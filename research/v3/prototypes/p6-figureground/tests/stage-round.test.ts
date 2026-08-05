@@ -12,7 +12,14 @@
  *     palette they are grading. The fixture is grepped too — and the ONE surviving occurrence of the
  *     candidate id, `fingerprint.algorithmVersion`, is asserted to be exactly that and nothing else,
  *     so the documented deviation is pinned rather than merely written down.
- *  4. **Determinism.** Two emissions of the same round are byte-identical, all four files.
+ *  4. **Mechanism blinding, field by field** (`no served field names the prototype`). This is the test
+ *     that would have caught the defect the first staged round shipped with: item ids were
+ *     `<round-name>-NN-<hash>`, round names are spelled `p6-round-1`, and so every item id and every
+ *     `/media/<batch>/<item>` URL announced which prototype the reviewer was grading. The old blinding
+ *     test above passed throughout — it looked for the candidate id, the code version and the arm
+ *     label, and `p6-round-1` is none of those. Checking the *round name and its tokens* against every
+ *     served string, rather than a list of secrets, is the difference.
+ *  5. **Determinism.** Two emissions of the same round are byte-identical, all four files.
  *
  * Everything runs against a synthetic run file over synthetic covers in a temp tree, with `repoRoot`
  * pointed at that tree, so nothing here depends on the corpus, on `data/devloop/runs/`, or on the
@@ -32,13 +39,17 @@ import test from "node:test"
 import sharp from "sharp"
 
 import {
+	BLINDING_TOKENS,
+	blindingLeaks,
 	buildFixture,
 	buildSidecar,
+	deriveBatchId,
 	deriveItemId,
 	MAX_ROUND_ITEMS,
 	MIN_ROUND_ITEMS,
 	parseRunFile,
 	resolveCover,
+	servedStrings,
 	stageRound,
 	toPaletteSnapshot,
 	validateStagedFixture,
@@ -111,7 +122,10 @@ function palette(seed: number, imagePath: string, contentHash: string, withGradi
  * `repoRoot` is the temp directory, so repo-relative paths in the emitted fixture are
  * `covers/NN.png` and nothing in the test touches the real tree.
  */
-async function makeRun(rowCount: number, options: Readonly<{ failLast?: boolean }> = {}): Promise<Fixture> {
+async function makeRun(
+	rowCount: number,
+	options: Readonly<{ failLast?: boolean; hexNames?: boolean }> = {},
+): Promise<Fixture> {
 	const root = await mkdtemp(join(tmpdir(), "p6-stage-round-"))
 	await mkdir(join(root, "covers"), { recursive: true })
 	const lines: string[] = [
@@ -133,7 +147,10 @@ async function makeRun(rowCount: number, options: Readonly<{ failLast?: boolean 
 	]
 	const covers: string[] = []
 	for (let index = 0; index < rowCount; index += 1) {
-		const name = `${String(index).padStart(2, "0")}.png`
+		// Two naming worlds, because the item id scheme has two branches: the corpus names covers by a
+		// 40-hex content id, a temp tree names them `00.png`, and both must yield a neutral id.
+		const stem = options.hexNames === true ? createHash("sha1").update(`cover-${index}`).digest("hex") : String(index).padStart(2, "0")
+		const name = `${stem}.png`
 		const imagePath = join(root, "covers", name)
 		const bytes = await sharp({
 			create: { width: 8, height: 8, channels: 3, background: { r: 16 + index, g: 32, b: 64 } },
@@ -251,7 +268,12 @@ test("a 5-item round emits four files whose fixture matches the push schema fiel
 		// written is what was checked, not merely that the object in memory was fine.
 		validateStagedFixture(emitted, fixture.root)
 
-		assert.equal(emitted.batchId, "p6-demo-round")
+		// The batch id is a content-derived placeholder, never the round's name and never a server batch
+		// id: the installer assigns the real one at push, and retired ids are not reused. Asserted by
+		// shape and by agreement with `deriveBatchId`, so no test here pins a batch id the server owns.
+		assert.match(emitted.batchId as string, /^cal-[0-9a-f]{8}$/u)
+		assert.equal(emitted.batchId, round.batchId)
+		assert.equal(emitted.batchId, deriveBatchId(round.items.map((item) => item.itemId)))
 		assert.equal(emitted.purpose, "calibration")
 		assert.deepEqual(emitted.fundedBy, [])
 		assert.equal(emitted.imagePathsRelativeTo, "repo-root")
@@ -288,16 +310,22 @@ test("a 5-item round emits four files whose fixture matches the push schema fiel
 			assert.match(item.imagePath as string, /^covers\/\d\d\.png$/u)
 		}
 
-		// Ordering is by run index, and the item ids carry the ordinal.
+		// Ordering is by run index. The item ids carry no ordinal and no round: these covers are named
+		// `NN.png`, so the fallback branch fires and every id is 40 hex of the run's content hash.
 		assert.deepEqual(
 			items.map((item) => item.itemId),
 			round.items.map((item) => item.itemId),
 		)
-		assert.equal(items[0]?.itemId, deriveItemId("p6-demo-round", 1, round.items[0]?.inputContentHash as string))
+		for (const item of round.items) {
+			assert.equal(item.itemId, deriveItemId(item.imagePath, item.inputContentHash).id)
+			assert.equal(deriveItemId(item.imagePath, item.inputContentHash).scheme, "content-hash-fallback")
+			assert.match(item.itemId, /^[0-9a-f]{40}$/u)
+			assert.ok(item.inputContentHash.startsWith(item.itemId))
+		}
 
 		// The side-car is the render-data shape the review-ui pages already consume.
 		const sidecar = JSON.parse(text.sidecar as string) as { batchId: string; items: Record<string, unknown>[] }
-		assert.equal(sidecar.batchId, "p6-demo-round")
+		assert.equal(sidecar.batchId, emitted.batchId)
 		assert.deepEqual(
 			sidecar.items.map((item) => item.questionKey),
 			items.map((item) => item.itemId),
@@ -344,7 +372,9 @@ test("a 5-item round emits four files whose fixture matches the push schema fiel
 
 		// The private mapping is the de-blinding join, and it is complete.
 		const mapping = JSON.parse(text.privateMapping as string) as Record<string, any>
-		assert.equal(mapping.batchId, "p6-demo-round")
+		// Keyed on item ids and nothing else. A mapping keyed on a batch id would stop joining the
+		// moment the installer assigned a different one, which is every push.
+		assert.ok(!("batchId" in mapping), "the private mapping must not key on a batch id")
 		assert.equal(mapping.run.candidateId, CANDIDATE_ID)
 		assert.equal(mapping.run.codeVersion, CODE_VERSION)
 		assert.equal(mapping.run.runId, RUN_ID)
@@ -472,7 +502,7 @@ test("blinding: the side-car names nothing about the candidate, and the fixture 
 		for (const item of emitted.items) {
 			assert.equal(item.fingerprint.algorithmVersion, CANDIDATE_ID)
 			assert.notEqual(item.variantId, CANDIDATE_ID)
-			assert.match(item.variantId, /^p6-demo-round-v-[0-9a-f]{8}$/u)
+			assert.match(item.variantId, /^cal-[0-9a-f]{8}-v-[0-9a-f]{8}$/u)
 		}
 
 		// --- nothing points at the private mapping ----------------------------------------------
@@ -485,6 +515,176 @@ test("blinding: the side-car names nothing about the candidate, and the fixture 
 		assert.ok(mappingText.includes(CANDIDATE_ID))
 		assert.ok(mappingText.includes(CODE_VERSION))
 		assert.ok(mappingText.includes(RUN_ID))
+	} finally {
+		await rm(fixture.root, { recursive: true, force: true })
+	}
+})
+
+// ---------------------------------------------------------------------------------------------
+// 3b. Mechanism blinding — the test that would have caught the shipped defect
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * Every string the reviewer's browser can reach, checked against the round name and against
+ * `p6` / `figureground` / `figure-ground` / `round`.
+ *
+ * **This is the test that would have caught the defect the first staged round shipped with.** Item
+ * ids were built as `<round-name>-NN-<hash>`; the round was called `p6-round-1`; so every item id,
+ * every side-car key and every `/media/<batch>/<item>` URL spelled out which prototype was on screen,
+ * and the round was retired before review. The blinding test that existed at the time passed the
+ * whole way through, because it grepped for a list of *secrets* — the candidate id, the code version,
+ * an arm label — and `p6-round-1` was on none of those lists. What closes the hole is checking the
+ * round's own name and its tokens against every served field, which is what this does.
+ *
+ * The round staged here is deliberately named `p6-demo-round`: a name carrying all three token
+ * shapes, so a scheme that leaked any part of it would fail here rather than in a review session.
+ * `background` is the standing false-positive to beware — it contains `round` — which is why the
+ * token match is on word boundaries.
+ */
+test("mechanism blinding: no served field carries the round name, p6, figureground or round", async () => {
+	const fixture = await makeRun(5)
+	try {
+		const round = await stageRound({ ...fixture.options, covers: ["0", "1", "2", "3", "4"] })
+		const text = await readAll(round.files)
+		const emitted = JSON.parse(text.fixture as string) as Record<string, unknown>
+		const sidecar = JSON.parse(text.sidecar as string) as Record<string, unknown>
+		const roundName = fixture.options.roundName
+
+		assert.deepEqual([...BLINDING_TOKENS], ["p6", "figureground", "figure-ground", "round"])
+		assert.equal(roundName, "p6-demo-round")
+
+		// (a) the fixture, field by field — keys included, values included, nested arbitrarily deep.
+		// The ONE exemption is `fingerprint.algorithmVersion`, which the push schema requires and the
+		// server never serves; it is exempted by path, so the same string anywhere else still fails.
+		const fixtureFields = servedStrings(emitted, (path) =>
+			/^\$\.items\[\d+\]\.fingerprint\.algorithmVersion$/u.test(path),
+		)
+		assert.deepEqual(blindingLeaks(fixtureFields, roundName), [])
+		assert.ok(fixtureFields.length > 40, "the walker must actually reach the item fields")
+
+		// (b) the side-car — batch id, every questionKey, every rendered role name and CSS string.
+		assert.deepEqual(blindingLeaks(servedStrings(sidecar), roundName), [])
+
+		// (c) the media URLs the browser fetches. Both halves are served here, so both are checked.
+		const mediaUrls = round.items.map(
+			(item) =>
+				[
+					`media ${item.itemId}`,
+					`/media/${encodeURIComponent(round.batchId)}/${encodeURIComponent(item.itemId)}`,
+				] as const,
+		)
+		assert.deepEqual(blindingLeaks(mediaUrls, roundName), [])
+
+		// (d) item ids and the batch id, stated directly rather than only via the walker, because these
+		// are the two fields the retired scheme got wrong.
+		for (const item of round.items) {
+			assert.match(item.itemId, /^[0-9a-f]{40}$/u)
+			assert.ok(!item.itemId.includes("p6"))
+			assert.ok(!item.itemId.includes(roundName))
+		}
+		assert.ok(!round.batchId.includes("p6") && !round.batchId.includes(roundName))
+
+		// (e) the guard is not vacuous: the retired scheme, fed to the same function, is caught.
+		const retired = [["fixture $.items[0].itemId", `${roundName}-01-d2b82cd5`] as const]
+		assert.equal(blindingLeaks(retired, roundName).length, 3, "round name, p6 and round should all fire")
+
+		// (f) and `background` — b-a-c-k-g-round — is not a false positive.
+		assert.deepEqual(blindingLeaks([["role", "background"] as const], "unrelated-name"), [])
+	} finally {
+		await rm(fixture.root, { recursive: true, force: true })
+	}
+})
+
+test("a cover named by its 40-hex content id takes that stem as its item id", async () => {
+	const fixture = await makeRun(5, { hexNames: true })
+	try {
+		const round = await stageRound({ ...fixture.options, covers: ["0", "1", "2", "3", "4"] })
+		for (const item of round.items) {
+			const stem = item.imagePath.split("/").pop()?.replace(/\.png$/u, "") as string
+			assert.match(stem, /^[0-9a-f]{40}$/u)
+			assert.equal(item.itemId, stem, "a corpus cover's item id is its own file stem")
+			assert.equal(deriveItemId(item.imagePath, item.inputContentHash).scheme, "filename-stem")
+		}
+		// Content-derived, so the same cover staged twice — into two rounds, by two prototypes — carries
+		// the same id. That is what makes verdicts joinable across arms without a mapping table.
+		assert.deepEqual(blindingLeaks(servedStrings(JSON.parse(await readFile(round.files.fixture, "utf8")), (path) =>
+			/^\$\.items\[\d+\]\.fingerprint\.algorithmVersion$/u.test(path)), fixture.options.roundName), [])
+	} finally {
+		await rm(fixture.root, { recursive: true, force: true })
+	}
+})
+
+test("a batch id that names the prototype is refused, and the default placeholder is content-derived", async () => {
+	const fixture = await makeRun(5)
+	try {
+		const covers = ["0", "1", "2", "3", "4"]
+		for (const batchId of ["p6-round-1", "p6-cal-1", "figureground-1"]) {
+			await assert.rejects(
+				() => stageRound({ ...fixture.options, covers, batchId }),
+				/names the prototype or the round/u,
+				`--batch-id ${batchId} must be refused`,
+			)
+		}
+		// A neutral explicit id is accepted, and so is the default.
+		const explicit = await stageRound({ ...fixture.options, covers, batchId: "phase2-cal-005" })
+		assert.equal(explicit.batchId, "phase2-cal-005")
+		const placeholder = await stageRound({ ...fixture.options, covers })
+		assert.match(placeholder.batchId, /^cal-[0-9a-f]{8}$/u)
+		// Derived from the item ids alone: order of `--covers` cannot change it, the round name cannot
+		// enter it, and re-staging the same covers reproduces it.
+		assert.equal(placeholder.batchId, deriveBatchId([...placeholder.items].reverse().map((item) => item.itemId)))
+		assert.notEqual(deriveBatchId(["a"]), deriveBatchId(["b"]))
+	} finally {
+		await rm(fixture.root, { recursive: true, force: true })
+	}
+})
+
+test("two covers that would collide on one item id are refused", async () => {
+	const fixture = await makeRun(5)
+	try {
+		// Same content hash on two rows ⇒ same derived id under either branch. A round that shipped it
+		// would silently serve one item's palette under the other's handle.
+		const text = await readFile(fixture.runPath, "utf8")
+		const lines = text.split("\n").filter((line) => line.length > 0)
+		const rows = lines.map((line) => JSON.parse(line) as Record<string, any>)
+		const first = rows.find((row) => row.kind === "devloop-run-row" && row.index === 0)
+		const second = rows.find((row) => row.kind === "devloop-run-row" && row.index === 1)
+		second.inputContentHash = first.inputContentHash
+		second.palette.metadata.inputContentHash = first.inputContentHash
+		await writeFile(fixture.runPath, `${rows.map((row) => JSON.stringify(row)).join("\n")}\n`, "utf8")
+		await assert.rejects(
+			() => stageRound({ ...fixture.options, covers: ["0", "1", "2", "3"] }),
+			/both derive item id/u,
+		)
+	} finally {
+		await rm(fixture.root, { recursive: true, force: true })
+	}
+})
+
+test("retirement continuity is recorded in the private mapping and nowhere else", async () => {
+	const fixture = await makeRun(5)
+	try {
+		const covers = ["0", "1", "2", "3", "4"]
+		const plain = await stageRound({ ...fixture.options, covers })
+		// Read the plain mapping NOW: the superseding staging below writes into the same directory,
+		// so reading it afterwards would read the superseded round's file (that ordering bug shipped
+		// once — this comment is the tombstone).
+		const plainMapping = JSON.parse(await readFile(plain.files.privateMapping, "utf8")) as object
+		const supersededItemIds = Object.fromEntries(
+			plain.items.map((item, ordinal) => [`p6-demo-round-${String(ordinal + 1).padStart(2, "0")}-0000abcd`, item.itemId]),
+		)
+		const round = await stageRound({ ...fixture.options, covers, supersedes: "bc-msf8yakf-716f40fb", supersededItemIds })
+		const text = await readAll(round.files)
+		const mapping = JSON.parse(text.privateMapping as string) as Record<string, any>
+		assert.equal(mapping.provenance.supersedesRecord, "bc-msf8yakf-716f40fb")
+		assert.deepEqual(mapping.provenance.supersededItemIds, supersededItemIds)
+		// The retired ids name the prototype, which is exactly why they may live only here.
+		for (const body of [text.fixture as string, text.sidecar as string]) {
+			assert.ok(!body.includes("bc-msf8yakf-716f40fb"), "a payload must not carry the retirement record id")
+			for (const old of Object.keys(supersededItemIds)) assert.ok(!body.includes(old), `a payload must not carry ${old}`)
+		}
+		// Absent entirely when nothing is superseded, so an ordinary round's mapping is unchanged.
+		assert.ok(!("provenance" in plainMapping))
 	} finally {
 		await rm(fixture.root, { recursive: true, force: true })
 	}

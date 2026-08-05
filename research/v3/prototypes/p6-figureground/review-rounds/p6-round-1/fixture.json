@@ -1,28 +1,32 @@
 {
   "_comment": [
-    "Staged calibration round for the P6 figure/ground prototype. Absolute grading, one palette",
-    "per item, no comparison (REVIEW_UI.md §5).",
+    "Staged calibration batch. Absolute grading, one palette per item, no comparison",
+    "(REVIEW_UI.md §5).",
+    "batchId is a content-derived placeholder; the installer assigns the real batch id at push",
+    "time and overwrites this one.",
+    "itemId is the cover's content-addressed file stem, so the same artwork carries the same id",
+    "in every batch it appears in.",
     "imagePath entries are repo-root-relative so this directory is portable across worktrees;",
     "the pusher rewrites them to absolute paths before POST /api/calibration, which requires",
     "absolute paths.",
-    "variantId is an opaque per-round token. The true candidate identity is held by the staging",
-    "prototype and is deliberately not named here — this file is the payload, not the join.",
-    "fundedBy is empty until the orchestrator fills in the record ids that motivated the round."
+    "variantId is an opaque per-batch token. The true candidate identity is held by the staging",
+    "tool and is deliberately not named here — this file is the payload, not the join.",
+    "fundedBy is empty until the orchestrator fills in the record ids that motivated the batch."
   ],
   "imagePathsRelativeTo": "repo-root",
-  "batchId": "p6-round-1",
+  "batchId": "cal-bd66a37d",
   "purpose": "calibration",
   "fundedBy": [],
   "items": [
     {
-      "itemId": "p6-round-1-01-d2b82cd5",
+      "itemId": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
       "imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
       "artworkId": null,
-      "variantId": "p6-round-1-v-ea703cbc",
+      "variantId": "cal-bd66a37d-v-c1b52a24",
       "fingerprint": {
         "algorithmVersion": "p6-figureground-0.1.0",
         "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
         "dirty": true
       },
       "palette": {
@@ -36,14 +40,14 @@
       }
     },
     {
-      "itemId": "p6-round-1-02-9dcfd80b",
+      "itemId": "ab67616d00001e02000001335fe604d859a69094",
       "imagePath": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
       "artworkId": null,
-      "variantId": "p6-round-1-v-ea703cbc",
+      "variantId": "cal-bd66a37d-v-c1b52a24",
       "fingerprint": {
         "algorithmVersion": "p6-figureground-0.1.0",
         "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
         "dirty": true
       },
       "palette": {
@@ -57,14 +61,14 @@
       }
     },
     {
-      "itemId": "p6-round-1-03-066cdd5d",
+      "itemId": "ab67616d00001e0200000ee5a62175fc8d58e0af",
       "imagePath": "00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
       "artworkId": null,
-      "variantId": "p6-round-1-v-ea703cbc",
+      "variantId": "cal-bd66a37d-v-c1b52a24",
       "fingerprint": {
         "algorithmVersion": "p6-figureground-0.1.0",
         "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
         "dirty": true
       },
       "palette": {
@@ -78,14 +82,14 @@
       }
     },
     {
-      "itemId": "p6-round-1-04-9619ff4e",
+      "itemId": "ab67616d00001e02000018e9b0ec8fc5ac790164",
       "imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
       "artworkId": null,
-      "variantId": "p6-round-1-v-ea703cbc",
+      "variantId": "cal-bd66a37d-v-c1b52a24",
       "fingerprint": {
         "algorithmVersion": "p6-figureground-0.1.0",
         "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
         "dirty": true
       },
       "palette": {
@@ -99,14 +103,14 @@
       }
     },
     {
-      "itemId": "p6-round-1-05-7d3d097f",
+      "itemId": "ab67616d00001e02000022e7e9d11c908479200b",
       "imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
       "artworkId": null,
-      "variantId": "p6-round-1-v-ea703cbc",
+      "variantId": "cal-bd66a37d-v-c1b52a24",
       "fingerprint": {
         "algorithmVersion": "p6-figureground-0.1.0",
         "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
         "dirty": true
       },
       "palette": {
@@ -120,14 +124,14 @@
       }
     },
     {
-      "itemId": "p6-round-1-06-22ea9268",
+      "itemId": "ab67616d00001e020000269ead63cf2376a6b67d",
       "imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
       "artworkId": null,
-      "variantId": "p6-round-1-v-ea703cbc",
+      "variantId": "cal-bd66a37d-v-c1b52a24",
       "fingerprint": {
         "algorithmVersion": "p6-figureground-0.1.0",
         "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
         "dirty": true
       },
       "palette": {

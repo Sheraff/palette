@@ -1,7 +1,7 @@
 # p6-round-1
 
 - **Round kind:** calibration (absolute grading, one palette per item, no comparison — REVIEW_UI.md §5)
-- **Batch id:** `p6-round-1`
+- **Batch id:** `cal-bd66a37d` (content-derived placeholder — the installer assigns the real batch id at push; the previous install was retired as record `bc-msf8yakf-716f40fb`)
 - **Items:** 6
 - **Purpose:** First P6 calibration: grade 6 palettes; arbitrates fg/accent ordering and accent vividness
 
@@ -45,15 +45,29 @@ are written after the verdicts is a round that can be read to mean whatever is c
 
 | # | item id | cover |
 |---|---|---|
-| 1 | `p6-round-1-01-d2b82cd5` | `00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg` |
-| 2 | `p6-round-1-02-9dcfd80b` | `00/ab67616d00001e02000001335fe604d859a69094.jpg` |
-| 3 | `p6-round-1-03-066cdd5d` | `00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg` |
-| 4 | `p6-round-1-04-9619ff4e` | `00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg` |
-| 5 | `p6-round-1-05-7d3d097f` | `00/ab67616d00001e02000022e7e9d11c908479200b.jpg` |
-| 6 | `p6-round-1-06-22ea9268` | `00/ab67616d00001e020000269ead63cf2376a6b67d.jpg` |
+| 1 | `00007e976f2fb1819d1ec7e0cc2869f39d397ba3` | `00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg` |
+| 2 | `ab67616d00001e02000001335fe604d859a69094` | `00/ab67616d00001e02000001335fe604d859a69094.jpg` |
+| 3 | `ab67616d00001e0200000ee5a62175fc8d58e0af` | `00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg` |
+| 4 | `ab67616d00001e02000018e9b0ec8fc5ac790164` | `00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg` |
+| 5 | `ab67616d00001e02000022e7e9d11c908479200b` | `00/ab67616d00001e02000022e7e9d11c908479200b.jpg` |
+| 6 | `ab67616d00001e020000269ead63cf2376a6b67d` | `00/ab67616d00001e020000269ead63cf2376a6b67d.jpg` |
 
 Candidate identity, code version and the run this came from are deliberately **not** here —
 they live in `private-mapping.json`, which the post-release analyst reads and nobody else does.
+
+## Correction of record — first staging retired for a blinding defect
+
+The first staging of this round was installed and RETIRED before any review (record
+`bc-msf8yakf-716f40fb`, 0 answers): its item ids were `p6-round-1-NN-<hash>`, so every served
+item id and media URL carried the prototype identifier — a mechanism-blinding break, violating
+this prototype's own directive-10 standard ("no candidate identity anywhere the reviewer can
+see"). Two failures, both ours: the id scheme, and the blinding test that scanned for candidate
+ids and arm labels but not the round-name tokens the ids were built from. Both are fixed: item
+ids are now the cover's own 40-hex stem (content-derived, cross-round joinable), the tool
+hard-errors on prototype tokens in round names and batch ids, and the test that would have
+caught the defect now checks every served string against the round name's tokens. The old→new
+id mapping lives in `private-mapping.json` provenance — deliberately not here, since the old
+ids name the prototype.
 
 ## Staging checks
 

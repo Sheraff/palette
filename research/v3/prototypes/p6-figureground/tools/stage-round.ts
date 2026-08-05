@@ -51,9 +51,23 @@
  *  - **the side-car carries nothing but render data** — the same object `blindSidePayload` produces,
  *    built by calling that exact function, so an offline render and the served one cannot drift.
  *    No candidate id, no code version, no image path, no run file, no arm label, no palette hash.
- *  - **`variantId` in the fixture is an opaque per-round token**, not the candidate id. The schema
+ *  - **`variantId` in the fixture is an opaque per-batch token**, not the candidate id. The schema
  *    requires the field and the server never serves it, but a fixture that names the arm in plain
  *    text is one careless `cat` away from being read aloud in a review session.
+ *  - **item ids are the cover's own content-addressed file stem**, never `<round-name>-NN-<hash>`.
+ *    An item id is served twice — in the calibration payload and in every `/media/<batch>/<item>` URL
+ *    the browser fetches — so a round called `p6-round-1` puts the prototype's number on the
+ *    reviewer's screen before they have looked at a single palette. [RETIRED SCHEME] The
+ *    `<round-name>-NN-<8 hex>` spelling shipped once, into the first staged round, and was caught at
+ *    install time before any reviewer saw it; `blindingLeaks` and the test that calls it exist so it
+ *    cannot come back. Covers whose file name is not a 40-hex stem fall back to a neutral token of the
+ *    same shape derived from the run's content hash — never to anything naming the round.
+ *  - **the batch id is a content-derived placeholder**, `cal-<8 hex over the sorted item ids>`, and
+ *    the main-tier installer overwrites it with the real batch id at push time. It is here because the
+ *    push schema requires the field, not because this tool gets to name a batch: batch ids are the
+ *    installer's to assign, retired ones are never reused, and a batch id derived from the round name
+ *    would land the prototype's name in `/media/<batch>/…` and in the side-car's served file name.
+ *    `--batch-id` overrides it, and the override is checked for prototype tokens before it is used.
  *  - **`fingerprint` maps through unchanged**, including `fingerprint.algorithmVersion`, which for
  *    this prototype is byte-identical to the candidate id (`p6-figureground-0.1.0`). This is the one
  *    place a candidate id survives into the fixture, and it is deliberate: the push schema requires
@@ -64,7 +78,9 @@
  *
  * ## Determinism
  *
- * Same run file, same `--covers`, same `--name` ⇒ byte-identical output. No `Date.now`, no
+ * Same run file, same `--covers` ⇒ byte-identical output, and the round name no longer enters any of
+ * it: item ids come from the covers, the batch id comes from the item ids, and `--name` only chooses
+ * the directory and titles `ROUND.md`. No `Date.now`, no
  * `Math.random`, no timestamp anywhere in any of the three files. `gitCommit` and `dirty` are read
  * from the working tree, which is *state* and not time. Items are emitted sorted by run index
  * regardless of the order `--covers` listed them, so two humans who type the same set in a different
@@ -103,15 +119,41 @@ export const MIN_ROUND_ITEMS = 4
 export const MAX_ROUND_ITEMS = 10
 
 /**
- * Round names are lowercase, hyphenated, and short enough that `<name>-NN-<8 hex>` still fits the
- * server's 128-character id pattern with room to spare. Stricter than the server's `ID_PATTERN` on
- * purpose — the name is also a directory name and a batch id, and mixed case in either is a way to
- * end up with two rounds that are the same round on a case-insensitive filesystem.
+ * Round names are lowercase, hyphenated, and short. Stricter than the server's `ID_PATTERN` on
+ * purpose — the name is a directory name, and mixed case in a directory name is a way to end up with
+ * two rounds that are the same round on a case-insensitive filesystem. The round name is local: it
+ * names a directory and titles `ROUND.md`, and it reaches no payload.
  */
 const ROUND_NAME_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/u
 
-/** How many hex characters of a sha-256 an item token carries. Long enough not to collide in ten. */
+/** The server's own id rule, mirrored. Every id this tool emits must satisfy it. */
+const SERVER_ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,127}$/iu
+
+/** How many hex characters of a sha-256 a batch or variant token carries. */
 const TOKEN_HEX = 8
+
+/**
+ * The shape of a cover's content-addressed file stem, and therefore the shape of an item id.
+ *
+ * The corpus names covers by a 40-hex id (`00/ab67616d…0164.jpg`), which is content-derived, neutral,
+ * stable across runs and joinable across rounds — every property an item id wants. Covers named any
+ * other way get a token of this same shape derived from the run's content hash instead.
+ */
+const ITEM_ID_PATTERN = /^[0-9a-f]{40}$/iu
+
+/**
+ * Tokens that must never appear in anything the reviewer's browser can reach.
+ *
+ * `p6` and `figureground` name the prototype: a reviewer who reads either one knows which mechanism
+ * they are grading, which is the whole thing blinding exists to prevent. `round` is here for a
+ * narrower reason — it is the tell of the retired `<round-name>-NN-<hash>` item id scheme, whose round
+ * names are spelled `p6-round-1`. Matched on word boundaries, so `background` (b-a-c-k-g-**round**)
+ * is not a hit.
+ */
+export const BLINDING_TOKENS = ["p6", "figureground", "figure-ground", "round"] as const
+
+/** A prototype number in a token position: `p6`, `p11`, `arm-p3-b`. Not `phase2`, not `sharp`. */
+const PROTOTYPE_TOKEN_PATTERN = /\bp\d{1,2}\b/iu
 
 /** The batch purpose this tool stages. A calibration round is absolute grading, one palette per item. */
 const ROUND_PURPOSE = "calibration" as const
@@ -143,9 +185,22 @@ export type StageOptions = Readonly<{
 	runPath: string
 	/** Item selectors — run indices, paths, basenames, or content-hash prefixes. */
 	covers: readonly string[]
+	/** Local only: names the directory and titles `ROUND.md`. Never reaches a payload. */
 	roundName: string
+	/**
+	 * Overrides the `cal-<8 hex>` placeholder. Rarely wanted — the installer assigns the real batch id
+	 * at push time either way — and refused if it carries a prototype token.
+	 */
+	batchId?: string
 	/** One line, for `ROUND.md`. Empty means "the orchestrator fills it before submission". */
 	purpose: string
+	/**
+	 * Retirement continuity, written into `private-mapping.json` and nowhere else. `supersedes` is the
+	 * record id of the retired round this one replaces; `supersededItemIds` maps its old item ids onto
+	 * the ids staged here, so a verdict logged against a retired id can still be found.
+	 */
+	supersedes?: string
+	supersededItemIds?: Readonly<Record<string, string>>
 	/** Where `<roundName>/` is created. Defaults to `prototypes/p6-figureground/review-rounds`. */
 	outDir: string
 	/** What repo-relative paths are relative to. Injectable so tests can stage inside a temp tree. */
@@ -315,21 +370,104 @@ function shortHash(...parts: readonly string[]): string {
 	return digest.digest("hex").slice(0, TOKEN_HEX)
 }
 
+export type ItemIdScheme = "filename-stem" | "content-hash-fallback"
+
 /**
- * The handle the reviewer's browser answers with.
+ * The handle the reviewer's browser answers with, and the last path segment of `/media/<batch>/<item>`.
  *
- * `<round>-<ordinal>-<8 hex of (round, content hash)>`. It says which round and which position, and
- * nothing else — not the candidate, not the code version, not the cover's name. The ordinal is there
- * so a human reading a verdict log can find the item; the hash is there so two rounds over the same
- * covers do not share item ids, which would make a verdict ambiguous across rounds.
+ * The cover's own 40-hex file stem, because that is content-derived (it names the artwork, not the
+ * round), neutral (it names no prototype, arm, code version or position), and joinable — the same
+ * cover staged into two rounds by two prototypes gets the same id, so a reviewer's verdicts can be
+ * compared across arms without a mapping table. Covers named anything else get the same shape derived
+ * from the run's content hash, so the scheme is total and the fallback is still content-derived.
+ *
+ * What it deliberately is NOT is `<round-name>-<ordinal>-<hash>`, which is what shipped first and what
+ * broke blinding: it named the prototype in every media URL the browser fetched. The ordinal that
+ * scheme carried is not missed — `private-mapping.json` holds the run index, and the reviewer has no
+ * use for a position.
  */
-export function deriveItemId(roundName: string, ordinal: number, inputContentHash: string): string {
-	return `${roundName}-${String(ordinal).padStart(2, "0")}-${shortHash(roundName, inputContentHash)}`
+export function deriveItemId(
+	imagePath: string,
+	inputContentHash: string,
+): Readonly<{ id: string; scheme: ItemIdScheme }> {
+	const stem = basename(imagePath).replace(/\.[^.]+$/u, "")
+	if (ITEM_ID_PATTERN.test(stem)) return { id: stem.toLowerCase(), scheme: "filename-stem" }
+	require_(
+		/^[0-9a-f]{40,}$/iu.test(inputContentHash),
+		`cover ${imagePath} has no 40-hex file stem and its content hash ${JSON.stringify(inputContentHash)} is not hex either, so no neutral item id can be derived`,
+	)
+	return { id: inputContentHash.slice(0, 40).toLowerCase(), scheme: "content-hash-fallback" }
 }
 
-/** One opaque variant name per round. The true name lives in `private-mapping.json`. */
-export function deriveVariantId(roundName: string, codeVersion: string): string {
-	return `${roundName}-v-${shortHash(roundName, codeVersion)}`
+/**
+ * The placeholder batch id: `cal-<8 hex over the sorted item ids>`.
+ *
+ * Content-derived, so it is stable across re-emissions and says nothing about the round, the
+ * prototype or the arm. **The installer overwrites it at push time** — batch ids are assigned
+ * centrally, retired ids are never reused, and a prototype that picked its own would be naming a
+ * server resource it does not own. Sorted, so the id does not depend on the order `--covers` listed.
+ */
+export function deriveBatchId(itemIds: readonly string[]): string {
+	return `cal-${shortHash(...[...itemIds].sort())}`
+}
+
+/** One opaque variant name per batch. The true name lives in `private-mapping.json`. */
+export function deriveVariantId(batchId: string, codeVersion: string): string {
+	return `${batchId}-v-${shortHash(batchId, codeVersion)}`
+}
+
+/**
+ * Every string a served payload carries that matches a blinding token or the round name.
+ *
+ * Returns findings rather than throwing so both callers can use it: `stageRound` turns a non-empty
+ * result into a hard error, and the test asserts it is empty for every surface the browser can reach.
+ * One implementation, because a guard the tests spell differently from the tool is a guard with a gap
+ * exactly the width of the difference.
+ */
+export function blindingLeaks(
+	entries: ReadonlyArray<readonly [string, string]>,
+	roundName: string,
+): readonly string[] {
+	const found: string[] = []
+	const needles: ReadonlyArray<readonly [string, RegExp]> = [
+		[roundName, new RegExp(escapeRegExp(roundName), "iu")],
+		...BLINDING_TOKENS.map((token) => [token, new RegExp(`\\b${escapeRegExp(token)}\\b`, "iu")] as const),
+	]
+	for (const [where, text] of entries) {
+		for (const [token, pattern] of needles) {
+			if (pattern.test(text)) found.push(`${where} carries ${JSON.stringify(token)} (in ${JSON.stringify(text)})`)
+		}
+	}
+	return found
+}
+
+function escapeRegExp(source: string): string {
+	// `-` is deliberately not escaped: outside a character class `\-` is a SyntaxError under the `u`
+	// flag, and a bare `-` is already literal there. Round names and tokens are full of hyphens.
+	return source.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")
+}
+
+/**
+ * Every `[path, string]` pair in a JSON-shaped value — object keys as well as string values, since a
+ * key is served just as literally as what it holds. `exempt` is matched against the dotted path.
+ */
+export function servedStrings(
+	value: unknown,
+	exempt: (path: string) => boolean = () => false,
+	path = "$",
+	out: Array<readonly [string, string]> = [],
+): ReadonlyArray<readonly [string, string]> {
+	if (exempt(path)) return out
+	if (typeof value === "string") out.push([path, value])
+	else if (Array.isArray(value)) for (const [index, entry] of value.entries()) servedStrings(entry, exempt, `${path}[${index}]`, out)
+	else if (typeof value === "object" && value !== null) {
+		for (const [key, entry] of Object.entries(value)) {
+			if (exempt(`${path}.${key}`)) continue
+			out.push([`${path} key`, key])
+			servedStrings(entry, exempt, `${path}.${key}`, out)
+		}
+	}
+	return out
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -446,15 +584,22 @@ function sidecarJson(value: unknown): string {
 
 export function buildFixture(items: readonly StagedItem[], batchId: string) {
 	return {
+		// Every string here is served-adjacent and is checked by `blindingLeaks`: this comment used to
+		// name the prototype in its first line, which is one `cat` away from being read aloud in a
+		// review session.
 		_comment: [
-			"Staged calibration round for the P6 figure/ground prototype. Absolute grading, one palette",
-			"per item, no comparison (REVIEW_UI.md §5).",
+			"Staged calibration batch. Absolute grading, one palette per item, no comparison",
+			"(REVIEW_UI.md §5).",
+			"batchId is a content-derived placeholder; the installer assigns the real batch id at push",
+			"time and overwrites this one.",
+			"itemId is the cover's content-addressed file stem, so the same artwork carries the same id",
+			"in every batch it appears in.",
 			"imagePath entries are repo-root-relative so this directory is portable across worktrees;",
 			"the pusher rewrites them to absolute paths before POST /api/calibration, which requires",
 			"absolute paths.",
-			"variantId is an opaque per-round token. The true candidate identity is held by the staging",
-			"prototype and is deliberately not named here — this file is the payload, not the join.",
-			"fundedBy is empty until the orchestrator fills in the record ids that motivated the round.",
+			"variantId is an opaque per-batch token. The true candidate identity is held by the staging",
+			"tool and is deliberately not named here — this file is the payload, not the join.",
+			"fundedBy is empty until the orchestrator fills in the record ids that motivated the batch.",
 		],
 		imagePathsRelativeTo: "repo-root",
 		batchId,
@@ -497,20 +642,23 @@ export function buildSidecar(items: readonly StagedItem[], batchId: string) {
 /** The de-blinding join. SPEC directive 10. Never pushed, never served, never linked. */
 export function buildPrivateMapping(
 	items: readonly StagedItem[],
-	batchId: string,
 	run: LoadedRun,
 	repoRoot: string,
 	gitCommit: string,
 	dirty: boolean,
+	provenance: Readonly<{ supersedes?: string; supersededItemIds?: Readonly<Record<string, string>> }> = {},
 ) {
+	const supersededItemIds = provenance.supersededItemIds ?? {}
 	return {
 		_comment: [
 			"PRIVATE. The de-blinding join for the post-release analyst (P6 SPEC directive 10): item",
 			"token <-> cover <-> candidate identity <-> run file. Read it only after the batch has been",
 			"released, alongside data/review-server/batches.jsonl. It is never part of any payload and",
 			"nothing in fixture.json or sidecar.data.json points at it.",
+			"The join key is itemId, NOT a batch id: batch ids are assigned by the installer at push time",
+			"and a retired batch is never re-pushed under its old id, so a mapping keyed on one would stop",
+			"joining the moment the round was re-staged. Item ids are content-addressed and survive that.",
 		],
-		batchId,
 		roundKind: ROUND_PURPOSE,
 		run: {
 			file: toRepoRelative(run.path, repoRoot),
@@ -524,6 +672,17 @@ export function buildPrivateMapping(
 			packageVersions: run.header.packageVersions,
 		},
 		stagedFrom: { gitCommit, dirty },
+		// Continuity for a re-staged round: which record retired the previous staging, and which old
+		// item id each current id replaces. Present only when this staging supersedes another, so an
+		// ordinary round's mapping is unchanged by the existence of this field.
+		...(provenance.supersedes === undefined && Object.keys(supersededItemIds).length === 0
+			? {}
+			: {
+					provenance: {
+						supersedesRecord: provenance.supersedes ?? null,
+						supersededItemIds: Object.fromEntries(Object.entries(supersededItemIds).sort(([a], [b]) => (a < b ? -1 : 1))),
+					},
+				}),
 		items: items.map((item) => ({
 			itemId: item.itemId,
 			variantId: item.variantId,
@@ -553,7 +712,7 @@ export function renderRoundMd(
 		`# ${round.roundName}`,
 		"",
 		`- **Round kind:** calibration (absolute grading, one palette per item, no comparison — REVIEW_UI.md §5)`,
-		`- **Batch id:** \`${round.batchId}\``,
+		`- **Batch id (placeholder):** \`${round.batchId}\` — content-derived; the installer assigns the real batch id at push.`,
 		`- **Items:** ${round.items.length}`,
 		`- **Purpose:** ${purpose}`,
 		"",
@@ -630,9 +789,41 @@ export async function stageRound(options: StageOptions): Promise<StagedRound> {
 	const run = parseRunFile(await readFile(runPath, "utf8"), runPath)
 	const rows = selectRows(options.covers, run.rows, options.repoRoot)
 
-	const variantId = deriveVariantId(options.roundName, run.header.codeVersion)
 	const checks: string[] = []
 	const skipped: string[] = []
+
+	// Ids first, because each one is derived from the last: the item ids come from the covers, the
+	// batch id from the sorted item ids, the variant id from the batch id. Nothing derives from the
+	// round name, which is what stopped the prototype's identity reaching the browser.
+	const derived = rows.map((row) => deriveItemId(row.imagePath, row.inputContentHash))
+	const itemIds = derived.map((entry) => entry.id)
+	const byId = new Map<string, number>()
+	for (const [ordinal, id] of itemIds.entries()) {
+		require_(SERVER_ID_PATTERN.test(id), `item id ${JSON.stringify(id)} is not a filesystem-safe server token`)
+		const first = byId.get(id)
+		require_(
+			first === undefined,
+			`run indices ${(rows[first ?? 0] as RunRow).index} and ${(rows[ordinal] as RunRow).index} both derive item id ${id} — two covers cannot share an item id`,
+		)
+		byId.set(id, ordinal)
+	}
+	const schemes = new Set(derived.map((entry) => entry.scheme))
+	checks.push(
+		`item ids are content-derived and name nothing about this prototype (${[...schemes].sort().join(" + ")}${schemes.has("content-hash-fallback") ? "; covers without a 40-hex file stem fell back to the run's content hash" : ""}).`,
+	)
+
+	const batchId = options.batchId ?? deriveBatchId(itemIds)
+	require_(SERVER_ID_PATTERN.test(batchId), `--batch-id must be a filesystem-safe token; got ${JSON.stringify(batchId)}`)
+	require_(
+		!PROTOTYPE_TOKEN_PATTERN.test(batchId) && blindingLeaks([["--batch-id", batchId]], options.roundName).length === 0,
+		`--batch-id ${JSON.stringify(batchId)} names the prototype or the round; the batch id is served in every /media/<batch>/<item> URL and in the side-car's file name. Pass a neutral one, or pass none and take the cal-<hex> placeholder the installer overwrites at push time.`,
+	)
+	checks.push(
+		options.batchId === undefined
+			? `\`batchId\` is the placeholder \`${batchId}\`, derived from the item ids — the installer assigns the real batch id at push.`
+			: `\`batchId\` was supplied explicitly as \`${batchId}\` and carries no prototype token; the installer still assigns the real batch id at push.`,
+	)
+	const variantId = deriveVariantId(batchId, run.header.codeVersion)
 
 	const items: StagedItem[] = []
 	for (const [ordinal, row] of rows.entries()) {
@@ -643,7 +834,7 @@ export async function stageRound(options: StageOptions): Promise<StagedRound> {
 			...(snapshot.gradient?.stops.map((stop) => stop.color) ?? []),
 		]
 		items.push({
-			itemId: deriveItemId(options.roundName, ordinal + 1, row.inputContentHash),
+			itemId: itemIds[ordinal] as string,
 			variantId,
 			index: row.index,
 			imagePath: toRepoRelative(row.imagePath, options.repoRoot),
@@ -713,7 +904,7 @@ export async function stageRound(options: StageOptions): Promise<StagedRound> {
 			"(`PHASE_0_DECISIONS.md` §2).",
 	)
 
-	const fixture = buildFixture(items, options.roundName)
+	const fixture = buildFixture(items, batchId)
 	validateStagedFixture(fixture, options.repoRoot)
 	checks.push("`fixture.json` passes this tool's own mirror of the calibration push schema.")
 
@@ -727,8 +918,11 @@ export async function stageRound(options: StageOptions): Promise<StagedRound> {
 	})
 	checks.push("`fixture.json` passes `src/review-server/batch.ts:parseCalibrationBatch` verbatim (paths absolutised, as the pusher will).")
 
-	const sidecar = buildSidecar(items, options.roundName)
-	const privateMapping = buildPrivateMapping(items, options.roundName, run, options.repoRoot, options.gitCommit, options.dirty)
+	const sidecar = buildSidecar(items, batchId)
+	const privateMapping = buildPrivateMapping(items, run, options.repoRoot, options.gitCommit, options.dirty, {
+		supersedes: options.supersedes,
+		supersededItemIds: options.supersededItemIds,
+	})
 
 	// The blinding guard, enforced here and not only in the tests: a side-car that names the candidate
 	// is a leak that ships, and it ships silently because the page still renders.
@@ -754,6 +948,33 @@ export async function stageRound(options: StageOptions): Promise<StagedRound> {
 		"neither payload names the de-blinding join, and the fixture carries the candidate id only as `fingerprint.algorithmVersion` (schema-required, never served).",
 	)
 
+	// The mechanism-blinding guard. Every string in either payload — object keys included, since a key
+	// is served as literally as what it holds — plus the media URLs the browser will actually fetch,
+	// checked against the round name and `BLINDING_TOKENS`. The single exemption is
+	// `fingerprint.algorithmVersion`, which the push schema requires and `round-kit.ts` keeps
+	// server-side; it is the documented deviation above, and it is exempted by PATH, not by value, so
+	// the same string appearing anywhere else is still a leak.
+	const leaks = [
+		...blindingLeaks(servedStrings(fixture, (path) => /^\$\.items\[\d+\]\.fingerprint\.algorithmVersion$/u.test(path)).map(
+			([where, text]) => [`fixture ${where}`, text] as const,
+		), options.roundName),
+		...blindingLeaks(servedStrings(sidecar).map(([where, text]) => [`side-car ${where}`, text] as const), options.roundName),
+		...blindingLeaks(
+			items.map((item) => [
+				`media url for ${item.itemId}`,
+				`/media/${encodeURIComponent(batchId)}/${encodeURIComponent(item.itemId)}`,
+			] as const),
+			options.roundName,
+		),
+	]
+	require_(
+		leaks.length === 0,
+		`the payload would tell the reviewer which prototype they are grading:\n  ${leaks.join("\n  ")}`,
+	)
+	checks.push(
+		`no served string — item id, batch id, media URL, side-car key or fixture field — carries the round name or any of ${BLINDING_TOKENS.map((token) => `\`${token}\``).join(", ")}, except \`fingerprint.algorithmVersion\`, which the server never serves.`,
+	)
+
 	const roundDir = resolve(options.outDir, options.roundName)
 	await mkdir(roundDir, { recursive: true })
 	const files = {
@@ -767,11 +988,11 @@ export async function stageRound(options: StageOptions): Promise<StagedRound> {
 	await writeFile(files.privateMapping, sidecarJson(privateMapping), "utf8")
 	await writeFile(
 		files.roundMd,
-		renderRoundMd({ roundName: options.roundName, batchId: options.roundName, purpose: options.purpose, items }, checks, skipped),
+		renderRoundMd({ roundName: options.roundName, batchId, purpose: options.purpose, items }, checks, skipped),
 		"utf8",
 	)
 
-	return { roundDir, batchId: options.roundName, items, files, checks, skipped }
+	return { roundDir, batchId, items, files, checks, skipped }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -798,15 +1019,38 @@ async function main(argv: readonly string[]): Promise<void> {
 			name: { type: "string" },
 			purpose: { type: "string" },
 			out: { type: "string" },
+			"batch-id": { type: "string" },
+			supersedes: { type: "string" },
+			"superseded-item-ids": { type: "string" },
 		},
 		strict: true,
 	})
 	if (values.run === undefined || values.covers === undefined || values.name === undefined) {
 		process.stderr.write(
-			"usage: stage-round.ts --run <run.jsonl> --covers <ids or indices> --name <round-name> [--purpose \"<one line>\"] [--out <dir>]\n",
+			"usage: stage-round.ts --run <run.jsonl> --covers <ids or indices> --name <round-name>\n" +
+				"                     [--purpose \"<one line>\"] [--out <dir>] [--batch-id <neutral token>]\n" +
+				"                     [--supersedes <record id>] [--superseded-item-ids <old>=<new>,...]\n" +
+				"\n" +
+				"  --name is local: it names the output directory and titles ROUND.md. It reaches no payload.\n" +
+				"  --batch-id is rarely wanted; without it the fixture carries a cal-<hex> placeholder and the\n" +
+				"    installer assigns the real batch id at push time.\n" +
+				"  --supersedes / --superseded-item-ids write retirement continuity into private-mapping.json\n" +
+				"    when a round is re-staged, and appear nowhere else.\n",
 		)
 		process.exitCode = 2
 		return
+	}
+	// `old=new,old=new`. Parsed here rather than taken as JSON so the whole invocation stays a shell
+	// line somebody can paste back to reproduce the emission byte for byte.
+	const supersededItemIds: Record<string, string> = {}
+	for (const pair of (values["superseded-item-ids"] ?? "").split(",").map((entry) => entry.trim()).filter((entry) => entry.length > 0)) {
+		const [old, next, ...rest] = pair.split("=")
+		if (old === undefined || next === undefined || rest.length > 0 || old.length === 0 || next.length === 0) {
+			process.stderr.write(`stage-round: --superseded-item-ids expects <old>=<new> pairs; got ${JSON.stringify(pair)}\n`)
+			process.exitCode = 2
+			return
+		}
+		supersededItemIds[old] = next
 	}
 	const gitState = readGitState(REPO_ROOT)
 	const round = await stageRound({
@@ -814,7 +1058,10 @@ async function main(argv: readonly string[]): Promise<void> {
 		runPath: resolve(process.cwd(), values.run),
 		covers: values.covers.split(",").map((entry) => entry.trim()).filter((entry) => entry.length > 0),
 		roundName: values.name,
+		batchId: values["batch-id"],
 		purpose: values.purpose ?? "",
+		supersedes: values.supersedes,
+		supersededItemIds,
 		outDir: values.out === undefined ? DEFAULT_OUT_DIR : resolve(values.out),
 		repoRoot: REPO_ROOT,
 		gitCommit: gitState.gitCommit,
@@ -822,6 +1069,7 @@ async function main(argv: readonly string[]): Promise<void> {
 	})
 	const report = [
 		`staged ${round.items.length} items into ${round.roundDir}`,
+		`batch id (placeholder, installer overwrites at push): ${round.batchId}`,
 		...round.items.map((item) => `  ${item.itemId}  ${item.imagePath}`),
 		"",
 		"checks:",

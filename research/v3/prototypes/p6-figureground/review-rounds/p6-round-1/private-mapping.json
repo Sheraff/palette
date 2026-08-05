@@ -3,9 +3,11 @@
 		"PRIVATE. The de-blinding join for the post-release analyst (P6 SPEC directive 10): item",
 		"token <-> cover <-> candidate identity <-> run file. Read it only after the batch has been",
 		"released, alongside data/review-server/batches.jsonl. It is never part of any payload and",
-		"nothing in fixture.json or sidecar.data.json points at it."
+		"nothing in fixture.json or sidecar.data.json points at it.",
+		"The join key is itemId, NOT a batch id: batch ids are assigned by the installer at push time",
+		"and a retired batch is never re-pushed under its old id, so a mapping keyed on one would stop",
+		"joining the moment the round was re-staged. Item ids are content-addressed and survive that."
 	],
-	"batchId": "p6-round-1",
 	"roundKind": "calibration",
 	"run": {
 		"file": "research/v3/data/devloop/runs/p6-figureground-0.1.0-p6-round-1-6-20260804T224150247Z.jsonl",
@@ -34,13 +36,24 @@
 		}
 	},
 	"stagedFrom": {
-		"gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+		"gitCommit": "fb92dc9c6d340f4675dfa3c112f5f2439767e7e9",
 		"dirty": true
+	},
+	"provenance": {
+		"supersedesRecord": "bc-msf8yakf-716f40fb",
+		"supersededItemIds": {
+			"p6-round-1-01-d2b82cd5": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+			"p6-round-1-02-9dcfd80b": "ab67616d00001e02000001335fe604d859a69094",
+			"p6-round-1-03-066cdd5d": "ab67616d00001e0200000ee5a62175fc8d58e0af",
+			"p6-round-1-04-9619ff4e": "ab67616d00001e02000018e9b0ec8fc5ac790164",
+			"p6-round-1-05-7d3d097f": "ab67616d00001e02000022e7e9d11c908479200b",
+			"p6-round-1-06-22ea9268": "ab67616d00001e020000269ead63cf2376a6b67d"
+		}
 	},
 	"items": [
 		{
-			"itemId": "p6-round-1-01-d2b82cd5",
-			"variantId": "p6-round-1-v-ea703cbc",
+			"itemId": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+			"variantId": "cal-bd66a37d-v-c1b52a24",
 			"runIndex": 0,
 			"imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
 			"inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
@@ -52,8 +65,8 @@
 			"escape": null
 		},
 		{
-			"itemId": "p6-round-1-02-9dcfd80b",
-			"variantId": "p6-round-1-v-ea703cbc",
+			"itemId": "ab67616d00001e02000001335fe604d859a69094",
+			"variantId": "cal-bd66a37d-v-c1b52a24",
 			"runIndex": 1,
 			"imagePath": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
 			"inputContentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
@@ -65,8 +78,8 @@
 			"escape": null
 		},
 		{
-			"itemId": "p6-round-1-03-066cdd5d",
-			"variantId": "p6-round-1-v-ea703cbc",
+			"itemId": "ab67616d00001e0200000ee5a62175fc8d58e0af",
+			"variantId": "cal-bd66a37d-v-c1b52a24",
 			"runIndex": 2,
 			"imagePath": "00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
 			"inputContentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
@@ -78,8 +91,8 @@
 			"escape": null
 		},
 		{
-			"itemId": "p6-round-1-04-9619ff4e",
-			"variantId": "p6-round-1-v-ea703cbc",
+			"itemId": "ab67616d00001e02000018e9b0ec8fc5ac790164",
+			"variantId": "cal-bd66a37d-v-c1b52a24",
 			"runIndex": 3,
 			"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
 			"inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
@@ -91,8 +104,8 @@
 			"escape": null
 		},
 		{
-			"itemId": "p6-round-1-05-7d3d097f",
-			"variantId": "p6-round-1-v-ea703cbc",
+			"itemId": "ab67616d00001e02000022e7e9d11c908479200b",
+			"variantId": "cal-bd66a37d-v-c1b52a24",
 			"runIndex": 4,
 			"imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
 			"inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
@@ -104,8 +117,8 @@
 			"escape": null
 		},
 		{
-			"itemId": "p6-round-1-06-22ea9268",
-			"variantId": "p6-round-1-v-ea703cbc",
+			"itemId": "ab67616d00001e020000269ead63cf2376a6b67d",
+			"variantId": "cal-bd66a37d-v-c1b52a24",
 			"runIndex": 5,
 			"imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
 			"inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
