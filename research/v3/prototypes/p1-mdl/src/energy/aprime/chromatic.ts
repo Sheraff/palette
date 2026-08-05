@@ -12,8 +12,17 @@
  * v0.2.0 codes it against the image's **colour-space occupancy** — the same kernel sum with the pixel
  * counts `n(c')` removed and each occupied cell of the identity-bar lattice counted exactly once:
  *
- *     ρ(c) = Σ_{occupied cells q} κ( d_OKLab(c, x_q), h(c, x_q) )      [no mass anywhere]
+ *     ρ(c) = Σ_{occupied cells q} κ( d_OKLab(c, x_q), h(c, x_q) )
  *     p_generic(c) = ρ(cell(c)) / Σ_{c' ∈ alphabet} ρ(cell(c'))
+ *
+ * Two scope facts, measured by the independent verifier (V5, 2026-08-05), stated so the header
+ * does not overclaim: (1) "pixel counts removed" holds per CELL, not per cell member — `x_q` is
+ * `joints.lattice`'s mass-weighted centroid, so when two triples share a cell, mass still moves ρ
+ * through the representative (measured: 1.699% ρ shift on a 2× count change for a shared cell;
+ * bit-zero shift for a colour alone in its cell). (2) Small-Ω boundary: when the image occupies so
+ * few cells that log₂Σρ falls under the ink chain's 3-bit floor (Ω ≲ 8), nothing is nameable and
+ * this residual reproduces the rejected uniform alternative's failure. Real covers sit far above
+ * it (demo-20: Ω 1,648–21,000); the boundary is documented, not defended against.
  *
  * `ρ` answers *"how crowded is this colour's neighbourhood in **colour space**"* — how many distinct
  * colours the artwork puts within an identity bar or two of it — where `m` answered *"how much pixel
