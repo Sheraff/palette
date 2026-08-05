@@ -152,6 +152,19 @@ Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install)
     banding"). λ cannot be cranked to kill false gradients without buying missed ones; the
     banding datum adds a reading rule for A′'s emitted ramps (its 3 demo-20 gradients' stop
     spacings should be checked when its round items are read).
+13. **Stop count drove preference in another arm's pairwise round** (every 4-stop ramp
+    unacceptable with "banding" named; every winner 2-stop; one monotone-progression
+    complaint). Checked 2026-08-05 against A′'s three demo-20 ramps BEFORE our round is read:
+    all three are 2-stop [0,1], no interior stops — the winning shape. The λ-priced stop cost
+    is doing on its own what the reviewer wants; evidence FOR the pricing mechanism. Guide
+    stops (3–4) remain reachable but nothing has bought one, matching arm A′ §2.5's
+    prediction.
+14. **Identity-coverage reaches foreground-adjacent territory** (missing title-text yellow
+    complained about — feeds the same axis as the ink-recovery falsifier) **and a new shape:
+    the accent should sit in a different colour FAMILY than background/surface.** This
+    mechanism has no family notion; chromatic isolation in the naming gain is the nearest
+    structure. Recorded as an M3-reading class: if our accents draw same-family complaints,
+    that joins the salience finding as evidence about what the currency misses.
 
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
