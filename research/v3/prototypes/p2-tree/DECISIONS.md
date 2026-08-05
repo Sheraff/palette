@@ -127,6 +127,38 @@ many are tiny concentrated marks sitting below the node area floor? If material,
 moves toward a stability-based (not mass-based) retention criterion — ordering over existing
 attributes first, calibrated number only via a round.
 
+## D9 — pair-015 verdicts ruled: coverage reframes the accent question (2026-08-05)
+
+The round-3-tradeoffs outcome tables were found defective on contact with data (overlapping
+rows — see that round's OUTCOME.md), so the mechanical row-actions are not executed; this
+ruling replaces them, grounded in the reviewer's verbatim notes.
+
+**T1 (coral vs olive, both weak, olive preferred):** the note vindicates NEITHER accent
+order. The reviewer prefers olive because that side "represents more of the artwork" (green
+AND red present) while naming the coral as "the correct shade of red (Strawberry Moon)". So:
+chroma-first found the right accent shade; the palette lost on **identity-coverage across
+roles** — one accent slot cannot carry two colour families, and the ordering question was the
+wrong question. Consequences:
+- **D1 is neither reinstated nor overturned; it is superseded as scope.** Accent stays
+  chroma-first pending the coverage redesign (the coral IS the named-correct shade; flipping
+  to APCA-first would trade the correct shade away for nothing the note asked for).
+- **Cycle-3 design item (new, high priority): identity-coverage allocation** — when the
+  artwork carries ≥2 distinct chromatic families beyond the field (green + red here), the
+  four roles should be allocated so both are represented (fg/surface can carry the second
+  family), subject to the text-colour-leads rule and the contract. D4's identity-coverage
+  axis and D5's colour-family shape are the same signal; this is now reviewer-priced twice.
+- `accent-acceptance.test.ts` re-scopes from "coral wins the accent" to "coral is present in
+  the pool and is the most chromatic admissible candidate" (structural recall — the part the
+  reviewer confirmed correct).
+
+**T2 (both acceptable, level-first preferred, no note):** one unexplained preference on one
+cover funds W-H's owed calibrated-MSER-cut round item (kept on the queue with per-candidate
+numbers already published) but does NOT flip the live ranking — a single note-less preference
+is not a calibration. Interim ranking unchanged; the coverage redesign subsumes it.
+
+**Process lesson (binding on future rounds):** outcome tables must be mutually exclusive and
+collectively exhaustive, and must describe what the review page actually collects.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
