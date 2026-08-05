@@ -80,6 +80,24 @@ fails its own defence. Verdict: MECHANISM-FALSIFIED.**
 - **Reachability (falsifier 2) never fired**: no endorsed colour was ever excluded by the pruned
   search — "the whole artwork is feasible for every role" held.
 
+## Post-verdict corroboration (cross-arm, relayed 2026-08-05)
+
+Another arm's audit found four of seven reviewer-named identity marks sitting at rank-0 of its
+own ordering but excluded by a 0.1% population-support floor — against the corpus fact that the
+median ENDORSED role colour has exact-triple share 8.89e-5. This sharpens two lines above for
+whoever inherits:
+
+- P6's per-mass ink/mark correction (W8) was the right direction and is part of the salvage:
+  tiny concentrated marks are what gets endorsed, and any area/mass integral in role fitness
+  fights the corpus's own endorsement pattern.
+- The `belonging` term — the sweep's worst load-bearing-without-principle rate (69%/56%) — is
+  not just unprincipled but *aimed the wrong way*: it charges colours for rarity while the
+  endorsement record says rarity is what wins. The proposal knew the corpus fact (§2.2 quotes
+  the 8.89e-5 figure) and priced belonging against it anyway, as a cost with no cutoff. A
+  successor mechanism should treat presence mass as (at most) evidence about role, never as a
+  cost on eligibility — which is also what reviewer-evidence row 9 (salience gates identity,
+  presence ≠ eligibility) says from the other side.
+
 ## Disposition
 
 Per the campaign standard this prototype is complete: mechanism genuinely attempted, judged by
