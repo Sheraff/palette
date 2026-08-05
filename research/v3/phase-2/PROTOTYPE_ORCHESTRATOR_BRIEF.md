@@ -111,7 +111,12 @@ with a question none of the existing kinds can carry, and specify exactly what t
 what they answer, and the escape answer (every forced choice has one).
 
 Blinding: no arm labels, no prototype names, no truth in anything that reaches a review payload
-or side-car. Batch logs (`data/review-server/batches.jsonl`) are never read while a batch is open.
+or side-car. **This includes itemIds and the media URLs that echo them** — no prototype, round,
+or milestone token anywhere in the served surface (two batches were retired for exactly this:
+`p6-round-1-*` and `m3-item-*` ids). Use the cover's 40-hex image filename stem as the itemId
+(campaign convention, cross-round joinable) and make your staging validation enumerate every
+served id and URL against your own round/prototype tokens. Batch logs
+(`data/review-server/batches.jsonl`) are never read while a batch is open.
 
 ## 7. Reporting protocol (you → main orchestrator)
 
