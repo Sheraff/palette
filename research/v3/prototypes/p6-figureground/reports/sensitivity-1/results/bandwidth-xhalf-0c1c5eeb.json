@@ -1,0 +1,723 @@
+{
+	"config": {
+		"id": "bandwidth-xhalf-0c1c5eeb",
+		"family": "quadrature",
+		"knob": "bandwidth",
+		"label": "xhalf",
+		"rates": {
+			"belonging": 0.2,
+			"coverage": 1,
+			"fieldDescriptionLength": 0.33,
+			"collapse": 0.25,
+			"representativeness": 0.02,
+			"accentAnisotropy": 1
+		},
+		"lattice": {
+			"bandwidth": 0.007675
+		}
+	},
+	"results": [
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"status": "ok",
+			"ms": 6687.298125,
+			"roles": {
+				"background": [
+					227,
+					227,
+					229
+				],
+				"surface": [
+					227,
+					229,
+					218
+				],
+				"foreground": [
+					236,
+					231,
+					225
+				],
+				"accent": [
+					236,
+					231,
+					225
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 4.57005629662604,
+			"triples": 24615,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.22825241633319457,
+			"foregroundLeader": "#d87f3b",
+			"accentLeader": "#d87f3b",
+			"markOverInk": 0.6572617745565688
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000000d8bc25fbca2eff2a4a.jpg",
+			"status": "ok",
+			"ms": 177.375417,
+			"roles": {
+				"background": [
+					0,
+					0,
+					0
+				],
+				"surface": [
+					0,
+					0,
+					0
+				],
+				"foreground": [
+					254,
+					254,
+					254
+				],
+				"accent": [
+					11,
+					11,
+					11
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": true,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.8794594781638505,
+			"triples": 256,
+			"swapGap": 0,
+			"fitnessRelativeGap": 2.2333764480930833e-16,
+			"foregroundLeader": "#000000",
+			"accentLeader": "#000000",
+			"markOverInk": 3.7273995758182124e-8
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"status": "ok",
+			"ms": 214.1505,
+			"roles": {
+				"background": [
+					224,
+					224,
+					224
+				],
+				"surface": [
+					228,
+					230,
+					229
+				],
+				"foreground": [
+					255,
+					255,
+					255
+				],
+				"accent": [
+					255,
+					255,
+					255
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 3.2258911002289246,
+			"triples": 604,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.025691442874235266,
+			"foregroundLeader": "#1b1d1c",
+			"accentLeader": "#1b1d1c",
+			"markOverInk": 0.0031565405119145765
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"status": "ok",
+			"ms": 29460.14425,
+			"roles": {
+				"background": [
+					201,
+					201,
+					201
+				],
+				"surface": [
+					210,
+					204,
+					206
+				],
+				"foreground": [
+					249,
+					249,
+					249
+				],
+				"accent": [
+					204,
+					210,
+					208
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.009360998349321,
+			"triples": 32720,
+			"swapGap": 0.007168599618906146,
+			"fitnessRelativeGap": 0.34501490974498866,
+			"foregroundLeader": "#627579",
+			"accentLeader": "#627579",
+			"markOverInk": 0.4279721374640723
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200000bb3dc49110c4aab8aa7.jpg",
+			"status": "ok",
+			"ms": 286.01025,
+			"roles": {
+				"background": [
+					240,
+					240,
+					240
+				],
+				"surface": [
+					247,
+					247,
+					247
+				],
+				"foreground": [
+					228,
+					228,
+					228
+				],
+				"accent": [
+					253,
+					253,
+					253
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 2.2007399977029434,
+			"triples": 1727,
+			"swapGap": 0.00006893277569552936,
+			"fitnessRelativeGap": 0.009814634120549904,
+			"foregroundLeader": "#ffffff",
+			"accentLeader": "#ffffff",
+			"markOverInk": 0.008936948374506232
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
+			"status": "ok",
+			"ms": 2183.111042,
+			"roles": {
+				"background": [
+					74,
+					83,
+					78
+				],
+				"surface": [
+					79,
+					85,
+					81
+				],
+				"foreground": [
+					88,
+					97,
+					94
+				],
+				"accent": [
+					67,
+					76,
+					71
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.557689463124695,
+			"triples": 20726,
+			"swapGap": 0.0043894862121613976,
+			"fitnessRelativeGap": 0.06564108685073779,
+			"foregroundLeader": "#090a04",
+			"accentLeader": "#090a04",
+			"markOverInk": 0.11903237181254626
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"status": "ok",
+			"ms": 2348.911041,
+			"roles": {
+				"background": [
+					234,
+					235,
+					237
+				],
+				"surface": [
+					239,
+					240,
+					234
+				],
+				"foreground": [
+					244,
+					244,
+					244
+				],
+				"accent": [
+					244,
+					244,
+					244
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 2.0397664221729634,
+			"triples": 16987,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.10750842829695705,
+			"foregroundLeader": "#3d3a45",
+			"accentLeader": "#2e3607",
+			"markOverInk": 0.36351785241090745
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"status": "ok",
+			"ms": 2921.271917,
+			"roles": {
+				"background": [
+					253,
+					225,
+					222
+				],
+				"surface": [
+					249,
+					219,
+					217
+				],
+				"foreground": [
+					253,
+					232,
+					227
+				],
+				"accent": [
+					253,
+					232,
+					227
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 2.4626124931957545,
+			"triples": 25344,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.10321213062413322,
+			"foregroundLeader": "#835a6c",
+			"accentLeader": "#835a6c",
+			"markOverInk": 0.21317910760495062
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000013cdd885595a94002abc.jpg",
+			"status": "ok",
+			"ms": 598.141959,
+			"roles": {
+				"background": [
+					127,
+					136,
+					151
+				],
+				"surface": [
+					120,
+					130,
+					140
+				],
+				"foreground": [
+					173,
+					161,
+					171
+				],
+				"accent": [
+					112,
+					126,
+					135
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 2.994374001130388,
+			"triples": 6395,
+			"swapGap": 0.004734134926076106,
+			"fitnessRelativeGap": 0.1722387346001956,
+			"foregroundLeader": "#666e70",
+			"accentLeader": "#666e70",
+			"markOverInk": 0.24635558163064436
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"status": "ok",
+			"ms": 806.775542,
+			"roles": {
+				"background": [
+					250,
+					249,
+					228
+				],
+				"surface": [
+					250,
+					249,
+					228
+				],
+				"foreground": [
+					58,
+					24,
+					12
+				],
+				"accent": [
+					254,
+					255,
+					233
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": true,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 2.867706372555696,
+			"triples": 8887,
+			"swapGap": 3.0069919443320714e-8,
+			"fitnessRelativeGap": 0.015119531639997824,
+			"foregroundLeader": "#2a2813",
+			"accentLeader": "#2a2813",
+			"markOverInk": 0.07571967433509438
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"status": "ok",
+			"ms": 751.386417,
+			"roles": {
+				"background": [
+					20,
+					25,
+					29
+				],
+				"surface": [
+					23,
+					27,
+					30
+				],
+				"foreground": [
+					34,
+					38,
+					41
+				],
+				"accent": [
+					207,
+					226,
+					233
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 5.683282502751202,
+			"triples": 11033,
+			"swapGap": 0,
+			"fitnessRelativeGap": 0.02261241346435842,
+			"foregroundLeader": "#000c0a",
+			"accentLeader": "#000c0a",
+			"markOverInk": 0.04539349642808604
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"status": "ok",
+			"ms": 3487.975791,
+			"roles": {
+				"background": [
+					255,
+					255,
+					255
+				],
+				"surface": [
+					255,
+					255,
+					255
+				],
+				"foreground": [
+					112,
+					186,
+					37
+				],
+				"accent": [
+					250,
+					251,
+					245
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": true,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.624546407650764,
+			"triples": 6985,
+			"swapGap": 0.0000020192057748058545,
+			"fitnessRelativeGap": 0.010279132231622932,
+			"foregroundLeader": "#030303",
+			"accentLeader": "#030303",
+			"markOverInk": 0.6764765251070816
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e0200001ecff3d9ec20cac4b472.jpg",
+			"status": "ok",
+			"ms": 219.305458,
+			"roles": {
+				"background": [
+					47,
+					47,
+					47
+				],
+				"surface": [
+					253,
+					253,
+					253
+				],
+				"foreground": [
+					8,
+					8,
+					8
+				],
+				"accent": [
+					24,
+					24,
+					24
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 6.587742142296945,
+			"triples": 256,
+			"swapGap": 0,
+			"fitnessRelativeGap": 2.2514076997246467e-16,
+			"foregroundLeader": "#111111",
+			"accentLeader": "#111111",
+			"markOverInk": 3.727399584702308e-8
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000021fd811bf36e739e61bf.jpg",
+			"status": "ok",
+			"ms": 1839.53175,
+			"roles": {
+				"background": [
+					56,
+					38,
+					26
+				],
+				"surface": [
+					59,
+					39,
+					30
+				],
+				"foreground": [
+					28,
+					9,
+					3
+				],
+				"accent": [
+					47,
+					27,
+					16
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.851997619208462,
+			"triples": 7732,
+			"swapGap": 0.0007472341643484093,
+			"fitnessRelativeGap": 0.09750542058816825,
+			"foregroundLeader": "#e5cf84",
+			"accentLeader": "#e5cf84",
+			"markOverInk": 0.15707410479997194
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"status": "ok",
+			"ms": 13539.349625,
+			"roles": {
+				"background": [
+					158,
+					97,
+					104
+				],
+				"surface": [
+					146,
+					93,
+					101
+				],
+				"foreground": [
+					31,
+					31,
+					33
+				],
+				"accent": [
+					139,
+					89,
+					100
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.786336684836016,
+			"triples": 14338,
+			"swapGap": 0.029935314336671404,
+			"fitnessRelativeGap": 0.3430884390411422,
+			"foregroundLeader": "#ffe083",
+			"accentLeader": "#ffe083",
+			"markOverInk": 0.38096263286667914
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000023e98b7381eaed77a9cb.jpg",
+			"status": "ok",
+			"ms": 21018.02525,
+			"roles": {
+				"background": [
+					81,
+					83,
+					95
+				],
+				"surface": [
+					39,
+					46,
+					64
+				],
+				"foreground": [
+					32,
+					37,
+					56
+				],
+				"accent": [
+					32,
+					37,
+					56
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 5.621214283755542,
+			"triples": 23057,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.05806260880441735,
+			"foregroundLeader": "#000002",
+			"accentLeader": "#000002",
+			"markOverInk": 0.1207156733523815
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"status": "ok",
+			"ms": 1343.47975,
+			"roles": {
+				"background": [
+					54,
+					54,
+					54
+				],
+				"surface": [
+					190,
+					83,
+					161
+				],
+				"foreground": [
+					0,
+					0,
+					0
+				],
+				"accent": [
+					0,
+					0,
+					0
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 4.902663346089221,
+			"triples": 13698,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.22577676041638153,
+			"foregroundLeader": "#010007",
+			"accentLeader": "#010007",
+			"markOverInk": 0.44024127104585176
+		},
+		{
+			"configId": "bandwidth-xhalf-0c1c5eeb",
+			"cover": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"status": "ok",
+			"ms": 4342.452709,
+			"roles": {
+				"background": [
+					253,
+					208,
+					1
+				],
+				"surface": [
+					253,
+					208,
+					1
+				],
+				"foreground": [
+					253,
+					1,
+					0
+				],
+				"accent": [
+					250,
+					250,
+					250
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": true,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.657528640182084,
+			"triples": 17854,
+			"swapGap": 1.3322676295501878e-15,
+			"fitnessRelativeGap": 0.09239344514322449,
+			"foregroundLeader": "#5d5c2c",
+			"accentLeader": "#5d5c2c",
+			"markOverInk": 0.956478227401708
+		}
+	]
+}

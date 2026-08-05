@@ -1,0 +1,723 @@
+{
+	"config": {
+		"id": "cellsPerBandwidth-coarser-b51b3eed",
+		"family": "quadrature",
+		"knob": "cellsPerBandwidth",
+		"label": "coarser",
+		"rates": {
+			"belonging": 0.2,
+			"coverage": 1,
+			"fieldDescriptionLength": 0.33,
+			"collapse": 0.25,
+			"representativeness": 0.02,
+			"accentAnisotropy": 1
+		},
+		"lattice": {
+			"cellsPerBandwidth": 1.5
+		}
+	},
+	"results": [
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"status": "ok",
+			"ms": 3632.818917,
+			"roles": {
+				"background": [
+					233,
+					230,
+					223
+				],
+				"surface": [
+					229,
+					230,
+					212
+				],
+				"foreground": [
+					242,
+					55,
+					4
+				],
+				"accent": [
+					243,
+					233,
+					223
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.016566020362607,
+			"triples": 24615,
+			"swapGap": 1.4714451879171975e-11,
+			"fitnessRelativeGap": 0.06996474871779232,
+			"foregroundLeader": "#e7e4dd",
+			"accentLeader": "#e7e4dd",
+			"markOverInk": 0.6507771237641304
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000000d8bc25fbca2eff2a4a.jpg",
+			"status": "ok",
+			"ms": 162.041667,
+			"roles": {
+				"background": [
+					0,
+					0,
+					0
+				],
+				"surface": [
+					0,
+					0,
+					0
+				],
+				"foreground": [
+					252,
+					252,
+					252
+				],
+				"accent": [
+					11,
+					11,
+					11
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": true,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.64559683008588,
+			"triples": 256,
+			"swapGap": 0,
+			"fitnessRelativeGap": 6.661334476735266e-16,
+			"foregroundLeader": "#000000",
+			"accentLeader": "#000000",
+			"markOverInk": 3.727399577779198e-8
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"status": "ok",
+			"ms": 194.818542,
+			"roles": {
+				"background": [
+					224,
+					224,
+					224
+				],
+				"surface": [
+					220,
+					218,
+					219
+				],
+				"foreground": [
+					255,
+					254,
+					255
+				],
+				"accent": [
+					228,
+					230,
+					229
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 2.8125110361218333,
+			"triples": 604,
+			"swapGap": 0.000025492784206715413,
+			"fitnessRelativeGap": 0.023510033720739825,
+			"foregroundLeader": "#010000",
+			"accentLeader": "#010000",
+			"markOverInk": 0.003849994857617649
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"status": "ok",
+			"ms": 29797.970542,
+			"roles": {
+				"background": [
+					206,
+					206,
+					206
+				],
+				"surface": [
+					201,
+					201,
+					199
+				],
+				"foreground": [
+					249,
+					249,
+					249
+				],
+				"accent": [
+					214,
+					210,
+					211
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.5764267671054326,
+			"triples": 32720,
+			"swapGap": 0.0023203712960140344,
+			"fitnessRelativeGap": 0.35589563800711765,
+			"foregroundLeader": "#d4d4d4",
+			"accentLeader": "#cad8cb",
+			"markOverInk": 0.4066280013643991
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200000bb3dc49110c4aab8aa7.jpg",
+			"status": "ok",
+			"ms": 265.349458,
+			"roles": {
+				"background": [
+					237,
+					237,
+					237
+				],
+				"surface": [
+					243,
+					243,
+					243
+				],
+				"foreground": [
+					228,
+					228,
+					230
+				],
+				"accent": [
+					253,
+					253,
+					253
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 1.6842952267601168,
+			"triples": 1727,
+			"swapGap": 0.00006283348393876231,
+			"fitnessRelativeGap": 0.003978175020937975,
+			"foregroundLeader": "#f9f9f1",
+			"accentLeader": "#f9f9f1",
+			"markOverInk": 0.011022906403754026
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
+			"status": "ok",
+			"ms": 2196.586041,
+			"roles": {
+				"background": [
+					74,
+					83,
+					78
+				],
+				"surface": [
+					79,
+					85,
+					81
+				],
+				"foreground": [
+					90,
+					96,
+					92
+				],
+				"accent": [
+					69,
+					76,
+					69
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.9555810522268327,
+			"triples": 20726,
+			"swapGap": 0.005184218173171828,
+			"fitnessRelativeGap": 0.05195191511890558,
+			"foregroundLeader": "#090a04",
+			"accentLeader": "#090a04",
+			"markOverInk": 0.12596856052177477
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"status": "ok",
+			"ms": 31799.713875,
+			"roles": {
+				"background": [
+					240,
+					240,
+					240
+				],
+				"surface": [
+					236,
+					234,
+					235
+				],
+				"foreground": [
+					244,
+					246,
+					245
+				],
+				"accent": [
+					244,
+					246,
+					245
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 1.6738609385521712,
+			"triples": 16987,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.06440428521963623,
+			"foregroundLeader": "#2e3607",
+			"accentLeader": "#2e3607",
+			"markOverInk": 0.38234286181882876
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"status": "ok",
+			"ms": 9745.909083,
+			"roles": {
+				"background": [
+					251,
+					226,
+					222
+				],
+				"surface": [
+					253,
+					219,
+					217
+				],
+				"foreground": [
+					255,
+					232,
+					227
+				],
+				"accent": [
+					255,
+					232,
+					227
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 2.051248357899182,
+			"triples": 25344,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.12789758267241355,
+			"foregroundLeader": "#f5f2f9",
+			"accentLeader": "#f5f2f9",
+			"markOverInk": 0.220198312166212
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000013cdd885595a94002abc.jpg",
+			"status": "ok",
+			"ms": 582.018583,
+			"roles": {
+				"background": [
+					128,
+					136,
+					149
+				],
+				"surface": [
+					120,
+					132,
+					144
+				],
+				"foreground": [
+					172,
+					160,
+					170
+				],
+				"accent": [
+					114,
+					128,
+					137
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 2.3160024716340057,
+			"triples": 6395,
+			"swapGap": 0.006890672039385093,
+			"fitnessRelativeGap": 0.12350889865757804,
+			"foregroundLeader": "#5d6a70",
+			"accentLeader": "#5d6a70",
+			"markOverInk": 0.24845768340456606
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"status": "ok",
+			"ms": 792.2875,
+			"roles": {
+				"background": [
+					250,
+					249,
+					228
+				],
+				"surface": [
+					243,
+					244,
+					226
+				],
+				"foreground": [
+					254,
+					255,
+					233
+				],
+				"accent": [
+					58,
+					24,
+					12
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 2.386129106636997,
+			"triples": 8887,
+			"swapGap": 1.6271413261215173e-7,
+			"fitnessRelativeGap": 0.009358375268602379,
+			"foregroundLeader": "#fdfadb",
+			"accentLeader": "#fdfadb",
+			"markOverInk": 0.07925372194588876
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"status": "ok",
+			"ms": 1629.434208,
+			"roles": {
+				"background": [
+					23,
+					28,
+					32
+				],
+				"surface": [
+					21,
+					26,
+					29
+				],
+				"foreground": [
+					34,
+					39,
+					42
+				],
+				"accent": [
+					207,
+					226,
+					233
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 5.136312542241985,
+			"triples": 11033,
+			"swapGap": 0,
+			"fitnessRelativeGap": 0.026077468101260885,
+			"foregroundLeader": "#000a08",
+			"accentLeader": "#000a08",
+			"markOverInk": 0.047931504896734076
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"status": "ok",
+			"ms": 3228.516875,
+			"roles": {
+				"background": [
+					255,
+					255,
+					255
+				],
+				"surface": [
+					253,
+					255,
+					243
+				],
+				"foreground": [
+					112,
+					186,
+					37
+				],
+				"accent": [
+					248,
+					250,
+					249
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.161028481069697,
+			"triples": 6985,
+			"swapGap": 0.000008161772951931212,
+			"fitnessRelativeGap": 0.001992864689534475,
+			"foregroundLeader": "#000000",
+			"accentLeader": "#000000",
+			"markOverInk": 0.6270254334310188
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e0200001ecff3d9ec20cac4b472.jpg",
+			"status": "ok",
+			"ms": 188.08775,
+			"roles": {
+				"background": [
+					47,
+					47,
+					47
+				],
+				"surface": [
+					36,
+					36,
+					36
+				],
+				"foreground": [
+					7,
+					7,
+					7
+				],
+				"accent": [
+					23,
+					23,
+					23
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 6.127367118555576,
+			"triples": 256,
+			"swapGap": 0,
+			"fitnessRelativeGap": 3.526783638862779e-16,
+			"foregroundLeader": "#121212",
+			"accentLeader": "#121212",
+			"markOverInk": 3.727399585275884e-8
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000021fd811bf36e739e61bf.jpg",
+			"status": "ok",
+			"ms": 11137.160042,
+			"roles": {
+				"background": [
+					56,
+					38,
+					26
+				],
+				"surface": [
+					59,
+					39,
+					30
+				],
+				"foreground": [
+					28,
+					9,
+					3
+				],
+				"accent": [
+					49,
+					25,
+					15
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.2708814069158234,
+			"triples": 7732,
+			"swapGap": 0.0018432940404649045,
+			"fitnessRelativeGap": 0.10113716133160364,
+			"foregroundLeader": "#e5cf84",
+			"accentLeader": "#e5cf84",
+			"markOverInk": 0.1599887562395766
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"status": "ok",
+			"ms": 33077.206208,
+			"roles": {
+				"background": [
+					163,
+					98,
+					104
+				],
+				"surface": [
+					150,
+					93,
+					102
+				],
+				"foreground": [
+					33,
+					31,
+					32
+				],
+				"accent": [
+					141,
+					91,
+					100
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 4.220645459079949,
+			"triples": 14338,
+			"swapGap": 0.038272339094485686,
+			"fitnessRelativeGap": 0.27058039420844293,
+			"foregroundLeader": "#ffe978",
+			"accentLeader": "#ffe978",
+			"markOverInk": 0.37174141335820654
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000023e98b7381eaed77a9cb.jpg",
+			"status": "ok",
+			"ms": 72255.520625,
+			"roles": {
+				"background": [
+					80,
+					84,
+					95
+				],
+				"surface": [
+					42,
+					48,
+					64
+				],
+				"foreground": [
+					34,
+					40,
+					56
+				],
+				"accent": [
+					34,
+					40,
+					56
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 4.891469824776469,
+			"triples": 23057,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.08326109687488303,
+			"foregroundLeader": "#19253b",
+			"accentLeader": "#1a253b",
+			"markOverInk": 0.11940190103730543
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"status": "ok",
+			"ms": 1260.296583,
+			"roles": {
+				"background": [
+					54,
+					54,
+					54
+				],
+				"surface": [
+					55,
+					51,
+					52
+				],
+				"foreground": [
+					0,
+					0,
+					0
+				],
+				"accent": [
+					0,
+					0,
+					0
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": true,
+			"escape": null,
+			"energyTotal": 4.760776673213062,
+			"triples": 13698,
+			"swapGap": null,
+			"fitnessRelativeGap": 0.5029503036638745,
+			"foregroundLeader": "#2c2c2a",
+			"accentLeader": "#2d2c28",
+			"markOverInk": 0.42245244924754727
+		},
+		{
+			"configId": "cellsPerBandwidth-coarser-b51b3eed",
+			"cover": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"status": "ok",
+			"ms": 13576.104791,
+			"roles": {
+				"background": [
+					253,
+					208,
+					0
+				],
+				"surface": [
+					247,
+					217,
+					9
+				],
+				"foreground": [
+					253,
+					1,
+					0
+				],
+				"accent": [
+					250,
+					250,
+					250
+				]
+			},
+			"gradientStops": 0,
+			"surfaceCollapsed": false,
+			"accentCollapsed": false,
+			"escape": null,
+			"energyTotal": 3.494055483012565,
+			"triples": 17854,
+			"swapGap": 1.7763568394002505e-15,
+			"fitnessRelativeGap": 0.6708644482752649,
+			"foregroundLeader": "#ffcf00",
+			"accentLeader": "#ffcf00",
+			"markOverInk": 0.9015043430219025
+		}
+	]
+}
