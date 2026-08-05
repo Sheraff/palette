@@ -1,0 +1,110 @@
+{
+	"_note": "NOT SERVABLE. Decodes the blinded sides of round-3-tradeoffs after release.",
+	"_roundId": "p2-round-3-tradeoffs",
+	"_variants": {
+		"p2-tree-round3b-v1": {
+			"candidateId": "p2-tos",
+			"algorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+			"what": "the palette the merged candidate publishes today — chroma-first accent (D1)"
+		},
+		"p2-tree-round3b-v2": {
+			"candidateId": "p2-tos",
+			"algorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+			"what": "the same run with ONE role substituted: the accent the counterfactual order elects. Not a candidate output; every other role and the gradient are byte-identical to v1."
+		}
+	},
+	"_runFile": "review-rounds/round-3-tradeoffs/out/demo-20.jsonl",
+	"_salienceScan": {
+		"rule": "first cover by sorted repo-relative path where the level-first election differs from the chroma-first election",
+		"coversScanned": 20,
+		"coversDiffering": 12,
+		"differingPaths": [
+			"00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"00/ab67616d00001e0200000bb3dc49110c4aab8aa7.jpg",
+			"00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"00/ab67616d00001e02000013cdd885595a94002abc.jpg",
+			"00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"00/ab67616d00001e0200001a9be12b7116a8247378.jpg",
+			"00/ab67616d00001e02000023e98b7381eaed77a9cb.jpg",
+			"00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"00/ab67616d00001e020000269ead63cf2376a6b67d.jpg"
+		],
+		"selected": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+		"noneDiffered": false
+	},
+	"_items": {
+		"00007e976f2fb1819d1ec7e0cc2869f39d397ba3": {
+			"question": "d3-salience-cut",
+			"imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"verdict": "partitioned",
+			"sideOrder": [
+				"v1",
+				"v2"
+			],
+			"v1Accent": {
+				"hex": "#ccb2a5",
+				"order": "chroma from the field, descending (D1, the published order)",
+				"chromaFromField": 0.20431568445668497,
+				"fieldContrast": 28.62159960611665,
+				"stabilityLevel": 1,
+				"growth": 0.4382716049382716,
+				"lane": 1,
+				"nodeId": 150
+			},
+			"v2Accent": {
+				"hex": "#e7c0c1",
+				"order": "D3's stability level ascending, then the published order",
+				"chromaFromField": 0.1952436559374639,
+				"fieldContrast": 39.13837873345553,
+				"stabilityLevel": 0,
+				"growth": 0.016666666666666666,
+				"lane": 1,
+				"nodeId": 165
+			},
+			"accentSeparation": 0.06401237932903706,
+			"foregroundAccentDistance": {
+				"v1": 0.1311452165936431,
+				"v2": 0.07815734150164537,
+				"floor": 0.07444
+			}
+		},
+		"ab67616d00001e0200000f92552b0935b967964d": {
+			"question": "d1-exchange-rate",
+			"imagePath": "00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"verdict": "textured",
+			"sideOrder": [
+				"v2",
+				"v1"
+			],
+			"v1Accent": {
+				"hex": "#d25068",
+				"order": "chroma from the field, descending (D1, the published order)",
+				"chromaFromField": 0.16848012527407363,
+				"fieldContrast": 51.29929679521133,
+				"stabilityLevel": 1,
+				"growth": 0.05588235294117647,
+				"lane": 2,
+				"nodeId": 886
+			},
+			"v2Accent": {
+				"hex": "#6a723f",
+				"order": "minimum |raw APCA| over the rendered field, descending",
+				"chromaFromField": 0.05211803377787435,
+				"fieldContrast": 59.080192182998545,
+				"stabilityLevel": 1,
+				"growth": 0.5474137931034483,
+				"lane": 1,
+				"nodeId": 565
+			},
+			"accentSeparation": 0.21020892033999575,
+			"foregroundAccentDistance": {
+				"v1": 0.24819707159377594,
+				"v2": 0.31757760118270967,
+				"floor": 0.07444
+			}
+		}
+	}
+}

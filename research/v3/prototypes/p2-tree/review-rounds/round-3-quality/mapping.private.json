@@ -1,0 +1,242 @@
+{
+	"_note": "NOT SERVABLE. The decode key and the whole selection state of round-3-quality.",
+	"_roundId": "p2-round-3-quality",
+	"_variants": {
+		"p2-tree-cycle2-v1": {
+			"candidateId": "p2-tos",
+			"family": "tree of shapes",
+			"candidatePath": "research/v3/prototypes/p2-tree/tos/candidate.ts",
+			"algorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+			"runFile": "review-rounds/round-3-quality/out/fresh-40.jsonl"
+		}
+	},
+	"_pool": {
+		"source": "research/v3/data/coverage-set/coverage-set-1.json",
+		"excluded": [
+			"research/v3/data/devloop/sets/demo-20.txt",
+			"prototypes/p2-tree/falsifier/out/endorsed-173.txt"
+		],
+		"runSet": "review-rounds/round-3-quality/fresh-40.txt",
+		"ran": 40,
+		"failed": []
+	},
+	"_classes": {
+		"rule": "population descending, ties by the class's first cover's sorted path; representative is the class's first cover by sorted path clearing the margin floor",
+		"marginFloor": 0.02,
+		"population": {
+			"unreadable|flat|sc0|ac0": 29,
+			"partitioned|flat|sc0|ac0": 4,
+			"unreadable|flat|sc1|ac0": 2,
+			"laminar|grad|sc0|ac0": 2,
+			"flat|flat|sc1|ac0": 1,
+			"laminar|grad|sc0|ac1": 1,
+			"flat|flat|sc1|ac1": 1
+		},
+		"taken": [
+			"unreadable|flat|sc0|ac0",
+			"partitioned|flat|sc0|ac0",
+			"unreadable|flat|sc1|ac0",
+			"laminar|grad|sc0|ac0",
+			"flat|flat|sc1|ac0",
+			"laminar|grad|sc0|ac1"
+		],
+		"skipped": [
+			"flat|flat|sc1|ac1"
+		],
+		"swaps": []
+	},
+	"_items": {
+		"ab67616d0000b27300005f98559139b7dbc802fd": {
+			"imagePath": "00/ab67616d0000b27300005f98559139b7dbc802fd.jpg",
+			"class": "unreadable|flat|sc0|ac0",
+			"verdict": "unreadable",
+			"laminarity": 0.07676225973132086,
+			"coverage": 0.4858707476265823,
+			"nodeCount": 361,
+			"textGroupCount": 0,
+			"margin": {
+				"distance": 0.10913825814515013,
+				"pair": "surface/accent"
+			},
+			"publishedSurfaceIsEnclosureShaped": true,
+			"enclosureSurfaceNodes": [
+				{
+					"id": 10,
+					"role": "surface",
+					"kind": "field",
+					"depth": 9,
+					"areaFraction": 0.3027244857594937,
+					"ownAreaFraction": 0.0008653085443037974,
+					"onGroundChain": false,
+					"enclosure": true
+				}
+			],
+			"enclosureFieldNodeCount": 30,
+			"assembly": {
+				"attempts": 2,
+				"swapped": false,
+				"notes": []
+			}
+		},
+		"ab67616d0000b27300008912d4517960ad020c7a": {
+			"imagePath": "00/ab67616d0000b27300008912d4517960ad020c7a.jpg",
+			"class": "partitioned|flat|sc0|ac0",
+			"verdict": "partitioned",
+			"laminarity": 0.025395261125292175,
+			"coverage": 0.6261376953125,
+			"nodeCount": 331,
+			"textGroupCount": 1,
+			"margin": {
+				"distance": 0.03037636997494998,
+				"pair": "background/surface"
+			},
+			"publishedSurfaceIsEnclosureShaped": true,
+			"enclosureSurfaceNodes": [
+				{
+					"id": 37,
+					"role": "surface",
+					"kind": "field",
+					"depth": 186,
+					"areaFraction": 0.11318359375,
+					"ownAreaFraction": 0.0029052734375,
+					"onGroundChain": true,
+					"enclosure": true
+				}
+			],
+			"enclosureFieldNodeCount": 24,
+			"assembly": {
+				"attempts": 3,
+				"swapped": false,
+				"notes": []
+			}
+		},
+		"ab67616d0000b2730000aa80d6d7c54a1d85db99": {
+			"imagePath": "00/ab67616d0000b2730000aa80d6d7c54a1d85db99.jpg",
+			"class": "unreadable|flat|sc1|ac0",
+			"verdict": "unreadable",
+			"laminarity": 0.0726643169221189,
+			"coverage": 0.23103271484375,
+			"nodeCount": 722,
+			"textGroupCount": 5,
+			"margin": {
+				"distance": 0.3388018237824007,
+				"pair": "background/accent"
+			},
+			"publishedSurfaceIsEnclosureShaped": false,
+			"enclosureSurfaceNodes": [],
+			"enclosureFieldNodeCount": 41,
+			"assembly": {
+				"attempts": 2,
+				"swapped": false,
+				"notes": []
+			}
+		},
+		"ab67616d0000b273000131a334d00155369bb7b9": {
+			"imagePath": "01/ab67616d0000b273000131a334d00155369bb7b9.jpg",
+			"class": "laminar|grad|sc0|ac0",
+			"verdict": "laminar",
+			"laminarity": 0.07212535838546298,
+			"coverage": 0.50734619140625,
+			"nodeCount": 1238,
+			"textGroupCount": 2,
+			"margin": {
+				"distance": 0.04718053655762654,
+				"pair": "background/foreground"
+			},
+			"publishedSurfaceIsEnclosureShaped": true,
+			"enclosureSurfaceNodes": [
+				{
+					"id": 0,
+					"role": "surface",
+					"kind": "field",
+					"depth": 0,
+					"areaFraction": 1,
+					"ownAreaFraction": 0.42229736328125,
+					"onGroundChain": true,
+					"enclosure": true
+				},
+				{
+					"id": 827,
+					"role": "surface",
+					"kind": "field",
+					"depth": 0,
+					"areaFraction": 1,
+					"ownAreaFraction": 0.494677734375,
+					"onGroundChain": false,
+					"enclosure": true
+				},
+				{
+					"id": 1040,
+					"role": "surface",
+					"kind": "field",
+					"depth": 0,
+					"areaFraction": 1,
+					"ownAreaFraction": 0.44906982421875,
+					"onGroundChain": false,
+					"enclosure": true
+				}
+			],
+			"enclosureFieldNodeCount": 31,
+			"assembly": {
+				"attempts": 2,
+				"swapped": false,
+				"notes": []
+			}
+		},
+		"ab67616d00001e020002653adc4ef57bc46a3680": {
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"class": "flat|flat|sc1|ac0",
+			"verdict": "flat",
+			"laminarity": 1.4508790923328317e-16,
+			"coverage": 0.8740555555555556,
+			"nodeCount": 78,
+			"textGroupCount": 1,
+			"margin": {
+				"distance": 0.07644508072032849,
+				"pair": "background/foreground"
+			},
+			"publishedSurfaceIsEnclosureShaped": false,
+			"enclosureSurfaceNodes": [],
+			"enclosureFieldNodeCount": 9,
+			"assembly": {
+				"attempts": 2,
+				"swapped": false,
+				"notes": []
+			}
+		},
+		"ab67616d00001e020002fc520894d5fd547eb7f3": {
+			"imagePath": "02/ab67616d00001e020002fc520894d5fd547eb7f3.jpg",
+			"class": "laminar|grad|sc0|ac1",
+			"verdict": "laminar",
+			"laminarity": 0.09821580701714122,
+			"coverage": 0.6070777777777778,
+			"nodeCount": 447,
+			"textGroupCount": 3,
+			"margin": {
+				"distance": 0.06828248732708962,
+				"pair": "background/foreground"
+			},
+			"publishedSurfaceIsEnclosureShaped": true,
+			"enclosureSurfaceNodes": [
+				{
+					"id": 0,
+					"role": "surface",
+					"kind": "field",
+					"depth": 0,
+					"areaFraction": 1,
+					"ownAreaFraction": 0.03958888888888889,
+					"onGroundChain": true,
+					"enclosure": true
+				}
+			],
+			"enclosureFieldNodeCount": 25,
+			"assembly": {
+				"attempts": 9,
+				"swapped": false,
+				"notes": [
+					"accent-collapsed:no-separated-candidate"
+				]
+			}
+		}
+	}
+}
