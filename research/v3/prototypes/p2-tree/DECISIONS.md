@@ -112,6 +112,21 @@ the next candidate in the same ranking has materially larger margin at equal ran
 prefer it (ordering preference, not a new constant). Margin audit of the merged demo-20 run
 scheduled with round-3 staging so items don't walk into known complaints.
 
+## D8 — population floors block reviewer-requested colours (2026-08-05, cross-arm; no action ordered)
+
+Another arm found 4 of 7 reviewer-named identity marks at rank-0 of its accent order but
+excluded by a 0.1% population-support floor — while the corpus median ENDORSED role colour
+has exact-triple share 8.89e-5. Principle: **concentration/coherence beats raw population
+share; mass floors exclude exactly what the reviewer asks for.** P2 exposure: our area
+floors (`MIN_NODE_AREA_FRACTION` 5e-4 [UNCALIBRATED], `TEXT_COMPONENT_LIMIT` 512 area-ordered
+cut) are the same shape, mitigated but not cleared by the fact that nodes are bar-coherent
+regions (dense ~2e-2 for endorsed colours) rather than exact triples, and that W-E's coral
+survived at area rank 602/963 on stability. Cycle-3 targeted check: of the merged pool's 24
+falsifier-rate slots (node-unreachable, control-reachable) and 89 unreachable-from-both, how
+many are tiny concentrated marks sitting below the node area floor? If material, the floor
+moves toward a stability-based (not mass-based) retention criterion — ordering over existing
+attributes first, calibrated number only via a round.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
