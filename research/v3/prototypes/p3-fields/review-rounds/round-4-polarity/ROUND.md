@@ -426,3 +426,16 @@ actually pose, and it is a calibration question about the same-colour bar, not a
 7. **`work/` is scratch.** The three scan files under it are the round's raw evidence and `verify.ts`
    reads them, so they should travel with the round; the shard files, logs, diagnostics dirs and
    contact sheets in there are disposable.
+
+---
+
+## Install record (main-tier, 2026-08-05) — needed by the decode
+
+Live as **batch phase2-pair-011**, 6 items, verified clean. The installer REPLACED the
+run-ordinal itemIds (item-124 style) with ARTWORK CONTENT STEMS at push (blinding precedent):
+one 32-hex md5 (the music-artworks cover), the rest 40-hex. The batch log's blinding map is
+keyed on the SERVED stems. **Decode analyst: re-key this round's private mapping via
+imagePath → basename stem before joining verdicts.** Also stripped at push (orchestrator-only
+fields): publishedPolarity, pool, prevalenceRelativeGap, tieBandFired, decidedBy, backgroundL,
+surfaceL, deltaL, runIndex — the served payload carries none of them; this file and items.jsonl
+remain the private key.

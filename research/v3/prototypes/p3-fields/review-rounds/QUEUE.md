@@ -27,3 +27,7 @@ content-free "batch <id> released" signal only. This orchestrator then spawns it
 analyst — released warehouse payload + server batch log (readable post-release) — verifies the
 decode against ROUND.md's outcome branches, and acts. Cross-arm evidence goes upward only through
 §7 reports. Multi-prototype rounds remain main-tier.
+
+**Staging convention (from the round-4 install, 2026-08-05):** emit ARTWORK CONTENT STEMS
+(basename of imagePath, 32/40-hex) as itemIds directly at staging time — no run-ordinal ids —
+so the installer never rewrites ids and private↔served mappings stay trivial.
