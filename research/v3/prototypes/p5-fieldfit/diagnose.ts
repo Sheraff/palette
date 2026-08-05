@@ -10,6 +10,14 @@
  * and nothing else — the sidecar is deliberately not in the contract (`SPEC.md`, "Diagnostics") — so
  * this is the only place the fit's own numbers are readable per image.
  *
+ * v0.5.1 adds `attempts`: one row per level the component recursion fitted, accepted or not, with the
+ * two gate quantities (`supportFraction` for *extensive*, `coreFraction` for *smooth*) and the two
+ * verdicts. `diagnostics.fieldComponents` counts the accepted rows and `diagnostics.retreat` says the
+ * pool was empty, but neither can say **which** level failed **which** gate by how much — and that is
+ * the question every ruling about `EXTENSIVE_SUPPORT_FRACTION` and `COMPONENT_CORE_FRACTION` has so
+ * far been decided on (`16a8247378`'s sky at core 0.40 is a row of this table). It is `null` when the
+ * recursion never ran.
+ *
  * It calls `analyzeImage` from `candidate.ts`, the same function `paletteOf` wraps, so the palette
  * printed here is the palette the run file would hold, byte for byte.
  */
@@ -24,12 +32,22 @@ export type DiagnosticReport = Awaited<ReturnType<typeof diagnose>>
 
 export async function diagnose(imagePath: string) {
 	const absolute = isAbsolute(imagePath) ? imagePath : resolve(process.cwd(), imagePath)
-	const { palette, diagnostics, fieldOrder } = await analyzeImage(absolute)
+	const { palette, diagnostics, fieldOrder, fieldComponents } = await analyzeImage(absolute)
 	return {
 		image: absolute,
 		size: `${palette.metadata.sourceRendition.width}×${palette.metadata.sourceRendition.height}`,
 		fieldOrder,
 		diagnostics,
+		attempts: fieldComponents === null
+			? null
+			: fieldComponents.attempts.map((component) => ({
+				depth: component.depth,
+				order: component.order,
+				supportFraction: Number(component.supportFraction.toFixed(4)),
+				coreFraction: Number(component.coreFraction.toFixed(4)),
+				extensive: component.extensive,
+				smooth: component.smooth,
+			})),
 		palette: {
 			background: palette.roles.background.hex,
 			surface: palette.roles.surface.hex,

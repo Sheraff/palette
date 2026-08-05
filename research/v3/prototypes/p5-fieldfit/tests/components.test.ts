@@ -42,11 +42,13 @@ import { analyzeImage } from "../candidate.ts"
 import { compositeFieldFit, pixelIndexOnAxis } from "../src/components.ts"
 import { normalizedX, normalizedY } from "../src/decode.ts"
 import {
+	COMPONENT_CORE_FRACTION,
 	EXPLAINED_RADIUS,
 	EXTENSIVE_SUPPORT_FRACTION,
 	fitField,
 	fitFieldComponents,
 	MAX_COMPONENT_DEPTH,
+	NO_FIELD_EXPLAINED_FRACTION,
 } from "../src/fieldfit.ts"
 import type { DecodedRaster } from "../src/types.ts"
 
@@ -393,10 +395,93 @@ test("(b, palette) a flat panel over a flat ground is the two-component reading"
 	)
 })
 
-test("the extensive threshold is the one the brief states, and is reported", () => {
-	// Pinned because it is `[UNCALIBRATED]` and the report quotes it: a change here is a change to
-	// what "a region of the picture" means, and it should have to edit a test to happen.
+test("the two gate constants are the ones the rulings state, and are separate names", () => {
+	// Pinned because both are `[UNCALIBRATED]` and the reports quote them: a change here is a change
+	// to what "a region of the picture" and "holds its pixels close" mean, and it should have to edit
+	// a test to happen.
 	assert.equal(EXTENSIVE_SUPPORT_FRACTION, 0.1)
 	assert.equal(MAX_COMPONENT_DEPTH, 4)
 	assert.ok(Math.abs(EXPLAINED_RADIUS - 4 * POOLED_SAME_COLOR_BAR) < 1e-15)
+
+	// The v0.5.1 smooth-gate ruling, as an assertion. The value, and — separately — the *decoupling*:
+	// v0.5.0 read the smooth gate off `NO_FIELD_EXPLAINED_FRACTION`, so a test that only checked
+	// `COMPONENT_CORE_FRACTION === 0.4` would still pass if someone re-coupled them by moving decision
+	// 9's global threshold down to 0.4 — which is precisely what the ruling refuses.
+	assert.equal(COMPONENT_CORE_FRACTION, 0.39)
+	assert.equal(NO_FIELD_EXPLAINED_FRACTION, 0.5)
+	assert.notEqual(COMPONENT_CORE_FRACTION, NO_FIELD_EXPLAINED_FRACTION)
+})
+
+// ---------------------------------------------------------------------------------------------
+// The smooth gate, at the value the ruling sets it to (`16a8247378`-class)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **A painted region**: the sky ramp with per-pixel brushwork, amplitude set so the claim's pixels
+ * spread across the explained radius instead of piling at its centre.
+ *
+ * This is the shape `16a8247378` has and the synthetic (a) fixture does not: (a)'s sky is exact, so
+ * its core fraction is ~1 and it clears any gate in (0, 1). The cover the ruling was written for sits
+ * at 0.40 — brushwork is a real signal the affine surface cannot carry, and the component still *is*
+ * the sky. Amplitude is expressed in explained radii so the fixture cannot drift if the bar moves.
+ */
+function paintedSkyAt(x: number, index: number, amplitude: number): OkLab {
+	const base = skyAt(x)
+	const jitter = amplitude * EXPLAINED_RADIUS
+	return [
+		base[0] + jitter * (noise(index * 5 + 11) - 0.5),
+		base[1] + 0.25 * jitter * (noise(index * 5 + 12) - 0.5),
+		base[2] + 0.25 * jitter * (noise(index * 5 + 13) - 0.5),
+	]
+}
+
+/** Brushwork amplitudes, in explained radii, measured on the sweep recorded in `reports/wp9.md`. */
+const PAINTED_AMPLITUDE = 3.1
+const NOISY_AMPLITUDE = 5.5
+
+/** Obligation (a)'s fixture with the sky repainted — the same geometry, so only the gate differs. */
+function paintedSkyOverTexture(amplitude: number): DecodedRaster {
+	return makeRaster(SIZE, SIZE, (x, _y, index) => {
+		const row = Math.floor(index / SIZE)
+		return row < SKY_FRACTION * SIZE ? paintedSkyAt(x, index, amplitude) : textureAt(index)
+	})
+}
+
+test("the smooth gate admits a painted ramp at 0.4–0.5 core and still refuses a noisy region", () => {
+	// (i) Painted. The amplitude is tuned so the sky lands where the evidence cover does: claim 0.239
+	// against `16a8247378`'s 0.237, core **0.468** — above `COMPONENT_CORE_FRACTION`, below the 0.5
+	// v0.5.0 borrowed. That band is the entire behavioural content of the ruling, so the test asserts
+	// the band and not just the verdict: a component that qualified at core 0.8 would pass under both
+	// versions and prove nothing.
+	const painted = paintedSkyOverTexture(PAINTED_AMPLITUDE)
+	assert.equal(fitField(painted).noField, true, "the trigger must fire or the fixture is vacuous")
+
+	const reading = fitFieldComponents(painted)
+	const sky = reading.attempts.find((component) => component.supportFraction > 0.2)
+	assert.ok(sky !== undefined, "the sky claims a fifth of the frame at minimum")
+	assert.ok(
+		sky.coreFraction >= COMPONENT_CORE_FRACTION && sky.coreFraction < NO_FIELD_EXPLAINED_FRACTION,
+		`the fixture must sit in the decoupled band, core fraction ${sky.coreFraction}`,
+	)
+	assert.equal(sky.extensive, true)
+	assert.equal(sky.smooth, true, "a painted ramp above 0.4 core is field-like — the ruling")
+	assert.equal(sky.order, 1, "it is still the sky's ramp, brushwork and all")
+	assert.equal(reading.retreat, false)
+	assert.equal(reading.components[0].supportPixels, sky.supportPixels, "the sky carries the field")
+
+	// (ii) Noisy: the *same* region, brushwork wide enough that the surface holds its pixels only at
+	// the rim of the radius (core 0.224). It still claims an extensive share — that is the point, the
+	// extensive gate cannot tell these two apart — and *smooth* must refuse it. Without this the
+	// ruling would read as "0.4 lets more through", with no evidence anything is still kept out.
+	const noisy = paintedSkyOverTexture(NOISY_AMPLITUDE)
+	const noisyReading = fitFieldComponents(noisy)
+	assert.equal(noisyReading.attempts[0].extensive, true, "extensive alone would have admitted it")
+	for (const component of noisyReading.attempts) {
+		assert.ok(
+			component.coreFraction < COMPONENT_CORE_FRACTION,
+			`level ${component.depth} sits at core ${component.coreFraction}, above the gate`,
+		)
+		assert.equal(component.smooth, false)
+	}
+	assert.equal(noisyReading.retreat, true, "a region whose pixels sit at the rim is not a field")
 })

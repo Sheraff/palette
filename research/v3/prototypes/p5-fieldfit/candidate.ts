@@ -65,11 +65,20 @@
  * surface. Both of the brief's synthetic obligations pass under this order; obligation (a) does not
  * pass under the other one.
  *
- * **What the frozen `Diagnostics` can and cannot say about the fork.** `noField && gradient` is a
- * component ramp; `noField && twoBlockFallback` is a two-component (two flat colours) reading;
- * `noField` with neither is a single flat component **or** the retreat — the two are the same
- * published shape (one colour, surface collapsed) and the sidecar has no field to separate them.
- * `Analysis.fieldComponents` carries the pool for anything that needs the truth.
+ * **What the `Diagnostics` say about the fork (v0.5.1).** `noField && gradient` is a component ramp;
+ * `noField && twoBlockFallback` is a two-component (two flat colours) reading; `noField` with neither
+ * used to be a single flat component **or** the retreat, indistinguishable in the sidecar because both
+ * publish one colour with the surface collapsed. `types.ts` now carries the two fields that separate
+ * them, and this module is the only thing that fills them:
+ *
+ *  - `fieldComponents` — how many components the pool accepted, and **0 when the recursion never ran**
+ *    (the global fit explained half the image). A retreat is also 0, which is why it needs the second
+ *    field: 0-because-not-asked and 0-because-nothing-qualified differ by `noField`.
+ *  - `retreat` — true on exactly one code path, decision 9's declared retreat below, and set where
+ *    that path is taken rather than inferred afterwards from the shape of the palette. It is the
+ *    "declared, never silent" half of decision 9 made machine-readable.
+ *
+ * `Analysis.fieldComponents` still carries the whole pool for anything that needs more than a count.
  *
  * ## Deviations from `SPEC.md`, stated
  *
@@ -122,7 +131,7 @@ import type { Diagnostics, FieldFit, Inventory, RampReading } from "./src/types.
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.5.0"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.5.1"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -206,6 +215,8 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	let overlayFit: FieldFit = fit
 	let fieldComponents: FieldReading | null = null
 	let twoComponentReading = false
+	// Set on the one branch that takes decision 9's retreat, never inferred from the published shape.
+	let declaredRetreat = false
 
 	let backgroundTarget = ramp.backgroundTarget
 	let surfaceTarget = ramp.surfaceTarget
@@ -231,6 +242,7 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 			}
 		} else {
 			// Decision 9's declared retreat, reached only now that no component qualified.
+			declaredRetreat = true
 			gradientCandidate = false
 			const retreatTriple = highestFieldMassTriple(fit, raster, inventory)
 			if (retreatTriple) {
@@ -379,6 +391,9 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		noField: fit.noField,
 		inlierFraction: fit.inlierFraction,
 		fieldExplainedFraction: fit.fieldExplainedFraction,
+		// 0 also when the recursion never ran; `noField` is what tells the two zeros apart.
+		fieldComponents: fieldComponents?.components.length ?? 0,
+		retreat: declaredRetreat,
 		residualScale: fit.residualScale,
 		marginBars: fit.marginBars,
 		orientationMargin: ramp.orientationMargin,

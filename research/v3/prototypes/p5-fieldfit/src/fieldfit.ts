@@ -116,9 +116,10 @@ const NO_FIELD_EXPLAINED_BAR_MULTIPLE = 4
  * `[UNCALIBRATED]` — `SPEC.md` decision 9. "At least half the image" is the principle; the exact
  * half is the convention.
  *
- * Exported because decision 9's precedence ruling judges the two-block reading by the **same**
- * threshold before it retreats, and the ruling's "same two constants, no new ones" only means
- * anything if there is literally one of each.
+ * Exported for the tests that pin it. **It is now used in exactly one place** — the global `noField`
+ * verdict below. v0.5.0's component smooth gate borrowed it; v0.5.1's smooth-gate ruling gave that
+ * gate its own `COMPONENT_CORE_FRACTION`, and decision 9's own "same two constants, no new ones"
+ * clause was about the two-block rescue, which v0.5.0 deleted as subsumed by the component reading.
  */
 export const NO_FIELD_EXPLAINED_FRACTION = 0.5
 
@@ -170,6 +171,43 @@ export const EXTENSIVE_SUPPORT_FRACTION = 0.1
  * fields is not being read, and past four the reading has stopped being about background/surface.
  */
 export const MAX_COMPONENT_DEPTH = 4
+
+/**
+ * **Smooth**: at least this fraction of a component's claim must sit inside the fit's own inlier core.
+ *
+ * `[UNCALIBRATED]`. Its own constant as of v0.5.1, by `SPEC.md` decision 12's *smooth-gate ruling
+ * 2026-08-05* (evidence cover `16a8247378`, round-2 UNACCEPTABLE), quoted:
+ *
+ * > the component smooth gate decouples from `NO_FIELD_EXPLAINED_FRACTION` — new constant
+ * > `COMPONENT_CORE_FRACTION = 0.4` (`[UNCALIBRATED]`, anchored to the one evidence cover whose
+ * > painted sky sits at 0.40; relaxing the shared 0.5 instead would silently flip every global explF
+ * > 0.4–0.5 cover's retreat).
+ *
+ * **Anchor corrected 2026-08-05 (P5 orchestrator, from W-P9's measurement):** the evidence sky's
+ * core fraction is **0.3966 measured**, not the 0.40 the ruling transcribed — a gate at 0.4 fails
+ * to admit the very component it exists to admit (W-P9: the cover's palette moved only via a
+ * smaller secondary component). The constant is defined by its anchor ("admit the evidence sky"),
+ * so it is corrected to sit just under the measured value: **0.39**. Measured collateral: over all
+ * 22 dev covers the gate's next behavioural change below .40 is the sky itself at .3966 and
+ * nothing else (next change upward .4202), so this correction moves exactly one cover.
+ *
+ * **The evidence is a single cover, and that is the whole of it.** `16a8247378` is an autumn-sky
+ * painting; its sky claims 0.237 of the frame with a core fraction of **0.3966**, so under v0.5.0's
+ * reuse of `NO_FIELD_EXPLAINED_FRACTION` (0.5) it failed *smooth* by a tenth and the cover kept its
+ * black field — the reading round 2 called UNACCEPTABLE. A painted sky is brushwork: its pixels sit
+ * spread across the explained radius rather than piled at its centre, which is what a core fraction
+ * near 0.4 *is*. The value is the measured one, not a bracket: there is no second cover to bracket
+ * against, so unlike `EXTENSIVE_SUPPORT_FRACTION` (three covers, margin rule) and
+ * `FOREGROUND_MIN_RAW_APCA` (a reviewer-evidenced interval) this constant sits **on** its single
+ * datum. Round 3 is what moves it.
+ *
+ * Why a new constant rather than lowering the shared 0.5: `NO_FIELD_EXPLAINED_FRACTION` is decision
+ * 9's global verdict — every cover whose *global* explained fraction lands in [0.4, 0.5) would have
+ * stopped retreating, which is a change to the trigger and not to the gate the evidence is about.
+ * The two numbers were only ever equal by reuse; they answer different questions ("does one surface
+ * explain the picture" vs. "does this component hold its pixels close"), so they are now two names.
+ */
+export const COMPONENT_CORE_FRACTION = 0.39
 
 /**
  * **Why the verdict reads an absolute distance and not a scale — two retired clauses, both recorded.**
@@ -931,6 +969,10 @@ function measureComponent(
 	// **inlier core** (`w > 0.5`, i.e. within 0.5412 of the cut) rather than out at the rim: a real
 	// field holds its pixels close, a surface floating over a spread-out cloud claims them only at
 	// the edge of the radius. Both numbers are published; only this one is a vote.
+	//
+	// v0.5.1: the fraction it is voted against is `COMPONENT_CORE_FRACTION`, its own constant, and no
+	// longer `NO_FIELD_EXPLAINED_FRACTION` borrowed from decision 9 — see that constant's provenance
+	// for the ruling and its one evidence cover.
 	const coreFraction = supportPixels > 0 ? coreCount / supportPixels : 0
 
 	return {
@@ -952,7 +994,7 @@ function measureComponent(
 		seed,
 		extensive: supportFraction >= EXTENSIVE_SUPPORT_FRACTION,
 		smooth: supportFraction >= EXTENSIVE_SUPPORT_FRACTION &&
-			coreFraction >= NO_FIELD_EXPLAINED_FRACTION,
+			coreFraction >= COMPONENT_CORE_FRACTION,
 	}
 }
 

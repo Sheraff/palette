@@ -179,7 +179,11 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     `COMPONENT_CORE_FRACTION = 0.4` (`[UNCALIBRATED]`, anchored to the one evidence cover whose
     painted sky sits at 0.40; relaxing the shared 0.5 instead would silently flip every global
     explF 0.4–0.5 cover's retreat). Blast radius measured, not assumed, before any round stages
-    it. *Cost flag:* v0.5 recursion ≈ 9 s/palette at robustness-set scale — a cost pass
+    it. *Anchor corrected to 0.39, 2026-08-05:* the evidence sky's measured core is 0.3966 — the
+    0.40 transcription failed to admit the component the ruling exists to admit (W-P9 caught it).
+    Corrected per the anchor's own definition; measured effect: exactly one cover changes
+    (`16a8247378` → slate/brown two-component reading with the wheat-cream foreground), zero
+    collateral in (0.3966, 0.4202). *Cost flag:* v0.5 recursion ≈ 9 s/palette at robustness-set scale — a cost pass
     (component solves on the lattice subsample, as the global fit already does) is owed before
     the bake-off.
 
