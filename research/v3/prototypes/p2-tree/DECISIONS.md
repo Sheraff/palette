@@ -43,6 +43,23 @@ orders part. Until that verdict, contrast-first accent ranking is not to be re-i
   demo-20 items only where a specific prior verdict is being re-tested (e.g. D1's accent
   pairwise item).
 
+## D4 — cross-arm round evidence, folded (2026-08-05, via main orchestrator; no action ordered)
+
+- **Identity-coverage is a grading axis:** a distinct chromatic colour present in the artwork
+  but absent from the palette draws complaints even when everything published is fine.
+  Strengthens the case the salience-cut round item must carry both directions (a demoted
+  accidental shadow vs a demoted identity colour), and validates the lanes/mining work.
+- **Stop-spacing banding:** adjacent stops 3.1% apart read as "very significant banding".
+  P2 currently publishes 2-stop ramps only; binds the moment a 3rd stop lands — record a
+  minimum-spacing consequence check in the excursion work before any 3-stop publication.
+- **False gradient at rank-correlation 0.769:** high correlation is not a perceived ramp;
+  endpoint mismatch matters beyond thresholds. For tos this attaches to the laminarity /
+  monotone-migration calibration (round-2), not to a new number.
+- **Both gradient error directions are live:** the reviewer also asked for a gradient where
+  none was published. Round-2's pre-declared limit stands (its 8 items only test the
+  published-gradient→flat direction); the missed-gradient direction needs items in a later
+  round drawn from covers where tos says flat/partitioned and legacy says ramp.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
