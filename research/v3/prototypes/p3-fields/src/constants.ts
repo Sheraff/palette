@@ -12,6 +12,12 @@
  * 0.2.0 adds **three tie bands** — δ_fg, δ_bs and m_ink — under their own heading below. They are
  * `[UNCALIBRATED]` on the same terms, each with an anchor plan that has not run.
  *
+ * 0.4.0 adds **exactly two**, both in the gradient's guide-stop canon: `MIN_GUIDE_STOP_SPACING`
+ * (`[MEASURED]`, off five graded covers, with the caveats attached to it) and
+ * `FOURTH_STOP_PROVEN_UTILITY` (`[REVIEWED]`, the contract's negotiability clause). The accent redesign
+ * that is 0.4.0's centrepiece adds **none** — its ordering is a product of percentile ranks, which has
+ * no coefficient, and every narrowing below it is an order statistic of the population it narrows.
+ *
  * Three quantities are **inherited** from the contract and are used unchanged: the regional
  * same-colour bar (`SAME_COLOR_BAR_BY_REGION`), the population floor
  * (`SOURCE_POPULATION_FLOOR`), and the P1 excursion multiplier. They are imported at their use sites
@@ -20,7 +26,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.3.0"
+export const CANDIDATE_ID = "p3-fields-0.4.0"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -28,7 +34,7 @@ export const CANDIDATE_ID = "p3-fields-0.3.0"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.3.0"
+export const ALGORITHM_VERSION = "p3-fields-0.4.0"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -262,9 +268,77 @@ export const EXCURSION_BAND_HALF_WIDTH = 0.03
  * How many guide stops may be inserted (arm-d §2.4: "repeat at most once more").
  *
  * [INHERITED] — the contract's `MAX_GRADIENT_STOPS` is 4 and the two ends are the field roles, so two
- * is all there is room for. Named so the loop bound is not a bare literal.
+ * is all there is room for. Named so the loop bound is not a bare literal. This is the *structural*
+ * ceiling; what a default run may actually reach is `FOURTH_STOP_PROVEN_UTILITY` below.
  */
 export const MAX_GUIDE_STOPS = 2
+
+// ---------------------------------------------------------------------------------------------
+// 0.4.0 — the guide-stop canon
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The minimum spacing between published gradient stops**, as a fraction of the ramp.
+ *
+ * **[MEASURED]** — from `phase2-cal-006` r2-item-0 and `phase2-pair-007`, the only two rounds that have
+ * ever put a multi-stop ramp in front of the reviewer. Value **0.125**, and the predicate is *strictly
+ * greater* (`spacing > MIN_GUIDE_STOP_SPACING`), which is the cut this evidence draws and not a round
+ * number chosen near it.
+ *
+ * ### The measurement
+ *
+ * r2-item-0 was held at unacceptable for seven drafts on *"very significant banding (purple at 71.9%,
+ * green at 74.7%)"* — a **3.1%** gap. `phase2-pair-007` then graded eight covers as flat-vs-gradient
+ * pairs and named banding on **all four 4-stop covers and none of the four 2-stop covers**. Replaying
+ * those four under the 0.3.0 machinery (`gradient.ts`'s diagnosis table) gives their narrowest published
+ * spacings:
+ *
+ * | cover | narrowest spacing |
+ * |---|---|
+ * | 114 | 3.13% |
+ * | 188 | 3.13% |
+ * | 048 | 6.25% |
+ * | 181 | 12.50% |
+ *
+ * 12.50% is the **widest spacing a reviewer has called banding**, so a strictly-greater cut at 0.125
+ * rejects every named case and nothing else. The two 3.1% covers are the machinery's own floor —
+ * `1/(EXCURSION_GRID_SAMPLES − 1)`, one grid step — which is what makes them the class rather than the
+ * accident.
+ *
+ * ### Carry the caveats with the number
+ *
+ * - **n = 5 covers, one reviewer, one rendering.** [MEASURED] here means *"read off graded reviewer
+ *   verdicts"*, not *"a sweep found a knee"*. Nothing was measured on the other side of the cut, because
+ *   no reviewer has been shown a multi-stop ramp whose stops are 15% or 20% apart.
+ * - **The evidence is confounded.** All four round-3 covers are also the covers whose stops meander or
+ *   cross lumps (`gradient.ts`'s diagnosis), so "banding" and "the path is not a path" are not separated
+ *   by this data. The spacing rule is the conservative half of the fix; the monotone clause is the other,
+ *   and neither is a measurement of the other's necessity.
+ * - **Anchor plan:** a stop-spacing ladder — the same cover rendered with one guide stop at 5%, 10%, 15%
+ *   and 25% from an endpoint, graded for banding. That is a review round and it has not run.
+ */
+export const MIN_GUIDE_STOP_SPACING = 0.125
+
+/**
+ * **Has the fourth gradient stop proven its utility?** `false`, and the code path stays.
+ *
+ * [REVIEWED] — the contract's own negotiability clause, `PHASE_0_DECISIONS.md` §2 as `types.ts` §"Stop
+ * count" restates it, verbatim: *"The fourth stop is additionally **negotiable on proven utility** rather
+ * than granted (the reviewer's parenthesis above), so a fitter that reaches for it owes evidence that
+ * three could not do the job."*
+ *
+ * The evidence owed has not been produced, and the only measurement that bears on it runs the other way:
+ * `phase2-pair-007` graded the gradient side **unacceptable on all four 4-stop covers**, and preference
+ * split on the same line (4-stop → flat or no-preference; 2-stop → gradient or no-preference). So the
+ * second guide stop — the one that makes a ramp four stops long — is **unreachable by default**, while
+ * `insertGuideStops`'s loop keeps the branch that would take it.
+ *
+ * This is a gate, not a cap: `MAX_GUIDE_STOPS` is unchanged, round 3's corrected reading explicitly
+ * refuses a hard cap at three, and flipping this constant is what "negotiable" means in code. **Anchor
+ * plan:** a paired round in which the same artwork is published with three stops and with four, on covers
+ * whose 3-stop ramp still shows a measured excursion above the bar — the evidence the clause asks for.
+ */
+export const FOURTH_STOP_PROVEN_UTILITY = false
 
 /**
  * The **decile count** the lump heuristic reads a scalar distribution at.

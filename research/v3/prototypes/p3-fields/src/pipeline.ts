@@ -47,7 +47,14 @@ import type {
 	Rgb8,
 } from "../../../src/contract/types.ts"
 import { hashFileBytes } from "../../../src/devloop/code-version.ts"
-import { computeAccentTiers, chooseAccent, type AccentChoice } from "./accent.ts"
+import {
+	chooseAccent,
+	computeAccentOrdering,
+	type AccentChoice,
+	type AccentContrastPreference,
+	type AccentOrdering,
+	type AccentRefinement,
+} from "./accent.ts"
 import {
 	ALGORITHM_VERSION,
 	BACKGROUND_PREVALENCE_TIE_BAND,
@@ -57,9 +64,11 @@ import {
 	ENDS_BAND_TAU_MULTIPLE,
 	FIELD_DEPTH_QUANTILE,
 	FOREGROUND_POLARITY_TIE_BAND,
+	FOURTH_STOP_PROVEN_UTILITY,
 	GRADIENT_RANK_CORRELATION,
 	INK_REGIME_SUPPORT_MARGIN,
 	MAX_RANK_STEPS,
+	MIN_GUIDE_STOP_SPACING,
 	PREPROCESSING_VERSION,
 	TRIM_LEVEL,
 } from "./constants.ts"
@@ -116,8 +125,10 @@ export type P3Intermediates = {
 	inkRefinement: InkRefinement | null
 	inkBandSize: number
 	inkCandidates: number
-	accentTier: 1 | 2 | null
-	accentFragile: boolean
+	/** How many pixels cleared the same-colour bar from both field ends (0.4.0). */
+	accentQualified: number
+	/** What the four narrowings did to the accent's top-τ band (0.4.0). `null` when the accent collapsed. */
+	accentRefinement: AccentRefinement | null
 	accentStep: number
 	accentCollapsed: boolean
 	/** True when the fg↔accent comparator swapped the two role labels (0.3.0, round-1 item-19). */
@@ -306,25 +317,36 @@ function searchForeground(
 }
 
 /**
- * The accent search: tier 1, then tier 2, stepping the rank inside each, then collapse.
+ * The accent search: one ordering, stepping the rank down it, then collapse.
  *
- * `null` means every tier was empty or failed verification — which §2.6 says is the accent collapsing to
- * exactly the foreground, arrived at as an empty population rather than asserted.
+ * `null` means the qualified population was empty or nothing in it survived verification — which §2.6
+ * says is the accent collapsing to exactly the foreground, arrived at as an empty population rather than
+ * asserted. **Collapse semantics are unchanged at 0.4.0**; what changed is the ordering above it, and
+ * the deletion of the tier wall means there is now one cursor rather than two.
  *
- * **0.3.0 adds the min-ramp |raw APCA| floor** (round-1 item-07; see `accent.ts`'s docstring). It is a
- * feasibility predicate over the whole published ramp, exactly like the foreground's, and it changes no
- * ordering. At the contract's default floor it fires only where the artwork genuinely has nothing
- * readable to publish, which is §2.7's zero-collateral rule; raising `minAccentContrast` is what puts
- * pressure on the answer.
+ * ## 0.4.0 — the min-ramp floor is a preference again, and this function stopped eliminating on it
+ *
+ * 0.3.0 made the accent's min-ramp |raw APCA| a **feasibility predicate** here: a candidate below the
+ * floor stepped the rank. `ACCENT_REDESIGN.md` requirement 3 moves it back to a **preference inside the
+ * ordering** (`accent.ts`, narrowing 3), on the ink amendment's pattern and for the ink amendment's
+ * reason — identity outranks legibility when the artwork has no legible version of the colour it is
+ * about. The evidence for the move is that the floor's own motivating cover was re-graded **strong** at
+ * round 2 with the pre-registered "accent complaint repeats" expectation **refuted** at min-ramp 7.55
+ * (`review-rounds/round-2-calibration/VERDICTS.md`): the floor was not carrying the verdict.
+ *
+ * **Stated rather than smoothed:** this is the one place 0.4.0 removes a guard rather than adding one,
+ * and if a round-4 note reads *"the accent is hard to see"* on a cover where the ordering had a legible
+ * alternative, this paragraph is what failed. What remains here is the **contract's** own clause —
+ * invariant 4's accent test with its functional-distance escape — which was never a preference.
  */
 function searchAccent(
 	image: DecodedImage,
-	tiers: ReturnType<typeof computeAccentTiers>,
+	ordering: AccentOrdering,
 	background: number,
 	surface: number,
 	foreground: number,
 	fromCursor: number,
-	rampAnchorRgb: readonly Rgb8[],
+	preference: AccentContrastPreference,
 	support: Record<string, number>,
 	spread: Record<string, number>,
 ): { choice: AccentChoice; cursor: number } | null {
@@ -332,47 +354,41 @@ function searchAccent(
 	const surfaceRgb = pixelRgb(image, surface)
 	const floor = CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude
 
-	// One cursor over the whole (tier, step) sequence, for the reason given in `searchForeground`. Tier 2
-	// is reached only when tier 1 is empty *after verification*, which is what exhausting tier 1's ranks
-	// means here.
-	for (const tier of [1, 2] as const) {
-		for (let step = 0; step <= MAX_RANK_STEPS; step += 1) {
-			const cursor = (tier - 1) * (MAX_RANK_STEPS + 1) + step
-			if (cursor < fromCursor) continue
-			const choice = chooseAccent(image, tiers, tier, step)
-			if (choice === null || choice.pixel < 0) continue
+	// One cursor over the ordering's ranks, for the reason given in `searchForeground`. There is one
+	// ordering at 0.4.0, so the cursor *is* the step.
+	for (let step = 0; step <= MAX_RANK_STEPS; step += 1) {
+		const cursor = step
+		if (cursor < fromCursor) continue
+		const choice = chooseAccent(image, ordering, step, preference)
+		if (choice === null || choice.pixel < 0) continue
 
-			const verdict = verifyColor(image, choice.pixel)
-			support[`accent:tier${tier}:${step}`] = verdict.support
-			spread[`accent:tier${tier}:${step}`] = verdict.spread
-			if (!verdict.passes) continue
+		const verdict = verifyColor(image, choice.pixel)
+		support[`accent:${step}`] = verdict.support
+		spread[`accent:${step}`] = verdict.spread
+		// The salience guard's second half (`ACCENT_REDESIGN.md` requirement 4): support and spatial
+		// spread, the existing machinery, applied to the lump's own cascade pixel. A colour living in one
+		// tight blob fails `SPATIAL_SPREAD_FLOOR` here and the rank steps.
+		if (!verdict.passes) continue
 
-			// Invariant 3's elevated cell: the accent must be plainly a different colour from the
-			// foreground, or collapse onto it exactly. The separation distance is the contract's, used
-			// here as a verification predicate and never to choose anything.
-			const separation = Math.max(
-				barBetween(image, choice.pixel, foreground),
-				FOREGROUND_ACCENT_SEPARATION_DISTANCE,
-			)
-			if (labDistance(image.lab, choice.pixel, foreground) < separation) continue
+		// Invariant 3's elevated cell: the accent must be plainly a different colour from the
+		// foreground, or collapse onto it exactly. The separation distance is the contract's, used
+		// here as a verification predicate and never to choose anything.
+		const separation = Math.max(
+			barBetween(image, choice.pixel, foreground),
+			FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+		)
+		if (labDistance(image.lab, choice.pixel, foreground) < separation) continue
 
-			// Invariant 4's accent clause, with its one escape: a pair violates only when |raw APCA| is
-			// below the floor *and* the two colours are closer than the functional distance.
-			const rgb = pixelRgb(image, choice.pixel)
-			const failsBackground = Math.abs(apcaRaw(rgb, backgroundRgb)) < floor &&
-				labDistance(image.lab, choice.pixel, background) < ACCENT_FUNCTIONAL_DISTANCE
-			const failsSurface = Math.abs(apcaRaw(rgb, surfaceRgb)) < floor &&
-				labDistance(image.lab, choice.pixel, surface) < ACCENT_FUNCTIONAL_DISTANCE
-			if (failsBackground || failsSurface) continue
+		// Invariant 4's accent clause, with its one escape: a pair violates only when |raw APCA| is
+		// below the floor *and* the two colours are closer than the functional distance.
+		const rgb = pixelRgb(image, choice.pixel)
+		const failsBackground = Math.abs(apcaRaw(rgb, backgroundRgb)) < floor &&
+			labDistance(image.lab, choice.pixel, background) < ACCENT_FUNCTIONAL_DISTANCE
+		const failsSurface = Math.abs(apcaRaw(rgb, surfaceRgb)) < floor &&
+			labDistance(image.lab, choice.pixel, surface) < ACCENT_FUNCTIONAL_DISTANCE
+		if (failsBackground || failsSurface) continue
 
-			// 0.3.0 — the min-ramp floor. The clause above is invariant 4's, escape and all; this one is
-			// the *metric* the round-1 item-07 complaint is about, taken over the whole published ramp
-			// rather than over its two ends and with no escape: a colour nobody can see against any stop
-			// of the field is not an accent, however far from it in OKLab it happens to sit.
-			if (minRampContrast(image, choice.pixel, rampAnchorRgb) < floor) continue
-
-			return { choice, cursor }
-		}
+		return { choice, cursor }
 	}
 	return null
 }
@@ -405,19 +421,39 @@ function namesRole(subjects: readonly string[], role: string): boolean {
  *
  * **One clause added to the brief, named rather than folded in.** The verdict's own wording is *"each
  * clears the other's qualification"*, and the accent's qualification is the same-colour bar from both
- * field ends. This function also requires the promoted colour to clear the **accent's min-ramp floor**,
- * because 0.3.0 adds that floor to accent feasibility (`searchAccent`) and a swap that could install an
- * accent the accent search would itself have refused would be a hole in the predicate one function over.
- * At the contract's default floors the extra clause changes nothing; it exists so the two paths into the
- * accent slot cannot disagree about what an accent has to clear.
+ * field ends. This function also requires the promoted colour to clear the accent's min-ramp floor.
  *
- * **Reported rather than smoothed.** The swapped accent is no longer the output of the accent's tier
- * machinery, so `accentTier`/`accentFragile` describe the *pre-swap* candidate and `roleSwapApplied`
- * says the labels moved. In particular a tier-1 accent is defined as a *lightness-moving* departure from
- * the field, and the foreground promoted into the accent slot carries no such guarantee — it is the
- * worse-contrasting of two colours the comparator has just ordered, which is a different property, and
- * on the demo set it is systematically the lower-|APCA| one *by construction*. The comparator's
- * strictness (`>`, never `≥`) keeps it from firing on a tie.
+ * **0.4.0 restates what that clause now is.** At 0.3.0 it mirrored a feasibility floor in `searchAccent`;
+ * at 0.4.0 the min-ramp floor is a *preference* inside the accent ordering, so the clause has no
+ * counterpart to mirror. It is kept, and it is kept as what it now is: a **conservative guard on a label
+ * move**. A swap is optional — the palette is valid either way — so requiring the promoted colour to be
+ * one the accent slot can carry legibly costs nothing that the evidence asks for, and dropping it would
+ * widen a comparator whose fire rate is already the thing being measured.
+ *
+ * **Reported rather than smoothed.** The swapped accent is no longer the output of the accent ordering,
+ * so `accentRefinement` describes the *pre-swap* candidate and `roleSwapApplied` says the labels moved.
+ * The colour promoted into the accent slot carries none of the accent ordering's properties — it is not
+ * the chromatic departure the ordering elected, it is the worse-contrasting of two colours the comparator
+ * has just ordered, and on the demo set it is systematically the lower-|APCA| one *by construction*. The
+ * comparator's strictness (`>`, never `≥`) keeps it from firing on a tie.
+ *
+ * ## The 0.4.0 interaction, named and left standing
+ *
+ * The accent redesign changed what this comparator is comparing, and the consequence is measurable on
+ * cover 168 — the very cover whose reviewer asked for *"the accent … within the blue family instead of …
+ * the same color family as the background and surface"*. At 0.4.0 the accent ordering elects `#278aa9`,
+ * a vivid blue, exactly as asked. The foreground search elects `#3d3936`, a brown at min-ramp **6.66**
+ * against a dark brown field. This comparator then reads 39.95 > 6.66, swaps the labels, and publishes
+ * the blue as the **foreground** and the brown as the **accent** — so the reviewer's complaint stands
+ * even though the ordering answered it.
+ *
+ * **That is not obviously the wrong call and it is not this iteration's to make.** Without the swap the
+ * palette carries a near-invisible foreground, and foreground readability is the campaign's dominant
+ * graded-down failure (`EVIDENCE_2026-08-04.md` item 1). With it, identity loses. The real defect is one
+ * layer up — the foreground search elected an unreadable ink and the comparator is papering over it —
+ * and `ACCENT_REDESIGN.md`'s non-goals forbid touching foreground selection here. So the comparator is
+ * left exactly as round 2 validated it, the fire rate is instrumented, and the interaction is written
+ * down rather than quietly designed around. It is the first thing a round-4 note about 168 will be about.
  */
 function shouldSwapRoles(
 	image: DecodedImage,
@@ -537,8 +573,8 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		inkRefinement: null,
 		inkBandSize: 0,
 		inkCandidates: 0,
-		accentTier: null,
-		accentFragile: false,
+		accentQualified: 0,
+		accentRefinement: null,
 		accentStep: 0,
 		accentCollapsed: false,
 		roleSwapApplied: false,
@@ -670,8 +706,9 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		const parameterisation = parameteriseField(image, field.indices, ends)
 		intermediates.bestSpatialCorrelation = parameterisation.bestCorrelation
 		let stops: { pixel: number; position: number }[] | null = null
+		let excursion: ReturnType<typeof insertGuideStops> | null = null
 		if (!ends.collapsed && parameterisation.isGradient) {
-			const excursion = insertGuideStops(image, field.indices, parameterisation.t, ends.background, ends.surface)
+			excursion = insertGuideStops(image, field.indices, parameterisation.t, ends.background, ends.surface)
 			intermediates.maxExcursion = excursion.maxExcursion
 			intermediates.excursionBar = excursion.excursionBar
 			stops = [
@@ -690,6 +727,19 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			stops: stops === null ? 0 : stops.length,
 			maxExcursion: intermediates.maxExcursion,
 			excursionBar: intermediates.excursionBar,
+			// 0.4.0's guide-stop canon, as numbers rather than as a claim: the spacing bar, the gate, why
+			// insertion stopped, what each admitted stop reduced, and what each refusal clause cost.
+			minStopSpacing: MIN_GUIDE_STOP_SPACING,
+			fourthStopProvenUtility: FOURTH_STOP_PROVEN_UTILITY,
+			stopBudget: excursion === null ? null : excursion.stopBudget,
+			halt: excursion === null ? null : excursion.halt,
+			refusals: excursion === null ? null : excursion.refusals,
+			justifications: excursion === null ? null : excursion.justifications,
+			stopPositions: stops === null ? null : stops.map((stop) => stop.position),
+			stopSpacings: stops === null
+				? null
+				: stops.slice(1).map((stop, index) => stop.position - stops[index].position),
+			stopHexes: stops === null ? null : stops.map((stop) => hexOf(stop.pixel)),
 		})
 
 		if (ink === inkPlaceholder) {
@@ -698,8 +748,8 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			intermediates.inkCandidates = ink.candidates.length
 		}
 
-		// The two orderings and the two tiers depend on the field ends, so they are built once per ends
-		// step and redeemed at as many ranks as the repair loop asks for.
+		// The foreground's two orderings and the accent's one depend on the field ends, so they are built
+		// once per ends step and redeemed at as many ranks as the repair loop asks for.
 		// The **published field ramp** as pixel indices, in ramp order: the two field roles and whatever
 		// guide stops the excursion machinery inserted between them. This is what the foreground ordering
 		// minimises |raw APCA| against at 0.2.0, and it is why the ordering is built here rather than
@@ -716,13 +766,17 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			? stops.map((stop) => stop.pixel)
 			: [ends.background, ends.surface]
 		intermediates.rampAnchors = rampAnchors.length
-		// The ramp as triples, resolved once: the ink preference (0.3.0), the accent’s min-ramp floor (0.3.0)
-		// and the fg↔accent comparator (0.3.0) all consume the same anchors, and resolving them three
-		// times is three chances for them to be three different ramps.
+		// The ramp as triples, resolved once: the ink preference (0.3.0), the accent's min-ramp preference
+		// (0.4.0) and the fg↔accent comparator (0.3.0) all consume the same anchors, and resolving them
+		// three times is three chances for them to be three different ramps.
 		const rampAnchorRgb: Rgb8[] = rampAnchors.map((anchor) => pixelRgb(image, anchor))
 		const inkPreference: InkContrastPreference = {
 			anchorRgb: rampAnchorRgb,
 			floor: CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude,
+		}
+		const accentPreference: AccentContrastPreference = {
+			anchorRgb: rampAnchorRgb,
+			floor: CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude,
 		}
 
 		const orderings: ForegroundOrdering[] = []
@@ -730,7 +784,8 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		if (ranked !== null) orderings.push(ranked)
 		const luminance = luminanceOrdering(image, depth.depth, rampAnchors)
 		if (luminance !== null) orderings.push(luminance)
-		const tiers = computeAccentTiers(image, ends.background, ends.surface)
+		const accentOrdering = computeAccentOrdering(image, ends.background, ends.surface)
+		intermediates.accentQualified = accentOrdering.qualified
 
 		record("ink", {
 			bandSize: ink.bandSize,
@@ -741,7 +796,17 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			rampAnchorL: rampAnchors.map(lOf),
 			marginFactor: 1 + INK_REGIME_SUPPORT_MARGIN,
 		})
-		record("accentTiers", { tier1: tiers.tier1.length, tier2: tiers.tier2.length })
+		record("accentOrdering", {
+			qualified: accentOrdering.qualified,
+			eligible: image.eligibleIndices.length,
+			// The top of the ordering, as colours, so a divergence in "which chromatic mark won" is
+			// readable without re-deriving the percentile product.
+			topDeparture: Array.from(accentOrdering.sorted.slice(-5)).reverse().map((pixel) => ({
+				hex: hexOf(pixel),
+				departure: accentOrdering.departure[pixel],
+				margin: accentOrdering.margin[pixel],
+			})),
+		})
 
 		let foregroundFrom = 0
 		let accentFrom = 0
@@ -765,17 +830,16 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 
 			const accent = searchAccent(
 				image,
-				tiers,
+				accentOrdering,
 				ends.background,
 				ends.surface,
 				foreground.choice.pixel,
 				accentFrom,
-				rampAnchorRgb,
+				accentPreference,
 				support,
 				spread,
 			)
-			intermediates.accentTier = accent === null ? null : accent.choice.tier
-			intermediates.accentFragile = accent !== null && accent.choice.fragile
+			intermediates.accentRefinement = accent === null ? null : accent.choice.refinement
 			intermediates.accentStep = accent === null ? 0 : accent.cursor
 			intermediates.accentCollapsed = accent === null
 
@@ -832,13 +896,16 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 				})
 				record("accent", {
 					collapsed: accent === null,
-					tier: accent === null ? null : accent.choice.tier,
 					cursor: accent === null ? null : accent.cursor,
-					fragile: accent !== null && accent.choice.fragile,
 					pixel: accent === null ? null : accent.choice.pixel,
 					L: accent === null ? null : lOf(accent.choice.pixel),
 					hex: accent === null ? null : hexOf(accent.choice.pixel),
 					populationSize: accent === null ? null : accent.choice.populationSize,
+					// 0.4.0's four narrowings: which lump, what the headroom clause cut at, and whether the
+					// two preferences moved the population. A divergence in the published accent splits into
+					// "the ordering moved" and "a narrowing moved" only if both are recorded.
+					qualified: accentOrdering.qualified,
+					refinement: accent === null ? null : accent.choice.refinement,
 				})
 				record("roleSwap", {
 					applied: swapped,

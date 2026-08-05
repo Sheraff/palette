@@ -372,6 +372,29 @@ export function averageRanks(values: Float64Array): Float64Array {
 }
 
 /**
+ * **Percentile ranks** of a run of values: `averageRanks / (n − 1)`, so each value maps to its position
+ * in [0, 1] with ties sharing a position.
+ *
+ * This is the unit in which 0.4.0's accent combines two scalar fields *without a weight* (arm-d′'s
+ * percentile-product graft, which the discipline line names as sanctioned evidence combination). Two
+ * fields in different units cannot be added or multiplied without an exchange rate; their **ranks** can,
+ * because a rank has no unit and a product of ranks is still an ordering. Nothing here creates a colour:
+ * the input is a scalar field over pixels and the output is another one.
+ *
+ * A single-element run has no spread to rank against, so it maps to 1 — the top — which keeps a
+ * degenerate population from silently scoring zero in a product.
+ */
+export function percentileRanks(values: Float64Array): Float64Array {
+	const n = values.length
+	if (n === 0) return new Float64Array(0)
+	if (n === 1) return Float64Array.from([1])
+	const ranks = averageRanks(values)
+	const out = new Float64Array(n)
+	for (let i = 0; i < n; i += 1) out[i] = ranks[i] / (n - 1)
+	return out
+}
+
+/**
  * **Spearman rank correlation** between two runs of equal length: Pearson on average ranks.
  *
  * No fit, no residual, no created colour, nothing a dither can move — arm-d §2.4's whole reason for

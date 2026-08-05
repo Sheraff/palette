@@ -36,6 +36,16 @@
  * band-then-cascade change at the field ends moves *toward* that discipline rather than away: e₁ and e₂
  * were this pipeline's only single-pixel reads and are now populations like every other role.
  *
+ * **0.4.0 deletes a wall and adds two numbers.** The accent's lexicographic tier wall is gone: the role
+ * is now one ordering, the **product of two percentile ranks** (chroma relative to the field, hue
+ * separation from it), narrowed by four preferences that can none of them empty the population. Both
+ * scalars are differences of two pixels' OKLab coordinates and percentile ranks are order statistics of
+ * a scalar field, so the redesign introduces **no new constant at all** and materialises nothing. The
+ * gradient's guide-stop canon adds the only two new constants in this release —
+ * `MIN_GUIDE_STOP_SPACING` (`[MEASURED]`, from the two rounds that have shown a reviewer a multi-stop
+ * ramp) and `FOURTH_STOP_PROVEN_UTILITY` (`[REVIEWED]`, the contract's own negotiability clause, `false`
+ * with the code path intact).
+ *
  * **The constants are `[UNCALIBRATED]`.** All five of arm-d §4's free parameters, the three 0.2.0 tie
  * bands and the five 0.3.0 band/lump/depth constants run at declared-provisional values chosen by this
  * author; only k has had its anchoring plan executed, and ρ* has moved once on a *measured distribution*
