@@ -96,8 +96,12 @@ describe("(b) a two-band image — two flat fields beat one, and beat a ramp", (
 	 *
 	 * **The hand derivation.**
 	 *
-	 * *Generic code.* Two symbols of equal mass sitting 44 bars apart, so the kernel between them is
-	 * numerically zero and `m(c) = n(c) = 2048` for both. `−log₂(2048/4096) = 1 bit` per pixel.
+	 * *Generic code.* Two colours 44 bars apart occupy two cells of the identity-bar lattice, and the
+	 * kernel between them is numerically zero, so each cell's chromatic density is its own `κ(0) = 1`:
+	 * `ρ = 1` for both, `Σρ = 2`, and the code costs `log₂ 2 − log₂ 1 = 1 bit` per pixel. (Under
+	 * v0.1.0's mass-proportional residual this was `−log₂(2048/4096)` and gave the same 1 bit — the
+	 * two agree wherever the masses are equal and the colours are isolated, which is why this case's
+	 * magnitudes did not move when the prior did.)
 	 *
 	 * *Support code.* Each band is a solid 64 × 32 rectangle. Its normalised covariance is
 	 * `diag(0.08333, 0.020833)`, so `4π·sqrt(det Σ) = 0.5236` against an area of 0.5 — a fill ratio
@@ -176,15 +180,16 @@ describe("(c) a linear ramp image — the ramp beats both flat descriptions", ()
 	 *
 	 * **Why flat loses.** Under a flat field only the handful of columns within a few bars of the
 	 * named colour are cheap; the other sixty are dozens of bars away and fall to the generic code.
-	 * The generic code here is `−log₂(m(c)/Σm)` over 64 nearly-equal smoothed masses, i.e. about
-	 * `log₂ 64 = 6` bits per pixel minus what the kernel overlap between neighbouring columns
-	 * returns. Roughly 5.5 bits × 4,096 ≈ 22,000 bits, and no arrangement of two flat names changes
-	 * that for more than a sixth of the image.
+	 * The 64 columns occupy 64 cells of the identity-bar lattice, so the generic code is
+	 * `log₂ Σρ − log₂ ρ(c)` over 64 nearly-equal chromatic densities — `log₂ Σρ = 8.02`, `ρ` between
+	 * 2.4 and 3.4 along the ramp, giving 5.39 to 7.05 bits per pixel and 6.14 on average. Roughly
+	 * 6 bits × 4,096 ≈ 24,000 bits, and no arrangement of two flat names changes that for more than a
+	 * sixth of the image.
 	 *
 	 * **Why the ramp wins.** Given the `t` bin, the field predicts the column colour to within about
 	 * one step of the ramp, so the kernel is near its peak and `Z(b)` sums only the few columns
-	 * within a few bars — a couple of bits per pixel instead of five and a half. The ramp pays 24
-	 * bits for the second field name and 2 for the stop count and gets ~7,000 bits back.
+	 * within a few bars — a couple of bits per pixel instead of six. The ramp pays 24 bits for the
+	 * second field name and 2 for the stop count and gets ~7,400 bits back.
 	 *
 	 * **The third stop.** Adding the mid stop at t = 0.5 — which is exactly the shape
 	 * `src/emit/legacy.ts` reconstructs every v2-3 gradient into — costs 32 further bits of L(P) and

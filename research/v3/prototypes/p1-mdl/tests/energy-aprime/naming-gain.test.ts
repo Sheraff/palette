@@ -2,73 +2,85 @@
  * # The naming-gain test — arm A′ §2.3, the mechanism the paradigm turns on
  *
  * > *"Naming a colour is worth doing when the pixels near it become cheaper to code. Under the
- * > generic code, a pixel's cost is −log of the image's own smoothed colour density at that point. A
- * > large mass sitting in a dense part of colour space is already cheap generically, so naming it
- * > saves little per pixel. A **chromatically isolated** cluster — a signature red on an otherwise
- * > desaturated cover — sits where the density is near zero, so every one of its pixels is expensive
- * > generically and becomes cheap once named. Total saving is mass × per-pixel saving, and a small
- * > isolated cluster can beat a large typical one."*
+ * > generic code, a pixel's cost is −log of the image's own … density at that point. A large mass
+ * > sitting in a dense part of colour space is already cheap generically, so naming it saves little
+ * > per pixel. A **chromatically isolated** cluster — a signature red on an otherwise desaturated
+ * > cover — sits where the density is near zero, so every one of its pixels is expensive generically
+ * > and becomes cheap once named."*
  *
- * This file is that paragraph as an experiment. Nothing in the energy encodes it: there is no rarity
- * term, no isolation statistic, no chroma bonus and no area threshold. The behaviour has to *emerge*
- * from the choice of residual model (`DESIGN.md` decision 4: arm A′ codes the unexplained against
- * **the image's own smoothed colour density**, where arm A uses a uniform density over the gamut).
- * If it did not emerge, that would be evidence against arm A′'s prior, and this test is where it
- * would show.
+ * This file is that paragraph as an experiment, **strengthened at v0.2.0** to the claim the M3 round
+ * demanded (`DESIGN.md` fold item 11, `review-rounds/m3-priors-pairwise/ANALYSIS.md` §4d): under the
+ * chromatic residual the isolated colour does not merely win a close race against a heavier one — the
+ * heavier one **cannot be named at any mass**, because the criterion is mass-free:
+ *
+ *     naming `c` as ink repays  ⟺  log₂ Z(c) + chain(c)  <  log₂ Σρ − log₂ ρ(c)
+ *                               ⟺  ρ(c) · Z(c)  <  Σρ / 2^chain(c)
+ *
+ * Not one pixel count appears in that inequality. `ρ` and `Z` are both counts of *distinct colours*
+ * near `c` — `ρ` over the occupied cells of the identity-bar lattice (`src/energy/aprime/chromatic.ts`),
+ * `Z` over the alphabet — so **chromatic isolation decides whether a name is worth its bits, and mass
+ * only scales a gain it never decides.** Nothing in the energy encodes that: there is no rarity term,
+ * no isolation statistic, no chroma bonus and no area threshold. It falls out of the residual model,
+ * which is what makes this file evidence about arm A′'s prior rather than about its code.
  *
  * ## The fixture
  *
- * 64 × 64 = 4,096 pixels, three triples:
+ * 64 × 64 = 4,096 pixels, eight triples in five occupied cells:
  *
- * | triple | rgb | pixels | shape | OKLab |
+ * | triple | rgb | pixels | shape | where it sits |
  * |---|---|---|---|---|
- * | `c0` field | `#464b55` | 3,407 | everything else | L 0.4120, chroma 0.018, dark-neutral |
- * | `c1` second dull | `#4a4f59` | 608 | solid 38 × 16 block | L 0.4258, chroma 0.018, dark-neutral |
- * | `c2` vivid | `#dc1e28` | 81 | solid 9 × 9 block | L 0.5729, chroma 0.219, light-saturated |
+ * | `c0` field | `#464b55` | 3,307 | everything else | dark neutral |
+ * | `c1` dull | `#4a4f59` | 608 | solid 38 × 16 block | 1.58 bars from `c0` |
+ * | five shades | `#484d57` … `#48515 9` | 20 each | four rows of a shaded strip | 0.47–0.87 bars from `c1` |
+ * | `c2` vivid | `#dc1e28` | 81 | solid 9 × 9 block | **30.0 bars** from `c0` |
  *
- * `c1` sits **1.58 bars** from `c0` (0.01472 in OKLab against a dark-neutral bar of 0.00932): a
- * legally distinct colour, and a close one. `c2` sits **12.2 bars** from `c0` — chromatically
- * isolated, which is the only property that distinguishes it.
- *
- * `c1` has **7.5 times** `c2`'s mass. Any rule that ranked candidates by area, by exact-triple share,
- * or by "population floor first" names `c1`. This energy names `c2`, and the arithmetic below is why.
+ * The five shades are the fixture's whole point and are the one thing v0.1.0's version of this file
+ * did not have: they make `c1` **chromatically crowded** without giving it any more mass. That is
+ * what a large dull region on a real cover is — a colour surrounded in colour space by its own
+ * shading — and it is what `ρ` sees and `m` did not.
  *
  * ## The arithmetic, before the code runs
  *
- * *Smoothed mass* (the exact O(K²) path, since K = 3). `κ(c0,c1) = exp(−½·1.58²) = 0.2872`; the
- * kernels from `c2` to either dull colour are ~1e-29 and drop out.
+ * Occupancy at the identity bar puts the eight triples in five cells; `ρ` is the kernel sum over
+ * those cells with weight one each:
  *
- *     m(c0) = 3407 + 0.2872 × 608  = 3580.4
- *     m(c1) =  608 + 0.2872 × 3407 = 1579.8
- *     m(c2) =   81                 =   81.0
- *     Σm                           = 5241.2
+ *     ρ(c1) = 2.7852     (its own cell, plus the shade cells and `c0`'s within a bar or two)
+ *     ρ(c2) = 1.0000     (nothing within four bars of it — the truncation radius)
+ *     Σ_c ρ(cell(c)) = 18.08,  log₂ Σρ = 4.17685
  *
- * *Generic cost per pixel*, `−log₂(m(c)/Σm)`:
+ * *Generic cost per pixel*, `log₂ Σρ − log₂ ρ(c)`:
  *
- *     c1 → log₂(5241.2/1579.8) = 1.730 bits      ← already cheap: it lives inside c0's kernel
- *     c2 → log₂(5241.2/  81.0) = 6.016 bits      ← expensive: nothing else is anywhere near it
+ *     c1 → 4.17685 − log₂ 2.7852 = 2.6991 bits      ← cheap: seven distinct colours share its region
+ *     c2 → 4.17685 − log₂ 1.0000 = 4.1768 bits      ← dear: it is alone
  *
- * *Ink cost per pixel* if the foreground names the colour: `−log₂(1/Z) + log₂(N)/n + 3`, where the
- * `3` is the chain code's per-step charge and `Z` is the kernel normaliser at the named colour.
+ * *Ink cost per pixel* if the foreground names the colour, `log₂ Z(c) + log₂(N)/n(c) + 3`:
  *
- *     naming c1 → log₂(1.2872) + 12/608 + 3 = 0.364 + 0.020 + 3 = 3.384 bits   > 1.730 generic
- *     naming c2 → log₂(1.0000) + 12/ 81 + 3 = 0.000 + 0.148 + 3 = 3.148 bits   < 6.016 generic
+ *     naming c1 → 0.0000 + 12/608 + 3 = 3.0197 bits   > 2.6991 generic  → declines
+ *     naming c2 → 0.0000 + 12/ 81 + 3 = 3.1481 bits   < 4.1768 generic  → 1.0287 bits saved
  *
- * So **naming `c1` buys nothing at all**: its pixels are cheaper left in the residual, the assignment
- * leaves them there, and the saving is exactly zero. Naming `c2` saves `6.016 − 3.148 = 2.868` bits
- * on each of 81 pixels:
+ * (`log₂ Z ≈ 0` for both: at its own centre the kernel normaliser sums only what is within a few
+ * bandwidths, and each of these colours is the only *triple* that close — `Z` counts triples, `ρ`
+ * counts cells, and here the shades are more than a bandwidth from `c1` itself.)
  *
- *     gain = 81 × 2.868 ≈ 232 bits
+ *     gain = 81 × 1.0287 = 83.32 bits
  *
- * Both configurations are the same length as messages (`L(P) = 51` bits each: background 24,
- * foreground 24, three flag bits), so the 232 bits are pure likelihood and the comparison isolates
- * the mechanism completely.
+ * Both configurations are the same length as messages (`L(P) = 51` bits each), so the 83 bits are
+ * pure likelihood and the comparison isolates the mechanism completely.
+ *
+ * ## And the mass sweep, which is the strengthening
+ *
+ * The same fixture is re-rendered with the dull block at 608, 1,920 and 3,072 pixels — 7.5×, 23.7×
+ * and 37.9× the vivid patch's mass. `ρ` reads no mass, so the two generic costs are the same three
+ * digits at every size, `c1`'s naming gain is **exactly zero** at every size, and `c2`'s is 83.3 bits
+ * at every size. Under v0.1.0's mass-proportional residual this sweep was the failure: the heavier
+ * the dull region, the more naming it bought.
  */
 
 import assert from "node:assert/strict"
 import { after, describe, it } from "node:test"
 import type { Rgb8 } from "../../../../src/contract/types.ts"
-import { energyOfAPrime } from "../../src/energy/aprime/index.ts"
+import { chromaticResidual, energyOfAPrime } from "../../src/energy/aprime/index.ts"
+import { computeSupportCodes } from "../../src/energy/aprime/support.ts"
 import { measureImage } from "../../src/measure/index.ts"
 import { FIXTURE_SIDE, cleanupFixtures, configuration, writeRgbImage } from "./support.ts"
 
@@ -78,34 +90,50 @@ const SIDE = FIXTURE_SIDE
 
 /** The large dull field. */
 const FIELD: Rgb8 = [70, 75, 85]
-/** A second dull colour, 1.58 bars from the field, 608 pixels — 7.5× the vivid patch's mass. */
-const SECOND_DULL: Rgb8 = [74, 79, 89]
-/** The chromatically isolated patch, 12.2 bars from the field, 81 pixels. */
+/** The heavy dull colour, 1.58 bars from the field — the one that must stay unnameable. */
+const DULL: Rgb8 = [74, 79, 89]
+/** Five shades 0.47–0.87 bars from `DULL`: its crowd in colour space, 20 pixels each. */
+const SHADES: readonly Rgb8[] = [
+	[72, 77, 87],
+	[76, 81, 91],
+	[74, 77, 91],
+	[76, 79, 87],
+	[72, 81, 89],
+]
+/** The chromatically isolated patch, 30.0 bars from the field, 81 pixels. */
 const VIVID: Rgb8 = [220, 30, 40]
 
-const SECOND_DULL_PIXELS = 38 * 16
 const VIVID_PIXELS = 9 * 9
 
-async function namingFixture() {
+/** The fixture, with the dull block's size as the only variable. */
+async function namingFixture(name: string, dullWidth: number, dullHeight: number) {
 	return measureImage(
-		await writeRgbImage("d-naming.png", SIDE, SIDE, (x, y) => {
-			if (y < 16 && x < 38) return SECOND_DULL
-			if (y >= 40 && y < 49 && x >= 40 && x < 49) return VIVID
+		await writeRgbImage(name, SIDE, SIDE, (x, y) => {
+			if (y < dullHeight && x < dullWidth) return DULL
+			if (y >= 50 && y < 59 && x >= 40 && x < 49) return VIVID
+			if (y >= 60 && y < 64 && x < 25) return SHADES[((y - 60) * 25 + x) % SHADES.length]
 			return FIELD
 		}),
 	)
 }
 
-describe("(d) the naming gain — a small isolated colour beats a large typical one", () => {
+const rowOf = (measurement: Awaited<ReturnType<typeof measureImage>>, rgb: Rgb8): number => {
+	const key = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2]
+	const index = measurement.triples.keys.indexOf(key)
+	assert.ok(index >= 0, `triple ${key} missing from the table`)
+	return index
+}
+
+describe("(d) the naming gain — a chromatically isolated colour beats a heavier crowded one", () => {
 	it("names the vivid 81-pixel patch over the dull 608-pixel one, at equal message length", async () => {
-		const measurement = await namingFixture()
-		assert.equal(measurement.triples.colorCount, 3)
-		assert.equal(measurement.smoothedMass.mode, "exact")
+		const measurement = await namingFixture("d-naming.png", 38, 16)
+		assert.equal(measurement.triples.colorCount, 8)
+		assert.equal(measurement.joints.lattice.cellCount, 5)
 
 		// Two configurations differing in exactly one field: which colour the foreground names.
 		const nameTheDull = energyOfAPrime(
 			measurement,
-			configuration({ background: FIELD, foreground: SECOND_DULL }),
+			configuration({ background: FIELD, foreground: DULL }),
 		)
 		const nameTheVivid = energyOfAPrime(
 			measurement,
@@ -121,26 +149,27 @@ describe("(d) the naming gain — a small isolated colour beats a large typical 
 			`naming the vivid colour (${nameTheVivid.total}) should beat naming the dull one (${nameTheDull.total})`,
 		)
 
-		// The hand-derived gain: 81 × (6.016 − 3.148) ≈ 232 bits. Half a bit of tolerance, because
-		// every input to that arithmetic is exact and the only slack is the rounding in this comment.
+		// The hand-derived gain: 81 × (4.17685 − 3.14815) = 83.32 bits. A hundredth of a bit of
+		// tolerance, because every input to that arithmetic is exact and the only slack is the
+		// rounding in this comment.
 		const gain = nameTheDull.total - nameTheVivid.total
-		assert.ok(Math.abs(gain - 232.3) < 0.5, `gain was ${gain} bits, expected ≈ 232.3`)
+		assert.ok(Math.abs(gain - 83.325) < 0.01, `gain was ${gain} bits, expected ≈ 83.325`)
 	})
 
 	it("shows the mechanism: naming the dull colour saves exactly nothing, whatever its mass", async () => {
-		const measurement = await namingFixture()
+		const measurement = await namingFixture("d-naming.png", 38, 16)
 		const pixels = measurement.source.pixelCount
 
 		const nameTheDull = energyOfAPrime(
 			measurement,
-			configuration({ background: FIELD, foreground: SECOND_DULL }),
+			configuration({ background: FIELD, foreground: DULL }),
 		)
 		const nameTheVivid = energyOfAPrime(
 			measurement,
 			configuration({ background: FIELD, foreground: VIVID }),
 		)
 
-		// Naming `c1` moves no mass out of the residual at all: at 3.384 ink bits against 1.730
+		// Naming `c1` moves no mass out of the residual at all: at 3.0197 ink bits against 2.6991
 		// generic bits, its own pixels are cheaper unnamed, so the assignment declines the name. This
 		// is arm A′ §2.3's answer to "does this colour belong to the artwork?" — *it belongs if it
 		// pays for its own name* — with no threshold anywhere.
@@ -152,40 +181,104 @@ describe("(d) the naming gain — a small isolated colour beats a large typical 
 		assert.equal(nameTheVivid.nuisance.inkMassFraction, VIVID_PIXELS / pixels)
 
 		// And the colour that lost has 7.5 times the mass of the one that won.
-		assert.equal(SECOND_DULL_PIXELS / VIVID_PIXELS, 608 / 81)
-		assert.ok(SECOND_DULL_PIXELS > 7 * VIVID_PIXELS)
+		const dullMass = measurement.triples.counts[rowOf(measurement, DULL)]
+		assert.equal(dullMass, 38 * 16)
+		assert.ok(dullMass > 7 * VIVID_PIXELS)
 	})
 
-	it("is the residual model doing the work: the isolated colour is 3.5× dearer per generic pixel", async () => {
-		const measurement = await namingFixture()
+	it("is the residual model doing the work: the isolated colour is 1.478 bits dearer per generic pixel", async () => {
+		const measurement = await namingFixture("d-naming.png", 38, 16)
+		const residual = chromaticResidual(measurement)
+		const support = computeSupportCodes(measurement)
+		const lattice = measurement.joints.lattice
 
-		// Read the generic per-pixel costs straight off the measurement, the way the energy does:
-		// −log₂(m(c)/Σm) over the image's own smoothed colour density.
-		const mass = measurement.smoothedMass.mass
-		let total = 0
-		for (let row = 0; row < measurement.triples.colorCount; row += 1) total += mass[row]
-		const rowOf = (rgb: Rgb8): number => {
-			const key = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2]
-			const index = measurement.triples.keys.indexOf(key)
-			assert.ok(index >= 0)
-			return index
+		const dullRow = rowOf(measurement, DULL)
+		const vividRow = rowOf(measurement, VIVID)
+
+		// The two densities, read straight off the measurement the way the energy does.
+		const dullDensity = residual.cellDensity[lattice.tripleCell[dullRow]]
+		const vividDensity = residual.cellDensity[lattice.tripleCell[vividRow]]
+		assert.ok(Math.abs(dullDensity - 2.7852) < 0.001, `ρ(dull) = ${dullDensity}`)
+		// Nothing is within the truncation radius of the vivid patch, so its density is exactly κ(0).
+		assert.equal(vividDensity, 1)
+		assert.ok(Math.abs(residual.log2Normaliser - 4.17685) < 0.001)
+
+		// The hand-derived per-pixel costs: 2.6991 and 4.1768 bits.
+		assert.ok(Math.abs(residual.bitsPerPixel[dullRow] - 2.6991) < 0.001)
+		assert.ok(Math.abs(residual.bitsPerPixel[vividRow] - 4.1768) < 0.001)
+
+		// The whole difference is the log of the crowd, and **no pixel count enters it**:
+		//   generic(vivid) − generic(dull) = log₂ ρ(dull) − log₂ ρ(vivid) = log₂ 2.7852 = 1.4778.
+		const difference = residual.bitsPerPixel[vividRow] - residual.bitsPerPixel[dullRow]
+		assert.ok(
+			Math.abs(difference - Math.log2(dullDensity / vividDensity)) < 1e-12,
+			`the gap must be exactly log₂(ρ_dull/ρ_vivid); got ${difference}`,
+		)
+		assert.ok(Math.abs(difference - 1.4778) < 0.001)
+
+		// And the criterion each colour is judged by, spelled out: ink cost against generic cost.
+		assert.ok(support.chainBitsPerPixel[dullRow] > residual.bitsPerPixel[dullRow])
+		assert.ok(support.chainBitsPerPixel[vividRow] < residual.bitsPerPixel[vividRow])
+	})
+
+	it("holds at every mass: the dull colour is unnameable at 7.5×, 23.7× and 37.9× the vivid's mass", async () => {
+		// The strengthening `DESIGN.md` fold item 11 asks for. `ρ` counts occupied colour-space cells,
+		// so growing the dull block changes no density — only how many pixels are charged at it. If the
+		// residual ever went back to reading mass, the second and third rows here would move.
+		const sizes: readonly [string, number, number, number][] = [
+			["d-sweep-608.png", 38, 16, 608],
+			["d-sweep-1920.png", 64, 30, 1920],
+			["d-sweep-3072.png", 64, 48, 3072],
+		]
+		const genericCosts: number[] = []
+
+		for (const [name, width, height, expectedMass] of sizes) {
+			const measurement = await namingFixture(name, width, height)
+			const residual = chromaticResidual(measurement)
+			const dullRow = rowOf(measurement, DULL)
+			const vividRow = rowOf(measurement, VIVID)
+			assert.equal(measurement.triples.counts[dullRow], expectedMass)
+			assert.equal(measurement.triples.counts[vividRow], VIVID_PIXELS)
+
+			const nameTheDull = energyOfAPrime(
+				measurement,
+				configuration({ background: FIELD, foreground: DULL }),
+			)
+			const nameTheVivid = energyOfAPrime(
+				measurement,
+				configuration({ background: FIELD, foreground: VIVID }),
+			)
+
+			// Zero, not "small": the dull colour's pixels never leave the residual.
+			assert.equal(
+				nameTheDull.nuisance.inkMassFraction,
+				0,
+				`the dull colour must stay unnamed at ${expectedMass} pixels`,
+			)
+			assert.equal(nameTheVivid.nuisance.inkMassFraction, VIVID_PIXELS / 4096)
+
+			// The isolated 81-pixel patch still buys the same 83.3 bits, against up to 37.9× its mass.
+			const gain = nameTheDull.total - nameTheVivid.total
+			assert.ok(
+				Math.abs(gain - 83.33) < 0.02,
+				`gain at ${expectedMass} dull pixels was ${gain}, expected ≈ 83.33`,
+			)
+
+			genericCosts.push(residual.bitsPerPixel[dullRow], residual.bitsPerPixel[vividRow])
 		}
-		const genericBits = (rgb: Rgb8): number => Math.log2(total / mass[rowOf(rgb)])
 
-		const dullBits = genericBits(SECOND_DULL)
-		const vividBits = genericBits(VIVID)
-
-		// The hand-derived values: 1.730 and 6.016 bits per pixel.
-		assert.ok(Math.abs(dullBits - 1.730) < 0.01, `dull generic cost ${dullBits}`)
-		assert.ok(Math.abs(vividBits - 6.016) < 0.01, `vivid generic cost ${vividBits}`)
-
-		// The dull colour is cheap generically *because* it sits inside the field's kernel: its
-		// smoothed mass is 2.6× its own pixel count, where the vivid colour's is exactly its own.
-		assert.ok(mass[rowOf(SECOND_DULL)] > 2.5 * SECOND_DULL_PIXELS)
-		assert.ok(Math.abs(mass[rowOf(VIVID)] - VIVID_PIXELS) < 1e-6)
-
-		// A rule that ranked by mass would name the dull colour; the ratio of generic costs (3.48)
-		// is what beats the ratio of masses once the ink code's flat 3-bit chain charge is paid.
-		assert.ok(vividBits / dullBits > 3.4)
+		// The densities themselves are mass-blind. The only drift across a 5× change in the dull
+		// region's area is the lattice cell's own mass-weighted representative moving inside its
+		// bar-sized box — under a thousandth of a bit, and it is the only mass this residual can feel.
+		for (let index = 2; index < genericCosts.length; index += 2) {
+			assert.ok(
+				Math.abs(genericCosts[index] - genericCosts[0]) < 1e-3,
+				`dull generic cost drifted: ${genericCosts[index]} vs ${genericCosts[0]}`,
+			)
+			assert.ok(
+				Math.abs(genericCosts[index + 1] - genericCosts[1]) < 1e-3,
+				`vivid generic cost drifted: ${genericCosts[index + 1]} vs ${genericCosts[1]}`,
+			)
+		}
 	})
 })

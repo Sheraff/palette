@@ -35,14 +35,20 @@
  * carries. See `support.ts` for the two support codes and for the approximation they are, with its
  * named upgrade path.
  *
- * **The generic code is the image's own smoothed colour density**, `m(c)` normalised over the table
- * (`DESIGN.md` decision 4: *"arm A: uniform density over sRGB gamut (parameter-free); arm A′: the
- * image's own smoothed colour density. Each arm keeps its own — it is part of the prior under
- * test."*). This is where the naming gain of §2.3 comes from and it is not put in by hand: a large
- * dull mass sits where `m` is high, so it is already cheap generically and naming it saves nothing; a
- * chromatically isolated cluster sits where `m` is near zero, so every one of its pixels is expensive
- * generically and becomes cheap the moment a role names it. `tests/energy-aprime/naming-gain.test.ts`
- * exhibits exactly that, with the arithmetic in the comments.
+ * **The generic code is the image's own chromatic density** — `ρ(c)`, the occupancy of its
+ * neighbourhood in *colour space*, normalised over the table. See `chromatic.ts`, which is the whole
+ * of `DESIGN.md` fold item 11 (*"a residual whose density is chromatic (colour-space) rather than
+ * mass-proportional — a change to the prior, not a bolt-on term"*) and carries the rejected
+ * alternative. `DESIGN.md` decision 4 still holds in its own terms — *"arm A: uniform density over
+ * sRGB gamut (parameter-free); arm A′: the image's own … density. Each arm keeps its own — it is part
+ * of the prior under test"* — with A′'s own density read off colour space instead of off mass, which
+ * is v0.2.0's single change. This is where the naming gain of §2.3 comes from and it is not put in by
+ * hand: a large dull region shares its neighbourhood with many distinct shades, so `ρ` is high, it is
+ * already cheap generically, and naming it saves nothing **however much of the frame it covers**; a
+ * chromatically isolated cluster sits alone, so `ρ ≈ 1`, every one of its pixels is expensive
+ * generically, and it becomes cheap the moment a role names it. `naming-gain.test.ts` exhibits
+ * exactly that, with the arithmetic in the comments; `identity-coverage.test.ts` exhibits the round
+ * verdict it was repaired for.
  *
  * ## The alphabet, and why the codes are normalised over it
  *
@@ -67,10 +73,12 @@
  * the identity bar's width (endorsed median exact-triple share 8.89e-5 vs 1.91e-2 at the bar — a
  * 215× gap the objective must live on the right side of)."* Held here in the only way a code length
  * can hold it: the **densities** are all kernel quantities at the identity bar — the field and ink
- * codes are Gaussian kernels of that bandwidth, and the generic code is the measurement's smoothed
- * mass `m(c)`. The exact integer counts appear only as the *number of pixels being coded*, which is
- * what makes the result a code length at all and is not a modelling quantity. No exact-bin share is
- * ever compared to a threshold, and there is no threshold.
+ * codes are Gaussian kernels of that bandwidth, and the generic code is the same kernel over the
+ * image's colour-space occupancy at that bar. The exact integer counts appear only as the *number of
+ * pixels being coded*, which is what makes the result a code length at all and is not a modelling
+ * quantity. No exact-bin share is ever compared to a threshold, and there is no threshold. Since
+ * v0.2.0 the residual reads no mass at all, smoothed or otherwise; `measurement.smoothedMass` is
+ * carried into `nuisance` as a provenance fact and is no longer an input to any number here.
  *
  * The bandwidth is `[INHERITED]` from `src/measure/kernel.ts` (`DESIGN.md` decision 1); no bandwidth
  * digit is written in this directory. The escape hatch needs no bandwidth of its own —
@@ -96,18 +104,22 @@ import type { Configuration } from "../../emit/types.ts"
 import type { TColorJoint } from "../../measure/joint.ts"
 import { bandwidthOf } from "../../measure/kernel.ts"
 import type { Measurement } from "../../measure/types.ts"
-import { DEFAULT_LAMBDA } from "./constants.ts"
+import { chromaticResidual } from "./chromatic.ts"
+import { DEFAULT_LAMBDA, ENERGY_APRIME_VERSION } from "./constants.ts"
 import { computeSupportCodes } from "./support.ts"
 import type { EnergyResult, EnergyOptions } from "./types.ts"
 
 export { computeSupportCodes, binaryEntropyBits } from "./support.ts"
 export type { SupportCodes } from "./support.ts"
+export { chromaticResidual } from "./chromatic.ts"
+export type { ChromaticResidual } from "./chromatic.ts"
 export type { EnergyResult, EnergyOptions, CodeFamily } from "./types.ts"
 export { CODE_FAMILIES } from "./types.ts"
 export {
 	CHAIN_CODE_DIRECTION_BITS,
 	CODE_FAMILY_TIE_BREAK,
 	DEFAULT_LAMBDA,
+	ENERGY_APRIME_VERSION,
 	FOOTPRINT_AREA_FACTOR,
 	PIXEL_SECOND_MOMENT,
 } from "./constants.ts"
@@ -485,16 +497,12 @@ export function energyOfAPrime(
 	const support = computeSupportCodes(measurement)
 	const cost = serializationCost(config)
 
-	// --- the generic code: the image's own smoothed colour density, normalised over the table -----
-	const smoothed = measurement.smoothedMass.mass
-	let smoothedTotal = 0
-	for (let row = 0; row < colorCount; row += 1) smoothedTotal += smoothed[row]
-	const log2SmoothedTotal = smoothedTotal > 0 ? Math.log2(smoothedTotal) : 0
-	const genericCost = new Float64Array(colorCount)
-	for (let row = 0; row < colorCount; row += 1) {
-		genericCost[row] =
-			smoothed[row] > 0 ? log2SmoothedTotal - Math.log2(smoothed[row]) : Number.POSITIVE_INFINITY
-	}
+	// --- the generic code: the image's own chromatic density, normalised over the table -----------
+	// `chromatic.ts` holds the whole of it, including why the density counts colour-space occupancy
+	// and not mass, and which alternative was rejected. It is a function of the measurement alone, so
+	// it is computed once per image and shared by every configuration scored against that image.
+	const residual = chromaticResidual(measurement)
+	const genericCost = residual.bitsPerPixel
 
 	// --- per-triple bandwidths, computed once ----------------------------------------------------
 	const tripleBandwidth = new Float64Array(colorCount)
@@ -647,6 +655,11 @@ export function energyOfAPrime(
 			genericTriples: assembly.genericTriples,
 			colorCount,
 			pixelCount,
+			/** `Ω` — occupied cells of the image's colour-space footprint, one cell per identity bar. */
+			chromaticCells: residual.occupiedCells,
+			/** `log₂ Σ_c ρ(cell(c))`, so a residual bit count can be read apart from its normaliser. */
+			chromaticLog2Normaliser: residual.log2Normaliser,
+			energyVersion: ENERGY_APRIME_VERSION,
 			smoothedMassMode: measurement.smoothedMass.mode,
 		},
 	}

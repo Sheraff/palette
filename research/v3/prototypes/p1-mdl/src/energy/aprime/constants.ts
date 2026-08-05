@@ -13,6 +13,17 @@
  */
 
 /**
+ * The version of the energy this directory computes.
+ *
+ * `[DERIVED]` — a name, not a number. It existed only as a string literal in `src/search/run-emitter.ts`
+ * (`"p1ap-energy-0.1.0"`), so a stored result recorded a version the energy itself could not state;
+ * that hygiene gap is recorded closed here. **0.2.0** is the chromatic residual (`chromatic.ts`,
+ * `DESIGN.md` fold item 11): every number this module produces changed, so results carrying 0.1.0 and
+ * 0.2.0 are never comparable and the string is what says so.
+ */
+export const ENERGY_APRIME_VERSION = "p1ap-energy-0.2.0"
+
+/**
  * λ — the exchange rate between `L(pixels | P)` and `L(P)`.
  *
  * `[UNCALIBRATED]` — `prototypes/p1-mdl/DESIGN.md` decision 2 verbatim: *"λ v0 = 1.0,
