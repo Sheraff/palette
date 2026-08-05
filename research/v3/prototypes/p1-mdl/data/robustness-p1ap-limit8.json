@@ -1,0 +1,454 @@
+{
+	"what": "Robustness of one candidate palette system under rendition pairs and invisible perturbations.",
+	"writtenAt": "2026-08-05T06:29:01.505Z",
+	"generatedBy": "research/v3/src/robustness/check.ts",
+	"candidate": {
+		"name": "p1ap",
+		"version": "p1ap",
+		"module": "research/v3/prototypes/p1-mdl/candidates/p1ap.ts"
+	},
+	"compare": {
+		"barMode": "regional",
+		"roles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		]
+	},
+	"sets": {
+		"pairSet": {
+			"path": "research/v3/data/robustness/pair-set-1.json",
+			"sha256": "a1a5a83b4274c0277dbda0a60b289a1ad4af5074e42a25dc6f4b0c7f98564bde"
+		},
+		"perturbationSet": {
+			"path": "research/v3/data/robustness/perturbation-set-1.json",
+			"sha256": "31c58f039e9b12e2c01d61635c2885401c147068f17b4f1e7b4819142f252295"
+		},
+		"warehouse": {
+			"path": "research/v3/data/warehouse/warehouse.jsonl",
+			"sha256": "dbe648cc382bd63c88df06e01f30a17cf3e981b9b242cab0cc255d66c07b9dce"
+		}
+	},
+	"reviewedness": {
+		"source": "live-warehouse",
+		"relabelledSinceDraw": 0,
+		"reviewedArtworksInWarehouse": 113
+	},
+	"overall": {
+		"group": "overall",
+		"agreed": 4,
+		"compared": 8,
+		"errored": 0,
+		"rate": 0.5,
+		"interval": [
+			0.2152160622138776,
+			0.7847839377861224
+		]
+	},
+	"byPairType": [
+		{
+			"group": "rendition-pair",
+			"agreed": 4,
+			"compared": 8,
+			"errored": 0,
+			"rate": 0.5,
+			"interval": [
+				0.2152160622138776,
+				0.7847839377861224
+			]
+		},
+		{
+			"group": "jpeg-q92",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "jpeg-q85",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "jpeg-q75",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "dither-lsb1",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		}
+	],
+	"byReviewedness": [
+		{
+			"group": "all|reviewed",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "all|unseen",
+			"agreed": 4,
+			"compared": 8,
+			"errored": 0,
+			"rate": 0.5,
+			"interval": [
+				0.2152160622138776,
+				0.7847839377861224
+			]
+		}
+	],
+	"stabilityRatios": [
+		{
+			"basis": "perturbation",
+			"reviewed": {
+				"group": "perturbation|reviewed",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"unseen": {
+				"group": "perturbation|unseen",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"ratio": null,
+			"underpowered": true,
+			"note": "The reportable one: the perturbation sample is allocated 50/50 reviewed/unseen by construction."
+		},
+		{
+			"basis": "rendition-pair",
+			"reviewed": {
+				"group": "rendition-pair|reviewed",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"unseen": {
+				"group": "rendition-pair|unseen",
+				"agreed": 4,
+				"compared": 8,
+				"errored": 0,
+				"rate": 0.5,
+				"interval": [
+					0.2152160622138776,
+					0.7847839377861224
+				]
+			},
+			"ratio": null,
+			"underpowered": true,
+			"note": "Underpowered by construction: only 23 eligible pairs touch a graded artwork, and none have two."
+		}
+	],
+	"byRole": [
+		{
+			"role": "background",
+			"disagreed": 2,
+			"compared": 8,
+			"rate": 0.25
+		},
+		{
+			"role": "surface",
+			"disagreed": 2,
+			"compared": 8,
+			"rate": 0.25
+		},
+		{
+			"role": "foreground",
+			"disagreed": 4,
+			"compared": 8,
+			"rate": 0.5
+		},
+		{
+			"role": "accent",
+			"disagreed": 4,
+			"compared": 8,
+			"rate": 0.5
+		}
+	],
+	"disagreements": [
+		{
+			"trialId": "pair|0000342093dd7f3bdbbe9705~0002669a5f69ea458aec4b7c",
+			"kind": "rendition-pair",
+			"arm": null,
+			"artworkId": "0000342093dd7f3bdbbe9705~0002669a5f69ea458aec4b7c",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000342093dd7f3bdbbe9705.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/02/ab67616d00001e020002669a5f69ea458aec4b7c.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#ef4f1f",
+						"right": "#f04f21",
+						"distance": 0.002277217016611558,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#5e2971",
+						"right": "#5e2971",
+						"distance": 0,
+						"bar": 0.01502,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#a29f98",
+						"right": "#f3f1e5",
+						"distance": 0.2535378030904281,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#f3f1e5",
+						"right": "#6c2815",
+						"distance": 0.590739848776877,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 36.30853403668574,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 345091.34904199996
+		},
+		{
+			"trialId": "pair|0000342093dd7f3bdbbe9705~0013a1a653f15f748133d771",
+			"kind": "rendition-pair",
+			"arm": null,
+			"artworkId": "0000342093dd7f3bdbbe9705~0013a1a653f15f748133d771",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000342093dd7f3bdbbe9705.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/13/ab67616d00001e020013a1a653f15f748133d771",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#ef4f1f",
+						"right": "#f04f21",
+						"distance": 0.002277217016611558,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#5e2971",
+						"right": "#5e2971",
+						"distance": 0,
+						"bar": 0.01502,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#a29f98",
+						"right": "#f3f1e5",
+						"distance": 0.2535378030904281,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#f3f1e5",
+						"right": "#6b2815",
+						"distance": 0.5922667118600243,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 36.402379339890864,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 290681.69200000004
+		},
+		{
+			"trialId": "pair|0000dfde1fd50d2f872bfaf0~0006219a3a616e3ebb7bb04e",
+			"kind": "rendition-pair",
+			"arm": null,
+			"artworkId": "0000dfde1fd50d2f872bfaf0~0006219a3a616e3ebb7bb04e",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000dfde1fd50d2f872bfaf0.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/06/ab67616d00001e020006219a3a616e3ebb7bb04e",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#040507",
+						"right": "#f04f21",
+						"distance": 0.5717124844706314,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "surface",
+						"left": "#f04f21",
+						"right": "#5e2971",
+						"distance": 0.33973439020870133,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#9d9a93",
+						"right": "#f3f1e5",
+						"distance": 0.2698152882641765,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#f5efe3",
+						"right": "#6c2815",
+						"distance": 0.5872156845161909,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 36.09192898071241,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": false
+			},
+			"error": null,
+			"millis": 232548.098542
+		},
+		{
+			"trialId": "pair|0000dfde1fd50d2f872bfaf0~0010e27dc06d955af141c9d4",
+			"kind": "rendition-pair",
+			"arm": null,
+			"artworkId": "0000dfde1fd50d2f872bfaf0~0010e27dc06d955af141c9d4",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000dfde1fd50d2f872bfaf0.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/10/ab67616d00001e020010e27dc06d955af141c9d4",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#040507",
+						"right": "#f04f21",
+						"distance": 0.5717124844706314,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "surface",
+						"left": "#f04f21",
+						"right": "#602871",
+						"distance": 0.33740714783184905,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#9d9a93",
+						"right": "#f3f1e5",
+						"distance": 0.2698152882641765,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#f5efe3",
+						"right": "#6c2815",
+						"distance": 0.5872156845161909,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 36.09192898071241,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": false
+			},
+			"error": null,
+			"millis": 176976.783292
+		}
+	],
+	"errors": [],
+	"timing": {
+		"trials": 8,
+		"wallMillis": 560609.2927079999,
+		"candidateMillis": 1474824.5506689998
+	}
+}

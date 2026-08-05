@@ -1,0 +1,197 @@
+{
+	"what": "Robustness of one candidate palette system under rendition pairs and invisible perturbations.",
+	"writtenAt": "2026-08-05T06:19:40.714Z",
+	"generatedBy": "research/v3/src/robustness/check.ts",
+	"candidate": {
+		"name": "p1a",
+		"version": "p1a",
+		"module": "research/v3/prototypes/p1-mdl/candidates/p1a.ts"
+	},
+	"compare": {
+		"barMode": "regional",
+		"roles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		]
+	},
+	"sets": {
+		"pairSet": {
+			"path": "research/v3/data/robustness/pair-set-1.json",
+			"sha256": "a1a5a83b4274c0277dbda0a60b289a1ad4af5074e42a25dc6f4b0c7f98564bde"
+		},
+		"perturbationSet": {
+			"path": "research/v3/data/robustness/perturbation-set-1.json",
+			"sha256": "31c58f039e9b12e2c01d61635c2885401c147068f17b4f1e7b4819142f252295"
+		},
+		"warehouse": {
+			"path": "research/v3/data/warehouse/warehouse.jsonl",
+			"sha256": "dbe648cc382bd63c88df06e01f30a17cf3e981b9b242cab0cc255d66c07b9dce"
+		}
+	},
+	"reviewedness": {
+		"source": "live-warehouse",
+		"relabelledSinceDraw": 0,
+		"reviewedArtworksInWarehouse": 113
+	},
+	"overall": {
+		"group": "overall",
+		"agreed": 8,
+		"compared": 8,
+		"errored": 0,
+		"rate": 1,
+		"interval": [
+			0.6755924351161198,
+			1
+		]
+	},
+	"byPairType": [
+		{
+			"group": "rendition-pair",
+			"agreed": 8,
+			"compared": 8,
+			"errored": 0,
+			"rate": 1,
+			"interval": [
+				0.6755924351161198,
+				1
+			]
+		},
+		{
+			"group": "jpeg-q92",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "jpeg-q85",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "jpeg-q75",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "dither-lsb1",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		}
+	],
+	"byReviewedness": [
+		{
+			"group": "all|reviewed",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "all|unseen",
+			"agreed": 8,
+			"compared": 8,
+			"errored": 0,
+			"rate": 1,
+			"interval": [
+				0.6755924351161198,
+				1
+			]
+		}
+	],
+	"stabilityRatios": [
+		{
+			"basis": "perturbation",
+			"reviewed": {
+				"group": "perturbation|reviewed",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"unseen": {
+				"group": "perturbation|unseen",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"ratio": null,
+			"underpowered": true,
+			"note": "The reportable one: the perturbation sample is allocated 50/50 reviewed/unseen by construction."
+		},
+		{
+			"basis": "rendition-pair",
+			"reviewed": {
+				"group": "rendition-pair|reviewed",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"unseen": {
+				"group": "rendition-pair|unseen",
+				"agreed": 8,
+				"compared": 8,
+				"errored": 0,
+				"rate": 1,
+				"interval": [
+					0.6755924351161198,
+					1
+				]
+			},
+			"ratio": null,
+			"underpowered": true,
+			"note": "Underpowered by construction: only 23 eligible pairs touch a graded artwork, and none have two."
+		}
+	],
+	"byRole": [
+		{
+			"role": "background",
+			"disagreed": 0,
+			"compared": 8,
+			"rate": 0
+		},
+		{
+			"role": "surface",
+			"disagreed": 0,
+			"compared": 8,
+			"rate": 0
+		},
+		{
+			"role": "foreground",
+			"disagreed": 0,
+			"compared": 8,
+			"rate": 0
+		},
+		{
+			"role": "accent",
+			"disagreed": 0,
+			"compared": 8,
+			"rate": 0
+		}
+	],
+	"disagreements": [],
+	"errors": [],
+	"timing": {
+		"trials": 8,
+		"wallMillis": 515308.72975,
+		"candidateMillis": 1360821.49704
+	}
+}

@@ -136,6 +136,23 @@ P5-round-2 addendum (relayed 2026-08-04, M2 emitter in flight):
     diagnostic: a low value is not automatically a defect — the diagnostic reports, the
     reviewer judges.
 
+Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install):
+
+11. **Identity-coverage is a grading axis, and it is CHROMATIC-DISTINCTNESS coverage, not mass
+    coverage.** A distinct chromatic colour present in the artwork but absent from the palette
+    draws complaints even when everything published is fine. Refines the M1 genericBits
+    finding: the reviewer prices distinct-chromatic coverage UP while bulk-mass coverage is
+    not the currency. The naming-gain bet (A′ §2.3: isolated vivid cluster = largest per-pixel
+    gain) is the right SHAPE, but the A′ residual weights by total mass — bulk dominates. If
+    the round corroborates, the candidate mechanism-internal response is a residual whose
+    density is chromatic (colour-space) rather than mass-proportional — a change to the prior,
+    not a bolt-on term. Not implemented; awaiting round evidence.
+12. **Gradient error costs live in BOTH directions** (a false gradient called at rank-corr
+    0.769; a missing gradient asked for; adjacent stops 3.1% apart read as "very significant
+    banding"). λ cannot be cranked to kill false gradients without buying missed ones; the
+    banding datum adds a reading rule for A′'s emitted ramps (its 3 demo-20 gradients' stop
+    spacings should be checked when its round items are read).
+
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
 - `src/measure/` — decode (sharp 0.33.5, dims from header, refuse transparency loudly),
