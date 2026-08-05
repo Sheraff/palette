@@ -1,99 +1,42 @@
 /**
- * `p2-tos-chroma` — the tree-of-shapes prototype with all three lanes, as a dev-loop candidate.
+ * `p2-tos-chroma` — **an alias for `candidate.ts`**, kept so existing references stay valid.
  *
- * The mechanism is `pipeline.ts` and `tree.ts`, unchanged and imported; `lanes/` adds the a and b
- * trees and merges their retained nodes into the pool the mark roles are ranked over. This file is
- * the contract adapter, and it is deliberately the same adapter as `candidate.ts` — the two
- * candidates differ in the *pool*, not in how a palette is assembled from it, so a reviewer
- * comparing them is comparing what cycle 2 changed.
+ * ## Why this file still exists, and why it holds no mechanism
  *
- * **Why this is a second candidate rather than an edit to `candidate.ts`.** `p2-tos` is the thing
- * round 1 was judged against; keeping it runnable byte for byte is what makes the pool-size, timing
- * and accent deltas below measurable rather than asserted. Folding the lanes into `candidate.ts` is
- * a later, sequenced merge with the role-logic work happening beside this one.
+ * Cycle 2 ran two candidates side by side on purpose: `p2-tos` was the thing round 1 was judged
+ * against, and keeping it runnable byte for byte was what made the chromatic lanes' pool-size, timing
+ * and accent deltas measurable rather than asserted. The lanes then reached one role — the accent — and
+ * `DECISIONS.md` D2 recorded the isoluminant *foreground* as a gap deferred to this integration pass.
  *
- * The **assembly closure** is shared with `candidate.ts` verbatim and is called out because it is
- * duplication, not design; it collapses at the merge. The walk itself is not duplicated — the twin
- * matrix, the repair and the role-swap check all live in `roles/assemble.ts` and are imported, so
- * both candidates assemble their palettes through exactly one implementation.
+ * That pass merged the lanes into `candidate.ts`. There is now **one pool, one parse and one
+ * implementation**; two candidate modules would be two names for one palette. So this module re-exports
+ * `candidate.ts`'s `paletteOf` unchanged — the same function object, publishing the same
+ * `algorithmVersion` — and overrides only `candidateId`. A palette from `p2-tos-chroma` is byte-for-byte
+ * a palette from `p2-tos`, which is the honest statement of what the merge did.
+ *
+ * It is kept rather than deleted because run files, report paths and review-round `items.json` entries
+ * from cycle 2 name `prototypes/p2-tree/tos/candidate-chroma.ts` as a candidate path, and a dangling
+ * path in a released artefact is a worse defect than a two-line alias.
+ *
+ * ## The dev-loop cache cannot conflate the two
+ *
+ * `src/devloop/run.ts` keys every row on `computeCodeVersion(candidatePath)` — a digest over the entry
+ * module's bytes *and* its transitive import graph — composed with the image's content hash, and it
+ * stamps `candidateId` into the run id and the run header. This file's bytes differ from
+ * `candidate.ts`'s, so the two ids carry different code versions and land in different cache entries and
+ * different run files. They now *agree* on every palette, which is the point; nothing merges them.
  */
 
-import { colorFromRgb } from "../../../src/contract/color.ts"
-import { CONTRACT_VERSION } from "../../../src/contract/constants.ts"
-import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
-import type { GradientStop, Palette, Rgb8 } from "../../../src/contract/types.ts"
-import { hashFileBytes } from "../../../src/devloop/code-version.ts"
+import { candidateId as mergedCandidateId, paletteOf as mergedPaletteOf } from "./candidate.ts"
 import type { CandidatePalette } from "../../../src/devloop/types.ts"
-import { MAX_ASSEMBLY_ATTEMPTS, PREPROCESSING_VERSION } from "./constants.ts"
-import { CHROMA_ALGORITHM_VERSION } from "./lanes/constants.ts"
-import { runChromaPipeline } from "./lanes/pool.ts"
-import { resolveRoles, roleSwapImproves } from "./roles/assemble.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p2-tos-chroma"
 
-export const paletteOf: CandidatePalette = async (imagePath) => {
-	const { image, parse } = await runChromaPipeline(imagePath)
-	const inputContentHash = await hashFileBytes(imagePath)
+/** `candidate.ts`'s function, unwrapped. Not a copy and not a re-implementation. */
+export const paletteOf: CandidatePalette = mergedPaletteOf
 
-	const background = colorFromRgb(parse.roles.background)
-	const surface = colorFromRgb(parse.roles.surface)
+/** What this alias points at, so a test can assert the aliasing rather than trust this comment. */
+export const aliasOf = mergedCandidateId
 
-	// The endpoint ruling, honoured by construction: stops[0] IS background, stops[last] IS surface,
-	// exact. A collapsed surface leaves no ramp to draw, so it publishes `gradient: null`.
-	const collapsedField = surface.hex === background.hex
-	const stops: GradientStop[] = [
-		{ color: background, position: 0 },
-		{ color: surface, position: 1 },
-	]
-
-	const assemble = (foregroundRgb: Rgb8, accentRgb: Rgb8): Palette => {
-		const foreground = colorFromRgb(foregroundRgb)
-		const accent = colorFromRgb(accentRgb)
-		return {
-			contractVersion: CONTRACT_VERSION,
-			roles: { background, surface, foreground, accent },
-			gradient: parse.gradient && !collapsedField ? { stops: stops as unknown as [GradientStop, GradientStop] } : null,
-			collapse: {
-				// Measured against the colours actually published, never asserted from the parse's intent.
-				surfaceCollapsed: collapsedField,
-				accentCollapsed: accent.hex === foreground.hex,
-			},
-			contrast: resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS),
-			metadata: {
-				algorithmVersion: CHROMA_ALGORITHM_VERSION,
-				preprocessingVersion: PREPROCESSING_VERSION,
-				inputContentHash,
-				sourceRendition: { path: imagePath, width: image.width, height: image.height, format: image.format },
-				// Equal to the rendition's size, because §1 forbids resampling and this pipeline does none.
-				processedSize: { width: image.width, height: image.height },
-			},
-		} satisfies Palette
-	}
-
-	// The repair walk, the twin matrix and the role-swap check are `roles/assemble.ts`'s — the same
-	// call `candidate.ts` makes, over the pools the shared pool produced. Two candidates, one assembly.
-	const foregrounds = parse.foregroundPool.length > 0 ? parse.foregroundPool : [parse.roles.foreground]
-	const accents = parse.accentPool.length > 0 ? parse.accentPool : [parse.roles.accent]
-	const resolved = resolveRoles({
-		background: parse.roles.background,
-		surface: parse.roles.surface,
-		foregroundPool: foregrounds,
-		accentPool: accents,
-		assemble,
-		maxAttempts: MAX_ASSEMBLY_ATTEMPTS,
-	})
-
-	if (
-		roleSwapImproves({
-			foreground: resolved.foreground,
-			accent: resolved.accent,
-			foregroundPool: foregrounds,
-			accentPool: accents,
-		})
-	) {
-		const swapped = assemble(resolved.accent, resolved.foreground)
-		if (validatePalette(swapped).violations.length === 0) return swapped
-	}
-	return resolved.palette
-}
+export { paletteWithDiagnostics, MERGED_ALGORITHM_VERSION } from "./candidate.ts"

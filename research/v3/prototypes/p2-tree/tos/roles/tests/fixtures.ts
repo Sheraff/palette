@@ -23,6 +23,8 @@
  */
 
 import sharp from "sharp"
+import { rgbToOkLab } from "../../../../../src/contract/color.ts"
+import type { Rgb8 } from "../../../../../src/contract/types.ts"
 
 export type Bar = Readonly<{ x: number; y: number; width: number; height: number }>
 
@@ -97,3 +99,79 @@ export const INCOHERENT_MARKS: readonly Bar[] = [
 	{ x: 14, y: 86, width: 18, height: 8 },
 	{ x: 60, y: 96, width: 9, height: 20 },
 ]
+
+/**
+ * **An ink and a field that differ in chroma and (almost) not at all in lightness.**
+ *
+ * Found by scanning two hue ramps for the pair whose OKLab lightnesses are closest while their
+ * chromatic separation stays large, so the fixture is a *fact about sRGB* rather than a hand-tuned
+ * constant; the test asserts both properties rather than trusting this comment. The pair is what makes
+ * `writeChromaticBars` a test of the chromatic lanes: a tree over L cannot contain a node separating two
+ * regions of equal lightness, because they are the same level set.
+ */
+export function isoluminantInkAndField(): Readonly<{ ink: Rgb8; field: Rgb8 }> {
+	let best: { ink: Rgb8; field: Rgb8; gap: number; separation: number } | null = null
+	for (let red = 120; red <= 255; red += 1) {
+		const ink: Rgb8 = [red, 60, 110]
+		const inkLab = rgbToOkLab(ink)
+		for (let green = 60; green <= 220; green += 1) {
+			const field: Rgb8 = [60, green, 110]
+			const fieldLab = rgbToOkLab(field)
+			const separation = Math.hypot(inkLab[1] - fieldLab[1], inkLab[2] - fieldLab[2])
+			if (separation < 0.1) continue
+			const gap = Math.abs(inkLab[0] - fieldLab[0])
+			if (best === null || gap < best.gap) best = { ink, field, gap, separation }
+		}
+	}
+	if (best === null) throw new Error("no isoluminant ink/field pair found; the fixture's premise is wrong")
+	return { ink: best.ink, field: best.field }
+}
+
+/**
+ * **The D2 fixture: a line of type that only exists in the chroma channels.**
+ *
+ * The same six strokes, one width, one height, one baseline, one colour as `GLYPH_ROW` — drawn with
+ * `isoluminantInkAndField`'s pair, so the glyphs move against their field in `a` and barely at all in
+ * `L`. Supersampled and box-filtered for the same reason `writeBars` is: a hard-edged image gives the
+ * MSER stability rule nothing to retain but the root.
+ *
+ * The field's gentle ramp is on the **blue channel alone**. It has to be somewhere — a perfectly flat
+ * field has no level structure for stability to be measured against — and blue is the channel OKLab's
+ * lightness weights least, so the ramp gives the trees something to hold without quietly turning this
+ * back into a fixture the L lane can read.
+ */
+export async function writeChromaticBars(
+	path: string,
+	size: number,
+	bars: readonly Bar[],
+	ink: readonly [number, number, number],
+	field: readonly [number, number, number],
+): Promise<string> {
+	const large = size * SUPERSAMPLE
+	const pixels = Buffer.alloc(large * large * 3)
+	for (let y = 0; y < large; y += 1) {
+		const fade = Math.round((10 * y) / (large - 1))
+		for (let x = 0; x < large; x += 1) {
+			const offset = (y * large + x) * 3
+			pixels[offset] = field[0]
+			pixels[offset + 1] = field[1]
+			pixels[offset + 2] = field[2] + fade
+		}
+	}
+	for (const bar of bars) {
+		for (let y = bar.y * SUPERSAMPLE; y < (bar.y + bar.height) * SUPERSAMPLE; y += 1) {
+			for (let x = bar.x * SUPERSAMPLE; x < (bar.x + bar.width) * SUPERSAMPLE; x += 1) {
+				if (x < 0 || y < 0 || x >= large || y >= large) continue
+				const offset = (y * large + x) * 3
+				pixels[offset] = ink[0]
+				pixels[offset + 1] = ink[1]
+				pixels[offset + 2] = ink[2]
+			}
+		}
+	}
+	await sharp(pixels, { raw: { width: large, height: large, channels: 3 } })
+		.resize(size, size, { kernel: "cubic" })
+		.png({ compressionLevel: 0 })
+		.toFile(path)
+	return path
+}

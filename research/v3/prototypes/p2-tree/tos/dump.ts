@@ -10,6 +10,11 @@
  * quantities the parse actually decided on, so a disagreement between the dump and a palette is
  * visible without re-running anything.
  *
+ * **Since the cycle-2 integration pass this is the merged pool: all three lanes.** The L lane keeps ids
+ * `0…n-1` exactly as round 1 published them; the a and b lanes are appended in one id space, each root
+ * re-parented onto the L root (the same image rectangle at the same area fraction), so the file is still
+ * one tree per line and the reachability question is asked of every node the candidate can reach.
+ *
  * The reachability falsifier reads `repr` across all nodes of all images: if more than 25% of the
  * endorsed legacy role colours are unreachable from this set within the same-colour bar, while
  * remaining reachable from the control set of all sufficiently common exact triples, the paradigm is
@@ -20,7 +25,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, isAbsolute, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { rgbToHex } from "../../../src/contract/color.ts"
-import { runPipeline } from "./pipeline.ts"
+import { runChromaPipeline } from "./lanes/pool.ts"
 
 /** The per-image record written to the dump. */
 export type NodeDump = Readonly<{
@@ -38,6 +43,27 @@ export type NodeDump = Readonly<{
 	groundChain: readonly number[]
 	roles: Readonly<{ background: string; surface: string; foreground: string; accent: string }>
 	nodes: readonly DumpNode[]
+	/**
+	 * Every clustered accent candidate, in the published order, with all four measurements.
+	 *
+	 * `DECISIONS.md` D1 ruled the accent order back to chroma-first and kept the APCA measurement W-F's
+	 * rewrite ranked on as a **reported** quantity, so the coming round can price the readability-vs-
+	 * identity exchange rate on the numbers the pipeline actually saw.
+	 */
+	accentCandidates: readonly DumpAccentCandidate[]
+}>
+
+export type DumpAccentCandidate = Readonly<{
+	repr: string
+	/** 0 is the L lane; then the chromatic lanes in `lanes/constants.ts`'s `LANES` order. */
+	lane: number
+	nodeId: number
+	chromaFromField: number
+	lightnessMove: number
+	fieldContrast: number
+	/** D3's eligibility level: 0 may lead an identity role, 1 is an incidental node. */
+	stabilityLevel: number
+	growth: number
 }>
 
 export type DumpNode = Readonly<{
@@ -59,7 +85,7 @@ export type DumpNode = Readonly<{
 
 /** The retained nodes of one image, ready to serialise. Deterministic: ids ascend, nothing is hashed. */
 export async function nodesOf(imagePath: string): Promise<NodeDump> {
-	const { parse } = await runPipeline(imagePath)
+	const { parse } = await runChromaPipeline(imagePath)
 	const onChain = new Set(parse.groundChain)
 	return {
 		imagePath,
@@ -93,6 +119,16 @@ export async function nodesOf(imagePath: string): Promise<NodeDump> {
 				kind: node.kind,
 				onGroundChain: onChain.has(node.id),
 			})),
+		accentCandidates: parse.accentCandidates.map((candidate) => ({
+			repr: rgbToHex(candidate.repr),
+			lane: candidate.laneIndex,
+			nodeId: candidate.nodeId,
+			chromaFromField: candidate.chromaFromField,
+			lightnessMove: candidate.lightnessMove,
+			fieldContrast: candidate.fieldContrast,
+			stabilityLevel: candidate.stabilityLevel,
+			growth: Number.isFinite(candidate.growth) ? candidate.growth : -1,
+		})),
 	}
 }
 

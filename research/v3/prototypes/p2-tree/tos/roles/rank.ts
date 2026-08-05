@@ -100,11 +100,17 @@ function packed(color: Rgb8): number {
 }
 
 /**
- * Order candidates by `minFieldContrast`, largest first.
+ * Order candidates by `minFieldContrast`, largest first, inside D3's eligibility level.
  *
  * Decorate–sort–undecorate, because the score is not cheap: a ramp minimum costs
  * `RAMP_SAMPLES_PER_SEGMENT + RAMP_REFINEMENT_SAMPLES` APCA evaluations and a comparator would pay for
  * it `O(n log n)` times instead of `n`.
+ *
+ * `levelOf` is D3's *salience gates identity* rule, handed in as a **lexicographic level ahead of the
+ * score** rather than as a term inside it: a smaller level always wins, and inside one level nothing
+ * about stability is consulted. That is what keeps it a gate on incidental nodes instead of a second
+ * ranking competing with readability. The default is a constant 0, which is the ordering this function
+ * had before D3 and is what every caller without a node population still gets.
  *
  * Ties break on lexicographic RGB. There is no bar on this quantity — the contract measures APCA in
  * raw units and has never published a just-noticeable difference for them — so the comparison is
@@ -115,8 +121,14 @@ export function rankByFieldContrast(
 	colors: readonly Rgb8[],
 	field: RenderedField,
 	scoreOf: (color: Rgb8, field: RenderedField) => number = minFieldContrast,
+	levelOf: (color: Rgb8) => number = () => 0,
 ): Rgb8[] {
-	const scored = colors.map((color) => ({ color, score: scoreOf(color, field), key: packed(color) }))
-	scored.sort((first, second) => second.score - first.score || first.key - second.key)
+	const scored = colors.map((color) => ({
+		color,
+		level: levelOf(color),
+		score: scoreOf(color, field),
+		key: packed(color),
+	}))
+	scored.sort((first, second) => first.level - second.level || second.score - first.score || first.key - second.key)
 	return scored.map((entry) => entry.color)
 }

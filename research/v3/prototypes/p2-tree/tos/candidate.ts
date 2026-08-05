@@ -13,6 +13,15 @@
  * including the metadata that makes a verdict about the output permanently scopable.
  *
  * The mechanism itself is in `pipeline.ts` and `tree.ts`; this file is the contract adapter.
+ *
+ * ## Cycle 2's integration pass: one candidate carries everything
+ *
+ * `lanes/` shipped its chromatic trees as a *second* candidate (`candidate-chroma.ts`) while the role
+ * stage was being rewritten beside it, so that the pool-size, timing and accent deltas were measurable
+ * against a byte-for-byte `p2-tos`. That sequencing is spent. `DECISIONS.md` D1–D3 are applied here and
+ * in `pipeline.ts`, over **one** pool: three lanes, per-lane chain collapse, the text detector reading
+ * every lane, chroma-first accent ranking, and D3's salience level ahead of both identity orders.
+ * `candidate-chroma.ts` is now this module under its other id, so the two runs are the same palette.
  */
 
 import { CONTRACT_VERSION } from "../../../src/contract/constants.ts"
@@ -21,12 +30,23 @@ import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette
 import type { GradientStop, Palette, Rgb8 } from "../../../src/contract/types.ts"
 import { hashFileBytes } from "../../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../../src/devloop/types.ts"
-import { ALGORITHM_VERSION, MAX_ASSEMBLY_ATTEMPTS, PREPROCESSING_VERSION } from "./constants.ts"
+import { MAX_ASSEMBLY_ATTEMPTS, PREPROCESSING_VERSION } from "./constants.ts"
+import { runChromaPipeline } from "./lanes/pool.ts"
 import { resolveRoles, roleSwapImproves } from "./roles/assemble.ts"
-import { runPipeline } from "./pipeline.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p2-tos"
+
+/**
+ * What the merged candidate calls itself in `PaletteMetadata.algorithmVersion`.
+ *
+ * **`[UNCALIBRATED]` — a label, and nothing reads it as a number.** `0.3.0-cycle-2-merged` says: the
+ * tree-of-shapes family, third prototype revision, the cycle-2 integration pass. It lives in this file
+ * rather than in `constants.ts` because it describes what *this adapter* publishes, and because
+ * `constants.ts`'s `ALGORITHM_VERSION` is the string round 1 was judged under and is left alone so the
+ * round-1 artefacts keep meaning what they said.
+ */
+export const MERGED_ALGORITHM_VERSION = "p2-tos-0.3.0-cycle-2-merged"
 
 /**
  * What the assembly decided, beside the palette it decided it for.
@@ -38,7 +58,7 @@ export const candidateId = "p2-tos"
  */
 export type CandidateDiagnostics = Readonly<{
 	palette: Palette
-	parse: Awaited<ReturnType<typeof runPipeline>>["parse"]
+	parse: Awaited<ReturnType<typeof runChromaPipeline>>["parse"]
 	/** Notes from the twin-matrix walk (`roles/assemble.ts`). */
 	notes: readonly string[]
 	/** Whether the role-swap check both fired and produced a palette the contract accepted. */
@@ -47,7 +67,7 @@ export type CandidateDiagnostics = Readonly<{
 }>
 
 export async function paletteWithDiagnostics(imagePath: string): Promise<CandidateDiagnostics> {
-	const { image, parse } = await runPipeline(imagePath)
+	const { image, parse } = await runChromaPipeline(imagePath)
 	const inputContentHash = await hashFileBytes(imagePath)
 
 	const background = colorFromRgb(parse.roles.background)
@@ -77,7 +97,7 @@ export async function paletteWithDiagnostics(imagePath: string): Promise<Candida
 			},
 			contrast: resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS),
 			metadata: {
-				algorithmVersion: ALGORITHM_VERSION,
+				algorithmVersion: MERGED_ALGORITHM_VERSION,
 				preprocessingVersion: PREPROCESSING_VERSION,
 				inputContentHash,
 				sourceRendition: { path: imagePath, width: image.width, height: image.height, format: image.format },

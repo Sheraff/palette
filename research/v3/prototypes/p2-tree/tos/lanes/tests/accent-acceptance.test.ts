@@ -22,6 +22,18 @@
  * (3) and (4) are what make this a recall test rather than a taste test: no threshold admitted the
  * red, no score preferred it. It was already the most chromatic thing in the picture; the ordering it
  * was ranked in is what changed.
+ *
+ * ## After the cycle-2 integration pass
+ *
+ * The candidate under test is now `../../candidate.ts` — `DECISIONS.md` D1 ruled the accent order back
+ * to chroma-first over the merged pool, and D2 folded the lanes into it, so the thing this file has to
+ * hold is the *merged* candidate and not a second module. Two consequences:
+ *
+ *  - the L-only comparison in (4) is now made by calling `parseTree` with no extra lanes, which is what
+ *    `p2-tos` was when round 1 judged it, rather than by importing a second candidate;
+ *  - a fifth assertion: `candidate-chroma.ts` returns this palette **byte for byte**, because after the
+ *    merge it is this module under another id, and an alias that had drifted would be two algorithms
+ *    wearing one result.
  */
 
 import assert from "node:assert/strict"
@@ -32,15 +44,15 @@ import { test } from "node:test"
 import { colorFromRgb, rgbToHex, rgbToOkLab } from "../../../../../src/contract/color.ts"
 import { validatePalette } from "../../../../../src/contract/invariants.ts"
 import type { Rgb8 } from "../../../../../src/contract/types.ts"
-import { paletteOf as chromaPaletteOf } from "../../candidate-chroma.ts"
-import { paletteOf as lOnlyPaletteOf } from "../../candidate.ts"
+import { paletteOf as mergedPaletteOf } from "../../candidate.ts"
+import { candidateId as aliasId, paletteOf as aliasPaletteOf } from "../../candidate-chroma.ts"
 import { MARK_NODE_LIMIT } from "../../constants.ts"
 import { TEXT_COMPONENT_LIMIT } from "../../roles/constants.ts"
 import { decodeImage, parseTree, unpack } from "../../pipeline.ts"
 import { quantiseLanes } from "../channels.ts"
 import { LANES } from "../constants.ts"
 import { buildLane } from "../nodes.ts"
-import { adoptThinness, mergePools, runChromaPipeline } from "../pool.ts"
+import { runChromaPipeline } from "../pool.ts"
 
 const V3_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "..", "..")
 const REPO_ROOT = resolve(V3_ROOT, "..", "..")
@@ -58,7 +70,7 @@ async function requireImage(): Promise<string> {
 test("the vivid red-orange is a node, wins the accent ranking, and publishes", async () => {
 	const path = await requireImage()
 	const result = await runChromaPipeline(path)
-	const palette = await chromaPaletteOf(path)
+	const palette = await mergedPaletteOf(path)
 
 	// ---- 1. it publishes, it is exact, and the palette is legal -----------------------------------
 	assert.equal(palette.collapse.accentCollapsed, false, "the accent must not collapse onto the foreground")
@@ -111,42 +123,58 @@ test("the vivid red-orange is a node, wins the accent ranking, and publishes", a
 		"the published accent must be the most chromatic candidate in the pool",
 	)
 
-	const lOnlyBest = Math.max(...result.base.accentPool.map(chromaFromField))
+	// The comparison that makes this a recall test: the L-only parse, run here rather than kept as a
+	// second candidate, since the merge folded `p2-tos-chroma` into `p2-tos`.
+	const lOnly = parseTree(image, buildLane(image, quantiseLanes(image)[0]).tree)
+	const lOnlyBest = Math.max(...lOnly.accentPool.map(chromaFromField))
 	assert.ok(
 		accentChroma > lOnlyBest,
 		`the accent's chromatic distance from the field is ${accentChroma}, no better than the ${lOnlyBest} the ` +
 			"L-only pool already offered — the recall gap is not closed",
 	)
-
-	const lOnlyPalette = await lOnlyPaletteOf(path)
-	assert.ok(
-		accentChroma > chromaFromField(lOnlyPalette.roles.accent.rgb),
-		`p2-tos published ${lOnlyPalette.roles.accent.hex} at ${chromaFromField(lOnlyPalette.roles.accent.rgb)}; ` +
-			`p2-tos-chroma published ${accentHex} at ${accentChroma}`,
-	)
 	assert.ok(accentChroma > chromaFromField(palette.roles.foreground.rgb), "the accent must out-chroma the foreground")
+
+	// The alias publishes the merged candidate's palette, byte for byte — that is what the merge means.
+	assert.equal(aliasId, "p2-tos-chroma")
+	assert.deepEqual(await aliasPaletteOf(path), palette, "candidate-chroma.ts must be candidate.ts under another id")
 })
 
-test("on the acceptance cover too, the pools grow only where they are meant to", async () => {
-	// The parity fixtures are simple by construction; this runs the same pin on a busy real cover,
-	// where the mark population is in the hundreds and the clustering actually does something.
+test("on the acceptance cover too, the merged pool only adds to what L alone offered", async () => {
+	// The parity fixtures are simple by construction; this runs the same pin on a busy real cover, where
+	// the mark population is in the hundreds and the clustering actually does something.
 	const path = await requireImage()
 	const image = await decodeImage(path)
-	const [lChannel] = quantiseLanes(image)
-	const built = buildLane(image, lChannel)
-	const base = parseTree(image, built.tree)
-	adoptThinness(base, built)
-	const restricted = mergePools(image, [built], base)
-	assert.deepEqual(
-		restricted.parse.foregroundPool.map(rgbToHex),
-		base.foregroundPool.map(rgbToHex),
-		"the foreground pool is the sibling's ranking and must pass through untouched",
-	)
-	let cursor = -1
-	const merged = restricted.parse.accentPool.map(rgbToHex)
-	for (const color of base.accentPool.map(rgbToHex)) {
-		const position = merged.indexOf(color)
-		assert.ok(position > cursor, `${color} is missing from, or reordered in, the accent pool`)
-		cursor = position
+	const lOnly = parseTree(image, buildLane(image, quantiseLanes(image)[0]).tree)
+	const merged = (await runChromaPipeline(path)).parse
+
+	// The field is the L lane's before and after — the one invariant the lanes may not touch.
+	assert.equal(merged.verdict, lOnly.verdict)
+	assert.deepEqual(merged.groundChain, lOnly.groundChain)
+	assert.equal(rgbToHex(merged.roles.background), rgbToHex(lOnly.roles.background))
+	assert.equal(rgbToHex(merged.roles.surface), rgbToHex(lOnly.roles.surface))
+
+	// **What the shared cost guard costs, measured rather than hoped away.** `TEXT_COMPONENT_LIMIT` is
+	// one cut over three lanes' components, ordered by area, so on a cover this busy a chromatic
+	// component can take an L component's place and its cluster then reaches neither pool. On
+	// `…35b967964d` that is five pale candidates. The property that has to hold is not "nothing is
+	// dropped" — that would be a claim about a cost guard — but **nothing dropped could have won**: the
+	// published accent out-chromas every one of them, so the ordering, not the cut, decided the accent.
+	// `integration-NOTES.md` records the guard as the next cost measurement.
+	const mergedAccent = new Set(merged.accentPool.map(rgbToHex))
+	const dropped = lOnly.accentPool.filter((color) => !mergedAccent.has(rgbToHex(color)))
+	const backgroundLab = rgbToOkLab(merged.roles.background)
+	const chroma = (color: Rgb8): number => {
+		const lab = rgbToOkLab(color)
+		return Math.hypot(lab[1] - backgroundLab[1], lab[2] - backgroundLab[2])
 	}
+	const published = chroma(merged.roles.accent)
+	for (const color of dropped) {
+		assert.ok(
+			chroma(color) < published,
+			`${rgbToHex(color)} was dropped by the area cut at chroma ${chroma(color)}, above the published ` +
+				`accent's ${published} — the cut, not the ranking, decided the accent`,
+		)
+	}
+	// And the drop is confined to the mark pools: the foreground pool is expected to move under D2.
+	assert.ok(dropped.length < lOnly.accentPool.length / 2, `${dropped.length} of ${lOnly.accentPool.length} dropped`)
 })

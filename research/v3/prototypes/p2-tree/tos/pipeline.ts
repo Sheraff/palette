@@ -45,9 +45,10 @@ import {
 	STABILITY_WINDOW_LEVELS,
 	UNREADABLE_COVERAGE_FRACTION,
 } from "./constants.ts"
+import { ACCENT_CANDIDATE_LIMIT } from "./lanes/constants.ts"
 import { COMPONENT_CHAIN_AREA_AGREEMENT, TEXT_COMPONENT_LIMIT } from "./roles/constants.ts"
 import { minFieldContrast, rankByFieldContrast, renderedFieldOf } from "./roles/rank.ts"
-import { findTextGroups, strokeWidthFromDistanceField, type TextComponent, type TextGroup } from "./roles/text.ts"
+import { findTextGroups, lowerMedian, strokeWidthFromDistanceField, type TextComponent, type TextGroup } from "./roles/text.ts"
 import { buildTreeOfShapes, type ShapeTree } from "./tree.ts"
 
 /** Thrown when the input is one the contract refuses. Surfaces as a failed row, never a silent skip. */
@@ -531,6 +532,55 @@ export type ParsedTextGroup = Readonly<{
 	fieldContrast: number
 }>
 
+/**
+ * One lane's contribution to the shared node pool — the shape `lanes/nodes.ts` already produces.
+ *
+ * Declared **structurally** rather than imported so that `pipeline.ts` never depends on `lanes/`: the
+ * lane builder imports this module, and an import back would close a cycle for no gain.
+ */
+export type LaneInputNode = Readonly<{
+	id: number
+	parent: number
+	treeNodeId: number
+	depth: number
+	level: number
+	areaFraction: number
+	ownAreaFraction: number
+	centroidX: number
+	centroidY: number
+	growth: number
+	repr: Rgb8
+	kind: "field" | "mark"
+}>
+
+/** A built lane: the tree it came from, and its retained nodes in that lane's own id space. */
+export type LaneInput = Readonly<{ lane: string; tree: ShapeTree; nodes: readonly LaneInputNode[] }>
+
+/**
+ * One accent candidate, with every quantity the ordering *could* have used, whether or not it did.
+ *
+ * D1 ruled the accent order back to chroma-first; the APCA measurement W-F's rewrite ranked on is still
+ * computed and published here, per candidate, so the coming round can price the exchange rate on real
+ * numbers rather than on a re-run. Reported, never ordered on.
+ */
+export type AccentCandidate = Readonly<{
+	repr: Rgb8
+	/** Which lane's tree the leading node came from: 0 = L, then `LaneInput` order. */
+	laneIndex: number
+	/** The parsed node id of the cluster's first member. */
+	nodeId: number
+	/** OKLab chromatic distance from the published background. The D1 ranking key. */
+	chromaFromField: number
+	/** |ΔL| from the published background. The D1 tie-break. */
+	lightnessMove: number
+	/** Minimum |raw APCA| over the whole rendered field — W-F's key, reported only. */
+	fieldContrast: number
+	/** D3's eligibility level: 0 leads, 1 is an incidental node that may not lead. */
+	stabilityLevel: number
+	/** The best (smallest) MSER growth rate among the cluster's nodes. */
+	growth: number
+}>
+
 export type Parse = Readonly<{
 	width: number
 	height: number
@@ -551,6 +601,8 @@ export type Parse = Readonly<{
 	foregroundPool: readonly Rgb8[]
 	/** Accent candidates, best first, under the accent ordering rather than the text-ness one. */
 	accentPool: readonly Rgb8[]
+	/** Every clustered accent candidate with all four measurements, in the published order. */
+	accentCandidates: readonly AccentCandidate[]
 	/** True when the field reads as one continuous ramp between the two chain ends. */
 	gradient: boolean
 	notes: string[]
@@ -621,7 +673,113 @@ function collinearityResidual(
 /** Everything the pipeline knows about one image. */
 export type PipelineResult = Readonly<{ image: DecodedImage; tree: ShapeTree; parse: Parse }>
 
-export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
+/**
+ * **Chain collapse**, one lane at a time — the rule `roles/NOTES.md` calls cycle 2's most consequential
+ * change, lifted out of the L lane so every lane gets it.
+ *
+ * A tree of shapes names one glyph once per quantised level between the level at which it separates
+ * from its field and the level at which it is complete. A **component** is a candidate node with no
+ * candidate strictly beneath it covering at least `COMPONENT_CHAIN_AREA_AGREEMENT` of its area — the
+ * deepest node of each such chain. Chains never cross lanes, so the collapse cannot either: it is run
+ * per lane, over that lane's own parent links, which is exactly what D2 asks for.
+ *
+ * Returns the surviving indices, ascending. `parentOfItem` is in the same index space as `items`, with
+ * a negative entry for a root.
+ */
+function collapseChains(
+	items: readonly ParsedNode[],
+	parentOfItem: readonly number[],
+	isCandidate: (index: number) => boolean,
+): number[] {
+	const childrenList: number[][] = items.map(() => [])
+	const roots: number[] = []
+	for (let index = 0; index < items.length; index += 1) {
+		const parent = parentOfItem[index]
+		if (parent >= 0 && parent !== index) childrenList[parent].push(index)
+		else roots.push(index)
+	}
+	const order: number[] = []
+	const stack: number[] = roots.slice()
+	while (stack.length > 0) {
+		const current = stack.pop() as number
+		order.push(current)
+		for (const child of childrenList[current]) stack.push(child)
+	}
+	const largestBeneath = new Float64Array(items.length)
+	for (let position = order.length - 1; position >= 0; position -= 1) {
+		const current = order[position]
+		let best = 0
+		for (const child of childrenList[current]) {
+			const beneath = Math.max(isCandidate(child) ? items[child].areaFraction : 0, largestBeneath[child])
+			if (beneath > best) best = beneath
+		}
+		largestBeneath[current] = best
+	}
+	const kept: number[] = []
+	for (let index = 0; index < items.length; index += 1) {
+		if (!isCandidate(index)) continue
+		if (largestBeneath[index] >= COMPONENT_CHAIN_AREA_AGREEMENT * items[index].areaFraction) continue
+		kept.push(index)
+	}
+	return kept
+}
+
+/**
+ * Group colours the contract's one ruler calls the same colour — union-find over an ascending scan, so
+ * the clustering is a function of the input order and of nothing else, and a merge always points the
+ * higher root at the lower one.
+ *
+ * Returns each cluster's member indices ascending, clusters ordered by their lowest member. This is the
+ * one place the bar decides membership, and it is **lane-agnostic on purpose**: arm-b §2.4's colour
+ * clause is a statement about colours, and two marks that are the same colour are one candidate whether
+ * a lightness tree or a chroma tree found them.
+ */
+function clusterByBar(colors: readonly Rgb8[]): number[][] {
+	const parentOf = colors.map((_unused, index) => index)
+	const find = (index: number): number => {
+		let root = index
+		while (parentOf[root] !== root) root = parentOf[root]
+		let walk = index
+		while (parentOf[walk] !== root) {
+			const next = parentOf[walk]
+			parentOf[walk] = root
+			walk = next
+		}
+		return root
+	}
+	const labs = colors.map(rgbToOkLab)
+	const paletteColors = colors.map(colorFromRgb)
+	for (let first = 0; first < colors.length; first += 1) {
+		for (let second = first + 1; second < colors.length; second += 1) {
+			if (okLabDistance(labs[first], labs[second]) < sameColorBar(paletteColors[first], paletteColors[second])) {
+				const rootFirst = find(first)
+				const rootSecond = find(second)
+				if (rootFirst !== rootSecond) parentOf[Math.max(rootFirst, rootSecond)] = Math.min(rootFirst, rootSecond)
+			}
+		}
+	}
+	const clusterOf = new Map<number, number[]>()
+	for (let index = 0; index < colors.length; index += 1) {
+		const root = find(index)
+		const bucket = clusterOf.get(root)
+		if (bucket === undefined) clusterOf.set(root, [index])
+		else bucket.push(index)
+	}
+	return Array.from(clusterOf.keys())
+		.sort((first, second) => first - second)
+		.map((root) => (clusterOf.get(root) ?? []).slice().sort((first, second) => first - second))
+}
+
+/**
+ * Parse one image's tree into a palette-shaped reading of it.
+ *
+ * `extraLanes` are the chromatic lanes' retained nodes (D2). With none, this is byte-for-byte the
+ * L-only parse round 1 was judged on; with them, the a and b lanes' marks join the *same* pool the text
+ * detector, the foreground ranking and the accent ranking all read — arm-b′ §2.6's "one pool, so there
+ * is no lane that cannot reach a role". The **field** roles stay the L lane's alone: a ground stack is a
+ * reading of lightness structure, and nothing in the chroma trees is a statement about it.
+ */
+export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: readonly LaneInput[] = []): Parse {
 	const totalArea = image.width * image.height
 	const children = childrenOf(tree)
 	const stability = selectStableNodes(tree, children)
@@ -808,139 +966,241 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 	}
 	if (colorFromRgb(background).hex === colorFromRgb(surface).hex) gradient = false
 
-	// ---- components, clusters, foreground and accent --------------------------------------------
+	// ---- the chromatic lanes, folded into one node id space --------------------------------------
 	//
-	// **Chain collapse, and why cycle 1's mark population could not carry a text detector.** The tree
-	// of shapes names one glyph once per quantised L level between the level at which it separates from
-	// its field and the level at which it is fully dark: on `…d859a69094` one letter of the title is
-	// twenty retained nodes, each with a plausible area, bounding box and representative colour. The
-	// stability filter drops only *exact*-area duplicates, so the whole chain survives, and the sixty-four
-	// largest marks on that cover are all slices of one grey swoosh with not one glyph among them.
+	// **D2** (`DECISIONS.md`): the a and b lanes' retained nodes join the **mark** population the whole
+	// role stage reads, not the accent's alone. Cycle 2's first pass let the lanes reach one role because
+	// grafting them into the foreground needed the component rule to run per lane, and that rule lives
+	// here; it now does. An isoluminant mark therefore reaches the text detector and the foreground
+	// ranking, and a region is invisible only when it matches its surround in L *and* a *and* b.
 	//
-	// A **component** is therefore a retained mark node with no retained mark strictly beneath it
-	// covering at least `COMPONENT_CHAIN_AREA_AGREEMENT` of its area — the deepest node of each chain,
-	// which is the glyph at its darkest and most complete. 512 marks become 95 components on that cover
-	// and the title's letters are nine of them, at their near-black exact triples.
-	//
-	// The rule is local to the role stage: `stability.retained`, which is what the dump publishes and
-	// what the reachability falsifier and the verifier read, is untouched.
-	const chainSet = new Set(groundChain)
-	const isMarkNode = (node: ParsedNode): boolean => node.kind === "mark" && !chainSet.has(node.id)
-	const largestMarkBeneath = new Float64Array(nodes.length)
+	// **Ids.** The L lane keeps `0…nodes.length-1`, so `groundChain`, every `parent` and every id the
+	// round-1 artefacts already carry are unchanged. Each extra lane is appended in `extraLanes` order
+	// with its own parent links offset alongside, and its root re-parented onto the L root — the same
+	// image rectangle at the same area fraction, so the dump stays one tree and the verifier's
+	// `child.area ≤ parent.area` invariant holds by construction rather than by tolerance.
+	const laneNodes: ParsedNode[][] = []
 	{
-		const order: number[] = []
-		const stack: number[] = [0]
-		while (stack.length > 0) {
-			const nodeId = stack.pop() as number
-			order.push(nodeId)
-			for (const childId of parsedChildren[nodeId]) stack.push(childId)
-		}
-		for (let position = order.length - 1; position >= 0; position -= 1) {
-			const nodeId = order[position]
-			let best = 0
-			for (const childId of parsedChildren[nodeId]) {
-				const beneath = Math.max(isMarkNode(nodes[childId]) ? nodes[childId].areaFraction : 0, largestMarkBeneath[childId])
-				if (beneath > best) best = beneath
-			}
-			largestMarkBeneath[nodeId] = best
+		let cursor = nodes.length
+		for (const lane of extraLanes) {
+			const offset = cursor
+			laneNodes.push(
+				lane.nodes.map((node) => ({
+					id: offset + node.id,
+					parent: node.parent < 0 ? 0 : offset + node.parent,
+					treeNodeId: node.treeNodeId,
+					depth: node.depth,
+					level: node.level,
+					areaFraction: node.areaFraction,
+					ownAreaFraction: node.ownAreaFraction,
+					centroidX: node.centroidX,
+					centroidY: node.centroidY,
+					growth: node.growth,
+					thinness: null,
+					strokeWidth: null,
+					repr: node.repr,
+					kind: node.kind,
+				})),
+			)
+			cursor += lane.nodes.length
 		}
 	}
-	const marks = nodes
-		.filter((node) => isMarkNode(node) && largestMarkBeneath[node.id] < COMPONENT_CHAIN_AREA_AGREEMENT * node.areaFraction)
-		.sort((first, second) => second.areaFraction - first.areaFraction || first.id - second.id)
+
+	// ---- the shared mark pool, and the components inside it --------------------------------------
+	//
+	// **Two populations, and the difference between them is the whole of the chain-collapse rule.**
+	//
+	// `poolMarks` is every retained mark node of every lane: the pool arm-b′ §2.6 says all four roles are
+	// ranked over. The **accent** ranks over it directly, and that is deliberate — a chain of nodes naming
+	// one region at successive levels is folded by the same-colour clustering below, and nothing in the
+	// accent's ordering is geometric, so the accent needs no component rule. Putting the accent behind
+	// chain collapse costs exactly the recall round 1 asked for: on `…35b967964d` the vivid coral lives on
+	// *mid*-chain nodes, and the deepest node of each of those chains is a duller red.
+	//
+	// `components` is the chain-collapsed subset, per lane. That rule exists for the **text detector's
+	// geometry**: the tree names one glyph once per quantised level between the level at which it
+	// separates from its field and the level at which it is complete, and a detector that counts shapes
+	// cannot see a letter through twenty re-namings of it. Chains never cross lanes, so the collapse
+	// cannot either — it runs per lane over that lane's own parent links, which is what D2 asks for.
+	//
+	// Both rules stay **local to the role stage**: `stability.retained` — what the dump publishes and what
+	// the reachability falsifier and the verifier read — is untouched, in every lane.
+	const chainSet = new Set(groundChain)
+	const isMarkNode = (node: ParsedNode): boolean => node.kind === "mark" && !chainSet.has(node.id)
+
+	/** A pool node, with the lane whose tree owns its mask. 0 is L; then `extraLanes` order. */
+	type Component = Readonly<{ node: ParsedNode; laneIndex: number }>
+	const poolMarks: Component[] = []
+	const components: Component[] = []
+	for (const node of nodes) if (isMarkNode(node)) poolMarks.push({ node, laneIndex: 0 })
+	for (const index of collapseChains(
+		nodes,
+		nodes.map((node) => node.parent),
+		(index) => isMarkNode(nodes[index]),
+	)) {
+		components.push({ node: nodes[index], laneIndex: 0 })
+	}
+	for (let laneIndex = 0; laneIndex < extraLanes.length; laneIndex += 1) {
+		const lane = laneNodes[laneIndex]
+		for (const node of lane) if (node.kind === "mark") poolMarks.push({ node, laneIndex: laneIndex + 1 })
+		for (const index of collapseChains(
+			lane,
+			extraLanes[laneIndex].nodes.map((node) => node.parent),
+			(index) => lane[index].kind === "mark",
+		)) {
+			components.push({ node: lane[index], laneIndex: laneIndex + 1 })
+		}
+	}
+	if (extraLanes.length > 0) {
+		notes.push(`lanes:${["L", ...extraLanes.map((lane) => lane.lane)].join("+")}`)
+		notes.push(`pool-marks:${poolMarks.length}`)
+		notes.push(`components:${components.length}`)
+	}
+
+	// The trees and Euler tours a component's mask is cut from, indexed the same way `laneIndex` is.
+	const laneTrees: ShapeTree[] = [tree, ...extraLanes.map((lane) => lane.tree)]
+	const laneTours = [tour, ...extraLanes.map((lane) => eulerTour(lane.tree, childrenOf(lane.tree)))]
+
+	// ---- D3: salience gates identity -------------------------------------------------------------
+	//
+	// The reviewer's rule (P5 round 2, folded in as D3): *presence ≠ eligibility* — a colour present only
+	// as an "accidental shadow" may not carry an **identity** role. The structural attribute that already
+	// says how much of a region a node names is the MSER growth rate `selectStableNodes` computes: the
+	// area derivative per level, small for a region that holds its shape across the level axis and large
+	// for one that appears and dissolves. It is on every retained node in every lane and costs nothing.
+	//
+	// It is applied as a **level, not a score**: the foreground's ranking puts level 0 ahead of level 1 and
+	// then orders inside each level by its own key, so this can only demote an incidental node beneath a
+	// stable one — it can never re-order two stable candidates by stability. **The accent measures the
+	// level and does not rank on it**; the reason is at `rankAccent` below and in `integration-NOTES.md`,
+	// and it is a deviation from the integration brief, stated as one.
+	//
+	// The split is the **pool's own lower median**, an order statistic of the marks this image produced.
+	// It is deliberately not a constant: there is no calibrated growth rate at which a node stops being
+	// incidental, this file may not invent one, and a rank-based split is invariant under any monotone
+	// re-scaling of growth. `integration-NOTES.md` records the calibration that is owed. The population is
+	// the *whole* pool rather than either ranking's candidate set, so the two identity roles are gated
+	// against one statement about this image and not against two.
+	const componentGrowths = poolMarks.map((component) => component.node.growth).filter((value) => Number.isFinite(value))
+	const growthMedian = componentGrowths.length > 0 ? lowerMedian(componentGrowths) : Number.POSITIVE_INFINITY
+	const nodeIsSalient = (node: ParsedNode): boolean => Number.isFinite(node.growth) && node.growth <= growthMedian
+	if (componentGrowths.length > 0) notes.push(`salience-median-growth:${growthMedian}`)
+
+	// ---- the accent's own candidate set ----------------------------------------------------------
+	//
+	// **Truncate along the ranking you are about to apply.** Round 1's miss on `…35b967964d` ("accent
+	// wrongly collapsed — vivid red-orange missed") was not a threshold rejecting the red: the tree had
+	// retained it, and the role stage's *area*-ordered truncation dropped it before any ranking ran — the
+	// node that carries it ranks 602nd by area out of 963 marks. A vivid accent is characteristically
+	// small, so an area-ordered cost guard in front of the accent ranking is a saturation wall by another
+	// route. The accent's candidates are therefore cut down the accent's own order, so nothing dropped
+	// could have won. No floor, no minimum saturation: a low-chroma cover yields a low-chroma accent.
+	const backgroundLab = rgbToOkLab(background)
+	const chromaCache = new Map<number, number>()
+	const packOfColor = (color: Rgb8): number => (color[0] << 16) | (color[1] << 8) | color[2]
+	const chromaFromField = (color: Rgb8): number => {
+		const key = packOfColor(color)
+		let value = chromaCache.get(key)
+		if (value === undefined) {
+			const lab = labFor(key)
+			value = Math.hypot(lab[1] - backgroundLab[1], lab[2] - backgroundLab[2])
+			chromaCache.set(key, value)
+		}
+		return value
+	}
+	const lightnessMove = (color: Rgb8): number => Math.abs(labFor(packOfColor(color))[0] - backgroundLab[0])
+
+	const accentComponents = poolMarks
+		.slice()
+		.sort(
+			(first, second) =>
+				chromaFromField(second.node.repr) - chromaFromField(first.node.repr) ||
+				lightnessMove(second.node.repr) - lightnessMove(first.node.repr) ||
+				first.laneIndex - second.laneIndex ||
+				first.node.id - second.node.id,
+		)
+		.slice(0, ACCENT_CANDIDATE_LIMIT)
+
+	// ---- the text detector's component set -------------------------------------------------------
+	//
+	// Largest first, because the detector's cost is one exact distance transform per component and
+	// `TEXT_COMPONENT_LIMIT` is a cost guard. The cut is shared across lanes rather than applied per
+	// lane: the pool is one pool, and a per-lane cap would be three cost guards where the spec has one.
+	const markComponents = components
+		.slice()
+		.sort((first, second) => second.node.areaFraction - first.node.areaFraction || first.node.id - second.node.id)
 		.slice(0, TEXT_COMPONENT_LIMIT)
+	const marks = markComponents.map((component) => component.node)
 
 	// One distance transform per component, read twice: the inradius gives arm-b′ §2.6's thinness, the
-	// median ridge distance gives arm-b §2.4's stroke width.
+	// median ridge distance gives arm-b §2.4's stroke width. The mask is cut from the component's **own**
+	// lane's tree — the only per-lane step in the detector; everything after it is geometry in pixels,
+	// which is the same space in every lane.
 	const componentHeight = new Map<number, number>()
-	for (const mark of marks) {
+	for (let index = 0; index < markComponents.length; index += 1) {
+		const mark = markComponents[index].node
+		const laneTree = laneTrees[markComponents[index].laneIndex]
+		const laneTour = laneTours[markComponents[index].laneIndex]
 		const treeNodeId = mark.treeNodeId
-		const minX = tree.nodeMinX[treeNodeId]
-		const minY = tree.nodeMinY[treeNodeId]
-		const boxWidth = tree.nodeMaxX[treeNodeId] - minX + 1
-		const boxHeight = tree.nodeMaxY[treeNodeId] - minY + 1
+		const minX = laneTree.nodeMinX[treeNodeId]
+		const minY = laneTree.nodeMinY[treeNodeId]
+		const boxWidth = laneTree.nodeMaxX[treeNodeId] - minX + 1
+		const boxHeight = laneTree.nodeMaxY[treeNodeId] - minY + 1
 		if (boxWidth <= 0 || boxHeight <= 0) continue
 		componentHeight.set(mark.id, boxHeight)
 		const mask = new Uint8Array(boxWidth * boxHeight)
 		for (let y = 0; y < boxHeight; y += 1) {
 			for (let x = 0; x < boxWidth; x += 1) {
-				const owner = tree.nodeOfPixel[(minY + y) * image.width + (minX + x)]
-				const inside = tour.enter[treeNodeId] <= tour.enter[owner] && tour.enter[owner] < tour.exit[treeNodeId]
+				const owner = laneTree.nodeOfPixel[(minY + y) * image.width + (minX + x)]
+				const inside = laneTour.enter[treeNodeId] <= laneTour.enter[owner] && laneTour.enter[owner] < laneTour.exit[treeNodeId]
 				if (inside) mask[y * boxWidth + x] = 1
 			}
 		}
 		const distances = distanceFieldOf(mask, boxWidth, boxHeight)
 		const inradius = inradiusFromDistanceField(distances)
-		const area = tree.nodeSubtreeArea[treeNodeId]
+		const area = laneTree.nodeSubtreeArea[treeNodeId]
 		mark.thinness = area > 0 ? inradius / Math.sqrt(area) : null
 		mark.strokeWidth = strokeWidthFromDistanceField(distances.squared, distances.width, distances.height)
 	}
 
 	// Clusters: components whose representative colours are the same colour by the contract's own bar.
-	// Union-find over an ascending scan, so the clustering is a function of node id and of nothing else.
 	// This is also arm-b §2.4's fourth grouping clause — "colours the same under the bar" — so the text
-	// detector inherits it structurally rather than re-testing it.
-	const parentOf = marks.map((_unused, index) => index)
-	const find = (index: number): number => {
-		let root = index
-		while (parentOf[root] !== root) root = parentOf[root]
-		let walk = index
-		while (parentOf[walk] !== root) {
-			const next = parentOf[walk]
-			parentOf[walk] = root
-			walk = next
-		}
-		return root
-	}
-	for (let first = 0; first < marks.length; first += 1) {
-		for (let second = first + 1; second < marks.length; second += 1) {
-			const one = colorFromRgb(marks[first].repr)
-			const other = colorFromRgb(marks[second].repr)
-			if (okLabDistance(rgbToOkLab(marks[first].repr), rgbToOkLab(marks[second].repr)) < sameColorBar(one, other)) {
-				const rootFirst = find(first)
-				const rootSecond = find(second)
-				if (rootFirst !== rootSecond) parentOf[Math.max(rootFirst, rootSecond)] = Math.min(rootFirst, rootSecond)
-			}
-		}
-	}
-	const clusterOf = new Map<number, number[]>()
-	for (let index = 0; index < marks.length; index += 1) {
-		const root = find(index)
-		const bucket = clusterOf.get(root)
-		if (bucket === undefined) clusterOf.set(root, [index])
-		else bucket.push(index)
-	}
+	// detector inherits it structurally rather than re-testing it, and inherits it across lanes.
 	const clusterIndexOfComponent = new Int32Array(marks.length).fill(-1)
-	const clusters = Array.from(clusterOf.keys())
-		.sort((first, second) => first - second)
-		.map((root, clusterIndex) => {
-			const members = (clusterOf.get(root) ?? []).slice().sort((first, second) => first - second)
-			for (const index of members) clusterIndexOfComponent[index] = clusterIndex
-			const thicknesses = members.map((index) => marks[index].thinness).filter((value): value is number => value !== null)
-			const thinness = thicknesses.length > 0 ? thicknesses.reduce((sum, value) => sum + value, 0) / thicknesses.length : 1
-			const geometryOfCluster = collinearityResidual(members.map((index) => [marks[index].centroidX, marks[index].centroidY] as const))
-			const collinearity = geometryOfCluster.length > 0 ? geometryOfCluster.residual / geometryOfCluster.length : 1
-			const largest = members.slice().sort((first, second) => marks[second].areaFraction - marks[first].areaFraction || first - second)[0]
-			return {
-				members,
-				thinness,
-				count: members.length,
-				collinearity,
-				areaFraction: members.reduce((sum, index) => sum + marks[index].areaFraction, 0),
-				repr: marks[largest].repr,
-				firstMarkId: marks[members[0]].id,
-			}
-		})
+	const clusters = clusterByBar(marks.map((mark) => mark.repr)).map((members, clusterIndex) => {
+		for (const index of members) clusterIndexOfComponent[index] = clusterIndex
+		const thicknesses = members.map((index) => marks[index].thinness).filter((value): value is number => value !== null)
+		const thinness = thicknesses.length > 0 ? thicknesses.reduce((sum, value) => sum + value, 0) / thicknesses.length : 1
+		const geometryOfCluster = collinearityResidual(members.map((index) => [marks[index].centroidX, marks[index].centroidY] as const))
+		const collinearity = geometryOfCluster.length > 0 ? geometryOfCluster.residual / geometryOfCluster.length : 1
+		const largest = members.slice().sort((first, second) => marks[second].areaFraction - marks[first].areaFraction || first - second)[0]
+		return {
+			members,
+			thinness,
+			count: members.length,
+			collinearity,
+			areaFraction: members.reduce((sum, index) => sum + marks[index].areaFraction, 0),
+			repr: marks[largest].repr,
+			firstMarkId: marks[members[0]].id,
+			firstLaneIndex: markComponents[members[0]].laneIndex,
+			salient: members.some((index) => nodeIsSalient(marks[index])),
+			growth: Math.min(...members.map((index) => marks[index].growth)),
+		}
+	})
 
-	// ---- the text detector, arm-b §2.4 ----------------------------------------------------------
+	// ---- the text detector, arm-b §2.4 -----------------------------------------------------------
 	//
-	// Cycle 1 ranked the foreground by arm-b′ §2.6's *text-ness* order — thinness, member count,
-	// centroid collinearity — which contains no contrast term at all, and the reviewer called the
-	// result unreadable on 7 of 10 unacceptable sides. Cycle 2 replaces the proxy with the thing it was
-	// proxying for: find the components that are *manufactured as type*, and let the artwork's own text
-	// colour lead. `roles/text.ts` carries the graft and its deviations; the cluster's thinness and
-	// collinearity are still computed because the dump publishes them, but nothing orders a role by them
-	// any more.
+	// Cycle 1 ranked the foreground by arm-b′ §2.6's *text-ness* order — thinness, member count, centroid
+	// collinearity — which contains no contrast term at all, and the reviewer called the result
+	// unreadable on 7 of 10 unacceptable sides. Cycle 2 replaces the proxy with the thing it was proxying
+	// for: find the components that are *manufactured as type*, and let the artwork's own text colour
+	// lead. `roles/text.ts` carries the graft and its deviations.
+	//
+	// **The detector's tests are lane-agnostic and stay that way.** Stroke width, height agreement,
+	// centroid collinearity and row linkage are measured in image pixels, which every lane shares; the
+	// colour clause is the one bar, applied once, in `clusterByBar` above. Nothing here knows which tree
+	// found a glyph, which is the point — a title set in a colour that only moves in `a` is type by
+	// exactly the same evidence as a title that moves in `L`.
 	const textComponents: TextComponent[] = marks.map((mark, index) => ({
 		nodeId: mark.id,
 		clusterId: clusterIndexOfComponent[index],
@@ -954,24 +1214,18 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 	const textGroups: TextGroup[] = findTextGroups(textComponents)
 	const textClusterIds = new Set(textGroups.map((group) => group.clusterId))
 
-	// ---- the ordered pools the roles are drawn from --------------------------------------------
+	// ---- the ordered pools the roles are drawn from ----------------------------------------------
 	//
-	// **The parse publishes rankings, not just winners.** arm-b′ §2.7: "a violated invariant at
-	// assembly is repaired by taking the next item in the same ranking, never by inventing or
-	// adjusting a colour", and "the whole palette is re-validated after it". The contract adapter
-	// (`candidate.ts`) does the walking; the ordering is decided here, once, and is the same ordering
-	// whether or not a repair ever happens.
-	const backgroundLab = rgbToOkLab(background)
-	const chromaFromField = (color: Rgb8): number => {
-		const lab = rgbToOkLab(color)
-		return Math.hypot(lab[1] - backgroundLab[1], lab[2] - backgroundLab[2])
-	}
-	const lightnessMove = (color: Rgb8): number => Math.abs(rgbToOkLab(color)[0] - backgroundLab[0])
+	// **The parse publishes rankings, not just winners.** arm-b′ §2.7: "a violated invariant at assembly
+	// is repaired by taking the next item in the same ranking, never by inventing or adjusting a colour",
+	// and "the whole palette is re-validated after it". The contract adapter (`candidate.ts`) does the
+	// walking; the ordering is decided here, once, and is the same ordering whether or not a repair ever
+	// happens.
 
-	// The residual, treated as one node (arm-b′ §2.7): the image's own sufficiently common exact
-	// triples, ranked by APCA against the background. It is the whole of both rankings when there is no
-	// mark population at all, and their tail otherwise, so a degradation always has somewhere to go and
-	// never has to reach for a colour the artwork does not contain.
+	// The residual, treated as one node (arm-b′ §2.7): the image's own sufficiently common exact triples,
+	// ranked by APCA against the background. It is the whole of both rankings when there is no mark
+	// population at all, and their tail otherwise, so a degradation always has somewhere to go and never
+	// has to reach for a colour the artwork does not contain.
 	const wholeImage = new Map<number, number>()
 	for (let pixel = 0; pixel < image.packed.length; pixel += 1) {
 		wholeImage.set(image.packed[pixel], (wholeImage.get(image.packed[pixel]) ?? 0) + 1)
@@ -993,7 +1247,7 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		const seenColors = new Set<number>()
 		const kept: Rgb8[] = []
 		for (const color of colors) {
-			const packed = (color[0] << 16) | (color[1] << 8) | color[2]
+			const packed = packOfColor(color)
 			if (seenColors.has(packed)) continue
 			seenColors.add(packed)
 			kept.push(color)
@@ -1006,10 +1260,9 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 	// the contract's own `minRawContrastOverRamp`, which is the function invariant 4 itself calls.
 	const renderedField = renderedFieldOf(background, surface, gradient)
 	// Memoised per exact triple: a ramp minimum costs `RAMP_SAMPLES_PER_SEGMENT +
-	// RAMP_REFINEMENT_SAMPLES` APCA evaluations, both rankings score overlapping candidate sets, and
-	// the score is a pure function of the triple and the field.
+	// RAMP_REFINEMENT_SAMPLES` APCA evaluations, both rankings score overlapping candidate sets, and the
+	// score is a pure function of the triple and the field.
 	const contrastCache = new Map<number, number>()
-	const packOfColor = (color: Rgb8): number => (color[0] << 16) | (color[1] << 8) | color[2]
 	const contrastOf = (color: Rgb8): number => {
 		const key = packOfColor(color)
 		let score = contrastCache.get(key)
@@ -1020,10 +1273,28 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		return score
 	}
 
+	// **D3's level, as a lookup.** Salience is a property of the *nodes* behind a colour, so it is defined
+	// for candidates that came from a cluster and undefined for the residual — which is a set of the
+	// image's common exact triples and not a node at all. An undefined level is 0: D3 demotes incidental
+	// nodes, and reading it as a demotion of everything that is not a node would be a different rule.
+	//
+	// A text group's colour is level 0 whatever its nodes' growth says. D3 is explicit that identity
+	// outranks legibility and that the artwork's own text colour claims the foreground first; a rule
+	// meant to stop accidental shadows carrying identity may not unseat the one candidate whose identity
+	// is not in question.
+	const levelByColor = new Map<number, number>()
+	const noteLevel = (color: Rgb8, level: number): void => {
+		const key = packOfColor(color)
+		const known = levelByColor.get(key)
+		if (known === undefined || level < known) levelByColor.set(key, level)
+	}
+	for (const cluster of clusters) noteLevel(cluster.repr, cluster.salient ? 0 : 1)
+	const levelOf = (color: Rgb8): number => levelByColor.get(packOfColor(color)) ?? 0
+
 	// **Foreground.** The artwork's own text colour leads — round 1, verbatim, on the acceptance case:
 	// *"black is the artwork's text → fg should be black"*. Text groups first (arm-b §2.6: "text-shaped
 	// groups first by total area fraction"), with readability against the rendered field as the
-	// tie-break; then every remaining candidate ranked by that readability alone.
+	// tie-break; then every remaining candidate ranked by D3's level and then by that readability.
 	//
 	// The ranking is not a gate. The contract's floors stay where the constraint sheet puts them; what
 	// this chooses is the most readable of the artwork's *own* candidates, every one of them still an
@@ -1036,33 +1307,82 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 				second.contrast - first.contrast ||
 				first.group.firstNodeId - second.group.firstNodeId,
 		)
+	for (const entry of rankedTextGroups) levelByColor.set(packOfColor(entry.group.repr), 0)
 	if (rankedTextGroups.length === 0) notes.push("no-text-groups:contrast-ranking-only")
-	const nonTextClusterReprs = clusters
-		.filter((_cluster, index) => !textClusterIds.has(index))
-		.map((cluster) => cluster.repr)
+	const nonTextClusterReprs = clusters.filter((_cluster, index) => !textClusterIds.has(index)).map((cluster) => cluster.repr)
 	const foregroundPool = dedupe([
 		...rankedTextGroups.map((entry) => entry.group.repr),
-		...rankByFieldContrast([...nonTextClusterReprs, ...residualPool], renderedField, (color) => contrastOf(color)),
+		...rankByFieldContrast([...nonTextClusterReprs, ...residualPool], renderedField, (color) => contrastOf(color), levelOf),
 	])
 
-	// **Accent.** Same readability measurement as the foreground, over the same rendered field — the
-	// reviewer grades the accent against *both* field roles, so the accent's order is the foreground's
-	// order minus the text-first clause. Chroma from the field and lightness movement survive as
-	// tie-breaks: arm-b′ §2.6's direction, kept as a direction and never as a coefficient, so an accent
-	// that has to choose between two equally readable candidates still takes the vivid one.
-	const accentPool = dedupe([
-		...clusters
+	// **Accent — D1.** The order is **chroma from the field first**, lightness movement as the tie-break:
+	// arm-b′ §2.6's rule, and the ruling the orchestrator issued at the W-E/W-F fan-in. W-F's rewrite had
+	// put minimum APCA over the rendered field in front of it; on `…35b967964d` the two orders elect
+	// different colours (olive `#6a723f`, chroma 0.052, contrast 59.1, against coral `#d25068`, chroma
+	// 0.190, contrast 44.5) and the reviewer's only direct quote about a specific accent on a specific
+	// cover names the coral. Readability keeps its guard through the contract's own machinery — invariant
+	// 4 at the user floors, plus the twins-must-collapse walk in `roles/assemble.ts` — rather than
+	// through an exchange rate nobody has priced. `fieldContrast` is still measured, per candidate, and
+	// published in `accentCandidates` so the coming round can price it.
+	//
+	// **D3's level is measured for the accent and is not ranked on, and that is a deviation.** The
+	// integration brief asks for the salience level ahead of *both* identity orders. On the acceptance
+	// cover it inverts D1: the coral `#d25068` is the most chromatic candidate in the pool (0.169 against
+	// the runner-up's 0.146) and its cluster's best MSER growth is 0.056 against a pool median of 0.015,
+	// so **every** split this file can construct without a calibrated number — the population median, the
+	// node-against-its-own-parent comparison — demotes exactly the colour D1 names, and D1 forbids
+	// re-introducing an order that does. The brief's own escape clause applies ("if you find you need a
+	// threshold, stop, write the need into `integration-NOTES.md`, and use pure ordering instead"): the
+	// need is written there, `stabilityLevel` is published per candidate in `accentCandidates` so the
+	// round can price it, and the accent's published order is D1's, unqualified. The foreground keeps the
+	// level, where nothing in D1 is at stake.
+	type AccentKeyed = Readonly<{ repr: Rgb8; firstLaneIndex: number; firstMarkId: number }>
+	const rankAccent = (first: AccentKeyed, second: AccentKeyed): number =>
+		chromaFromField(second.repr) - chromaFromField(first.repr) ||
+		lightnessMove(second.repr) - lightnessMove(first.repr) ||
+		first.firstLaneIndex - second.firstLaneIndex ||
+		first.firstMarkId - second.firstMarkId
+
+	const accentClusters = clusterByBar(accentComponents.map((component) => component.node.repr)).map((members) => {
+		const largest = members
 			.slice()
 			.sort(
 				(first, second) =>
-					contrastOf(second.repr) - contrastOf(first.repr) ||
-					chromaFromField(second.repr) - chromaFromField(first.repr) ||
-					lightnessMove(second.repr) - lightnessMove(first.repr) ||
-					first.firstMarkId - second.firstMarkId,
-			)
-			.map((cluster) => cluster.repr),
+					accentComponents[second].node.areaFraction - accentComponents[first].node.areaFraction || first - second,
+			)[0]
+		return {
+			repr: accentComponents[largest].node.repr,
+			salient: members.some((index) => nodeIsSalient(accentComponents[index].node)),
+			firstLaneIndex: accentComponents[members[0]].laneIndex,
+			firstMarkId: accentComponents[members[0]].node.id,
+			growth: Math.min(...members.map((index) => accentComponents[index].node.growth)),
+		}
+	})
+	for (const cluster of accentClusters) noteLevel(cluster.repr, cluster.salient ? 0 : 1)
+	if (extraLanes.length > 0 || accentComponents.length > 0) notes.push(`accent-candidates:${accentComponents.length}`)
+
+	// Three tiers, and nothing the L-only parse offered is lost: the accent's own truncated candidates
+	// first, then the text stage's clusters under the same key — the components the area cut kept and the
+	// chroma cut did not — then the residual.
+	const rankedAccentClusters = accentClusters.slice().sort(rankAccent)
+	const rankedMarkClusters = clusters.slice().sort(rankAccent)
+	const accentPool = dedupe([
+		...rankedAccentClusters.map((cluster) => cluster.repr),
+		...rankedMarkClusters.map((cluster) => cluster.repr),
 		...residualPool,
 	])
+
+	// Every measurement the accent order *could* have used, in the order it published, for the round.
+	const accentCandidates: AccentCandidate[] = [...rankedAccentClusters, ...rankedMarkClusters].map((cluster) => ({
+		repr: cluster.repr,
+		laneIndex: cluster.firstLaneIndex,
+		nodeId: cluster.firstMarkId,
+		chromaFromField: chromaFromField(cluster.repr),
+		lightnessMove: lightnessMove(cluster.repr),
+		fieldContrast: contrastOf(cluster.repr),
+		stabilityLevel: levelOf(cluster.repr),
+		growth: cluster.growth,
+	}))
 
 	const foreground = foregroundPool.length > 0 ? foregroundPool[0] : background
 	// The accent collapses to the foreground, exactly, when nothing clears the contract's own
@@ -1081,7 +1401,7 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		laminarity,
 		groundChain,
 		coverage,
-		nodes,
+		nodes: laneNodes.length > 0 ? [...nodes, ...laneNodes.flat()] : nodes,
 		roles: { background, surface, foreground, accent },
 		textGroups: rankedTextGroups.map((entry) => ({
 			nodeIds: entry.group.members.map((index) => marks[index].id).sort((first, second) => first - second),
@@ -1092,6 +1412,7 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		})),
 		foregroundPool,
 		accentPool,
+		accentCandidates,
 		gradient,
 		notes,
 	}

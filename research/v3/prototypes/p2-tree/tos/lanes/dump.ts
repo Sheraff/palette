@@ -60,8 +60,9 @@ export type LaneDumpNode = Readonly<{
 
 /** The retained nodes of one image across all three lanes. Deterministic: ids ascend, nothing is hashed. */
 export async function nodesOf(imagePath: string): Promise<LaneNodeDump> {
-	const { lanes, base, parse } = await runChromaPipeline(imagePath)
-	const onChain = new Set(base.groundChain)
+	const { lanes, parse } = await runChromaPipeline(imagePath)
+	// The ground chain is the L lane's and lives in the L lane's id block, which is the global block 0.
+	const onChain = new Set(parse.groundChain)
 
 	const offsets: number[] = []
 	let running = 0
@@ -97,12 +98,12 @@ export async function nodesOf(imagePath: string): Promise<LaneNodeDump> {
 	return {
 		imagePath,
 		pipeline: "p2-tos-chroma",
-		width: base.width,
-		height: base.height,
-		verdict: base.verdict,
-		laminarity: base.laminarity,
-		coverage: base.coverage,
-		groundChain: base.groundChain,
+		width: parse.width,
+		height: parse.height,
+		verdict: parse.verdict,
+		laminarity: parse.laminarity,
+		coverage: parse.coverage,
+		groundChain: parse.groundChain,
 		roles: {
 			background: rgbToHex(parse.roles.background),
 			surface: rgbToHex(parse.roles.surface),

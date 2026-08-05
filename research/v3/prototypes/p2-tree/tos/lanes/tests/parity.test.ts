@@ -9,12 +9,19 @@
  *
  *  1. `laneRetainedNodes` run on the L tree must reproduce `parseTree(image, tree).nodes` field for
  *     field, for every synthetic cover;
- *  2. the foreground pool must pass through **untouched** — the lanes reach the accent this cycle and
- *     nothing else, and a foreground that moved would mean this module had quietly taken over a
- *     ranking the sibling worker owns;
- *  3. the accent pool must be a **superset** of `parseTree`'s, in order. Adding candidates ahead of
- *     the ones that were already there is the one intended difference; dropping or reordering one
- *     would mean the shared pool had lost a candidate rather than gained some.
+ *  2. the **field** roles, the verdict, the ground chain and the coverage must be untouched by the
+ *     chromatic lanes — a ground stack is a reading of lightness structure, and a chroma tree makes
+ *     no statement about it. This is the invariant D2 did *not* relax;
+ *  3. the L lane's node block must still be the merged parse's prefix, node for node, so every id in
+ *     the round-1 artefacts still names the node it named;
+ *  4. both identity pools must be **supersets** of the L-only parse's. D2 lets the lanes reorder the
+ *     foreground — that is the whole point of grafting them into the text detector — but a colour the
+ *     L-only parse offered and the merged parse does not is a candidate lost, not gained.
+ *
+ * (4) is asserted on these synthetic fixtures, whose component populations are far below
+ * `TEXT_COMPONENT_LIMIT`. On a busy cover the shared area-ordered cut *can* drop an L component in
+ * favour of a larger chromatic one; that is a cost guard binding, not a rule, and `integration-NOTES.md`
+ * records it.
  *
  * If a future edit changes the rules on either side, one of these fails.
  */
@@ -29,7 +36,7 @@ import type { Rgb8 } from "../../../../../src/contract/types.ts"
 import { decodeImage, parseTree } from "../../pipeline.ts"
 import { quantiseLanes } from "../channels.ts"
 import { buildLane, laneRetainedNodes } from "../nodes.ts"
-import { adoptThinness, mergePools, runChromaPipeline } from "../pool.ts"
+import { runChromaPipeline } from "../pool.ts"
 import { writeColorFixtures } from "./fixtures.ts"
 
 const hexes = (colors: readonly Rgb8[]): string[] => colors.map(rgbToHex)
@@ -88,7 +95,7 @@ test("laneRetainedNodes reproduces parseTree's nodes on the L tree", async () =>
 	}
 })
 
-test("the shared pool passes the foreground through and only grows the accent", async () => {
+test("the lanes leave the field alone, keep the L block, and only add identity candidates", async () => {
 	const directory = await mkdtemp(join(tmpdir(), "p2-lanes-parity-pools-"))
 	try {
 		for (const path of await writeColorFixtures(directory)) {
@@ -96,41 +103,8 @@ test("the shared pool passes the foreground through and only grows the accent", 
 			const [lChannel] = quantiseLanes(image)
 			const built = buildLane(image, lChannel)
 			const base = parseTree(image, built.tree)
-			adoptThinness(base, built)
-			const restricted = mergePools(image, [built], base)
-
-			assert.deepEqual(
-				hexes(restricted.parse.foregroundPool),
-				hexes(base.foregroundPool),
-				`${path}: the foreground pool is the sibling's ranking and must pass through untouched`,
-			)
-			assert.equal(
-				rgbToHex(restricted.parse.roles.foreground),
-				rgbToHex(base.roles.foreground),
-				`${path}: the foreground itself must be unchanged`,
-			)
-
-			// The accent pool may grow, and only by prefixing: every colour the L-only parse offered is
-			// still offered, in the same relative order.
-			const merged = hexes(restricted.parse.accentPool)
-			const original = hexes(base.accentPool)
-			let cursor = -1
-			for (const color of original) {
-				const position = merged.indexOf(color)
-				assert.ok(position > cursor, `${path}: ${color} is missing from, or reordered in, the accent pool`)
-				cursor = position
-			}
-		}
-	} finally {
-		await rm(directory, { recursive: true, force: true })
-	}
-})
-
-test("the three-lane pools are supersets of the L-only pools, and the lanes are recorded", async () => {
-	const directory = await mkdtemp(join(tmpdir(), "p2-lanes-parity-three-"))
-	try {
-		for (const path of await writeColorFixtures(directory)) {
 			const result = await runChromaPipeline(path)
+
 			assert.deepEqual(
 				result.lanes.map((lane) => lane.lane),
 				["L", "a", "b"],
@@ -139,17 +113,34 @@ test("the three-lane pools are supersets of the L-only pools, and the lanes are 
 			for (const lane of result.lanes) {
 				for (const node of lane.nodes) assert.equal(node.lane, lane.lane, `${path}: every node records its lane`)
 			}
-			for (const color of hexes(result.base.accentPool)) {
+
+			// The field is the L lane's, before and after.
+			assert.equal(result.parse.verdict, base.verdict, `${path}: verdict`)
+			assert.deepEqual(result.parse.groundChain, base.groundChain, `${path}: ground chain`)
+			assert.equal(result.parse.coverage, base.coverage, `${path}: coverage`)
+			assert.equal(result.parse.laminarity, base.laminarity, `${path}: laminarity`)
+			assert.equal(result.parse.gradient, base.gradient, `${path}: gradient`)
+			assert.equal(rgbToHex(result.parse.roles.background), rgbToHex(base.roles.background), `${path}: background`)
+			assert.equal(rgbToHex(result.parse.roles.surface), rgbToHex(base.roles.surface), `${path}: surface`)
+
+			// The L lane's nodes are the merged parse's prefix, id for id.
+			assert.ok(result.parse.nodes.length > base.nodes.length, `${path}: the lanes must add nodes`)
+			for (let index = 0; index < base.nodes.length; index += 1) {
+				assert.equal(result.parse.nodes[index].id, base.nodes[index].id, `${path}: node ${index} id`)
+				assert.equal(result.parse.nodes[index].parent, base.nodes[index].parent, `${path}: node ${index} parent`)
+				assert.deepEqual(result.parse.nodes[index].repr, base.nodes[index].repr, `${path}: node ${index} repr`)
+			}
+			// Every extra node is a lane node whose parent is a real node of the merged tree.
+			for (const node of result.parse.nodes) {
+				assert.ok(node.parent === -1 || node.parent < node.id, `${path}: node ${node.id} parent ${node.parent}`)
+			}
+
+			for (const color of hexes(base.foregroundPool)) {
+				assert.ok(hexes(result.parse.foregroundPool).includes(color), `${path}: ${color} dropped from the foreground pool`)
+			}
+			for (const color of hexes(base.accentPool)) {
 				assert.ok(hexes(result.parse.accentPool).includes(color), `${path}: ${color} dropped from the accent pool`)
 			}
-			assert.deepEqual(
-				hexes(result.parse.foregroundPool),
-				hexes(result.base.foregroundPool),
-				`${path}: the foreground pool must pass through untouched`,
-			)
-			// Field roles are the L lane's and are not this cycle's business.
-			assert.equal(rgbToHex(result.parse.roles.background), rgbToHex(result.base.roles.background), `${path}: background`)
-			assert.equal(rgbToHex(result.parse.roles.surface), rgbToHex(result.base.roles.surface), `${path}: surface`)
 		}
 	} finally {
 		await rm(directory, { recursive: true, force: true })

@@ -141,3 +141,37 @@ comparisons and `accent` on 65.8%, against `background` 28.8% and `surface` 32.5
 where this pipeline is unstable, and the chain collapse — which decides *which level of a glyph chain
 is the component* — is a new place for a one-LSB perturbation to change the answer. That is a
 hypothesis this cycle produced and did not test.
+
+---
+
+## Superseded by the integration pass (worker H, 2026-08-05) — appended, not edited away
+
+Three statements above are **no longer true of the code**, and the reason each changed is a ruling, not
+a preference. The full account is `../integration-NOTES.md`; this is the index.
+
+1. **"The accent joins the APCA ranking"** (§*Folded in mid-cycle*, item 1) is **reversed**.
+   `DECISIONS.md` D1 ruled at the W-E/W-F fan-in that chroma-from-field leads the accent and lightness
+   movement is the tie-break, because that order matches the reviewer's only direct quote about a
+   specific accent on a specific cover (`…35b967964d`'s missed vivid coral) and readability keeps its
+   guard through the contract's own machinery. The measurement itself is kept: `minFieldContrast` is
+   computed for every accent candidate and published in `Parse.accentCandidates` and in the node dump,
+   so the round that prices the exchange rate has the numbers. This worker's own note — *"whether
+   readability or chroma should lead the accent is a question for a review round, not for either
+   worker"* — is exactly what happened.
+
+2. **"`pipeline.ts` and `candidate.ts` are wired to these; nothing else changed"** understates what the
+   role stage now reads. Its component population is the **three lanes'** retained marks, chain-collapsed
+   per lane (D2), so the text detector and the foreground ranking see isoluminant type. Every geometric
+   test in `text.ts` is unchanged and lane-agnostic by construction; the colour clause is still the one
+   bar. Measured on demo-20 after the merge: **19 of 20** covers yield at least one text group (was 17)
+   and the foreground is the leading group's colour on **16 of 20** (was 13).
+
+3. **The foreground ranking has a level in front of it.** D3 (*salience gates identity*) puts an MSER-
+   growth eligibility level ahead of `minFieldContrast`, so an incidental low-stability node cannot lead
+   the foreground. Text groups and residual colours are exempt, and the split is the pool's own median
+   rather than a new constant. The accent measures the level and does **not** rank on it — that is a
+   stated deviation from the integration brief, with its evidence and the calibration it owes written
+   down in `../integration-NOTES.md` §5.
+
+The cost figure in *Cuts and known weaknesses* (~700 ms per 300 × 300 cover, 5.7 s per palette on the
+robustness corpus) is also superseded; the merged numbers are in `../integration-NOTES.md` §9.
