@@ -118,10 +118,12 @@ try {
 		row("paletteBits", sp.terms.paletteBits, vp.paletteBits)
 		row("L(P) bits", sp.nuisance.serializationBits, serializationBits(config))
 		row("total", sp.total, vp.total)
+		row("chromatic log2Σρ", sp.nuisance.chromaticLog2Normaliser as number, vp.chromaticLog2Normaliser)
 		console.log(
 			`  nuisance: model ${sp.nuisance.fieldModel}/${vp.fieldModel}  triples f/i/g ` +
 				`${sp.nuisance.fieldTriples},${sp.nuisance.inkTriples},${sp.nuisance.genericTriples} / ` +
-				`${vp.fieldTriples},${vp.inkTriples},${vp.genericTriples}`,
+				`${vp.fieldTriples},${vp.inkTriples},${vp.genericTriples}` +
+				`  Ω ${sp.nuisance.chromaticCells}/${vp.chromaticCells}`,
 		)
 		console.log("")
 	}

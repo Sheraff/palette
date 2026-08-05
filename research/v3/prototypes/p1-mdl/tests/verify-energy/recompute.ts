@@ -27,7 +27,15 @@ export function barOf(lab: readonly [number, number, number]): number {
 }
 
 const TWO_PI_32 = (2 * Math.PI) ** 1.5
+/** Arm A's density truncation, `DENSITY_TRUNCATION_BANDWIDTHS = 8`, squared. Arm A only. */
 const TRUNC_SQ = 8 * 8
+/**
+ * The measurement layer's kernel truncation, `KERNEL_TRUNCATION_BANDWIDTHS = 4`. Written out rather
+ * than imported, for the same reason as `SOFTNESS_OCTAVES`: this file rebuilds the stated formulas.
+ * Arm A′'s chromatic residual says it applies *"the definitional cutoff, at the pair bandwidth,
+ * exactly as `smoothed-mass.ts` applies it"* — that is this number and not arm A's 8.
+ */
+const KERNEL_TRUNC_BANDWIDTHS = 4
 
 /**
  * `w` — arm A §4.2's softness, "one ladder octave", stated with no digits attached
@@ -468,6 +476,9 @@ export type ArmAPrimeResult = {
 	fieldTriples: number
 	inkTriples: number
 	genericTriples: number
+	/** `Ω`, the occupied cells of the colour-space footprint, and `log₂ Σρ`. */
+	chromaticCells: number
+	chromaticLog2Normaliser: number
 }
 
 /** L(P), rebuilt from `cost.ts`'s stated partition. */
@@ -483,6 +494,69 @@ export function serializationBits(config: Configuration): number {
 		roles + 2 + 1 + (config.gradient ? 2 : 0) + interior * (24 + 8) +
 		(config.escape === null ? 0 : 1024)
 	)
+}
+
+/**
+ * The chromatic residual (`src/energy/aprime/chromatic.ts`, A′ 0.2.0), rebuilt from its stated
+ * formula and by a **different algorithm**: a plain O(cells²) double loop over the joint lattice,
+ * with no slab index, no sorting, no reach heuristic and no cache. If the module's spatial index ever
+ * drops a neighbour it should be inside the cutoff, this loop will not.
+ *
+ *     ρ(q)          = Σ_{occupied cells q'} κ( d(x_q, x_q'), max(bar(x_q), bar(x_q')) )
+ *     κ(d, h)       = exp(−½ d²/h²),  and 0 at d² ≥ (4h)²
+ *     p_generic(c)  = ρ(cell(c)) / Σ_{c' over the K triples} ρ(cell(c'))
+ *     bits(c)       = log₂ Σρ − log₂ ρ(cell(c))
+ *
+ * Occupancy, not mass: every occupied cell contributes weight 1 and `counts` appears nowhere. The
+ * only place a pixel count can reach this quantity is through `cellLab`, which the measurement builds
+ * as a *mass-weighted* centroid — so ρ is mass-free per cell but not per cell **member**, and the
+ * verifier tests exactly that boundary.
+ */
+export function chromaticResidualBits(measurement: Measurement): {
+	cellDensity: Float64Array
+	bitsPerPixel: Float64Array
+	normaliser: number
+	log2Normaliser: number
+	occupiedCells: number
+} {
+	const lattice = measurement.joints.lattice
+	const cells = lattice.cellCount
+	const K = measurement.triples.colorCount
+	const cellBar = new Float64Array(cells)
+	for (let q = 0; q < cells; q += 1) {
+		cellBar[q] = barOf([
+			lattice.cellLab[q * 3],
+			lattice.cellLab[q * 3 + 1],
+			lattice.cellLab[q * 3 + 2],
+		])
+	}
+	const cellDensity = new Float64Array(cells)
+	for (let i = 0; i < cells; i += 1) {
+		let total = 0
+		for (let j = 0; j < cells; j += 1) {
+			const dl = lattice.cellLab[i * 3] - lattice.cellLab[j * 3]
+			const da = lattice.cellLab[i * 3 + 1] - lattice.cellLab[j * 3 + 1]
+			const db = lattice.cellLab[i * 3 + 2] - lattice.cellLab[j * 3 + 2]
+			const sq = dl * dl + da * da + db * db
+			const h = cellBar[i] > cellBar[j] ? cellBar[i] : cellBar[j]
+			if (sq >= KERNEL_TRUNC_BANDWIDTHS * KERNEL_TRUNC_BANDWIDTHS * h * h) continue
+			total += Math.exp(-0.5 * (sq / (h * h)))
+		}
+		cellDensity[i] = total
+	}
+	let normaliser = 0
+	for (let r = 0; r < K; r += 1) {
+		const q = lattice.tripleCell[r]
+		normaliser += q >= 0 ? cellDensity[q] : 1
+	}
+	const log2Normaliser = normaliser > 0 ? Math.log2(normaliser) : 0
+	const bitsPerPixel = new Float64Array(K)
+	for (let r = 0; r < K; r += 1) {
+		const q = lattice.tripleCell[r]
+		const d = q >= 0 && cellDensity[q] > 0 ? cellDensity[q] : 1
+		bitsPerPixel[r] = log2Normaliser - Math.log2(d)
+	}
+	return { cellDensity, bitsPerPixel, normaliser, log2Normaliser, occupiedCells: cells }
 }
 
 function h2(p: number): number {
@@ -519,6 +593,13 @@ export function armAPrime(
 	measurement: Measurement,
 	config: Configuration,
 	lambda = 1.0,
+	/**
+	 * `generic: "smoothed-mass"` rebuilds the **0.1.0** residual — `p_generic(c) ∝ m(c)`, the image's
+	 * smoothed *mass* — which 0.2.0 replaced. Kept for the same reason as `armA`'s `withSupport`: the
+	 * before/after of a repair has to be measurable on one fixture by one implementation, rather than
+	 * compared against numbers quoted from a report.
+	 */
+	options: { generic?: "chromatic" | "smoothed-mass" } = {},
 ): ArmAPrimeResult {
 	const { colorCount: K, counts, lab, pixelCount } = measurement.triples
 	const { covXX, covXY, covYY } = measurement.derived
@@ -544,14 +625,23 @@ export function armAPrime(
 		chain[r] = chainStart / n + 3
 	}
 
-	// --- generic code ----------------------------------------------------------------------------
-	const smoothed = measurement.smoothedMass.mass
-	let smoothedTotal = 0
-	for (let r = 0; r < K; r += 1) smoothedTotal += smoothed[r]
-	const generic = new Float64Array(K)
-	for (let r = 0; r < K; r += 1) {
-		generic[r] =
-			smoothed[r] > 0 ? Math.log2(smoothedTotal) - Math.log2(smoothed[r]) : Number.POSITIVE_INFINITY
+	// --- generic code: the chromatic residual (A′ 0.2.0), not smoothed mass ------------------------
+	// Until 0.1.0 this read `measurement.smoothedMass.mass`. 0.2.0 codes the residual against the
+	// image's colour-space occupancy instead; `chromaticResidualBits` rebuilds that from the stated
+	// formula by a different algorithm. `smoothedMass` is now read by nothing in arm A′.
+	const residual = chromaticResidualBits(measurement)
+	let generic = residual.bitsPerPixel
+	if (options.generic === "smoothed-mass") {
+		const smoothed = measurement.smoothedMass.mass
+		let smoothedTotal = 0
+		for (let r = 0; r < K; r += 1) smoothedTotal += smoothed[r]
+		generic = new Float64Array(K)
+		for (let r = 0; r < K; r += 1) {
+			generic[r] =
+				smoothed[r] > 0
+					? Math.log2(smoothedTotal) - Math.log2(smoothed[r])
+					: Number.POSITIVE_INFINITY
+		}
 	}
 
 	const tripleBar = new Float64Array(K)
@@ -707,5 +797,7 @@ export function armAPrime(
 		fieldTriples: a.ft,
 		inkTriples: a.it,
 		genericTriples: a.gt,
+		chromaticCells: residual.occupiedCells,
+		chromaticLog2Normaliser: residual.log2Normaliser,
 	}
 }

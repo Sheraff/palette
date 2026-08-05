@@ -1,12 +1,17 @@
 /**
  * VERIFIER — check 9: which of `cross-energy.ts`'s ordering disagreements did the extent code touch?
  *
- * `cross-energy.ts` reported **three** disagreements at energy 0.1.0 and reports **two** at 0.2.0.
+ * `cross-energy.ts` reported **three** disagreements at *arm A* 0.1.0 and **two** at arm A 0.2.0.
  * "The diptych one went away" is a claim about a difference, so it is measured as one: the two
  * fixtures that still disagree are re-scored by `recompute.ts`'s arm A with the extent code switched
  * **off** (`withSupport: false`, the pre-0.2.0 model) and **on**, and the orderings are put beside arm
  * A′'s. If a disagreement is present in both columns it pre-dates the fix and is a standing currency
  * difference; if it appears only in the "on" column the fix introduced it.
+ *
+ * **This file is about arm A's extent code only.** Arm A′ 0.2.0's chromatic residual added a *third*
+ * disagreement of its own (`A'-suite (d)`, the naming-gain fixture), and the symmetric question —
+ * which disagreements the *residual* moved — is answered in `cross-energy.ts`, which now carries its
+ * own 0.1.0 column and classifies each disagreement as a currency difference or a defect candidate.
  */
 
 import { join } from "node:path"

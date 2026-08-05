@@ -2,6 +2,18 @@
  * VERIFIER — check 5: do the two energies agree on the ORDERINGS of the eight synthetic cases the
  * two workers' suites use? They are different currencies (nats per unit image mass vs bits), so only
  * the ranking is comparable — but the mechanism predicts the same winners on cases this unambiguous.
+ *
+ * Since A′ 0.2.0 each disagreement is also **placed and classified**, because a raw count moves for
+ * two very different reasons and the number alone cannot say which:
+ *
+ * - **provenance** — every case is additionally scored by `recompute.ts`'s arm A′ with the *0.1.0*
+ *   residual switched back on (`generic: "smoothed-mass"`). A disagreement present in that column
+ *   pre-dates the chromatic residual; one absent from it arrived with the residual.
+ * - **currency-difference vs defect-candidate** — if A′ separates the entries and merely ranks them
+ *   differently from A, the two energies have an opinion each and the gap is a currency difference.
+ *   If A′'s totals are **bit-identical**, A′ has *no* opinion and the reported "ordering" is the
+ *   sort's stable input order; that is not a currency difference and is reported as a defect
+ *   candidate against A′, with the tie's size printed so the reader is not taking it on trust.
  */
 
 import { mkdtemp, rm } from "node:fs/promises"
@@ -14,6 +26,7 @@ import type { Configuration, ConfigurationStop } from "../../src/emit/types.ts"
 import { measureImage } from "../../src/measure/index.ts"
 import { energyOfA } from "../../src/energy/a/index.ts"
 import { energyOfAPrime } from "../../src/energy/aprime/index.ts"
+import { armAPrime, chromaticResidualBits } from "./recompute.ts"
 
 let dir = ""
 
@@ -70,6 +83,8 @@ function rampTriple(from: Rgb8, to: Rgb8, t: number): Rgb8 {
 type Case = { name: string; path: string; entries: [string, Configuration][] }
 
 let disagreements = 0
+let disagreementsAt010 = 0
+const verdicts: string[] = []
 
 function report(c: Case, measurementCache: Map<string, unknown>): Promise<void> {
 	return (async () => {
@@ -79,17 +94,57 @@ function report(c: Case, measurementCache: Map<string, unknown>): Promise<void> 
 			label,
 			a: energyOfA(m, cfg).total,
 			p: energyOfAPrime(m, cfg).total,
+			// The independent reimplementation, so the 0.2.0 column can be checked rather than trusted,
+			// and the 0.1.0 column can exist at all.
+			mine: armAPrime(m, cfg).total,
+			old: armAPrime(m, cfg, 1, { generic: "smoothed-mass" }).total,
 		}))
-		const byA = [...rows].sort((l, r) => l.a - r.a).map((r) => r.label)
-		const byP = [...rows].sort((l, r) => l.p - r.p).map((r) => r.label)
-		const same = byA.join(" < ") === byP.join(" < ")
+		const order = (key: "a" | "p" | "old") =>
+			[...rows].sort((l, r) => l[key] - r[key]).map((r) => r.label).join(" < ")
+		const byA = order("a")
+		const byP = order("p")
+		const byOld = order("old")
+		const same = byA === byP
+		const sameAt010 = byA === byOld
 		if (!same) disagreements += 1
+		if (!sameAt010) disagreementsAt010 += 1
+
+		// The tie test. A′ is a bit count, not an ordering, so two configurations it prices identically
+		// carry no ranking at all — `sort` is stable and hands back the input order, which is an artefact
+		// of the fixture's array literal and not a verdict.
+		const distinct = new Set(rows.map((r) => r.p)).size
+		const tied = distinct < rows.length
+		const exact = rows.every((r) => r.p === r.mine)
+
 		console.log(`\n### ${c.name}  ${same ? "AGREE" : "DISAGREE"}`)
 		for (const r of rows) {
-			console.log(`   ${r.label.padEnd(26)} A ${r.a.toFixed(6).padStart(14)} nats   A' ${r.p.toFixed(3).padStart(12)} bits`)
+			console.log(
+				`   ${r.label.padEnd(26)} A ${r.a.toFixed(6).padStart(14)} nats   A' ${r.p.toFixed(3).padStart(12)} bits` +
+					`   (0.1.0 residual ${r.old.toFixed(3).padStart(12)})`,
+			)
 		}
-		console.log(`   arm A  order: ${byA.join(" < ")}`)
-		console.log(`   arm A' order: ${byP.join(" < ")}`)
+		console.log(`   arm A  order: ${byA}`)
+		console.log(`   arm A' order: ${byP}`)
+		console.log(
+			`   recomputed independently, bit-exactly on every row: ${exact}` +
+				`${tied ? `   — A′ TIES ${rows.length - distinct + 1} entries bit-for-bit` : ""}`,
+		)
+		if (!same) {
+			const provenance = sameAt010 ? "NEW at A′ 0.2.0" : "PRE-EXISTING (also at A′ 0.1.0)"
+			const kind = tied
+				? "DEFECT-CANDIDATE — A′ has no opinion; the order shown is the sort's input order"
+				: "CURRENCY-DIFFERENCE — both energies separate the entries and rank them differently"
+			console.log(`   provenance: ${provenance};  ${kind}`)
+			verdicts.push(`${c.name}\n      ${provenance};  ${kind}`)
+			if (tied) {
+				const residual = chromaticResidualBits(m)
+				console.log(
+					`   why the tie: Ω = ${residual.occupiedCells}, log₂Σρ = ${residual.log2Normaliser.toFixed(6)} bits —` +
+						` under the ink code's 3-bit chain charge, so no colour in this image can repay a name and` +
+						` every configuration of the same length prices identically.`,
+				)
+			}
+		}
 	})()
 }
 
@@ -329,8 +384,10 @@ try {
 	)
 
 	console.log(
-		`\n=== ${disagreements === 0 ? "the two energies agree on every ordering" : `${disagreements} ORDERING DISAGREEMENT(S)`} ===`,
+		`\n=== ${disagreements === 0 ? "the two energies agree on every ordering" : `${disagreements} ORDERING DISAGREEMENT(S)`}` +
+			`, against ${disagreementsAt010} at the 0.1.0 residual ===`,
 	)
+	for (const verdict of verdicts) console.log(`   ${verdict}`)
 } finally {
 	await rm(dir, { recursive: true, force: true })
 }
