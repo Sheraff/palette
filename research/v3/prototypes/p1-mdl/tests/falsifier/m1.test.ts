@@ -15,23 +15,45 @@
  * ## The ordering, and why it is known in advance
  *
  * The fixture is the arm A′ **naming-gain** shape (`tests/energy-aprime/naming-gain.test.ts`, arm A′
- * §2.3; the same fixture family arm A's `orderings.test.ts` case (d) uses): a 64 × 64 image with a
- * large dull field, a second dull colour 1.58 identity bars away carrying 608 pixels, and a
- * chromatically isolated vivid patch 12.2 bars away carrying 81. The two entries differ in exactly
- * one field — which colour the ink names:
+ * §2.3; the same fixture family arm A's `orderings.test.ts` case (d) uses), at the alphabet size the
+ * chromatic residual (`src/energy/aprime/chromatic.ts`, A′ v0.2.0) needs to be exercised at all: a
+ * 64 × 64 image with **17 distinct triples in 14 occupied lattice cells** —
  *
- * - **good** names the vivid patch. Its 81 pixels cost 6.016 bits each generically and 3.148 named,
- *   so naming them saves `81 × 2.868 ≈ 232` bits.
- * - **bad** names the second dull colour. That colour lives inside the field's own kernel, so it is
- *   already cheap generically (1.730 bits) and dearer named (3.384): the assignment declines the
- *   name and the saving is exactly zero.
+ * | triple | rgb | pixels | where it sits |
+ * |---|---|---|---|
+ * | `FIELD` | `#464b55` | 3,127 | everything the blocks below do not cover |
+ * | `SECOND_DULL` | `#4a4f59` | 608 | a solid 38 × 16 block, 1.58 identity bars from `FIELD` |
+ * | 14 `SHADES` | `#424751`…`#4e535d` | 20 each | a 56 × 5 strip; the dull region's own crowd |
+ * | `VIVID` | `#dc1e28` | 81 | a solid 9 × 9 block, chromatically alone |
  *
- * Both configurations are flat and fully collapsed, so **Ω = 0 and L(P) = 51 bits for both**. The
- * structural halves of the two energies are therefore identical and the ordering is λ-independent by
- * construction — which is a property of the fixture, stated here, not a coincidence to be discovered.
- * The arithmetic above is arm A′'s; arm A prices the same pair in nats through a completely different
- * residual model (uniform over the sRGB gamut rather than the image's own density), and the test
- * asserts the ordering holds in **both** currencies, which is the only claim the falsifier needs.
+ * The 14 shades are why the alphabet has to be this rich. Under v0.2.0 the residual codes a triple
+ * against its **colour-space occupancy** `ρ` — how many distinct occupied cells sit within a bar or
+ * two of it, with no pixel mass anywhere — normalised over the image's own alphabet. A three-symbol
+ * alphabet gives `log₂ Σρ ≈ 1.58` bits per pixel, below the ink code's flat 3-bit chain charge, so
+ * *nothing* is ever nameable and every ordering below would be a tie. The shades put the neutral
+ * region where a real cover's shading puts it — crowded — and leave the vivid patch alone.
+ *
+ * The two entries differ in exactly one field, which colour the ink names, and both configurations
+ * are flat and fully collapsed:
+ *
+ * - **good** names the vivid patch. `ρ(VIVID) = 1` and `log₂ Σρ = 6.00415`, so its 81 pixels cost
+ *   6.00415 bits each generically; named they cost `log₂ Z = 0` plus the chain support
+ *   `12/81 + 3 = 3.14815`, so naming them saves `81 × (6.00415 − 3.14815) = 231.34` bits.
+ * - **bad** names the second dull colour. `ρ(SECOND_DULL) = 5.0258` — its own cell plus the shades'
+ *   and `FIELD`'s — so it is already cheap generically at 3.67479 bits, while naming it costs
+ *   `log₂ Z = 2.73190` plus chain `12/608 + 3 = 3.01974`, i.e. **5.75164**. The assignment declines
+ *   the name and the saving is exactly zero.
+ * - `FIELD` is declined by the *field* code for the same mass-free reason: `ρ(FIELD) = 5.0338` puts
+ *   it at 3.67251 bits generically, against `log₂ Z = 2.84518` plus coarse support 0.89613 = 3.74131
+ *   named. All 4,096 pixels of the bad entry are therefore residual, which is what makes its
+ *   explained mass exactly 0 below.
+ *
+ * Both entries carry **Ω = 0 and L(P) = 51 bits**, so the structural halves of the two energies are
+ * identical and the ordering is λ-independent by construction — a property of the fixture, stated
+ * here, not a coincidence to be discovered. The arithmetic above is arm A′'s; arm A prices the same
+ * pair in nats through a completely different residual model (uniform over the sRGB gamut rather than
+ * the image's own colour-space occupancy), and the test asserts the ordering holds in **both**
+ * currencies, which is the only claim the falsifier needs.
  *
  * ```sh
  * cd research/v3
@@ -60,20 +82,54 @@ import {
 } from "../../src/falsifier/types.ts"
 import { cleanupFixtures, legacyEntry, writeRgbImage } from "./support.ts"
 
-/** The large dull field: everything the two blocks below do not cover. */
+/** The large dull field: everything the blocks below do not cover. */
 const FIELD: Rgb8 = [70, 75, 85]
 /** A second dull colour, 1.58 identity bars from the field. 38 × 16 = 608 pixels. */
 const SECOND_DULL: Rgb8 = [74, 79, 89]
-/** The chromatically isolated patch, 12.2 bars from the field. 9 × 9 = 81 pixels. */
+/**
+ * The dull region's crowd in colour space: 14 neutrals within a bar or two of `FIELD` and
+ * `SECOND_DULL`, 20 pixels each. They carry 6.8% of the frame and decide nothing by mass — they
+ * exist so `ρ(FIELD)` and `ρ(SECOND_DULL)` are ≈ 5 rather than ≈ 2, which is what makes the two dull
+ * colours cheap generically and therefore unnameable. Without them the alphabet is too small for the
+ * residual to price anything above the ink code's 3-bit chain charge.
+ */
+const SHADES: readonly Rgb8[] = [
+	[68, 73, 83],
+	[72, 77, 87],
+	[76, 81, 91],
+	[66, 71, 81],
+	[78, 83, 93],
+	[70, 77, 87],
+	[74, 75, 85],
+	[68, 79, 89],
+	[76, 73, 83],
+	[72, 81, 91],
+	[70, 73, 89],
+	[74, 81, 83],
+	[66, 77, 85],
+	[78, 75, 91],
+]
+/** The chromatically isolated patch: `ρ = 1`, nothing within the truncation radius. 9 × 9 = 81. */
 const VIVID: Rgb8 = [220, 30, 40]
 
-const VIVID_PIXELS = 81
+const VIVID_PIXELS = 9 * 9
+const SECOND_DULL_PIXELS = 38 * 16
+/** The strip is 56 × 5 = 280 and 56 is a multiple of 14, so every shade gets exactly 20 pixels. */
+const SHADE_STRIP_WIDTH = 56
+const SHADE_STRIP_HEIGHT = 5
+const SHADE_PIXELS = (SHADE_STRIP_WIDTH * SHADE_STRIP_HEIGHT) / SHADES.length
 const PIXELS = 64 * 64
+const FIELD_PIXELS = PIXELS - SECOND_DULL_PIXELS - VIVID_PIXELS - SHADE_STRIP_WIDTH * SHADE_STRIP_HEIGHT
+/** 1 field + 1 second dull + 14 shades + 1 vivid. */
+const TRIPLE_COUNT = 2 + SHADES.length + 1
 
 const SHA = "0000000000000000000000000000000000000000000000000000000000000001"
 
-/** The hand-derived likelihood gain from naming the isolated patch, in bits. */
-const EXPECTED_GAIN_BITS = 232.3
+/**
+ * The hand-derived likelihood gain from naming the isolated patch, in bits:
+ * `81 × (6.00415 − (0 + 12/81 + 3)) = 81 × 2.85601 = 231.34`.
+ */
+const EXPECTED_GAIN_BITS = 231.34
 
 let imagePath: string
 let measurement: Measurement
@@ -86,6 +142,9 @@ before(async () => {
 	imagePath = await writeRgbImage("naming-gain.png", 64, 64, (x, y) => {
 		if (y < 16 && x < 38) return SECOND_DULL
 		if (y >= 40 && y < 49 && x >= 40 && x < 49) return VIVID
+		if (y >= 50 && y < 50 + SHADE_STRIP_HEIGHT && x < SHADE_STRIP_WIDTH) {
+			return SHADES[((y - 50) * SHADE_STRIP_WIDTH + x) % SHADES.length]
+		}
 		return FIELD
 	})
 	measurement = await measureImage(imagePath)
@@ -115,12 +174,22 @@ after(async () => {
 })
 
 describe("the fixture is the image the ordering argument assumes", () => {
-	test("three triples, the exact smoothed-mass path, the painted proportions", () => {
-		assert.equal(measurement.triples.colorCount, 3)
+	test("seventeen triples in fourteen cells, the exact smoothed-mass path, the painted proportions", () => {
+		assert.equal(measurement.triples.colorCount, TRIPLE_COUNT)
 		assert.equal(measurement.triples.pixelCount, PIXELS)
 		assert.equal(measurement.smoothedMass.mode, "exact")
 		const counts = [...measurement.triples.counts].sort((left, right) => right - left)
-		assert.deepEqual(counts, [PIXELS - 608 - 81, 608, 81])
+		assert.deepEqual(counts, [
+			FIELD_PIXELS,
+			SECOND_DULL_PIXELS,
+			VIVID_PIXELS,
+			...SHADES.map(() => SHADE_PIXELS),
+		])
+		// The residual's alphabet is the occupied cells of the identity-bar lattice, and it has to be
+		// large enough that `log₂ Σρ` clears the ink code's 3-bit chain charge — the property the old
+		// three-triple fixture lacked. Fourteen cells: the two dulls and the shades collapse into
+		// thirteen, the vivid sits alone in the fourteenth.
+		assert.equal(measurement.joints.lattice.cellCount, 14)
 	})
 })
 
@@ -159,7 +228,7 @@ describe("end-to-end: the hand-known ordering", () => {
 		}
 	})
 
-	test("arm A′'s margin is the hand-derived 232 bits", () => {
+	test("arm A′'s margin is the hand-derived 231 bits", () => {
 		const gain = bad.p1ap.dataPart - good.p1ap.dataPart
 		assert.ok(Math.abs(gain - EXPECTED_GAIN_BITS) < 0.5, `gain was ${gain} bits`)
 	})
@@ -172,8 +241,10 @@ describe("end-to-end: the hand-known ordering", () => {
 			assert.ok(Math.abs(score.explainedMassFraction - (1 - generic)) < 1e-12)
 			assert.ok(score.explainedMassFraction >= 0 && score.explainedMassFraction <= 1)
 		}
-		// The good entry explains exactly the vivid patch and nothing else; the bad entry explains
-		// nothing at all, because the colour it names is cheaper left in the residual.
+		// The good entry explains exactly the vivid patch and nothing else — its background names
+		// `FIELD`, whose field code (2.84518 + 0.89613 = 3.74131 bits/px) is dearer than its generic
+		// one (3.67251), so the field declines too. The bad entry explains nothing at all: both the
+		// colour it names and the field it sits on are cheaper left in the residual.
 		assert.equal(good.explainedMassFraction, VIVID_PIXELS / PIXELS)
 		assert.equal(bad.explainedMassFraction, 0)
 		// Which puts the two on opposite sides of the report's degeneracy cut — the artwork's stratum
