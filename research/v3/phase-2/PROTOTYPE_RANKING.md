@@ -1,63 +1,91 @@
-# Phase 2 prototype ranking — pre-pause snapshot
+# Phase 2 prototype ranking — pause snapshot
 
-**Written 2026-08-05 by the Phase 2 orchestrator at the reviewer's request, ahead of a planned
-pause.** Criteria, in order: reviewer verdicts (the only judge), instrument health, trajectory.
+**Written 2026-08-05 by the Phase 2 orchestrator at the reviewer's request; updated at the
+park order the same day.** Criteria, in order: reviewer verdicts (the only judge), instrument
+health, trajectory.
 
-**Caveats.** Grade counts across rounds are not strictly comparable — different covers, and
-difficulty escalates as arms deliberately probe their own weaknesses. P2's round-3 and P5's
-round-3 verdicts were released but still under analysis by their owning orchestrators when this
-was written; P2 is the one arm whose rank could plausibly jump on those reads. This is a
-main-tier synthesis of reported evidence, not a fresh decode of warehouse rows.
+**Parked state.** The fleet is parked; each orchestrator's PARKED.md holds its exact resume
+sequence. Inputs pending at park time, in whoever-resumes' inbox: three released rounds not yet
+analyzed by their arms (P5's phase2-cal-013; P2's phase2-cal-014 and phase2-pair-015); P2's
+oracle ground-truth fixture restaged and awaiting REVIEW-READY + install; P1's v1 re-emission
+finishing on CPU with its keep-or-kill round owed after. Grade counts across rounds are not
+strictly comparable — different covers, and difficulty escalates as arms probe their own
+weaknesses. This is a main-tier synthesis of reported evidence, not a fresh decode of warehouse
+rows.
 
 ## 1. P3 — per-pixel scalar fields and ranks
 
-The strongest record on every axis. Reviewer grades improved round-over-round; its second
-calibration scored 4 strong / 2 acceptable / 3 weak with **all four returning failure covers
-fixed to strong and zero repeat complaints** — the only arm to fully convert reviewer verdicts
-into judge-validated fixes. Best-measured robustness (16.8% overall disagreement, overfit ratio
-1.128×), adjudication 1W/0L, and its remaining weakness is located and under a gated experiment
-(the edge/depth substrate; continuous-coherence replacement measured before any default flips).
-Also the only genuine novelty of the six per `PRIOR_ART_CHECK.md`.
+The strongest record on every axis, and the gap widened since the first snapshot. Reviewer
+grades improved round-over-round; its second calibration scored 4 strong / 2 acceptable / 3 weak
+with **all four returning failure covers fixed to strong and zero repeat complaints** — the only
+arm to fully convert reviewer verdicts into judge-validated fixes. Its polarity round resolved as
+an honest pre-registered null with high off-branch yield: the salience watch fired live (a
+published colour read by the reviewer as "coming from some dithering or texture artifact"), and
+reviewer consistency on the accent-identity axis is now demonstrated across rounds (8 counts +
+2 cross-round confirmations). The 0.4.0 quality half is committed: banding class eliminated
+(4-stop ramps 28→0 on coverage, gradient count unchanged), guide-stop canon implemented,
+contract-valid 198→200, and a real mechanism finding on the way (its curve parameter wasn't a
+curve — the "meandering is unreachable" claim was false and is fixed). Best-measured robustness
+(16.8% overall, overfit 1.128×), adjudication 1W/0L. Remaining weakness located (edge/depth
+substrate) with the coherence-field replacement mid-experiment (W13) behind pre-registered gates.
+Its floor finding generalized fleet-wide: reviewer-named marks sit below population floors —
+median endorsed role colour has 8.89e-5 exact-triple share. Only genuine novelty of the six per
+`PRIOR_ART_CHECK.md`.
 
 ## 2. P2 — hierarchical region decomposition (tree of shapes carried forward)
 
 The strongest instruments: 91.9% endorsed-colour reachability, best single robustness number
-(12.0% pre-merge), zero epsilon-margin pairs (audited, not assumed), fastest runtime
-(627 ms/palette). Not yet earned: top reviewer grades — its palettes have reached acceptable but
-never strong. Its round-3 verdicts (fresh covers + two priced trade-off pairs) were released just
-before this snapshot; a good read there could contest first place.
+(12.0% pre-merge; merged-suite numbers unread at park), zero epsilon-margin pairs (audited),
+fastest runtime (627 ms/palette). Not yet earned: top reviewer grades — acceptable, never strong.
+Unread at park: its round-3 verdicts (6 fresh covers spanning structure classes + the two priced
+trade-off pairs: the coral-vs-olive accent exchange rate and a salience cut that moves 12/20
+palettes) — the one pending read that could contest first place. Also parked: its restaged
+ground-truth labeling round (flat-vs-gradient enum on 8 artworks, `/oracle` page, no server work
+needed) — the campaign's first non-palette round, targeting the missed-gradient blind spot every
+arm shares.
 
 ## 3. P5 — robust parametric field fit plus residual marks
 
 Doing its control-floor job well: cheapest, most verdict-responsive (the reviewer-named pink
-accent, black foreground, guide-stop machinery now publishing real gradients), positive
-trajectory. But grades remain mixed (fresh covers still draw unacceptables), and robustness is
-the standing weakness: ~42% overall disagreement, accent instability ~45–50% across selection
-rules, pinned to candidate agglomeration. Valuable as benchmark and parts-donor; less likely the
-winner.
+accent, black foreground, guide-stop machinery now publishing 6/8 gradients in its third round —
+up from 2/8 — with the sunset cover's gradient recovered), positive trajectory, zero contract
+violations across three item sets, 53/53 tests. Round-3 (phase2-cal-013) released but unanalyzed
+at park. Standing weakness unchanged: robustness ~42% overall, accent instability ~45–50% across
+three selection rules, pinned to candidate agglomeration; stabilization is its committed
+next-after-verdicts milestone. Valuable as benchmark and parts-donor; less likely the winner.
 
 ## 4. P1 — one global objective priced as description length
 
-MECHANISM-FALSIFIED at v0 (mass-weighted residual pricing condemned by both legacy evidence and
-live verdicts; degenerate collapses traced to an uncalibrated λ). Alive on the reviewer's
-one-bounded-iteration grant; early v1 signal is genuinely encouraging (collapse degeneracy gone at
-recalibrated λ; first ramp emerged; the chromatic residual reproduces the reviewer's own item-2
-pattern). Everything rests on its single keep-or-kill round. Fleet-best record of intellectual
-honesty (pre-registered falsifiers, self-corrections).
+MECHANISM-FALSIFIED at v0 (mass-weighted residual pricing condemned by legacy evidence and live
+verdicts; degenerate collapses traced to λ=1 uncalibrated × budget-exhausted searches). Alive on
+the reviewer's one-bounded-iteration grant, and v1 is measurably repairing both defects: the
+chromatic residual (zero new constants, isolation-decides naming) reproduces the reviewer's own
+item-2 pattern in tests, and the λ-probe put the collapse degeneracy on record (λ=1 collapses
+11/12 cells; structure at λ=0.1, now the [MEASURED] operating point) — mid-re-emission, arm A is
+producing mixed structure including its first-ever ramp, versus v0's 20/20 two-colour collapse.
+Everything rests on the single keep-or-kill round owed after re-emission. Fleet-best record of
+intellectual honesty.
 
 ## 5. P6 — one continuous joint figure–ground measure
 
-Closed: MECHANISM-FALSIFIED on its own pre-registered instruments — two exchange rates
-load-bearing without principle (the continuity defence measurably false, exactly as
-`PRIOR_ART_CHECK.md` predicted), structural role degeneracy at every anisotropy, and every
-reviewer-graded axis (margins, role distinctness, family coverage) requiring precisely the
-hand-weighted terms the proposal forswore. Verified salvage outlives it: exact joint search
-(bit-identical to brute force at real scale), blur-ladder surround, excursion profiler, staging
-pipeline — most useful inside P4 or grafted onto a finalist. Inheritance note: presence mass may
-inform *which role* a colour fills, never whether it may fill one.
+Closed and stood down, with a complete record: **both independent pre-registered falsifiers
+fired** — exchange rates load-bearing without principle (belonging ×½/×2 moves 69%/56% of
+palettes; the continuity defence measurably false, exactly as `PRIOR_ART_CHECK.md` predicted)
+and robustness measured and failed on its own bars (dither 0.6875 vs ≥0.98, jpeg-q92 0.9375 vs
+≥0.95, fast-cover bias disclosed). Role vocabulary structurally degenerate at every anisotropy.
+Every bake-off cell measured; three self-corrections on the record. Verified salvage inventoried
+in its `REOPENING_ANALYSIS.md`: exact joint search (bit-identical to brute force at real scale),
+byte-determinism with an empty exception mask, blur-ladder surround and lattice quadrature,
+excursion profiler (the campaign's only working excursion measurement), staging pipeline with
+blinding test. Inheritance note: rarity is what gets endorsed — presence mass is evidence about
+*which role* a colour fills, never an eligibility cost.
 
 ## Not yet launched: P4 — portfolio of rival extractors under a selector
 
-Prospects *improved* by the falsifications: a selector choosing among P3/P2/P5, with P6's salvage
-machinery available, is a more honest test of the selector — the historically always-failed
-component — than the thin-sketch version would have been.
+Prospects *improved* by the falsifications: a selector choosing among P3/P2/P5 (P1 pending its
+keep-or-kill), with P6's salvage machinery available, is a more honest test of the selector — the
+historically always-failed component — than the thin-sketch version would have been. Launch
+material staged: member inventory above, P6 salvage list, and the cross-arm evidence corpus
+(reviewer principles: readability incl. accent, margins-not-floors, identity coverage incl.
+foreground, salience gates eligibility, guide-stop canon, 2-stop preference with misuse cost,
+family separation, no phantom gradients — both error directions live).
