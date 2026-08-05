@@ -5,6 +5,21 @@ palette is shown, and no candidate is on screen** — there is nothing to blind,
 being compared. **Staged 2026-08-04** by the round-2 staging worker; the main orchestrator installs
 it. Files: `build.ts`, `fixture.json`, `validate.ts`, this document.
 
+> **Restaged 2026-08-05.** The first staging was aborted at install for a blinding defect: the batch
+> id and the schema version both carried the prototype token, and both are served — the schema
+> version drives page routing and the batch id is on screen. Every served string is now free of
+> prototype, arm and round tokens, and `validate.ts` walks every string field of the fixture to keep
+> it that way. Item selection, the question and the wording are unchanged.
+
+## Routing — for the main orchestrator
+
+**No new page and no round kit is required.** This is a single plain enum question with one-keystroke
+hotkeys and an escape — exactly the shape the **existing `/oracle` page** already serves. The only
+thing owed is a `batchReviewPaths` branch for `field-gradient-labels.v1`, pending on your side.
+
+**The fixture's only forced choice carries the `cant_tell` escape** (hotkey `u`). There is one
+question, and it is answerable without filing a reading the reviewer does not hold.
+
 > **This document is not servable.** Everything the fixture deliberately does not carry lives here:
 > the constants under consideration, the source study, the per-artwork legacy record and the
 > per-artwork category. `validate.ts` scans `fixture.json`'s raw bytes and fails on any of it. Same
@@ -148,8 +163,11 @@ palette**. Answering it again with no palette on screen separates two things rou
 
 ## The question set — a new schema version, and why
 
-`labelSchemaVersion` is **`p2-field-gradient.v1`**, minted here. Question key `field-gradient`, kind
-`enum`, four answers: `flat` (1), `gradient` (2), `neither` (3), `cant_tell` (u).
+`labelSchemaVersion` is **`field-gradient-labels.v1`**, minted here; `batchId` is
+**`field-gradient-labels-1`**. Both are deliberately neutral — the first staging used
+`p2-field-gradient.v1` / `p2-field-gradient-1`, and that is the defect it was aborted for. Question
+key `field-gradient`, kind `enum`, four answers: `flat` (1), `gradient` (2), `neither` (3),
+`cant_tell` (u) — the escape.
 
 Reuse of the standing ground-structure schema `group-a.v2` / `ground_type` was considered first — its
 `flat_field` / `shaded_field` vocabulary is close — and rejected on two facts, either sufficient:
@@ -169,6 +187,22 @@ two colour areas meeting are **neither**, however soft the join, because softnes
 the test; and `can't tell` is a real answer that is measured, not penalized.
 
 ## Provenance
+
+### Logical names in the fixture → true repository paths
+
+`generatedBy` and `builtFrom` are fields of a **served** fixture, and this round's builder and this
+document live at paths that name the prototype and the round. A true path there is a leak in a field
+nobody thinks of as reviewer-visible, which is exactly how the first staging failed. The fixture
+therefore carries logical names, resolved here:
+
+| in the fixture | true path |
+|---|---|
+| `field-gradient-labels/build.ts` | `research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts` |
+| `field-gradient-labels/ROUND.md` | `research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/ROUND.md` |
+| `research/v3/data/oracle-premise/eval-set.json` | unchanged — it carries no token, so it is named outright |
+
+The provenance is not lost; it is one hop away and out of the served payload. The round directory
+holds exactly one `build.ts`, so the resolution is unambiguous.
 
 - Selection source: `../../tos/stability/q2-laminarity/report.json`, `flips[]` at role
   `monotone-only` (22 covers), with role `best-agreement` (23 covers) as the declared backfill. The
@@ -194,7 +228,21 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types validate.ts  # exit 0 or it d
 
 `validate.ts` asserts: 8 items; every image file exists under the repository root; every `sha256`
 matches the bytes; exactly one question, of kind `enum`, with a stem, an instruction, a preamble, a
-framing and four distinctly-hotkeyed answers; an escape answer present; no placeholder markers; no
-candidate name, constant, measurement word, pipeline verdict token or legacy record anywhere in the
-fixture's raw bytes; `serveOrder` covering every item exactly once; and a **deterministic rebuild** —
-it runs `build.ts` twice more and byte-compares both results against the committed file.
+framing and four distinctly-hotkeyed answers; an escape answer present; no placeholder markers;
+`serveOrder` covering every item exactly once; and a **deterministic rebuild** — it runs `build.ts`
+twice more and byte-compares both results against the committed file.
+
+The **leak scan** is the check the restage strengthened. It now walks **every string field of the
+parsed fixture — values and object keys alike** — and then re-scans the raw bytes as a backstop, so
+no field is exempt by being unfamiliar. Forbidden: the prototype, round and arm tokens (`p2`,
+`p2-tree`, `prototype`, `round-1`, `round-2`, the candidate and family names), the constants and
+measurement words under consideration, the pipeline's verdict vocabulary minus the two the reviewer
+is offered, the legacy record, and palette output. `flat` and `gradient` are absent from that list
+only because they are the reviewer's own answer vocabulary here.
+
+The scan is itself checked before it is trusted: `validate.ts` runs it against the retired
+`p2-field-gradient.v1`, in the field that id rode in on, and fails if no finding is produced — and it
+runs it against this round's own schema id and fails if one is. Verified end to end as well: the
+committed fixture was tampered with to carry the retired id, `validate.ts` failed with
+`$.labelSchemaVersion leaks "p2"` plus the raw-byte backstop, and the file was then rebuilt and
+byte-compared back to the committed bytes.

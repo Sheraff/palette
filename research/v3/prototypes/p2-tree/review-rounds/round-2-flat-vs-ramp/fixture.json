@@ -1,17 +1,17 @@
 {
 	"fixtureVersion": "oracle-validation-1",
-	"batchId": "p2-field-gradient-1",
+	"batchId": "field-gradient-labels-1",
 	"purpose": "oracle-validation",
-	"labelSchemaVersion": "p2-field-gradient.v1",
+	"labelSchemaVersion": "field-gradient-labels.v1",
 	"seed": 20260804,
-	"generatedBy": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+	"generatedBy": "field-gradient-labels/build.ts",
 	"builtFrom": [
 		"research/v3/data/oracle-premise/eval-set.json",
-		"research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
-		"research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/ROUND.md"
+		"field-gradient-labels/build.ts",
+		"field-gradient-labels/ROUND.md"
 	],
 	"selection": {
-		"rule": "Eight artworks, chosen before any of them was looked at. One is the artwork the reviewer commented on in round 1, whose comment opened this question; it is the anchor and it is drawn first. The other seven come from a committed set of covers whose automatic field reading changes when a single parameter of that reading is moved to its literal value — the change under consideration. Those covers are split by what the legacy corpus records about them: three where the legacy record says the field is a progression and the change would stop calling it one (the costliest error the change can make), two where the legacy record says the field is flat and the change would stop calling it a progression, and two that carry no legacy record at all. Within each group the artworks are taken first by sorted image path, so none was chosen for how it looks; the anchor is removed from the later groups so no artwork is drawn twice. The source file that produced the seven, the per-artwork legacy record, and the parameter under consideration are named in ROUND.md and deliberately not here: this round is the primary judge answering about an artwork, and nothing that could tell them what to answer travels with the items.",
+		"rule": "Eight artworks, chosen before any of them was looked at. One is an artwork whose earlier reading raised the question this round asks; it is the anchor and it is drawn first. The other seven come from a committed set of covers whose automatic field reading changes when a single parameter of that reading is moved to its literal value — the change under consideration. Those covers are split by what the legacy corpus records about them: three where the legacy record says the field is a progression and the change would stop calling it one (the costliest error the change can make), two where the legacy record says the field is flat and the change would stop calling it a progression, and two that carry no legacy record at all. Within each group the artworks are taken first by sorted image path, so none was chosen for how it looks; the anchor is removed from the later groups so no artwork is drawn twice. The source file that produced the seven, the per-artwork legacy record, and the parameter under consideration are named in the round's own directory and deliberately not here: this round is the primary judge answering about an artwork, and nothing that could tell them what to answer travels with the items.",
 		"counts": {
 			"anchor": 1,
 			"legacy_progression_group": 3,
@@ -67,7 +67,7 @@
 			"artworkId": "00001448e1c8dadd225466f4",
 			"collection": "sharded-corpus",
 			"rendition": {
-				"source": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+				"source": "field-gradient-labels/build.ts",
 				"sourceEntryId": "377b1cc24ef36613",
 				"longEdgePx": 300,
 				"width": 300,
@@ -135,7 +135,7 @@
 			"artworkId": "000200344e34f02b55e8292a",
 			"collection": "sharded-corpus",
 			"rendition": {
-				"source": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+				"source": "field-gradient-labels/build.ts",
 				"sourceEntryId": "7b3b6cd562036531",
 				"longEdgePx": 300,
 				"width": 300,
@@ -186,7 +186,7 @@
 			"artworkId": "000018e9b0ec8fc5ac790164",
 			"collection": "sharded-corpus",
 			"rendition": {
-				"source": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+				"source": "field-gradient-labels/build.ts",
 				"sourceEntryId": "fc39e6beb57fd263",
 				"longEdgePx": 300,
 				"width": 300,

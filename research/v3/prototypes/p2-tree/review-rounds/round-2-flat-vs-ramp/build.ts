@@ -46,7 +46,17 @@ const FIXTURE_PATH = join(HERE, "fixture.json")
 
 /** The wire shape is the oracle-validation fixture's, unchanged; only the question set is new. */
 export const FIXTURE_VERSION = "oracle-validation-1"
-export const BATCH_ID = "p2-field-gradient-1"
+/**
+ * Neutral, and deliberately so.
+ *
+ * The first staging of this round was aborted at install for a blinding defect: the batch id and the
+ * schema version both carried the prototype token. Neither is an internal note — the schema version
+ * drives page routing and the batch id is on screen — so both would have told the reviewer whose
+ * reading they were about to underwrite, on a round whose entire value is that they answer about the
+ * artwork with nothing else on screen. Every served string is now free of prototype, arm and round
+ * tokens; the true names live in the round's own directory. `validate.ts` enforces it.
+ */
+export const BATCH_ID = "field-gradient-labels-1"
 
 /**
  * A NEW schema version, rather than a reuse of the standing ground-structure one.
@@ -66,8 +76,10 @@ export const BATCH_ID = "p2-field-gradient-1"
  * three ways; this round does not need that split to answer its question, and every extra key is
  * another way for two rounds' answers to be incomparable.
  */
-export const LABEL_SCHEMA_VERSION = "p2-field-gradient.v1"
+export const LABEL_SCHEMA_VERSION = "field-gradient-labels.v1"
 export const QUESTION_KEY = "field-gradient"
+/** The aborted first staging's id. Kept only so `validate.ts` can prove the scan catches it. */
+export const RETIRED_LABEL_SCHEMA_VERSION = "p2-field-gradient.v1"
 /** Fixed so the committed serve order is reproducible. [UNCALIBRATED] — the build date. */
 export const SEED = 20260804
 
@@ -79,8 +91,18 @@ const REPORT_PATH = fileURLToPath(
 )
 const EVAL_SET_PATH = fileURLToPath(new URL("../../../../data/oracle-premise/eval-set.json", import.meta.url))
 const EVAL_SET_REL = "research/v3/data/oracle-premise/eval-set.json"
-const BUILDER_REL = "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts"
-const ROUND_REL = "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/ROUND.md"
+/**
+ * Logical names, not repository paths — the one place this round departs from the other fixtures'
+ * convention, and it is the blinding defect's doing.
+ *
+ * `generatedBy` and `builtFrom` are fields of a served fixture, and this round's builder and round
+ * document live at paths that name the prototype and the round. A true path there is a leak in a
+ * field nobody thinks of as reviewer-visible, which is exactly how the first staging failed. The
+ * resolution — logical name → true repository path — is a table in the round document, so the
+ * provenance is not lost, it is one hop away and out of the served payload.
+ */
+const BUILDER_REL = "field-gradient-labels/build.ts"
+const ROUND_REL = "field-gradient-labels/ROUND.md"
 
 /* ------------------------------------------------------------------------------------------- */
 /* The question                                                                                  */
@@ -289,8 +311,8 @@ async function buildItem(imagePath: string, evalSet: ReadonlyMap<string, EvalSet
  * by content hash for the same reason, so position in the file carries no category either.
  */
 const SELECTION_RULE =
-	"Eight artworks, chosen before any of them was looked at. One is the artwork the reviewer " +
-	"commented on in round 1, whose comment opened this question; it is the anchor and it is drawn " +
+	"Eight artworks, chosen before any of them was looked at. One is an artwork whose earlier reading " +
+	"raised the question this round asks; it is the anchor and it is drawn " +
 	"first. The other seven come from a committed set of covers whose automatic field reading changes " +
 	"when a single parameter of that reading is moved to its literal value — the change under " +
 	"consideration. Those covers are split by what the legacy corpus records about them: three where " +
@@ -300,8 +322,8 @@ const SELECTION_RULE =
 	"each group the artworks are taken first by sorted image path, so none was chosen for how it " +
 	"looks; the anchor is removed from the later groups so no artwork is drawn twice. The source file " +
 	"that produced the seven, the per-artwork legacy record, and the parameter under consideration " +
-	"are named in ROUND.md and deliberately not here: this round is the primary judge answering about " +
-	"an artwork, and nothing that could tell them what to answer travels with the items."
+	"are named in the round's own directory and deliberately not here: this round is the primary judge " +
+	"answering about an artwork, and nothing that could tell them what to answer travels with the items."
 
 export async function build(): Promise<{ fixture: OracleValidationFixture; selected: readonly Selected[]; substitutions: readonly string[] }> {
 	const flipSets = await readFlipSets()

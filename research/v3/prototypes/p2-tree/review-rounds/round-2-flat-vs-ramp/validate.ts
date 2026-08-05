@@ -16,7 +16,7 @@ import { readFile, stat, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { validateFixture, type OracleValidationFixture } from "../../../../src/review-server/oracle-validation.ts"
-import { BATCH_ID, LABEL_SCHEMA_VERSION, QUESTION_KEY } from "./build.ts"
+import { BATCH_ID, LABEL_SCHEMA_VERSION, QUESTION_KEY, RETIRED_LABEL_SCHEMA_VERSION } from "./build.ts"
 
 const HERE = fileURLToPath(new URL("./", import.meta.url))
 const REPO_ROOT = fileURLToPath(new URL("../../../../../../", import.meta.url))
@@ -24,8 +24,6 @@ const FIXTURE_PATH = join(HERE, "fixture.json")
 const BUILD_PATH = join(HERE, "build.ts")
 
 const EXPECTED_ITEMS = 8
-/** This round's own directory name, masked out of the leak scan. See the scan for why. */
-const ROUND_DIR_NAME = "round-2-flat-vs-ramp"
 /** Any one of these, as an answer key, is a reviewer's way out of a forced choice. */
 const ESCAPE_KEYS = new Set(["cant_tell", "cannot_tell", "unsure", "none_discernible"])
 
@@ -40,6 +38,16 @@ const ESCAPE_KEYS = new Set(["cant_tell", "cannot_tell", "unsure", "none_discern
  * rather than asserted about any artwork.
  */
 const FORBIDDEN = [
+	// the prototype, the round and the arms — the class of leak that aborted the first staging.
+	// `p2` is bare on purpose: it is the token that rode in on a schema version and a batch id, both
+	// of which are served, and it cannot collide with a content hash (hex has no `p`).
+	"p2",
+	"p2-tree",
+	"prototype",
+	"round-1",
+	"round-2",
+	"round 1",
+	"round 2",
 	// candidates, families, prior arms
 	"p2-tos",
 	"p2-alpha",
@@ -85,6 +93,48 @@ const FORBIDDEN = [
 const failures: string[] = []
 function check(condition: boolean, message: string): void {
 	if (!condition) failures.push(message)
+}
+
+/**
+ * Every string in the fixture, with the path that leads to it.
+ *
+ * Walked structurally rather than only scanned as raw bytes, for the reason the aborted first
+ * staging demonstrated: a leak is easy to see in the question text and easy to MISS in a field
+ * nobody thinks of as reviewer-visible. `labelSchemaVersion` drives page routing and `batchId` is on
+ * screen; both carried the prototype token and both read as internal bookkeeping. Enumerating the
+ * strings means no field is exempt by being unfamiliar — object keys are walked too, so a leak in a
+ * key name fails exactly like a leak in a value.
+ */
+function* strings(node: unknown, path = "$"): Generator<{ path: string; value: string }> {
+	if (typeof node === "string") {
+		yield { path, value: node }
+		return
+	}
+	if (Array.isArray(node)) {
+		for (const [index, child] of node.entries()) yield* strings(child, `${path}[${index}]`)
+		return
+	}
+	if (node !== null && typeof node === "object") {
+		for (const [key, child] of Object.entries(node)) {
+			yield { path: `${path}.${key} (key)`, value: key }
+			yield* strings(child, `${path}.${key}`)
+		}
+	}
+}
+
+/** Every forbidden token found in a fixture-shaped value, as `path → token` findings. */
+function leaks(node: unknown): string[] {
+	const found: string[] = []
+	for (const { path, value } of strings(node)) {
+		const haystack = value.toLowerCase()
+		for (const needle of FORBIDDEN) {
+			if (haystack.includes(needle.toLowerCase())) {
+				const at = haystack.indexOf(needle.toLowerCase())
+				found.push(`${path} leaks "${needle}": …${value.slice(Math.max(0, at - 50), at + 50)}…`)
+			}
+		}
+	}
+	return found
 }
 
 async function sha256Of(path: string): Promise<string> {
@@ -174,16 +224,38 @@ async function main(): Promise<void> {
 	for (const id of fixture.serveOrder) check(known.has(id), `serveOrder names unknown item ${id}`)
 	for (const id of itemIds) check(fixture.serveOrder.includes(id), `item ${id} is never served`)
 
-	// 6. Leak scan over the raw bytes — not over the parsed object, so a leak in a key, a comment-like
-	// string or an unread field is caught the same as a leak in a value.
-	// The round's own directory name is masked out first. It contains the word `ramp` and is the one
-	// place that word may legitimately appear: it names this round's subject, it appears only inside
-	// repository paths in `generatedBy` and `builtFrom`, and it says nothing about any artwork. The
-	// mask is exact and narrow — the bare word anywhere else still fails.
-	const raw = before.toString("utf8").toLowerCase().split(ROUND_DIR_NAME).join("«round-dir»")
+	// 6a. The scan is checked before it is trusted.
+	//
+	// A leak scan that silently stops matching is worse than no leak scan, because it reports OK. So
+	// it is first run against the exact value that got the first staging aborted — the retired schema
+	// id `p2-field-gradient.v1` — placed in the field it actually rode in on. If that does not
+	// produce a finding, the scan is broken and this file says so instead of passing.
+	// Verified end to end, not only by this in-process canary: the committed fixture was tampered with
+	// to carry the retired id and `validate.ts` was re-run, which failed with
+	//   ✗ $.labelSchemaVersion leaks "p2": …p2-field-gradient.v1…
+	//   ✗ raw bytes leak "p2" at byte 140 …
+	// before the file was rebuilt and byte-compared back to the committed bytes.
+	const canary = { labelSchemaVersion: RETIRED_LABEL_SCHEMA_VERSION }
+	const canaryFindings = leaks(canary)
+	check(
+		canaryFindings.length > 0,
+		`the leak scan does not catch the retired schema id ${RETIRED_LABEL_SCHEMA_VERSION}; the scan is broken, not the fixture`,
+	)
+	// And it is checked in the other direction too: the shipped schema id must NOT trip it, or every
+	// build would fail for the wrong reason.
+	check(
+		leaks({ labelSchemaVersion: LABEL_SCHEMA_VERSION }).length === 0,
+		`the leak scan rejects this round's own schema id ${LABEL_SCHEMA_VERSION}`,
+	)
+
+	// 6b. Leak scan over EVERY string field of the parsed fixture — values and object keys alike —
+	// and then over the raw bytes as a backstop, so a leak in a field the walk somehow misses is
+	// still caught.
+	for (const finding of leaks(fixture)) failures.push(finding)
+	const raw = before.toString("utf8").toLowerCase()
 	for (const needle of FORBIDDEN) {
 		const at = raw.indexOf(needle.toLowerCase())
-		if (at !== -1) failures.push(`the fixture leaks "${needle}" at byte ${at}: …${raw.slice(Math.max(0, at - 60), at + 60)}…`)
+		if (at !== -1) failures.push(`raw bytes leak "${needle}" at byte ${at}: …${raw.slice(Math.max(0, at - 60), at + 60)}…`)
 	}
 
 	// 7. Deterministic rebuild: two more builder runs, byte-compared against the committed file.
