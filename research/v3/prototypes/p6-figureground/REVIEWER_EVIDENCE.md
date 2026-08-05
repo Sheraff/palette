@@ -44,6 +44,22 @@ the verdicts", which is the documented relapse.
 | 15 | Stop count drove preference: every 4-stop ramp unacceptable ("banding" named), every winner 2-stop; one monotone-progression complaint | Corroborates the excursion-only rule: P6 never publishes a 4th stop (reported-not-published by construction), inserts a 3rd only on excursion-bar violation, and its ramp is the flattest on-artwork path (monotone by the spatial-regression construction) | Constraint adopted for the real-ramps set: predominantly genuine 2-stop ramps, a minority of true 3-colour ramps — matching the reviewer-preferred shape so the set measures the DL rate where verdicts actually live |
 | 16 | Identity-coverage spans foreground-adjacent territory (a missing title-text yellow); new shape: accent should sit in a different colour FAMILY than background/surface | Coverage transport is floorless over ALL chromatic mass, ink included — a title-text yellow with mass and no published colour near it is expensive by construction. The family shape touches the coverage term's colour-space structure: OKLab transport distance can be cheaply satisfied by a same-family-different-lightness colour that the reviewer would still call family-uncovered | Analyst template gains: for coverage complaints, report whether the nearest published colour to the complained-about mass differs mainly in lightness (family-satisfied-in-OKLab-only — the gap this evidence names) or in hue (genuine miss). Measurement of the gap, not a term change |
 
+## Addendum 5 — reviewer clarification on stops (2026-08-05), superseding row 15's set constraint
+
+Reviewer verbatim: *"the 3rd and 4th stops in a gradient are mostly to help guide the linear
+interpolation in OKLab space through colors that fit the artwork, not to introduce new colors or
+meander around the color space."* The earlier "2-stop preferred" reading was an over-reading of a
+frequent outcome; the canon (PHASE_0_DECISIONS.md §2, quoted in the author brief) is guide-stop
+semantics — which P6's excursion-only insertion rule already implements verbatim.
+
+**Row 15's real-ramps set constraint is superseded:** the set must include covers whose 2-stop
+OKLab line *demonstrably leaves the artwork* (the guide-stop-owed case), not just clean 2-stop
+ramps — otherwise the set never exercises the insertion rule at all. Measured hazard on record
+(C7, FIELD_GUIDE_CHECKLIST.md): 42% of legacy midpoints sat outside their endpoints' lightness
+span. The excursion instrument is unbuilt campaign-wide; P6's own excursion profile
+(`fieldmodel/excursion.ts`, W3) is the measurement we use — and its per-ramp max-excursion
+number should be reported beside any published gradient from here on.
+
 If any check fails, the report says *which principle failed and why*, with the measurement. The
 sensitivity harness (README falsifier 3) stays the only process that ever moves a rate, and it
 moves rates to *measure* them, not to improve verdict agreement.
