@@ -31,3 +31,10 @@ decode against ROUND.md's outcome branches, and acts. Cross-arm evidence goes up
 **Staging convention (from the round-4 install, 2026-08-05):** emit ARTWORK CONTENT STEMS
 (basename of imagePath, 32/40-hex) as itemIds directly at staging time — no run-ordinal ids —
 so the installer never rewrites ids and private↔served mappings stay trivial.
+
+**Purpose + fundedBy policy (main ruling, 2026-08-05):** staging docs declare `purpose: <legal
+enum value>` and installers honor it verbatim (round-4's "mechanism" stands as pushed,
+append-only; VERDICTS.md is the correction of record). fundedBy stays LINKAGE-FREE while a
+batch is open (citing prior batch/item ids is identity information under the blinding
+standard); motivating verdict ids are recorded post-release via the release-note amendment
+(main-tier). Decode commits remain the canonical chain meanwhile.
