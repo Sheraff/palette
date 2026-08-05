@@ -33,23 +33,43 @@
  * 4. **Collapses are measured on the published hex**, never asserted from upstream intent, because
  *    invariant 1 checks the flag against exact hex equality and nothing else.
  *
- * ## The three no-field outcomes, and how a reader tells them apart
+ * ## The no-field fork, v0.5: components, then the retreat
  *
- * SPEC decision 9's precedence ruling makes `noField` a fork rather than a verdict. In descending
- * order of structure: an affine field (not `noField` at all), a **two-block rescue** (two flat
- * colours that between them put half the image inside four bars), and only then the **retreat** to
- * one colour. The two constants are the verdict's own — the ruling's "same two constants, no new
- * ones" is why `NO_FIELD_EXPLAINED_FRACTION` and the radius live in `fieldfit.ts` and are imported
- * here rather than restated.
+ * `noField` is a **trigger**, not a verdict (SPEC decision 12; `E2_BRIEF.md`). When the one global
+ * surface explains less than half the image, this module asks `fitFieldComponents` for the pool of
+ * field-like components — the same robust fit, run again on what nothing has explained yet — and
+ * reads the roles off the pool:
  *
- * `Diagnostics` is frozen and carries no field for the fork, so it is read off two that it does
- * carry: `noField && twoBlockFallback` is a rescue, `noField && !twoBlockFallback` is a retreat.
+ *  - **background and gradient** come from the most extensive component, read by the *existing*
+ *    `readRamp` over a `FieldFit` view of that component (`components.ts`), so the ramp is the
+ *    component's own ramp over its own support and no ramp code learned about components;
+ *  - **surface** is the component's far end when its ramp separates, else the **second** component
+ *    when one exists and separates (arm-f §2.5's two-component reading — the polaroid), else
+ *    collapsed;
+ *  - **overlay** measures against the pool: `compositeFieldFit` gives `overlay.ts` a `fieldAt` that
+ *    is the *local* component's surface and weights that call a pixel field iff some component
+ *    explains it. This is arm-f's original local-field semantics; the old global-affine
+ *    approximation was the one-component case of it.
+ *  - **retreat** fires only when no component qualifies, and is otherwise unchanged (highest
+ *    field-mass triple on the kept fit's weights, decision 9's pick-and-state).
  *
- * Two things the ruling settled that would otherwise look like deviations here, and are not:
- * the retreat ranks field mass on the **kept fit's weights** rather than a separate order-0 fit
- * (*"on a noField image no weight map is meaningful, so this is pick-and-state"*), and overlay's
- * `localField` stays the affine `fieldAt` even on a rescued two-block cover, where near a block's
- * centre it approximates that block's colour. Both are revisited only on round-1 reviewer signal.
+ * **Order of precedence between the ramp and the second component, stated.** `E2_BRIEF.md` lists the
+ * second component first and the ramp's far end as the fallback. It is implemented the other way
+ * round — *a component that is a ramp publishes its ramp* — because background and surface are the
+ * ramp's two ends in the contract (`stops[0]` and `stops[n-1]` **are** the roles), so the far end
+ * and the second component compete for one slot rather than compose. Giving the slot to the second
+ * component would publish a "gradient" running between two different fields, and would lose exactly
+ * the reading decision 12 pulled E2 forward to get ("we would expect such a gorgeous gradient")
+ * whenever the picture also happens to hold a second flat area. The polaroid case is untouched by
+ * the choice: two flat components have no ramp to separate, so the second component takes the
+ * surface. Both of the brief's synthetic obligations pass under this order; obligation (a) does not
+ * pass under the other one.
+ *
+ * **What the frozen `Diagnostics` can and cannot say about the fork.** `noField && gradient` is a
+ * component ramp; `noField && twoBlockFallback` is a two-component (two flat colours) reading;
+ * `noField` with neither is a single flat component **or** the retreat — the two are the same
+ * published shape (one colour, surface collapsed) and the sidecar has no field to separate them.
+ * `Analysis.fieldComponents` carries the pool for anything that needs the truth.
  *
  * ## Deviations from `SPEC.md`, stated
  *
@@ -84,28 +104,25 @@ import type {
 import { hashFileBytes } from "../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../src/devloop/types.ts"
 
+import { componentCentre, componentFieldFit, compositeFieldFit } from "./src/components.ts"
+import type { FieldReading } from "./src/components.ts"
 import { decodeAndInventory, packRgb, unpackRgb } from "./src/decode.ts"
-import {
-	explainedFractionByColors,
-	fitField,
-	NO_FIELD_EXPLAINED_FRACTION,
-} from "./src/fieldfit.ts"
+import { fitField, fitFieldComponents } from "./src/fieldfit.ts"
 import { readOverlay } from "./src/overlay.ts"
 import {
 	highestFieldMassTriple,
 	pathExcursion,
 	projectionFraction,
 	readRamp,
-	twoBlockCandidates,
 } from "./src/ramp.ts"
 import { snapToArtwork } from "./src/snap.ts"
-import type { Diagnostics, Inventory } from "./src/types.ts"
+import type { Diagnostics, FieldFit, Inventory, RampReading } from "./src/types.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.4.1"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.5.0"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -134,6 +151,12 @@ export type Analysis = Readonly<{
 	diagnostics: Diagnostics
 	/** The fit's kept order, for the decision-9 deviation note above. */
 	fieldOrder: 0 | 1
+	/**
+	 * The component pool, or `null` when the global fit explained half the image and the recursion
+	 * never ran. `null` is therefore also the proof that a fully-explained cover takes v0.4.1's path
+	 * unchanged — see the guard in `analyzeImage`.
+	 */
+	fieldComponents: FieldReading | null
 }>
 
 function labOf(color: PaletteColor): OkLab {
@@ -171,35 +194,44 @@ function presentInArtwork(inventory: Inventory, color: PaletteColor): boolean {
 export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	const { raster, inventory } = await decodeAndInventory(imagePath)
 	const fit = fitField(raster)
-	const ramp = readRamp(fit, raster, inventory)
 	const contrast = resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS)
 
 	// --- the field ends ---------------------------------------------------------------------------
 	//
-	// SPEC decision 9: `noField` never reads an endpoint off a surface it has just declared not to
-	// describe the image. But it does not go straight to the retreat either — the precedence ruling
-	// puts a **structured two-colour reading ahead of a flat one**, and tests it by the very same
-	// principle the verdict itself used: does this model put half the image inside four bars of
-	// itself? A genuinely two-colour cover answers yes and keeps two distinct roles; only an image
-	// that neither an affine field nor two blocks can explain retreats to one colour.
-	let twoBlockRescue = false
+	// The whole-image reading first. When it explains half the image (`!noField`) this *is* the
+	// reading and nothing below runs: the component recursion is guarded by the same trigger
+	// decision 12 names, so a fully-explained cover takes v0.4.1's path instruction for instruction.
+	let ramp: RampReading = readRamp(fit, raster, inventory)
+	// What overlay measures against. The global affine field, until a component pool replaces it.
+	let overlayFit: FieldFit = fit
+	let fieldComponents: FieldReading | null = null
+	let twoComponentReading = false
+
 	let backgroundTarget = ramp.backgroundTarget
 	let surfaceTarget = ramp.surfaceTarget
-	// A no-field image has no ramp to be a candidate for, on either branch: the rescue publishes two
-	// flat blocks (decision 5: gradient null), and the retreat publishes one colour.
 	let gradientCandidate = ramp.gradientCandidate
 
 	if (fit.noField) {
-		gradientCandidate = false
-		const blocks = twoBlockCandidates(fit, raster, inventory)
-		const rescued = blocks !== null && blocks.surface !== null &&
-			explainedFractionByColors(raster, [blocks.background.lab, blocks.surface.lab]) >=
-				NO_FIELD_EXPLAINED_FRACTION
-		if (rescued && blocks?.surface) {
-			twoBlockRescue = true
-			backgroundTarget = blocks.background.lab
-			surfaceTarget = blocks.surface.lab
+		fieldComponents = fitFieldComponents(raster)
+		const primary = fieldComponents.components[0]
+		if (primary !== undefined) {
+			// The component's own ramp, by the existing machinery reading a support-restricted view.
+			ramp = readRamp(componentFieldFit(primary, raster), raster, inventory)
+			overlayFit = compositeFieldFit(fieldComponents, raster, fit)
+			backgroundTarget = ramp.backgroundTarget
+			surfaceTarget = ramp.surfaceTarget
+			gradientCandidate = ramp.gradientCandidate
+			const second = fieldComponents.components[1]
+			// The two-component reading: only when the first component has no ramp of its own to
+			// publish (see the header's precedence note). `componentCentre` is the component's field
+			// at the support's own weighted centre — the colour that component *is*, where it is.
+			if (!gradientCandidate && second !== undefined) {
+				surfaceTarget = componentCentre(second)
+				twoComponentReading = true
+			}
 		} else {
+			// Decision 9's declared retreat, reached only now that no component qualified.
+			gradientCandidate = false
 			const retreatTriple = highestFieldMassTriple(fit, raster, inventory)
 			if (retreatTriple) {
 				backgroundTarget = retreatTriple.lab
@@ -267,7 +299,7 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	]
 
 	// --- the overlay, against the field actually published ---------------------------------------------
-	const overlay = readOverlay(fit, raster, inventory, contrast, stops)
+	const overlay = readOverlay(overlayFit, raster, inventory, contrast, stops)
 
 	// --- foreground, and decision 10's escape ----------------------------------------------------------
 	let foreground: PaletteColor
@@ -354,11 +386,12 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		excursionMax: ramp.excursionMax,
 		thirdStopAccepted: interiorStop !== null,
 		residualExcursion,
-		// True on both routes to a published two-block reading: `readRamp`'s decision-5 fallback (no
-		// polyline stayed on-artwork) and decision 9's precedence rescue. Together with `noField` this
-		// says which of the three no-field outcomes happened, with no new diagnostics field:
-		// `noField && twoBlockFallback` = rescued, `noField && !twoBlockFallback` = retreat.
-		twoBlockFallback: twoBlockRescue || ramp.twoBlockFallback,
+		// True on both routes to a published two-flat-colour reading: `readRamp`'s decision-5 fallback
+		// (no polyline stayed on-artwork) and v0.5's two-component reading, which is where decision
+		// 9's two-block rescue went. See the header for what this flag can and cannot distinguish.
+		// A two-component reading that collapsed on the published colours was not a two-colour reading,
+		// whatever it was upstream: this flag is measured on what came out, like the collapse flags.
+		twoBlockFallback: (twoComponentReading && !surfaceCollapses) || ramp.twoBlockFallback,
 		accentChromaOnly: accentCollapses ? false : overlay.accentChromaOnly,
 		offArtwork: {
 			background: backgroundSnap.offArtwork,
@@ -371,7 +404,7 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		escape: escape !== null,
 	}
 
-	return { palette, diagnostics, fieldOrder: fit.order }
+	return { palette, diagnostics, fieldOrder: fit.order, fieldComponents }
 }
 
 /** The candidate the dev loop loads. */

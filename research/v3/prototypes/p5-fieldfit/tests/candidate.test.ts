@@ -59,7 +59,7 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.4.1")
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.5.0")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })
@@ -162,9 +162,12 @@ test("paletteOf returns a contract-shaped palette on a real cover", async () => 
  * apart, so `fieldExplainedFraction` collapses and `noField` fires. What separates them is whether
  * *two* colours can do what one surface could not:
  *
- *  - **two blocks.** Every pixel is one of two far-apart colours, so the two highest-field-mass
- *    colours put 100% of the image inside four bars of themselves. The rescue fires, both roles
- *    survive, `surfaceCollapsed` is false.
+ *  - **two blocks.** Every pixel is one of two far-apart colours, so each of them is a flat
+ *    field-like component: extensive (half the image each) and smooth (its claim sits exactly on it).
+ *    The two-component reading fires, both roles survive, `surfaceCollapsed` is false. *v0.5: this
+ *    used to be decision 9's separate two-block rescue, which has merged into the component reading
+ *    (`E2_BRIEF.md`). The assertions below are unchanged from v0.4.1 on purpose — obligation (c) is
+ *    that the merge subsumes the rescue, and an unchanged test is what that claim looks like.*
  *  - **sixteen blocks.** The best two colours cover an eighth of the image, far under the floor, so
  *    there is nothing to rescue and the retreat takes one colour with `surfaceCollapsed` true.
  *

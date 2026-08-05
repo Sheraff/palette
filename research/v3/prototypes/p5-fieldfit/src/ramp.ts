@@ -41,6 +41,26 @@
  *
  * Everything is deterministic: no randomness, no map-iteration-order dependence (every candidate
  * list is sorted on `(value, …, packed int)`), and every accumulation is in a fixed pixel order.
+ *
+ * ## v0.5: reading **one component's** ramp, with no support-restriction code in this file
+ *
+ * `E2_BRIEF.md` asks for the gradient of the most extensive field-like component — "its affine term
+ * over its own support, by the existing ramp machinery restricted to the component's support". The
+ * restriction is applied to the *input*, not here: `components.ts`'s `componentFieldFit` hands this
+ * module a `FieldFit` whose weight map is zero off the component's support, and every quantity below
+ * that reads weights — the t-histogram, both endpoint quantiles, the orientation median and its
+ * standard error, the two-block mass ranking — is thereby computed over that support and nothing
+ * else. The coefficients are the component's, so `fieldAt` is the component's surface.
+ *
+ * That is the whole of the change, and it is deliberate: a support-restricted *reader* would have
+ * been a second implementation of the same six statistics, free to drift from this one. The two
+ * things worth stating about the substitution:
+ *
+ *  - the endpoint quantiles are 2/98 **of the component's own weight mass**, so the ends are colours
+ *    a non-trivial area *of the component* shows — the same refinement as before, one scale down;
+ *  - `excursionMax` still measures against the whole artwork's inventory, not the component's
+ *    colours. That is intended: the excursion test asks whether the rendered ramp passes through
+ *    colours the *picture* contains, and the picture is the picture whichever field is being read.
  */
 
 import { colorFromRgb, okLabDistance, okLabToRgb, sameColor } from "../../../src/contract/color.ts"
@@ -494,12 +514,13 @@ function fieldMassRanking(
  * decision 3's principle). `surface` is `null` when no second separated colour exists at all, which
  * is a one-colour image and not a two-block one.
  *
- * Split out of `twoBlockTargets` and exported for `candidate.ts`: SPEC decision 9's precedence
- * ruling has the no-field path test *this* reading before it retreats, and it needs the two triples
- * rather than their targets. There is deliberately one implementation — a second ranking-and-
- * separating loop in the caller would be a second definition of "the two blocks".
+ * *v0.5: no longer exported.* It was split out and exported for `candidate.ts`, which used it for
+ * decision 9's two-block rescue; that rescue has merged into the component reading (`E2_BRIEF.md`:
+ * "the two-block rescue becomes a special case of the two-component reading and should merge into
+ * it, not survive beside it"), so the only caller left is this module's own decision-5 fallback —
+ * a *different* question (no polyline stayed on-artwork), which is why the function survives at all.
  */
-export function twoBlockCandidates(
+function twoBlockCandidates(
 	fit: FieldFit,
 	raster: DecodedRaster,
 	inventory: Inventory,

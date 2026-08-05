@@ -155,6 +155,10 @@ export type Diagnostics = Readonly<{
 	noField: boolean
 	inlierFraction: number
 	fieldExplainedFraction: number
+	/** Number of field-like components the v0.5 reading extracted (0 when the global fit sufficed). */
+	fieldComponents: number
+	/** True only when the declared retreat published the palette (distinguishes it from a flat component). */
+	retreat: boolean
 	residualScale: number
 	marginBars: number
 	orientationMargin: number

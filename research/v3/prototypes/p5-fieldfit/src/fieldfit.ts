@@ -29,6 +29,7 @@
 import { POOLED_SAME_COLOR_BAR } from "../../../src/contract/constants.ts"
 import type { OkLab } from "../../../src/contract/types.ts"
 
+import type { FieldComponent, FieldReading } from "./components.ts"
 import { normalizedX, normalizedY } from "./decode.ts"
 import type { DecodedRaster, FieldFit } from "./types.ts"
 
@@ -122,6 +123,55 @@ const NO_FIELD_EXPLAINED_BAR_MULTIPLE = 4
 export const NO_FIELD_EXPLAINED_FRACTION = 0.5
 
 /**
+ * **How close to the field a pixel must sit to count as explained**, in OKLab.
+ *
+ * One name for the radius decision 9 states and the component recursion holds its Tukey cut to. It
+ * is `NO_FIELD_EXPLAINED_BAR_MULTIPLE × POOLED_SAME_COLOR_BAR` and nothing else — hoisted out of
+ * `evaluateFullResolution`, where it used to be a local, precisely so the recursion cannot fork a
+ * second copy of it. Exported: `components.ts`'s documentation quotes it and the tests pin it.
+ */
+export const EXPLAINED_RADIUS = NO_FIELD_EXPLAINED_BAR_MULTIPLE * POOLED_SAME_COLOR_BAR
+
+/**
+ * **Extensive**: a component must claim at least this fraction of the image.
+ *
+ * `[UNCALIBRATED]` — the *principle* is the calibrated part: **a field-like component is a region of
+ * the picture, not a detail in it.** The number is **measured, not chosen**, in the same style as
+ * SPEC decision 14's multiple, because `E2_BRIEF.md`'s suggested 0.15 was measured and found to sit
+ * exactly on top of the evidence it was pulled forward for. The three second components the round-2
+ * covers name, as claimed fractions of their frame:
+ *
+ * | cover | second component | claim |
+ * |---|---|---|
+ * | `28279e9184` | the depicted polaroid (decision 12: *"there is literally a surface"*) | **0.144** |
+ * | `2376a6b67d` | the red block of the cover decision 9's precedence ruling was written for | **0.138** |
+ * | `fc8d58e0af` | its second field | **0.131** |
+ *
+ * At 0.15 all three are excluded by between one and two points, the polaroid is not published as a
+ * surface, and the two-block cover **regresses** — v0.4.1's rescue published two colours there and
+ * the component reading published one, which `E2_BRIEF.md`'s obligation (c) forbids. The smallest
+ * evidenced claim with the same ≥20% margin decision 14 used is `0.131 / 1.2 = 0.109`, so the floor
+ * is 0.10 and every evidenced component clears it. It is still `[UNCALIBRATED]` in the sense that no
+ * reviewer has been asked "is a seventh of the frame an area?" — what is measured is that 0.15
+ * contradicts three covers the reviewer has already spoken about.
+ *
+ * It doubles as the recursion's **minimum claim**: a level that claims less than this can never
+ * yield a component, and a level that claims at least this shrinks the domain by at least this — so
+ * the loop cannot run more than `⌈1 / 0.10⌉ = 10` times even without the depth cap. That is the
+ * termination proof, and it is one constant rather than two so it cannot rot into an infinite loop.
+ */
+export const EXTENSIVE_SUPPORT_FRACTION = 0.1
+
+/**
+ * Hard cap on recursion depth.
+ *
+ * `[UNCALIBRATED]` — `E2_BRIEF.md` suggests 4. Termination does not depend on it (see
+ * `EXTENSIVE_SUPPORT_FRACTION`); it is a *statement*, not a guard: a picture read as more than four
+ * fields is not being read, and past four the reading has stopped being about background/surface.
+ */
+export const MAX_COMPONENT_DEPTH = 4
+
+/**
  * **Why the verdict reads an absolute distance and not a scale — two retired clauses, both recorded.**
  *
  * `SPEC.md` decision 9's ruling history, in the form that matters to this file:
@@ -200,46 +250,20 @@ export function fittedSpan(coefficients: Float64Array): number {
 // ---------------------------------------------------------------------------------------------
 
 /**
- * **The same explained-fraction question, asked of a fixed set of colours instead of a surface.**
+ * **The retired two-block rescue, and where its question went.**
  *
- * SPEC decision 9's precedence ruling: when `noField` fires, the two-block reading is tested before
- * the retreat, *"by the same principle: fraction of pixels within 4×bar of the **nearer** of the two
- * candidate block colours"*. That is this function with `colors.length === 2`, and it shares
- * `NO_FIELD_EXPLAINED_BAR_MULTIPLE` with `fieldExplainedFraction` rather than restating the radius —
- * two numbers that were meant to be one is exactly how a threshold quietly forks.
- *
- * Every pixel is counted, not just the fit's inliers, for the reason the field version gives: a
- * pixel a model does not cover is unexplained whether or not some earlier stage rejected it.
- * Distance is to the **nearest** member of `colors`, so a set of *k* colours is judged as one model
- * of the image and not as *k* separate ones. An empty set explains nothing.
+ * v0.4 answered decision 9's precedence ruling with `explainedFractionByColors(raster, [a, b])`:
+ * when `noField` fired, two flat block colours were tested — *"fraction of pixels within 4×bar of
+ * the **nearer** of the two"* — and published if they explained half the image. `E2_BRIEF.md` folds
+ * that into the two-component reading ("the two-block rescue becomes a special case of the
+ * two-component reading and should merge into it, not survive beside it"), and v0.5 does: two flat
+ * blocks are two order-0 components, each tested by the *same* radius on the pixels it claims. The
+ * function had no caller left once `candidate.ts` stopped rescuing, so it is deleted rather than
+ * kept as a second, unreachable definition of "explained". The ruling it implemented is not
+ * reversed — it is now enforced per component instead of per palette, and by a *stricter* rule: the
+ * rescue asked for half the image between two colours, the component reading asks each of them to be
+ * extensive and smooth on its own.
  */
-export function explainedFractionByColors(raster: DecodedRaster, colors: readonly OkLab[]): number {
-	const pixelCount = raster.width * raster.height
-	if (pixelCount === 0 || colors.length === 0) return 0
-	const radius = NO_FIELD_EXPLAINED_BAR_MULTIPLE * POOLED_SAME_COLOR_BAR
-	const radiusSquared = radius * radius
-	const lab = raster.lab
-
-	let explained = 0
-	for (let index = 0; index < pixelCount; index += 1) {
-		const offset = index * 3
-		const l = lab[offset]
-		const a = lab[offset + 1]
-		const b = lab[offset + 2]
-		for (const color of colors) {
-			const dl = l - color[0]
-			const da = a - color[1]
-			const db = b - color[2]
-			// Squared distance: the radius is fixed, so the square root would be per-pixel work for
-			// an answer that is only ever compared against it.
-			if (dl * dl + da * da + db * db < radiusSquared) {
-				explained += 1
-				break
-			}
-		}
-	}
-	return explained / pixelCount
-}
 
 /**
  * Fit the field. See the module docstring; the shape of the result is fixed by `types.ts`.
@@ -404,7 +428,11 @@ type FitResult = {
  * per-channel noise of scale s, ‖r‖ follows a χ₃ law, so σ̂ ≈ 2.28·s — σ̂ is a norm-space scale,
  * and decision 9's threshold is stated in the same space.
  */
-function updateWeights(set: SampleSet, coefficients: Float64Array): number {
+function updateWeights(
+	set: SampleSet,
+	coefficients: Float64Array,
+	cutCeiling = Number.POSITIVE_INFINITY,
+): number {
 	const { count, x, y, l, a, b, residual, weight } = set
 	for (let i = 0; i < count; i += 1) {
 		const px = x[i]
@@ -416,7 +444,10 @@ function updateWeights(set: SampleSet, coefficients: Float64Array): number {
 		)
 	}
 	const sigma = MAD_TO_SIGMA * median(residual, count)
-	const cut = TUKEY_CUT_SIGMAS * Math.max(sigma, RESIDUAL_SCALE_FLOOR)
+	// `cutCeiling` is the component recursion's one departure from the global fit: it holds the cut
+	// at the explained radius so a component can never claim a pixel it does not explain. The default
+	// is +∞, and `Math.min(x, +∞)` is `x` bit-for-bit, so the global fit's arithmetic is untouched.
+	const cut = Math.min(TUKEY_CUT_SIGMAS * Math.max(sigma, RESIDUAL_SCALE_FLOOR), cutCeiling)
 	for (let i = 0; i < count; i += 1) {
 		const u = residual[i] / cut
 		if (u >= 1) {
@@ -446,15 +477,23 @@ function weightedRobustRms(set: SampleSet): number {
  * heavily marked image cannot start the iteration inside the marks), then IRLS — at fixed weights
  * the M-estimator's stationary point is the weighted mean, so each iteration is one weighted mean.
  */
-function fitOrder0(set: SampleSet): FitResult {
+function fitOrder0(
+	set: SampleSet,
+	cutCeiling = Number.POSITIVE_INFINITY,
+	start: OkLab | null = null,
+): FitResult {
 	const coefficients = new Float64Array(9)
-	coefficients[0] = median(set.l, set.count)
-	coefficients[3] = median(set.a, set.count)
-	coefficients[6] = median(set.b, set.count)
+	// The coordinate-wise median is the breakdown-1/2 start the global fit uses. A component level
+	// may hand in its domain's modal colour instead (`E2_BRIEF.md`'s recursion needs a start inside
+	// a mode: on a two-block domain the median sits between the blocks, where a cut held at the
+	// explained radius weights nothing).
+	coefficients[0] = start ? start[0] : median(set.l, set.count)
+	coefficients[3] = start ? start[1] : median(set.a, set.count)
+	coefficients[6] = start ? start[2] : median(set.b, set.count)
 
 	let iterations = 0
 	for (; iterations < MAX_IRLS_ITERATIONS; iterations += 1) {
-		updateWeights(set, coefficients)
+		updateWeights(set, coefficients, cutCeiling)
 		let sumWeight = 0
 		let sumL = 0
 		let sumA = 0
@@ -481,7 +520,7 @@ function fitOrder0(set: SampleSet): FitResult {
 		if (delta < COEFFICIENT_CONVERGENCE) break
 	}
 
-	const residualScale = updateWeights(set, coefficients)
+	const residualScale = updateWeights(set, coefficients, cutCeiling)
 	return { coefficients, residualScale, robustRms: weightedRobustRms(set), iterations }
 }
 
@@ -496,14 +535,18 @@ function fitOrder0(set: SampleSet): FitResult {
  * weight set that collapsed onto a line — the iteration stops and the last iterate stands, which
  * for the first iteration means the order-0 centre with exactly zero tilt.
  */
-function fitOrder1(set: SampleSet, start: Float64Array): FitResult {
+function fitOrder1(
+	set: SampleSet,
+	start: Float64Array,
+	cutCeiling = Number.POSITIVE_INFINITY,
+): FitResult {
 	const coefficients = start.slice()
 	const solution = new Float64Array(3)
 	const rhs = new Float64Array(3)
 
 	let iterations = 0
 	for (; iterations < MAX_IRLS_ITERATIONS; iterations += 1) {
-		updateWeights(set, coefficients)
+		updateWeights(set, coefficients, cutCeiling)
 
 		let g00 = 0
 		let g01 = 0
@@ -582,7 +625,7 @@ function fitOrder1(set: SampleSet, start: Float64Array): FitResult {
 		if (delta < COEFFICIENT_CONVERGENCE) break
 	}
 
-	const residualScale = updateWeights(set, coefficients)
+	const residualScale = updateWeights(set, coefficients, cutCeiling)
 	return { coefficients, residualScale, robustRms: weightedRobustRms(set), iterations }
 }
 
@@ -637,7 +680,7 @@ function evaluateFullResolution(raster: DecodedRaster, coefficients: Float64Arra
 	const cut = TUKEY_CUT_SIGMAS * Math.max(residualScale, RESIDUAL_SCALE_FLOOR)
 
 	// The explained radius, in OKLab, fixed by the contract's bar and never by these residuals.
-	const explainedRadius = NO_FIELD_EXPLAINED_BAR_MULTIPLE * POOLED_SAME_COLOR_BAR
+	const explainedRadius = EXPLAINED_RADIUS
 
 	const weights = new Float32Array(pixelCount)
 	let inliers = 0
@@ -661,6 +704,385 @@ function evaluateFullResolution(raster: DecodedRaster, coefficients: Float64Arra
 		inlierFraction: pixelCount > 0 ? inliers / pixelCount : 0,
 		fieldExplainedFraction: pixelCount > 0 ? explained / pixelCount : 0,
 	}
+}
+
+// ---------------------------------------------------------------------------------------------
+// Field-like components (W-E2, `E2_BRIEF.md`; `SPEC.md` decision 12)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The recursion, and the three things that make it a fit rather than a segmentation.**
+ *
+ * `fitField` answers "does one surface describe this image". When it does not — decision 9's
+ * `noField`, which decision 12 demotes from a verdict to a *trigger* — this runs the same robust
+ * affine fit again on the pixels nothing has explained yet, and keeps the surfaces that are both
+ * **extensive** and **smooth**.
+ *
+ *  1. **No masks as primitives.** The only mask in here (`claim`) is the fit's own residual field
+ *     thresholded at the radius decision 9 already uses. Nothing looks at connectivity, at shape, at
+ *     size-in-pixels-of-a-blob, or at colour identity. A component is "a surface plus what it
+ *     explains", which is exactly what `FieldFit` has always been, restricted to a domain.
+ *  2. **The cut is held at the explained radius.** `min(4.685·σ̂, 4×bar)`: a component may not claim
+ *     a pixel it does not explain. This is the whole reason the recursion converges on the mode
+ *     rather than floating between two of them — with the global fit's σ̂ (a MAD *about zero*, see
+ *     `updateWeights`), a domain that is 50/50 two colours inflates σ̂ until the biweight has no
+ *     rejection power at all and the surface settles in between, explaining neither. On any domain
+ *     the fit already sits tightly on, σ̂ is far below the radius and the cut is the ordinary one, so
+ *     this is a *ceiling*, not a new estimator.
+ *  3. **The start is the domain's modal colour** (`modalSeed`), with the ordinary median start run
+ *     beside it and the larger claim kept — arm-f's multi-start, at component level, and the reason
+ *     a two-block domain yields two components instead of nothing. Ties go to the median start.
+ *
+ * **Termination.** The domain only shrinks, and it shrinks by at least `EXTENSIVE_SUPPORT_FRACTION`
+ * of the image on every iteration that does not stop the loop: a level whose claim is smaller than
+ * that can never produce an extensive component, so the loop stops there. At most `⌈1/0.10⌉ = 10`
+ * iterations even with the depth cap removed; `MAX_COMPONENT_DEPTH` stops it at 4.
+ *
+ * **Determinism.** No randomness, no map-iteration-order dependence (the modal cell is chosen by
+ * count with the lattice key as tie-break, so the `Map`'s insertion order cannot matter), and every
+ * accumulation is in a fixed pixel order. The pool is sorted on (support pixels, support mass,
+ * depth) — depth is unique, so no tie survives to be decided by anything else.
+ */
+export function fitFieldComponents(raster: DecodedRaster): FieldReading {
+	const { width, height } = raster
+	const pixelCount = width * height
+	const domain = new Uint8Array(pixelCount).fill(1)
+	let domainCount = pixelCount
+	// One number for "can never be extensive" and for "the loop makes progress": see the constant.
+	const minimumClaim = Math.ceil(EXTENSIVE_SUPPORT_FRACTION * pixelCount)
+
+	const attempts: FieldComponent[] = []
+	const accepted: FieldComponent[] = []
+	let depthCapReached = false
+
+	for (let depth = 0; depth < MAX_COMPONENT_DEPTH; depth += 1) {
+		if (domainCount < minimumClaim) break
+		const component = fitComponentLevel(raster, domain, domainCount, depth)
+		if (component === null) break
+		// Recorded before the gates, so a report can say what the level found and which test it
+		// failed — a level that claimed too little to be a component is evidence, not silence.
+		attempts.push(component)
+		if (component.supportPixels < minimumClaim) break
+		if (component.smooth) accepted.push(component)
+		for (let index = 0; index < pixelCount; index += 1) {
+			if (component.claim[index] === 1 && domain[index] === 1) {
+				domain[index] = 0
+				domainCount -= 1
+			}
+		}
+		if (depth === MAX_COMPONENT_DEPTH - 1) depthCapReached = domainCount >= minimumClaim
+	}
+
+	accepted.sort((first, second) =>
+		second.supportPixels - first.supportPixels ||
+		second.supportMass - first.supportMass ||
+		first.depth - second.depth
+	)
+
+	const labels = new Uint8Array(pixelCount)
+	for (let rank = 0; rank < accepted.length; rank += 1) {
+		const claim = accepted[rank].claim
+		for (let index = 0; index < pixelCount; index += 1) {
+			if (claim[index] === 1) labels[index] = rank + 1
+		}
+	}
+
+	return {
+		components: accepted,
+		attempts,
+		depthCapReached,
+		retreat: accepted.length === 0,
+		labels,
+	}
+}
+
+/**
+ * One level: two starts, the better claim kept, the component measured against both gates.
+ *
+ * "Better" is the larger claim, ties to the median start — the same order the starts are tried in,
+ * so the choice is a total order and not a preference.
+ */
+function fitComponentLevel(
+	raster: DecodedRaster,
+	domain: Uint8Array,
+	domainCount: number,
+	depth: number,
+): FieldComponent | null {
+	const samples = buildDomainSamples(raster, domain, domainCount)
+	if (samples.count === 0) return null
+
+	const seeds: (OkLab | null)[] = [null, modalSeed(raster, domain)]
+	let best: FieldComponent | null = null
+	for (const seed of seeds) {
+		const order0 = fitOrder0(samples, EXPLAINED_RADIUS, seed)
+		const order1 = fitOrder1(samples, order0.coefficients, EXPLAINED_RADIUS)
+		const marginBars = (order0.robustRms - order1.robustRms) / POOLED_SAME_COLOR_BAR
+		const span = fittedSpan(order1.coefficients)
+		const order: 0 | 1 = marginBars > 0 && span > 0 ? 1 : 0
+		const coefficients = order === 1 ? order1.coefficients : order0.coefficients
+		const candidate = measureComponent(
+			raster,
+			domain,
+			domainCount,
+			coefficients,
+			order,
+			marginBars,
+			depth,
+			seed ?? [order0.coefficients[0], order0.coefficients[3], order0.coefficients[6]],
+		)
+		if (best === null || candidate.supportPixels > best.supportPixels) best = candidate
+	}
+	return best
+}
+
+/**
+ * The full-resolution measurement of one candidate surface over one domain: its claim, its weights,
+ * its support mass and position, and the two gates.
+ *
+ * The claim is `‖r‖ < 4×bar` **within the domain** — the same radius, the same units, the same
+ * question decision 9 asks of the whole image, asked of the pixels still unexplained. Weights use
+ * the level's ceiling-held cut, so `w > 0` implies claimed and the two never disagree.
+ */
+function measureComponent(
+	raster: DecodedRaster,
+	domain: Uint8Array,
+	domainCount: number,
+	coefficients: Float64Array,
+	order: 0 | 1,
+	marginBars: number,
+	depth: number,
+	seed: OkLab,
+): FieldComponent {
+	const { width, height, lab } = raster
+	const pixelCount = width * height
+	const residual = new Float32Array(pixelCount)
+	const domainResiduals = new Float32Array(domainCount)
+
+	let cursor = 0
+	for (let row = 0; row < height; row += 1) {
+		const py = normalizedY(row, height)
+		const baseL = coefficients[0] + coefficients[2] * py
+		const baseA = coefficients[3] + coefficients[5] * py
+		const baseB = coefficients[6] + coefficients[8] * py
+		for (let column = 0; column < width; column += 1) {
+			const index = row * width + column
+			if (domain[index] !== 1) continue
+			const px = normalizedX(column, width)
+			const offset = index * 3
+			const value = norm3(
+				lab[offset] - (baseL + coefficients[1] * px),
+				lab[offset + 1] - (baseA + coefficients[4] * px),
+				lab[offset + 2] - (baseB + coefficients[7] * px),
+			)
+			residual[index] = value
+			if (cursor < domainCount) domainResiduals[cursor] = value
+			cursor += 1
+		}
+	}
+
+	const residualScale = MAD_TO_SIGMA * median(domainResiduals, Math.min(cursor, domainCount))
+	const cut = Math.min(
+		TUKEY_CUT_SIGMAS * Math.max(residualScale, RESIDUAL_SCALE_FLOOR),
+		EXPLAINED_RADIUS,
+	)
+
+	const claim = new Uint8Array(pixelCount)
+	const weights = new Float32Array(pixelCount)
+	let supportPixels = 0
+	let supportMass = 0
+	let coreCount = 0
+	let sumX = 0
+	let sumY = 0
+	let plainX = 0
+	let plainY = 0
+	for (let row = 0; row < height; row += 1) {
+		const py = normalizedY(row, height)
+		for (let column = 0; column < width; column += 1) {
+			const index = row * width + column
+			if (domain[index] !== 1) continue
+			const value = residual[index]
+			if (!(value < EXPLAINED_RADIUS)) continue
+			claim[index] = 1
+			supportPixels += 1
+			const px = normalizedX(column, width)
+			plainX += px
+			plainY += py
+			const u = value / cut
+			if (u >= 1) continue
+			const t = 1 - u * u
+			const weight = t * t
+			weights[index] = weight
+			supportMass += weight
+			if (weight > INLIER_WEIGHT_THRESHOLD) coreCount += 1
+			sumX += weight * px
+			sumY += weight * py
+		}
+	}
+
+	const supportFraction = pixelCount > 0 ? supportPixels / pixelCount : 0
+	const meanX = supportMass > 0 ? sumX / supportMass : supportPixels > 0 ? plainX / supportPixels : 0
+	const meanY = supportMass > 0 ? sumY / supportMass : supportPixels > 0 ? plainY / supportPixels : 0
+	// **Smooth**, and why it is this and not the brief's literal wording. `E2_BRIEF.md` says "the
+	// component's own explained fraction over its support ≥ 0.5, using the existing 4×bar radius".
+	// Under a claim-defined support that quantity is 1 by construction (the claim *is* the explained
+	// set), so it cannot fail and would be a gate that never fires — the exact defect decision 9's
+	// second ruling was retired for. The non-vacuous form of the same sentence, with the same two
+	// constants and no new ones, asks how much of what the component claims sits in the fit's own
+	// **inlier core** (`w > 0.5`, i.e. within 0.5412 of the cut) rather than out at the rim: a real
+	// field holds its pixels close, a surface floating over a spread-out cloud claims them only at
+	// the edge of the radius. Both numbers are published; only this one is a vote.
+	const coreFraction = supportPixels > 0 ? coreCount / supportPixels : 0
+
+	return {
+		depth,
+		order,
+		coefficients,
+		fieldAt: (x: number, y: number): OkLab => fieldAtCoefficients(coefficients, x, y),
+		claim,
+		weights,
+		supportMass,
+		supportPixels,
+		supportFraction,
+		explainedFractionOwn: supportPixels > 0 ? 1 : 0,
+		coreFraction,
+		meanX,
+		meanY,
+		residualScale,
+		marginBars,
+		seed,
+		extensive: supportFraction >= EXTENSIVE_SUPPORT_FRACTION,
+		smooth: supportFraction >= EXTENSIVE_SUPPORT_FRACTION &&
+			coreFraction >= NO_FIELD_EXPLAINED_FRACTION,
+	}
+}
+
+/**
+ * The same stratified lattice as `buildSamples`, restricted to the domain.
+ *
+ * The stride is derived from the **domain's** pixel count, so the lattice over the whole raster is
+ * `MIN_SOLVE_SAMPLES × (pixels / domainPixels)` points and the share of them that lands inside the
+ * domain is about `MIN_SOLVE_SAMPLES` again. That is the same guarantee `buildSamples` gives, one
+ * level down, and it is an expectation rather than a floor — a domain that is spatially clumped can
+ * come in under it. Stated rather than corrected: the model has 3 coefficients per channel and
+ * arm-f-r3 §2.2's argument (10^5 puts the endpoint standard error orders of magnitude below any bar
+ * this pipeline compares against) has orders of magnitude of headroom.
+ */
+function buildDomainSamples(raster: DecodedRaster, domain: Uint8Array, domainCount: number): SampleSet {
+	const { width, height, lab } = raster
+
+	let strideX = 1
+	let strideY = 1
+	if (domainCount > MIN_SOLVE_SAMPLES) {
+		const ideal = Math.max(1, Math.floor(Math.sqrt(domainCount / MIN_SOLVE_SAMPLES)))
+		strideX = Math.min(ideal, width)
+		strideY = Math.min(ideal, height)
+	}
+
+	const capacity = axisSampleCount(width, strideX) * axisSampleCount(height, strideY)
+	const set: SampleSet = {
+		count: capacity,
+		x: new Float64Array(capacity),
+		y: new Float64Array(capacity),
+		l: new Float64Array(capacity),
+		a: new Float64Array(capacity),
+		b: new Float64Array(capacity),
+		residual: new Float64Array(capacity),
+		weight: new Float64Array(capacity),
+	}
+
+	let index = 0
+	for (let row = strideY >> 1; row < height; row += strideY) {
+		const y = normalizedY(row, height)
+		for (let column = strideX >> 1; column < width; column += strideX) {
+			const pixel = row * width + column
+			if (domain[pixel] !== 1) continue
+			set.x[index] = normalizedX(column, width)
+			set.y[index] = y
+			set.l[index] = lab[pixel * 3]
+			set.a[index] = lab[pixel * 3 + 1]
+			set.b[index] = lab[pixel * 3 + 2]
+			index += 1
+		}
+	}
+	set.count = index
+	return set
+}
+
+/**
+ * **The domain's modal colour**, as a start for the level's IRLS.
+ *
+ * A count over a fixed OKLab lattice of cell size `POOLED_SAME_COLOR_BAR` (the contract's own bar —
+ * no new constant), then the mass-weighted mean of every domain pixel within the explained radius of
+ * the winning cell's centroid. The second pass is what makes the seed insensitive to where the cell
+ * boundaries happened to fall: a mode split across two cells is re-joined by averaging over a ball
+ * the size of the radius the fit itself works in.
+ *
+ * This is a *start*, never an answer: the IRLS moves from here and the component is whatever it
+ * converges to. It is the only place in the module that counts colours rather than fitting them,
+ * and it decides nothing on its own — `fitComponentLevel` keeps whichever start claims more.
+ */
+function modalSeed(raster: DecodedRaster, domain: Uint8Array): OkLab | null {
+	const { width, height, lab } = raster
+	const pixelCount = width * height
+	const cells = new Map<number, { count: number; l: number; a: number; b: number }>()
+
+	for (let index = 0; index < pixelCount; index += 1) {
+		if (domain[index] !== 1) continue
+		const offset = index * 3
+		const l = lab[offset]
+		const a = lab[offset + 1]
+		const b = lab[offset + 2]
+		const key = latticeKey(l, a, b)
+		const cell = cells.get(key)
+		if (cell === undefined) cells.set(key, { count: 1, l, a, b })
+		else {
+			cell.count += 1
+			cell.l += l
+			cell.a += a
+			cell.b += b
+		}
+	}
+	if (cells.size === 0) return null
+
+	let bestKey = 0
+	let bestCount = -1
+	let bestCentre: OkLab = [0, 0, 0]
+	for (const [key, cell] of cells) {
+		// Count first, lattice key second: the tie-break is a property of the colour, so the Map's
+		// iteration order cannot reach the result.
+		if (cell.count > bestCount || (cell.count === bestCount && key < bestKey)) {
+			bestCount = cell.count
+			bestKey = key
+			bestCentre = [cell.l / cell.count, cell.a / cell.count, cell.b / cell.count]
+		}
+	}
+
+	let sumL = 0
+	let sumA = 0
+	let sumB = 0
+	let count = 0
+	for (let index = 0; index < pixelCount; index += 1) {
+		if (domain[index] !== 1) continue
+		const offset = index * 3
+		const dl = lab[offset] - bestCentre[0]
+		const da = lab[offset + 1] - bestCentre[1]
+		const db = lab[offset + 2] - bestCentre[2]
+		if (dl * dl + da * da + db * db >= EXPLAINED_RADIUS * EXPLAINED_RADIUS) continue
+		sumL += lab[offset]
+		sumA += lab[offset + 1]
+		sumB += lab[offset + 2]
+		count += 1
+	}
+	if (count === 0) return bestCentre
+	return [sumL / count, sumA / count, sumB / count]
+}
+
+/** Fixed OKLab lattice at the contract's bar. Offsets keep the key a small non-negative integer. */
+function latticeKey(l: number, a: number, b: number): number {
+	const i = Math.floor(l / POOLED_SAME_COLOR_BAR) + 512
+	const j = Math.floor(a / POOLED_SAME_COLOR_BAR) + 512
+	const k = Math.floor(b / POOLED_SAME_COLOR_BAR) + 512
+	return (i * 1024 + j) * 1024 + k
 }
 
 // ---------------------------------------------------------------------------------------------

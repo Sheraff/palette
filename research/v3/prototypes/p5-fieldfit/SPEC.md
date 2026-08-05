@@ -166,6 +166,22 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     (arm-f §2.5 two-component reading, item 4's polaroid); the noField retreat fires only when no
     component is field-like. Global explained-fraction stays as the trigger for the component
     search, not as a terminal verdict.
+    *E2 deviations accepted 2026-08-05 (we2-pass1, all measured or obligation-driven):* extensive
+    = 0.10 (margin rule over the three evidenced second components); smooth = inlier-core
+    fraction (the brief's own quantity was provably 1 under claim-defined support); ramp beats
+    second component for the surface slot; component IRLS cut ceiling `min(4.685σ̂, 4×bar)` with
+    the global fit bit-identical; two-block rescue deleted (subsumed); overlay measures against
+    the local component. Robustness cost measured at −2.9 overall concentrated in fg/accent;
+    reviewed-vs-unseen ratio 1.10, not underpowered — first pass where reviewed covers are the
+    more stable set.
+    *Smooth-gate ruling 2026-08-05 (evidence cover `16a8247378`, round-2 UNACCEPTABLE):* the
+    component smooth gate decouples from `NO_FIELD_EXPLAINED_FRACTION` — new constant
+    `COMPONENT_CORE_FRACTION = 0.4` (`[UNCALIBRATED]`, anchored to the one evidence cover whose
+    painted sky sits at 0.40; relaxing the shared 0.5 instead would silently flip every global
+    explF 0.4–0.5 cover's retreat). Blast radius measured, not assumed, before any round stages
+    it. *Cost flag:* v0.5 recursion ≈ 9 s/palette at robustness-set scale — a cost pass
+    (component solves on the lattice subsample, as the global fit already does) is owed before
+    the bake-off.
 
 13. **Foreground experiment (v0.4, from round-2 items 1 + 7)** — the fg principle is *the
     artwork's own ink, provided it registers*, not max contrast: item 7 wants the white title on
