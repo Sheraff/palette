@@ -39,3 +39,14 @@ composition is untouched (staging was in flight when this arrived).
    over their bars in Diagnostics so round analyses can correlate complaints with epsilon-margins
    — reporting only, no behavioural change ahead of evidence. Epsilon-pairs reading as one colour
    is further same-colour-bar calibration evidence for the upward packet.
+7. **Population floors exclude reviewer-named colours** (another arm: 4 of 7 reviewer-named marks
+   at rank-0 blocked by a 0.1% population floor; corpus median *endorsed* role colour has
+   exact-triple share 8.89e-5). P5's exposure assessment: our only candidacy floor is
+   `NEGLIGIBLE_OVERLAY_MASS_FRACTION = 1e-4` **of total overlay mass**, not of image population —
+   a tiny mark on a well-fitted field owns a large share of a small overlay total, so the shapes
+   diverge exactly where the hazard lives; and every reviewer-named colour to date (pink, white
+   title, brown/green) was missed by ranking criteria, never by the floor, on our record. Still
+   scheduled: a measured audit in the next code pass — for each reviewer-named colour, the
+   overlay-mass share of its family cluster vs the floor — so the exposure claim is verified, not
+   assumed. Concentration-shaped eligibility (our overlay-mass denominator) over raw population
+   share is precisely the arms' original design choice; the audit checks it held.

@@ -851,3 +851,348 @@ exactly; `dirty:false` measured (diff against `e6b9966` and porcelain both empty
    which class; if the orchestrator maps them differently, re-decide slot 7 before the push. §3.4.
 8. `round-3/NOTES-cross-arm.md` appeared in this directory during staging, **not written by this
    worker**. §1.
+
+---
+
+# 8. SUPERSESSION — the payload was re-cut on `p5-fieldfit-0.6.0`
+
+*Appended 2026-08-05 by a second worker (W-STAGE3B) in the same worktree `.worktrees/p5-fieldfit`
+(branch `proto/p5-fieldfit`, HEAD `b34dcf1`). **Nothing above this line was edited.** Everything in
+§§1–7 describes the v0.5.1 cut and is kept verbatim as the superseded record. Where §§1–7 and this
+section disagree, **this section is the payload.***
+
+## 8.1 What was re-cut, and why
+
+`items.json` and `render-data.json` were rebuilt from fresh dev-loop runs against
+`ALGORITHM_VERSION` **`p5-fieldfit-0.6.0`** (commit `b34dcf1`: t-continuity discriminator on
+measured anchors, guide-stop acceptance per doctrine, margin reporting). The v0.5.1 files staged at
+HEAD `e6b9966` are superseded.
+
+**The composition did not move.** The same eight `itemId`s in the same order, the same eight
+`imagePath`s, the same selection record, the same census, the same substitution ruling. §§2–3 stand
+unchanged. Only three things differ per item: `palette`, `variantId`, and `fingerprint`.
+
+**Measured blast radius: exactly one item.** Palettes were compared field-by-field against the
+v0.5.1 `items.json`:
+
+| # | itemId | palette |
+|---|---|---|
+| 1 | `ab67616d00001e0200001a9be12b7116a8247378` | **unchanged** |
+| 2 | `ab67616d00001e02000022e7e9d11c908479200b` | **unchanged** |
+| 3 | `ab67616d00001e020000269ead63cf2376a6b67d` | **unchanged** |
+| 4 | `ab67616d00001e020004ccf0ae91364130886c02` | **unchanged** |
+| 5 | `ab67616d0000b27300113f74852a0091a16672c4` | **unchanged** |
+| 6 | `ab67616d0000b27300094a786a28459646be9b20` | **unchanged** |
+| 7 | `ab67616d0000b27300125577fb06a6a8942d6547` | **unchanged** |
+| 8 | `ab67616d0000b27300096440c40e31757a78343d` | **CHANGED** — §8.3 |
+
+Seven of eight are byte-identical across the version bump. That is the blast radius the orchestrator
+measured, reproduced here independently from the payload files themselves.
+
+## 8.2 The runs these palettes come from
+
+Both run from `research/v3`, both against `prototypes/p5-fieldfit/candidate.ts`.
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types src/devloop/run.ts \
+  --candidate prototypes/p5-fieldfit/candidate.ts \
+  --set data/devloop/sets/demo-20.txt
+
+NODE_NO_WARNINGS=1 node --experimental-strip-types src/devloop/run.ts \
+  --candidate prototypes/p5-fieldfit/candidate.ts \
+  --set data/devloop/sets/p5-round3-fresh.txt
+```
+
+**Items 1–3 — demo-20.**
+
+- **Run file:** `research/v3/data/devloop/runs/p5-fieldfit-demo-20-20260805T113922823Z.jsonl`
+- **Result:** 20 ok · 0 failed · 20 cache hits · 0 computed · 155 ms
+- **`codeVersion`:** `3dd6266c2f925837c8a88504d5861e4c9af5222b671043215650590828169ea1`
+- **`setHash`:** `c364706ce35fde8ffad818f3427377ac182e1da9639e88d419e93863221b41e7`
+  — identical to §1's, the set file did not move.
+
+**Items 4–8 — the fresh five.**
+
+- **Run file:** `research/v3/data/devloop/runs/p5-fieldfit-p5-round3-fresh-20260805T113928937Z.jsonl`
+- **Result:** 5 ok · 0 failed · 5 cache hits · 0 computed · 71 ms
+- **`codeVersion`:** `3dd6266c2f925837c8a88504d5861e4c9af5222b671043215650590828169ea1`
+  — **identical to the demo-20 run's**; both halves come from the same candidate bytes.
+- **`setHash`:** `97625315b8491412231e1f2e5628b6879c624742a7d7c6d4f6ada3f431173299`
+  — identical to §1's *second* (post-correction) hash. Caveat N still holds: the set **name** maps to
+  two hashes in the run directory; pin the run file.
+
+`codeVersion` `3dd6266c…` ≠ v0.5.1's `52ebc106…`, so no v0.5.1 row can reach this payload.
+Node v25.8.1, `sharp@0.33.5`, `colornames-oklab@0.6.0`, as before.
+
+**Both runs report 100% cache hits — verified, not assumed.** The cache is keyed on `codeVersion` +
+input content hash, and two earlier v0.6.0 runs at the *same* `codeVersion` `3dd6266c…` had already
+been made in this worktree at 07:19:05Z (demo-20) and 07:19:10Z (p5-round3-fresh) by another worker.
+Three independent confirmations that the rows are v0.6.0 rows:
+
+1. **All 25 rows carry `palette.metadata.algorithmVersion` `p5-fieldfit-0.6.0`** and
+   `preprocessingVersion` `sharp-0.33.5/srgb/no-resample`. Checked programmatically, all 25, no
+   exceptions. (The run *header* does not carry `algorithmVersion` — it carries `codeVersion`; the
+   algorithm version lives on every row's `palette.metadata`. The orchestrator's instruction to
+   "verify the run header says `p5-fieldfit-0.6.0`" is satisfied at the row level, which is where the
+   instrument actually writes it.)
+2. `prototypes/p5-fieldfit/candidate.ts:154` reads
+   `export const ALGORITHM_VERSION = "p5-fieldfit-0.6.0"`, and the working tree over the algorithm
+   paths is clean (§8.5).
+3. The 25 rows are **byte-identical in roles, gradient and collapse** to the 07:19Z v0.6.0 runs —
+   0 of 25 differ. Determinism across two independent invocations of the same code.
+
+**Every colour in `items.json` is copied verbatim** from a run row's `palette.roles[*].hex` and
+`palette.gradient.stops[*].color.hex`. Nothing was recomputed, re-quantised or re-rounded; the
+collapse flags are the run's own.
+
+## 8.3 Item 8 — the one change, old → new
+
+`ab67616d0000b27300096440c40e31757a78343d` (*Harp Zone — Castlevania*, the round's census-certified
+high-chroma gradient, §3.5).
+
+| role | v0.5.1 | v0.6.0 |
+|---|---|---|
+| background | `#f82f01` | **`#f2190a`** |
+| surface | `#98961d` | **`#868825`** |
+| foreground | `#8c3406` | `#8c3406` *(unchanged)* |
+| accent | `#d0d749` | **`#ff2c00`** |
+| gradient | **`null`** | **`{ #f2190a @0 → #868825 @1 }`** |
+| surfaceCollapsed / accentCollapsed | false / false | false / false |
+
+**v0.5.1 read it as two flat blocks (`twoBlockFallback: true`, `gradient: null`); v0.6.0 reads it as
+a gradient.** This is the whole point of the re-cut. §3.5's LOUD flag and **caveat I are now
+obsolete for this item**: the reviewer will see a rendered green→red ramp, not a flat red field.
+`fieldCss` for item 8 is now
+`linear-gradient(135deg in oklab, #f2190a 35%, #868825 100%)`.
+
+**Downstream caveat corrections (§6):**
+
+- **Caveat H is superseded.** **Six** items now carry a gradient (1, 2, 4, 5, 7, **8**); **two** are
+  flat (3, 6). All six ramps are 2-stop, `stops[0].color === background`,
+  `stops[1].color === surface`, positions 0 and 1.
+- **Caveat C** now applies to six of eight items, not five: item 8's fitted angle is −88.35°, and the
+  pinned renderer still displays 135°.
+- **Caveat I no longer bites this round.** No item now has two distinct field colours with
+  `gradient: null`. It remains a true statement about the renderer.
+- **Caveat G** is unaffected — item 6 ("Capri" twice, a real collapse) and item 7 ("Narwhal Grey"
+  twice, not a collapse) are unchanged. Item 8's four new names are all distinct: `Scarlet Blaze`,
+  `Lentil`, `Russet`, `Flame Scarlet`.
+
+**FOR THE ANALYSIS RECORD — item 8's accent is a deliberate live question, not an oversight.** The
+new accent `#ff2c00` sits at **1.46× the bar** from its own background `#f2190a` (measured:
+distance 0.03357, bar 0.02293, ratio **1.464**; §8.6). Two reds, thin apart, and the palette
+publishes them as background and accent. That pairing is *put to the reviewer on purpose* — it is
+exactly the kind of near-miss the round exists to grade. Do not read it as a staging error, and do
+not "fix" it before the push. Every other pair on this item is comfortable: accent×surface 11.02×,
+background×surface 10.97×, foreground×background 8.83×, foreground×surface 9.32×,
+foreground×accent 3.09×.
+
+**A second thing to notice, unprompted:** v0.6.0's diagnostic for item 8 reports
+`offArtwork.background: true` where v0.5.1 reported all four roles on-artwork. The published
+background `#f2190a` is a fitted ramp endpoint that no artwork pixel sits on. Recorded here because
+it is new at this version and it is on the one item that changed; it is a diagnostic, never payload,
+and no ruling here depends on it.
+
+## 8.4 What the files now say
+
+`items.json` — same shape as §4, same five keys per item, same order. `variantId` is
+**`"p5-fieldfit-0.6.0"`** on every item; `fingerprint` is
+
+```json
+{
+  "algorithmVersion": "p5-fieldfit-0.6.0",
+  "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+  "gitCommit": "b34dcf1",
+  "dirty": false
+}
+```
+
+on every item. `render-data.json` — same map shape, same pinned `nameHexes()` / `fieldCss()` call
+sites, rebuilt from the new palettes. Both files are serialized exactly as before
+(`JSON.stringify(x, null, "\t") + "\n"`).
+
+All of §4's blinding statement, §6's caveats A, B, D, E, F, J, K, L, M, N, and §7's flags 1 and 3–8
+carry over unchanged. §7's flag 2 ("item 8 publishes no gradient") is **retired by this re-cut**.
+
+## 8.5 `dirty: false`, measured at `b34dcf1`
+
+- `git diff b34dcf1 -- research/v3/prototypes/p5-fieldfit/src research/v3/prototypes/p5-fieldfit/candidate.ts`
+  → **empty**.
+- `git status --porcelain research/v3/prototypes/p5-fieldfit/src research/v3/prototypes/p5-fieldfit/candidate.ts`
+  → **empty**.
+- `HEAD` is `b34dcf1` at the start and at the end of this re-cut — it did not move.
+
+**Concurrent edits in this worktree, flagged again (as §1 flagged one).** Whole-worktree
+`git status --porcelain` at the end of the re-cut shows three modified files: this worker's
+`round-3/items.json` and `round-3/render-data.json`, plus
+**`round-3/NOTES-cross-arm.md`, modified by someone else during this re-cut** — not read into and
+not acted on by this work. Neither `src/` nor `candidate.ts` is among them, so `dirty: false` is
+true of the algorithm, which is what the fingerprint claims. A re-run reproduces these palettes only
+while those paths stay untouched.
+
+## 8.6 Validation, re-run in full
+
+The §5 battery, unchanged except that the three version assertions now name v0.6.0 / `b34dcf1`, and
+`"0.6.0"` was **added** to the leak-scan token list beside `"0.5.1"` (the current version label must
+be scanned for, as the then-current one was). Same 24 checks, same script, run from `research/v3`.
+
+```
+PASS  items.json parses as an array of 8 — 8 items
+PASS  8 unique itemIds
+PASS  every itemId is a server-legal id token
+PASS  every itemId is a full 40-hex stem
+PASS  every hex matches ^#[0-9a-f]{6}$ — 44 hexes checked, bad: none
+PASS  every imagePath exists under the MAIN checkout — 8/8 resolve
+PASS  no imagePath is absolute
+PASS  gradient ends are background -> surface — 6 gradient items
+PASS  gradient positions in [0,1] and strictly increasing
+PASS  gradient stop counts within 2..4
+PASS  no gradient carries a non-string geometry
+PASS  every item has both collapse booleans and required fields
+PASS  collapse flags agree with hex equality
+PASS  items.json items carry exactly the 5 push keys
+PASS  fingerprint is uniform and names v0.6.0
+PASS  render-data has one entry per itemId
+PASS  every render entry has 4 named roles in order
+PASS  render hexes and collapse flags match items.json verbatim
+PASS  render names are the current colornames-oklab output
+PASS  fieldCss is a ramp when there is a gradient, the flat background otherwise
+PASS  render entries carry exactly roles/gradient/fieldCss
+PASS  no diagnostics / mechanism labels / version labels in any served field — clean
+PASS  the "E2" mechanism label, word-bounded and case-sensitive — clean
+PASS  "e2" over the served colour NAMES only (hex-free text) — clean
+parseCalibrationBatch OK: 8 items, purpose calibration
+round-trip identical: true
+PASS  parseCalibrationBatch dry-run, byte-identical round-trip
+
+ALL CHECKS PASSED
+```
+
+Two counts moved and both are explained by item 8 gaining a ramp: **44** hexes checked (was 42, +2
+stops) and **6** gradient items (was 5). §5's two notes on the leak scan still apply verbatim —
+`"round"` is unusable because `background`/`foreground` contain it, and `"e2"` is unusable over
+colour data because item 1's foreground `#fee2ba` is a served hex, so it is scanned word-bounded and
+case-sensitive over the payload and case-insensitively over the hex-free colour names.
+
+The dry-run still does **not** exercise `pushCalibration`'s later stages (path allowlist,
+`sharp.metadata()`, batch-log write). The live push remains the real test.
+
+## 8.7 Appendix — `diagnose.ts` on item 8 at v0.6.0
+
+Record only, **never payload**. Run from `research/v3`:
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types prototypes/p5-fieldfit/diagnose.ts \
+  /Users/Flo/GitHub/palette/09/ab67616d0000b27300096440c40e31757a78343d
+```
+
+```json
+{
+  "image": "/Users/Flo/GitHub/palette/09/ab67616d0000b27300096440c40e31757a78343d",
+  "size": "640×640",
+  "fieldOrder": 1,
+  "diagnostics": {
+    "noField": false,
+    "inlierFraction": 0.94085205078125,
+    "fieldExplainedFraction": 0.6100146484375,
+    "fieldComponents": 0,
+    "retreat": false,
+    "residualScale": 0.07157966667003929,
+    "marginBars": 3.4857396446379956,
+    "orientationMargin": -9.061395195283456,
+    "gradient": true,
+    "excursionMax": 0.036189377184029654,
+    "thirdStopAccepted": false,
+    "residualExcursion": 0.004605021230138174,
+    "twoBlockFallback": false,
+    "accentChromaOnly": false,
+    "offArtwork": { "background": true, "surface": false, "foreground": false, "accent": false },
+    "escape": false
+  },
+  "continuity": {
+    "middleBandMass": 0.2982,
+    "spanMassFraction": 0.9174,
+    "reading": "continuous"
+  },
+  "margins": {
+    "pairs": [
+      { "pair": "background×surface", "colors": "#f2190a/#868825", "distance": 0.25163, "bar": 0.02293, "ratio": 10.974, "collapsed": false },
+      { "pair": "foreground×accent", "colors": "#8c3406/#ff2c00", "distance": 0.23012, "bar": 0.07444, "ratio": 3.091, "collapsed": false },
+      { "pair": "foreground×background", "colors": "#8c3406/#f2190a", "distance": 0.20257, "bar": 0.02293, "ratio": 8.834, "collapsed": false },
+      { "pair": "foreground×surface", "colors": "#8c3406/#868825", "distance": 0.21366, "bar": 0.02293, "ratio": 9.318, "collapsed": false },
+      { "pair": "accent×background", "colors": "#ff2c00/#f2190a", "distance": 0.03357, "bar": 0.02293, "ratio": 1.464, "collapsed": false },
+      { "pair": "accent×surface", "colors": "#ff2c00/#868825", "distance": 0.25275, "bar": 0.02293, "ratio": 11.023, "collapsed": false }
+    ],
+    "foregroundLegibility": { "minRawApca": 20.249, "floor": 15, "ratio": 1.35 },
+    "accentTwin": { "distance": 0.23012, "bar": 0.02293, "ratio": 10.036, "exclusionMultiple": 8, "clearance": 1.254, "collapsed": false }
+  },
+  "attempts": null,
+  "palette": {
+    "background": "#f2190a",
+    "surface": "#868825",
+    "foreground": "#8c3406",
+    "accent": "#ff2c00",
+    "gradient": [
+      { "hex": "#f2190a", "position": 0 },
+      { "hex": "#868825", "position": 1 }
+    ],
+    "geometry": { "kind": "linear", "angleDegrees": -88.35156469794246 },
+    "collapse": { "surfaceCollapsed": false, "accentCollapsed": false },
+    "escape": null
+  }
+}
+```
+
+The diagnostic re-derives the run row's palette exactly — same four hexes, same two stops, same
+collapse flags. `continuity.reading` is `"continuous"` and `twoBlockFallback` is now `false`, which
+is the v0.6.0 change in one line. §3.6's item-8 block is the superseded v0.5.1 diagnostic and is
+kept there for the comparison.
+
+## 8.8 Files this re-cut rewrote
+
+- `round-3/items.json` — rewritten (palettes for item 8; `variantId` and `fingerprint` for all 8).
+- `round-3/render-data.json` — rewritten (item 8's roles, names, gradient and `fieldCss`).
+- `round-3/STAGING.md` — this section appended; **nothing above it edited**. `git diff --stat`
+  reports `308 insertions(+)`, **0 deletions**, which is the append-only property proved rather than
+  asserted.
+- `round-3/RESTAGE-REPORT.md` — **not written.** The orchestrator asked for it; the harness refuses
+  standalone report files from a worker, exactly as it refused W-STAGE3's `REPORT.md` (§7). The
+  report is §8.9 below and was also returned on the message channel.
+
+Plus the two dev-loop run files the instrument wrote itself, in
+`research/v3/data/devloop/runs/`. `round-3/ROUND.md`, `round-3/NOTES-cross-arm.md` and
+`round-3/select-fresh-covers.mjs` were **not** touched by this worker. Nothing was committed and
+nothing was pushed to the server.
+
+## 8.9 Report (W-STAGE3B)
+
+**Per item, v0.5.1 → v0.6.0:**
+
+| # | itemId | palette |
+|---|---|---|
+| 1 | `…16a8247378` | unchanged |
+| 2 | `…908479200b` | unchanged |
+| 3 | `…2376a6b67d` | unchanged |
+| 4 | `…30886c02` | unchanged |
+| 5 | `…a16672c4` | unchanged |
+| 6 | `…46be9b20` | unchanged |
+| 7 | `…942d6547` | unchanged |
+| 8 | `…7a78343d` | **CHANGED** — flat two-block → gradient; bg `#f82f01`→`#f2190a`, surface `#98961d`→`#868825`, accent `#d0d749`→`#ff2c00`, fg `#8c3406` unchanged, `gradient: null` → `#f2190a@0 → #868825@1` |
+
+**Exactly one item changed — the measured blast radius is confirmed, not contradicted.**
+
+**Validation:** all 24 checks PASS; `parseCalibrationBatch` OK, round-trip identical. Two counts
+moved with item 8's new ramp: 44 hexes (was 42), 6 gradient items (was 5).
+
+**`dirty: false`, measured at `b34dcf1`:** `git diff b34dcf1 --` over
+`prototypes/p5-fieldfit/src` + `candidate.ts` empty; `git status --porcelain` over the same paths
+empty; HEAD unmoved. Whole-worktree porcelain shows a concurrent third-party edit to
+`NOTES-cross-arm.md` (§8.5), no algorithm code.
+
+**Files rewritten:** `round-3/items.json`, `round-3/render-data.json`, `round-3/STAGING.md`
+(append-only, +308 lines then this report, 0 deletions). Run files:
+`p5-fieldfit-demo-20-20260805T113922823Z.jsonl`,
+`p5-fieldfit-p5-round3-fresh-20260805T113928937Z.jsonl`, `codeVersion` `3dd6266c…`.
+
+**Live question, on purpose:** item 8's accent `#ff2c00` is 1.46× bar from its background
+`#f2190a`. Two thin-apart reds, put to the reviewer deliberately (§8.3).

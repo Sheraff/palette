@@ -268,14 +268,14 @@
 		"roles": [
 			{
 				"role": "background",
-				"hex": "#f82f01",
-				"name": "Flame Scarlet",
+				"hex": "#f2190a",
+				"name": "Scarlet Blaze",
 				"collapsed": false
 			},
 			{
 				"role": "surface",
-				"hex": "#98961d",
-				"name": "Pistachio Shell",
+				"hex": "#868825",
+				"name": "Lentil",
 				"collapsed": false
 			},
 			{
@@ -286,12 +286,23 @@
 			},
 			{
 				"role": "accent",
-				"hex": "#d0d749",
-				"name": "Limoncello",
+				"hex": "#ff2c00",
+				"name": "Flame Scarlet",
 				"collapsed": false
 			}
 		],
-		"gradient": null,
-		"fieldCss": "#f82f01"
+		"gradient": {
+			"stops": [
+				{
+					"color": "#f2190a",
+					"position": 0
+				},
+				{
+					"color": "#868825",
+					"position": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #f2190a 35%, #868825 100%)"
 	}
 }
