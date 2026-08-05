@@ -159,6 +159,30 @@ is not a calibration. Interim ranking unchanged; the coverage redesign subsumes 
 **Process lesson (binding on future rounds):** outcome tables must be mutually exclusive and
 collectively exhaustive, and must describe what the review page actually collects.
 
+## D10 — cal-014 ruled: identity eligibility, polarity, and the fresh-cover verdict (2026-08-05)
+
+Verified decode in round-3-quality/OUTCOME.md. Headline: 5/6 fresh covers at ≤ weak (1
+acceptable, 0 strong) — the pre-declared "≥4 of 6 at ≤2" outcome fires. Rulings:
+
+1. **The white-foreground defect is a text-detector colour-recall problem, priced twice**
+   (items 1–2: published near-whites "not a color that is part of the artwork" — said about
+   exact pixels). D3's identity-over-legibility rule is about *the artwork's own text colour*;
+   the detector electing antialiasing/blend whites as "the text colour" is the suspected
+   mechanism. Cycle-3 diagnosis mandated before any rule change.
+2. **Item 6's "background should be white" is a POLARITY defect, not a contract gap:** the
+   contract fixes stops[0]=background but P2 chooses ramp direction; flipping the published
+   ramp (#fafafa→#646464) satisfies the note legally. The geometric top-left polarity rule
+   mispicked on its first reviewer contact — one data point, design attention in cycle 3, no
+   invented constant.
+3. **Identity/belonging is now the campaign's dominant P2 signal** (with D9): eligibility
+   ordering (salience/stability) + coverage allocation are one design problem. Cycle-3 fleet
+   priority 1, ahead of stability work only where they touch the same code.
+4. **Item 4** (gradient, unacceptable, no note, grade moved weak→unacceptable in 1.9s) is an
+   evidence gap: queue its cover for a future noted round; do not guess.
+5. Enclosure-surface question, D7 margin probe, missed-gradient direction: items were in
+   front of the reviewer, no decidable evidence returned (margin probe's negative — 0.0304
+   survived — is the one usable point). §5 caveat stands.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
