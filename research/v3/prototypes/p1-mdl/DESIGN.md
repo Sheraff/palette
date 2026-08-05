@@ -181,6 +181,19 @@ Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install)
     structure. Recorded as an M3-reading class: if our accents draw same-family complaints,
     that joins the salience finding as evidence about what the currency misses.
 
+## V1 — the one bounded iteration (reviewer ruling, 2026-08-05)
+
+Granted after the MECHANISM-FALSIFIED report on v0 (round phase2-pair-010: zero strong, ink-recovery
+falsifier fired, coverage-vs-identity corroborated live, arm A degenerate 20/20 two-colour).
+**Hard scope, no growth:** (1) chromatic residual density for A′ (DESIGN 11); (2) λ recalibration +
+disentangling arm A's collapse degeneracy (λ=1 [UNCALIBRATED] × 16/20 budget-exhausted searches);
+(3) re-emit demo-20; (4) ONE 8-item round (pairwise, same 8 covers as v0 for per-arm grade
+comparability). **Kill condition, pre-registered:** if the iteration needs ANYTHING beyond this
+recorded repair, that fact itself is the kill signal. The indistinguishable-inks axis is
+deliberately NOT touched (contract floors are the reviewer's; if v1 dies there again, that is kill
+data, not a repair prompt). Keep-or-kill on the round's verdicts; the falsification record stands
+either way.
+
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
 - `src/measure/` — decode (sharp 0.33.5, dims from header, refuse transparency loudly),
