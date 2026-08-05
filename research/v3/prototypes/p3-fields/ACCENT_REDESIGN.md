@@ -43,7 +43,12 @@ the wall (not the ranking inside it) is the defect. Accent is also the robustnes
    tie-band + stated-convention pattern already used elsewhere.
 6. **The line holds.** Every published accent is an exact pixel; chroma/hue-relative-to-field
    are numbers attached to pixels; no colour-family object is ever materialised as a colour.
-7. **Collapse semantics unchanged** (accent→fg when no qualified population survives), and the
+7. **Margins rank, bars only qualify** (EVIDENCE item 11: cross-arm, reviewer called pairs
+   clearing the bar by 1e-4–3e-3 indistinguishable). The ordering must prefer headroom — an
+   accent barely past qualification is a twin to the eye and a flip to the harness; chromatic-
+   departure-leads already encodes this, but no tie-break may ever settle AT the bar's edge
+   when a higher-margin candidate qualifies.
+8. **Collapse semantics unchanged** (accent→fg when no qualified population survives), and the
    swap comparator keeps operating downstream of the new ordering — re-measure its fire rate
    after (36.4% at 0.3.0; expect it to drop if fg/accent selection improves).
 
