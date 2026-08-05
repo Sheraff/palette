@@ -100,6 +100,18 @@ worst-excursion t taking the field's actual colour there (exact pixel), re-test,
 excursion falls materially; D4's minimum-spacing check and monotone colour order are
 preconditions for any inserted stop. D5's other three items stand unchanged.
 
+## D7 — margins, not floors (2026-08-05, cross-arm; no action ordered)
+
+Another arm published pairs clearing sameColorBar by 1e-4–3e-3 and the reviewer called them
+indistinguishable; its 6/6-low round also exposed a chroma-blind coverage term (missing black
+named). Principle: **the reviewer grades margins; optimizers sit on floors.** P2 exposure:
+the twins-must-collapse walk enforces distinctness AT the bar — a pair at bar+epsilon
+publishes as "distinct" and is a complaint waiting to happen. P2 translation, cycle-3 design
+input: report the pairwise margin per published palette (dump + round side-cars), and where
+the next candidate in the same ranking has materially larger margin at equal rank-level,
+prefer it (ordering preference, not a new constant). Margin audit of the merged demo-20 run
+scheduled with round-3 staging so items don't walk into known complaints.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
