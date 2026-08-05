@@ -1,0 +1,1629 @@
+{
+ "what": "P1 M3 pairwise round \u2014 de-blinded verdicts, batch phase2-pair-010 (staged as b-20260805-4a2e)",
+ "generatedAt": "2026-08-05",
+ "analyst": "P1 post-release round analyst",
+ "sources": {
+  "warehouse": "research/v3/data/warehouse/warehouse.jsonl",
+  "batchLog": "research/v3/data/review-server/batches.jsonl",
+  "key": "research/v3/prototypes/p1-mdl/review-rounds/m3-priors-pairwise/KEY.json",
+  "fixture": "research/v3/prototypes/p1-mdl/review-rounds/m3-priors-pairwise/batch.json"
+ },
+ "arms": {
+  "a": "p1a \u2014 mass-normalised prior (nats)",
+  "aprime": "p1ap \u2014 schema-derived serialization prior (bits)"
+ },
+ "decodeVerification": {
+  "installedBatchId": "phase2-pair-010",
+  "stagedBatchId": "b-20260805-4a2e",
+  "itemCount": 8,
+  "allItemIds40Hex": true,
+  "itemIdSetsEqual_fixture_installed": true,
+  "itemIdSetsEqual_key_installed": true,
+  "variantIdSetsEqualPerItem_key_installed": true,
+  "sideOrderIdentical_fixture_installed": true,
+  "paletteBytesIdentical_fixture_installed": true,
+  "unknownVariantIdsInVerdicts": 0,
+  "crossItemVariantMismatches": 0,
+  "artworkSha256Agrees_key_warehouse_emitterBothArms": true,
+  "verdictRows": 17,
+  "itemsWithVerdicts": 8,
+  "batchCompleteRows": 1,
+  "releasedItemIds": 8,
+  "result": "PASS"
+ },
+ "tallies": {
+  "preferenceByArm": {
+   "a": 4,
+   "aprime": 2,
+   "none": 2
+  },
+  "preferenceExplicitOnly": {
+   "a": 0,
+   "aprime": 1,
+   "none": 2
+  },
+  "preferencePrefilled": 5,
+  "gradeDistribution": {
+   "a": {
+    "strong": 0,
+    "acceptable": 1,
+    "weak": 4,
+    "unacceptable": 3
+   },
+   "aprime": {
+    "strong": 0,
+    "acceptable": 0,
+    "weak": 2,
+    "unacceptable": 6
+   }
+  },
+  "confoundFlags": 0,
+  "vetoes": "not expressible in schema v3.0"
+ },
+ "items": [
+  {
+   "index": 1,
+   "itemId": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+   "servedSides": {
+    "A": {
+     "variantId": "v-9e548f3f803d7429",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-971ba2543e99aecd",
+     "arm": "aprime"
+    }
+   },
+   "grades": {
+    "a": "acceptable",
+    "aprime": "unacceptable"
+   },
+   "preference": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "side B: there is not red-to-white gradient in the artwork, so this field treatment does not reflect the artwork\nside B: accent and foreground are impossible to distinguish on top of the surface",
+   "revisionCount": 6,
+   "revisionTimestamps": [
+    "2026-08-05T06:40:49.052Z",
+    "2026-08-05T06:41:02.659Z",
+    "2026-08-05T06:41:05.269Z",
+    "2026-08-05T06:41:24.215Z",
+    "2026-08-05T06:41:35.525Z",
+    "2026-08-05T06:41:38.838Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 53.68,
+     "minAbsApcaAccent": 53.68,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         233,
+         230,
+         223
+        ],
+        "hex": "#e9e6df"
+       },
+       "surface": {
+        "rgb": [
+         233,
+         230,
+         223
+        ],
+        "hex": "#e9e6df"
+       },
+       "foreground": {
+        "rgb": [
+         241,
+         51,
+         3
+        ],
+        "hex": "#f13303"
+       },
+       "accent": {
+        "rgb": [
+         241,
+         51,
+         3
+        ],
+        "hex": "#f13303"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 2.55,
+     "minAbsApcaAccent": 2.55,
+     "apcaField": "rendered-ramp",
+     "massExplained": 0.001122,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         164,
+         20,
+         12
+        ],
+        "hex": "#a4140c"
+       },
+       "surface": {
+        "rgb": [
+         224,
+         228,
+         229
+        ],
+        "hex": "#e0e4e5"
+       },
+       "foreground": {
+        "rgb": [
+         233,
+         230,
+         221
+        ],
+        "hex": "#e9e6dd"
+       },
+       "accent": {
+        "rgb": [
+         233,
+         230,
+         221
+        ],
+        "hex": "#e9e6dd"
+       }
+      },
+      "gradient": {
+       "stops": [
+        {
+         "color": {
+          "rgb": [
+           164,
+           20,
+           12
+          ],
+          "hex": "#a4140c"
+         },
+         "position": 0
+        },
+        {
+         "color": {
+          "rgb": [
+           224,
+           228,
+           229
+          ],
+          "hex": "#e0e4e5"
+         },
+         "position": 1
+        }
+       ]
+      },
+      "collapse": {
+       "surfaceCollapsed": false,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 2,
+   "itemId": "ab67616d00001e020000269ead63cf2376a6b67d",
+   "servedSides": {
+    "A": {
+     "variantId": "v-bb74f76a4cbbb5c8",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-b27d7191b9fc57f6",
+     "arm": "aprime"
+    }
+   },
+   "grades": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "preference": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "those 2 palette proposals are missing too much of the artwork's identity. The artwork has 4 colors (white, yellow, red, black), and the background is yellow. ",
+   "revisionCount": 4,
+   "revisionTimestamps": [
+    "2026-08-05T06:41:51.466Z",
+    "2026-08-05T06:42:06.501Z",
+    "2026-08-05T06:42:18.126Z",
+    "2026-08-05T06:42:25.540Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 22.11,
+     "minAbsApcaAccent": 22.11,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         250,
+         250,
+         248
+        ],
+        "hex": "#fafaf8"
+       },
+       "surface": {
+        "rgb": [
+         250,
+         250,
+         248
+        ],
+        "hex": "#fafaf8"
+       },
+       "foreground": {
+        "rgb": [
+         252,
+         208,
+         0
+        ],
+        "hex": "#fcd000"
+       },
+       "accent": {
+        "rgb": [
+         252,
+         208,
+         0
+        ],
+        "hex": "#fcd000"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 34.75,
+     "minAbsApcaAccent": 107.22,
+     "apcaField": "flat-field",
+     "massExplained": 0.124533,
+     "swapDelta": 0,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         0,
+         0,
+         0
+        ],
+        "hex": "#000000"
+       },
+       "surface": {
+        "rgb": [
+         0,
+         3,
+         0
+        ],
+        "hex": "#000300"
+       },
+       "foreground": {
+        "rgb": [
+         119,
+         123,
+         124
+        ],
+        "hex": "#777b7c"
+       },
+       "accent": {
+        "rgb": [
+         249,
+         250,
+         252
+        ],
+        "hex": "#f9fafc"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": false,
+       "accentCollapsed": false
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 3,
+   "itemId": "ab67616d00001e02000025b4e66a00806cb6dd7d",
+   "servedSides": {
+    "A": {
+     "variantId": "v-cf1879812d6d93b1",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-e021e52c50461fd6",
+     "arm": "a"
+    }
+   },
+   "grades": {
+    "aprime": "unacceptable",
+    "a": "unacceptable"
+   },
+   "preference": {
+    "raw": "no-preference",
+    "source": "explicit",
+    "arm": null
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "missing the significant magenta from the artwork\nincorrect background",
+   "revisionCount": 2,
+   "revisionTimestamps": [
+    "2026-08-05T06:44:30.476Z",
+    "2026-08-05T06:44:43.857Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 8.84,
+     "minAbsApcaAccent": 8.84,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         54,
+         54,
+         52
+        ],
+        "hex": "#363634"
+       },
+       "surface": {
+        "rgb": [
+         54,
+         54,
+         52
+        ],
+        "hex": "#363634"
+       },
+       "foreground": {
+        "rgb": [
+         0,
+         0,
+         0
+        ],
+        "hex": "#000000"
+       },
+       "accent": {
+        "rgb": [
+         0,
+         0,
+         0
+        ],
+        "hex": "#000000"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 8.84,
+     "minAbsApcaAccent": 102.27,
+     "apcaField": "flat-field",
+     "massExplained": 0.400289,
+     "swapDelta": 0,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         54,
+         54,
+         52
+        ],
+        "hex": "#363634"
+       },
+       "surface": {
+        "rgb": [
+         54,
+         54,
+         52
+        ],
+        "hex": "#363634"
+       },
+       "foreground": {
+        "rgb": [
+         0,
+         0,
+         0
+        ],
+        "hex": "#000000"
+       },
+       "accent": {
+        "rgb": [
+         250,
+         253,
+         255
+        ],
+        "hex": "#fafdff"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": false
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 4,
+   "itemId": "ab67616d00001e02000022e7e9d11c908479200b",
+   "servedSides": {
+    "A": {
+     "variantId": "v-33d6a4010681ddde",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-894456ddc0301632",
+     "arm": "aprime"
+    }
+   },
+   "grades": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "preference": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 1,
+   "revisionTimestamps": [
+    "2026-08-05T06:43:08.885Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 29.46,
+     "minAbsApcaAccent": 29.46,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         152,
+         95,
+         102
+        ],
+        "hex": "#985f66"
+       },
+       "surface": {
+        "rgb": [
+         152,
+         95,
+         102
+        ],
+        "hex": "#985f66"
+       },
+       "foreground": {
+        "rgb": [
+         31,
+         31,
+         33
+        ],
+        "hex": "#1f1f21"
+       },
+       "accent": {
+        "rgb": [
+         31,
+         31,
+         33
+        ],
+        "hex": "#1f1f21"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 4.67,
+     "minAbsApcaAccent": 20.21,
+     "apcaField": "flat-field",
+     "massExplained": 0.263389,
+     "swapDelta": 0,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         244,
+         206,
+         97
+        ],
+        "hex": "#f4ce61"
+       },
+       "surface": {
+        "rgb": [
+         114,
+         80,
+         96
+        ],
+        "hex": "#725060"
+       },
+       "foreground": {
+        "rgb": [
+         251,
+         191,
+         121
+        ],
+        "hex": "#fbbf79"
+       },
+       "accent": {
+        "rgb": [
+         31,
+         31,
+         33
+        ],
+        "hex": "#1f1f21"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": false,
+       "accentCollapsed": false
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 5,
+   "itemId": "ab67616d00001e02000018e9b0ec8fc5ac790164",
+   "servedSides": {
+    "A": {
+     "variantId": "v-f95a2469784c88b3",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-d17e06eb822ec673",
+     "arm": "aprime"
+    }
+   },
+   "grades": {
+    "a": "unacceptable",
+    "aprime": "weak"
+   },
+   "preference": {
+    "raw": "b",
+    "source": "prefilled",
+    "arm": "aprime"
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 1,
+   "revisionTimestamps": [
+    "2026-08-05T06:43:19.146Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 20.69,
+     "minAbsApcaAccent": 20.69,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         217,
+         226,
+         225
+        ],
+        "hex": "#d9e2e1"
+       },
+       "surface": {
+        "rgb": [
+         217,
+         226,
+         225
+        ],
+        "hex": "#d9e2e1"
+       },
+       "foreground": {
+        "rgb": [
+         254,
+         255,
+         255
+        ],
+        "hex": "#feffff"
+       },
+       "accent": {
+        "rgb": [
+         254,
+         255,
+         255
+        ],
+        "hex": "#feffff"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 19.2,
+     "minAbsApcaAccent": 19.2,
+     "apcaField": "rendered-ramp",
+     "massExplained": 0.011989,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         217,
+         226,
+         225
+        ],
+        "hex": "#d9e2e1"
+       },
+       "surface": {
+        "rgb": [
+         112,
+         186,
+         39
+        ],
+        "hex": "#70ba27"
+       },
+       "foreground": {
+        "rgb": [
+         249,
+         9,
+         10
+        ],
+        "hex": "#f9090a"
+       },
+       "accent": {
+        "rgb": [
+         249,
+         9,
+         10
+        ],
+        "hex": "#f9090a"
+       }
+      },
+      "gradient": {
+       "stops": [
+        {
+         "color": {
+          "rgb": [
+           217,
+           226,
+           225
+          ],
+          "hex": "#d9e2e1"
+         },
+         "position": 0
+        },
+        {
+         "color": {
+          "rgb": [
+           112,
+           186,
+           39
+          ],
+          "hex": "#70ba27"
+         },
+         "position": 1
+        }
+       ]
+      },
+      "collapse": {
+       "surfaceCollapsed": false,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 6,
+   "itemId": "ab67616d00001e0200000bbc3367a621256ce593",
+   "servedSides": {
+    "A": {
+     "variantId": "v-533bba38a7317c48",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-8473c5c5f7f3ceca",
+     "arm": "a"
+    }
+   },
+   "grades": {
+    "aprime": "unacceptable",
+    "a": "unacceptable"
+   },
+   "preference": {
+    "raw": "no-preference",
+    "source": "explicit",
+    "arm": null
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 1,
+   "revisionTimestamps": [
+    "2026-08-05T06:46:09.417Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 91.46,
+     "minAbsApcaAccent": 91.46,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         16,
+         22,
+         240
+        ],
+        "hex": "#1016f0"
+       },
+       "surface": {
+        "rgb": [
+         16,
+         22,
+         240
+        ],
+        "hex": "#1016f0"
+       },
+       "foreground": {
+        "rgb": [
+         250,
+         250,
+         250
+        ],
+        "hex": "#fafafa"
+       },
+       "accent": {
+        "rgb": [
+         250,
+         250,
+         250
+        ],
+        "hex": "#fafafa"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 14.89,
+     "minAbsApcaAccent": 80.07,
+     "apcaField": "rendered-ramp",
+     "massExplained": 0.026811,
+     "swapDelta": 0,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         67,
+         93,
+         240
+        ],
+        "hex": "#435df0"
+       },
+       "surface": {
+        "rgb": [
+         16,
+         22,
+         240
+        ],
+        "hex": "#1016f0"
+       },
+       "foreground": {
+        "rgb": [
+         40,
+         40,
+         40
+        ],
+        "hex": "#282828"
+       },
+       "accent": {
+        "rgb": [
+         252,
+         250,
+         251
+        ],
+        "hex": "#fcfafb"
+       }
+      },
+      "gradient": {
+       "stops": [
+        {
+         "color": {
+          "rgb": [
+           67,
+           93,
+           240
+          ],
+          "hex": "#435df0"
+         },
+         "position": 0
+        },
+        {
+         "color": {
+          "rgb": [
+           16,
+           22,
+           240
+          ],
+          "hex": "#1016f0"
+         },
+         "position": 1
+        }
+       ]
+      },
+      "collapse": {
+       "surfaceCollapsed": false,
+       "accentCollapsed": false
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 7,
+   "itemId": "ab67616d00001e020000099e97d17d28279e9184",
+   "servedSides": {
+    "A": {
+     "variantId": "v-74d663ac7f58ec32",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-aaed9a287cff72d9",
+     "arm": "a"
+    }
+   },
+   "grades": {
+    "aprime": "unacceptable",
+    "a": "weak"
+   },
+   "preference": {
+    "raw": "b",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 1,
+   "revisionTimestamps": [
+    "2026-08-05T06:43:48.923Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 28.31,
+     "minAbsApcaAccent": 28.31,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         206,
+         206,
+         206
+        ],
+        "hex": "#cecece"
+       },
+       "surface": {
+        "rgb": [
+         206,
+         206,
+         206
+        ],
+        "hex": "#cecece"
+       },
+       "foreground": {
+        "rgb": [
+         249,
+         249,
+         249
+        ],
+        "hex": "#f9f9f9"
+       },
+       "accent": {
+        "rgb": [
+         249,
+         249,
+         249
+        ],
+        "hex": "#f9f9f9"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 9.24,
+     "minAbsApcaAccent": 9.24,
+     "apcaField": "flat-field",
+     "massExplained": 0.052067,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         2,
+         27,
+         47
+        ],
+        "hex": "#021b2f"
+       },
+       "surface": {
+        "rgb": [
+         19,
+         18,
+         14
+        ],
+        "hex": "#13120e"
+       },
+       "foreground": {
+        "rgb": [
+         0,
+         65,
+         99
+        ],
+        "hex": "#004163"
+       },
+       "accent": {
+        "rgb": [
+         0,
+         65,
+         99
+        ],
+        "hex": "#004163"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": false,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "index": 8,
+   "itemId": "ab67616d00001e0200001456cbd4881a798808bf",
+   "servedSides": {
+    "A": {
+     "variantId": "v-25157ffa5919644a",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-8fc82888d1b387ef",
+     "arm": "aprime"
+    }
+   },
+   "grades": {
+    "a": "weak",
+    "aprime": "weak"
+   },
+   "preference": {
+    "raw": "b",
+    "source": "explicit",
+    "arm": "aprime"
+   },
+   "veto": null,
+   "vetoNote": "schema v3.0 pairwise verdict carries no veto field; a veto was not expressible in this round",
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 1,
+   "revisionTimestamps": [
+    "2026-08-05T06:43:58.191Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "minAbsApcaForeground": 91.49,
+     "minAbsApcaAccent": 91.49,
+     "apcaField": "flat-field",
+     "massExplained": 1.0,
+     "swapDelta": null,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         212,
+         233,
+         238
+        ],
+        "hex": "#d4e9ee"
+       },
+       "surface": {
+        "rgb": [
+         212,
+         233,
+         238
+        ],
+        "hex": "#d4e9ee"
+       },
+       "foreground": {
+        "rgb": [
+         23,
+         28,
+         32
+        ],
+        "hex": "#171c20"
+       },
+       "accent": {
+        "rgb": [
+         23,
+         28,
+         32
+        ],
+        "hex": "#171c20"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": true
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1a-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    },
+    "aprime": {
+     "minAbsApcaForeground": 80.16,
+     "minAbsApcaAccent": 96.13,
+     "apcaField": "flat-field",
+     "massExplained": 0.008567,
+     "swapDelta": 0,
+     "palette": {
+      "contractVersion": "v3-contract-0.1.0",
+      "roles": {
+       "background": {
+        "rgb": [
+         23,
+         28,
+         32
+        ],
+        "hex": "#171c20"
+       },
+       "surface": {
+        "rgb": [
+         23,
+         28,
+         32
+        ],
+        "hex": "#171c20"
+       },
+       "foreground": {
+        "rgb": [
+         207,
+         209,
+         221
+        ],
+        "hex": "#cfd1dd"
+       },
+       "accent": {
+        "rgb": [
+         234,
+         235,
+         240
+        ],
+        "hex": "#eaebf0"
+       }
+      },
+      "gradient": null,
+      "collapse": {
+       "surfaceCollapsed": true,
+       "accentCollapsed": false
+      },
+      "escape": null,
+      "contrast": {
+       "minTextContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       },
+       "minAccentContrast": {
+        "requestedLc": 0,
+        "effectiveRawMagnitude": 2.5
+       }
+      },
+      "metadata": {
+       "algorithmVersion": "p1ap-0.1.0",
+       "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+       "inputContentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+       "sourceRendition": {
+        "path": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+        "width": 300,
+        "height": 300,
+        "format": "jpeg"
+       },
+       "processedSize": {
+        "width": 300,
+        "height": 300
+       }
+      }
+     }
+    }
+   }
+  }
+ ]
+}
