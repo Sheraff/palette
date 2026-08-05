@@ -235,6 +235,43 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     evidenced twin pairs with ≥20% margin; provenance records the three pairs and their measured
     ratios. Superseded automatically by any future formula recalibration.
 
+15. **Ink-shape sourcing (v0.7, round-3 ruling R2 — finding: role sourcing, items 4/6/7/8 of
+    `phase2-cal-013`)** — adopt arm-e-r3 §2.4's ink statistics (erosion mortality at the ink
+    scale × ground adjacency; shape measurements — only that arm's lexicographic *ranking* was
+    excluded by decision 12) as a per-cluster and per-component ink-likeness instrument.
+    (a) **Field-candidacy veto**: an ink-shaped extensive component cannot carry the field
+    (round-3 item 6, the only UNACCEPTABLE: display-type blue published as the field; this
+    answers decision 12's absurd-component tripwire by mechanism instead of moving the 0.4
+    gate). (b) **Foreground preference**: among floor-clearing, rep-distinct candidates,
+    ink-like mass leads (the "artwork's own ink" principle, now measured rather than
+    approximated by raw mass). Ink-scale constant per arm-e-r3's anchor (stroke-width of
+    designed marks), `[UNCALIBRATED]` with stated provenance.
+
+16. **Accent visibility floor (v0.7, ruling R3 — verified 8-for-8 on `phase2-cal-013`)** —
+    `ACCENT_VISIBILITY_COLOR_DISTANCE` (0.07444, the contract's own accent-vs-field constant,
+    today only an APCA escape) becomes a selection-time feasibility floor on the accent against
+    **both** published field colours. Role-aware by evidence: NO bg×surface analogue (item 7
+    STRONG at 1.21× bar). Prerequisite measurement in the implementing pass: which existing rule
+    admitted round-3 items 1/5/8's accents. Distinct from the disavowed fg/accent-collapse use
+    of the same numeral: different site, contract-intended semantics, fresh behavioural
+    evidence (complained 0.034–0.048, silent ≥ 0.092).
+
+17. **Ramp-path excursion (v0.7, ruling R4 — two unprompted path asks; cross-arm stop-count
+    prior withdrawn)** — restore arm-f §2.6's original formulation: excursion is measured from
+    the **component's fitted colour path g(t)** to the rendered polyline, not from the polyline
+    to any occupied colour; an interior stop is admitted only when it reduces that excursion AND
+    carries a colour the endpoints do not; adjacent-stop spacing respects the cross-arm banding
+    floor (constant `[UNCALIBRATED]` when introduced). "Lead the interpolation through colors
+    that better match the artwork" is this, verbatim.
+
+18. **Joint four-role assignment with set coverage (v0.7, ruling R5 — item 3's three-round
+    rotation + two cross-arm corroborations of the same four-colour set)** — restore arm-f
+    §2.7's exhaustive small assignment over top candidates per role (serialized away in v0.1).
+    Set coverage enters **lexicographically**: contract feasibility → number of distinct
+    identity families covered (family = bar-neighbourhood cluster family by salient mass) →
+    the existing per-role criteria as tie-breaks. Never a weighted multi-term objective
+    (decision 12's P6 exclusion binds). Sequenced after decisions 15–17 land.
+
 ## Verification obligations (designed overlap)
 
 - Every module ships a synthetic self-test with a known right answer: W-FIT — a known affine ramp +
