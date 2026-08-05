@@ -20,11 +20,16 @@
  *    "publish both and set the flag" is not a nicety: the contract's invariant 3 refuses
  *    near-identical-but-unequal as hard as it refuses equal-without-flag, so the only legal answer to
  *    "these two snapped inside the bar of each other" is one colour.
- * 2. **The third stop is re-earned post-snap.** `ramp.ts`'s excursion test ran on the pre-snap
+ * 2. **The guide stop is re-earned post-snap.** `ramp.ts`'s excursion test ran on the pre-snap
  *    targets and says so in its own header; snapping moves each vertex, so the polyline that earned
  *    a stop may no longer beat the chord. The stop is dropped when it snapped onto an end, when its
  *    projection is no longer strictly inside the ends, or when the re-measured polyline no longer
- *    passes decision 5's acceptance rule. The measurement is `ramp.ts`'s `pathExcursion`, not a copy.
+ *    passes decision 5's acceptance rule. The measurement is `ramp.ts`'s `pathExcursion`, not a copy,
+ *    and since v0.6 the rule on both sides of the snap is *under the bar, or a reduction larger than
+ *    `excursionResolution`* — the `≥2×` prong is gone from here and from `ramp.ts` in one edit.
+ *    **What is not re-decided here is ramp-versus-two-blocks**: that is the t-continuity
+ *    discriminator's call, it is made once, on the field's own inlier mass, and a snapped vertex
+ *    cannot change what the picture is.
  * 3. **Overlay roles are published as their cluster's representative triple, not as its centre.**
  *    The representative *is* an exact source pixel (`overlay.ts` header, choice 1), so invariant 2 is
  *    satisfied by publishing it directly — snapping a cluster centre would be a second, weaker route
@@ -100,15 +105,28 @@
  * away the best surviving cluster rather than skipping the infeasible one.
  */
 
-import { CONTRACT_VERSION, POOLED_SAME_COLOR_BAR } from "../../src/contract/constants.ts"
-import { colorFromRgb, colorFromHex, rgbToOkLab, sameColor } from "../../src/contract/color.ts"
+import {
+	CONTRACT_VERSION,
+	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+	POOLED_SAME_COLOR_BAR,
+} from "../../src/contract/constants.ts"
+import {
+	colorDistance,
+	colorFromRgb,
+	colorFromHex,
+	rgbToOkLab,
+	sameColor,
+	sameColorBar,
+} from "../../src/contract/color.ts"
 import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters } from "../../src/contract/invariants.ts"
+import { minRawContrastOverRamp } from "../../src/contract/ramp.ts"
 import type {
 	GradientStop,
 	NonSourceColorEscape,
 	OkLab,
 	Palette,
 	PaletteColor,
+	ResolvedContrastFloors,
 } from "../../src/contract/types.ts"
 import { hashFileBytes } from "../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../src/devloop/types.ts"
@@ -119,11 +137,13 @@ import { decodeAndInventory, packRgb, unpackRgb } from "./src/decode.ts"
 import { fitField, fitFieldComponents } from "./src/fieldfit.ts"
 import { readOverlay } from "./src/overlay.ts"
 import {
+	excursionResolution,
 	highestFieldMassTriple,
 	pathExcursion,
 	projectionFraction,
-	readRamp,
+	readRampDetailed,
 } from "./src/ramp.ts"
+import type { RampContinuity } from "./src/ramp.ts"
 import { snapToArtwork } from "./src/snap.ts"
 import type { Diagnostics, FieldFit, Inventory, RampReading } from "./src/types.ts"
 
@@ -131,7 +151,7 @@ import type { Diagnostics, FieldFit, Inventory, RampReading } from "./src/types.
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.5.1"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.6.0"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -148,11 +168,12 @@ const ESCAPE_BLACK = colorFromHex("#000000")
 /**
  * Decision 5's acceptance rule, re-applied to the snapped polyline.
  *
- * Deliberately the same two clauses `ramp.ts` applies pre-snap — under the bar outright, or the
- * excursion divided by at least two — because a stop that has to be re-earned should be re-earned
- * against the rule it was granted under, not a looser one.
+ * Deliberately the same two clauses `ramp.ts` applies pre-snap — under the bar outright, or a
+ * reduction larger than the measurement's own resolution — because a stop that has to be re-earned
+ * should be re-earned against the rule it was granted under, not a looser or a stricter one. The
+ * `≥2×` prong both files used until v0.6 was deleted by decision 5's ruling of 2026-08-05 in the same
+ * edit, on both sides of the snap.
  */
-const THIRD_STOP_REDUCTION_FACTOR = 2
 
 /** Everything `diagnose.ts` prints, and everything `paletteOf` throws away. */
 export type Analysis = Readonly<{
@@ -166,7 +187,163 @@ export type Analysis = Readonly<{
 	 * unchanged — see the guard in `analyzeImage`.
 	 */
 	fieldComponents: FieldReading | null
+	/**
+	 * What the t-continuity discriminator measured on the reading that was published, or `null` when
+	 * the chord never left the artwork and it was never consulted (SPEC decision 5, ruling
+	 * 2026-08-05).
+	 */
+	continuity: RampContinuity | null
+	/**
+	 * Every margin the contract's own judgements turn on, measured on the published palette. Reporting
+	 * only: nothing above reads it, and it is computed after the palette is assembled. Proposed for
+	 * `Diagnostics` in `reports/wp10-types.md`; it lives here until `types.ts` carries it.
+	 */
+	margins: MarginReport
 }>
+
+// ---------------------------------------------------------------------------------------------
+// Margin reporting (v0.6) — the numbers the reviewer grades, beside the numbers the contract passes
+// ---------------------------------------------------------------------------------------------
+//
+// Round-3's cross-arm note 6: *"the reviewer grades margins; optimizers sit on floors"* — another arm
+// published six pairs clearing `sameColorBar` by 1e-4 to 3e-3 and the reviewer called all six
+// indistinguishable. A pass/fail scorecard cannot tell an epsilon-pass from a comfortable one, so a
+// round analysis cannot correlate a complaint with a margin. This block publishes the ratio for every
+// pair the contract judges, and for the two prototype gates that are not the contract's.
+//
+// **Reporting only, and structurally so**: it runs on the finished `palette`, after every decision,
+// and nothing above reads its result. That is the same discipline `invariants.ts` applies to its own
+// observation sink.
+
+/** One judged pair: what was measured, what it had to clear, and by what factor it cleared it. */
+export type PairMargin = Readonly<{
+	/** `roles.foreground` × `roles.accent`, in the contract's own path spelling. */
+	pair: string
+	first: string
+	second: string
+	distance: number
+	/** The bar this pair is judged against — elevated for foreground↔accent, per invariant 3. */
+	bar: number
+	/** `distance / bar`. Below 1 is a violation; at 1.0 the palette is sitting on the floor. */
+	ratio: number
+	/** A sanctioned collapse: the pair is one published colour, so no distinctness is claimed. */
+	collapsed: boolean
+}>
+
+export type MarginReport = Readonly<{
+	pairs: readonly PairMargin[]
+	/**
+	 * The foreground's own legibility, measured the way `overlay.ts` selected it but at the
+	 * contract's density rather than selection density — so this is invariant 4's number, not the
+	 * ranking's approximation of it.
+	 */
+	foregroundLegibility: Readonly<{ minRawApca: number; floor: number; ratio: number }>
+	/**
+	 * SPEC decision 14's twin test on the published pair: `distance / sameColorBar`, against the
+	 * multiple that excludes the foreground's family. Below the multiple the accent would have been
+	 * excluded — so on a published palette this is always ≥ 1 unless the accent collapsed.
+	 */
+	accentTwin: Readonly<{
+		distance: number
+		bar: number
+		ratio: number
+		exclusionMultiple: number
+		/** `ratio / exclusionMultiple`: how far past the gate the published accent actually is. */
+		clearance: number
+		collapsed: boolean
+	}>
+}>
+
+/**
+ * `overlay.ts`'s two prototype gates, mirrored here for reporting.
+ *
+ * They are `const` in `overlay.ts` (SPEC decisions 13 and 14) and that module is not this worker's to
+ * edit; mirroring is the smaller wrong than a second definition of the *rule*, because nothing here
+ * selects — these two numbers are printed beside a measurement and never compared to decide anything.
+ * `reports/wp10-types.md` proposes exporting them so the mirror can go.
+ */
+const REPORTED_FOREGROUND_MIN_RAW_APCA = 15
+const REPORTED_ACCENT_FG_EXCLUSION_MULTIPLE = 8
+
+function pairMargin(
+	pair: string,
+	first: { path: string; color: PaletteColor },
+	second: { path: string; color: PaletteColor },
+	elevated: boolean,
+	collapsed: boolean,
+): PairMargin {
+	const distance = colorDistance(first.color, second.color)
+	const same = sameColorBar(first.color, second.color)
+	// Invariant 3's elevated cell, reproduced exactly: `max`, never a replacement.
+	const bar = elevated ? Math.max(same, FOREGROUND_ACCENT_SEPARATION_DISTANCE) : same
+	return {
+		pair,
+		first: first.color.hex,
+		second: second.color.hex,
+		distance,
+		bar,
+		ratio: bar > 0 ? distance / bar : 0,
+		collapsed,
+	}
+}
+
+/** Every margin the contract's judgements turn on, measured on the published palette. */
+function reportMargins(
+	palette: Palette,
+	stops: readonly GradientStop[],
+	contrast: ResolvedContrastFloors,
+): MarginReport {
+	const { background, surface, foreground, accent } = palette.roles
+	const roles = {
+		background: { path: "roles.background", color: background },
+		surface: { path: "roles.surface", color: surface },
+		foreground: { path: "roles.foreground", color: foreground },
+		accent: { path: "roles.accent", color: accent },
+	} as const
+	const surfaceCollapsed = palette.collapse.surfaceCollapsed
+	const accentCollapsed = palette.collapse.accentCollapsed
+
+	const pairs: PairMargin[] = [
+		pairMargin("background×surface", roles.background, roles.surface, false, surfaceCollapsed),
+		pairMargin("foreground×accent", roles.foreground, roles.accent, true, accentCollapsed),
+		pairMargin("foreground×background", roles.foreground, roles.background, false, false),
+		pairMargin("foreground×surface", roles.foreground, roles.surface, false, surfaceCollapsed),
+		pairMargin("accent×background", roles.accent, roles.background, false, false),
+		pairMargin("accent×surface", roles.accent, roles.surface, false, surfaceCollapsed),
+	]
+
+	// The foreground against the whole rendered ramp, at the contract's own sampling density: this is
+	// the quantity invariant 4 enforces and decision 13's floor gates, side by side.
+	const extremum = minRawContrastOverRamp(foreground, stops)
+	const minRawApca = extremum === null || !Number.isFinite(extremum.raw)
+		? 0
+		: Math.abs(extremum.raw)
+	const floor = Math.max(
+		contrast.minTextContrast.effectiveRawMagnitude,
+		REPORTED_FOREGROUND_MIN_RAW_APCA,
+	)
+
+	const twinDistance = colorDistance(accent, foreground)
+	const twinBar = sameColorBar(accent, foreground)
+	const twinRatio = twinBar > 0 ? twinDistance / twinBar : 0
+
+	return {
+		pairs,
+		foregroundLegibility: {
+			minRawApca,
+			floor,
+			ratio: floor > 0 ? minRawApca / floor : 0,
+		},
+		accentTwin: {
+			distance: twinDistance,
+			bar: twinBar,
+			ratio: twinRatio,
+			exclusionMultiple: REPORTED_ACCENT_FG_EXCLUSION_MULTIPLE,
+			clearance: twinRatio / REPORTED_ACCENT_FG_EXCLUSION_MULTIPLE,
+			collapsed: accentCollapsed,
+		},
+	}
+}
 
 function labOf(color: PaletteColor): OkLab {
 	return rgbToOkLab(color.rgb)
@@ -210,7 +387,9 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	// The whole-image reading first. When it explains half the image (`!noField`) this *is* the
 	// reading and nothing below runs: the component recursion is guarded by the same trigger
 	// decision 12 names, so a fully-explained cover takes v0.4.1's path instruction for instruction.
-	let ramp: RampReading = readRamp(fit, raster, inventory)
+	let detail = readRampDetailed(fit, raster, inventory)
+	let ramp: RampReading = detail.reading
+	let continuity: RampContinuity | null = detail.continuity
 	// What overlay measures against. The global affine field, until a component pool replaces it.
 	let overlayFit: FieldFit = fit
 	let fieldComponents: FieldReading | null = null
@@ -227,7 +406,9 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		const primary = fieldComponents.components[0]
 		if (primary !== undefined) {
 			// The component's own ramp, by the existing machinery reading a support-restricted view.
-			ramp = readRamp(componentFieldFit(primary, raster), raster, inventory)
+			detail = readRampDetailed(componentFieldFit(primary, raster), raster, inventory)
+			ramp = detail.reading
+			continuity = detail.continuity
 			overlayFit = compositeFieldFit(fieldComponents, raster, fit)
 			backgroundTarget = ramp.backgroundTarget
 			surfaceTarget = ramp.surfaceTarget
@@ -284,8 +465,15 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 			const monotone = position > 0 && position < 1
 			if (distinctFromEnds && monotone) {
 				const polyline = pathExcursion(inventory, [backgroundSnap.lab, middleSnap.lab, surfaceLab])
-				const earnsItsPlace = polyline < POOLED_SAME_COLOR_BAR ||
-					polyline * THIRD_STOP_REDUCTION_FACTOR <= chord
+				// Decision 5's post-2026-08-05 rule, the same two clauses `ramp.ts` applies pre-snap:
+				// under the bar outright, or a reduction bigger than the coarser of the two
+				// measurements' own resolutions.
+				const resolution = Math.max(
+					excursionResolution([backgroundSnap.lab, surfaceLab]),
+					excursionResolution([backgroundSnap.lab, middleSnap.lab, surfaceLab]),
+				)
+				const earnsItsPlace = polyline <= POOLED_SAME_COLOR_BAR ||
+					polyline + resolution < chord
 				if (earnsItsPlace) {
 					interiorStop = { color: middle, position }
 					residualExcursion = polyline
@@ -419,7 +607,16 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		escape: escape !== null,
 	}
 
-	return { palette, diagnostics, fieldOrder: fit.order, fieldComponents }
+	return {
+		palette,
+		diagnostics,
+		fieldOrder: fit.order,
+		fieldComponents,
+		continuity,
+		// Last, on the finished palette: the report is a reading of what was published, and it cannot
+		// influence what was published because there is nothing left to influence.
+		margins: reportMargins(palette, stops, contrast),
+	}
 }
 
 /** The candidate the dev loop loads. */

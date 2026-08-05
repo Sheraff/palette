@@ -61,6 +61,34 @@
  *  - `excursionMax` still measures against the whole artwork's inventory, not the component's
  *    colours. That is intended: the excursion test asks whether the rendered ramp passes through
  *    colours the *picture* contains, and the picture is the picture whichever field is being read.
+ *
+ * ## v0.6: the guide-stop doctrine (SPEC decision 5, ruling of 2026-08-05)
+ *
+ * Until v0.5 an excursion above the bar was refused into the two-block fallback unless a middle stop
+ * either brought it under the bar outright or divided it by two. The `≥2×` prong was uncalibrated and
+ * it rejected the exact case guide stops exist for — round-3 item 8, a chromatic arc at 2.36 bars
+ * whose best stop lands at 1.3 bars, refused into a two-block reading of a cover that is one field.
+ * The ruling replaces the prong with a **discriminator and a preference**:
+ *
+ * 1. **Which reading applies is decided by the continuity of inlier mass over the ramp coordinate**,
+ *    not by how well a polyline happens to fit. `rampContinuity` projects every inlier pixel's colour
+ *    onto the chord background→surface and measures how much weight sits in the chord's **middle
+ *    third**. One field with a bend fills the middle (its colours run continuously from one end to
+ *    the other, off the straight chord but along the path); two blocks leave it empty. Continuous ⇒
+ *    ramp-with-bend; bimodal ⇒ two blocks, and **that is now the only route to the two-block
+ *    fallback**.
+ * 2. **On a continuous ramp above the bar, the best monotone excursion-reducing stop is accepted and
+ *    its residual is published**, even when the residual stays above the bar. Under-bar remains the
+ *    ideal and is unchanged when it is achievable. Ties within the measurement's own resolution go to
+ *    the **flattest path** — the smallest turning angle at the stop — which is the doctrine's guard
+ *    against meandering, together with the monotonicity requirement that was already here.
+ *
+ * "Within the measurement's own resolution" is `excursionResolution`, not a tunable: `nearestDistance`
+ * is 1-Lipschitz in its query colour and the excursion is a max over samples spaced
+ * `length / (samples − 1)` apart, so the sampled max can understate the true max by at most half a
+ * sample step and two excursions closer than that are the same measurement. Nothing new is
+ * `[UNCALIBRATED]` there. The one genuinely uncalibrated number is the continuity threshold, and it is
+ * anchored on two measured covers — see `CONTINUOUS_MIDDLE_BAND_MASS`.
  */
 
 import { colorFromRgb, okLabDistance, okLabToRgb, sameColor } from "../../../src/contract/color.ts"
@@ -93,8 +121,37 @@ const CHORD_SAMPLES = 64
 /** Samples per segment of a three-stop polyline (64 in total, matching the chord's budget). */
 const POLYLINE_SAMPLES_PER_SEGMENT = 32
 
-/** A third stop must bring the excursion under the bar, or divide it by at least this. */
-const THIRD_STOP_REDUCTION_FACTOR = 2
+/**
+ * **The t-continuity discriminator's band and its threshold** (SPEC decision 5, ruling 2026-08-05).
+ *
+ * The band is the chord's middle third: mass at `u ∈ [1/3, 2/3]` of the projection onto
+ * background→surface, as a fraction of the inlier mass that falls inside the chord's own span. A
+ * uniform distribution along the ramp puts exactly 1/3 of its mass there, so the quantity reads as a
+ * fraction of "what a straight, evenly-travelled ramp would show".
+ *
+ * `CONTINUOUS_MIDDLE_BAND_MASS = 1/6` is `[UNCALIBRATED]` and is **half the uniform expectation** —
+ * the middle third must carry at least half the mass an evenly travelled ramp would put there. (Half,
+ * not the whole, because 1/3 is a *floor* for a travelled ramp rather than its value: a ramp read
+ * along a diagonal projects a rectangle onto its axis and the resulting tent density puts nearer 0.47
+ * in the middle third. See `tests/ramp.test.ts`.) It is anchored, per the ruling, on the two covers
+ * the ruling names, both measured before the constant was set:
+ *
+ *  - round-3 item 8, `09/…78343d` (must read **continuous**): **0.2982**, the discriminator's own
+ *    measurement on the global fit's weights and the field's chord. The histogram is flat from end to
+ *    end apart from the red field's spike at `u ≈ 0`;
+ *  - `00/…2376a6b67d` (must read **bimodal**): **0.0446** on the global fit's weights over the chord
+ *    between the two colours the cover publishes, and **0.0000** on the component weights its
+ *    two-component reading actually uses. The yellow field sits at `u ≈ 0` and the white at `u ≈ 1`
+ *    with nothing between; 0.0446 is the more generous of the two and is the one the threshold has to
+ *    clear.
+ *
+ * 1/6 therefore sits **1.79× below** the continuous anchor and **3.74× above** the strictest bimodal
+ * one. The two anchors are 6.7× apart in this number and the value is picked in the gap on a stated
+ * principle, not fitted to either end of it. Both anchors are pinned as tests.
+ */
+const CONTINUITY_BAND_LOW = 1 / 3
+const CONTINUITY_BAND_HIGH = 2 / 3
+const CONTINUOUS_MIDDLE_BAND_MASS = 1 / 6
 
 /** Candidate colours are occupied triples within `max(this × excursion, 3 × bar)` of the worst sample. */
 const THIRD_STOP_RADIUS_FACTOR = 2
@@ -447,6 +504,35 @@ function chordExcursion(from: OkLab, to: OkLab, grid: ColorGrid): Excursion {
 	return { max: max < 0 ? 0 : max, worst, worstFraction }
 }
 
+/**
+ * **The resolution of an excursion measurement**, in OKLab units — the noise floor two excursions
+ * have to differ by before the difference is a fact about the paths rather than about the sampling.
+ *
+ * `nearestDistance` is 1-Lipschitz in its query colour (it is a minimum of distances), and the
+ * excursion is a maximum over samples spaced `segment length / (samples − 1)` apart, so the true
+ * maximum along the continuous path can exceed the sampled one by at most **half a sample step**, and
+ * by the coarsest of the path's segments. Two excursions closer together than that are one
+ * measurement twice, which is exactly what the ruling's "ties within measurement noise" names.
+ *
+ * Derived, not chosen: the two sample budgets are already fixed above, and there is no constant here
+ * to calibrate. Takes the same 2-or-3-point path `pathExcursion` takes, and answers for that path —
+ * a chord is sampled at a different density from a polyline, so one number for both would be a
+ * guess about which.
+ */
+export function excursionResolution(path: readonly OkLab[]): number {
+	if (path.length === 2) {
+		return okLabDistance(path[0], path[1]) / (2 * (CHORD_SAMPLES - 1))
+	}
+	if (path.length === 3) {
+		const longest = Math.max(
+			okLabDistance(path[0], path[1]),
+			okLabDistance(path[1], path[2]),
+		)
+		return longest / (2 * (POLYLINE_SAMPLES_PER_SEGMENT - 1))
+	}
+	throw new RangeError(`excursionResolution takes 2 or 3 points, got ${path.length}`)
+}
+
 /** Max excursion of the two-segment polyline `from`→`middle`→`to`. */
 function polylineExcursion(from: OkLab, middle: OkLab, to: OkLab, grid: ColorGrid): number {
 	let max = 0
@@ -476,6 +562,65 @@ function pickCandidates(grid: ColorGrid, worst: OkLab, radius: number): readonly
 		picked.push(neighbourhood[Math.min(neighbourhood.length - 1, Math.floor(index * stride))])
 	}
 	return picked
+}
+
+// ---------------------------------------------------------------------------------------------
+// t-continuity: is this one field with a bend, or two blocks? (SPEC decision 5, ruling 2026-08-05)
+// ---------------------------------------------------------------------------------------------
+
+/** What the discriminator measured. Reported whenever the excursion test had to decide anything. */
+export type RampContinuity = Readonly<{
+	/** Inlier mass in the chord's middle third, over the inlier mass inside the chord's span. */
+	middleBandMass: number
+	/** Inlier mass inside the chord's span, over all inlier mass — how much of the field the chord covers. */
+	spanMassFraction: number
+	/** `middleBandMass < CONTINUOUS_MIDDLE_BAND_MASS`: two blocks, not one bent field. */
+	bimodal: boolean
+}>
+
+/**
+ * **Inlier mass along the ramp coordinate.**
+ *
+ * The ramp coordinate of a *colour* is its projection onto the chord `from`→`to`, which is the same
+ * `projectionFraction` a middle stop's published `position` uses — so this measures the distribution
+ * of the field's own pixels over the positions the published ramp would give them. Mass that projects
+ * outside `[0, 1]` is left out rather than clamped into the ends: a colour beyond the ends is not
+ * evidence about what happens *between* them, and folding it into an end bin would deepen the
+ * bimodality of anything with saturated tails.
+ *
+ * Weighted by the fit's own inlier weight, per the ruling's "inlier-mass": marks are what the fit
+ * rejected, and a black title crossing the middle of a two-block cover's chord must not be read as
+ * the field passing through it. On a fit with no support this returns a fully bimodal reading, which
+ * is the conservative answer — no evidence of continuity is not evidence of continuity.
+ */
+export function rampContinuity(
+	fit: FieldFit,
+	raster: DecodedRaster,
+	from: OkLab,
+	to: OkLab,
+): RampContinuity {
+	const lab = raster.lab
+	const weights = fit.weights
+	const pixels = raster.width * raster.height
+	let total = 0
+	let spanMass = 0
+	let bandMass = 0
+	for (let index = 0; index < pixels; index++) {
+		const weight = weights[index]
+		if (!(weight > 0)) continue
+		total += weight
+		const offset = index * 3
+		const position = projectionFraction(from, to, [lab[offset], lab[offset + 1], lab[offset + 2]])
+		if (position < 0 || position > 1) continue
+		spanMass += weight
+		if (position >= CONTINUITY_BAND_LOW && position <= CONTINUITY_BAND_HIGH) bandMass += weight
+	}
+	const middleBandMass = spanMass > 0 ? bandMass / spanMass : 0
+	return {
+		middleBandMass,
+		spanMassFraction: total > 0 ? spanMass / total : 0,
+		bimodal: middleBandMass < CONTINUOUS_MIDDLE_BAND_MASS,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -573,15 +718,34 @@ function flatReading(
 	}
 }
 
+/** A reading, plus what the t-continuity discriminator saw — `null` when it was never consulted. */
+export type RampDetail = Readonly<{
+	reading: RampReading
+	continuity: RampContinuity | null
+}>
+
+function withoutContinuity(reading: RampReading): RampDetail {
+	return { reading, continuity: null }
+}
+
 /**
  * Read a fitted field into the continuous ramp targets the caller will snap and publish.
  *
  * Order-0 fits, `noField` verdicts and degenerate order-1 fits (zero position coefficients, zero
  * inlier mass) all return the flat reading: one constant target, no stops, no gradient. Everything
- * else runs the full path — direction, orientation, robust ends, excursion, third stop, and the
- * two-block fallback when no polyline stays on-artwork.
+ * else runs the full path — direction, orientation, robust ends, excursion, and, when the straight
+ * chord leaves the artwork, the t-continuity discriminator that decides between a guide stop and the
+ * two-block fallback.
+ *
+ * `readRamp` is this function with the discriminator's measurement dropped; callers that report
+ * diagnostics take `readRampDetailed` instead. There is one implementation, so the palette and the
+ * sidecar cannot disagree about what was measured.
  */
-export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Inventory): RampReading {
+export function readRampDetailed(
+	fit: FieldFit,
+	raster: DecodedRaster,
+	inventory: Inventory,
+): RampDetail {
 	const expectedPixels = raster.width * raster.height
 	if (fit.weights.length !== expectedPixels) {
 		throw new RangeError(
@@ -590,13 +754,13 @@ export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Invent
 	}
 
 	const constant = fit.fieldAt(0, 0)
-	if (fit.noField || fit.order === 0) return flatReading(constant, null, 0)
+	if (fit.noField || fit.order === 0) return withoutContinuity(flatReading(constant, null, 0))
 
 	const axis = dominantDirection(fit.coefficients)
-	if (!axis) return flatReading(constant, null, 0)
+	if (!axis) return withoutContinuity(flatReading(constant, null, 0))
 
 	const statistics = tStatistics(fit, raster, axis)
-	if (!statistics) return flatReading(constant, axis, 0)
+	if (!statistics) return withoutContinuity(flatReading(constant, axis, 0))
 
 	const { tLow, tHigh, tMedian, medianStandardError } = statistics
 	const lowEnd = fit.fieldAt(tLow * axis[0], tLow * axis[1])
@@ -628,7 +792,7 @@ export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Invent
 	const backgroundColor = colorFromRgb(okLabToRgb(backgroundTarget))
 	const surfaceColor = colorFromRgb(okLabToRgb(surfaceTarget))
 	if (sameColor(backgroundColor, surfaceColor)) {
-		return {
+		return withoutContinuity({
 			gradientCandidate: false,
 			direction,
 			backgroundTarget,
@@ -639,7 +803,7 @@ export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Invent
 			thirdStopAccepted: false,
 			residualExcursion: 0,
 			twoBlockFallback: false,
-		}
+		})
 	}
 
 	// --- excursion (SPEC decision 5) ------------------------------------------------------------
@@ -655,7 +819,7 @@ export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Invent
 	]
 
 	if (excursion.max <= POOLED_SAME_COLOR_BAR) {
-		return {
+		return withoutContinuity({
 			gradientCandidate: true,
 			direction,
 			backgroundTarget,
@@ -666,80 +830,151 @@ export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Invent
 			thirdStopAccepted: false,
 			residualExcursion: excursion.max,
 			twoBlockFallback: false,
+		})
+	}
+
+	// --- which reading applies (SPEC decision 5, ruling 2026-08-05) ---------------------------------
+	//
+	// The chord leaves the artwork. Before asking whether a stop can fix it — a question about the
+	// polyline — ask what the picture is: one field the straight chord is cutting the corner of, or
+	// two blocks the fit spanned. The inlier mass along the ramp coordinate answers it, and it is the
+	// only thing that decides. A guide stop is never the reason a cover is called a ramp, and a
+	// failure to find one is never the reason a cover is called two blocks.
+	const continuity = rampContinuity(fit, raster, backgroundTarget, surfaceTarget)
+
+	if (continuity.bimodal) {
+		// --- two blocks: no polyline can describe what is not a path (SPEC decision 5) --------------
+		const blocks = twoBlockTargets(twoBlockCandidates(fit, raster, inventory), backgroundTarget)
+		return {
+			reading: {
+				gradientCandidate: false,
+				direction,
+				backgroundTarget: blocks.background,
+				surfaceTarget: blocks.surface,
+				orientationMargin,
+				stops: [],
+				excursionMax: excursion.max,
+				thirdStopAccepted: false,
+				residualExcursion: excursion.max,
+				twoBlockFallback: true,
+			},
+			continuity,
 		}
 	}
 
-	// --- third stop ------------------------------------------------------------------------------
+	// --- the guide stop: best monotone excursion-reducing stop, flattest path among ties ------------
+	//
+	// Two passes rather than one running argmin, because the tie-break is *within a tolerance* and a
+	// tolerant comparator is not a total order — scanning once with "is this within noise of the best
+	// so far" would make the answer depend on the order candidates arrive in. The minimum is found
+	// first; the flattest path is then chosen among everything indistinguishable from it.
 	const radius = Math.max(
 		THIRD_STOP_RADIUS_FACTOR * excursion.max,
 		3 * POOLED_SAME_COLOR_BAR,
 	)
-	let best: { target: OkLab; position: number; excursion: number; turn: number; packed: number } | null =
-		null
+	type GuideStop = {
+		target: OkLab
+		position: number
+		excursion: number
+		resolution: number
+		turn: number
+		packed: number
+	}
+	const admissible: GuideStop[] = []
 	for (const candidate of pickCandidates(grid, excursion.worst, radius)) {
 		const position = projectionFraction(backgroundTarget, surfaceTarget, candidate.lab)
-		// Monotone in t: the middle stop must project strictly between the two ends.
+		// Monotone in t: the middle stop must project strictly between the two ends. C7's measured
+		// midpoint hazard binds here, and this is the check the ruling points at.
 		if (!(position > 0 && position < 1)) continue
-		const candidateExcursion = polylineExcursion(
-			backgroundTarget,
-			candidate.lab,
-			surfaceTarget,
-			grid,
-		)
-		const turn = turningAngle(backgroundTarget, candidate.lab, surfaceTarget)
-		if (
-			best === null ||
-			candidateExcursion < best.excursion ||
-			(candidateExcursion === best.excursion &&
-				(turn < best.turn || (turn === best.turn && candidate.packed < best.packed)))
-		) {
-			best = {
-				target: candidate.lab,
-				position,
-				excursion: candidateExcursion,
-				turn,
-				packed: candidate.packed,
-			}
+		admissible.push({
+			target: candidate.lab,
+			position,
+			excursion: polylineExcursion(backgroundTarget, candidate.lab, surfaceTarget, grid),
+			resolution: excursionResolution([backgroundTarget, candidate.lab, surfaceTarget]),
+			turn: turningAngle(backgroundTarget, candidate.lab, surfaceTarget),
+			packed: candidate.packed,
+		})
+	}
+
+	let best: GuideStop | null = null
+	if (admissible.length > 0) {
+		let lowest = admissible[0]
+		for (const candidate of admissible) {
+			if (
+				candidate.excursion < lowest.excursion ||
+				(candidate.excursion === lowest.excursion && candidate.packed < lowest.packed)
+			) lowest = candidate
+		}
+		// The tie band is the *minimum's* own resolution, so which candidates count as tied is fixed
+		// before any of them is preferred — a per-pair tolerance would not be an equivalence relation.
+		const tieBand = lowest.excursion + lowest.resolution
+		for (const candidate of admissible) {
+			if (candidate.excursion > tieBand) continue
+			if (
+				best === null ||
+				candidate.turn < best.turn ||
+				(candidate.turn === best.turn && candidate.packed < best.packed)
+			) best = candidate
 		}
 	}
 
+	// Accept when the stop takes the excursion under the bar (the ideal, unchanged), or when it
+	// reduces the excursion by more than the coarser of the two measurements' resolutions. The ≥2×
+	// prong is gone: on a cover the discriminator has already called one field, a real reduction is
+	// the whole of what a guide stop is for, and the residual — above the bar or not — is published.
+	const chordResolution = excursionResolution([backgroundTarget, surfaceTarget])
 	const accepted = best !== null &&
-		(best.excursion < POOLED_SAME_COLOR_BAR ||
-			best.excursion * THIRD_STOP_REDUCTION_FACTOR <= excursion.max)
+		(best.excursion <= POOLED_SAME_COLOR_BAR ||
+			best.excursion + Math.max(chordResolution, best.resolution) < excursion.max)
 
 	if (accepted && best) {
 		return {
+			reading: {
+				gradientCandidate: true,
+				direction,
+				backgroundTarget,
+				surfaceTarget,
+				orientationMargin,
+				stops: [
+					{ target: backgroundTarget, position: 0 },
+					{ target: best.target, position: best.position },
+					{ target: surfaceTarget, position: 1 },
+				],
+				excursionMax: excursion.max,
+				thirdStopAccepted: true,
+				residualExcursion: best.excursion,
+				twoBlockFallback: false,
+			},
+			continuity,
+		}
+	}
+
+	// --- continuous, but nothing occupied reduces the excursion -------------------------------------
+	//
+	// The two-block fallback is not the answer here and is no longer reachable from this branch: the
+	// mass said one field, and refusing the ramp because no *stop* helped would be the ≥2× prong's
+	// mistake in a new place. The straight ramp is published with its excursion in `residualExcursion`,
+	// which is what "the residual is published" means when the residual is all there is.
+	return {
+		reading: {
 			gradientCandidate: true,
 			direction,
 			backgroundTarget,
 			surfaceTarget,
 			orientationMargin,
-			stops: [
-				{ target: backgroundTarget, position: 0 },
-				{ target: best.target, position: best.position },
-				{ target: surfaceTarget, position: 1 },
-			],
+			stops: twoStops,
 			excursionMax: excursion.max,
-			thirdStopAccepted: true,
-			residualExcursion: best.excursion,
+			thirdStopAccepted: false,
+			residualExcursion: excursion.max,
 			twoBlockFallback: false,
-		}
+		},
+		continuity,
 	}
+}
 
-	// --- no polyline fixed it: two-block fallback (SPEC decision 5) --------------------------------
-	const blocks = twoBlockTargets(twoBlockCandidates(fit, raster, inventory), backgroundTarget)
-	return {
-		gradientCandidate: false,
-		direction,
-		backgroundTarget: blocks.background,
-		surfaceTarget: blocks.surface,
-		orientationMargin,
-		stops: [],
-		excursionMax: excursion.max,
-		thirdStopAccepted: false,
-		residualExcursion: excursion.max,
-		twoBlockFallback: true,
-	}
+/** `readRampDetailed` for callers that do not report the discriminator's measurement. */
+export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Inventory): RampReading {
+	return readRampDetailed(fit, raster, inventory).reading
 }
 
 // ---------------------------------------------------------------------------------------------

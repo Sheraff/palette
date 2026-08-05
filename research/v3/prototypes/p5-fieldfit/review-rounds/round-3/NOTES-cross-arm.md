@@ -32,3 +32,10 @@ composition is untouched (staging was in flight when this arrived).
    field — if one of our rounds draws a same-family-accent complaint, the mechanism question is
    whether accent feasibility needs a hue-family term, and it gets its own evidence before any
    rule changes. Prior recorded.
+6. **The reviewer grades margins; optimizers sit on floors** (another arm: 6/6 low, published
+   pairs cleared sameColorBar by 1e-4–3e-3, called indistinguishable). P5's mass-led argmaxes do
+   not optimize *toward* floors, but epsilon-clearing happens by accident (fg floor at ~15.x, twin
+   ratios just above 8, near-black at 11.4). Action folded into pass 10: publish per-pair margins
+   over their bars in Diagnostics so round analyses can correlate complaints with epsilon-margins
+   — reporting only, no behavioural change ahead of evidence. Epsilon-pairs reading as one colour
+   is further same-colour-bar calibration evidence for the upward packet.

@@ -29,7 +29,7 @@ import { fileURLToPath } from "node:url"
 
 import sharp from "sharp"
 
-import { hex } from "../../../src/contract/color.ts"
+import { hex, rgbToOkLab } from "../../../src/contract/color.ts"
 import type { Rgb8 } from "../../../src/contract/types.ts"
 import {
 	ALGORITHM_VERSION,
@@ -39,6 +39,8 @@ import {
 	PREPROCESSING_VERSION,
 } from "../candidate.ts"
 import { decodeAndInventory, packRgb } from "../src/decode.ts"
+import { fitField } from "../src/fieldfit.ts"
+import { rampContinuity } from "../src/ramp.ts"
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 /** `tests/` → `p5-fieldfit/` → `prototypes/` → `v3/` → `research/` → the repository root. */
@@ -59,7 +61,7 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.5.1")
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.6.0")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })
@@ -261,4 +263,72 @@ test("a many-colour collage retreats to one colour: nothing to rescue", async ()
 		`the retreat is one flat colour, got ${palette.roles.background.hex} / ${palette.roles.surface.hex}`,
 	)
 	assert.equal(palette.roles.surface.hex, palette.roles.background.hex)
+})
+
+// ---------------------------------------------------------------------------------------------
+// The two anchors of the t-continuity threshold (SPEC decision 5, ruling 2026-08-05)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * `CONTINUOUS_MIDDLE_BAND_MASS` is `[UNCALIBRATED]` and the ruling anchors it on two named covers:
+ * round-3 item 8 must read **continuous**, `2376a6b67d` must read **bimodal**. Those are the two
+ * measurements the constant was picked between, so they belong in the suite rather than in a report
+ * — a constant whose only justification is two numbers should fail loudly when either number moves.
+ *
+ * Both covers are corpus files resolved against the repository root, like `demo-20`'s own paths.
+ */
+const ANCHOR_CONTINUOUS = "09/ab67616d0000b27300096440c40e31757a78343d"
+const ANCHOR_BIMODAL = "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg"
+
+test("anchor: round-3 item 8 reads continuous and publishes its ramp", async () => {
+	const { palette, diagnostics, continuity } = await analyzeImage(resolve(REPO_ROOT, ANCHOR_CONTINUOUS))
+
+	assert.ok(continuity !== null, "the chord left the artwork, so the discriminator ran")
+	assert.equal(continuity.bimodal, false, `middle-band mass ${continuity.middleBandMass}`)
+	// The measured value the threshold was set below. A tolerance, not an equality: the number is a
+	// property of the cover and the fit, and it is quoted in `ramp.ts`'s provenance as 0.2982.
+	assert.ok(
+		Math.abs(continuity.middleBandMass - 0.2982) < 0.01,
+		`item 8's middle-band mass was 0.2982 when the threshold was set, now ${continuity.middleBandMass}`,
+	)
+
+	// The outcome the ruling asked for: a ramp, not the two-block reading v0.5.1 published here.
+	assert.equal(diagnostics.twoBlockFallback, false)
+	assert.equal(diagnostics.gradient, true)
+	assert.notEqual(palette.gradient, null)
+	assert.equal(palette.collapse.surfaceCollapsed, false)
+})
+
+test("anchor: 2376a6b67d reads bimodal and keeps its two-block palette", async () => {
+	const path = resolve(REPO_ROOT, ANCHOR_BIMODAL)
+	const { palette, diagnostics } = await analyzeImage(path)
+
+	// Byte-identical to v0.5.1: this cover's reading must not move under the ruling.
+	assert.equal(palette.roles.background.hex, "#fad107")
+	assert.equal(palette.roles.surface.hex, "#f9fbf8")
+	assert.equal(palette.roles.foreground.hex, "#000000")
+	assert.equal(palette.roles.accent.hex, "#000300")
+	assert.equal(palette.gradient, null)
+	assert.equal(diagnostics.twoBlockFallback, true)
+
+	// Its two-block reading comes from the component pool, not from `readRamp`'s decision-5 fallback,
+	// so the discriminator is never consulted on the published path. The anchor is still measurable,
+	// and it is measured here the way the ruling names it: the inlier mass of the whole-image fit
+	// along the chord between the two colours this cover actually publishes.
+	const { raster, inventory } = await decodeAndInventory(path)
+	const continuity = rampContinuity(
+		fitField(raster),
+		raster,
+		rgbToOkLab(palette.roles.background.rgb),
+		rgbToOkLab(palette.roles.surface.rgb),
+	)
+	assert.equal(continuity.bimodal, true, `middle-band mass ${continuity.middleBandMass}`)
+	// 0.0446 is the *most generous* reading available for this cover — on the component weights the
+	// reading actually uses it is 0.0000 — and it is the one `ramp.ts`'s provenance quotes, because a
+	// threshold should clear the hardest version of its own counterexample.
+	assert.ok(
+		Math.abs(continuity.middleBandMass - 0.0446) < 0.005,
+		`2376a6b67d's middle-band mass was 0.0446 when the threshold was set, now ${continuity.middleBandMass}`,
+	)
+	assert.ok(inventory.has(packRgb(palette.roles.surface.rgb)))
 })

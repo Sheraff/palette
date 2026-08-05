@@ -56,6 +56,27 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
    (`[UNCALIBRATED]`, stated here); must stay monotone in t. No fourth stop; residual excursion goes
    in diagnostics. If no polyline fixes it (two-block cover): gradient false, background/surface =
    two highest-field-mass agglomerated colours separated by the bar (arm-f-r3 §2.4 fallback).
+   *Ruling 2026-08-05 (reviewer's guide-stop clarification + round-3 item-8 diagnosis, v0.6):*
+   the ≥2× prong (mine, uncalibrated) rejected the exact case guide stops exist for — a chromatic
+   arc at excursion 2.4× bar whose best stop lands ~1.3× bar, refused into a two-block fallback
+   ("a fitter that never uses a guide stop on a cover whose straight line leaves the artwork is
+   as wrong as one that meanders"). New reading: **ramp-with-bend vs two-block is decided by
+   inlier-mass continuity over the ramp coordinate t** (continuous ⇒ one field with a bend;
+   bimodal ⇒ two blocks; middle-band mass constant `[UNCALIBRATED]`, anchored: round-3 item 8
+   must read continuous, `2376a6b67d` bimodal). On a continuous ramp with excursion > bar, accept
+   the **best monotone excursion-reducing guide stop** (flattest path — smallest turning angle —
+   among near-ties), even when the residual stays above the bar; the residual is published. The
+   under-bar outcome remains the ideal; refusing the ramp is no longer the fallback for a
+   guide-stop-fixable cover. Doctrine: excursion reduction justifies; coverage, metric-fitting
+   and meandering stay forbidden; C7's measured midpoint hazard binds the monotone check.
+   *Premise corrected 2026-08-05 (W-P10, brute force over all 55,958 occupied triples):* the
+   orchestrator's "best stop lands ~1.3× bar" on the item-8 cover was wrong — the excursion sat
+   at u=0, the background *target* itself was 0.036 off-artwork, and no middle vertex can shorten
+   an endpoint's own distance; end-snapping alone brings the residual to 0.30× bar and the cover
+   publishes a monotone 2-stop ramp. The discriminator, not guide-stop acceptance, is what fixed
+   the refusal there; the acceptance change is validated on the two-lobe fixture instead
+   (2.77×→1.75× bar, refused by the deleted prong). Measured anchors:
+   `CONTINUOUS_MIDDLE_BAND_MASS = 1/6`, continuous anchor 0.2982, bimodal anchor 0.0446/0.0000.
 6. **Overlay clustering** — agglomerate non-field triples (overlay mass = Σ(1−w) over the triple's
    pixels) into bar-neighbourhoods in descending-mass order with packed-int tie-break (arm-e-r3
    §2.4: idempotent under sub-bar perturbation — this is the dither answer).
