@@ -37,6 +37,13 @@ the verdicts", which is the documented relapse.
 | 13 | A false gradient was called at rank-correlation 0.769 — high-correlation structure is not a perceived ramp | Supports P6's stricter criterion: the DL fit demands monotone SPATIAL structure (two flat regions ≠ ramp — the tested hard case), not correlation | none — corroborates an existing guard |
 | 14 | The reviewer also asked for a gradient where none was published — both error directions live | P6 published 0/18 gradients while proposing 17/18; the miss direction is untested on demo-20 (no real ramps in the set) | W7's open item "a set with real ramps" gains priority: build it before the second round, so the DL rate's sweep curves have both error directions to land on |
 
+## Addendum 4 — cross-arm pairwise round, relayed 2026-08-04
+
+| # | evidence | where P6's design answers it | the check |
+|---|---|---|---|
+| 15 | Stop count drove preference: every 4-stop ramp unacceptable ("banding" named), every winner 2-stop; one monotone-progression complaint | Corroborates the excursion-only rule: P6 never publishes a 4th stop (reported-not-published by construction), inserts a 3rd only on excursion-bar violation, and its ramp is the flattest on-artwork path (monotone by the spatial-regression construction) | Constraint adopted for the real-ramps set: predominantly genuine 2-stop ramps, a minority of true 3-colour ramps — matching the reviewer-preferred shape so the set measures the DL rate where verdicts actually live |
+| 16 | Identity-coverage spans foreground-adjacent territory (a missing title-text yellow); new shape: accent should sit in a different colour FAMILY than background/surface | Coverage transport is floorless over ALL chromatic mass, ink included — a title-text yellow with mass and no published colour near it is expensive by construction. The family shape touches the coverage term's colour-space structure: OKLab transport distance can be cheaply satisfied by a same-family-different-lightness colour that the reviewer would still call family-uncovered | Analyst template gains: for coverage complaints, report whether the nearest published colour to the complained-about mass differs mainly in lightness (family-satisfied-in-OKLab-only — the gap this evidence names) or in hue (genuine miss). Measurement of the gap, not a term change |
+
 If any check fails, the report says *which principle failed and why*, with the measurement. The
 sensitivity harness (README falsifier 3) stays the only process that ever moves a rate, and it
 moves rates to *measure* them, not to improve verdict agreement.
