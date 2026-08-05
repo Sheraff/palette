@@ -181,6 +181,16 @@ Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install)
     distance 0.0181 (arm A) / 0.0177 (A′) ≈ 2× the dark-neutral bar; pairs under 0.03: 4/80
     and 3/106. No epsilon-sitting; the handful of sub-0.03 pairs get per-item attention in
     round reads.
+16. **Population/support floors block reviewer-requested colours** (another arm: 4/7 reviewer-
+    named marks at rank-0 but excluded by a 0.1% support floor; corpus median ENDORSED share is
+    8.89e-5). P1's exposure, checked: no candidacy and no floor of ours anywhere; the operative
+    quantity is smoothed mass at the identity bar (endorsed median 1.91e-2 there — 215× the
+    exact-triple share), so concentration is already the eligible shape. Two residual
+    exposures, named: (a) the contract's invariant-2 population floor (reviewer-owned; arm-a §9
+    flagged the endorsed-median question at proposal time); (b) total naming gain still scales
+    with mass — a sufficiently tiny isolated mark may not repay its name in either prior; v1-
+    read check: report the minimum exact-triple share among published roles in the v1 emission
+    (if it sits near the endorsed median's order of magnitude, no effective floor operates).
 14. **Identity-coverage reaches foreground-adjacent territory** (missing title-text yellow
     complained about — feeds the same axis as the ink-recovery falsifier) **and a new shape:
     the accent should sit in a different colour FAMILY than background/surface.** This
