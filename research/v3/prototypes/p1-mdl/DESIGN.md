@@ -155,10 +155,17 @@ Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install)
 13. **Stop count drove preference in another arm's pairwise round** (every 4-stop ramp
     unacceptable with "banding" named; every winner 2-stop; one monotone-progression
     complaint). Checked 2026-08-05 against A′'s three demo-20 ramps BEFORE our round is read:
-    all three are 2-stop [0,1], no interior stops — the winning shape. The λ-priced stop cost
-    is doing on its own what the reviewer wants; evidence FOR the pricing mechanism. Guide
-    stops (3–4) remain reachable but nothing has bought one, matching arm A′ §2.5's
-    prediction.
+    all three are 2-stop [0,1], no interior stops — the winning shape. CORRECTED 2026-08-05
+    (reviewer clarification on guide-stop semantics): this is favourable ONLY IF no 2-stop
+    line passes through off-artwork colours — guide stops exist precisely to pull the OKLab
+    interpolation onto the artwork, and excursion reduction is code-length the stop saves
+    elsewhere, exactly what a λ-priced stop cost should see. Both energies price the path via
+    the (t,colour) joints (mid-path off-artwork = low mass = expensive), so the currency sees
+    excursion STRUCTURALLY; whether it sees it at the joint's lattice resolution is empirical.
+    Excursion probe on the three ramps dispatched; if any 2-stop line is off-artwork and the
+    energy still refuses the repairing stop, that is a resolution defect in the joints, not a
+    pricing win. (C7: 42% of legacy midpoints sit outside the endpoints' lightness span; the
+    campaign's excursion instrument is unbuilt — our own measurement is the only check.)
 14. **Identity-coverage reaches foreground-adjacent territory** (missing title-text yellow
     complained about — feeds the same axis as the ink-recovery falsifier) **and a new shape:
     the accent should sit in a different colour FAMILY than background/surface.** This
