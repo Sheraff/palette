@@ -1,0 +1,436 @@
+{
+	"what": "same-resolution perturbation control for the W11b pair attribution (task 4)",
+	"source": "robustness-p3-fields-0.3.0.json",
+	"rule": "5 per arm, evenly spaced ranks of trialId order",
+	"counts": {
+		"perturbationDisagreements": 317,
+		"selected": 20
+	},
+	"trials": [
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/0d149b97cfa25534.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/0d149b97cfa25534.dither-lsb1.perturbed.png",
+			"disagreeingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 29.11454128356911,
+			"worstRole": "foreground",
+			"worstMove": 0.44322922282306587,
+			"worstFrom": "#858585",
+			"worstTo": "#101011",
+			"selection": "perturb-control-dither-lsb1"
+		},
+		{
+			"trialId": "perturb|000606d3a5c7da73c3887268|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "000606d3a5c7da73c3887268",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/661805cbbb6159b4.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/661805cbbb6159b4.dither-lsb1.perturbed.png",
+			"disagreeingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 4,
+			"allFour": true,
+			"worstRoleBarRatio": 8.510117825373122,
+			"worstRole": "foreground",
+			"worstMove": 0.16779246141700876,
+			"worstFrom": "#ce0555",
+			"worstTo": "#fa61a3",
+			"selection": "perturb-control-dither-lsb1"
+		},
+		{
+			"trialId": "perturb|000ad40f7a92f3abf74f4683|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/1149533670b82098.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/1149533670b82098.dither-lsb1.perturbed.png",
+			"disagreeingRoles": [
+				"foreground"
+			],
+			"rolesMoved": 1,
+			"allFour": false,
+			"worstRoleBarRatio": 4.901708264806923,
+			"worstRole": "foreground",
+			"worstMove": 0.07362365813739999,
+			"worstFrom": "#504c41",
+			"worstTo": "#5c3320",
+			"selection": "perturb-control-dither-lsb1"
+		},
+		{
+			"trialId": "perturb|0010c158d73707fcc525c6fa|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "0010c158d73707fcc525c6fa",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/ef979116ead541e4.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/ef979116ead541e4.dither-lsb1.perturbed.png",
+			"disagreeingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 12.144881711003288,
+			"worstRole": "accent",
+			"worstMove": 0.1975972254380235,
+			"worstFrom": "#274f73",
+			"worstTo": "#8d725e",
+			"selection": "perturb-control-dither-lsb1"
+		},
+		{
+			"trialId": "perturb|dea5add5f0ac48c56f403a2d4ed7097d|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "dea5add5f0ac48c56f403a2d4ed7097d",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/e28db67540bdb840.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/e28db67540bdb840.dither-lsb1.perturbed.png",
+			"disagreeingRoles": [
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 2,
+			"allFour": false,
+			"worstRoleBarRatio": 9.531138843966945,
+			"worstRole": "accent",
+			"worstMove": 0.21854901369216204,
+			"worstFrom": "#f88916",
+			"worstTo": "#d5d5d4",
+			"selection": "perturb-control-dither-lsb1"
+		},
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/0d149b97cfa25534.jpeg-q75.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 9.416448752023864,
+			"worstRole": "surface",
+			"worstMove": 0.08776130236886243,
+			"worstFrom": "#191919",
+			"worstTo": "#2e2e2e",
+			"selection": "perturb-control-jpeg-q75"
+		},
+		{
+			"trialId": "perturb|0005a54a9ea60f48619788f1|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/842e59bf627f01ac.jpeg-q75.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface"
+			],
+			"rolesMoved": 1,
+			"allFour": false,
+			"worstRoleBarRatio": 1.4150798431417395,
+			"worstRole": "surface",
+			"worstMove": 0.02125449924398893,
+			"worstFrom": "#b90101",
+			"worstTo": "#c30004",
+			"selection": "perturb-control-jpeg-q75"
+		},
+		{
+			"trialId": "perturb|000a064109bec999385e7f08|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "000a064109bec999385e7f08",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/0a/ab67616d00001e02000a064109bec999385e7f08",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/18285a3d5359e932.jpeg-q75.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface"
+			],
+			"rolesMoved": 1,
+			"allFour": false,
+			"worstRoleBarRatio": 1.941627955319505,
+			"worstRole": "surface",
+			"worstMove": 0.04452152901547625,
+			"worstFrom": "#efa550",
+			"worstTo": "#e7a803",
+			"selection": "perturb-control-jpeg-q75"
+		},
+		{
+			"trialId": "perturb|00103a3729bf589e0dc913ab|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "00103a3729bf589e0dc913ab",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/10/ab67616d0000b27300103a3729bf589e0dc913ab",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/82a1e00b067c52fe.jpeg-q75.perturbed.jpg",
+			"disagreeingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 4,
+			"allFour": true,
+			"worstRoleBarRatio": 31.829387924799875,
+			"worstRole": "background",
+			"worstMove": 0.517864141536494,
+			"worstFrom": "#c4ced0",
+			"worstTo": "#093e36",
+			"selection": "perturb-control-jpeg-q75"
+		},
+		{
+			"trialId": "perturb|dea5add5f0ac48c56f403a2d4ed7097d|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "dea5add5f0ac48c56f403a2d4ed7097d",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/music-artworks/d/e/a/dea5add5f0ac48c56f403a2d4ed7097d.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/e28db67540bdb840.jpeg-q75.perturbed.jpg",
+			"disagreeingRoles": [
+				"foreground"
+			],
+			"rolesMoved": 1,
+			"allFour": false,
+			"worstRoleBarRatio": 2.933307860045349,
+			"worstRole": "foreground",
+			"worstMove": 0.027338429255622652,
+			"worstFrom": "#110801",
+			"worstTo": "#0b0b0b",
+			"selection": "perturb-control-jpeg-q75"
+		},
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/0d149b97cfa25534.jpeg-q85.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 29.072638166823193,
+			"worstRole": "foreground",
+			"worstMove": 0.4436646322119551,
+			"worstFrom": "#858585",
+			"worstTo": "#101010",
+			"selection": "perturb-control-jpeg-q85"
+		},
+		{
+			"trialId": "perturb|0005597105ba1e2d38f62cfc|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "0005597105ba1e2d38f62cfc",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/fbd59ef749935555.jpeg-q85.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"accent"
+			],
+			"rolesMoved": 2,
+			"allFour": false,
+			"worstRoleBarRatio": 3.1894110411693744,
+			"worstRole": "accent",
+			"worstMove": 0.07313319517401375,
+			"worstFrom": "#e3a278",
+			"worstTo": "#c4a0a2",
+			"selection": "perturb-control-jpeg-q85"
+		},
+		{
+			"trialId": "perturb|00099f4221cf6ed5f2440904|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "00099f4221cf6ed5f2440904",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/09/ab67616d0000b27300099f4221cf6ed5f2440904",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/a7792253cec609f9.jpeg-q85.perturbed.jpg",
+			"disagreeingRoles": [
+				"accent"
+			],
+			"rolesMoved": 1,
+			"allFour": false,
+			"worstRoleBarRatio": 4.884822066482541,
+			"worstRole": "accent",
+			"worstMove": 0.07337002743856777,
+			"worstFrom": "#2a0b08",
+			"worstTo": "#0c0a0b",
+			"selection": "perturb-control-jpeg-q85"
+		},
+		{
+			"trialId": "perturb|00103a3729bf589e0dc913ab|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "00103a3729bf589e0dc913ab",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/10/ab67616d0000b27300103a3729bf589e0dc913ab",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/82a1e00b067c52fe.jpeg-q85.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 4.960981729685178,
+			"worstRole": "foreground",
+			"worstMove": 0.11375531106168114,
+			"worstFrom": "#9a8d56",
+			"worstTo": "#7899aa",
+			"selection": "perturb-control-jpeg-q85"
+		},
+		{
+			"trialId": "perturb|dea5add5f0ac48c56f403a2d4ed7097d|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "dea5add5f0ac48c56f403a2d4ed7097d",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/music-artworks/d/e/a/dea5add5f0ac48c56f403a2d4ed7097d.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/e28db67540bdb840.jpeg-q85.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 27.84546018583997,
+			"worstRole": "accent",
+			"worstMove": 0.6384964020613104,
+			"worstFrom": "#f88916",
+			"worstTo": "#060606",
+			"selection": "perturb-control-jpeg-q85"
+		},
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q92",
+			"kind": "perturbation",
+			"arm": "jpeg-q92",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/0d149b97cfa25534.jpeg-q92.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface"
+			],
+			"rolesMoved": 1,
+			"allFour": false,
+			"worstRoleBarRatio": 1.4194655174905078,
+			"worstRole": "surface",
+			"worstMove": 0.013229418623011533,
+			"worstFrom": "#191919",
+			"worstTo": "#161616",
+			"selection": "perturb-control-jpeg-q92"
+		},
+		{
+			"trialId": "perturb|0005ab1795e9ac7793fe109d|jpeg-q92",
+			"kind": "perturbation",
+			"arm": "jpeg-q92",
+			"artworkId": "0005ab1795e9ac7793fe109d",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005ab1795e9ac7793fe109d",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/bdb2fb1379f9b1ba.jpeg-q92.perturbed.jpg",
+			"disagreeingRoles": [
+				"foreground",
+				"accent"
+			],
+			"rolesMoved": 2,
+			"allFour": false,
+			"worstRoleBarRatio": 7.263385422912469,
+			"worstRole": "accent",
+			"worstMove": 0.1665494277473829,
+			"worstFrom": "#c12593",
+			"worstTo": "#7d1758",
+			"selection": "perturb-control-jpeg-q92"
+		},
+		{
+			"trialId": "perturb|000a064109bec999385e7f08|jpeg-q92",
+			"kind": "perturbation",
+			"arm": "jpeg-q92",
+			"artworkId": "000a064109bec999385e7f08",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/0a/ab67616d00001e02000a064109bec999385e7f08",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/18285a3d5359e932.jpeg-q92.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"foreground"
+			],
+			"rolesMoved": 2,
+			"allFour": false,
+			"worstRoleBarRatio": 4.395034266082069,
+			"worstRole": "foreground",
+			"worstMove": 0.10077813572126185,
+			"worstFrom": "#db4f02",
+			"worstTo": "#ed2355",
+			"selection": "perturb-control-jpeg-q92"
+		},
+		{
+			"trialId": "perturb|00112616baa5515c8c43aee1|jpeg-q92",
+			"kind": "perturbation",
+			"arm": "jpeg-q92",
+			"artworkId": "00112616baa5515c8c43aee1",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/11/ab67616d0000b27300112616baa5515c8c43aee1",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/ada83b40bf893e12.jpeg-q92.perturbed.jpg",
+			"disagreeingRoles": [
+				"surface",
+				"foreground"
+			],
+			"rolesMoved": 2,
+			"allFour": false,
+			"worstRoleBarRatio": 2.6313509557198373,
+			"worstRole": "foreground",
+			"worstMove": 0.04281208004956175,
+			"worstFrom": "#b8bcbb",
+			"worstTo": "#bdb09d",
+			"selection": "perturb-control-jpeg-q92"
+		},
+		{
+			"trialId": "perturb|dea5add5f0ac48c56f403a2d4ed7097d|jpeg-q92",
+			"kind": "perturbation",
+			"arm": "jpeg-q92",
+			"artworkId": "dea5add5f0ac48c56f403a2d4ed7097d",
+			"reviewedness": "unseen",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/music-artworks/d/e/a/dea5add5f0ac48c56f403a2d4ed7097d.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/e28db67540bdb840.jpeg-q92.perturbed.jpg",
+			"disagreeingRoles": [
+				"background",
+				"surface",
+				"foreground"
+			],
+			"rolesMoved": 3,
+			"allFour": false,
+			"worstRoleBarRatio": 3.090940701790792,
+			"worstRole": "surface",
+			"worstMove": 0.039567795157552405,
+			"worstFrom": "#dbdbdb",
+			"worstTo": "#e8e8e8",
+			"selection": "perturb-control-jpeg-q92"
+		}
+	]
+}

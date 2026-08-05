@@ -516,49 +516,6 @@ export const LUMP_MASS_TIE_BAND = 0.1
 export const DEGENERATE_DEPTH_FLOOR_PX = 1
 
 /**
- * **d_min expressed scale-free** — the same floor read as a fraction of the long edge, used *only*
- * when the dev-only `P3_DEPTH_FLOOR_MODE` variable asks for it. **Not a shipped constant: nothing in
- * `src/` selects this branch by default.**
- *
- * [MEASUREMENT-ONLY] — 1/320, count-preserving. `DEGENERATE_DEPTH_FLOOR_PX = 1` fires on 94 of the
- * 220 coverage artworks (`data/devloop/p3-diag-coverage-0.3.0`, 220 chains). Sorting those 220
- * artworks by their β-quantile depth *as a fraction of the long edge* and asking for the largest cut
- * that keeps exactly 94 below it gives **0.003125 = 1/320** — the next distinct value up, 1/313,
- * takes 96. So this constant changes the rule's *form* (pixel grid → image fraction) while holding
- * its *strictness* fixed on the corpus the pixel rule was set on, which is what makes the pair
- * measurement in `measurements/attribution/PAIRS_ATTRIBUTION.md` a test of the form alone.
- *
- * The docstring above rejects "a scale-free fraction" on the strength of a 0.01 trial that fired on
- * 39 of 64. That rejection is of a rule **three times wider** than the pixel rule, not of a
- * count-matched one: 0.01 is 3 px at 300² where 1/320 is 0.94 px.
- */
-export const DEGENERATE_DEPTH_FLOOR_FRACTION = 1 / 320
-
-/** Which form of the degenerate-depth floor a run uses. `pixels` is the shipped rule. */
-export type DepthFloorMode = "pixels" | "scale-free"
-
-/**
- * **Dev-only override of the degenerate-depth floor's form**, read from `P3_DEPTH_FLOOR_MODE`.
- *
- * Same contract as `edgeRankInUse` above and for the same reason: the 0.3.0 rendition-pair regression
- * (14.5 % → 9.0 %) has to be measured against a candidate fix without the shipped constant moving.
- * **With the variable unset this function is `"pixels"` and the published palette is unchanged** —
- * checked byte-for-byte over demo-20, not asserted.
- *
- * Dev-only: no product build sets the variable, and an unrecognised value throws rather than falling
- * back, because a typo in a measurement's environment must not quietly produce the baseline again and
- * be read as "the fix does nothing".
- */
-export function depthFloorModeInUse(): DepthFloorMode {
-	const override = process.env.P3_DEPTH_FLOOR_MODE
-	if (override === undefined || override.length === 0) return "pixels"
-	if (override !== "pixels" && override !== "scale-free") {
-		throw new Error(`P3_DEPTH_FLOOR_MODE must be "pixels" or "scale-free"; got ${override}`)
-	}
-	return override
-}
-
-/**
  * **The L axis's midpoint**, against which the ink lump's extremity is measured.
  *
  * [INHERITED] — OKLab L is bounded [0, 1] by the space's own definition, so its midpoint is 0.5 and

@@ -36,23 +36,22 @@ import {
 	CONTRACT_VERSION,
 	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 	SOURCE_POPULATION_FLOOR,
-} from "../../../src/contract/constants.ts"
-import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../src/contract/color.ts"
-import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
+} from "../../../../../src/contract/constants.ts"
+import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../../../src/contract/color.ts"
+import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../../../src/contract/invariants.ts"
 import type {
 	GradientStop,
 	NonSourceColorEscape,
 	Palette,
 	PaletteColor,
 	Rgb8,
-} from "../../../src/contract/types.ts"
-import { hashFileBytes } from "../../../src/devloop/code-version.ts"
+} from "../../../../../src/contract/types.ts"
+import { hashFileBytes } from "../../../../../src/devloop/code-version.ts"
 import { computeAccentTiers, chooseAccent, type AccentChoice } from "./accent.ts"
 import {
 	ALGORITHM_VERSION,
 	BACKGROUND_PREVALENCE_TIE_BAND,
 	DEGENERATE_DEPTH_FLOOR_PX,
-	depthFloorModeInUse,
 	edgeRankInUse,
 	ENDS_BAND_TAU_MULTIPLE,
 	FIELD_DEPTH_QUANTILE,
@@ -503,13 +502,6 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		// where a divergence in the field-set size alone was only ever a continuous quantity.
 		rule: field.rule,
 		degenerateDepthFloorPx: DEGENERATE_DEPTH_FLOOR_PX,
-		// W11b: the floor is an *absolute pixel* rule and a rendition pair differs in resolution, so the
-		// two quantities the rule is a comparison between travel with the record: the β-quantile depth
-		// read back in the transform's own pixels, and the long edge it was divided by. A divergence in
-		// `rule` between two renditions is then attributable to one of them without re-deriving anything.
-		longEdge: image.longEdge,
-		depthThresholdPx: field.threshold * image.longEdge,
-		depthFloorMode: depthFloorModeInUse(),
 	})
 
 	const support: Record<string, number> = {}

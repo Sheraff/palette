@@ -63,9 +63,7 @@
 
 import {
 	BACKGROUND_PREVALENCE_TIE_BAND,
-	DEGENERATE_DEPTH_FLOOR_FRACTION,
 	DEGENERATE_DEPTH_FLOOR_PX,
-	depthFloorModeInUse,
 	ENDS_BAND_TAU_MULTIPLE,
 	FIELD_DEPTH_QUANTILE,
 	LUMP_GAP_RATIO,
@@ -130,14 +128,7 @@ export function computeFieldSet(
 	const threshold = depth.depth[sorted[quantileIndex(sorted.length, FIELD_DEPTH_QUANTILE)]]
 
 	// The degenerate case, tested before the rank is redeemed. See the docstring.
-	//
-	// The comparison is the pixel rule `threshold · longEdge ≤ d_min` unless the dev-only
-	// `P3_DEPTH_FLOOR_MODE=scale-free` asks for the same floor as a fraction of the long edge. With the
-	// variable unset `depthFloorModeInUse()` is `"pixels"` and this line is what it was.
-	const degenerate = depthFloorModeInUse() === "scale-free"
-		? threshold <= DEGENERATE_DEPTH_FLOOR_FRACTION
-		: threshold * image.longEdge <= DEGENERATE_DEPTH_FLOOR_PX
-	if (degenerate) {
+	if (threshold * image.longEdge <= DEGENERATE_DEPTH_FLOOR_PX) {
 		const wide: number[] = []
 		for (let i = 0; i < eligible.length; i += 1) {
 			if (depth.depth[eligible[i]] > 0) wide.push(eligible[i])
