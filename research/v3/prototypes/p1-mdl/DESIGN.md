@@ -166,6 +166,14 @@ Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install)
     energy still refuses the repairing stop, that is a resolution defect in the joints, not a
     pricing win. (C7: 42% of legacy midpoints sit outside the endpoints' lightness span; the
     campaign's excursion instrument is unbuilt — our own measurement is the only check.)
+15. **The reviewer grades margins; optimizers sit on floors** (another arm's 6/6 low round:
+    pairs clearing sameColorBar by 1e-4–3e-3 read as indistinguishable). This mechanism's
+    structural answer: distinctness is never rewarded, so nothing attracts colours to the
+    boundary, and a second name within ~a bar explains overlapping mass and rarely repays λ —
+    collapse eats epsilon-margins. MEASURED on M2 demo-20 output (2026-08-05): min role-pair
+    distance 0.0181 (arm A) / 0.0177 (A′) ≈ 2× the dark-neutral bar; pairs under 0.03: 4/80
+    and 3/106. No epsilon-sitting; the handful of sub-0.03 pairs get per-item attention in
+    round reads.
 14. **Identity-coverage reaches foreground-adjacent territory** (missing title-text yellow
     complained about — feeds the same axis as the ink-recovery falsifier) **and a new shape:
     the accent should sit in a different colour FAMILY than background/surface.** This
