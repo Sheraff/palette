@@ -1,0 +1,1398 @@
+{
+	"what": "Robustness of one candidate palette system under rendition pairs and invisible perturbations.",
+	"writtenAt": "2026-08-05T12:33:51.449Z",
+	"generatedBy": "research/v3/src/robustness/check.ts",
+	"candidate": {
+		"name": "p6-figureground-0.1.0",
+		"version": "p6-figureground-0.1.0",
+		"module": "research/v3/prototypes/p6-figureground/src/candidate.ts"
+	},
+	"compare": {
+		"barMode": "regional",
+		"roles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		]
+	},
+	"sets": {
+		"perturbationSet": {
+			"path": "../../../../../../private/tmp/claude-501/-Users-Flo-GitHub-palette/2309a578-04f5-4ae0-97b9-481682d72c4f/scratchpad/perturbation-set-p6-subset.json",
+			"sha256": "74b66895ee46e1a0759e33400dc266853fe8e86b47cefa89ce40dda522a59435"
+		},
+		"warehouse": {
+			"path": "research/v3/data/warehouse/warehouse.jsonl",
+			"sha256": "dbe648cc382bd63c88df06e01f30a17cf3e981b9b242cab0cc255d66c07b9dce"
+		}
+	},
+	"reviewedness": {
+		"source": "live-warehouse",
+		"relabelledSinceDraw": 0,
+		"reviewedArtworksInWarehouse": 113
+	},
+	"overall": {
+		"group": "overall",
+		"agreed": 45,
+		"compared": 64,
+		"errored": 0,
+		"rate": 0.703125,
+		"interval": [
+			0.5822979889645707,
+			0.8009484867446021
+		]
+	},
+	"byPairType": [
+		{
+			"group": "rendition-pair",
+			"agreed": 0,
+			"compared": 0,
+			"errored": 0,
+			"rate": null,
+			"interval": null
+		},
+		{
+			"group": "jpeg-q92",
+			"agreed": 15,
+			"compared": 16,
+			"errored": 0,
+			"rate": 0.9375,
+			"interval": [
+				0.7167126242970107,
+				0.9888806552353575
+			]
+		},
+		{
+			"group": "jpeg-q85",
+			"agreed": 10,
+			"compared": 16,
+			"errored": 0,
+			"rate": 0.625,
+			"interval": [
+				0.38641040545502725,
+				0.8151876744113636
+			]
+		},
+		{
+			"group": "jpeg-q75",
+			"agreed": 9,
+			"compared": 16,
+			"errored": 0,
+			"rate": 0.5625,
+			"interval": [
+				0.331785563988119,
+				0.7690134759450764
+			]
+		},
+		{
+			"group": "dither-lsb1",
+			"agreed": 11,
+			"compared": 16,
+			"errored": 0,
+			"rate": 0.6875,
+			"interval": [
+				0.44404355834740666,
+				0.8583535614521797
+			]
+		}
+	],
+	"byReviewedness": [
+		{
+			"group": "all|reviewed",
+			"agreed": 19,
+			"compared": 28,
+			"errored": 0,
+			"rate": 0.6785714285714286,
+			"interval": [
+				0.49338843180857617,
+				0.8206675307750504
+			]
+		},
+		{
+			"group": "all|unseen",
+			"agreed": 26,
+			"compared": 36,
+			"errored": 0,
+			"rate": 0.7222222222222222,
+			"interval": [
+				0.5600751000260289,
+				0.8415166205986538
+			]
+		}
+	],
+	"stabilityRatios": [
+		{
+			"basis": "perturbation",
+			"reviewed": {
+				"group": "perturbation|reviewed",
+				"agreed": 19,
+				"compared": 28,
+				"errored": 0,
+				"rate": 0.6785714285714286,
+				"interval": [
+					0.49338843180857617,
+					0.8206675307750504
+				]
+			},
+			"unseen": {
+				"group": "perturbation|unseen",
+				"agreed": 26,
+				"compared": 36,
+				"errored": 0,
+				"rate": 0.7222222222222222,
+				"interval": [
+					0.5600751000260289,
+					0.8415166205986538
+				]
+			},
+			"ratio": 0.9395604395604397,
+			"underpowered": true,
+			"note": "The reportable one: the perturbation sample is allocated 50/50 reviewed/unseen by construction."
+		},
+		{
+			"basis": "rendition-pair",
+			"reviewed": {
+				"group": "rendition-pair|reviewed",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"unseen": {
+				"group": "rendition-pair|unseen",
+				"agreed": 0,
+				"compared": 0,
+				"errored": 0,
+				"rate": null,
+				"interval": null
+			},
+			"ratio": null,
+			"underpowered": true,
+			"note": "Underpowered by construction: only 23 eligible pairs touch a graded artwork, and none have two."
+		}
+	],
+	"byRole": [
+		{
+			"role": "background",
+			"disagreed": 4,
+			"compared": 64,
+			"rate": 0.0625
+		},
+		{
+			"role": "surface",
+			"disagreed": 8,
+			"compared": 64,
+			"rate": 0.125
+		},
+		{
+			"role": "foreground",
+			"disagreed": 9,
+			"compared": 64,
+			"rate": 0.140625
+		},
+		{
+			"role": "accent",
+			"disagreed": 9,
+			"compared": 64,
+			"rate": 0.140625
+		}
+	],
+	"disagreements": [
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q92",
+			"kind": "perturbation",
+			"arm": "jpeg-q92",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q92/0d149b97cfa25534.jpeg-q92.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#787878",
+						"right": "#787878",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#343434",
+						"right": "#343434",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#d4d4d4",
+						"right": "#2d2d2d",
+						"distance": 0.57278057575781,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#2d2d2d",
+						"right": "#d4d4d4",
+						"distance": 0.57278057575781,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 35.20470656163553,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 3509.413042
+		},
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q85/0d149b97cfa25534.jpeg-q85.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#787878",
+						"right": "#787878",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#343434",
+						"right": "#333333",
+						"distance": 0.003944350298063229,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#d4d4d4",
+						"right": "#d4d4d4",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#2d2d2d",
+						"right": "#6d6d6d",
+						"distance": 0.23759909151037562,
+						"bar": 0.00932,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"accent"
+				],
+				"worstRoleBarRatio": 25.493464754332148,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 3509.47925
+		},
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/0d149b97cfa25534.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#787878",
+						"right": "#797979",
+						"distance": 0.0034158242070928568,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#343434",
+						"right": "#343434",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#d4d4d4",
+						"right": "#2d2d2d",
+						"distance": 0.57278057575781,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#2d2d2d",
+						"right": "#d4d4d4",
+						"distance": 0.57278057575781,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 35.20470656163553,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 3509.106375
+		},
+		{
+			"trialId": "perturb|00002947b898e4bd572ac4aa|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/0d149b97cfa25534.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/0d149b97cfa25534.dither-lsb1.perturbed.png",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#787878",
+						"right": "#787879",
+						"distance": 0.0015456200424462181,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#343434",
+						"right": "#343435",
+						"distance": 0.0017820666010541697,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#d4d4d4",
+						"right": "#2d2d2e",
+						"distance": 0.5724027702735129,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#2d2d2d",
+						"right": "#d4d4d5",
+						"distance": 0.5730708738960918,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 35.222549102402695,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 3509.6951249999997
+		},
+		{
+			"trialId": "perturb|00009a5acf9fb19544298ce4|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "00009a5acf9fb19544298ce4",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/ad5bc620f24b472c.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/ad5bc620f24b472c.dither-lsb1.perturbed.png",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#fefefe",
+						"right": "#000001",
+						"distance": 0.9668769340457569,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "surface",
+						"left": "#f8f8f8",
+						"right": "#000000",
+						"distance": 0.9791293496198372,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#000000",
+						"right": "#fefefd",
+						"distance": 0.9967484775122626,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#000000",
+						"right": "#fefefd",
+						"distance": 0.9967484775122626,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 61.26296727180471,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 129992.98891700001
+		},
+		{
+			"trialId": "perturb|0001c404b8a04a8789db8dab|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/ac7ca45674c6b77c.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/ac7ca45674c6b77c.dither-lsb1.perturbed.png",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#080808",
+						"right": "#080807",
+						"distance": 0.002612906378670183,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#060805",
+						"right": "#08080b",
+						"distance": 0.01695006887150771,
+						"bar": 0.00932,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#044b21",
+						"right": "#054c21",
+						"distance": 0.0035775567782103243,
+						"bar": 0.01502,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#fefafb",
+						"right": "#fefafa",
+						"distance": 0.0013467373719786829,
+						"bar": 0.01627,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.8186769175437456,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 169630.85462499998
+		},
+		{
+			"trialId": "perturb|000241edffbc59ed2fe08dd3|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "000241edffbc59ed2fe08dd3",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/02/ab67616d0000b273000241edffbc59ed2fe08dd3.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q85/df58faaf07d8b84f.jpeg-q85.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#d8ac91",
+						"right": "#d3a180",
+						"distance": 0.03186844443750053,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "surface",
+						"left": "#d5a581",
+						"right": "#d7ac8c",
+						"distance": 0.01961802433614401,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#eb5e4a",
+						"right": "#eb5e4a",
+						"distance": 0,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#fefefe",
+						"right": "#fcfefd",
+						"distance": 0.003057602240904042,
+						"bar": 0.01627,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"background"
+				],
+				"worstRoleBarRatio": 1.3898144107065213,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 89038.99391699999
+		},
+		{
+			"trialId": "perturb|000241edffbc59ed2fe08dd3|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "000241edffbc59ed2fe08dd3",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/df58faaf07d8b84f.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/df58faaf07d8b84f.dither-lsb1.perturbed.png",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#d8ac91",
+						"right": "#d2a27f",
+						"distance": 0.031468440745865314,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "surface",
+						"left": "#d5a581",
+						"right": "#d7ac8b",
+						"distance": 0.019116900679692527,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#eb5e4a",
+						"right": "#eb5e49",
+						"distance": 0.0010651115893355614,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#fefefe",
+						"right": "#fefefd",
+						"distance": 0.001344035328841372,
+						"bar": 0.01627,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"background"
+				],
+				"worstRoleBarRatio": 1.372369853722866,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 179061.07045799997
+		},
+		{
+			"trialId": "perturb|0002875c482df56c656a8605|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "0002875c482df56c656a8605",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q85/f1acbebe48f75407.jpeg-q85.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#b1aea7",
+						"right": "#b1aea7",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#afa99d",
+						"right": "#b1a89f",
+						"distance": 0.005448786053640503,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#f5edda",
+						"right": "#c8b7a5",
+						"distance": 0.15883019455382175,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#bbb1a5",
+						"right": "#a5a49f",
+						"distance": 0.04935192553034154,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 9.762150863787447,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 80591.308417
+		},
+		{
+			"trialId": "perturb|0002875c482df56c656a8605|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "0002875c482df56c656a8605",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/f1acbebe48f75407.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#b1aea7",
+						"right": "#b1aea7",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#afa99d",
+						"right": "#b2a89f",
+						"distance": 0.006342767923280384,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#f5edda",
+						"right": "#c8b7a5",
+						"distance": 0.15883019455382175,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#bbb1a5",
+						"right": "#a5a49f",
+						"distance": 0.04935192553034154,
+						"bar": 0.01627,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 9.762150863787447,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 80591.102083
+		},
+		{
+			"trialId": "perturb|0003e50500c5d762da89643a|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "0003e50500c5d762da89643a",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/33d63ad96631b232.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#070906",
+						"right": "#060807",
+						"distance": 0.006852005670822898,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#040807",
+						"right": "#050a06",
+						"distance": 0.011196249244711215,
+						"bar": 0.00932,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#132110",
+						"right": "#132110",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#cfd4c0",
+						"right": "#cfd4c0",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.2013142966428343,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 42875.50679100002
+		},
+		{
+			"trialId": "perturb|000535cf7b987bd9309aad76|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "000535cf7b987bd9309aad76",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/05/ab67616d0000b273000535cf7b987bd9309aad76",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q85/7c7402acff8682f7.jpeg-q85.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#362e21",
+						"right": "#362e21",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#372b1f",
+						"right": "#322e25",
+						"distance": 0.013349767036786054,
+						"bar": 0.00932,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#0b7390",
+						"right": "#0b7390",
+						"distance": 0,
+						"bar": 0.01502,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#3a3424",
+						"right": "#3a3426",
+						"distance": 0.0031930488104168174,
+						"bar": 0.00932,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.4323784374233963,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 141317.26579100004
+		},
+		{
+			"trialId": "perturb|000535cf7b987bd9309aad76|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "000535cf7b987bd9309aad76",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/05/ab67616d0000b273000535cf7b987bd9309aad76",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/7c7402acff8682f7.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#362e21",
+						"right": "#362e21",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#372b1f",
+						"right": "#322e25",
+						"distance": 0.013349767036786054,
+						"bar": 0.00932,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#0b7390",
+						"right": "#0b7390",
+						"distance": 0,
+						"bar": 0.01502,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#3a3424",
+						"right": "#3a3424",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.4323784374233963,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 108239.17416699993
+		},
+		{
+			"trialId": "perturb|000535cf7b987bd9309aad76|dither-lsb1",
+			"kind": "perturbation",
+			"arm": "dither-lsb1",
+			"artworkId": "000535cf7b987bd9309aad76",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/7c7402acff8682f7.dither-lsb1.baseline.png",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/dither-lsb1/7c7402acff8682f7.dither-lsb1.perturbed.png",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#362e21",
+						"right": "#362e22",
+						"distance": 0.001633849664139535,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#372b1f",
+						"right": "#372e1c",
+						"distance": 0.012522535338291023,
+						"bar": 0.00932,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#0b7390",
+						"right": "#0a7390",
+						"distance": 0.00022390912053552611,
+						"bar": 0.01502,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#3a3424",
+						"right": "#3a3425",
+						"distance": 0.0015882687135854686,
+						"bar": 0.00932,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.3436196714904531,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 211553.30204099993
+		},
+		{
+			"trialId": "perturb|0005597105ba1e2d38f62cfc|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "0005597105ba1e2d38f62cfc",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/fbd59ef749935555.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#1f191b",
+						"right": "#1f191b",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#1c171b",
+						"right": "#1c171b",
+						"distance": 0,
+						"bar": 0.00932,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#2d2324",
+						"right": "#42353c",
+						"distance": 0.0782189802245806,
+						"bar": 0.00932,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#42353c",
+						"right": "#2d2324",
+						"distance": 0.0782189802245806,
+						"bar": 0.00932,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 8.392594444697488,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 103314.29645800008
+		},
+		{
+			"trialId": "perturb|00060491ade88c8893373d9f|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "00060491ade88c8893373d9f",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/06/ab67616d00001e0200060491ade88c8893373d9f",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q85/9ae81cd12e4bd2a4.jpeg-q85.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#9f7c5c",
+						"right": "#9f7c5c",
+						"distance": 0,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#977653",
+						"right": "#977653",
+						"distance": 0,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#c6c6c6",
+						"right": "#8c613f",
+						"distance": 0.30551508854416715,
+						"bar": 0.01627,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#a58465",
+						"right": "#a58465",
+						"distance": 0,
+						"bar": 0.02293,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"foreground"
+				],
+				"worstRoleBarRatio": 18.777817365959873,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 62621.822292000055
+		},
+		{
+			"trialId": "perturb|00060491ade88c8893373d9f|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "00060491ade88c8893373d9f",
+			"reviewedness": "reviewed",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/06/ab67616d00001e0200060491ade88c8893373d9f",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/9ae81cd12e4bd2a4.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#9f7c5c",
+						"right": "#967451",
+						"distance": 0.02871103860233084,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "surface",
+						"left": "#977653",
+						"right": "#9d7c5b",
+						"distance": 0.02062240060426615,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "foreground",
+						"left": "#c6c6c6",
+						"right": "#a48364",
+						"distance": 0.2021363745654355,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "accent",
+						"left": "#a58465",
+						"right": "#8b603e",
+						"distance": 0.11116365059428238,
+						"bar": 0.02293,
+						"same": false
+					}
+				],
+				"disagreeingRoles": [
+					"background",
+					"foreground",
+					"accent"
+				],
+				"worstRoleBarRatio": 8.815367403638705,
+				"collapseAgrees": true,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 62621.719124999945
+		},
+		{
+			"trialId": "perturb|0007bcee5dd53c80d8eb53c4|jpeg-q85",
+			"kind": "perturbation",
+			"arm": "jpeg-q85",
+			"artworkId": "0007bcee5dd53c80d8eb53c4",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/07/ab67616d00001e020007bcee5dd53c80d8eb53c4",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q85/fd2d953301c7f20d.jpeg-q85.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#7fb13e",
+						"right": "#7fb13e",
+						"distance": 0,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#7fb13e",
+						"right": "#7ba93c",
+						"distance": 0.02341485472672135,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#f3f3f5",
+						"right": "#f3f3f5",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#77aa34",
+						"right": "#78ad21",
+						"distance": 0.015871825396629596,
+						"bar": 0.02293,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.0211449946236961,
+				"collapseAgrees": false,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 61927.536250000005
+		},
+		{
+			"trialId": "perturb|0007bcee5dd53c80d8eb53c4|jpeg-q75",
+			"kind": "perturbation",
+			"arm": "jpeg-q75",
+			"artworkId": "0007bcee5dd53c80d8eb53c4",
+			"reviewedness": "unseen",
+			"collection": "sharded",
+			"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/07/ab67616d00001e020007bcee5dd53c80d8eb53c4",
+			"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p6-figureground/research/v3/data/robustness/cache/jpeg-q75/fd2d953301c7f20d.jpeg-q75.perturbed.jpg",
+			"comparison": {
+				"same": false,
+				"barMode": "regional",
+				"rolesCompared": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"comparisons": [
+					{
+						"role": "background",
+						"left": "#7fb13e",
+						"right": "#7fb13e",
+						"distance": 0,
+						"bar": 0.02293,
+						"same": true
+					},
+					{
+						"role": "surface",
+						"left": "#7fb13e",
+						"right": "#7ba93c",
+						"distance": 0.02341485472672135,
+						"bar": 0.02293,
+						"same": false
+					},
+					{
+						"role": "foreground",
+						"left": "#f3f3f5",
+						"right": "#f3f3f5",
+						"distance": 0,
+						"bar": 0.01627,
+						"same": true
+					},
+					{
+						"role": "accent",
+						"left": "#77aa34",
+						"right": "#75ad26",
+						"distance": 0.01428276162799442,
+						"bar": 0.02293,
+						"same": true
+					}
+				],
+				"disagreeingRoles": [
+					"surface"
+				],
+				"worstRoleBarRatio": 1.0211449946236961,
+				"collapseAgrees": false,
+				"gradientPresenceAgrees": true
+			},
+			"error": null,
+			"millis": 26618.043999999994
+		}
+	],
+	"errors": [],
+	"timing": {
+		"trials": 64,
+		"wallMillis": 818266.580208,
+		"candidateMillis": 3670710.308756002
+	}
+}

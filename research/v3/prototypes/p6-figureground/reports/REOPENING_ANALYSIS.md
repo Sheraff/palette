@@ -65,10 +65,15 @@ fails its own defence. Verdict: MECHANISM-FALSIFIED.**
 
 ## What this does not say — kept precise for the record
 
-- **The robustness pre-registration (falsifier 1: dither ≥0.98, jpeg-q92 ≥0.95) was never
-  measured** — the harness run was queued behind the sweep and is now moot for a falsified
-  mechanism unless the main tier wants the datum anyway (~30 min with --limit). UNANSWERED, not
-  failed.
+- **The robustness pre-registration (falsifier 1) is now MEASURED and FAILED** (W13,
+  post-disposition, main-tier-ordered): dither-lsb1 agreement 0.6875 vs the pre-registered
+  ≥0.98; jpeg-q92 0.9375 vs ≥0.95 (CI spans the bar); jpeg-q85 0.625, q75 0.5625. n=16 covers ×
+  4 arms, regional bar, and the sample is disclosed as biased toward P6's FASTEST covers (24 of
+  40 screened covers exceeded a 20 s termination cap and were excluded) — the true rates are, if
+  anything, no better. The proposal's own falsifier text applies verbatim: the instability was
+  never in the quantisation stage; the diagnosis was mistaken. Both of the mechanism's
+  independent pre-registered falsifiers have now fired. Datum:
+  `data/robustness/reports/p6-figureground-perturbations-w13.json`.
 - **The substrate is verified sound and is salvage.** Independent verification (5/6 CONFIRMED,
   `verification-1.md`): exact search bit-identical to brute force at real scale; byte-determinism
   across processes with an empty exception mask; per-term faithfulness to 3e-17; the blur-ladder
