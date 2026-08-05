@@ -1,0 +1,13 @@
+item-124 [tie-band] gap=0.00534 ΔL=0.7276 pub=dark hexes=16 path:ok pixels:ok endpoints:ok collapse:ok polarity-only:ok contract:ok preview:ok
+item-130 [tie-band] gap=0.02048 ΔL=0.1247 pub=dark hexes=12 path:ok pixels:ok endpoints:ok collapse:ok polarity-only:ok contract:ok preview:ok
+item-168 [tie-band] gap=0.05037 ΔL=0.1174 pub=dark hexes=12 path:ok pixels:ok endpoints:ok collapse:ok polarity-only:ok contract:ok preview:ok
+item-009 [tie-band] gap=0.05612 ΔL=0.0537 pub=dark hexes=12 path:ok pixels:ok endpoints:ok collapse:ok polarity-only:ok contract:ok preview:ok
+item-065 [tie-band] gap=0.09676 ΔL=0.8474 pub=dark hexes=8 path:ok pixels:ok endpoints:ok collapse:ok polarity-only:ok contract:ok preview:ok
+item-132 [fill] gap=0.10244 ΔL=0.4132 pub=light hexes=8 path:ok pixels:ok endpoints:ok collapse:ok polarity-only:ok contract:ok preview:ok
+check 8: pinned copy reproduces 220/220 coverage-220 rows exactly
+check 9: 12 pinned files, provenance ok; override touches [constants.ts, field-roles.ts, pipeline.ts]
+check 9b: override absent from all 12 live src/*.ts files
+check 10: 19 candidates — reproduction leg 19/19, swap leg 19/19
+check 11: blinding ok — 6 neutral itemIds, no mechanism text in served fields
+
+ALL CHECKS PASS — 6 items, 12 palettes

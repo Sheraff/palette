@@ -1,0 +1,105 @@
+/**
+ * Verification (arm-d §2.7). **Selection is cheap and local; verification is a full pass.**
+ *
+ * For a candidate colour, one pass over the eligible pixels counts how many sit within the same-colour
+ * bar of it and accumulates where they are. Two numbers come out: a **support fraction** and a
+ * **spatial spread**. A colour that fails is never adjusted — the algorithm *steps the rank*, moves to
+ * the next quantile in the same ordering, and re-verifies; every role downstream of a stepped role
+ * re-runs, so a relocated defect is impossible rather than hoped against.
+ *
+ * ## Which population floor this is, and which it is not
+ *
+ * The count is the **neighbourhood** form: pixels within the pair's regional same-colour bar of the
+ * candidate, not pixels bearing its exact triple. Arm-d §2.7 asks for exactly that ("counts the pixels
+ * within the same-colour bar of it"), and the distinction matters, because the contract has *retired the
+ * exact-triple form as a verdict*: `BELONGS_STUDY.md` measured that it has no discriminating power at
+ * any threshold and that it refused 340 of 351 palettes whose colours the reviewer endorsed.
+ *
+ * So `SOURCE_POPULATION_FLOOR` is used here **as a selection predicate inside this prototype only**. It
+ * can step a rank; it can never make a palette invalid, and this module returns no violations. The
+ * contract's own verdict is computed where it always was, by `validatePalette`.
+ *
+ * ## The spread measure, and why it is deliberately weak
+ *
+ * Spread is the summed interquartile extent of the occurrences' normalized x and y — quantiles of
+ * positions, which is what §2.7 says to accumulate, and not a centroid, which would be a mean. Its
+ * threshold (`SPATIAL_SPREAD_FLOOR`) is `[UNCALIBRATED]` and set low on purpose: the contract's own
+ * spatial-spread validator is *unimplemented* because a made-up threshold there would be worse than
+ * nothing, and this is a made-up threshold. It exists so the shape of §2.7 is real code rather than a
+ * promise, and it is set where it can only catch a colour living in one tight blob.
+ *
+ * Positions are accumulated into fixed bins rather than collected into a list: a colour whose bar
+ * contains half the artwork would otherwise cost an array of half a million coordinates per
+ * verification, and the quantile of a binned position is the quantile of a position to within one bin.
+ */
+
+import { SOURCE_POPULATION_FLOOR } from "../../../../../src/contract/constants.ts"
+import { SPATIAL_SPREAD_FLOOR, SPREAD_POSITION_BINS } from "./constants.ts"
+import type { DecodedImage } from "./decode.ts"
+import { labDistance } from "./primitives.ts"
+
+export type SupportVerdict = Readonly<{
+	/** The pixel index that was verified, echoed so a caller can log which rank it was. */
+	pixel: number
+	/** Fraction of eligible pixels within the same-colour bar of this colour. */
+	support: number
+	/** Summed interquartile extent of the occurrences' normalized x and y. */
+	spread: number
+	supportPasses: boolean
+	spreadPasses: boolean
+	passes: boolean
+}>
+
+function binQuantileExtent(bins: Uint32Array, total: number): number {
+	if (total === 0) return 0
+	// [INHERITED] — the quartiles. §2.7 asks for an *interquartile* extent, so 0.25 and 0.75 are the
+	// definition of the statistic rather than a window anyone chose; the tunable is the floor the result
+	// is compared against (`SPATIAL_SPREAD_FLOOR`), which carries its own tag and its own caveat.
+	const lowTarget = total * 0.25
+	const highTarget = total * 0.75
+	let running = 0
+	let low = 0
+	let high = bins.length - 1
+	let haveLow = false
+	for (let bin = 0; bin < bins.length; bin += 1) {
+		running += bins[bin]
+		if (!haveLow && running >= lowTarget) {
+			low = bin
+			haveLow = true
+		}
+		if (running >= highTarget) {
+			high = bin
+			break
+		}
+	}
+	return (high - low) / bins.length
+}
+
+/**
+ * Verify one candidate colour against the whole image. One pass, no allocation beyond two bin arrays.
+ */
+export function verifyColor(image: DecodedImage, pixel: number): SupportVerdict {
+	const { eligibleIndices, lab, bar, width, height } = image
+	const barOfCandidate = bar[pixel]
+	const xBins = new Uint32Array(SPREAD_POSITION_BINS)
+	const yBins = new Uint32Array(SPREAD_POSITION_BINS)
+	let within = 0
+
+	for (let i = 0; i < eligibleIndices.length; i += 1) {
+		const index = eligibleIndices[i]
+		// The pair's bar, exactly as `sameColorBar` defines it: the larger of the two regions' bars.
+		const pairBar = barOfCandidate > bar[index] ? barOfCandidate : bar[index]
+		if (labDistance(lab, index, pixel) >= pairBar) continue
+		within += 1
+		const y = Math.floor(index / width)
+		const x = index - y * width
+		xBins[Math.min(SPREAD_POSITION_BINS - 1, Math.floor((x / width) * SPREAD_POSITION_BINS))] += 1
+		yBins[Math.min(SPREAD_POSITION_BINS - 1, Math.floor((y / height) * SPREAD_POSITION_BINS))] += 1
+	}
+
+	const support = within / eligibleIndices.length
+	const spread = binQuantileExtent(xBins, within) + binQuantileExtent(yBins, within)
+	const supportPasses = support >= SOURCE_POPULATION_FLOOR
+	const spreadPasses = spread >= SPATIAL_SPREAD_FLOOR
+	return { pixel, support, spread, supportPasses, spreadPasses, passes: supportPasses && spreadPasses }
+}
