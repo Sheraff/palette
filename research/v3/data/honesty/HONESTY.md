@@ -2,18 +2,18 @@
 
 **Generated file. Do not edit by hand** — regenerate with `node --experimental-strip-types src/honesty/cli.ts` from `research/v3`.
 
-Measured at **2026-08-04T21:26:35.082Z**. Body hash `086a939e43488f91`.
+Measured at **2026-08-05T06:10:06.674Z**. Body hash `2dddbb2a0966d87b`.
 
 Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1). It exists because v2-3 carried roughly 900 tunable sites against 11 human-anchored values — quantified overfitting. This page counts the first number and the provenance behind it. It does **not** measure the third number, the reviewed-vs-unseen perturbation-stability ratio; that needs a pipeline and belongs at the Phase 2 entry condition.
 
 ## Headline
 
-- **Tunable sites: 8868**
-- **Documented: 745 (8.4%)** — carries a provenance tag or a resolved decision record.
-- **Anchored: 465 (5.2%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
-- **Untagged: 8123** — no provenance of any kind. This is the dishonesty measure.
+- **Tunable sites: 9230**
+- **Documented: 768 (8.3%)** — carries a provenance tag or a resolved decision record.
+- **Anchored: 471 (5.1%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
+- **Untagged: 8462** — no provenance of any kind. This is the dishonesty measure.
 
-Scanned 301 files, 114558 lines, 14194 numeric literals, of which 5326 were excluded by a named rule (listed below, none silent).
+Scanned 324 files, 119083 lines, 14826 numeric literals, of which 5596 were excluded by a named rule (listed below, none silent).
 
 **Read the fraction as a lower bound.** Exclusion rules are deliberately narrow: when it is unclear whether a number is structural or tunable it is counted, which inflates the denominator and pushes the fraction down. The tree is at least this honest, never less.
 
@@ -22,26 +22,26 @@ Scanned 301 files, 114558 lines, 14194 numeric literals, of which 5326 were excl
 | language | files | lines | parser fidelity |
 |---|---:|---:|---|
 | py | 102 | 38941 | lexical |
-| ts | 199 | 75617 | ast |
+| ts | 222 | 80142 | ast |
 
 ## Provenance of the tunable sites
 
 | tag | count | anchor strength |
 |---|---:|---|
-| `[REVIEWED]` | 279 | anchored |
-| `[MEASURED]` | 184 | anchored |
+| `[REVIEWED]` | 281 | anchored |
+| `[MEASURED]` | 188 | anchored |
 | `[FITTED]` | 1 | anchored |
 | `[n=1]` | 2 | weak |
-| `[INHERITED]` | 129 | weak |
-| `[UNCALIBRATED]` | 135 | unanchored |
+| `[INHERITED]` | 130 | weak |
+| `[UNCALIBRATED]` | 151 | unanchored |
 | `[HELD]` | 14 | weak |
 | decision record, resolved | 1 | anchored |
 | decision record, dangling | 0 | unanchored |
-| **untagged** | **8123** | unanchored |
+| **untagged** | **8462** | unanchored |
 
 Decision citations resolve to 3 machine-recheckable records (non-empty `fundedBy`) and 0 reviewer-conversational ones (empty `fundedBy`, which `CONVENTIONS.md` calls the honest form for a verbal ruling). Both are human-anchored; only the first can ever be re-verified.
 
-**How the tags were attributed:** 625 from the site's own doc comment, 1 from a trailing same-line comment, 119 inherited from an adjacent declaration's doc block. That last number is the instrument's weakest inference — discount it if you are being strict.
+**How the tags were attributed:** 646 from the site's own doc comment, 1 from a trailing same-line comment, 121 inherited from an adjacent declaration's doc block. That last number is the instrument's weakest inference — discount it if you are being strict.
 
 ## Per working area
 
@@ -54,7 +54,7 @@ One row per top-level directory under a scan root — the granularity `CONVENTIO
 | `oracle/ladder` | INFORMATIONAL | oracle — ladder | 7 | 368 | 88 | 280 | 23.9% |
 | `oracle/premise` | INFORMATIONAL | oracle — premise | 20 | 675 | 59 | 616 | 8.7% |
 | `oracle/sam` | INFORMATIONAL | oracle — SAM | 57 | 1460 | 174 | 1286 | 11.9% |
-| `prototypes/p1-mdl` | INFORMATIONAL | phase-2 prototype orchestrators | 81 | 2879 | 19 | 2860 | 0.7% |
+| `prototypes/p1-mdl` | INFORMATIONAL | phase-2 prototype orchestrators | 104 | 3241 | 42 | 3199 | 1.3% |
 | `src/adjudication` | INFORMATIONAL | adjudication | 7 | 74 | 0 | 74 | 0.0% |
 | `src/calibration-consequence` | INFORMATIONAL | calibration consequence | 5 | 96 | 18 | 78 | 18.8% |
 | `src/contract` | INFORMATIONAL | contract schema + gates | 18 | 717 | 52 | 665 | 7.2% |
@@ -79,19 +79,19 @@ No literal is dropped silently. A site records exactly one rule, so these sum to
 | `fixture-module` | 237 | The file is a fixture or test-support module. Its numbers are data under test, not policy the system runs on; they are pinned deliberately and changing one is a test edit, not a retuning. |
 | `colorimetric-spec` | 75 | A constant fixed by the sRGB or OKLab specification (0.04045, 12.92, 1.055, 2.4, 0.0031308, and the OKLab matrices). There is nothing to calibrate and no provenance question to answer. This is the one exemption src/contract/constants.ts declares in its own header, and contract-color.test.ts verifies the conversions against colorjs.io rather than against a chosen value. |
 | `version-literal` | 4 | Part of a version or schema-version identifier. It labels a thing rather than shaping behaviour; CONVENTIONS tags these [HELD] precisely because they are identifiers, not measurements. |
-| `exit-code` | 22 | A process exit code. It is an operating-system protocol value, not a parameter of the algorithm. |
+| `exit-code` | 23 | A process exit code. It is an operating-system protocol value, not a parameter of the algorithm. |
 | `http-status` | 29 | An HTTP status code. Fixed by RFC 9110; the choice of which status to send is logic, but the number itself is not tunable. Covers the review server's own respond(res, status, ...) helper as well as the writeHead/statusCode shapes the scanner recognises directly. |
-| `emptiness-comparison` | 419 | A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`. |
+| `emptiness-comparison` | 424 | A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`. |
 | `not-found-sentinel` | 0 | A -1 compared against the result of indexOf/findIndex/.index() — the language's not-found sentinel, not a bound anyone chose. |
-| `index-access` | 1811 | An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes. |
-| `loop-header` | 777 | An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy. |
-| `accumulator-init` | 465 | A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted. |
-| `counter-increment` | 422 | A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous. |
-| `unit-conversion` | 74 | A multiply or divide by a unit constant — ms per second, seconds per minute, the 8-bit channel maximum, bytes per KiB. An identity of the units, not a choice. |
-| `unit-clamp` | 161 | A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit. |
-| `display-format` | 479 | A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes. |
-| `display-interpolation` | 295 | A literal inside a template literal, f-string, or print — text assembly. Note this rule is narrow: a comparison inside an interpolation keeps its protection and stays counted. |
-| `slice-origin` | 56 | A 0 as the start argument of slice/substring/splice — 'from the beginning'. The LENGTH argument of the same call is not excluded: a hash prefix length is a real choice. |
+| `index-access` | 1897 | An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes. |
+| `loop-header` | 840 | An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy. |
+| `accumulator-init` | 484 | A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted. |
+| `counter-increment` | 439 | A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous. |
+| `unit-conversion` | 78 | A multiply or divide by a unit constant — ms per second, seconds per minute, the 8-bit channel maximum, bytes per KiB. An identity of the units, not a choice. |
+| `unit-clamp` | 162 | A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit. |
+| `display-format` | 536 | A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes. |
+| `display-interpolation` | 309 | A literal inside a template literal, f-string, or print — text assembly. Note this rule is narrow: a comparison inside an interpolation keeps its protection and stays counted. |
+| `slice-origin` | 59 | A 0 as the start argument of slice/substring/splice — 'from the beginning'. The LENGTH argument of the same call is not excluded: a hash prefix length is a real choice. |
 
 Whole files skipped: 2 — 2 type-declaration file (no runtime behaviour to tune). Full list under `body.skippedFiles`.
 
@@ -118,7 +118,7 @@ Files with at least one untagged tunable site, worst first.
 
 | file | tunable | documented | untagged |
 |---|---:|---:|---:|
-| `prototypes/p1-mdl/tests/verify-energy/recompute.ts` | 260 | 0 | 260 |
+| `prototypes/p1-mdl/tests/verify-energy/recompute.ts` | 261 | 0 | 261 |
 | `src/review-server/bracketing.ts` | 214 | 35 | 179 |
 | `oracle/premise/analyze_b_unmapped_class.py` | 184 | 12 | 172 |
 | `src/stats/stats.py` | 156 | 4 | 152 |
@@ -149,7 +149,7 @@ Files with at least one untagged tunable site, worst first.
 | `prototypes/p1-mdl/tests/emit/to-palette.test.ts` | 75 | 0 | 75 |
 | `prototypes/p1-mdl/tests/energy-a/invariance.test.ts` | 74 | 0 | 74 |
 
-Full list of all 8123 untagged sites with `file:line`: `data/honesty/honesty-report.json`, key `body.untagged`.
+Full list of all 8462 untagged sites with `file:line`: `data/honesty/honesty-report.json`, key `body.untagged`.
 
 ## What this instrument cannot see
 

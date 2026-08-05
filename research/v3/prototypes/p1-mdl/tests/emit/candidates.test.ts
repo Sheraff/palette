@@ -1,9 +1,15 @@
 /**
- * The two candidate scaffolds.
+ * The two candidate modules.
  *
- * Two things are worth asserting about a module that does not work yet: that importing it is free of
- * side effects, and that calling it fails in a way that names what is missing. A scaffold that threw
- * `TypeError: undefined is not a function` at run time would be worse than no scaffold at all.
+ * **Updated 2026-08-05, when M2 wired them.** These were scaffolds that threw `NotYetWiredError`, and
+ * the two tests asserting that behaviour are gone with the behaviour — replaced by the two claims
+ * that matter now: each candidate names its own energy version separately from its algorithm version,
+ * and importing one still loads no decoder.
+ *
+ * The import-closure guard is the one that has to keep working across the wiring, and it is the reason
+ * `paletteOf` reaches `src/search/` through a *dynamic* import: `src/search/index.ts` pulls in
+ * `src/measure/decode.ts`, which loads `sharp`, and a dev loop that merely enumerates candidates to
+ * list them must not initialise a native image decoder to do it.
  */
 
 import assert from "node:assert/strict"
@@ -13,7 +19,6 @@ import { test } from "node:test"
 import * as p1a from "../../candidates/p1a.ts"
 import * as p1ap from "../../candidates/p1ap.ts"
 import { PROTOTYPE_ROOT } from "../../src/emit/paths.ts"
-import { NotYetWiredError } from "../../src/emit/types.ts"
 
 test("both candidates export the CandidateModule surface the devloop loads", () => {
 	assert.equal(p1a.candidateId, "p1a")
@@ -30,25 +35,20 @@ test("the algorithm versions are the ones toPalette will stamp on every row", ()
 	assert.notEqual(p1a.ALGORITHM_VERSION, p1ap.ALGORITHM_VERSION)
 })
 
-test("calling either throws NotYetWiredError, naming the wave-3 wiring step and the image", async () => {
-	for (const candidate of [p1a, p1ap]) {
-		await assert.rejects(
-			() => candidate.paletteOf("/some/cover.jpg"),
-			(error: unknown) => {
-				assert.ok(error instanceof NotYetWiredError)
-				assert.equal((error as NotYetWiredError).name, "NotYetWiredError")
-				assert.match((error as Error).message, /wave 3/)
-				assert.match((error as Error).message, /\/some\/cover\.jpg/)
-				assert.match((error as Error).message, new RegExp(candidate.candidateId))
-				return true
-			},
-		)
-	}
+test("each candidate names its energy version separately from its algorithm version", () => {
+	// `DESIGN.md` decision 9 is why these are two strings: arm A's ink term has a known defect awaiting
+	// a fix that will move the energy without changing the candidate's identity, and a warehouse row
+	// that recorded only `p1a-0.1.0` could not tell a palette from before that fix from one after it.
+	assert.equal(p1a.ENERGY_VERSION, "p1a-energy-0.2.0")
+	assert.equal(p1ap.ENERGY_VERSION, "p1ap-energy-0.1.0")
+	assert.notEqual(p1a.ENERGY_VERSION, p1a.ALGORITHM_VERSION)
 })
 
-test("the wiring steps differ: arm A′'s L(P) is already done, arm A's Ω is not", () => {
-	assert.match(p1a.WIRING_STEP, /src\/energy\/a\.ts/)
-	assert.match(p1ap.WIRING_STEP, /serializationCost/)
+test("a candidate that cannot see its image rejects rather than inventing a palette", async () => {
+	// Whatever goes wrong, it goes wrong *loudly*: a failed dev-loop row naming the error is
+	// information, a repaired palette is not. The path below does not exist, so this exercises the
+	// decoder's own refusal through the whole wired stack.
+	await assert.rejects(() => p1a.paletteOf(join(PROTOTYPE_ROOT, "no-such-cover.jpg")))
 })
 
 /**

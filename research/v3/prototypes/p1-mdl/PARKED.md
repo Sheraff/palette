@@ -1,28 +1,33 @@
-# PARKED — reviewer-ordered pause, 2026-08-04
+# PARKED — reviewer-ordered pause #2, 2026-08-04
 
 ## Current state
-- Branch `proto/p1-mdl` at `a4b5de6`, all landed work committed and signed (G):
-  measurement layer, contract adapter, both energies (arm A nats / arm A′ bits), three
-  independent verifier suites (all arithmetic bit-exact), truncation fix, DESIGN decisions 1–9,
-  first-round reviewer evidence folded (DESIGN "Reviewer evidence" section).
-- Test state: full prototype suite green (measure 34, emit+verify-emit 42, energy-a 9,
-  energy-aprime 11).
-- Owed-commits ledger: empty. Vault was working at last commit.
+- Branch `proto/p1-mdl` at `a98273b` (+ this file uncommitted), everything landed is committed
+  signed G. Suite green (121+ tests). Honesty --check clean. Owed-commits ledger empty.
+- M1 CLOSED and recorded in DESIGN: no legacy-verdict signal for either prior at any λ, before
+  or after the DESIGN-9 fix (M1: data/falsifier/, M1b: data/falsifier-m1b/). Attribution: p1a
+  spread; p1ap culprit genericBits (coverage-vs-identity). Interpretation: weak evidence, no
+  paradigm verdict; sharpens M3.
+- M3 approved in principle by the reviewer (pairwise p1a-vs-p1ap where the arms differ,
+  coverage-vs-identity probe); staged only after M2 data.
 
-## Mid-flight (one worker, unattended)
-- **M1 falsifier worker** (scores 458 convertible legacy entries with both energies,
-  λ ∈ {¼,½,1,2,4}, paired 22-artwork comparisons via src/stats, degeneracy-stratified;
-  writes `data/falsifier/m1-results.json` + `m1-summary.json` + `src/falsifier/` + tests).
-  Per pause order: allowed to finish writing to disk; its output will NOT be read or acted on
-  until RESUME. Its completion notification, if it arrives during the pause, is noted and
-  ignored.
+## Mid-flight (one worker, unattended, allowed to finish writing)
+- **M2 emitter worker**: v0 joint search (both arms), candidates wiring, run-emitter CLI,
+  mechanism-guard tests, demo-20 run with diagnostics (self-falsifier underSearched, both-ink
+  min-APCA, F/A-swap delta, runner-ups, UNCERTIFIED-V0 certificate). Its output will NOT be
+  read or acted on until RESUME; completion notification during pause is noted and ignored.
 
 ## Exact next actions on RESUME, in order
-1. Read the falsifier worker's report + `data/falsifier/m1-summary.json`; commit its files
-   (signed, pathspec `src/falsifier tests/falsifier data/falsifier`).
-2. Read M1 against the pre-registered DESIGN reading (endorsed < known-bad paired wins, both
-   strata, λ-sweep vs the gradient-on-flat anchor). Report M1 data upward (§7 protocol).
-3. Dispatch the arm-A ink-support fix worker (DESIGN decision 9: broad ink must pay, in arm A's
-   vocabulary; also restate MIXTURE_WEIGHT_FLOOR honestly). Then re-run falsifier for arm A.
-4. Proceed to M2 emitter brief (requirements already in DESIGN: contract floors as written,
-   min-|APCA|-over-ramp report-only diagnostic, sibling-collapse machinery, both candidateIds).
+1. Read M2 worker report; run its tests; commit (pathspec: src/search, candidates, tests/search,
+   data/emitter). If worker died mid-run, check disk for partial artifacts before respawning
+   (recover, don't redo).
+2. Read the demo-20 run table (20/20 emitted? escape=0? underSearched count? arm agreement).
+   Spot-check 3 palettes visually via devloop viewer if warranted.
+3. Run auto-adjudication (both arms' candidates.jsonl) and robustness check.ts (--candidate
+   for each arm; budget note: ~10.8 s/palette heavy; use --limit if needed first pass). Record
+   W/NS/L + overfit ratio.
+4. Independent verification pass on the search (differential vs exhaustive on tiny images is in
+   the worker's tests; verifier confirms + probes determinism and feasibility on 3 real covers).
+5. Stage M3 per brief §6: pick 4–10 covers where arms differ materially (exact-hex or bar-level
+   disagreement), build round fixture + ROUND.md (question: which palette belongs to this
+   artwork; kind: pairwise; blinded; escape answer present), REVIEW-READY via SendMessage.
+6. Fold in: aprime version-constant hygiene (one-liner, next natural worker).
