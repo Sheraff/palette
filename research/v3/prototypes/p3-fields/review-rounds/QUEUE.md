@@ -14,8 +14,10 @@
    version-independently ("does this artwork read as shaded/graded or flat?" — an artwork
    question whose answer calibrates any version's ρ*). Staging protocol as round 1; Opus
    installer on main's side handles push + verification.
-3. **near-neutral polarity pairwise — DEFERRED by ruling, not declined.** Behind round-2; one
-   open question per reviewer visit. Re-propose after round 2 lands.
+3. **near-neutral polarity pairwise — APPROVED 2026-08-05 (after round-2 landed), staging as
+   round-4.** ~6 tie-band covers, two polarities as blinded sides, palettes from PINNED
+   5a4f845 code (dev-only polarity override lives in the pinned copy only — live src is under
+   0.4.0 edit). Decision rule pre-registered in its ROUND.md.
 
 Standing: rounds are 4–10 items; every forced choice carries an escape; blinded side-cars; the
 batch log is never read while a batch is open.
