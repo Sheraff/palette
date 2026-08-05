@@ -188,7 +188,13 @@ export type Solution = Readonly<{
 	accentCollapsed: boolean
 	/** Set only when the constrained problem over artwork triples was infeasible (proposal §2.4). */
 	escape?: Readonly<{ role: "background" | "foreground"; color: "#ffffff" | "#000000" }>
-	/** Total energy and per-term breakdown — the survivor-table / audit surface. */
+	/**
+	 * Total energy and per-term breakdown — the survivor-table / audit surface.
+	 * NOT naively summable: the map is hierarchical — `belonging.*` entries are components already
+	 * included in their `unary.*` parents (verifier measured naive sum 1.4126 vs total 2.8028 on a
+	 * real cover). Consumers reconstruct the total from top-level terms only; the verifier's check 5
+	 * re-derives it to 3e-17 and is the reference for which keys are top-level.
+	 */
 	energy: Readonly<{ total: number; terms: Readonly<Record<string, number>> }>
 	/** Barriers every tuple violated, when the escape fired. */
 	infeasibilityCertificate?: readonly string[]

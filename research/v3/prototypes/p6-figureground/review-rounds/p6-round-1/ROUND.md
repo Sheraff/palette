@@ -58,8 +58,10 @@ they live in `private-mapping.json`, which the post-release analyst reads and no
 ## Correction of record — first staging retired for a blinding defect
 
 The first staging of this round was installed and RETIRED before any review (record
-`bc-msf8yakf-716f40fb`, 0 answers): its item ids were `p6-round-1-NN-<hash>`, so every served
-item id and media URL carried the prototype identifier — a mechanism-blinding break, violating
+`bc-msf8yakf-716f40fb`, 0 answers): its item ids were `p6-round-1-NN-<hash>`, and the item id
+is served to the reviewer verbatim as the `questionKey` (media and itemRef use opaque tokens —
+the verifier corrected this attribution; the leak channel was `questionKey`, not the media URL) —
+a mechanism-blinding break, violating
 this prototype's own directive-10 standard ("no candidate identity anywhere the reviewer can
 see"). Two failures, both ours: the id scheme, and the blinding test that scanned for candidate
 ids and arm labels but not the round-name tokens the ids were built from. Both are fixed: item
@@ -71,12 +73,20 @@ ids name the prototype.
 
 ## Staging checks
 
+- item ids are content-derived and name nothing about this prototype (filename-stem).
+- `batchId` is the placeholder `cal-bd66a37d`, derived from the item ids — the installer assigns the real batch id at push.
 - every cover exists on disk and has a repo-relative path (6 covers).
 - every palette's metadata hash and source path match its run row, and every cover's bytes still hash to what the run saw.
 - `fixture.json` passes this tool's own mirror of the calibration push schema.
 - `fixture.json` passes `src/review-server/batch.ts:parseCalibrationBatch` verbatim (paths absolutised, as the pusher will).
 - `sidecar.data.json` carries render data only — no candidate id, code version, run id, or cover path.
 - neither payload names the de-blinding join, and the fixture carries the candidate id only as `fingerprint.algorithmVersion` (schema-required, never served).
+- no served string — item id, batch id, media URL, side-car key or fixture field — carries the round name or any of `p6`, `figureground`, `figure-ground`, `round`, except `fingerprint.algorithmVersion`, which the server never serves.
+
+*(Correction of record, second instance: the first hand-merge of this file dropped the three
+attestations above that the regenerated tool emitted — including the round-name scan, the exact
+defect class this restage exists to fix. Caught by the independent verifier (check 6b), restored
+here. The lesson stands: hand-merging tool output loses exactly the lines one is not looking at.)*
 
 ### Not checked, and why
 
@@ -85,6 +95,6 @@ ids name the prototype.
 
 ## Before submission
 
-1. Fill in `fundedBy` in `fixture.json` with the record ids of the evidence that motivated it.
+1. `fundedBy` stays `[]` by main-tier ruling (first install): the installer substitutes the neutral standard string; this prototype's committed reports are the recorded motivation.
 2. Fill in every TODO above.
 3. Hand the directory to the main orchestrator. **This prototype does not push.**
