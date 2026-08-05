@@ -1,32 +1,29 @@
 {
 	"_comment": [
-		"Staged pairwise batch — NOT installed. The main orchestrator pushes it.",
+		"Staged pairwise round — NOT installed. The main orchestrator pushes it.",
 		"imagePath entries are repo-root-relative; the push API requires absolute paths, so the",
-		"installer rewrites them (the same convention as fixtures/demo-batch.json). Resolve them",
-		"against the MAIN checkout root, never a worktree root: a worktree path would put a",
-		"directory slug into the stored artwork identity.",
-		"Every id here is neutral by construction: itemIds are the cover's image stem, variantIds",
-		"are salted opaque tokens, side order is sorted by them, and both sides carry one shared",
-		"algorithmVersion. The side mapping lives in KEY.json, which is never served."
+		"installer rewrites them (the same convention as fixtures/demo-batch.json).",
+		"Blinded: variantIds are salted opaque tokens, side order is sorted by them, and both sides",
+		"carry one shared algorithmVersion. The arm mapping is in KEY.json, which is never served."
 	],
 	"imagePathsRelativeTo": "repo-root",
-	"batchId": "b-20260805-4a2e",
+	"batchId": "priors-pairwise-20260805a",
 	"purpose": "arm",
 	"fundedBy": [
-		"Two candidate emitters over the demo-20 set: identical decode, identical preprocessing, differing only in the objective that priced the configuration.",
-		"An earlier comparison of the same two objectives on legacy verdicts returned no usable signal; this round asks the question of fresh palettes instead.",
-		"data/emitter/*-demo-20-2026-08-05.jsonl — the two runs these palettes are taken from, verbatim."
+		"DESIGN.md M1 OUTCOME (2026-08-04): no pre-registered energy signal for either prior on legacy verdicts; the prior comparison waits on fresh palettes under current priors",
+		"data/falsifier + data/falsifier-m1b — M1 attribution: spread for one prior, single genericBits culprit for the other (coverage vs identity)",
+		"data/emitter/*-demo-20-2026-08-05.jsonl — the two M2 v0 emitter runs over demo-20 this round compares"
 	],
 	"items": [
 		{
-			"itemId": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+			"itemId": "m3-item-01",
 			"imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
 			"artworkId": null,
 			"sides": [
 				{
-					"variantId": "v-971ba2543e99aecd",
+					"variantId": "v-819cb796d051c51b",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -53,9 +50,9 @@
 					}
 				},
 				{
-					"variantId": "v-9e548f3f803d7429",
+					"variantId": "v-ab479c0b1178ff60",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -73,14 +70,14 @@
 			]
 		},
 		{
-			"itemId": "ab67616d00001e020000269ead63cf2376a6b67d",
+			"itemId": "m3-item-02",
 			"imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
 			"artworkId": null,
 			"sides": [
 				{
-					"variantId": "v-b27d7191b9fc57f6",
+					"variantId": "v-7de2e4fa4d93a2ff",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -96,9 +93,9 @@
 					}
 				},
 				{
-					"variantId": "v-bb74f76a4cbbb5c8",
+					"variantId": "v-84db7805f1b21666",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -116,14 +113,14 @@
 			]
 		},
 		{
-			"itemId": "ab67616d00001e02000025b4e66a00806cb6dd7d",
+			"itemId": "m3-item-03",
 			"imagePath": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
 			"artworkId": null,
 			"sides": [
 				{
-					"variantId": "v-cf1879812d6d93b1",
+					"variantId": "v-7733ad607e0deabe",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -139,9 +136,9 @@
 					}
 				},
 				{
-					"variantId": "v-e021e52c50461fd6",
+					"variantId": "v-dbe6aa4b03c00b9b",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -159,14 +156,14 @@
 			]
 		},
 		{
-			"itemId": "ab67616d00001e02000022e7e9d11c908479200b",
+			"itemId": "m3-item-04",
 			"imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
 			"artworkId": null,
 			"sides": [
 				{
-					"variantId": "v-33d6a4010681ddde",
+					"variantId": "v-c3f373704c18fc76",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -182,9 +179,9 @@
 					}
 				},
 				{
-					"variantId": "v-894456ddc0301632",
+					"variantId": "v-eb6600caf9891ed6",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -202,14 +199,32 @@
 			]
 		},
 		{
-			"itemId": "ab67616d00001e02000018e9b0ec8fc5ac790164",
+			"itemId": "m3-item-05",
 			"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
 			"artworkId": null,
 			"sides": [
 				{
-					"variantId": "v-d17e06eb822ec673",
+					"variantId": "v-0119ccaf5b680f5e",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#d9e2e1",
+						"surface": "#d9e2e1",
+						"foreground": "#feffff",
+						"accent": "#feffff",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				},
+				{
+					"variantId": "v-ce0d4049be35fb1a",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -234,36 +249,36 @@
 						"surfaceCollapsed": false,
 						"accentCollapsed": true
 					}
-				},
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-06",
+			"imagePath": "00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"artworkId": null,
+			"sides": [
 				{
-					"variantId": "v-f95a2469784c88b3",
+					"variantId": "v-4f5b66a4e4edad6b",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
 					},
 					"palette": {
-						"background": "#d9e2e1",
-						"surface": "#d9e2e1",
-						"foreground": "#feffff",
-						"accent": "#feffff",
+						"background": "#1016f0",
+						"surface": "#1016f0",
+						"foreground": "#fafafa",
+						"accent": "#fafafa",
 						"gradient": null,
 						"surfaceCollapsed": true,
 						"accentCollapsed": true
 					}
-				}
-			]
-		},
-		{
-			"itemId": "ab67616d00001e0200000bbc3367a621256ce593",
-			"imagePath": "00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
-			"artworkId": null,
-			"sides": [
+				},
 				{
-					"variantId": "v-533bba38a7317c48",
+					"variantId": "v-902b097c76dec2a6",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -288,54 +303,18 @@
 						"surfaceCollapsed": false,
 						"accentCollapsed": false
 					}
-				},
-				{
-					"variantId": "v-8473c5c5f7f3ceca",
-					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
-						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-						"gitCommit": "b257412",
-						"dirty": false
-					},
-					"palette": {
-						"background": "#1016f0",
-						"surface": "#1016f0",
-						"foreground": "#fafafa",
-						"accent": "#fafafa",
-						"gradient": null,
-						"surfaceCollapsed": true,
-						"accentCollapsed": true
-					}
 				}
 			]
 		},
 		{
-			"itemId": "ab67616d00001e020000099e97d17d28279e9184",
+			"itemId": "m3-item-07",
 			"imagePath": "00/ab67616d00001e020000099e97d17d28279e9184.jpg",
 			"artworkId": null,
 			"sides": [
 				{
-					"variantId": "v-74d663ac7f58ec32",
+					"variantId": "v-67c43dffb7f05ff3",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
-						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
-						"gitCommit": "b257412",
-						"dirty": false
-					},
-					"palette": {
-						"background": "#021b2f",
-						"surface": "#13120e",
-						"foreground": "#004163",
-						"accent": "#004163",
-						"gradient": null,
-						"surfaceCollapsed": false,
-						"accentCollapsed": true
-					}
-				},
-				{
-					"variantId": "v-aaed9a287cff72d9",
-					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -349,36 +328,36 @@
 						"surfaceCollapsed": true,
 						"accentCollapsed": true
 					}
-				}
-			]
-		},
-		{
-			"itemId": "ab67616d00001e0200001456cbd4881a798808bf",
-			"imagePath": "00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
-			"artworkId": null,
-			"sides": [
+				},
 				{
-					"variantId": "v-25157ffa5919644a",
+					"variantId": "v-c831e8edbe268cb6",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
 					},
 					"palette": {
-						"background": "#d4e9ee",
-						"surface": "#d4e9ee",
-						"foreground": "#171c20",
-						"accent": "#171c20",
+						"background": "#021b2f",
+						"surface": "#13120e",
+						"foreground": "#004163",
+						"accent": "#004163",
 						"gradient": null,
-						"surfaceCollapsed": true,
+						"surfaceCollapsed": false,
 						"accentCollapsed": true
 					}
-				},
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-08",
+			"imagePath": "00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"artworkId": null,
+			"sides": [
 				{
-					"variantId": "v-8fc82888d1b387ef",
+					"variantId": "v-3f8c5e6d119be1fc",
 					"fingerprint": {
-						"algorithmVersion": "v3-emitter-v0-0.1.0",
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
 						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
 						"gitCommit": "b257412",
 						"dirty": false
@@ -391,6 +370,24 @@
 						"gradient": null,
 						"surfaceCollapsed": true,
 						"accentCollapsed": false
+					}
+				},
+				{
+					"variantId": "v-eb981d69adb9c4f5",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#d4e9ee",
+						"surface": "#d4e9ee",
+						"foreground": "#171c20",
+						"accent": "#171c20",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
 					}
 				}
 			]

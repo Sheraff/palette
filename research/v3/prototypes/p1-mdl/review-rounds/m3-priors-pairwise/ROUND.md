@@ -7,10 +7,39 @@
 |---|---|
 | round kind | **pairwise** (already implemented: two blinded sides on the real mock) |
 | items | **8** |
-| batchId as staged | `priors-pairwise-20260805a` (rename freely; nothing downstream of mine depends on it) |
+| batchId as staged | `b-20260805-4a2e` (opaque date-serial; rename freely, nothing downstream of mine depends on it) |
 | purpose | `arm` |
 | fixture | `batch.json` — repo-relative `imagePath`s, `imagePathsRelativeTo: "repo-root"`; the installer rewrites them to absolute, the same convention as `src/review-server/fixtures/demo-batch.json` |
-| never install, never serve | `KEY.json` — the blinding salt and the variantId → source mapping |
+| never install, never serve | `KEY.json` — the blinding salt, the variantId → source mapping, and the id continuity map |
+| kept only as a negative test | `batch.retired.json` — the retired first staging; it must **fail** the id-surface scan |
+
+### Restaged after a blinding defect
+
+The first staging (`priors-pairwise-20260805a`) was **retired at install, before any item was
+reviewed** — record `bc-msfp99so-4a5548d2`. Its itemIds were `m3-item-01`…`m3-item-08`, which put
+the round ordinal on the served surface: an itemId appears in the review URL (`?item=`), in
+`/media/:batchId/:itemId`, and in anything quoted back from a report. Second prototype to ship this
+class, so it is now a campaign standard — no round, milestone, arm or prototype token anywhere a
+reviewer can reach.
+
+Three strings were carrying one, not just the itemIds, and the sweep found the other two:
+
+| where | was | now |
+|---|---|---|
+| `itemId` | `m3-item-01` … | the cover's 40-hex image stem (campaign convention, cross-round joinable) |
+| `batchId` | `priors-pairwise-20260805a` | `b-20260805-4a2e` |
+| `fingerprint.algorithmVersion` | `p1-mdl-v0-emitter-0.1.0` — the prototype slug | `v3-emitter-v0-0.1.0` |
+| `fundedBy` (**served**, via `/api/queue` and `/api/dashboard`) | cited `M1`, `falsifier`, "prior" | the same provenance in neutral words |
+
+No verdict is scoped to the retired batch, so nothing needed rescoping. `KEY.json` carries
+`retiredBatchId`, `retirementRecordId` and a per-item `retiredItemId`, so the retirement record
+stays joinable to this staging.
+
+**One thing the installer must get right:** resolve the repo-relative `imagePath`s against the
+**main checkout root**, not a worktree root. `readArtworkIdentity` stores the absolute path it was
+pushed with, and a worktree path would put a prototype directory slug into the stored artwork
+identity — the same defect through a different door. Every cover here exists at
+`<main-checkout>/00/<stem>.jpg`; verified.
 
 ## The question this round answers
 
@@ -34,25 +63,27 @@ Neutral one-line notes of what the two sides disagree about, read off the emitte
 shuffles the two sides per item under its own salt, so "one side / the other" below is not the
 order the reviewer will see, and nothing here names a prior.
 
-| item | artwork | what differs |
-|---|---|---|
-| `m3-item-01` | `00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg` | Field polarity inverts: a flat near-white field carrying vivid red ink, against a deep-red→pale two-stop ramp carrying pale ink. All four roles differ. |
-| `m3-item-02` | `00/ab67616d00001e020000269ead63cf2376a6b67d.jpg` | Background flips near-white ↔ black; one side's ink pair is a saturated yellow, the other's is a mid-grey foreground with a near-white accent — the yellow appears in no role. |
-| `m3-item-03` | `00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg` | **Minimal-diff control.** Background, surface and foreground are byte-identical; only the accent differs — pure black (collapsed onto the foreground) against near-white (a separate fourth colour). |
-| `m3-item-04` | `00/ab67616d00001e02000022e7e9d11c908479200b.jpg` | Same accent on both sides (near-black). One side is a flat muted-rose field with a near-black foreground; the other is a yellow background over a mauve surface with a light-orange foreground. |
-| `m3-item-05` | `00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg` | Same pale background. One side keeps it flat with near-white ink (both inks collapsed); the other ramps pale→saturated green and puts vivid red in both ink roles. |
-| `m3-item-06` | `00/ab67616d00001e0200000bbc3367a621256ce593.jpg` | Same surface blue on both sides. One publishes it flat with near-white ink; the other publishes a two-stop ramp between two blues of the same hue family, with a dark-grey foreground and a near-white accent. |
-| `m3-item-07` | `00/ab67616d00001e020000099e97d17d28279e9184.jpg` | A flat light-grey field with near-white ink, against a near-black navy background over a near-black surface with a mid-blue ink pair. |
-| `m3-item-08` | `00/ab67616d00001e0200001456cbd4881a798808bf.jpg` | Light/dark inversion: the same two colours change places. Pale blue field + near-black ink, against near-black field + pale ink (and a second, lighter accent). |
+Serve order is the table's order. itemId = the cover's image stem, so the first column is also the
+filename under `00/`.
 
-**Why `m3-item-06` is the gradient item.** Three covers in this run have one side publishing a
-two-stop ramp where the other publishes a flat field. Two of them — `m3-item-01` and `m3-item-05`
+| # | itemId / artwork stem | what differs |
+|---|---|---|
+| 1 | `00007e976f2fb1819d1ec7e0cc2869f39d397ba3` | Field polarity inverts: a flat near-white field carrying vivid red ink, against a deep-red→pale two-stop ramp carrying pale ink. All four roles differ. |
+| 2 | `ab67616d00001e020000269ead63cf2376a6b67d` | Background flips near-white ↔ black; one side's ink pair is a saturated yellow, the other's is a mid-grey foreground with a near-white accent — the yellow appears in no role. |
+| 3 | `ab67616d00001e02000025b4e66a00806cb6dd7d` | **Minimal-diff control.** Background, surface and foreground are byte-identical; only the accent differs — pure black (collapsed onto the foreground) against near-white (a separate fourth colour). |
+| 4 | `ab67616d00001e02000022e7e9d11c908479200b` | Same accent on both sides (near-black). One side is a flat muted-rose field with a near-black foreground; the other is a yellow background over a mauve surface with a light-orange foreground. |
+| 5 | `ab67616d00001e02000018e9b0ec8fc5ac790164` | Same pale background. One side keeps it flat with near-white ink (both inks collapsed); the other ramps pale→saturated green and puts vivid red in both ink roles. |
+| 6 | `ab67616d00001e0200000bbc3367a621256ce593` | Same surface blue on both sides. One publishes it flat with near-white ink; the other publishes a two-stop ramp between two blues of the same hue family, with a dark-grey foreground and a near-white accent. |
+| 7 | `ab67616d00001e020000099e97d17d28279e9184` | A flat light-grey field with near-white ink, against a near-black navy background over a near-black surface with a mid-blue ink pair. |
+| 8 | `ab67616d00001e0200001456cbd4881a798808bf` | Light/dark inversion: the same two colours change places. Pale blue field + near-black ink, against near-black field + pale ink (and a second, lighter accent). |
+
+**Why item 6 (`…0bbc3367a621256ce593`) is the gradient item.** Three covers in this run have one
+side publishing a two-stop ramp where the other publishes a flat field. Two of them — items 1 and 5
 — are already in this round for other reasons, and on both of them every role changes at the same
-time, so a preference there cannot be attributed to the ramp. `m3-item-06` is the clean one: the
-surface is the *identical* blue on both sides and the ramp runs between two blues of one hue
-family, so the field is as close to "same colours, ramp or not" as this run offers. The inks still
-differ (near-white pair against dark-grey + near-white), and that is stated rather than claimed
-away.
+time, so a preference there cannot be attributed to the ramp. Item 6 is the clean one: the surface
+is the *identical* blue on both sides and the ramp runs between two blues of one hue family, so the
+field is as close to "same colours, ramp or not" as this run offers. The inks still differ
+(near-white pair against dark-grey + near-white), and that is stated rather than claimed away.
 
 ## Pre-registered outcome reading
 
@@ -88,7 +119,7 @@ Two special reads, both pre-registered in `DESIGN.md` § *Reviewer evidence …*
   is the honest status if it lands), never answered with an APCA reward term. Read it against
   **fold item 10**: identity can outrank legibility, so a low min-|APCA| diagnostic is not itself
   the finding — the reviewer's words are.
-- **`m3-item-06` prices gradient-on-flat**, which is **fold item 4**: a gradient on a flat artwork
+- **Item 6 prices gradient-on-flat**, which is **fold item 4**: a gradient on a flat artwork
   is a graded-down error, and that class is λ's calibration anchor from above. If the ramp side is
   graded down here, λ is too low and the M1 sweep gets re-read with this item in hand. Per **fold
   item 7**, this is read as a *direction* only — one item's grade arithmetic calibrates nothing.
@@ -108,6 +139,13 @@ the two runs before it was carried through. Sides are emitted sorted by `variant
 position carries no signal either. `validate.mjs` asserts all of this, plus that the two sides of
 an item are separable by nothing but the palette.
 
+On top of that, the **id surface**: `validate.mjs` walks every string in the fixture — ids, paths,
+fingerprints, `fundedBy` — against the forbidden token classes (milestone tokens, `falsifier`,
+"prior" as a side label, item ordinals, arm names, prototype slugs). The one exclusion is
+`purpose`, which is the server's own six-value enum and identifies nothing. The scan is checked
+against `batch.retired.json`, which must trip it — a blinding check that cannot fail is not a
+check.
+
 ## Reproducing and checking
 
 ```
@@ -120,5 +158,8 @@ The build is deterministic (it reuses `KEY.json`'s salt; two runs give a byte-id
 `batch.json`). `validate.mjs` runs the endpoint's own `parseBatch` from
 `research/v3/src/review-server/batch.ts` — the same function `POST /api/batches` calls — over the
 fixture with absolute paths, then checks every image resolves and hashes to the
-`inputContentHash` both emitter runs recorded, that every fingerprint is complete, and the blinding
-properties above. Last run: **8 items, 16 sides, all passed, exit 0.**
+`inputContentHash` both emitter runs recorded, that every fingerprint is complete, the blinding
+properties above, and the id surface with its negative test.
+
+Last run: **8 items, 16 sides, all passed, exit 0**; 163 strings scanned in `batch.json` with 0
+hits, and the retired fixture tripping 55 — the negative test holds.

@@ -43,15 +43,31 @@ const SOURCES = [
 /** The commit the palettes are attributed to, per the round's spawn brief. */
 const GIT_COMMIT = "b257412"
 const DIRTY = false
-/** One shared algorithmVersion: the real ones name their arm. True values are in KEY.json. */
-const BLINDED_ALGORITHM_VERSION = "p1-mdl-v0-emitter-0.1.0"
+/**
+ * One shared algorithmVersion, and a neutral one.
+ *
+ * The two real strings name their arm; they live in KEY.json. The blinded stand-in used to be
+ * `p1-mdl-v0-emitter-0.1.0`, which carried the prototype slug — same defect class as the itemIds,
+ * caught in the same sweep. Nothing in the served surface may carry a round, milestone, arm or
+ * prototype token.
+ */
+const BLINDED_ALGORITHM_VERSION = "v3-emitter-v0-0.1.0"
 
-const BATCH_ID = "priors-pairwise-20260805a"
+/**
+ * Opaque date-serial. The previous id (`priors-pairwise-20260805a`) named the comparison and is
+ * retired; see KEY.json for the retirement record and the id continuity map.
+ */
+const BATCH_ID = "b-20260805-4a2e"
 const PURPOSE = "arm"
+/**
+ * `fundedBy` IS served (`/api/queue`, `/api/dashboard`, the payload endpoints — server.ts), so it
+ * is written to the same standard as an itemId: no milestone words, no arm labels, no prototype
+ * paths. The full, unblinded provenance is in ROUND.md and KEY.json.
+ */
 const FUNDED_BY = [
-	"DESIGN.md M1 OUTCOME (2026-08-04): no pre-registered energy signal for either prior on legacy verdicts; the prior comparison waits on fresh palettes under current priors",
-	"data/falsifier + data/falsifier-m1b — M1 attribution: spread for one prior, single genericBits culprit for the other (coverage vs identity)",
-	"data/emitter/*-demo-20-2026-08-05.jsonl — the two M2 v0 emitter runs over demo-20 this round compares",
+	"Two candidate emitters over the demo-20 set: identical decode, identical preprocessing, differing only in the objective that priced the configuration.",
+	"An earlier comparison of the same two objectives on legacy verdicts returned no usable signal; this round asks the question of fresh palettes instead.",
+	"data/emitter/*-demo-20-2026-08-05.jsonl — the two runs these palettes are taken from, verbatim.",
 ]
 
 /** The eight covers, in serve order. Selected by the prototype orchestrator. */
@@ -126,8 +142,18 @@ const items = []
 const keyItems = []
 const failures = []
 
+/**
+ * itemIds are the cover's 40-hex image stem — the campaign convention, and cross-round joinable.
+ *
+ * They used to be `m3-item-NN`, which put the round ordinal on the served surface: the itemId is in
+ * the review URL (`?item=`), in the media URL (`/media/:batchId/:itemId`), and in anything quoted
+ * back from a report. That batch was retired before any review (`bc-msfp99so-4a5548d2`).
+ */
+const itemIdOf = (filename) => filename.replace(/\.jpg$/u, "")
+
 SELECTION.forEach((filename, index) => {
-	const itemId = `m3-item-${String(index + 1).padStart(2, "0")}`
+	const itemId = itemIdOf(filename)
+	const retiredItemId = `m3-item-${String(index + 1).padStart(2, "0")}`
 	const sides = []
 	for (const run of runs) {
 		const row = run.rows.get(filename)
@@ -198,6 +224,7 @@ SELECTION.forEach((filename, index) => {
 	})
 	keyItems.push({
 		itemId,
+		retiredItemId,
 		imagePath: `00/${filename}`,
 		inputContentHash: sides[0].key.inputContentHash,
 		sides: sides.map((entry) => entry.key),
@@ -212,11 +239,14 @@ if (failures.length > 0) {
 
 const batch = {
 	_comment: [
-		"Staged pairwise round — NOT installed. The main orchestrator pushes it.",
+		"Staged pairwise batch — NOT installed. The main orchestrator pushes it.",
 		"imagePath entries are repo-root-relative; the push API requires absolute paths, so the",
-		"installer rewrites them (the same convention as fixtures/demo-batch.json).",
-		"Blinded: variantIds are salted opaque tokens, side order is sorted by them, and both sides",
-		"carry one shared algorithmVersion. The arm mapping is in KEY.json, which is never served.",
+		"installer rewrites them (the same convention as fixtures/demo-batch.json). Resolve them",
+		"against the MAIN checkout root, never a worktree root: a worktree path would put a",
+		"directory slug into the stored artwork identity.",
+		"Every id here is neutral by construction: itemIds are the cover's image stem, variantIds",
+		"are salted opaque tokens, side order is sorted by them, and both sides carry one shared",
+		"algorithmVersion. The side mapping lives in KEY.json, which is never served.",
 	],
 	imagePathsRelativeTo: "repo-root",
 	batchId: BATCH_ID,
@@ -233,6 +263,14 @@ const key = {
 		"serialization prior (candidate p1ap).",
 	],
 	batchId: BATCH_ID,
+	/**
+	 * Continuity with the retired batch. It was retired at install for a blinding defect — its
+	 * itemIds carried the round ordinal — before any item was reviewed, so no verdict is scoped to
+	 * it. `retiredItemId` per item below keeps the retirement record joinable to this restaging.
+	 */
+	retiredBatchId: "priors-pairwise-20260805a",
+	retirementRecordId: "bc-msfp99so-4a5548d2",
+	retiredFixture: "batch.retired.json (kept as validate.mjs's negative test — it must FAIL the id-surface scan)",
 	blindingSalt: salt,
 	blindedAlgorithmVersion: BLINDED_ALGORITHM_VERSION,
 	variantIdDerivation: 'sha256(`${blindingSalt}|${itemId}|${sourceTag}`) truncated to 16 hex, prefixed "v-"',

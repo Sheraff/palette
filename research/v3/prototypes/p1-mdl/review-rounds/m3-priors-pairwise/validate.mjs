@@ -11,6 +11,10 @@
  *   4. blinding: no arm name, candidate id, salt or true algorithmVersion anywhere in batch.json;
  *      variantIds opaque and pairwise distinct; the two sides of an item never separable by any
  *      field other than the palette itself.
+ *   5. the id surface: EVERY string in the fixture is scanned for round / milestone / arm /
+ *      prototype tokens. Campaign standard after two prototypes shipped the same defect — an
+ *      itemId is in the review URL, in `/media/:batchId/:itemId`, and in anything quoted back.
+ *      Run against `batch.retired.json` as a negative test, so the scan cannot pass vacuously.
  *
  * Run:  node <this file>          exit 0 = all passed, 1 = at least one failure, named.
  */
@@ -117,6 +121,74 @@ for (const item of key.items) {
 	}
 }
 check("KEY_ITEM_COUNT", key.items.length === batch.items.length)
+for (const item of batch.items) {
+	// itemIds are the cover's 40-hex image stem: neutral, and cross-round joinable.
+	check("ITEM_ID_NOT_IMAGE_STEM", item.itemId === item.imagePath.replace(/^00\//u, "").replace(/\.jpg$/u, ""), item.itemId)
+	check("ITEM_ID_NOT_HEX40", /^[0-9a-f]{40}$/u.test(item.itemId), item.itemId)
+}
+// Continuity with the retired batch, so its retirement record stays joinable.
+check("KEY_MISSING_RETIREMENT", typeof key.retirementRecordId === "string" && key.retirementRecordId.length > 0)
+check(
+	"KEY_MISSING_ID_CONTINUITY",
+	key.items.every((item) => typeof item.retiredItemId === "string" && item.retiredItemId.length > 0),
+)
+
+// ---- 5. the id surface ------------------------------------------------------------------------
+/**
+ * Forbidden token classes on any served string. `purpose` is the ONE exclusion: it is the server's
+ * own six-value enum (`BATCH_PURPOSES`), shared by every prototype, and it identifies nothing here.
+ */
+const FORBIDDEN = [
+	[/\bm[0-9]\b/iu, "milestone token (m1..m9)"],
+	[/\bmilestones?\b/iu, "milestone word"],
+	[/\bfalsifier\b/iu, "milestone word"],
+	[/\bpriors?\b/iu, "'prior' as a side label"],
+	[/item-?\d/iu, "item ordinal"],
+	[/\bp1ap?\b/iu, "arm name"],
+	[/a-?prime/iu, "arm name"],
+	[/p[1-6]-[a-z]+/iu, "prototype slug"],
+	[/\bp[1-6]\b/iu, "prototype token"],
+]
+
+/** Every string the fixture carries, with the JSON path it sits at. `purpose` excluded, see above. */
+function servedStrings(value, path = "$", out = []) {
+	if (typeof value === "string") out.push([path, value])
+	else if (Array.isArray(value)) value.forEach((entry, index) => servedStrings(entry, `${path}[${index}]`, out))
+	else if (value && typeof value === "object") {
+		for (const [name, entry] of Object.entries(value)) {
+			if (path === "$" && name === "purpose") continue
+			servedStrings(entry, `${path}.${name}`, out)
+		}
+	}
+	return out
+}
+
+function scanIdSurface(fixture, label) {
+	const hits = []
+	for (const [path, text] of servedStrings(fixture)) {
+		for (const [pattern, why] of FORBIDDEN) {
+			const match = text.match(pattern)
+			if (match) hits.push(`${label} ${path}: ${JSON.stringify(match[0])} — ${why}`)
+		}
+	}
+	return hits
+}
+
+const liveHits = scanIdSurface(batch, "batch.json")
+for (const hit of liveHits) check("ID_SURFACE_LEAK", false, hit)
+console.log(`ID_SURFACE scanned ${servedStrings(batch).length} strings in batch.json — ${liveHits.length} hit(s)`)
+
+// The negative test: the retired fixture MUST trip the same scan, or the scan proves nothing.
+const retiredPath = resolve(HERE, "batch.retired.json")
+try {
+	const retired = JSON.parse(readFileSync(retiredPath, "utf8"))
+	const retiredHits = scanIdSurface(retired, "batch.retired.json")
+	check("ID_SURFACE_SCAN_VACUOUS", retiredHits.length > 0, "the retired fixture passed a scan it must fail")
+	console.log(`ID_SURFACE negative test — retired fixture trips ${retiredHits.length} hit(s), e.g.:`)
+	for (const hit of retiredHits.slice(0, 4)) console.log(`    ${hit}`)
+} catch (error) {
+	check("ID_SURFACE_NEGATIVE_TEST_MISSING", false, `${retiredPath}: ${error.message}`)
+}
 
 // ---- report ----------------------------------------------------------------------------------
 if (failures.length === 0) {
