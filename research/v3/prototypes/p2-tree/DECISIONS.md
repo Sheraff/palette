@@ -60,6 +60,23 @@ orders part. Until that verdict, contrast-first accent ranking is not to be re-i
   published-gradient→flat direction); the missed-gradient direction needs items in a later
   round drawn from covers where tos says flat/partitioned and legacy says ramp.
 
+## D5 — cross-arm pairwise-round evidence, folded (2026-08-05; no action ordered)
+
+- **Stop count drove preference:** every 4-stop ramp graded unacceptable ("banding" named);
+  every preference-winning gradient was 2-stop. P2's 2-stop-only publication is validated as
+  the default; a 3rd stop now needs strong cause (excursion evidence per the guide-stop
+  semantics) AND the D4 minimum-spacing check; a 4th is effectively off the table.
+- **Meander named by the reviewer** ("no blue-to-red-to-blue"): monotone progression matters
+  perceptually, not just contractually. tos's laminar chain is monotone by construction —
+  keep it that way; any interior stop must preserve monotone colour order along the ramp.
+- **Identity-coverage extends to foreground-adjacent territory** (a missing title-text
+  yellow): the text detector's colour recall is graded, not just its geometry — a second
+  reason the per-lane graft (D2) and its isoluminant regression matter on fresh covers.
+- **New shape: accent should sit in a different colour FAMILY than background/surface.**
+  P2 translation: chroma-from-field already pushes this direction; treat "different family"
+  as reviewer vocabulary for hue separation, not a new metric — if round evidence recurs,
+  it prices a hue-separation preference level in the accent order (ordering, not a constant).
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
