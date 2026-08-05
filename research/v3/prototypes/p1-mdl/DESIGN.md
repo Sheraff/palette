@@ -166,6 +166,13 @@ Cross-arm round addendum (relayed 2026-08-05, round staged and awaiting install)
     energy still refuses the repairing stop, that is a resolution defect in the joints, not a
     pricing win. (C7: 42% of legacy midpoints sit outside the endpoints' lightness span; the
     campaign's excursion instrument is unbuilt — our own measurement is the only check.)
+    PROBE RESULT (2026-08-05, data/excursion/): ON-ARTWORK CLEAN, all three ramps — no sample
+    exceeds 83% of its bar; the favourable reading stands. Control finding for v1: on one ramp
+    a −212.6-bit repairing stop existed but was search-unreachable (coarse ramp-3 grammar),
+    and at λ=1 a 32-bit stop is negligible against a ~10⁶-bit likelihood — a fully-reaching
+    search would buy interior stops freely. V1 RE-EMISSION READING RULE: check A′ stop counts
+    and spacings before staging; many-stop ramps at tiny per-stop cost are the banding failure
+    the reviewer already named (items 12–13).
 15. **The reviewer grades margins; optimizers sit on floors** (another arm's 6/6 low round:
     pairs clearing sameColorBar by 1e-4–3e-3 read as indistinguishable). This mechanism's
     structural answer: distinctness is never rewarded, so nothing attracts colours to the

@@ -1,0 +1,4213 @@
+{
+	"what": "Excursion probe on arm A′'s three emitted 2-stop ramps (DESIGN.md item 13, corrected reading)",
+	"asOf": "2026-08-05",
+	"source": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05.jsonl",
+	"method": {
+		"interpolator": "src/contract/ramp.ts:rampColorAt (componentwise-linear OKLab, 8-bit quantised via okLabToRgb) — the contract's own rendered-ramp function",
+		"sampleCount": 64,
+		"offArtworkRule": "min over exact triples of d_OKLab(sample, triple) / pairBar(sample, triple) > 1; pairBar is src/measure/kernel.ts:pairBandwidth, the frozen regional same-colour bar",
+		"density": "smoothed mass of src/measure/smoothed-mass.ts evaluated at the sample point (same kernel, same truncation, same pair bandwidth)",
+		"repair": "top-50 triples by smoothed mass within 2 pair bars of the sampled path, each tried as a single interior stop at the largest off-artwork span's midpoint on the 1/256 grid",
+		"lambda": 1,
+		"energy": "src/energy/aprime/index.ts:energyOfAPrime"
+	},
+	"ramps": [
+		{
+			"index": 0,
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"image": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"stops": [
+				{
+					"hex": "#a4140c",
+					"position": 0
+				},
+				{
+					"hex": "#e0e4e5",
+					"position": 1
+				}
+			],
+			"pixelCount": 90000,
+			"colorCount": 24615,
+			"smoothedMassMode": "lattice",
+			"emitted": {
+				"energyTotal": 1211004.4331130704,
+				"serializationBits": 77,
+				"rampGeometry": "radial",
+				"rampOrientation": "reverse",
+				"feasible": true
+			},
+			"summary": {
+				"maxNearestDistance": 0.00991133215877424,
+				"meanNearestDistance": 0.004657448858632773,
+				"maxBarRatio": 0.5984546165337478,
+				"offArtworkSamples": 0,
+				"sampleCount": 64,
+				"minSmoothedMassFraction": 0.001006901754726309
+			},
+			"largestOffArtworkSpan": null,
+			"repair": {
+				"mode": "control",
+				"atSampleT": 0.15873015873015872,
+				"position": 0.16015625,
+				"targetHex": "#b24236",
+				"candidatesConsidered": 50,
+				"feasibleCount": 50,
+				"bestByEnergy": {
+					"hex": "#b82f25",
+					"smoothedMassFraction": 0.025527739128751108,
+					"feasible": true,
+					"violations": [],
+					"energyTotal": 1211068.9708152956,
+					"delta": 64.53770222514868,
+					"offArtworkAfter": 0,
+					"maxDistanceAfter": 0.008127402370036067
+				},
+				"bestByExcursion": {
+					"hex": "#b82f25",
+					"smoothedMassFraction": 0.025527739128751108,
+					"feasible": true,
+					"violations": [],
+					"energyTotal": 1211068.9708152956,
+					"delta": 64.53770222514868,
+					"offArtworkAfter": 0,
+					"maxDistanceAfter": 0.008127402370036067
+				},
+				"interiorStopBits": 32,
+				"tried": [
+					{
+						"hex": "#c8331f",
+						"smoothedMassFraction": 0.029251892301303952,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211105.6218061212,
+						"delta": 101.18869305076078,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00773444536353512
+					},
+					{
+						"hex": "#c8331d",
+						"smoothedMassFraction": 0.029076969092744185,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211106.4539590692,
+						"delta": 102.02084599877708,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008107260979012463
+					},
+					{
+						"hex": "#c83426",
+						"smoothedMassFraction": 0.02839960390666565,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211100.046227214,
+						"delta": 95.61311414348893,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009788154867826566
+					},
+					{
+						"hex": "#c83428",
+						"smoothedMassFraction": 0.02807175143911738,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.779302745,
+						"delta": 93.34618967445567,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00938910390951328
+					},
+					{
+						"hex": "#c83521",
+						"smoothedMassFraction": 0.02790156636691742,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211103.3357264975,
+						"delta": 98.90261342702433,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007808624847602473
+					},
+					{
+						"hex": "#c73526",
+						"smoothedMassFraction": 0.027874454572122724,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.4926142846,
+						"delta": 93.05950121418573,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009373536862984172
+					},
+					{
+						"hex": "#c73623",
+						"smoothedMassFraction": 0.0272999924987746,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211099.3232779596,
+						"delta": 94.8901648891624,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008915284485332423
+					},
+					{
+						"hex": "#c93624",
+						"smoothedMassFraction": 0.027238156705324097,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211103.76940275,
+						"delta": 99.33628967963159,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008647359433139636
+					},
+					{
+						"hex": "#c8352b",
+						"smoothedMassFraction": 0.026754405191848542,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211094.9626078787,
+						"delta": 90.52949480828829,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009539868282261695
+					},
+					{
+						"hex": "#b83020",
+						"smoothedMassFraction": 0.026611051122018864,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211077.1434105746,
+						"delta": 72.71029750420712,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008349018789497176
+					},
+					{
+						"hex": "#c63726",
+						"smoothedMassFraction": 0.02657818477517245,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211094.5323458295,
+						"delta": 90.09923275909387,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009377808040599542
+					},
+					{
+						"hex": "#c63727",
+						"smoothedMassFraction": 0.02648230961165523,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211093.9464497082,
+						"delta": 89.51333663775586,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008925525359142011
+					},
+					{
+						"hex": "#c6362b",
+						"smoothedMassFraction": 0.026400835411404953,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211089.4197405085,
+						"delta": 84.98662743810564,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01023682652753158
+					},
+					{
+						"hex": "#c93720",
+						"smoothedMassFraction": 0.026388335632420663,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211104.6225595602,
+						"delta": 100.18944648979232,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007985359001267041
+					},
+					{
+						"hex": "#c7371f",
+						"smoothedMassFraction": 0.026255422272673114,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211100.402014328,
+						"delta": 95.96890125749633,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007832034391663719
+					},
+					{
+						"hex": "#c63729",
+						"smoothedMassFraction": 0.02618416890026855,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211092.0479648614,
+						"delta": 87.61485179094598,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008622759595276096
+					},
+					{
+						"hex": "#b63024",
+						"smoothedMassFraction": 0.026182668381406964,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211070.8326445832,
+						"delta": 66.39953151275404,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009022111067973975
+					},
+					{
+						"hex": "#b83022",
+						"smoothedMassFraction": 0.02604565792726431,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211074.1083067392,
+						"delta": 69.67519366880879,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008349018789497176
+					},
+					{
+						"hex": "#c53824",
+						"smoothedMassFraction": 0.026042044314826863,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211092.5782379443,
+						"delta": 88.1451248738449,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009838699702544265
+					},
+					{
+						"hex": "#c8371c",
+						"smoothedMassFraction": 0.025808200050036405,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211103.4779937277,
+						"delta": 99.04488065722398,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008722537030144773
+					},
+					{
+						"hex": "#c63820",
+						"smoothedMassFraction": 0.025623680590012115,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.0132074668,
+						"delta": 92.58009439636953,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009927021378658916
+					},
+					{
+						"hex": "#b82f25",
+						"smoothedMassFraction": 0.025527739128751108,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211068.9708152956,
+						"delta": 64.53770222514868,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008127402370036067
+					},
+					{
+						"hex": "#c83820",
+						"smoothedMassFraction": 0.025518601490832953,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211101.525463729,
+						"delta": 97.09235065849498,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0075936317783072025
+					},
+					{
+						"hex": "#b8311e",
+						"smoothedMassFraction": 0.025482864672990577,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211080.1549321457,
+						"delta": 75.72181907529011,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00879360465075885
+					},
+					{
+						"hex": "#b8311d",
+						"smoothedMassFraction": 0.02547815698609358,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211081.5790552332,
+						"delta": 77.14594216272235,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00879360465075885
+					},
+					{
+						"hex": "#b53124",
+						"smoothedMassFraction": 0.025242283636453606,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211071.1156044775,
+						"delta": 66.6824914070312,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009867092672964154
+					},
+					{
+						"hex": "#b3321f",
+						"smoothedMassFraction": 0.02515063085372465,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211081.039824344,
+						"delta": 76.60671127354726,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009986841174452086
+					},
+					{
+						"hex": "#c8381d",
+						"smoothedMassFraction": 0.02514078401383911,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211102.4549353404,
+						"delta": 98.02182227000594,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008722537030144773
+					},
+					{
+						"hex": "#b3321d",
+						"smoothedMassFraction": 0.02513983170255944,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211084.265290331,
+						"delta": 79.83217726065777,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010979125818659445
+					},
+					{
+						"hex": "#b5321e",
+						"smoothedMassFraction": 0.02512377366599324,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211081.081593773,
+						"delta": 76.64848070265725,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009863524713136625
+					},
+					{
+						"hex": "#b4321c",
+						"smoothedMassFraction": 0.025090513347179006,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211084.8920021649,
+						"delta": 80.45888909441419,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009863524713136625
+					},
+					{
+						"hex": "#c53922",
+						"smoothedMassFraction": 0.025054264367686593,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211092.8866632269,
+						"delta": 88.45355015643872,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009626375540698935
+					},
+					{
+						"hex": "#b53220",
+						"smoothedMassFraction": 0.02501147083170962,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211077.8177262442,
+						"delta": 73.38461317378096,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00952288372086794
+					},
+					{
+						"hex": "#c63925",
+						"smoothedMassFraction": 0.024990679425132955,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211093.7486347873,
+						"delta": 89.3155217168387,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009251572845525042
+					},
+					{
+						"hex": "#c73925",
+						"smoothedMassFraction": 0.02493627401448885,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211096.4458077666,
+						"delta": 92.01269469619729,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008830487621037407
+					},
+					{
+						"hex": "#c73923",
+						"smoothedMassFraction": 0.024900368873561486,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.3133208156,
+						"delta": 92.88020774512552,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009073816502389137
+					},
+					{
+						"hex": "#c53920",
+						"smoothedMassFraction": 0.024874413394091036,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211093.8617612221,
+						"delta": 89.42864815169014,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010565769411654052
+					},
+					{
+						"hex": "#c83928",
+						"smoothedMassFraction": 0.02482476630564935,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.938545703,
+						"delta": 93.50543263251893,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008571969131126038
+					},
+					{
+						"hex": "#c63928",
+						"smoothedMassFraction": 0.024819953063007,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211091.8312949324,
+						"delta": 87.39818186196499,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008998572261615588
+					},
+					{
+						"hex": "#c73921",
+						"smoothedMassFraction": 0.0247657441951812,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211098.0920072743,
+						"delta": 93.6588942038361,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008728930605973673
+					},
+					{
+						"hex": "#c83929",
+						"smoothedMassFraction": 0.024708449137121058,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.3480600743,
+						"delta": 92.91494700382464,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009249898263481673
+					},
+					{
+						"hex": "#b53125",
+						"smoothedMassFraction": 0.024696217292685223,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211069.3550525492,
+						"delta": 64.92193947872147,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00952288372086794
+					},
+					{
+						"hex": "#b6321b",
+						"smoothedMassFraction": 0.024602740587604286,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211084.6222884895,
+						"delta": 80.18917541904375,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00936699553014736
+					},
+					{
+						"hex": "#b93121",
+						"smoothedMassFraction": 0.024482897050814675,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211075.8511345733,
+						"delta": 71.4180215029046,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009705390926541478
+					},
+					{
+						"hex": "#c8392b",
+						"smoothedMassFraction": 0.024373128677699852,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211096.2159911941,
+						"delta": 91.78287812368944,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010035929858765788
+					},
+					{
+						"hex": "#c6391d",
+						"smoothedMassFraction": 0.024311877485680766,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211097.1240054704,
+						"delta": 92.6908923999872,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009506670005975049
+					},
+					{
+						"hex": "#b73221",
+						"smoothedMassFraction": 0.024272286638332818,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211075.6610546054,
+						"delta": 71.2279415349476,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009998547019212434
+					},
+					{
+						"hex": "#c53a25",
+						"smoothedMassFraction": 0.02424291188955445,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211090.1089571705,
+						"delta": 85.67584410007112,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009251572845525042
+					},
+					{
+						"hex": "#c83a26",
+						"smoothedMassFraction": 0.024224682703466973,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211098.3384682904,
+						"delta": 93.90535521996208,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007915010614398739
+					},
+					{
+						"hex": "#ba3023",
+						"smoothedMassFraction": 0.024215945526032324,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1211073.156224639,
+						"delta": 68.72311156848446,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009115549121861523
+					}
+				]
+			},
+			"samples": [
+				{
+					"t": 0,
+					"hex": "#a4140c",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#a4140c",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.025564318396177253
+					},
+					"rawDistance": 0,
+					"offArtwork": false
+				},
+				{
+					"t": 0.015873015873015872,
+					"hex": "#a51b12",
+					"reading": {
+						"nearestDistance": 0.000622311658848005,
+						"nearestHex": "#a51b11",
+						"nearestBarRatio": 0.04143220098854893,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.02997992855477411
+					},
+					"rawDistance": 0.0011488174381653344,
+					"offArtwork": false
+				},
+				{
+					"t": 0.031746031746031744,
+					"hex": "#a72117",
+					"reading": {
+						"nearestDistance": 0.0007194686783339014,
+						"nearestHex": "#a72116",
+						"nearestBarRatio": 0.04790071094100542,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.03324294988324931
+					},
+					"rawDistance": 0.0009176162416867455,
+					"offArtwork": false
+				},
+				{
+					"t": 0.047619047619047616,
+					"hex": "#a8261b",
+					"reading": {
+						"nearestDistance": 0.0023115363683203507,
+						"nearestHex": "#a82618",
+						"nearestBarRatio": 0.15389722825035623,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.03168010377180413
+					},
+					"rawDistance": 0.0022123723530541053,
+					"offArtwork": false
+				},
+				{
+					"t": 0.06349206349206349,
+					"hex": "#aa2a20",
+					"reading": {
+						"nearestDistance": 0.0025731798021805296,
+						"nearestHex": "#aa2a1d",
+						"nearestBarRatio": 0.171316897615215,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.029155317195197976
+					},
+					"rawDistance": 0.001991785648957172,
+					"offArtwork": false
+				},
+				{
+					"t": 0.07936507936507936,
+					"hex": "#ab2f23",
+					"reading": {
+						"nearestDistance": 0.004993107512414458,
+						"nearestHex": "#aa3120",
+						"nearestBarRatio": 0.33243059336980413,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.023089116465345286
+					},
+					"rawDistance": 0.005251311817231734,
+					"offArtwork": false
+				},
+				{
+					"t": 0.09523809523809523,
+					"hex": "#ad3327",
+					"reading": {
+						"nearestDistance": 0.004957082151576223,
+						"nearestHex": "#ac3423",
+						"nearestBarRatio": 0.3300321006375648,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.017834371340027667
+					},
+					"rawDistance": 0.004969867848810215,
+					"offArtwork": false
+				},
+				{
+					"t": 0.1111111111111111,
+					"hex": "#ae372b",
+					"reading": {
+						"nearestDistance": 0.006902932366726759,
+						"nearestHex": "#b1382d",
+						"nearestBarRatio": 0.45958271416290003,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.012041644903767437
+					},
+					"rawDistance": 0.0069379991422732525,
+					"offArtwork": false
+				},
+				{
+					"t": 0.12698412698412698,
+					"hex": "#af3b2f",
+					"reading": {
+						"nearestDistance": 0.005507693936469173,
+						"nearestHex": "#b1382d",
+						"nearestBarRatio": 0.3666906748647918,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.007593818135827587
+					},
+					"rawDistance": 0.005000828053720912,
+					"offArtwork": false
+				},
+				{
+					"t": 0.14285714285714285,
+					"hex": "#b13f32",
+					"reading": {
+						"nearestDistance": 0.00449821227951304,
+						"nearestHex": "#af3f34",
+						"nearestBarRatio": 0.29948150995426365,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0052030406902725465
+					},
+					"rawDistance": 0.003711000733210664,
+					"offArtwork": false
+				},
+				{
+					"t": 0.15873015873015872,
+					"hex": "#b24235",
+					"reading": {
+						"nearestDistance": 0.008988788340336892,
+						"nearestHex": "#b44430",
+						"nearestBarRatio": 0.5984546165337478,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003835570985626791
+					},
+					"rawDistance": 0.009124054554151403,
+					"offArtwork": false
+				},
+				{
+					"t": 0.1746031746031746,
+					"hex": "#b34639",
+					"reading": {
+						"nearestDistance": 0.008857124514430426,
+						"nearestHex": "#b34631",
+						"nearestBarRatio": 0.589688716007352,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.002783163544928781
+					},
+					"rawDistance": 0.009001122532092067,
+					"offArtwork": false
+				},
+				{
+					"t": 0.19047619047619047,
+					"hex": "#b5493c",
+					"reading": {
+						"nearestDistance": 0.006505446938051997,
+						"nearestHex": "#b74b3f",
+						"nearestBarRatio": 0.28370898116231996,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002685219059844714
+					},
+					"rawDistance": 0.006770863336004901,
+					"offArtwork": false
+				},
+				{
+					"t": 0.20634920634920634,
+					"hex": "#b64d40",
+					"reading": {
+						"nearestDistance": 0.0039765623143286945,
+						"nearestHex": "#b74b3f",
+						"nearestBarRatio": 0.1734218192031703,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.004913788742932718
+					},
+					"rawDistance": 0.003357486588306979,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2222222222222222,
+					"hex": "#b75043",
+					"reading": {
+						"nearestDistance": 0.0050692256613094865,
+						"nearestHex": "#b54f41",
+						"nearestBarRatio": 0.22107394946835965,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.003890561208245202
+					},
+					"rawDistance": 0.005256782025244937,
+					"offArtwork": false
+				},
+				{
+					"t": 0.23809523809523808,
+					"hex": "#b85346",
+					"reading": {
+						"nearestDistance": 0.007413779566085027,
+						"nearestHex": "#b75441",
+						"nearestBarRatio": 0.32332226629241284,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.00325196145363383
+					},
+					"rawDistance": 0.007611390432845491,
+					"offArtwork": false
+				},
+				{
+					"t": 0.25396825396825395,
+					"hex": "#ba5649",
+					"reading": {
+						"nearestDistance": 0.006780602707231845,
+						"nearestHex": "#ba5949",
+						"nearestBarRatio": 0.2957087966520648,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.003052199114099565
+					},
+					"rawDistance": 0.006064836098748929,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2698412698412698,
+					"hex": "#bb5a4d",
+					"reading": {
+						"nearestDistance": 0.005022318914379882,
+						"nearestHex": "#bc5c4e",
+						"nearestBarRatio": 0.2190282997985121,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002776972422203881
+					},
+					"rawDistance": 0.004836063399170571,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2857142857142857,
+					"hex": "#bc5d50",
+					"reading": {
+						"nearestDistance": 0.002315651047936254,
+						"nearestHex": "#bd5d51",
+						"nearestBarRatio": 0.10098783462434602,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002720212816606556
+					},
+					"rawDistance": 0.0022377924604461696,
+					"offArtwork": false
+				},
+				{
+					"t": 0.30158730158730157,
+					"hex": "#bd6053",
+					"reading": {
+						"nearestDistance": 0.0023134845384229817,
+						"nearestHex": "#be6054",
+						"nearestBarRatio": 0.10089335099969393,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0026908126969636538
+					},
+					"rawDistance": 0.0018019707223161363,
+					"offArtwork": false
+				},
+				{
+					"t": 0.31746031746031744,
+					"hex": "#be6356",
+					"reading": {
+						"nearestDistance": 0.0018378745891504205,
+						"nearestHex": "#bf6356",
+						"nearestBarRatio": 0.08015153027258703,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.00264549639077434
+					},
+					"rawDistance": 0.001141747816677091,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3333333333333333,
+					"hex": "#c0665a",
+					"reading": {
+						"nearestDistance": 0.0030745965757792825,
+						"nearestHex": "#c16558",
+						"nearestBarRatio": 0.1340862004264842,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002618662630084163
+					},
+					"rawDistance": 0.0022058464426280085,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3492063492063492,
+					"hex": "#c1695d",
+					"reading": {
+						"nearestDistance": 0.0026414637971387475,
+						"nearestHex": "#c1695b",
+						"nearestBarRatio": 0.11519685116174215,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002458042556921422
+					},
+					"rawDistance": 0.0023245526867182948,
+					"offArtwork": false
+				},
+				{
+					"t": 0.36507936507936506,
+					"hex": "#c26d60",
+					"reading": {
+						"nearestDistance": 0.005478690641020366,
+						"nearestHex": "#c56d5f",
+						"nearestBarRatio": 0.238931122591381,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0021941249878072245
+					},
+					"rawDistance": 0.005379301421430454,
+					"offArtwork": false
+				},
+				{
+					"t": 0.38095238095238093,
+					"hex": "#c37063",
+					"reading": {
+						"nearestDistance": 0.007501926312340637,
+						"nearestHex": "#c56d5f",
+						"nearestBarRatio": 0.3271664331592079,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001957075370653486
+					},
+					"rawDistance": 0.007165610290729517,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3968253968253968,
+					"hex": "#c47367",
+					"reading": {
+						"nearestDistance": 0.0022910226956491778,
+						"nearestHex": "#c57368",
+						"nearestBarRatio": 0.09991376779978971,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0016817411803566216
+					},
+					"rawDistance": 0.002718723441303552,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4126984126984127,
+					"hex": "#c5766a",
+					"reading": {
+						"nearestDistance": 0.0024964433834675013,
+						"nearestHex": "#c5776a",
+						"nearestBarRatio": 0.10887236735575671,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0014720069044370132
+					},
+					"rawDistance": 0.003134918224304875,
+					"offArtwork": false
+				},
+				{
+					"t": 0.42857142857142855,
+					"hex": "#c6796d",
+					"reading": {
+						"nearestDistance": 0.00576842007414406,
+						"nearestHex": "#c5776a",
+						"nearestBarRatio": 0.2515665099931993,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.00130372746118577
+					},
+					"rawDistance": 0.0054486223544567055,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4444444444444444,
+					"hex": "#c77c70",
+					"reading": {
+						"nearestDistance": 0.00991133215877424,
+						"nearestHex": "#c88072",
+						"nearestBarRatio": 0.4322430073604117,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001186318645530017
+					},
+					"rawDistance": 0.010457947506107911,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4603174603174603,
+					"hex": "#c87f73",
+					"reading": {
+						"nearestDistance": 0.0032811106426875497,
+						"nearestHex": "#c88072",
+						"nearestBarRatio": 0.14309248332697558,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0011205895689088328
+					},
+					"rawDistance": 0.004257668717554854,
+					"offArtwork": false
+				},
+				{
+					"t": 0.47619047619047616,
+					"hex": "#c98277",
+					"reading": {
+						"nearestDistance": 0.007360226247659722,
+						"nearestHex": "#c88072",
+						"nearestBarRatio": 0.32098675305973495,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0010817414944107708
+					},
+					"rawDistance": 0.006969659537844554,
+					"offArtwork": false
+				},
+				{
+					"t": 0.49206349206349204,
+					"hex": "#ca857a",
+					"reading": {
+						"nearestDistance": 0.0022580583939589404,
+						"nearestHex": "#cb857b",
+						"nearestBarRatio": 0.0984761619694261,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0010996360658653715
+					},
+					"rawDistance": 0.002135520733802052,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5079365079365079,
+					"hex": "#cb887d",
+					"reading": {
+						"nearestDistance": 0.007158060811316483,
+						"nearestHex": "#cb857b",
+						"nearestBarRatio": 0.31217011824319596,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0011417166809223544
+					},
+					"rawDistance": 0.006656054893961084,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5238095238095238,
+					"hex": "#cc8b80",
+					"reading": {
+						"nearestDistance": 0.00625997037165577,
+						"nearestHex": "#ca8b84",
+						"nearestBarRatio": 0.2730035050874736,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0012001705979723305
+					},
+					"rawDistance": 0.005583808313107034,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5396825396825397,
+					"hex": "#cd8e84",
+					"reading": {
+						"nearestDistance": 0.006627226617082547,
+						"nearestHex": "#d08c81",
+						"nearestBarRatio": 0.2890199135230069,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0012574487263792922
+					},
+					"rawDistance": 0.006267890863029058,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5555555555555556,
+					"hex": "#ce9187",
+					"reading": {
+						"nearestDistance": 0.005785832875253808,
+						"nearestHex": "#cc938a",
+						"nearestBarRatio": 0.2523258994877369,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0013472329573272835
+					},
+					"rawDistance": 0.006167981761941077,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5714285714285714,
+					"hex": "#cf948a",
+					"reading": {
+						"nearestDistance": 0.0033184714206138544,
+						"nearestHex": "#ce9488",
+						"nearestBarRatio": 0.14472182383837132,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0014595866217041987
+					},
+					"rawDistance": 0.003694232348679174,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5873015873015873,
+					"hex": "#d0978d",
+					"reading": {
+						"nearestDistance": 0.008782433438113269,
+						"nearestHex": "#d29a8d",
+						"nearestBarRatio": 0.383010616577116,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001597179561508226
+					},
+					"rawDistance": 0.008049047884145637,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6031746031746031,
+					"hex": "#d19a91",
+					"reading": {
+						"nearestDistance": 0.002777642665856147,
+						"nearestHex": "#d19a93",
+						"nearestBarRatio": 0.12113574643943074,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0017379119479529067
+					},
+					"rawDistance": 0.0031022690380799792,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6190476190476191,
+					"hex": "#d19d94",
+					"reading": {
+						"nearestDistance": 0.0040587338953641545,
+						"nearestHex": "#cf9d96",
+						"nearestBarRatio": 0.1770054031994834,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0017835367847649894
+					},
+					"rawDistance": 0.0042377774134278404,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6349206349206349,
+					"hex": "#d2a097",
+					"reading": {
+						"nearestDistance": 0.004586576394030297,
+						"nearestHex": "#d3a19a",
+						"nearestBarRatio": 0.20002513711427378,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0019175006290995031
+					},
+					"rawDistance": 0.004610176136874913,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6507936507936508,
+					"hex": "#d3a39b",
+					"reading": {
+						"nearestDistance": 0.0024934414097725023,
+						"nearestHex": "#d3a49c",
+						"nearestBarRatio": 0.10874144831105549,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0019867359181744474
+					},
+					"rawDistance": 0.0035937124633255713,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6666666666666666,
+					"hex": "#d4a69e",
+					"reading": {
+						"nearestDistance": 0.00494380192461163,
+						"nearestHex": "#d5a49d",
+						"nearestBarRatio": 0.2156040961452957,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002022699466304924
+					},
+					"rawDistance": 0.003927648789599535,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6825396825396826,
+					"hex": "#d5a8a1",
+					"reading": {
+						"nearestDistance": 0.007608123983376884,
+						"nearestHex": "#d7a59e",
+						"nearestBarRatio": 0.331797818725551,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0020195910959302905
+					},
+					"rawDistance": 0.007784857190371826,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6984126984126984,
+					"hex": "#d5aba5",
+					"reading": {
+						"nearestDistance": 0.003824620654052392,
+						"nearestHex": "#d3aca5",
+						"nearestBarRatio": 0.16679549298091548,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001858722616170601
+					},
+					"rawDistance": 0.003572510275058063,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7142857142857143,
+					"hex": "#d6aea8",
+					"reading": {
+						"nearestDistance": 0.0032961696764645006,
+						"nearestHex": "#d7aeaa",
+						"nearestBarRatio": 0.20259186702301787,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0016857536991403473
+					},
+					"rawDistance": 0.0038234968903054466,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7301587301587301,
+					"hex": "#d7b1ab",
+					"reading": {
+						"nearestDistance": 0.004673972769021416,
+						"nearestHex": "#d5b2ae",
+						"nearestBarRatio": 0.28727552360303726,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0016183543276835817
+					},
+					"rawDistance": 0.004158054129073776,
+					"offArtwork": false
+				},
+				{
+					"t": 0.746031746031746,
+					"hex": "#d7b4af",
+					"reading": {
+						"nearestDistance": 0.004781754607972326,
+						"nearestHex": "#d4b5b0",
+						"nearestBarRatio": 0.2939000988305056,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.00144814872324457
+					},
+					"rawDistance": 0.005225142748514019,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7619047619047619,
+					"hex": "#d8b7b2",
+					"reading": {
+						"nearestDistance": 0.004906891249976839,
+						"nearestHex": "#d6b7b5",
+						"nearestBarRatio": 0.3015913491073656,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0013957739128764202
+					},
+					"rawDistance": 0.005439173656505517,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7777777777777778,
+					"hex": "#d9bab5",
+					"reading": {
+						"nearestDistance": 0.004440456869903909,
+						"nearestHex": "#d9bbb3",
+						"nearestBarRatio": 0.2729229790967369,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0013486964049114728
+					},
+					"rawDistance": 0.004211745028164276,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7936507936507936,
+					"hex": "#d9bdb9",
+					"reading": {
+						"nearestDistance": 0.004383230612538416,
+						"nearestHex": "#dbbcba",
+						"nearestBarRatio": 0.2694056922273151,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0012021083903242839
+					},
+					"rawDistance": 0.004830825647719269,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8095238095238095,
+					"hex": "#dac0bc",
+					"reading": {
+						"nearestDistance": 0.008980543826696483,
+						"nearestHex": "#d7beb7",
+						"nearestBarRatio": 0.5519695037920395,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0011690543241617193
+					},
+					"rawDistance": 0.009244882135906272,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8253968253968254,
+					"hex": "#dbc3bf",
+					"reading": {
+						"nearestDistance": 0.0074702761225318255,
+						"nearestHex": "#dfc3c2",
+						"nearestBarRatio": 0.4591441992951337,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.001148425715736735
+					},
+					"rawDistance": 0.007649240065260897,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8412698412698413,
+					"hex": "#dbc6c3",
+					"reading": {
+						"nearestDistance": 0.002863878499350502,
+						"nearestHex": "#dac7c3",
+						"nearestBarRatio": 0.17602203437925643,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0010372124924351268
+					},
+					"rawDistance": 0.0025836335679445153,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8571428571428571,
+					"hex": "#dcc9c6",
+					"reading": {
+						"nearestDistance": 0.006610824739934696,
+						"nearestHex": "#dac7c3",
+						"nearestBarRatio": 0.40631989796771334,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0010521011528842827
+					},
+					"rawDistance": 0.006758110138264333,
+					"offArtwork": false
+				},
+				{
+					"t": 0.873015873015873,
+					"hex": "#dcccca",
+					"reading": {
+						"nearestDistance": 0.006905552494677515,
+						"nearestHex": "#ddccc5",
+						"nearestBarRatio": 0.42443469543193085,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.001006901754726309
+					},
+					"rawDistance": 0.0061520180575021805,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8888888888888888,
+					"hex": "#ddcfcd",
+					"reading": {
+						"nearestDistance": 0.005840771679947475,
+						"nearestHex": "#dccfc9",
+						"nearestBarRatio": 0.35899026920390137,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0015600939583576686
+					},
+					"rawDistance": 0.005651274098941122,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9047619047619048,
+					"hex": "#ddd2d0",
+					"reading": {
+						"nearestDistance": 0.005908139453362265,
+						"nearestHex": "#dfd2cc",
+						"nearestBarRatio": 0.3631308821980495,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.003376878470160862
+					},
+					"rawDistance": 0.0056237677064859565,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9206349206349206,
+					"hex": "#ded5d4",
+					"reading": {
+						"nearestDistance": 0.003146018087951151,
+						"nearestHex": "#dfd4d2",
+						"nearestBarRatio": 0.19336312771672717,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.010667752586385127
+					},
+					"rawDistance": 0.0031244683038128204,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9365079365079365,
+					"hex": "#ded8d7",
+					"reading": {
+						"nearestDistance": 0.0027204814452963812,
+						"nearestHex": "#dcd8d7",
+						"nearestBarRatio": 0.1672084477748237,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.029405735962940764
+					},
+					"rawDistance": 0.0032291856153808607,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9523809523809523,
+					"hex": "#dfdbdb",
+					"reading": {
+						"nearestDistance": 0.005289607499276102,
+						"nearestHex": "#dedddb",
+						"nearestBarRatio": 0.32511416713436403,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.07542482146791327
+					},
+					"rawDistance": 0.005040347747681977,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9682539682539683,
+					"hex": "#dfdede",
+					"reading": {
+						"nearestDistance": 0.0020254498987245318,
+						"nearestHex": "#e0dedf",
+						"nearestBarRatio": 0.12448985241085014,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.14637499195668027
+					},
+					"rawDistance": 0.0017341854422784175,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9841269841269841,
+					"hex": "#e0e1e2",
+					"reading": {
+						"nearestDistance": 0.0013780961491048405,
+						"nearestHex": "#e0e1e3",
+						"nearestBarRatio": 0.08470166866040815,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.24065708218404247
+					},
+					"rawDistance": 0.001909361737638423,
+					"offArtwork": false
+				},
+				{
+					"t": 1,
+					"hex": "#e0e4e5",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#e0e4e5",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.3070741323109512
+					},
+					"rawDistance": 0,
+					"offArtwork": false
+				}
+			]
+		},
+		{
+			"index": 5,
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"image": "ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"stops": [
+				{
+					"hex": "#435df0",
+					"position": 0
+				},
+				{
+					"hex": "#1016f0",
+					"position": 1
+				}
+			],
+			"pixelCount": 90000,
+			"colorCount": 69536,
+			"smoothedMassMode": "lattice",
+			"emitted": {
+				"energyTotal": 1495758.9437031923,
+				"serializationBits": 101,
+				"rampGeometry": "conic",
+				"rampOrientation": "reverse",
+				"feasible": true
+			},
+			"summary": {
+				"maxNearestDistance": 0.004628235654888102,
+				"meanNearestDistance": 0.0021300945289652183,
+				"maxBarRatio": 0.30813819273555937,
+				"offArtworkSamples": 0,
+				"sampleCount": 64,
+				"minSmoothedMassFraction": 0.003339460780882484
+			},
+			"largestOffArtworkSpan": null,
+			"repair": {
+				"mode": "control",
+				"atSampleT": 0.5238095238095238,
+				"position": 0.5234375,
+				"targetHex": "#2641f0",
+				"candidatesConsidered": 50,
+				"feasibleCount": 50,
+				"bestByEnergy": {
+					"hex": "#2832ec",
+					"smoothedMassFraction": 0.009591613940962076,
+					"feasible": true,
+					"violations": [],
+					"energyTotal": 1495807.155095049,
+					"delta": 48.211391856661066,
+					"offArtworkAfter": 0,
+					"maxDistanceAfter": 0.002936653412970423
+				},
+				"bestByExcursion": {
+					"hex": "#2832ec",
+					"smoothedMassFraction": 0.009591613940962076,
+					"feasible": true,
+					"violations": [],
+					"energyTotal": 1495807.155095049,
+					"delta": 48.211391856661066,
+					"offArtworkAfter": 0,
+					"maxDistanceAfter": 0.002936653412970423
+				},
+				"interiorStopBits": 32,
+				"tried": [
+					{
+						"hex": "#222ef2",
+						"smoothedMassFraction": 0.014452646682718064,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.7320709783,
+						"delta": 52.78836778597906,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.002491963533799677
+					},
+					{
+						"hex": "#1d2ff5",
+						"smoothedMassFraction": 0.013925694294559827,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.7364925507,
+						"delta": 53.79278935841285,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00341398725284734
+					},
+					{
+						"hex": "#1f2ff4",
+						"smoothedMassFraction": 0.013872131049668132,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.1212701302,
+						"delta": 53.177566937869415,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0029702394521696706
+					},
+					{
+						"hex": "#242ef2",
+						"smoothedMassFraction": 0.013667809268126538,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.2138604394,
+						"delta": 52.27015724708326,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0030599573739085494
+					},
+					{
+						"hex": "#1f30f2",
+						"smoothedMassFraction": 0.013550033656392116,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.9218378896,
+						"delta": 51.978134697303176,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0032508770044262386
+					},
+					{
+						"hex": "#252eef",
+						"smoothedMassFraction": 0.013544061334419015,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.4429321983,
+						"delta": 51.49922900600359,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0031037517225322767
+					},
+					{
+						"hex": "#252df4",
+						"smoothedMassFraction": 0.013372547297688551,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.9789680436,
+						"delta": 53.035264851292595,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0044616105774923165
+					},
+					{
+						"hex": "#1e30f4",
+						"smoothedMassFraction": 0.013173973272162824,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.5575632816,
+						"delta": 52.613860089331865,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003136381361332482
+					},
+					{
+						"hex": "#2130ed",
+						"smoothedMassFraction": 0.013084844644653478,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.385662455,
+						"delta": 50.44195926282555,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003255260703723839
+					},
+					{
+						"hex": "#272df3",
+						"smoothedMassFraction": 0.012781498102453792,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.3220513826,
+						"delta": 52.37834819033742,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003733766355105667
+					},
+					{
+						"hex": "#2031f1",
+						"smoothedMassFraction": 0.012554423088088512,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.8494311608,
+						"delta": 50.90572796855122,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0032571758109222228
+					},
+					{
+						"hex": "#1d30f6",
+						"smoothedMassFraction": 0.012447600907632018,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.1726656563,
+						"delta": 53.228962464025244,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003745253042363383
+					},
+					{
+						"hex": "#1e30f6",
+						"smoothedMassFraction": 0.012242519593575127,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.976242313,
+						"delta": 53.03253912064247,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003599085860642246
+					},
+					{
+						"hex": "#2231ee",
+						"smoothedMassFraction": 0.012109560743267495,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.7129473889,
+						"delta": 49.7692441965919,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0030749040857918596
+					},
+					{
+						"hex": "#272df5",
+						"smoothedMassFraction": 0.0120503005300152,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.7022511663,
+						"delta": 52.75854797405191,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003998171946119647
+					},
+					{
+						"hex": "#282ef2",
+						"smoothedMassFraction": 0.011944469587849794,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.3732828598,
+						"delta": 51.42957966751419,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0032060390387749237
+					},
+					{
+						"hex": "#1f32ee",
+						"smoothedMassFraction": 0.011877554904833052,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.3230810405,
+						"delta": 49.37937784823589,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00344916952000502
+					},
+					{
+						"hex": "#292cf5",
+						"smoothedMassFraction": 0.011647408841941992,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.9202647775,
+						"delta": 52.9765615852084,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003920430342818926
+					},
+					{
+						"hex": "#1f31f5",
+						"smoothedMassFraction": 0.011637436542660001,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.9008210772,
+						"delta": 51.95711788488552,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.002833968998364789
+					},
+					{
+						"hex": "#2032ec",
+						"smoothedMassFraction": 0.011369052843378977,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495807.660853657,
+						"delta": 48.71715046465397,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0038241993890865
+					},
+					{
+						"hex": "#2132f2",
+						"smoothedMassFraction": 0.011308674843468605,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.4703109919,
+						"delta": 50.526607799576595,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0032508770044262386
+					},
+					{
+						"hex": "#2a2eef",
+						"smoothedMassFraction": 0.011305058364113513,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.875398106,
+						"delta": 50.93169491365552,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0037825777185596103
+					},
+					{
+						"hex": "#2a2ef1",
+						"smoothedMassFraction": 0.011192329368806164,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.9790465834,
+						"delta": 51.0353433911223,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004007250545590573
+					},
+					{
+						"hex": "#2b2df1",
+						"smoothedMassFraction": 0.011186328783656378,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.4006454158,
+						"delta": 51.45694222347811,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004242056545440942
+					},
+					{
+						"hex": "#2332ef",
+						"smoothedMassFraction": 0.01112713279639097,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.3126506826,
+						"delta": 49.368947490351275,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.002921814460068015
+					},
+					{
+						"hex": "#2b2df2",
+						"smoothedMassFraction": 0.011032310264443991,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.4963248763,
+						"delta": 51.55262168403715,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003649587627800822
+					},
+					{
+						"hex": "#2a2df4",
+						"smoothedMassFraction": 0.011014903185684925,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.964114121,
+						"delta": 52.02041092864238,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004213384865986759
+					},
+					{
+						"hex": "#2032f4",
+						"smoothedMassFraction": 0.010976961376110542,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.9073248766,
+						"delta": 50.96362168435007,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0026565894787481253
+					},
+					{
+						"hex": "#2631ed",
+						"smoothedMassFraction": 0.01090332223936782,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.0395983367,
+						"delta": 49.09589514438994,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0034992899696829833
+					},
+					{
+						"hex": "#1e31f7",
+						"smoothedMassFraction": 0.010832861878794328,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.4693664098,
+						"delta": 52.525663217529655,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003602531670076508
+					},
+					{
+						"hex": "#292cf7",
+						"smoothedMassFraction": 0.01069648296112334,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.41190129,
+						"delta": 53.46819809777662,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004483863513608388
+					},
+					{
+						"hex": "#2033f2",
+						"smoothedMassFraction": 0.010663126780901923,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.8246288854,
+						"delta": 49.880925693083555,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0032508770044262386
+					},
+					{
+						"hex": "#2d2cf2",
+						"smoothedMassFraction": 0.010385242121125609,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.8010658203,
+						"delta": 51.85736262798309,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004325785107444549
+					},
+					{
+						"hex": "#2233f2",
+						"smoothedMassFraction": 0.010317931746940436,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.6219489218,
+						"delta": 49.678245729533955,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0024816576264611906
+					},
+					{
+						"hex": "#2a2feb",
+						"smoothedMassFraction": 0.010311172323628937,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.6401931928,
+						"delta": 49.69649000046775,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004012301033890942
+					},
+					{
+						"hex": "#2a2df6",
+						"smoothedMassFraction": 0.01024227370816989,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.4406765157,
+						"delta": 52.496973323402926,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004064574071627007
+					},
+					{
+						"hex": "#1f30f9",
+						"smoothedMassFraction": 0.0102021041046927,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.4004259717,
+						"delta": 53.45672277943231,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004173652955296924
+					},
+					{
+						"hex": "#2d2df1",
+						"smoothedMassFraction": 0.010168173857593114,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.2305545511,
+						"delta": 51.28685135883279,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.005005148892104252
+					},
+					{
+						"hex": "#2433ee",
+						"smoothedMassFraction": 0.010127936813849402,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495807.3451266931,
+						"delta": 48.4014235008508,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0030749040857918596
+					},
+					{
+						"hex": "#2c2ef2",
+						"smoothedMassFraction": 0.010116962179135082,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.9505398893,
+						"delta": 51.00683669699356,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0036979706958316363
+					},
+					{
+						"hex": "#2931ee",
+						"smoothedMassFraction": 0.010085628610802009,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.2770022703,
+						"delta": 49.333299078047276,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003762021732045211
+					},
+					{
+						"hex": "#282df8",
+						"smoothedMassFraction": 0.010079505974846109,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.3848588923,
+						"delta": 53.44115570001304,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004794935731683785
+					},
+					{
+						"hex": "#2030f9",
+						"smoothedMassFraction": 0.010002609668929548,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495812.216125347,
+						"delta": 53.272422154666856,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004173652955296924
+					},
+					{
+						"hex": "#2c2ff0",
+						"smoothedMassFraction": 0.009934684272147295,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495809.343357602,
+						"delta": 50.39965440961532,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004441475513418229
+					},
+					{
+						"hex": "#2c2ef3",
+						"smoothedMassFraction": 0.009909894554216182,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.1313177492,
+						"delta": 51.18761455686763,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0040082101869749216
+					},
+					{
+						"hex": "#2b30ee",
+						"smoothedMassFraction": 0.009892239976758052,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.7347021212,
+						"delta": 49.790998928947374,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.003445706232078885
+					},
+					{
+						"hex": "#2b2ef5",
+						"smoothedMassFraction": 0.009752917196036996,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495810.6468889127,
+						"delta": 51.70318572036922,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.004260180492484702
+					},
+					{
+						"hex": "#2c2fec",
+						"smoothedMassFraction": 0.009714363436152432,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495808.7938721466,
+						"delta": 49.85016895434819,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0041307424896634935
+					},
+					{
+						"hex": "#1e31f9",
+						"smoothedMassFraction": 0.00963161220502438,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495811.6445155477,
+						"delta": 52.70081235538237,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.0041220081643115304
+					},
+					{
+						"hex": "#2832ec",
+						"smoothedMassFraction": 0.009591613940962076,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 1495807.155095049,
+						"delta": 48.211391856661066,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.002936653412970423
+					}
+				]
+			},
+			"samples": [
+				{
+					"t": 0,
+					"hex": "#435df0",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#435df0",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.005412767277085265
+					},
+					"rawDistance": 0,
+					"offArtwork": false
+				},
+				{
+					"t": 0.015873015873015872,
+					"hex": "#425cf0",
+					"reading": {
+						"nearestDistance": 0.0015165641407394273,
+						"nearestHex": "#425cf1",
+						"nearestBarRatio": 0.10096964984949582,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003793192502765965
+					},
+					"rawDistance": 0.0015945315101445017,
+					"offArtwork": false
+				},
+				{
+					"t": 0.031746031746031744,
+					"hex": "#415cf0",
+					"reading": {
+						"nearestDistance": 0.0015167605143993318,
+						"nearestHex": "#415cf1",
+						"nearestBarRatio": 0.10098272399462928,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0037951898427273307
+					},
+					"rawDistance": 0.001215750197907793,
+					"offArtwork": false
+				},
+				{
+					"t": 0.047619047619047616,
+					"hex": "#405bf0",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#405bf0",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0038508623586485688
+					},
+					"rawDistance": 0.0005141405837882072,
+					"offArtwork": false
+				},
+				{
+					"t": 0.06349206349206349,
+					"hex": "#3f5af0",
+					"reading": {
+						"nearestDistance": 0.0018150028940133998,
+						"nearestHex": "#405aef",
+						"nearestBarRatio": 0.12083907416866843,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0038902719301667434
+					},
+					"rawDistance": 0.0017186463273468797,
+					"offArtwork": false
+				},
+				{
+					"t": 0.07936507936507936,
+					"hex": "#3f59f0",
+					"reading": {
+						"nearestDistance": 0.0010459454472661596,
+						"nearestHex": "#3e59f0",
+						"nearestBarRatio": 0.0696368473546045,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003931784431513905
+					},
+					"rawDistance": 0.0009183346937726935,
+					"offArtwork": false
+				},
+				{
+					"t": 0.09523809523809523,
+					"hex": "#3e59f0",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#3e59f0",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0039111529874673095
+					},
+					"rawDistance": 0.0011777552498867295,
+					"offArtwork": false
+				},
+				{
+					"t": 0.1111111111111111,
+					"hex": "#3d58f0",
+					"reading": {
+						"nearestDistance": 0.0015201633238063842,
+						"nearestHex": "#3d58f1",
+						"nearestBarRatio": 0.10120927588591107,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003912700406632323
+					},
+					"rawDistance": 0.001506742132410641,
+					"offArtwork": false
+				},
+				{
+					"t": 0.12698412698412698,
+					"hex": "#3c57f0",
+					"reading": {
+						"nearestDistance": 0.0021065964433846862,
+						"nearestHex": "#3d56f0",
+						"nearestBarRatio": 0.14025275921336128,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003895863752988608
+					},
+					"rawDistance": 0.0021412965513637307,
+					"offArtwork": false
+				},
+				{
+					"t": 0.14285714285714285,
+					"hex": "#3b56f0",
+					"reading": {
+						"nearestDistance": 0.001522895672294716,
+						"nearestHex": "#3b56ef",
+						"nearestBarRatio": 0.10139118989978135,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003863179243190224
+					},
+					"rawDistance": 0.0016775854603317726,
+					"offArtwork": false
+				},
+				{
+					"t": 0.15873015873015872,
+					"hex": "#3a55f0",
+					"reading": {
+						"nearestDistance": 0.001018571708841793,
+						"nearestHex": "#3b55f0",
+						"nearestBarRatio": 0.06781436144086504,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0038181392212260764
+					},
+					"rawDistance": 0.0011579598912064655,
+					"offArtwork": false
+				},
+				{
+					"t": 0.1746031746031746,
+					"hex": "#3955f0",
+					"reading": {
+						"nearestDistance": 0.0017809072754243359,
+						"nearestHex": "#3855f1",
+						"nearestBarRatio": 0.11856905961546843,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003758913362927808
+					},
+					"rawDistance": 0.0017466494014262007,
+					"offArtwork": false
+				},
+				{
+					"t": 0.19047619047619047,
+					"hex": "#3854f0",
+					"reading": {
+						"nearestDistance": 0.0009808198831300387,
+						"nearestHex": "#3754f0",
+						"nearestBarRatio": 0.0653009243095898,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003700448263703458
+					},
+					"rawDistance": 0.001277354640175646,
+					"offArtwork": false
+				},
+				{
+					"t": 0.20634920634920634,
+					"hex": "#3753f0",
+					"reading": {
+						"nearestDistance": 0.0018445347719443742,
+						"nearestHex": "#3653ef",
+						"nearestBarRatio": 0.12280524447033117,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0036392339249056048
+					},
+					"rawDistance": 0.0019066785619594059,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2222222222222222,
+					"hex": "#3752f0",
+					"reading": {
+						"nearestDistance": 0.0017795950277377682,
+						"nearestHex": "#3652f1",
+						"nearestBarRatio": 0.11848169292528417,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003651571509191003
+					},
+					"rawDistance": 0.0013962985450181552,
+					"offArtwork": false
+				},
+				{
+					"t": 0.23809523809523808,
+					"hex": "#3651f0",
+					"reading": {
+						"nearestDistance": 0.0009878909805220175,
+						"nearestHex": "#3751f0",
+						"nearestBarRatio": 0.06577170309733804,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003598875360401823
+					},
+					"rawDistance": 0.0014261404272368312,
+					"offArtwork": false
+				},
+				{
+					"t": 0.25396825396825395,
+					"hex": "#3551f0",
+					"reading": {
+						"nearestDistance": 0.0019600855024872166,
+						"nearestHex": "#3751f0",
+						"nearestBarRatio": 0.13049836900713827,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003523891793985418
+					},
+					"rawDistance": 0.0020218548127986513,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2698412698412698,
+					"hex": "#3450f0",
+					"reading": {
+						"nearestDistance": 0.0015295689367631955,
+						"nearestHex": "#3450ef",
+						"nearestBarRatio": 0.10183548180846841,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003475082303200277
+					},
+					"rawDistance": 0.0019182619542323811,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2857142857142857,
+					"hex": "#334ff0",
+					"reading": {
+						"nearestDistance": 0.0024122661849293645,
+						"nearestHex": "#324ef0",
+						"nearestBarRatio": 0.1606036075185995,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0034343212186885613
+					},
+					"rawDistance": 0.0023802007643354177,
+					"offArtwork": false
+				},
+				{
+					"t": 0.30158730158730157,
+					"hex": "#324ef0",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#324ef0",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0034018379606921088
+					},
+					"rawDistance": 0.0004929813459856886,
+					"offArtwork": false
+				},
+				{
+					"t": 0.31746031746031744,
+					"hex": "#314df0",
+					"reading": {
+						"nearestDistance": 0.0015332774129455755,
+						"nearestHex": "#314def",
+						"nearestBarRatio": 0.10208238435057093,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033771942968481563
+					},
+					"rawDistance": 0.0017973484311502822,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3333333333333333,
+					"hex": "#304cf0",
+					"reading": {
+						"nearestDistance": 0.0027001117968697003,
+						"nearestHex": "#314def",
+						"nearestBarRatio": 0.17976776277428097,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033594856779612416
+					},
+					"rawDistance": 0.0023126130435923904,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3492063492063492,
+					"hex": "#304cf0",
+					"reading": {
+						"nearestDistance": 0.0027001117968697003,
+						"nearestHex": "#314def",
+						"nearestBarRatio": 0.17976776277428097,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033594856779612416
+					},
+					"rawDistance": 0.003791522200739842,
+					"offArtwork": false
+				},
+				{
+					"t": 0.36507936507936506,
+					"hex": "#2f4bf0",
+					"reading": {
+						"nearestDistance": 0.0037362661069773218,
+						"nearestHex": "#334af0",
+						"nearestBarRatio": 0.2487527368160667,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033477081045072995
+					},
+					"rawDistance": 0.0033572018487693003,
+					"offArtwork": false
+				},
+				{
+					"t": 0.38095238095238093,
+					"hex": "#2e4af0",
+					"reading": {
+						"nearestDistance": 0.0032217328023235025,
+						"nearestHex": "#3149f1",
+						"nearestBarRatio": 0.2144961918990348,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033411145651826486
+					},
+					"rawDistance": 0.0031023651685342444,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3968253968253968,
+					"hex": "#2d49f0",
+					"reading": {
+						"nearestDistance": 0.0022732360347435367,
+						"nearestHex": "#2d48f1",
+						"nearestBarRatio": 0.1513472726194099,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003339460780882484
+					},
+					"rawDistance": 0.0018235857787156666,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4126984126984127,
+					"hex": "#2c48f0",
+					"reading": {
+						"nearestDistance": 0.0018111677630666026,
+						"nearestHex": "#2d48f1",
+						"nearestBarRatio": 0.12058373921881509,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033433475913596674
+					},
+					"rawDistance": 0.0014248467883812782,
+					"offArtwork": false
+				},
+				{
+					"t": 0.42857142857142855,
+					"hex": "#2b47f0",
+					"reading": {
+						"nearestDistance": 0.00255364209598298,
+						"nearestHex": "#2b46ef",
+						"nearestBarRatio": 0.17001611824121038,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0033539083856460525
+					},
+					"rawDistance": 0.00299612413130421,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4444444444444444,
+					"hex": "#2a46f0",
+					"reading": {
+						"nearestDistance": 0.0017342531972163512,
+						"nearestHex": "#2b46ef",
+						"nearestBarRatio": 0.11546292924210061,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003373743634360502
+					},
+					"rawDistance": 0.0020803050778316987,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4603174603174603,
+					"hex": "#2945f0",
+					"reading": {
+						"nearestDistance": 0.003092051660681663,
+						"nearestHex": "#2b46ef",
+						"nearestBarRatio": 0.20586229431968464,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003405858716320684
+					},
+					"rawDistance": 0.002843999731020333,
+					"offArtwork": false
+				},
+				{
+					"t": 0.47619047619047616,
+					"hex": "#2944f0",
+					"reading": {
+						"nearestDistance": 0.0033288961540259934,
+						"nearestHex": "#2943f2",
+						"nearestBarRatio": 0.22163090239853483,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0035391002717195907
+					},
+					"rawDistance": 0.0031255480065566763,
+					"offArtwork": false
+				},
+				{
+					"t": 0.49206349206349204,
+					"hex": "#2843f0",
+					"reading": {
+						"nearestDistance": 0.0032463309059908682,
+						"nearestHex": "#2943f2",
+						"nearestBarRatio": 0.21613388189020427,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0036054644120803894
+					},
+					"rawDistance": 0.0027890282489582046,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5079365079365079,
+					"hex": "#2742f0",
+					"reading": {
+						"nearestDistance": 0.004416716371502644,
+						"nearestHex": "#2943f2",
+						"nearestBarRatio": 0.2940556838550362,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003697435709479994
+					},
+					"rawDistance": 0.00376803166815311,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5238095238095238,
+					"hex": "#2641f0",
+					"reading": {
+						"nearestDistance": 0.004628235654888102,
+						"nearestHex": "#2a40ee",
+						"nearestBarRatio": 0.30813819273555937,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0038202944450268926
+					},
+					"rawDistance": 0.0047887035814509855,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5396825396825397,
+					"hex": "#2540f0",
+					"reading": {
+						"nearestDistance": 0.0032555843790281476,
+						"nearestHex": "#273ef0",
+						"nearestBarRatio": 0.2167499586570005,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.003979153936183626
+					},
+					"rawDistance": 0.003827285787917346,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5555555555555556,
+					"hex": "#243ff0",
+					"reading": {
+						"nearestDistance": 0.0024993461583358387,
+						"nearestHex": "#273ef0",
+						"nearestBarRatio": 0.1664012089437975,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.004180463281714885
+					},
+					"rawDistance": 0.002617148633928235,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5714285714285714,
+					"hex": "#243ef0",
+					"reading": {
+						"nearestDistance": 0.002480129013036476,
+						"nearestHex": "#273ef0",
+						"nearestBarRatio": 0.16512177183997845,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.004477411161940222
+					},
+					"rawDistance": 0.002731405002608133,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5873015873015873,
+					"hex": "#233df0",
+					"reading": {
+						"nearestDistance": 0.004132820225182723,
+						"nearestHex": "#273ef0",
+						"nearestBarRatio": 0.2751544757112332,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.004772583479312449
+					},
+					"rawDistance": 0.004059733421173708,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6031746031746031,
+					"hex": "#223cf0",
+					"reading": {
+						"nearestDistance": 0.0038685340535253815,
+						"nearestHex": "#253aef",
+						"nearestBarRatio": 0.2575588584237937,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0051280441504833
+					},
+					"rawDistance": 0.003885905045787566,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6190476190476191,
+					"hex": "#213bf0",
+					"reading": {
+						"nearestDistance": 0.003498935312974623,
+						"nearestHex": "#253aef",
+						"nearestBarRatio": 0.23295175186249154,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.005548479050521767
+					},
+					"rawDistance": 0.0034154056462508513,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6349206349206349,
+					"hex": "#203af0",
+					"reading": {
+						"nearestDistance": 0.004190109535601957,
+						"nearestHex": "#253aef",
+						"nearestBarRatio": 0.27896867747017023,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.006039428791565364
+					},
+					"rawDistance": 0.004079153009943287,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6507936507936508,
+					"hex": "#1f39f0",
+					"reading": {
+						"nearestDistance": 0.003540002775394312,
+						"nearestHex": "#2337f0",
+						"nearestBarRatio": 0.2356859371101406,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.006605656658428184
+					},
+					"rawDistance": 0.0033213875063092453,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6666666666666666,
+					"hex": "#1f38f0",
+					"reading": {
+						"nearestDistance": 0.0029543695887119872,
+						"nearestHex": "#2337f0",
+						"nearestBarRatio": 0.19669571163195654,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0072253887629748674
+					},
+					"rawDistance": 0.0031910111402030645,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6825396825396826,
+					"hex": "#1e37f0",
+					"reading": {
+						"nearestDistance": 0.0035924710136118346,
+						"nearestHex": "#2235f1",
+						"nearestBarRatio": 0.23917916202475595,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.00794004404151381
+					},
+					"rawDistance": 0.003310234211203645,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6984126984126984,
+					"hex": "#1d35f0",
+					"reading": {
+						"nearestDistance": 0.003930312462520169,
+						"nearestHex": "#2033f2",
+						"nearestBarRatio": 0.2616719349214493,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.009551880323548286
+					},
+					"rawDistance": 0.003803469479169746,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7142857142857143,
+					"hex": "#1c34f0",
+					"reading": {
+						"nearestDistance": 0.004085692625805411,
+						"nearestHex": "#2033f2",
+						"nearestBarRatio": 0.27201681929463456,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0105101494477029
+					},
+					"rawDistance": 0.0036848568909590013,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7301587301587301,
+					"hex": "#1b33f0",
+					"reading": {
+						"nearestDistance": 0.0038772422639629972,
+						"nearestHex": "#2031f1",
+						"nearestBarRatio": 0.25813863275386134,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.011553308060657871
+					},
+					"rawDistance": 0.003526708875847267,
+					"offArtwork": false
+				},
+				{
+					"t": 0.746031746031746,
+					"hex": "#1b32f0",
+					"reading": {
+						"nearestDistance": 0.0037382047619695944,
+						"nearestHex": "#2031f1",
+						"nearestBarRatio": 0.24888180838679055,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.012555511779815957
+					},
+					"rawDistance": 0.0038492822286286367,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7619047619047619,
+					"hex": "#1a30f0",
+					"reading": {
+						"nearestDistance": 0.002510528743964594,
+						"nearestHex": "#1c2ef0",
+						"nearestBarRatio": 0.16714572196834848,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.014850182330546371
+					},
+					"rawDistance": 0.0030899389825985693,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7777777777777778,
+					"hex": "#192ff0",
+					"reading": {
+						"nearestDistance": 0.0019919641686906666,
+						"nearestHex": "#1c2ef0",
+						"nearestBarRatio": 0.1326207835346649,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.016165816705916103
+					},
+					"rawDistance": 0.0019876987853499604,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7936507936507936,
+					"hex": "#182ef0",
+					"reading": {
+						"nearestDistance": 0.0023835424315537725,
+						"nearestHex": "#1b2df1",
+						"nearestBarRatio": 0.15869124044965197,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.017534818279747733
+					},
+					"rawDistance": 0.001994449433989749,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8095238095238095,
+					"hex": "#182cf0",
+					"reading": {
+						"nearestDistance": 0.001340535118632504,
+						"nearestHex": "#1a2cf0",
+						"nearestBarRatio": 0.08925000789830252,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.019986480014966813
+					},
+					"rawDistance": 0.0014479073453077637,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8253968253968254,
+					"hex": "#172bf0",
+					"reading": {
+						"nearestDistance": 0.0011433493776079624,
+						"nearestHex": "#182af0",
+						"nearestBarRatio": 0.07612179611238098,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.021445090960501144
+					},
+					"rawDistance": 0.0010965587281085102,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8412698412698413,
+					"hex": "#1629f0",
+					"reading": {
+						"nearestDistance": 0.0015683541267919516,
+						"nearestHex": "#172af0",
+						"nearestBarRatio": 0.10441771816191422,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.02414363066839233
+					},
+					"rawDistance": 0.0010099509458886434,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8571428571428571,
+					"hex": "#1628f0",
+					"reading": {
+						"nearestDistance": 0.00170251817211852,
+						"nearestHex": "#1627f1",
+						"nearestBarRatio": 0.11335007803718508,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.025351726102288943
+					},
+					"rawDistance": 0.0014145991240035315,
+					"offArtwork": false
+				},
+				{
+					"t": 0.873015873015873,
+					"hex": "#1526f0",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#1526f0",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.027897209204672143
+					},
+					"rawDistance": 0.0003508333708319347,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8888888888888888,
+					"hex": "#1425f0",
+					"reading": {
+						"nearestDistance": 0.0014617770670066618,
+						"nearestHex": "#1526f0",
+						"nearestBarRatio": 0.0973220417447844,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.029202881040208812
+					},
+					"rawDistance": 0.0014124165351133027,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9047619047619048,
+					"hex": "#1423f0",
+					"reading": {
+						"nearestDistance": 0.0012391394374259945,
+						"nearestHex": "#1622f0",
+						"nearestBarRatio": 0.08249929676604491,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.031196155856290226
+					},
+					"rawDistance": 0.00141028466024512,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9206349206349206,
+					"hex": "#1321f0",
+					"reading": {
+						"nearestDistance": 0.0005683660131906851,
+						"nearestHex": "#1221f0",
+						"nearestBarRatio": 0.03784061339485254,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.033100388145392554
+					},
+					"rawDistance": 0.0005387879301681501,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9365079365079365,
+					"hex": "#121ff0",
+					"reading": {
+						"nearestDistance": 0.0009322430108185392,
+						"nearestHex": "#121ef0",
+						"nearestBarRatio": 0.06206677835010248,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.03464487367094687
+					},
+					"rawDistance": 0.0011158242760291287,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9523809523809523,
+					"hex": "#121df0",
+					"reading": {
+						"nearestDistance": 0.0009063128143927223,
+						"nearestHex": "#121ef0",
+						"nearestBarRatio": 0.060340400425614,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.035708800531996605
+					},
+					"rawDistance": 0.0009339242362982485,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9682539682539683,
+					"hex": "#111bf0",
+					"reading": {
+						"nearestDistance": 0.0016101334897075435,
+						"nearestHex": "#0f1af0",
+						"nearestBarRatio": 0.10719930024684045,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.03653286779721221
+					},
+					"rawDistance": 0.0015844153500236473,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9841269841269841,
+					"hex": "#1119f0",
+					"reading": {
+						"nearestDistance": 0.001009333250441606,
+						"nearestHex": "#0f1af0",
+						"nearestBarRatio": 0.06719928431701772,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.03696671282424687
+					},
+					"rawDistance": 0.001077454978569656,
+					"offArtwork": false
+				},
+				{
+					"t": 1,
+					"hex": "#1016f0",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#1016f0",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01502,
+						"smoothedMassFraction": 0.0371136396488478
+					},
+					"rawDistance": 0,
+					"offArtwork": false
+				}
+			]
+		},
+		{
+			"index": 12,
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p1-mdl/00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"image": "ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"stops": [
+				{
+					"hex": "#d9e2e1",
+					"position": 0
+				},
+				{
+					"hex": "#70ba27",
+					"position": 1
+				}
+			],
+			"pixelCount": 90000,
+			"colorCount": 6985,
+			"smoothedMassMode": "lattice",
+			"emitted": {
+				"energyTotal": 990968.2652352777,
+				"serializationBits": 77,
+				"rampGeometry": "radial",
+				"rampOrientation": "forward",
+				"feasible": true
+			},
+			"summary": {
+				"maxNearestDistance": 0.018941775806508132,
+				"meanNearestDistance": 0.008235030031461272,
+				"maxBarRatio": 0.8293406797858217,
+				"offArtworkSamples": 0,
+				"sampleCount": 64,
+				"minSmoothedMassFraction": 0.0011261776696273715
+			},
+			"largestOffArtworkSpan": null,
+			"repair": {
+				"mode": "control",
+				"atSampleT": 0.1746031746031746,
+				"position": 0.17578125,
+				"targetHex": "#c7dcc5",
+				"candidatesConsidered": 50,
+				"feasibleCount": 50,
+				"bestByEnergy": {
+					"hex": "#cdecc2",
+					"smoothedMassFraction": 0.006957240596201086,
+					"feasible": true,
+					"violations": [],
+					"energyTotal": 990755.6542325125,
+					"delta": -212.61100276524667,
+					"offArtworkAfter": 0,
+					"maxDistanceAfter": 0.008253227700452817
+				},
+				"bestByExcursion": {
+					"hex": "#cdecc2",
+					"smoothedMassFraction": 0.006957240596201086,
+					"feasible": true,
+					"violations": [],
+					"energyTotal": 990755.6542325125,
+					"delta": -212.61100276524667,
+					"offArtworkAfter": 0,
+					"maxDistanceAfter": 0.008253227700452817
+				},
+				"interiorStopBits": 32,
+				"tried": [
+					{
+						"hex": "#d5eac1",
+						"smoothedMassFraction": 0.007848776413248918,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990769.0557102946,
+						"delta": -199.20952498307452,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.006756086349104794
+					},
+					{
+						"hex": "#d2ebc4",
+						"smoothedMassFraction": 0.007717438207780903,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990766.2556715132,
+						"delta": -202.00956376455724,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007771683259542594
+					},
+					{
+						"hex": "#d3ebc9",
+						"smoothedMassFraction": 0.007627038763249656,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990785.8868996795,
+						"delta": -182.37833559815772,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.00777132674713177
+					},
+					{
+						"hex": "#d1ebc4",
+						"smoothedMassFraction": 0.007592846913218466,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990764.8785876555,
+						"delta": -203.38664762221742,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007584060575101376
+					},
+					{
+						"hex": "#d1eac2",
+						"smoothedMassFraction": 0.00748955903563175,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990767.4354669997,
+						"delta": -200.82976827805396,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007674305387023855
+					},
+					{
+						"hex": "#dbe7bf",
+						"smoothedMassFraction": 0.007209799965139032,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990791.0406954321,
+						"delta": -177.2245398455998,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007583808324466441
+					},
+					{
+						"hex": "#d0e9c1",
+						"smoothedMassFraction": 0.007195426204878269,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990773.900052066,
+						"delta": -194.36518321174663,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008884663796784752
+					},
+					{
+						"hex": "#d6e7bd",
+						"smoothedMassFraction": 0.007160462405522777,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990784.1520960246,
+						"delta": -184.1131392531097,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008776757168388154
+					},
+					{
+						"hex": "#d0e9bf",
+						"smoothedMassFraction": 0.007156493026642331,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990773.9379500933,
+						"delta": -194.32728518440854,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008664623245159868
+					},
+					{
+						"hex": "#ceecc6",
+						"smoothedMassFraction": 0.0071533583378219755,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990760.3378674932,
+						"delta": -207.92736778454855,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009242312610049678
+					},
+					{
+						"hex": "#d0eabd",
+						"smoothedMassFraction": 0.007130995135152312,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990767.6489670011,
+						"delta": -200.6162682765862,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.007702532859448022
+					},
+					{
+						"hex": "#cfe9c4",
+						"smoothedMassFraction": 0.006997250560516244,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990776.5306743677,
+						"delta": -191.73456091003027,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008723212216254298
+					},
+					{
+						"hex": "#cdecc2",
+						"smoothedMassFraction": 0.006957240596201086,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990755.6542325125,
+						"delta": -212.61100276524667,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008253227700452817
+					},
+					{
+						"hex": "#d7e7b8",
+						"smoothedMassFraction": 0.0067863152190848815,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990783.9863587035,
+						"delta": -184.27887657424435,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008293042296240798
+					},
+					{
+						"hex": "#ccebc1",
+						"smoothedMassFraction": 0.006753419469676663,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990763.239601958,
+						"delta": -205.0256333197467,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009627418551014734
+					},
+					{
+						"hex": "#cfe9ba",
+						"smoothedMassFraction": 0.006700183183743742,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990783.3732159337,
+						"delta": -184.89201934402809,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008884663796784752
+					},
+					{
+						"hex": "#d1e7b9",
+						"smoothedMassFraction": 0.006593743781157438,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990798.2835110801,
+						"delta": -169.98172419762705,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009749151667007603
+					},
+					{
+						"hex": "#cce8c0",
+						"smoothedMassFraction": 0.006370276225696997,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990790.092186392,
+						"delta": -178.1730488856556,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009911083362176182
+					},
+					{
+						"hex": "#d4e5c1",
+						"smoothedMassFraction": 0.006351201128990305,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990806.516219873,
+						"delta": -161.74901540472638,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009664582722939257
+					},
+					{
+						"hex": "#d3e5bd",
+						"smoothedMassFraction": 0.00634488354456461,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990807.1439811105,
+						"delta": -161.12125416717026,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011393924301157444
+					},
+					{
+						"hex": "#cfe7b7",
+						"smoothedMassFraction": 0.006251407635053847,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990812.9940703837,
+						"delta": -155.2711648939876,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01053538249742468
+					},
+					{
+						"hex": "#d0e6b8",
+						"smoothedMassFraction": 0.006238904634226319,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990816.1657740022,
+						"delta": -152.0994612755021,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009749151667007603
+					},
+					{
+						"hex": "#d3e7b4",
+						"smoothedMassFraction": 0.006202876192366801,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990805.2996315069,
+						"delta": -162.9656037708046,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.008853014595961613
+					},
+					{
+						"hex": "#d1e5c0",
+						"smoothedMassFraction": 0.006122351716271366,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990810.0175662986,
+						"delta": -158.2476689791074,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012452870886039628
+					},
+					{
+						"hex": "#cce8b7",
+						"smoothedMassFraction": 0.0060099266321535895,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990817.3032963024,
+						"delta": -150.96193897526246,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011034460899510604
+					},
+					{
+						"hex": "#cce7c4",
+						"smoothedMassFraction": 0.005949112297171876,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990797.2994615795,
+						"delta": -170.96577369817533,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010645765040145156
+					},
+					{
+						"hex": "#d2e6b3",
+						"smoothedMassFraction": 0.005941231748248928,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990825.1409460627,
+						"delta": -143.1242892149603,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009112487165402323
+					},
+					{
+						"hex": "#cee6c4",
+						"smoothedMassFraction": 0.005921560251977574,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990804.6394600096,
+						"delta": -163.62577526806854,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010800584902923642
+					},
+					{
+						"hex": "#dbe4b7",
+						"smoothedMassFraction": 0.0058173368969009955,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990804.9427024162,
+						"delta": -163.32253286149353,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.009468935630951685
+					},
+					{
+						"hex": "#cae8b6",
+						"smoothedMassFraction": 0.005682240284922966,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990834.4134765118,
+						"delta": -133.85175876587164,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011034460899510604
+					},
+					{
+						"hex": "#cce7b2",
+						"smoothedMassFraction": 0.00555001135909096,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990857.0924361782,
+						"delta": -111.17279909946956,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01010956510337358
+					},
+					{
+						"hex": "#cae8b4",
+						"smoothedMassFraction": 0.005526774712748079,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990846.2002091638,
+						"delta": -122.06502611387987,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01010956510337358
+					},
+					{
+						"hex": "#cbe6b3",
+						"smoothedMassFraction": 0.0054950907851911,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990871.960360647,
+						"delta": -96.30487463076133,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01010956510337358
+					},
+					{
+						"hex": "#cee4b5",
+						"smoothedMassFraction": 0.005478822600693673,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990866.7156716521,
+						"delta": -101.5495636255946,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011771698359147684
+					},
+					{
+						"hex": "#cbe5b5",
+						"smoothedMassFraction": 0.005445687956303479,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990873.8591387966,
+						"delta": -94.40609648113605,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012897889160403924
+					},
+					{
+						"hex": "#d1e3b9",
+						"smoothedMassFraction": 0.0054307451592010255,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990846.4006533226,
+						"delta": -121.86458195513114,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010742342108677914
+					},
+					{
+						"hex": "#cee5af",
+						"smoothedMassFraction": 0.005330741058541608,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990889.0813655609,
+						"delta": -79.18386971682776,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010228508880870676
+					},
+					{
+						"hex": "#cae5b0",
+						"smoothedMassFraction": 0.005215069615045241,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990907.2639591921,
+						"delta": -61.00127608561888,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011499334810921713
+					},
+					{
+						"hex": "#d5e4c3",
+						"smoothedMassFraction": 0.0052141743931532975,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990819.4859487561,
+						"delta": -148.77928652160335,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010926111844936366
+					},
+					{
+						"hex": "#d7e2b7",
+						"smoothedMassFraction": 0.005191758534370238,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990838.2752962372,
+						"delta": -129.9899390405044,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011164859410075003
+					},
+					{
+						"hex": "#cde4ae",
+						"smoothedMassFraction": 0.005162712495798933,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990911.9058651732,
+						"delta": -56.35937010450289,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.010228508880870676
+					},
+					{
+						"hex": "#cde3b5",
+						"smoothedMassFraction": 0.005146962585636777,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990889.2694069253,
+						"delta": -78.9958283524029,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.011771698359147684
+					},
+					{
+						"hex": "#d5e3b0",
+						"smoothedMassFraction": 0.00513449968493958,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990858.8101626519,
+						"delta": -109.45507262577303,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01023034652009548
+					},
+					{
+						"hex": "#c9e4b1",
+						"smoothedMassFraction": 0.005080664224730696,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990908.9544844488,
+						"delta": -59.31075082893949,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012163777045580375
+					},
+					{
+						"hex": "#cce3b5",
+						"smoothedMassFraction": 0.005078135808837348,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990897.1173142918,
+						"delta": -71.14792098593898,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012271814096016378
+					},
+					{
+						"hex": "#c7e5b1",
+						"smoothedMassFraction": 0.0050384260057150625,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990902.3687128067,
+						"delta": -65.89652247098275,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012918963605739481
+					},
+					{
+						"hex": "#c9e4b9",
+						"smoothedMassFraction": 0.004996485444582263,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990880.9696472053,
+						"delta": -87.29558807238936,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012468914946902408
+					},
+					{
+						"hex": "#d0e2b8",
+						"smoothedMassFraction": 0.004996326787735404,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990869.8348073899,
+						"delta": -98.43042788782623,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012703794898685087
+					},
+					{
+						"hex": "#cfe2b4",
+						"smoothedMassFraction": 0.004956611425656402,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990895.5679260434,
+						"delta": -72.69730923429597,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.01294492194137816
+					},
+					{
+						"hex": "#c9e2a9",
+						"smoothedMassFraction": 0.004922689949505873,
+						"feasible": true,
+						"violations": [],
+						"energyTotal": 990913.4737242392,
+						"delta": -54.79151103855111,
+						"offArtworkAfter": 0,
+						"maxDistanceAfter": 0.012072281571382994
+					}
+				]
+			},
+			"samples": [
+				{
+					"t": 0,
+					"hex": "#d9e2e1",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#d9e2e1",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0023194183368107197
+					},
+					"rawDistance": 0,
+					"offArtwork": false
+				},
+				{
+					"t": 0.015873015873015872,
+					"hex": "#d7e1de",
+					"reading": {
+						"nearestDistance": 0.004487038783496605,
+						"nearestHex": "#dae0de",
+						"nearestBarRatio": 0.2757860346340876,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0022548500220724017
+					},
+					"rawDistance": 0.004203649508588671,
+					"offArtwork": false
+				},
+				{
+					"t": 0.031746031746031744,
+					"hex": "#d6e1dc",
+					"reading": {
+						"nearestDistance": 0.004000447355394032,
+						"nearestHex": "#d4e1da",
+						"nearestBarRatio": 0.2458787557095287,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0022385906042092676
+					},
+					"rawDistance": 0.0037645010968334774,
+					"offArtwork": false
+				},
+				{
+					"t": 0.047619047619047616,
+					"hex": "#d4e0d9",
+					"reading": {
+						"nearestDistance": 0.002543443003506278,
+						"nearestHex": "#d4e1da",
+						"nearestBarRatio": 0.15632716677973435,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0021168563956356396
+					},
+					"rawDistance": 0.0016092003360199667,
+					"offArtwork": false
+				},
+				{
+					"t": 0.06349206349206349,
+					"hex": "#d2e0d7",
+					"reading": {
+						"nearestDistance": 0.005236060869079353,
+						"nearestHex": "#d4e1da",
+						"nearestBarRatio": 0.32182304050887234,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.002011373631163835
+					},
+					"rawDistance": 0.005133120037262779,
+					"offArtwork": false
+				},
+				{
+					"t": 0.07936507936507936,
+					"hex": "#d1dfd4",
+					"reading": {
+						"nearestDistance": 0.009688375666954662,
+						"nearestHex": "#d4e1da",
+						"nearestBarRatio": 0.5954748412387623,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0019154805255510129
+					},
+					"rawDistance": 0.009243898273702825,
+					"offArtwork": false
+				},
+				{
+					"t": 0.09523809523809523,
+					"hex": "#cfdfd2",
+					"reading": {
+						"nearestDistance": 0.008937063652813706,
+						"nearestHex": "#cadfce",
+						"nearestBarRatio": 0.5492970899086482,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0018198622807056137
+					},
+					"rawDistance": 0.009128450363753675,
+					"offArtwork": false
+				},
+				{
+					"t": 0.1111111111111111,
+					"hex": "#cddecf",
+					"reading": {
+						"nearestDistance": 0.005033403962841914,
+						"nearestHex": "#cadfce",
+						"nearestBarRatio": 0.3093671765729511,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.001636986638910018
+					},
+					"rawDistance": 0.005638127371534352,
+					"offArtwork": false
+				},
+				{
+					"t": 0.12698412698412698,
+					"hex": "#ccdecd",
+					"reading": {
+						"nearestDistance": 0.0032603028074875756,
+						"nearestHex": "#cadfce",
+						"nearestBarRatio": 0.2003873882905701,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0016294513272697689
+					},
+					"rawDistance": 0.00394837850945051,
+					"offArtwork": false
+				},
+				{
+					"t": 0.14285714285714285,
+					"hex": "#caddca",
+					"reading": {
+						"nearestDistance": 0.006218091799406094,
+						"nearestHex": "#cadfce",
+						"nearestBarRatio": 0.3821814259008048,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0014483209430732086
+					},
+					"rawDistance": 0.005893406810347639,
+					"offArtwork": false
+				},
+				{
+					"t": 0.15873015873015872,
+					"hex": "#c8dcc8",
+					"reading": {
+						"nearestDistance": 0.010179560857990825,
+						"nearestHex": "#cadfce",
+						"nearestBarRatio": 0.6256644657646482,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.001252169915462807
+					},
+					"rawDistance": 0.009445429222260202,
+					"offArtwork": false
+				},
+				{
+					"t": 0.1746031746031746,
+					"hex": "#c7dcc5",
+					"reading": {
+						"nearestDistance": 0.01349337286011532,
+						"nearestHex": "#cadfce",
+						"nearestBarRatio": 0.8293406797858217,
+						"barAtNearest": 0.01627,
+						"smoothedMassFraction": 0.0013116192830859128
+					},
+					"rawDistance": 0.013380633801704563,
+					"offArtwork": false
+				},
+				{
+					"t": 0.19047619047619047,
+					"hex": "#c5dbc3",
+					"reading": {
+						"nearestDistance": 0.014434764051473734,
+						"nearestHex": "#badbc8",
+						"nearestBarRatio": 0.7841510125005426,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0011447505125522794
+					},
+					"rawDistance": 0.014876044912592144,
+					"offArtwork": false
+				},
+				{
+					"t": 0.20634920634920634,
+					"hex": "#c4dbc0",
+					"reading": {
+						"nearestDistance": 0.014992123454746476,
+						"nearestHex": "#cbd9b5",
+						"nearestBarRatio": 0.6538213456060391,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0012524685347692235
+					},
+					"rawDistance": 0.014388302803142112,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2222222222222222,
+					"hex": "#c2dabe",
+					"reading": {
+						"nearestDistance": 0.014747840914150552,
+						"nearestHex": "#cbd9b5",
+						"nearestBarRatio": 0.643167942178393,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0011261776696273715
+					},
+					"rawDistance": 0.014649325100205135,
+					"offArtwork": false
+				},
+				{
+					"t": 0.23809523809523808,
+					"hex": "#c0dabb",
+					"reading": {
+						"nearestDistance": 0.014462144490689565,
+						"nearestHex": "#c6dbb2",
+						"nearestBarRatio": 0.6307084383205218,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0015833369091126372
+					},
+					"rawDistance": 0.014774885640182523,
+					"offArtwork": false
+				},
+				{
+					"t": 0.25396825396825395,
+					"hex": "#bfd9b9",
+					"reading": {
+						"nearestDistance": 0.014497487429494601,
+						"nearestHex": "#c4dbb1",
+						"nearestBarRatio": 0.6322497788702399,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0014905086468188801
+					},
+					"rawDistance": 0.014574799644635617,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2698412698412698,
+					"hex": "#bdd8b6",
+					"reading": {
+						"nearestDistance": 0.014959907388143309,
+						"nearestHex": "#c4dbb1",
+						"nearestBarRatio": 0.6524163710485525,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0014354474419168766
+					},
+					"rawDistance": 0.014496197142236145,
+					"offArtwork": false
+				},
+				{
+					"t": 0.2857142857142857,
+					"hex": "#bbd8b4",
+					"reading": {
+						"nearestDistance": 0.0154667122927229,
+						"nearestHex": "#c4dbb1",
+						"nearestBarRatio": 0.6745186346586525,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0015048049413882076
+					},
+					"rawDistance": 0.015594743244888423,
+					"offArtwork": false
+				},
+				{
+					"t": 0.30158730158730157,
+					"hex": "#bad7b1",
+					"reading": {
+						"nearestDistance": 0.015084308983844521,
+						"nearestHex": "#c4d5a8",
+						"nearestBarRatio": 0.6578416477908644,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0015216606692519251
+					},
+					"rawDistance": 0.015480298656118394,
+					"offArtwork": false
+				},
+				{
+					"t": 0.31746031746031744,
+					"hex": "#b8d7af",
+					"reading": {
+						"nearestDistance": 0.015049909003497522,
+						"nearestHex": "#c1d7a6",
+						"nearestBarRatio": 0.6563414305930014,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0016288510672587755
+					},
+					"rawDistance": 0.01516911908895292,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3333333333333333,
+					"hex": "#b6d6ac",
+					"reading": {
+						"nearestDistance": 0.015794513239966453,
+						"nearestHex": "#c1d7a6",
+						"nearestBarRatio": 0.6888143584808746,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001624217531271925
+					},
+					"rawDistance": 0.015552346907966114,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3492063492063492,
+					"hex": "#b5d5a9",
+					"reading": {
+						"nearestDistance": 0.016945741573777547,
+						"nearestHex": "#c1d7a6",
+						"nearestBarRatio": 0.7390205657992824,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001645241725453029
+					},
+					"rawDistance": 0.01699971038396606,
+					"offArtwork": false
+				},
+				{
+					"t": 0.36507936507936506,
+					"hex": "#b3d5a7",
+					"reading": {
+						"nearestDistance": 0.018941775806508132,
+						"nearestHex": "#c1d7a6",
+						"nearestBarRatio": 0.8260695947016194,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0017674684637691519
+					},
+					"rawDistance": 0.019272938289576953,
+					"offArtwork": false
+				},
+				{
+					"t": 0.38095238095238093,
+					"hex": "#b1d4a4",
+					"reading": {
+						"nearestDistance": 0.018897341089587814,
+						"nearestHex": "#bcd498",
+						"nearestBarRatio": 0.8241317527077111,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0017413152746335078
+					},
+					"rawDistance": 0.018754115000970524,
+					"offArtwork": false
+				},
+				{
+					"t": 0.3968253968253968,
+					"hex": "#b0d3a2",
+					"reading": {
+						"nearestDistance": 0.01731852783074468,
+						"nearestHex": "#afd194",
+						"nearestBarRatio": 0.7552781435126333,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0016485130912379398
+					},
+					"rawDistance": 0.016777410116823287,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4126984126984127,
+					"hex": "#aed39f",
+					"reading": {
+						"nearestDistance": 0.01309366260124479,
+						"nearestHex": "#afd194",
+						"nearestBarRatio": 0.5710275883665412,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0018596411213503883
+					},
+					"rawDistance": 0.013138253164531826,
+					"offArtwork": false
+				},
+				{
+					"t": 0.42857142857142855,
+					"hex": "#acd29c",
+					"reading": {
+						"nearestDistance": 0.009576321686779977,
+						"nearestHex": "#afd194",
+						"nearestBarRatio": 0.41763286902660174,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0018119936525911816
+					},
+					"rawDistance": 0.009954257410007546,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4444444444444444,
+					"hex": "#abd29a",
+					"reading": {
+						"nearestDistance": 0.007733589690893486,
+						"nearestHex": "#afd194",
+						"nearestBarRatio": 0.3372695024375703,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.001967439038200817
+					},
+					"rawDistance": 0.0078039812490910895,
+					"offArtwork": false
+				},
+				{
+					"t": 0.4603174603174603,
+					"hex": "#a9d197",
+					"reading": {
+						"nearestDistance": 0.007640194148689824,
+						"nearestHex": "#afd194",
+						"nearestBarRatio": 0.3331964303833329,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0019108534272269035
+					},
+					"rawDistance": 0.007619602645135511,
+					"offArtwork": false
+				},
+				{
+					"t": 0.47619047619047616,
+					"hex": "#a7d095",
+					"reading": {
+						"nearestDistance": 0.008173434654097965,
+						"nearestHex": "#a6ce8f",
+						"nearestBarRatio": 0.35645157671600375,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0017649623080735937
+					},
+					"rawDistance": 0.008453139390338848,
+					"offArtwork": false
+				},
+				{
+					"t": 0.49206349206349204,
+					"hex": "#a6d092",
+					"reading": {
+						"nearestDistance": 0.005562696928577495,
+						"nearestHex": "#a6ce8f",
+						"nearestBarRatio": 0.24259471995540755,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002012728774577028
+					},
+					"rawDistance": 0.004900447418585282,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5079365079365079,
+					"hex": "#a4cf8f",
+					"reading": {
+						"nearestDistance": 0.0034623066059570385,
+						"nearestHex": "#a6ce8f",
+						"nearestBarRatio": 0.15099461866363012,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0019838083762748855
+					},
+					"rawDistance": 0.003451744868071164,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5238095238095238,
+					"hex": "#a2ce8d",
+					"reading": {
+						"nearestDistance": 0.0058274576245590775,
+						"nearestHex": "#a6ce8f",
+						"nearestBarRatio": 0.25414119601217083,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0018897051351967904
+					},
+					"rawDistance": 0.0059292527984820985,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5396825396825397,
+					"hex": "#a1ce8a",
+					"reading": {
+						"nearestDistance": 0.009463299818221211,
+						"nearestHex": "#a6ce8f",
+						"nearestBarRatio": 0.41270387345055437,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0021906669687530717
+					},
+					"rawDistance": 0.009681883765284224,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5555555555555556,
+					"hex": "#9fcd87",
+					"reading": {
+						"nearestDistance": 0.011530779077818677,
+						"nearestHex": "#a7cd80",
+						"nearestBarRatio": 0.5028686907029515,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0022939571073653615
+					},
+					"rawDistance": 0.011343607305587674,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5714285714285714,
+					"hex": "#9ecd84",
+					"reading": {
+						"nearestDistance": 0.010937544550914195,
+						"nearestHex": "#a7cd80",
+						"nearestBarRatio": 0.47699714570057544,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0026938953079474223
+					},
+					"rawDistance": 0.012006971325961607,
+					"offArtwork": false
+				},
+				{
+					"t": 0.5873015873015873,
+					"hex": "#9ccc82",
+					"reading": {
+						"nearestDistance": 0.013694099212956648,
+						"nearestHex": "#a7cd80",
+						"nearestBarRatio": 0.5972132234172111,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.002779363134862997
+					},
+					"rawDistance": 0.01396419108017583,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6031746031746031,
+					"hex": "#9acb7f",
+					"reading": {
+						"nearestDistance": 0.01417364939746171,
+						"nearestHex": "#9cca72",
+						"nearestBarRatio": 0.6181268817035198,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0030853918822643786
+					},
+					"rawDistance": 0.014026896975971577,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6190476190476191,
+					"hex": "#99cb7c",
+					"reading": {
+						"nearestDistance": 0.010315985478301374,
+						"nearestHex": "#98ca73",
+						"nearestBarRatio": 0.44989033921942323,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.0036619038830362537
+					},
+					"rawDistance": 0.010479526295823357,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6349206349206349,
+					"hex": "#97ca79",
+					"reading": {
+						"nearestDistance": 0.006819204155759366,
+						"nearestHex": "#98ca73",
+						"nearestBarRatio": 0.2973922440366056,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.004067883938386275
+					},
+					"rawDistance": 0.007333292405307755,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6507936507936508,
+					"hex": "#95c977",
+					"reading": {
+						"nearestDistance": 0.006718700794063897,
+						"nearestHex": "#98ca73",
+						"nearestBarRatio": 0.29300919293780625,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.004263342099987065
+					},
+					"rawDistance": 0.0057511061545367165,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6666666666666666,
+					"hex": "#94c974",
+					"reading": {
+						"nearestDistance": 0.005772497098553744,
+						"nearestHex": "#98ca73",
+						"nearestBarRatio": 0.2517443130638353,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.004981012452414895
+					},
+					"rawDistance": 0.006352327283886624,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6825396825396826,
+					"hex": "#92c871",
+					"reading": {
+						"nearestDistance": 0.0033400479828415296,
+						"nearestHex": "#93c86e",
+						"nearestBarRatio": 0.14566279907725815,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.005451675493190071
+					},
+					"rawDistance": 0.0032504806678479337,
+					"offArtwork": false
+				},
+				{
+					"t": 0.6984126984126984,
+					"hex": "#90c76e",
+					"reading": {
+						"nearestDistance": 0.004675629484643797,
+						"nearestHex": "#93c86e",
+						"nearestBarRatio": 0.2039088305557696,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.005962071892398024
+					},
+					"rawDistance": 0.004015037435019957,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7142857142857143,
+					"hex": "#8fc76b",
+					"reading": {
+						"nearestDistance": 0.006611411977562387,
+						"nearestHex": "#93c86e",
+						"nearestBarRatio": 0.28833022143752235,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.006839426900403241
+					},
+					"rawDistance": 0.007550944644167753,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7301587301587301,
+					"hex": "#8dc668",
+					"reading": {
+						"nearestDistance": 0.0055586866486292425,
+						"nearestHex": "#8bc765",
+						"nearestBarRatio": 0.24241982767680953,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.00771901954843989
+					},
+					"rawDistance": 0.005665717416986756,
+					"offArtwork": false
+				},
+				{
+					"t": 0.746031746031746,
+					"hex": "#8bc565",
+					"reading": {
+						"nearestDistance": 0.0056095672765691055,
+						"nearestHex": "#8bc765",
+						"nearestBarRatio": 0.24463878223153535,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.009088822858233708
+					},
+					"rawDistance": 0.00495218624230916,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7619047619047619,
+					"hex": "#8ac562",
+					"reading": {
+						"nearestDistance": 0.005906442906181401,
+						"nearestHex": "#89c65e",
+						"nearestBarRatio": 0.25758582233673794,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.01089905643332828
+					},
+					"rawDistance": 0.006642805716733947,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7777777777777778,
+					"hex": "#88c45f",
+					"reading": {
+						"nearestDistance": 0.00618678267611017,
+						"nearestHex": "#89c65e",
+						"nearestBarRatio": 0.26981171723114566,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.013843518418517324
+					},
+					"rawDistance": 0.006260169973763343,
+					"offArtwork": false
+				},
+				{
+					"t": 0.7936507936507936,
+					"hex": "#86c35c",
+					"reading": {
+						"nearestDistance": 0.00398211683693122,
+						"nearestHex": "#89c259",
+						"nearestBarRatio": 0.1736640574326742,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.018240828219553973
+					},
+					"rawDistance": 0.003974027879432646,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8095238095238095,
+					"hex": "#84c258",
+					"reading": {
+						"nearestDistance": 0.005752970594874988,
+						"nearestHex": "#89c154",
+						"nearestBarRatio": 0.25089274290776226,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.02594684505405996
+					},
+					"rawDistance": 0.005266631319422637,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8253968253968254,
+					"hex": "#83c255",
+					"reading": {
+						"nearestDistance": 0.005320001118878281,
+						"nearestHex": "#84c351",
+						"nearestBarRatio": 0.23201051543298218,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.03204845903913633
+					},
+					"rawDistance": 0.0058617632284253115,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8412698412698413,
+					"hex": "#81c152",
+					"reading": {
+						"nearestDistance": 0.007020901234812372,
+						"nearestHex": "#84c351",
+						"nearestBarRatio": 0.3061884533280581,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.04260928647637485
+					},
+					"rawDistance": 0.006644591147019466,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8571428571428571,
+					"hex": "#7fc04e",
+					"reading": {
+						"nearestDistance": 0.006543378714245897,
+						"nearestHex": "#83c047",
+						"nearestBarRatio": 0.2853632234734364,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.05815391641483562
+					},
+					"rawDistance": 0.006204663810366352,
+					"offArtwork": false
+				},
+				{
+					"t": 0.873015873015873,
+					"hex": "#7ec04b",
+					"reading": {
+						"nearestDistance": 0.005233308604760289,
+						"nearestHex": "#7bbf48",
+						"nearestBarRatio": 0.22822976906935408,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.06853074101586344
+					},
+					"rawDistance": 0.004467823542203379,
+					"offArtwork": false
+				},
+				{
+					"t": 0.8888888888888888,
+					"hex": "#7cbf47",
+					"reading": {
+						"nearestDistance": 0.0011748665611438982,
+						"nearestHex": "#7bbf48",
+						"nearestBarRatio": 0.05123709381351497,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.08834761100846075
+					},
+					"rawDistance": 0.0012057773696643598,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9047619047619048,
+					"hex": "#7abe43",
+					"reading": {
+						"nearestDistance": 0.0027165577605594298,
+						"nearestHex": "#7bbd41",
+						"nearestBarRatio": 0.11847177324724945,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.10948990054336412
+					},
+					"rawDistance": 0.003085168820550697,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9206349206349206,
+					"hex": "#79be3f",
+					"reading": {
+						"nearestDistance": 0.0015152322513359237,
+						"nearestHex": "#79be3d",
+						"nearestBarRatio": 0.0660807785144319,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.12399590778013836
+					},
+					"rawDistance": 0.0022486636934316634,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9365079365079365,
+					"hex": "#77bd3b",
+					"reading": {
+						"nearestDistance": 0.002138711182038075,
+						"nearestHex": "#77bd38",
+						"nearestBarRatio": 0.09327131190746075,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.1439754780079017
+					},
+					"rawDistance": 0.0022212060817427283,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9523809523809523,
+					"hex": "#75bc37",
+					"reading": {
+						"nearestDistance": 0.0013867797596139075,
+						"nearestHex": "#74bc36",
+						"nearestBarRatio": 0.060478838186389335,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.1609062099526464
+					},
+					"rawDistance": 0.001462757654247666,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9682539682539683,
+					"hex": "#73bb32",
+					"reading": {
+						"nearestDistance": 0.0006309323500510376,
+						"nearestHex": "#73bb31",
+						"nearestBarRatio": 0.027515584389491393,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.17477105625285297
+					},
+					"rawDistance": 0.0014110867598578914,
+					"offArtwork": false
+				},
+				{
+					"t": 0.9841269841269841,
+					"hex": "#72bb2d",
+					"reading": {
+						"nearestDistance": 0.0005719133984539803,
+						"nearestHex": "#72bb2c",
+						"nearestBarRatio": 0.024941709483383354,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.18114728087205176
+					},
+					"rawDistance": 0.0009968707161819525,
+					"offArtwork": false
+				},
+				{
+					"t": 1,
+					"hex": "#70ba27",
+					"reading": {
+						"nearestDistance": 0,
+						"nearestHex": "#70ba27",
+						"nearestBarRatio": 0,
+						"barAtNearest": 0.02293,
+						"smoothedMassFraction": 0.18457613117270277
+					},
+					"rawDistance": 0,
+					"offArtwork": false
+				}
+			]
+		}
+	]
+}
