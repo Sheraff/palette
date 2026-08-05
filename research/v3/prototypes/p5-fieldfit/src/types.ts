@@ -83,6 +83,24 @@ export type StopTarget = Readonly<{
 	position: number
 }>
 
+/**
+ * What the t-continuity discriminator measured (SPEC decision 5, ruling 2026-08-05).
+ *
+ * Reported whenever the excursion test had to decide anything. Since the ruling, `bimodal` is the
+ * **only** route from `readRamp` to the two-block fallback, so this is the number that says *why* a
+ * cover reads as one bent field or as two blocks — and the constant it is compared against is
+ * `[UNCALIBRATED]` with exactly two anchor covers, which is the other reason it is published rather
+ * than kept inside `ramp.ts`.
+ */
+export type RampContinuity = Readonly<{
+	/** Inlier mass in the chord's middle third, over the inlier mass inside the chord's span. */
+	middleBandMass: number
+	/** Inlier mass inside the chord's span, over all inlier mass — how much of the field the chord covers. */
+	spanMassFraction: number
+	/** `middleBandMass < CONTINUOUS_MIDDLE_BAND_MASS`: two blocks, not one bent field. */
+	bimodal: boolean
+}>
+
 export type RampReading = Readonly<{
 	/** False when flat, when ends do not separate, or on the two-block fallback. */
 	gradientCandidate: boolean
@@ -148,6 +166,58 @@ export type SnapResult = Readonly<{
 }>
 
 // ---------------------------------------------------------------------------------------------
+// Margin reporting (assembled by `candidate.ts`)
+// ---------------------------------------------------------------------------------------------
+//
+// Round-3's cross-arm note 6: *"the reviewer grades margins; optimizers sit on floors"* — another arm
+// published six pairs clearing `sameColorBar` by 1e-4 to 3e-3 and the reviewer called all six
+// indistinguishable. A pass/fail scorecard cannot tell an epsilon-pass from a comfortable one, so a
+// round analysis cannot correlate a complaint with a margin. These shapes carry the ratio for every
+// pair the contract judges, and for the two prototype gates that are not the contract's.
+//
+// **Reporting only, and structurally so**: `candidate.ts` fills them on the finished palette, after
+// every decision, and nothing above reads the result.
+
+/** One judged pair: what was measured, what it had to clear, and by what factor it cleared it. */
+export type PairMargin = Readonly<{
+	/** `roles.foreground` × `roles.accent`, in the contract's own path spelling. */
+	pair: string
+	first: string
+	second: string
+	distance: number
+	/** The bar this pair is judged against — elevated for foreground↔accent, per invariant 3. */
+	bar: number
+	/** `distance / bar`. Below 1 is a violation; at 1.0 the palette is sitting on the floor. */
+	ratio: number
+	/** A sanctioned collapse: the pair is one published colour, so no distinctness is claimed. */
+	collapsed: boolean
+}>
+
+export type MarginReport = Readonly<{
+	pairs: readonly PairMargin[]
+	/**
+	 * The foreground's own legibility, measured the way `overlay.ts` selected it but at the
+	 * contract's density rather than selection density — so this is invariant 4's number, not the
+	 * ranking's approximation of it.
+	 */
+	foregroundLegibility: Readonly<{ minRawApca: number; floor: number; ratio: number }>
+	/**
+	 * SPEC decision 14's twin test on the published pair: `distance / sameColorBar`, against the
+	 * multiple that excludes the foreground's family. Below the multiple the accent would have been
+	 * excluded — so on a published palette this is always ≥ 1 unless the accent collapsed.
+	 */
+	accentTwin: Readonly<{
+		distance: number
+		bar: number
+		ratio: number
+		exclusionMultiple: number
+		/** `ratio / exclusionMultiple`: how far past the gate the published accent actually is. */
+		clearance: number
+		collapsed: boolean
+	}>
+}>
+
+// ---------------------------------------------------------------------------------------------
 // Diagnostics sidecar (assembled by `candidate.ts` / `diagnose.ts`)
 // ---------------------------------------------------------------------------------------------
 
@@ -167,7 +237,14 @@ export type Diagnostics = Readonly<{
 	thirdStopAccepted: boolean
 	residualExcursion: number
 	twoBlockFallback: boolean
+	/**
+	 * What the t-continuity discriminator measured, or `null` when the straight chord never left the
+	 * artwork and the question never arose.
+	 */
+	continuity: RampContinuity | null
 	accentChromaOnly: boolean
 	offArtwork: Readonly<Record<"background" | "surface" | "foreground" | "accent", boolean>>
 	escape: boolean
+	/** Distance, bar and ratio for every pair the contract judges, plus the two prototype gates. */
+	margins: MarginReport
 }>

@@ -135,7 +135,11 @@ import { componentCentre, componentFieldFit, compositeFieldFit } from "./src/com
 import type { FieldReading } from "./src/components.ts"
 import { decodeAndInventory, packRgb, unpackRgb } from "./src/decode.ts"
 import { fitField, fitFieldComponents } from "./src/fieldfit.ts"
-import { readOverlay } from "./src/overlay.ts"
+import {
+	ACCENT_FG_EXCLUSION_MULTIPLE,
+	FOREGROUND_MIN_RAW_APCA,
+	readOverlay,
+} from "./src/overlay.ts"
 import {
 	excursionResolution,
 	highestFieldMassTriple,
@@ -143,9 +147,16 @@ import {
 	projectionFraction,
 	readRampDetailed,
 } from "./src/ramp.ts"
-import type { RampContinuity } from "./src/ramp.ts"
 import { snapToArtwork } from "./src/snap.ts"
-import type { Diagnostics, FieldFit, Inventory, RampReading } from "./src/types.ts"
+import type {
+	Diagnostics,
+	FieldFit,
+	Inventory,
+	MarginReport,
+	PairMargin,
+	RampContinuity,
+	RampReading,
+} from "./src/types.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p5-fieldfit"
@@ -187,83 +198,20 @@ export type Analysis = Readonly<{
 	 * unchanged — see the guard in `analyzeImage`.
 	 */
 	fieldComponents: FieldReading | null
-	/**
-	 * What the t-continuity discriminator measured on the reading that was published, or `null` when
-	 * the chord never left the artwork and it was never consulted (SPEC decision 5, ruling
-	 * 2026-08-05).
-	 */
-	continuity: RampContinuity | null
-	/**
-	 * Every margin the contract's own judgements turn on, measured on the published palette. Reporting
-	 * only: nothing above reads it, and it is computed after the palette is assembled. Proposed for
-	 * `Diagnostics` in `reports/wp10-types.md`; it lives here until `types.ts` carries it.
-	 */
-	margins: MarginReport
 }>
 
 // ---------------------------------------------------------------------------------------------
 // Margin reporting (v0.6) — the numbers the reviewer grades, beside the numbers the contract passes
 // ---------------------------------------------------------------------------------------------
 //
-// Round-3's cross-arm note 6: *"the reviewer grades margins; optimizers sit on floors"* — another arm
-// published six pairs clearing `sameColorBar` by 1e-4 to 3e-3 and the reviewer called all six
-// indistinguishable. A pass/fail scorecard cannot tell an epsilon-pass from a comfortable one, so a
-// round analysis cannot correlate a complaint with a margin. This block publishes the ratio for every
-// pair the contract judges, and for the two prototype gates that are not the contract's.
+// The shapes (`PairMargin`, `MarginReport`) moved into `src/types.ts` in v0.6.1, with the reviewer's
+// rationale, when `Diagnostics` gained the `margins` field; what stays here is the measurement, which
+// is assembly's job. The two gate constants come from `overlay.ts` directly — v0.6 kept `REPORTED_`
+// copies of them because that module had no exports for them, and v0.6.1 deletes both copies.
 //
 // **Reporting only, and structurally so**: it runs on the finished `palette`, after every decision,
 // and nothing above reads its result. That is the same discipline `invariants.ts` applies to its own
 // observation sink.
-
-/** One judged pair: what was measured, what it had to clear, and by what factor it cleared it. */
-export type PairMargin = Readonly<{
-	/** `roles.foreground` × `roles.accent`, in the contract's own path spelling. */
-	pair: string
-	first: string
-	second: string
-	distance: number
-	/** The bar this pair is judged against — elevated for foreground↔accent, per invariant 3. */
-	bar: number
-	/** `distance / bar`. Below 1 is a violation; at 1.0 the palette is sitting on the floor. */
-	ratio: number
-	/** A sanctioned collapse: the pair is one published colour, so no distinctness is claimed. */
-	collapsed: boolean
-}>
-
-export type MarginReport = Readonly<{
-	pairs: readonly PairMargin[]
-	/**
-	 * The foreground's own legibility, measured the way `overlay.ts` selected it but at the
-	 * contract's density rather than selection density — so this is invariant 4's number, not the
-	 * ranking's approximation of it.
-	 */
-	foregroundLegibility: Readonly<{ minRawApca: number; floor: number; ratio: number }>
-	/**
-	 * SPEC decision 14's twin test on the published pair: `distance / sameColorBar`, against the
-	 * multiple that excludes the foreground's family. Below the multiple the accent would have been
-	 * excluded — so on a published palette this is always ≥ 1 unless the accent collapsed.
-	 */
-	accentTwin: Readonly<{
-		distance: number
-		bar: number
-		ratio: number
-		exclusionMultiple: number
-		/** `ratio / exclusionMultiple`: how far past the gate the published accent actually is. */
-		clearance: number
-		collapsed: boolean
-	}>
-}>
-
-/**
- * `overlay.ts`'s two prototype gates, mirrored here for reporting.
- *
- * They are `const` in `overlay.ts` (SPEC decisions 13 and 14) and that module is not this worker's to
- * edit; mirroring is the smaller wrong than a second definition of the *rule*, because nothing here
- * selects — these two numbers are printed beside a measurement and never compared to decide anything.
- * `reports/wp10-types.md` proposes exporting them so the mirror can go.
- */
-const REPORTED_FOREGROUND_MIN_RAW_APCA = 15
-const REPORTED_ACCENT_FG_EXCLUSION_MULTIPLE = 8
 
 function pairMargin(
 	pair: string,
@@ -320,7 +268,7 @@ function reportMargins(
 		: Math.abs(extremum.raw)
 	const floor = Math.max(
 		contrast.minTextContrast.effectiveRawMagnitude,
-		REPORTED_FOREGROUND_MIN_RAW_APCA,
+		FOREGROUND_MIN_RAW_APCA,
 	)
 
 	const twinDistance = colorDistance(accent, foreground)
@@ -338,8 +286,8 @@ function reportMargins(
 			distance: twinDistance,
 			bar: twinBar,
 			ratio: twinRatio,
-			exclusionMultiple: REPORTED_ACCENT_FG_EXCLUSION_MULTIPLE,
-			clearance: twinRatio / REPORTED_ACCENT_FG_EXCLUSION_MULTIPLE,
+			exclusionMultiple: ACCENT_FG_EXCLUSION_MULTIPLE,
+			clearance: twinRatio / ACCENT_FG_EXCLUSION_MULTIPLE,
 			collapsed: accentCollapsed,
 		},
 	}
@@ -595,6 +543,9 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		// A two-component reading that collapsed on the published colours was not a two-colour reading,
 		// whatever it was upstream: this flag is measured on what came out, like the collapse flags.
 		twoBlockFallback: (twoComponentReading && !surfaceCollapses) || ramp.twoBlockFallback,
+		// The discriminator's reading of the ramp that was published — `null` when the straight chord
+		// never left the artwork, so the question never arose.
+		continuity,
 		accentChromaOnly: accentCollapses ? false : overlay.accentChromaOnly,
 		offArtwork: {
 			background: backgroundSnap.offArtwork,
@@ -605,6 +556,9 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 			accent: accentCollapses ? foregroundOffArtwork : false,
 		},
 		escape: escape !== null,
+		// Last, on the finished palette: the report is a reading of what was published, and it cannot
+		// influence what was published because there is nothing left to influence.
+		margins: reportMargins(palette, stops, contrast),
 	}
 
 	return {
@@ -612,10 +566,6 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		diagnostics,
 		fieldOrder: fit.order,
 		fieldComponents,
-		continuity,
-		// Last, on the finished palette: the report is a reading of what was published, and it cannot
-		// influence what was published because there is nothing left to influence.
-		margins: reportMargins(palette, stops, contrast),
 	}
 }
 

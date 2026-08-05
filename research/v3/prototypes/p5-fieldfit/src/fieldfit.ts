@@ -839,6 +839,16 @@ export function fitFieldComponents(raster: DecodedRaster): FieldReading {
  *
  * "Better" is the larger claim, ties to the median start — the same order the starts are tried in,
  * so the choice is a total order and not a preference.
+ *
+ * **v0.6.1 cost pass.** The *solve* has always run on the domain's stratified lattice
+ * (`buildDomainSamples`); what ran at full resolution twice per level was the *measurement*. But the
+ * only thing the two starts are compared on is `supportPixels`, and that needs the claim **count**,
+ * not the claim, the weights, the σ̂, the core fraction or the moments. So the losing start no longer
+ * pays for any of them: each start is counted (`countClaim`, one pass, no allocation), and the full
+ * measurement runs once, for the winner. The comparison is the same number under the same strict
+ * `>` (so a tie still goes to the median start, which is still tried first) and the winner's
+ * measurement is the same arithmetic on the same residuals — the palettes are byte-identical, which
+ * is the claim this pass had to hold.
  */
 function fitComponentLevel(
 	raster: DecodedRaster,
@@ -850,7 +860,13 @@ function fitComponentLevel(
 	if (samples.count === 0) return null
 
 	const seeds: (OkLab | null)[] = [null, modalSeed(raster, domain)]
-	let best: FieldComponent | null = null
+	let best: {
+		coefficients: Float64Array
+		order: 0 | 1
+		marginBars: number
+		seed: OkLab
+		supportPixels: number
+	} | null = null
 	for (const seed of seeds) {
 		const order0 = fitOrder0(samples, EXPLAINED_RADIUS, seed)
 		const order1 = fitOrder1(samples, order0.coefficients, EXPLAINED_RADIUS)
@@ -858,19 +874,61 @@ function fitComponentLevel(
 		const span = fittedSpan(order1.coefficients)
 		const order: 0 | 1 = marginBars > 0 && span > 0 ? 1 : 0
 		const coefficients = order === 1 ? order1.coefficients : order0.coefficients
-		const candidate = measureComponent(
-			raster,
-			domain,
-			domainCount,
-			coefficients,
-			order,
-			marginBars,
-			depth,
-			seed ?? [order0.coefficients[0], order0.coefficients[3], order0.coefficients[6]],
-		)
-		if (best === null || candidate.supportPixels > best.supportPixels) best = candidate
+		const supportPixels = countClaim(raster, domain, coefficients)
+		if (best === null || supportPixels > best.supportPixels) {
+			best = {
+				coefficients,
+				order,
+				marginBars,
+				seed: seed ?? [order0.coefficients[0], order0.coefficients[3], order0.coefficients[6]],
+				supportPixels,
+			}
+		}
 	}
-	return best
+	if (best === null) return null
+	return measureComponent(
+		raster,
+		domain,
+		domainCount,
+		best.coefficients,
+		best.order,
+		best.marginBars,
+		depth,
+		best.seed,
+	)
+}
+
+/**
+ * How many domain pixels a candidate surface would claim — `measureComponent`'s `supportPixels` and
+ * nothing else.
+ *
+ * The residual arithmetic is character-for-character the one in `measureComponent` (same row-hoisted
+ * terms, same operand order, same `norm3`), because the two numbers have to agree exactly: this one
+ * chooses the start, that one publishes the component. The claim test is likewise the same
+ * predicate — `value < EXPLAINED_RADIUS`, which excludes a NaN residual on both sides.
+ */
+function countClaim(raster: DecodedRaster, domain: Uint8Array, coefficients: Float64Array): number {
+	const { width, height, lab } = raster
+	let claimed = 0
+	for (let row = 0; row < height; row += 1) {
+		const py = normalizedY(row, height)
+		const baseL = coefficients[0] + coefficients[2] * py
+		const baseA = coefficients[3] + coefficients[5] * py
+		const baseB = coefficients[6] + coefficients[8] * py
+		for (let column = 0; column < width; column += 1) {
+			const index = row * width + column
+			if (domain[index] !== 1) continue
+			const px = normalizedX(column, width)
+			const offset = index * 3
+			const value = norm3(
+				lab[offset] - (baseL + coefficients[1] * px),
+				lab[offset + 1] - (baseA + coefficients[4] * px),
+				lab[offset + 2] - (baseB + coefficients[7] * px),
+			)
+			if (value < EXPLAINED_RADIUS) claimed += 1
+		}
+	}
+	return claimed
 }
 
 /**
@@ -1136,16 +1194,88 @@ function norm3(first: number, second: number, third: number): number {
 }
 
 /**
- * Median of the first `count` entries, by sorting a copy. Deterministic (typed-array sort is
- * numeric and total on finite values); even counts average the two central entries.
+ * Median of the first `count` entries. Even counts average the two central entries.
+ *
+ * **The value is the sorted-order one; only the route to it changed (v0.6.1 cost pass).** Until
+ * v0.6.0 this sorted a copy — `O(n log n)` — and it was, measured, **66% of the entire pipeline's
+ * CPU time** on a 3000×3000 cover: the recursion asks for a median of up to nine million residuals
+ * twice per level, and the global fit asks for one more. Selection answers the same question in
+ * `O(n)`: the k-th order statistic is what a median *is*, and quickselect returns the same element
+ * the sort would have put at index k. This is an implementation change with no numerical content —
+ * the returned double is bit-for-bit what the sort returned, which is why the palettes it feeds are
+ * byte-identical across the change.
+ *
+ * Precondition, unchanged from the sort version in practice and stated because selection is the
+ * stricter of the two about it: the entries are finite. Every caller passes residual *norms*
+ * (`norm3` of finite Float32/Float64 differences), so they are finite and non-negative. A NaN would
+ * make a `<`-ordered partition non-total; the sort put NaNs last instead. No caller can produce one
+ * without `fieldfit.ts` already being broken upstream, which is where that would need fixing.
  */
 function median(values: Float64Array | Float32Array, count: number): number {
 	if (count === 0) return 0
-	const sorted = values.slice(0, count)
-	sorted.sort()
+	const scratch = values.slice(0, count)
 	const middle = count >> 1
-	if (count % 2 === 1) return sorted[middle]
-	return (sorted[middle - 1] + sorted[middle]) / 2
+	const upper = selectInPlace(scratch, middle)
+	if (count % 2 === 1) return upper
+	// `selectInPlace` leaves every entry below index `middle` no greater than the selected one, so
+	// the (middle−1)-th order statistic is the largest of that prefix. `middle ≥ 1` here because an
+	// even `count` reaching this line is at least 2.
+	let lower = scratch[0]
+	for (let i = 1; i < middle; i += 1) {
+		if (scratch[i] > lower) lower = scratch[i]
+	}
+	return (lower + upper) / 2
+}
+
+/**
+ * The `k`-th smallest entry of `values`, permuting `values` in place (quickselect).
+ *
+ * Three-way (Dutch-flag) partitioning, deliberately: residual arrays are full of exact duplicates —
+ * every pixel a flat fit explains perfectly has residual 0, and an 8-bit raster has at most 2^24
+ * distinct colours behind millions of pixels — and a two-way partition does `O(n²)` work on a run of
+ * equal keys. Median-of-three pivots, so the choice is a fixed function of the data: no randomness,
+ * and the same array always takes the same path.
+ */
+function selectInPlace(values: Float64Array | Float32Array, k: number): number {
+	let low = 0
+	let high = values.length - 1
+	while (low < high) {
+		const middle = (low + high) >> 1
+		const pivot = medianOfThree(values[low], values[middle], values[high])
+		let less = low
+		let greater = high
+		let cursor = low
+		while (cursor <= greater) {
+			const value = values[cursor]
+			if (value < pivot) {
+				values[cursor] = values[less]
+				values[less] = value
+				less += 1
+				cursor += 1
+			} else if (value > pivot) {
+				values[cursor] = values[greater]
+				values[greater] = value
+				greater -= 1
+			} else {
+				cursor += 1
+			}
+		}
+		// Everything in [less, greater] equals the pivot, so a `k` landing there is answered.
+		if (k < less) high = less - 1
+		else if (k > greater) low = greater + 1
+		else return pivot
+	}
+	return values[low]
+}
+
+/** The middle of three values, by value. Used only to pick a pivot. */
+function medianOfThree(first: number, second: number, third: number): number {
+	if (first < second) {
+		if (second < third) return second
+		return first < third ? third : first
+	}
+	if (first < third) return first
+	return second < third ? third : second
 }
 
 /**

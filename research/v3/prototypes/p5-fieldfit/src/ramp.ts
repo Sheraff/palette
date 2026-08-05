@@ -99,6 +99,7 @@ import type {
 	DecodedRaster,
 	FieldFit,
 	Inventory,
+	RampContinuity,
 	RampReading,
 	StopTarget,
 	TripleStats,
@@ -568,15 +569,9 @@ function pickCandidates(grid: ColorGrid, worst: OkLab, radius: number): readonly
 // t-continuity: is this one field with a bend, or two blocks? (SPEC decision 5, ruling 2026-08-05)
 // ---------------------------------------------------------------------------------------------
 
-/** What the discriminator measured. Reported whenever the excursion test had to decide anything. */
-export type RampContinuity = Readonly<{
-	/** Inlier mass in the chord's middle third, over the inlier mass inside the chord's span. */
-	middleBandMass: number
-	/** Inlier mass inside the chord's span, over all inlier mass — how much of the field the chord covers. */
-	spanMassFraction: number
-	/** `middleBandMass < CONTINUOUS_MIDDLE_BAND_MASS`: two blocks, not one bent field. */
-	bimodal: boolean
-}>
+// `RampContinuity` moved into `src/types.ts` in v0.6.1: the discriminator's reading is now a
+// `Diagnostics` field, and the interface contract is where the shapes the sidecar publishes live.
+// This module reads it from there and defines nothing of its own — there is exactly one definition.
 
 /**
  * **Inlier mass along the ramp coordinate.**

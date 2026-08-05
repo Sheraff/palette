@@ -18,8 +18,8 @@
  * far been decided on (`16a8247378`'s sky at core 0.40 is a row of this table). It is `null` when the
  * recursion never ran.
  *
- * v0.6 adds two blocks, both of which `types.ts` does not yet carry (see `reports/wp10-types.md`) and
- * both of which come off `Analysis` rather than `Diagnostics` in the meantime:
+ * v0.6 adds two blocks; v0.6.1 moved both into `Diagnostics` itself (`reports/wp10-types.md`, ratified),
+ * so this file reads them off the sidecar like everything else and prints them rounded, once:
  *
  *  - `continuity` — the t-continuity discriminator's measurement, `null` when the straight chord never
  *    left the artwork and the question never arose. `middleBandMass` below the threshold is the *only*
@@ -45,13 +45,15 @@ export type DiagnosticReport = Awaited<ReturnType<typeof diagnose>>
 
 export async function diagnose(imagePath: string) {
 	const absolute = isAbsolute(imagePath) ? imagePath : resolve(process.cwd(), imagePath)
-	const { palette, diagnostics, fieldOrder, fieldComponents, continuity, margins } =
-		await analyzeImage(absolute)
+	const { palette, diagnostics, fieldOrder, fieldComponents } = await analyzeImage(absolute)
+	// `continuity` and `margins` are printed below, rounded to the digits a reader can act on; they are
+	// lifted out of the flat sidecar block rather than printed twice.
+	const { continuity, margins, ...flatDiagnostics } = diagnostics
 	return {
 		image: absolute,
 		size: `${palette.metadata.sourceRendition.width}×${palette.metadata.sourceRendition.height}`,
 		fieldOrder,
-		diagnostics,
+		diagnostics: flatDiagnostics,
 		continuity: continuity === null ? null : {
 			middleBandMass: Number(continuity.middleBandMass.toFixed(4)),
 			spanMassFraction: Number(continuity.spanMassFraction.toFixed(4)),

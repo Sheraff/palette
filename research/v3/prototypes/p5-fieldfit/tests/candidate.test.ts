@@ -281,7 +281,9 @@ const ANCHOR_CONTINUOUS = "09/ab67616d0000b27300096440c40e31757a78343d"
 const ANCHOR_BIMODAL = "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg"
 
 test("anchor: round-3 item 8 reads continuous and publishes its ramp", async () => {
-	const { palette, diagnostics, continuity } = await analyzeImage(resolve(REPO_ROOT, ANCHOR_CONTINUOUS))
+	const { palette, diagnostics } = await analyzeImage(resolve(REPO_ROOT, ANCHOR_CONTINUOUS))
+	// v0.6.1: the discriminator's reading is a `Diagnostics` field, not a separate `Analysis` one.
+	const continuity = diagnostics.continuity
 
 	assert.ok(continuity !== null, "the chord left the artwork, so the discriminator ran")
 	assert.equal(continuity.bimodal, false, `middle-band mass ${continuity.middleBandMass}`)

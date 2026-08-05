@@ -403,8 +403,12 @@ function readCluster(cluster: Agglomerate, fit: FieldFit): OverlayCluster {
  * This is the prototype's own floor and it is combined with — never substituted for — the caller's
  * `minTextContrast`: the effective floor is the larger of the two, so a caller can raise it and
  * cannot lower it below the evidence.
+ *
+ * **Exported for reporting only** (v0.6.1). `candidate.ts` prints it beside the foreground's measured
+ * `min|raw APCA|` and never compares against it; it used to keep a `REPORTED_` copy, which was one
+ * edit away from disagreeing with the gate it claimed to describe.
  */
-const FOREGROUND_MIN_RAW_APCA = 15
+export const FOREGROUND_MIN_RAW_APCA = 15
 
 /**
  * **The accent's twin-exclusion multiple**: a candidate within
@@ -427,8 +431,12 @@ const FOREGROUND_MIN_RAW_APCA = 15
  * reported upward as calibration input, and this multiple is superseded automatically by any
  * recalibration of `sameColorBar` — it exists only to stand in for a bar that does not yet match the
  * reviewer's eye.
+ *
+ * **Exported for reporting only** (v0.6.1), for the same reason as `FOREGROUND_MIN_RAW_APCA`:
+ * `candidate.ts` publishes the accent's twin ratio against this number and its `REPORTED_` mirror
+ * could drift from it.
  */
-const ACCENT_FG_EXCLUSION_MULTIPLE = 8
+export const ACCENT_FG_EXCLUSION_MULTIPLE = 8
 
 // ---------------------------------------------------------------------------------------------
 // Entry point
