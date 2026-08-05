@@ -77,6 +77,29 @@ orders part. Until that verdict, contrast-first accent ranking is not to be re-i
   as reviewer vocabulary for hue separation, not a new metric — if round evidence recurs,
   it prices a hue-separation preference level in the accent order (ordering, not a constant).
 
+## D6 — guide-stop doctrine, reviewer clarification (2026-08-05) — SUPERSEDES part of D5
+
+D5's "a 4th is effectively off the table" was too strong and is superseded. Reviewer verbatim
+(today): stops 3–4 are "mostly to help guide the linear interpolation in OKLab space through
+colors that fit the artwork, not to introduce new colors or meander around the color space."
+Canon: PHASE_0_DECISIONS.md:62-71 — 3rd stop allowed for a genuine 3-colour ramp; stops 3–4
+are otherwise guides, existing only when the 2-stop straight line demonstrably passes through
+off-artwork colours; never coverage, never metric-fitting; flattest path that stays
+on-artwork; 4th negotiable on proven utility. The cross-arm 4-stop losses were the doctrine's
+predicted misuse cost, not evidence against guide stops.
+
+**The symmetric error is P2's live exposure:** 2-stop-always is NOT the safe harbor — a
+2-stop ramp whose straight OKLab line leaves the artwork OWES a guide stop (C7: 42% of legacy
+midpoints sit outside their endpoints' lightness span). P2 publishes 2-stop-only as a
+recorded cycle-1 cut with no excursion test, so today we cannot even detect when we owe one.
+
+**Consequence — cycle-3 work item, promoted from "cut" to "owed":** implement the excursion
+machinery (arm-b §2.7 / arm-e §2.4 semantics): sample the rendered 2-stop OKLab line against
+the artwork's occupied colours; over the excursion bar, insert ONE interior stop at the
+worst-excursion t taking the field's actual colour there (exact pixel), re-test, keep only if
+excursion falls materially; D4's minimum-spacing check and monotone colour order are
+preconditions for any inserted stop. D5's other three items stand unchanged.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
