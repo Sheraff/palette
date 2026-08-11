@@ -1,0 +1,466 @@
+{
+  "image": "/Users/Flo/GitHub/palette/.worktrees/p5-fieldfit/02/ab67616d00001e0200020fe55990dc2670c3f5a6.jpg",
+  "size": "300×300",
+  "fieldOrder": 1,
+  "diagnostics": {
+    "noField": true,
+    "inlierFraction": 0.9959555555555556,
+    "fieldExplainedFraction": 0.4343,
+    "fieldComponents": 3,
+    "retreat": false,
+    "residualScale": 0.0985501299664378,
+    "marginBars": 3.746617049434024,
+    "orientationMargin": 3.521730546007717,
+    "gradient": true,
+    "excursionMax": 0.0028206204057420205,
+    "thirdStopAccepted": false,
+    "residualExcursion": 0.002820254468511585,
+    "twoBlockFallback": false,
+    "accentChromaOnly": false,
+    "offArtwork": {
+      "background": false,
+      "surface": false,
+      "foreground": false,
+      "accent": false
+    },
+    "escape": false
+  },
+  "continuity": null,
+  "pathExcursion": {
+    "chord": 0.00552,
+    "published": 0.00552,
+    "chordBars": 0.36,
+    "publishedBars": 0.36,
+    "precision": 0.00082,
+    "largestGap": 0.00397,
+    "beyondEnds": 0.02344,
+    "samples": 64
+  },
+  "margins": {
+    "pairs": [
+      {
+        "pair": "background×surface",
+        "colors": "#b7c9d7/#92bad4",
+        "distance": 0.06467,
+        "bar": 0.02293,
+        "ratio": 2.821,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×accent",
+        "colors": "#b2944e/#80532a",
+        "distance": 0.19987,
+        "bar": 0.07444,
+        "ratio": 2.685,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×background",
+        "colors": "#b2944e/#b7c9d7",
+        "distance": 0.19124,
+        "bar": 0.02293,
+        "ratio": 8.34,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×surface",
+        "colors": "#b2944e/#92bad4",
+        "distance": 0.17327,
+        "bar": 0.02293,
+        "ratio": 7.557,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×background",
+        "colors": "#80532a/#b7c9d7",
+        "distance": 0.36013,
+        "bar": 0.01627,
+        "ratio": 22.135,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×surface",
+        "colors": "#80532a/#92bad4",
+        "distance": 0.31726,
+        "bar": 0.02293,
+        "ratio": 13.836,
+        "collapsed": false
+      }
+    ],
+    "foregroundLegibility": {
+      "minRawApca": 15.709,
+      "floor": 15,
+      "ratio": 1.047
+    },
+    "accentTwin": {
+      "distance": 0.19987,
+      "bar": 0.02293,
+      "ratio": 8.716,
+      "exclusionMultiple": 8,
+      "clearance": 1.09,
+      "collapsed": false
+    }
+  },
+  "assignment": {
+    "shortlistSize": 5,
+    "familyCount": 4,
+    "enumerated": 26,
+    "feasible": 26,
+    "totalFamilies": 19,
+    "massRetained": 0.7819,
+    "families": [
+      {
+        "rank": 1,
+        "hex": "#9dbfd8",
+        "massFraction": 0.3757,
+        "members": 1
+      },
+      {
+        "rank": 2,
+        "hex": "#ae914b",
+        "massFraction": 0.1777,
+        "members": 1
+      },
+      {
+        "rank": 3,
+        "hex": "#707e31",
+        "massFraction": 0.114,
+        "members": 1
+      },
+      {
+        "rank": 4,
+        "hex": "#acc8dd",
+        "massFraction": 0.0998,
+        "members": 193
+      }
+    ],
+    "fieldCovered": [
+      1
+    ],
+    "coverage": 2,
+    "covered": [
+      1,
+      2
+    ],
+    "coverageDecided": false,
+    "perRoleOnly": {
+      "foreground": "#b2944e",
+      "accent": "#80532a",
+      "coverage": 2
+    },
+    "foregroundShortlist": [
+      {
+        "hex": "#b2944e",
+        "source": "overlay",
+        "mass": 1687,
+        "chroma": 0.0961,
+        "minRawApca": 15.71
+      },
+      {
+        "hex": "#ab8848",
+        "source": "overlay",
+        "mass": 817,
+        "chroma": 0.0927,
+        "minRawApca": 20.84
+      },
+      {
+        "hex": "#b18554",
+        "source": "overlay",
+        "mass": 559.2,
+        "chroma": 0.0849,
+        "minRawApca": 20.79
+      },
+      {
+        "hex": "#8e6138",
+        "source": "overlay",
+        "mass": 330.6,
+        "chroma": 0.0814,
+        "minRawApca": 37.01
+      },
+      {
+        "hex": "#84592f",
+        "source": "overlay",
+        "mass": 185.9,
+        "chroma": 0.0808,
+        "minRawApca": 40.68
+      }
+    ],
+    "accentShortlist": [
+      {
+        "hex": "#dedde2",
+        "source": "overlay",
+        "mass": 162,
+        "chroma": 0.0068,
+        "minRawApca": 15.4
+      },
+      {
+        "hex": "#e4e4e4",
+        "source": "overlay",
+        "mass": 91,
+        "chroma": 0,
+        "minRawApca": 19.42
+      },
+      {
+        "hex": "#80532a",
+        "source": "overlay",
+        "mass": 52,
+        "chroma": 0.0822,
+        "minRawApca": 42.86
+      },
+      {
+        "hex": "#f1edea",
+        "source": "overlay",
+        "mass": 17,
+        "chroma": 0.0059,
+        "minRawApca": 25.55
+      },
+      {
+        "hex": "#7a4f2f",
+        "source": "overlay",
+        "mass": 8,
+        "chroma": 0.0742,
+        "minRawApca": 44.65
+      }
+    ]
+  },
+  "componentCandidates": [
+    {
+      "depth": 1,
+      "supportFraction": 0.1923,
+      "supportMass": 10259.1,
+      "centre": "#708031",
+      "published": "#707e31",
+      "admitted": true,
+      "duplicateOf": null,
+      "supersedes": [
+        "#6e8132@4.0"
+      ],
+      "feasible": true,
+      "minRawApca": 31.27
+    },
+    {
+      "depth": 2,
+      "supportFraction": 0.1405,
+      "supportMass": 6646,
+      "centre": "#9b6f43",
+      "published": "#9c6d43",
+      "admitted": true,
+      "duplicateOf": null,
+      "supersedes": [],
+      "feasible": true,
+      "minRawApca": 31.46
+    }
+  ],
+  "marks": {
+    "scale": {
+      "radius": 11,
+      "diagonal": 424.3,
+      "criterion": "plateau",
+      "plateauLength": 2,
+      "chosenIndex": 8,
+      "slopeIndex": 8,
+      "curve": [
+        {
+          "r": 0,
+          "n": 994
+        },
+        {
+          "r": 1,
+          "n": 63
+        },
+        {
+          "r": 2,
+          "n": 25
+        },
+        {
+          "r": 3,
+          "n": 15
+        },
+        {
+          "r": 4,
+          "n": 10
+        },
+        {
+          "r": 5,
+          "n": 8
+        },
+        {
+          "r": 6,
+          "n": 6
+        },
+        {
+          "r": 8,
+          "n": 4
+        },
+        {
+          "r": 11,
+          "n": 3
+        },
+        {
+          "r": 16,
+          "n": 3
+        }
+      ]
+    },
+    "entries": 6,
+    "unexplainedPixels": 19652,
+    "massRetained": 0.7819,
+    "top": [
+      {
+        "kind": "region",
+        "hex": "#9dbfd8",
+        "pixels": 40393,
+        "mass": 33809.4,
+        "massFraction": 0.3757,
+        "chroma": 0.0512,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.205,
+        "groundAdjacency": 0.002,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#ae914b",
+        "pixels": 15993,
+        "mass": 15993,
+        "massFraction": 0.1777,
+        "chroma": 0.0958,
+        "selfCoherence": 0.8279,
+        "identityCoherent": true,
+        "erosionMortality": 0.765,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "region",
+        "hex": "#707e31",
+        "pixels": 17308,
+        "mass": 10259.1,
+        "massFraction": 0.114,
+        "chroma": 0.1032,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.555,
+        "groundAdjacency": 0.358,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "region",
+        "hex": "#9c6d43",
+        "pixels": 12647,
+        "mass": 6646,
+        "massFraction": 0.0738,
+        "chroma": 0.0832,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.769,
+        "groundAdjacency": 0.33,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#c2ccd8",
+        "pixels": 3642,
+        "mass": 3642,
+        "massFraction": 0.0405,
+        "chroma": 0.02,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.867,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#c0c7d1",
+        "pixels": 17,
+        "mass": 17,
+        "massFraction": 0.0002,
+        "chroma": 0.016,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "depth": 0,
+      "order": 1,
+      "supportFraction": 0.4488,
+      "coreFraction": 0.8783,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.205,
+      "groundAdjacency": 0.0022,
+      "inkLike": false
+    },
+    {
+      "depth": 1,
+      "order": 1,
+      "supportFraction": 0.1923,
+      "coreFraction": 0.6327,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.555,
+      "groundAdjacency": 0.358,
+      "inkLike": false
+    },
+    {
+      "depth": 2,
+      "order": 0,
+      "supportFraction": 0.1405,
+      "coreFraction": 0.5461,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.7691,
+      "groundAdjacency": 0.3297,
+      "inkLike": false
+    },
+    {
+      "depth": 3,
+      "order": 1,
+      "supportFraction": 0.0915,
+      "coreFraction": 0.8007,
+      "extensive": false,
+      "smooth": false,
+      "erosionMortality": null,
+      "groundAdjacency": null,
+      "inkLike": false
+    }
+  ],
+  "palette": {
+    "background": "#b7c9d7",
+    "surface": "#92bad4",
+    "foreground": "#b2944e",
+    "accent": "#80532a",
+    "gradient": [
+      {
+        "hex": "#b7c9d7",
+        "position": 0
+      },
+      {
+        "hex": "#92bad4",
+        "position": 1
+      }
+    ],
+    "geometry": {
+      "kind": "linear",
+      "angleDegrees": -102.08956583986459
+    },
+    "collapse": {
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+    },
+    "escape": null
+  }
+}

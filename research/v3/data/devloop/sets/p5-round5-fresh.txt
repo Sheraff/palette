@@ -1,0 +1,29 @@
+# p5-round5-fresh — the five covers staged fresh for P5 review round 5 (payload items 4 to 8).
+#
+# Pool: round-4's census pool, UNCHANGED — a deterministic census over shards 01/, 02/ and 03/ taken
+# whole (1075 files, shard order 01,02,03, ascending filename sort within each shard). Holding the
+# pool identical to round 4's is deliberate: items 4 and 5 re-run round-4's inverted illustration
+# gate and round-3's panel gate verbatim, and a like-for-like next-best draw is only meaningful over
+# the same pool. Whole shards also keep the pool free of any cut-off parameter.
+#
+# Excluded before any statistic was read: data/holdout/holdout.json (by id, by every files[*].path
+# and by bestRenditionPath), all 220 artworks of data/coverage-set/coverage-set-1.json, and every
+# cover any earlier P5 round drew — demo-20, p5-round2-fresh, p5-round3-fresh AND p5-round4-fresh,
+# which is a superset of every cover any earlier round SERVED. Id-shaped matches use the
+# trailing-24-hex artwork key, so a different rendition of an excluded artwork is excluded too.
+# 1037 covers censused of 1075 scanned (34 coverage-set-1, 4 already-drawn, 0 holdout,
+# 0 unreadable).
+#
+# Class rules, pools, runners-up and the disclosed miss risk on item 4:
+# prototypes/p5-fieldfit/review-rounds/round-5/STAGING.md §3, and the programs kept beside it
+# (select-fresh-covers.mjs, rank.mjs, which carry every rule in their headers — written before any
+# ranking was read). No palette was consulted before selection.
+#
+# Paths resolve against the repository root. All five carry a .jpg extension.
+#
+# The five lines below are round-5 payload items 4, 5, 6, 7 and 8, in that order.
+01/ab67616d0000b27300011897ac9fe3d4b4cd95b2.jpg
+02/ab67616d00001e0200020fe55990dc2670c3f5a6.jpg
+03/ab67616d0000b27300036816370505937e5e017c.jpg
+01/ab67616d00001e020001418e127493d543b718cb.jpg
+03/ab67616d0000b27300035026aa41f4f25760ac35.jpg

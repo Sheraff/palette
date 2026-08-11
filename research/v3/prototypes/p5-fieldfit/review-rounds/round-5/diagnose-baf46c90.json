@@ -1,0 +1,620 @@
+{
+  "image": "/Users/Flo/GitHub/palette/.worktrees/p5-fieldfit/01/ab67616d0000b27300012525e62c7f45baf46c90.jpg",
+  "size": "640×640",
+  "fieldOrder": 1,
+  "diagnostics": {
+    "noField": true,
+    "inlierFraction": 1,
+    "fieldExplainedFraction": 0.18655029296875,
+    "fieldComponents": 4,
+    "retreat": false,
+    "residualScale": 0.1705761720612645,
+    "marginBars": 9.556481255989855,
+    "orientationMargin": -7.789617746118044,
+    "gradient": true,
+    "excursionMax": 0.0024697295318919354,
+    "thirdStopAccepted": false,
+    "residualExcursion": 0.002752062216017066,
+    "twoBlockFallback": false,
+    "accentChromaOnly": false,
+    "offArtwork": {
+      "background": false,
+      "surface": false,
+      "foreground": false,
+      "accent": false
+    },
+    "escape": false
+  },
+  "continuity": null,
+  "pathExcursion": {
+    "chord": 0.01058,
+    "published": 0.01058,
+    "chordBars": 0.689,
+    "publishedBars": 0.689,
+    "precision": 0.000435,
+    "largestGap": 0.00229,
+    "beyondEnds": 0.03158,
+    "samples": 64
+  },
+  "margins": {
+    "pairs": [
+      {
+        "pair": "background×surface",
+        "colors": "#e9d3df/#d7e2e4",
+        "distance": 0.04193,
+        "bar": 0.01627,
+        "ratio": 2.577,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×accent",
+        "colors": "#161010/#8d2639",
+        "distance": 0.28547,
+        "bar": 0.07444,
+        "ratio": 3.835,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×background",
+        "colors": "#161010/#e9d3df",
+        "distance": 0.70795,
+        "bar": 0.01627,
+        "ratio": 43.513,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×surface",
+        "colors": "#161010/#d7e2e4",
+        "distance": 0.72466,
+        "bar": 0.01627,
+        "ratio": 44.54,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×background",
+        "colors": "#8d2639/#e9d3df",
+        "distance": 0.46625,
+        "bar": 0.01627,
+        "ratio": 28.657,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×surface",
+        "colors": "#8d2639/#d7e2e4",
+        "distance": 0.4921,
+        "bar": 0.01627,
+        "ratio": 30.246,
+        "collapsed": false
+      }
+    ],
+    "foregroundLegibility": {
+      "minRawApca": 85.548,
+      "floor": 15,
+      "ratio": 5.703
+    },
+    "accentTwin": {
+      "distance": 0.28547,
+      "bar": 0.01502,
+      "ratio": 19.006,
+      "exclusionMultiple": 8,
+      "clearance": 2.376,
+      "collapsed": false
+    }
+  },
+  "assignment": {
+    "shortlistSize": 5,
+    "familyCount": 4,
+    "enumerated": 30,
+    "feasible": 30,
+    "totalFamilies": 44,
+    "massRetained": 0.6945,
+    "families": [
+      {
+        "rank": 1,
+        "hex": "#e6dde2",
+        "massFraction": 0.3337,
+        "members": 1
+      },
+      {
+        "rank": 2,
+        "hex": "#94aac2",
+        "massFraction": 0.1116,
+        "members": 1
+      },
+      {
+        "rank": 3,
+        "hex": "#8d2639",
+        "massFraction": 0.1005,
+        "members": 1
+      },
+      {
+        "rank": 4,
+        "hex": "#271515",
+        "massFraction": 0.082,
+        "members": 1
+      }
+    ],
+    "fieldCovered": [],
+    "coverage": 1,
+    "covered": [
+      3
+    ],
+    "coverageDecided": false,
+    "perRoleOnly": {
+      "foreground": "#161010",
+      "accent": "#8d2639",
+      "coverage": 1
+    },
+    "foregroundShortlist": [
+      {
+        "hex": "#161010",
+        "source": "overlay",
+        "mass": 456.4,
+        "chroma": 0.0101,
+        "minRawApca": 85.55
+      },
+      {
+        "hex": "#181310",
+        "source": "overlay",
+        "mass": 336.2,
+        "chroma": 0.0102,
+        "minRawApca": 85.29
+      },
+      {
+        "hex": "#131210",
+        "source": "overlay",
+        "mass": 270.5,
+        "chroma": 0.0043,
+        "minRawApca": 85.49
+      },
+      {
+        "hex": "#1c1012",
+        "source": "overlay",
+        "mass": 256.2,
+        "chroma": 0.0206,
+        "minRawApca": 85.34
+      },
+      {
+        "hex": "#1b0f0f",
+        "source": "overlay",
+        "mass": 188.8,
+        "chroma": 0.0205,
+        "minRawApca": 85.45
+      }
+    ],
+    "accentShortlist": [
+      {
+        "hex": "#98a9c3",
+        "source": "component",
+        "mass": 45730,
+        "chroma": 0.0424,
+        "minRawApca": 27.27
+      },
+      {
+        "hex": "#8d2639",
+        "source": "mark",
+        "mass": 41179,
+        "chroma": 0.1376,
+        "minRawApca": 68.45
+      },
+      {
+        "hex": "#5a1921",
+        "source": "component",
+        "mass": 23632.9,
+        "chroma": 0.0949,
+        "minRawApca": 79
+      },
+      {
+        "hex": "#36181a",
+        "source": "overlay",
+        "mass": 55.6,
+        "chroma": 0.0479,
+        "minRawApca": 83.13
+      },
+      {
+        "hex": "#6a1d27",
+        "source": "mark",
+        "mass": 6,
+        "chroma": 0.1088,
+        "minRawApca": 75.93
+      }
+    ]
+  },
+  "componentCandidates": [
+    {
+      "depth": 2,
+      "supportFraction": 0.1736,
+      "supportMass": 45730,
+      "centre": "#a2aac6",
+      "published": "#98a9c3",
+      "admitted": true,
+      "duplicateOf": null,
+      "supersedes": [],
+      "feasible": true,
+      "minRawApca": 27.27
+    },
+    {
+      "depth": 1,
+      "supportFraction": 0.1557,
+      "supportMass": 33605.9,
+      "centre": "#291615",
+      "published": "#231514",
+      "admitted": true,
+      "duplicateOf": null,
+      "supersedes": [
+        "#251311@18.6",
+        "#241615@17.0"
+      ],
+      "feasible": true,
+      "minRawApca": 84.67
+    },
+    {
+      "depth": 3,
+      "supportFraction": 0.1075,
+      "supportMass": 23632.9,
+      "centre": "#571c22",
+      "published": "#5a1921",
+      "admitted": true,
+      "duplicateOf": null,
+      "supersedes": [],
+      "feasible": true,
+      "minRawApca": 79
+    }
+  ],
+  "marks": {
+    "scale": {
+      "radius": 8,
+      "diagonal": 905.1,
+      "criterion": "default",
+      "plateauLength": 1,
+      "chosenIndex": 5,
+      "slopeIndex": 8,
+      "curve": [
+        {
+          "r": 0,
+          "n": 3041
+        },
+        {
+          "r": 2,
+          "n": 440
+        },
+        {
+          "r": 3,
+          "n": 211
+        },
+        {
+          "r": 4,
+          "n": 118
+        },
+        {
+          "r": 6,
+          "n": 55
+        },
+        {
+          "r": 8,
+          "n": 35
+        },
+        {
+          "r": 11,
+          "n": 19
+        },
+        {
+          "r": 16,
+          "n": 13
+        },
+        {
+          "r": 23,
+          "n": 7
+        },
+        {
+          "r": 32,
+          "n": 5
+        },
+        {
+          "r": 45,
+          "n": 1
+        }
+      ]
+    },
+    "entries": 39,
+    "unexplainedPixels": 44798,
+    "massRetained": 0.6945,
+    "top": [
+      {
+        "kind": "region",
+        "hex": "#e6dde2",
+        "pixels": 185884,
+        "mass": 136687.5,
+        "massFraction": 0.3337,
+        "chroma": 0.0118,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.083,
+        "groundAdjacency": 0.688,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "region",
+        "hex": "#94aac2",
+        "pixels": 71098,
+        "mass": 45730,
+        "massFraction": 0.1116,
+        "chroma": 0.0427,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.357,
+        "groundAdjacency": 0.6,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#8d2639",
+        "pixels": 41179,
+        "mass": 41179,
+        "massFraction": 0.1005,
+        "chroma": 0.1376,
+        "selfCoherence": 0.7116,
+        "identityCoherent": true,
+        "erosionMortality": 0.954,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "region",
+        "hex": "#271515",
+        "pixels": 63776,
+        "mass": 33605.9,
+        "massFraction": 0.082,
+        "chroma": 0.0297,
+        "selfCoherence": 0.9932,
+        "identityCoherent": true,
+        "erosionMortality": 0.667,
+        "groundAdjacency": 0.807,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "region",
+        "hex": "#5a1921",
+        "pixels": 44044,
+        "mass": 23632.9,
+        "massFraction": 0.0577,
+        "chroma": 0.0949,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.818,
+        "groundAdjacency": 0.562,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#a3e0e1",
+        "pixels": 3518,
+        "mass": 3518,
+        "massFraction": 0.0086,
+        "chroma": 0.0618,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.666,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#b1ece6",
+        "pixels": 25,
+        "mass": 25,
+        "massFraction": 0.0001,
+        "chroma": 0.0603,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#98e5dd",
+        "pixels": 20,
+        "mass": 20,
+        "massFraction": 0,
+        "chroma": 0.0768,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#6a1d27",
+        "pixels": 6,
+        "mass": 6,
+        "massFraction": 0,
+        "chroma": 0.1088,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#242720",
+        "pixels": 4,
+        "mass": 4,
+        "massFraction": 0,
+        "chroma": 0.0134,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#a6eadf",
+        "pixels": 4,
+        "mass": 4,
+        "massFraction": 0,
+        "chroma": 0.0698,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#b5cbe0",
+        "pixels": 4,
+        "mass": 4,
+        "massFraction": 0,
+        "chroma": 0.038,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#eee9e6",
+        "pixels": 4,
+        "mass": 4,
+        "massFraction": 0,
+        "chroma": 0.0068,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#c3c6d9",
+        "pixels": 3,
+        "mass": 3,
+        "massFraction": 0,
+        "chroma": 0.0266,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#9aeddd",
+        "pixels": 2,
+        "mass": 2,
+        "massFraction": 0,
+        "chroma": 0.0842,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#afa5c7",
+        "pixels": 2,
+        "mass": 2,
+        "massFraction": 0,
+        "chroma": 0.0495,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "depth": 0,
+      "order": 1,
+      "supportFraction": 0.4538,
+      "coreFraction": 0.8413,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.0832,
+      "groundAdjacency": 0.6877,
+      "inkLike": false
+    },
+    {
+      "depth": 1,
+      "order": 1,
+      "supportFraction": 0.1557,
+      "coreFraction": 0.5625,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.6666,
+      "groundAdjacency": 0.807,
+      "inkLike": false
+    },
+    {
+      "depth": 2,
+      "order": 1,
+      "supportFraction": 0.1736,
+      "coreFraction": 0.7296,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.357,
+      "groundAdjacency": 0.6005,
+      "inkLike": false
+    },
+    {
+      "depth": 3,
+      "order": 1,
+      "supportFraction": 0.1075,
+      "coreFraction": 0.5663,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.8179,
+      "groundAdjacency": 0.5624,
+      "inkLike": false
+    }
+  ],
+  "palette": {
+    "background": "#e9d3df",
+    "surface": "#d7e2e4",
+    "foreground": "#161010",
+    "accent": "#8d2639",
+    "gradient": [
+      {
+        "hex": "#e9d3df",
+        "position": 0
+      },
+      {
+        "hex": "#d7e2e4",
+        "position": 1
+      }
+    ],
+    "geometry": {
+      "kind": "linear",
+      "angleDegrees": -89.11066002900506
+    },
+    "collapse": {
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+    },
+    "escape": null
+  }
+}

@@ -1,0 +1,358 @@
+{
+  "image": "/Users/Flo/GitHub/palette/.worktrees/p5-fieldfit/12/ab67616d0000b27300125577fb06a6a8942d6547",
+  "size": "640×640",
+  "fieldOrder": 1,
+  "diagnostics": {
+    "noField": true,
+    "inlierFraction": 0.995966796875,
+    "fieldExplainedFraction": 0.01375,
+    "fieldComponents": 1,
+    "retreat": false,
+    "residualScale": 0.26142639429867265,
+    "marginBars": 0.1841797310210942,
+    "orientationMargin": 58.27334065378906,
+    "gradient": true,
+    "excursionMax": 0.003926482106198078,
+    "thirdStopAccepted": false,
+    "residualExcursion": 0.0020587044239544815,
+    "twoBlockFallback": false,
+    "accentChromaOnly": false,
+    "offArtwork": {
+      "background": false,
+      "surface": false,
+      "foreground": false,
+      "accent": false
+    },
+    "escape": false
+  },
+  "continuity": null,
+  "pathExcursion": {
+    "chord": 0.01246,
+    "published": 0.01246,
+    "chordBars": 0.812,
+    "publishedBars": 0.812,
+    "precision": 0.000861,
+    "largestGap": 0.00753,
+    "beyondEnds": 0.03023,
+    "samples": 64
+  },
+  "margins": {
+    "pairs": [
+      {
+        "pair": "background×surface",
+        "colors": "#120032/#0f002a",
+        "distance": 0.01811,
+        "bar": 0.01502,
+        "ratio": 1.206,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×accent",
+        "colors": "#ffffff/#009cff",
+        "distance": 0.37124,
+        "bar": 0.07444,
+        "ratio": 4.987,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×background",
+        "colors": "#ffffff/#120032",
+        "distance": 0.83949,
+        "bar": 0.01627,
+        "ratio": 51.597,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×surface",
+        "colors": "#ffffff/#0f002a",
+        "distance": 0.85373,
+        "bar": 0.01627,
+        "ratio": 52.473,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×background",
+        "colors": "#009cff/#120032",
+        "distance": 0.52647,
+        "bar": 0.02293,
+        "ratio": 22.96,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×surface",
+        "colors": "#009cff/#0f002a",
+        "distance": 0.54259,
+        "bar": 0.02293,
+        "ratio": 23.663,
+        "collapsed": false
+      }
+    ],
+    "foregroundLegibility": {
+      "minRawApca": 109.979,
+      "floor": 15,
+      "ratio": 7.332
+    },
+    "accentTwin": {
+      "distance": 0.37124,
+      "bar": 0.02293,
+      "ratio": 16.19,
+      "exclusionMultiple": 8,
+      "clearance": 2.024,
+      "collapsed": false
+    }
+  },
+  "assignment": {
+    "shortlistSize": 5,
+    "familyCount": 4,
+    "enumerated": 30,
+    "feasible": 30,
+    "totalFamilies": 107,
+    "massRetained": 0.323,
+    "families": [
+      {
+        "rank": 1,
+        "hex": "#120032",
+        "massFraction": 0.1123,
+        "members": 1
+      },
+      {
+        "rank": 2,
+        "hex": "#ffffff",
+        "massFraction": 0.0395,
+        "members": 23
+      },
+      {
+        "rank": 3,
+        "hex": "#0f0027",
+        "massFraction": 0.0181,
+        "members": 65
+      },
+      {
+        "rank": 4,
+        "hex": "#009cff",
+        "massFraction": 0.0163,
+        "members": 61
+      }
+    ],
+    "fieldCovered": [
+      1,
+      3
+    ],
+    "coverage": 4,
+    "covered": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "coverageDecided": true,
+    "perRoleOnly": {
+      "foreground": "#ffffff",
+      "accent": "#2e00ba",
+      "coverage": 3
+    },
+    "foregroundShortlist": [
+      {
+        "hex": "#ffffff",
+        "source": "overlay",
+        "mass": 16199,
+        "chroma": 0,
+        "minRawApca": 109.98
+      },
+      {
+        "hex": "#009cff",
+        "source": "overlay",
+        "mass": 6964,
+        "chroma": 0.1807,
+        "minRawApca": 49.13
+      },
+      {
+        "hex": "#f7f7f7",
+        "source": "overlay",
+        "mass": 1929,
+        "chroma": 0,
+        "minRawApca": 104.7
+      },
+      {
+        "hex": "#00a7ff",
+        "source": "overlay",
+        "mass": 573,
+        "chroma": 0.1705,
+        "minRawApca": 53.43
+      },
+      {
+        "hex": "#0000ee",
+        "source": "overlay",
+        "mass": 431,
+        "chroma": 0.2973,
+        "minRawApca": 16.14
+      }
+    ],
+    "accentShortlist": [
+      {
+        "hex": "#39367d",
+        "source": "mark",
+        "mass": 328009,
+        "chroma": 0.1168,
+        "minRawApca": 10.52
+      },
+      {
+        "hex": "#009cff",
+        "source": "overlay",
+        "mass": 6964,
+        "chroma": 0.1807,
+        "minRawApca": 49.13
+      },
+      {
+        "hex": "#2e00ba",
+        "source": "overlay",
+        "mass": 3634,
+        "chroma": 0.2366,
+        "minRawApca": 10.83
+      },
+      {
+        "hex": "#200089",
+        "source": "overlay",
+        "mass": 3365,
+        "chroma": 0.1888,
+        "minRawApca": 5.47
+      },
+      {
+        "hex": "#2b00b1",
+        "source": "overlay",
+        "mass": 3136,
+        "chroma": 0.2281,
+        "minRawApca": 9.74
+      }
+    ]
+  },
+  "componentCandidates": [],
+  "marks": {
+    "scale": {
+      "radius": 4,
+      "diagonal": 905.1,
+      "criterion": "default",
+      "plateauLength": 1,
+      "chosenIndex": 3,
+      "slopeIndex": 2,
+      "curve": [
+        {
+          "r": 0,
+          "n": 451
+        },
+        {
+          "r": 2,
+          "n": 5
+        },
+        {
+          "r": 3,
+          "n": 4
+        },
+        {
+          "r": 4,
+          "n": 2
+        },
+        {
+          "r": 6,
+          "n": 1
+        }
+      ]
+    },
+    "entries": 3,
+    "unexplainedPixels": 328011,
+    "massRetained": 0.9131,
+    "top": [
+      {
+        "kind": "mark",
+        "hex": "#39367d",
+        "pixels": 328009,
+        "mass": 328009,
+        "massFraction": 0.8008,
+        "chroma": 0.1168,
+        "selfCoherence": 0.2739,
+        "identityCoherent": false,
+        "erosionMortality": 0.229,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "region",
+        "hex": "#120032",
+        "pixels": 81589,
+        "mass": 45989.7,
+        "massFraction": 0.1123,
+        "chroma": 0.0929,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 0.635,
+        "groundAdjacency": 0,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#070012",
+        "pixels": 2,
+        "mass": 2,
+        "massFraction": 0,
+        "chroma": 0.0541,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "depth": 0,
+      "order": 1,
+      "supportFraction": 0.1992,
+      "coreFraction": 0.5933,
+      "extensive": true,
+      "smooth": true,
+      "erosionMortality": 0.6348,
+      "groundAdjacency": 0,
+      "inkLike": false
+    },
+    {
+      "depth": 1,
+      "order": 1,
+      "supportFraction": 0.058,
+      "coreFraction": 0.896,
+      "extensive": false,
+      "smooth": false,
+      "erosionMortality": null,
+      "groundAdjacency": null,
+      "inkLike": false
+    }
+  ],
+  "palette": {
+    "background": "#120032",
+    "surface": "#0f002a",
+    "foreground": "#ffffff",
+    "accent": "#009cff",
+    "gradient": [
+      {
+        "hex": "#120032",
+        "position": 0
+      },
+      {
+        "hex": "#0f002a",
+        "position": 1
+      }
+    ],
+    "geometry": {
+      "kind": "linear",
+      "angleDegrees": -112.88368863727949
+    },
+    "collapse": {
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+    },
+    "escape": null
+  }
+}

@@ -1,0 +1,448 @@
+{
+  "image": "/Users/Flo/GitHub/palette/.worktrees/p5-fieldfit/01/ab67616d0000b27300011897ac9fe3d4b4cd95b2.jpg",
+  "size": "640×640",
+  "fieldOrder": 0,
+  "diagnostics": {
+    "noField": false,
+    "inlierFraction": 0.58196533203125,
+    "fieldExplainedFraction": 0.9853271484375,
+    "fieldComponents": 0,
+    "retreat": false,
+    "residualScale": 0,
+    "marginBars": -3.5758780303726487e-13,
+    "orientationMargin": 0,
+    "gradient": false,
+    "excursionMax": 0,
+    "thirdStopAccepted": false,
+    "residualExcursion": 0,
+    "twoBlockFallback": false,
+    "accentChromaOnly": false,
+    "offArtwork": {
+      "background": false,
+      "surface": false,
+      "foreground": false,
+      "accent": false
+    },
+    "escape": false
+  },
+  "continuity": null,
+  "pathExcursion": null,
+  "margins": {
+    "pairs": [
+      {
+        "pair": "background×surface",
+        "colors": "#009f4e/#009f4e",
+        "distance": 0,
+        "bar": 0.02293,
+        "ratio": 0,
+        "collapsed": true
+      },
+      {
+        "pair": "foreground×accent",
+        "colors": "#ffffff/#050505",
+        "distance": 0.88508,
+        "bar": 0.07444,
+        "ratio": 11.89,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×background",
+        "colors": "#ffffff/#009f4e",
+        "distance": 0.41864,
+        "bar": 0.02293,
+        "ratio": 18.257,
+        "collapsed": false
+      },
+      {
+        "pair": "foreground×surface",
+        "colors": "#ffffff/#009f4e",
+        "distance": 0.41864,
+        "bar": 0.02293,
+        "ratio": 18.257,
+        "collapsed": true
+      },
+      {
+        "pair": "accent×background",
+        "colors": "#050505/#009f4e",
+        "distance": 0.52618,
+        "bar": 0.02293,
+        "ratio": 22.947,
+        "collapsed": false
+      },
+      {
+        "pair": "accent×surface",
+        "colors": "#050505/#009f4e",
+        "distance": 0.52618,
+        "bar": 0.02293,
+        "ratio": 22.947,
+        "collapsed": true
+      }
+    ],
+    "foregroundLegibility": {
+      "minRawApca": 69.603,
+      "floor": 15,
+      "ratio": 4.64
+    },
+    "accentTwin": {
+      "distance": 0.88508,
+      "bar": 0.01627,
+      "ratio": 54.4,
+      "exclusionMultiple": 8,
+      "clearance": 6.8,
+      "collapsed": false
+    }
+  },
+  "assignment": {
+    "shortlistSize": 5,
+    "familyCount": 4,
+    "enumerated": 30,
+    "feasible": 30,
+    "totalFamilies": 10,
+    "massRetained": 1,
+    "families": [
+      {
+        "rank": 1,
+        "hex": "#009f4f",
+        "massFraction": 1,
+        "members": 13
+      },
+      {
+        "rank": 2,
+        "hex": "#ffffff",
+        "massFraction": 0.0026,
+        "members": 7
+      },
+      {
+        "rank": 3,
+        "hex": "#000000",
+        "massFraction": 0.0014,
+        "members": 1
+      },
+      {
+        "rank": 4,
+        "hex": "#050505",
+        "massFraction": 0.0004,
+        "members": 2
+      }
+    ],
+    "fieldCovered": [
+      1
+    ],
+    "coverage": 3,
+    "covered": [
+      1,
+      2,
+      4
+    ],
+    "coverageDecided": false,
+    "perRoleOnly": {
+      "foreground": "#ffffff",
+      "accent": "#050505",
+      "coverage": 3
+    },
+    "foregroundShortlist": [
+      {
+        "hex": "#ffffff",
+        "source": "overlay",
+        "mass": 1098,
+        "chroma": 0,
+        "minRawApca": 69.6
+      },
+      {
+        "hex": "#000000",
+        "source": "overlay",
+        "mass": 584,
+        "chroma": 0,
+        "minRawApca": 45.33
+      },
+      {
+        "hex": "#050505",
+        "source": "overlay",
+        "mass": 168,
+        "chroma": 0,
+        "minRawApca": 45.29
+      },
+      {
+        "hex": "#010101",
+        "source": "overlay",
+        "mass": 121,
+        "chroma": 0,
+        "minRawApca": 45.33
+      },
+      {
+        "hex": "#020202",
+        "source": "overlay",
+        "mass": 114,
+        "chroma": 0,
+        "minRawApca": 45.33
+      }
+    ],
+    "accentShortlist": [
+      {
+        "hex": "#000000",
+        "source": "overlay",
+        "mass": 584,
+        "chroma": 0,
+        "minRawApca": 45.33
+      },
+      {
+        "hex": "#050505",
+        "source": "overlay",
+        "mass": 168,
+        "chroma": 0,
+        "minRawApca": 45.29
+      },
+      {
+        "hex": "#010101",
+        "source": "overlay",
+        "mass": 121,
+        "chroma": 0,
+        "minRawApca": 45.33
+      },
+      {
+        "hex": "#020202",
+        "source": "overlay",
+        "mass": 114,
+        "chroma": 0,
+        "minRawApca": 45.33
+      },
+      {
+        "hex": "#030303",
+        "source": "overlay",
+        "mass": 98,
+        "chroma": 0,
+        "minRawApca": 45.32
+      }
+    ]
+  },
+  "componentCandidates": [],
+  "marks": {
+    "scale": {
+      "radius": 3,
+      "diagonal": 905.1,
+      "criterion": "default",
+      "plateauLength": 1,
+      "chosenIndex": 2,
+      "slopeIndex": 1,
+      "curve": [
+        {
+          "r": 0,
+          "n": 1241
+        },
+        {
+          "r": 2,
+          "n": 27
+        },
+        {
+          "r": 3,
+          "n": 12
+        },
+        {
+          "r": 4,
+          "n": 1
+        }
+      ]
+    },
+    "entries": 13,
+    "unexplainedPixels": 171227,
+    "massRetained": 1,
+    "top": [
+      {
+        "kind": "region",
+        "hex": "#009f4f",
+        "pixels": 238373,
+        "mass": 238373,
+        "massFraction": 0.582,
+        "chroma": 0.1632,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": null,
+        "groundAdjacency": null,
+        "inkLike": false,
+        "inkShaped": false
+      },
+      {
+        "kind": "mark",
+        "hex": "#009f4e",
+        "pixels": 170222,
+        "mass": 170222,
+        "massFraction": 0.4156,
+        "chroma": 0.1641,
+        "selfCoherence": 0.9691,
+        "identityCoherent": true,
+        "erosionMortality": 0.91,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#019e4f",
+        "pixels": 312,
+        "mass": 312,
+        "massFraction": 0.0008,
+        "chroma": 0.1618,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#019e4f",
+        "pixels": 207,
+        "mass": 207,
+        "massFraction": 0.0005,
+        "chroma": 0.1618,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#029f50",
+        "pixels": 159,
+        "mass": 159,
+        "massFraction": 0.0004,
+        "chroma": 0.1621,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#029f50",
+        "pixels": 100,
+        "mass": 100,
+        "massFraction": 0.0002,
+        "chroma": 0.1621,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#019e4f",
+        "pixels": 52,
+        "mass": 52,
+        "massFraction": 0.0001,
+        "chroma": 0.1618,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#019e4f",
+        "pixels": 40,
+        "mass": 40,
+        "massFraction": 0.0001,
+        "chroma": 0.1618,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#01a050",
+        "pixels": 37,
+        "mass": 37,
+        "massFraction": 0.0001,
+        "chroma": 0.1634,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#009e4e",
+        "pixels": 31,
+        "mass": 31,
+        "massFraction": 0.0001,
+        "chroma": 0.1628,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#01a050",
+        "pixels": 27,
+        "mass": 27,
+        "massFraction": 0.0001,
+        "chroma": 0.1634,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#01a050",
+        "pixels": 24,
+        "mass": 24,
+        "massFraction": 0.0001,
+        "chroma": 0.1634,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      },
+      {
+        "kind": "mark",
+        "hex": "#009e4e",
+        "pixels": 16,
+        "mass": 16,
+        "massFraction": 0,
+        "chroma": 0.1628,
+        "selfCoherence": 1,
+        "identityCoherent": true,
+        "erosionMortality": 1,
+        "groundAdjacency": 1,
+        "inkLike": false,
+        "inkShaped": true
+      }
+    ]
+  },
+  "attempts": null,
+  "palette": {
+    "background": "#009f4e",
+    "surface": "#009f4e",
+    "foreground": "#ffffff",
+    "accent": "#050505",
+    "gradient": null,
+    "geometry": null,
+    "collapse": {
+      "surfaceCollapsed": true,
+      "accentCollapsed": false
+    },
+    "escape": null
+  }
+}
