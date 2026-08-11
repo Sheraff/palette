@@ -31,6 +31,8 @@ import type { GradientStop, Palette, Rgb8 } from "../../../src/contract/types.ts
 import { hashFileBytes } from "../../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../../src/devloop/types.ts"
 import { MAX_ASSEMBLY_ATTEMPTS, PREPROCESSING_VERSION } from "./constants.ts"
+import { type GuideCandidate, guideStop, type GuideStopReport } from "./gradient/guide-stop.ts"
+import { occupancyOf } from "./gradient/occupancy.ts"
 import { runChromaPipeline } from "./lanes/pool.ts"
 import { resolveRoles, roleSwapImproves } from "./roles/assemble.ts"
 import { type RoleMargin, roleMargins } from "./roles/indifference.ts"
@@ -76,6 +78,15 @@ export type CandidateDiagnostics = Readonly<{
 	 * there is (a 0.0304 margin the reviewer did not read as one colour), which is not a calibration.
 	 */
 	margins: readonly RoleMargin[]
+	/**
+	 * **D6's owed excursion record**, for every palette that publishes a ramp — `null` when none does.
+	 *
+	 * Published **always**, whether or not a guide stop was owed and whether or not one was kept, because
+	 * the census D6 asks for (*"today we cannot even detect when we owe one"*) is a census of the ramps
+	 * that pass as much as of the ramps that fail. `gradient/guide-stop.ts` carries the doctrine; this
+	 * field is how it reaches a dump, a round side-car or a test without a second run of the pipeline.
+	 */
+	gradientExcursion: GuideStopReport | null
 }>
 
 export async function paletteWithDiagnostics(imagePath: string): Promise<CandidateDiagnostics> {
@@ -90,10 +101,41 @@ export async function paletteWithDiagnostics(imagePath: string): Promise<Candida
 	// objects. A collapsed surface leaves no ramp to draw, so it publishes `gradient: null` — which is
 	// the same fact the parse already established, not a second check.
 	const collapsedField = surface.hex === background.hex
-	const stops: GradientStop[] = [
+	let stops: GradientStop[] = [
 		{ color: background, position: 0 },
 		{ color: surface, position: 1 },
 	]
+
+	// **The excursion test and the guide stop — `DECISIONS.md` D6.**
+	//
+	// D6 supersedes cycle 1's "2 stops or null" cut: *"2-stop-always is NOT the safe harbor — a 2-stop
+	// ramp whose straight OKLab line leaves the artwork OWES a guide stop"*. The test runs on every ramp
+	// this candidate publishes and its full record goes into the diagnostics regardless of the outcome;
+	// the insertion itself only fires over the contract's own excursion bar, keeps at most **one**
+	// interior stop, and reverts unless the overshoot falls materially. `gradient/guide-stop.ts` owns the
+	// doctrine, the two preconditions (D4's spacing, D5's monotone order) and the refusal classes.
+	//
+	// The interior colour is drawn from the **ramp's own ground chain**, which is where both endpoints
+	// came from: an exact artwork pixel, a colour of the field rather than of a mark on it, and a node
+	// already in the pool the reachability falsifier measures.
+	//
+	// Nothing here runs for a palette without a ramp — the occupancy structure is not even built — so a
+	// flat or partitioned cover is byte-identical to the pre-D6 candidate by construction, which
+	// `gradient/tests/flat-byte-identity.test.ts` asserts rather than assumes.
+	let gradientExcursion: GuideStopReport | null = null
+	if (parse.gradient && !collapsedField) {
+		const chainCandidates: GuideCandidate[] = parse.groundChain.map((nodeId) => ({
+			nodeId,
+			rgb: parse.nodes[nodeId].repr,
+		}))
+		const guided = guideStop({
+			stops: [stops[0], stops[1]],
+			occupancy: occupancyOf(image.packed),
+			candidates: chainCandidates,
+		})
+		stops = guided.stops
+		gradientExcursion = guided.report
+	}
 
 	const assemble = (foregroundRgb: Rgb8, accentRgb: Rgb8): Palette => {
 		const foreground = colorFromRgb(foregroundRgb)
@@ -101,7 +143,10 @@ export async function paletteWithDiagnostics(imagePath: string): Promise<Candida
 		return {
 			contractVersion: CONTRACT_VERSION,
 			roles: { background, surface, foreground, accent },
-			gradient: parse.gradient && !collapsedField ? { stops: stops as unknown as [GradientStop, GradientStop] } : null,
+			gradient:
+				parse.gradient && !collapsedField
+					? { stops: stops as unknown as readonly [GradientStop, GradientStop, ...GradientStop[]] }
+					: null,
 			collapse: {
 				// Measured against the colours actually published, never asserted from the parse's intent.
 				surfaceCollapsed: collapsedField,
@@ -161,6 +206,7 @@ export async function paletteWithDiagnostics(imagePath: string): Promise<Candida
 				swapped: true,
 				attempts: resolved.attempts,
 				margins: roleMargins(swapped.roles, ROLE_NAMES),
+				gradientExcursion,
 			}
 		}
 	}
@@ -171,6 +217,7 @@ export async function paletteWithDiagnostics(imagePath: string): Promise<Candida
 		swapped: false,
 		attempts: resolved.attempts,
 		margins: roleMargins(resolved.palette.roles, ROLE_NAMES),
+		gradientExcursion,
 	}
 }
 
