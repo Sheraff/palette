@@ -87,7 +87,26 @@ substrate family (no candidate; full design cycle), or judging the mechanism on
 quality/identity as-is. Read P3 as: quality-strong,
 robustness-plateaued-with-located-cause-and-refuted-first-fix.
 
-## Round-6 state — THE ONE PENDING INPUT (phase2-cal-022 RELEASED; decode in flight at park)
+## Round-6 outcome (decoded and APPLIED, 2026-08-05)
+
+Legibility won the arbitration unanimously (4/4 conflict covers unacceptable, three prescribing
+the fg colour); the pre-registered branch fired and 0.4.3 (`2fc45768`) implements it: floor
+clause MIN_RAMP_HOLD_FLOOR=5.0 + partial swap return + a root-caused ground-lump exclusion in
+fg selection. **The 168 arc closed at its strongest possible reading:** reviewer ground truth
+revealed a paired-family target (two greys gradient:true + two blues; EVIDENCE item 13,
+figure-vs-ground family separation), and the general machinery REACHED it without
+special-casing. Row-0's black-fg prescription met (the |L−0.5| extremity read had made a white
+GROUND the L-extreme — fixed). Purple shade fix validated strong; first fresh-cover strong
+since round-2; cover-19 regression confirmed (neutral-accent branch in flight, W24, with a
+sub-rankable-lump guard).
+
+**Structural limitation, recorded per commissioning ruling (2026-08-05): rows 5/6 unmet, cause
+located — the ink score's surround-coherence ranks white-on-photo type low while source support
+wins the regime choice; the prescribed colour sits at luminance rank-0 on all three affected
+covers. The ink-score redesign is DEFERRED to the mechanism-selection outcome: if P3 is
+selected it is the first post-selection cycle; if not, this limitation stands as recorded.**
+
+## Round-6 staging record (superseded by the outcome above)
 
 8 items on 0.4.2 (`b9c41a4`): 4 identity-vs-legibility conflict covers (min-ramp 2.67–4.93,
 chromatic accent held over a weak fg), 4 re-grades (168 blue-as-accent delivered after three
