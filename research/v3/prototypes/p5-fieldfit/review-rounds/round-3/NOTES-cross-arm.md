@@ -70,3 +70,13 @@ composition is untouched (staging was in flight when this arrived).
    colour in render-data.json (a name that mis-describes the colour's role in the artwork is a
    flag to record in STAGING.md, not a reason to change the hex). Awareness only; the name
    pipeline is pinned server-side and not P5's to change.
+9. **Family separation runs FIGURE-vs-GROUND, not pairwise** (reviewer ground truth on a
+   two-gradient cover, 2026-08-11): the stated ideal was two greys for bg/surface AND two blues
+   for fg/accent — within either pair, sharing a family can be exactly right. Refines note 5's
+   accent-family evidence. P5 readings: (a) this is arm-f's architecture stated back by the
+   judge — ground pair = the field's ends, figure pair = the overlay's marks — paradigm-level
+   validation worth carrying into the promise assessment; (b) decision 14's twin exclusion is
+   compatible (it blocks *indistinguishable* pairs at ≤8× bar, not same-family shades — the
+   evidenced twins were ratios 1.8–6.6, a deliberate two-shade pair sits far beyond); (c) any
+   future family-aware accent term must be figure/ground-scoped, never blanket
+   different-family-than-fg. Evidence for the v0.9+ identity cycle's family semantics.
