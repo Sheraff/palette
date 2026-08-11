@@ -294,6 +294,17 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     inertness after the pool union; `P5_IDENTITY_BAR_MULTIPLE` stays a diagnostic re-run knob,
     default 1. (c) Per-foreground accent shortlists (the truncation trap) accepted as
     implemented.
+    *Ruling 2026-08-05 (wp15 — scale mixing):* field mass (10³–10⁴) and overlay mass (10²–10³)
+    are different currencies; a raw-mass union makes every unslotted region beat every ink for
+    the foreground (the sunset STRONG's gold fell to a near-black region under `both`; neither
+    measurement column held it). **Foreground ordering becomes class-first**: overlay candidates
+    outrank ground-shaped components (wp12's component-level ink instrument classifies them —
+    grounds tile, ink floats) for the fg slot; within a class, the existing criteria. No
+    exclusion — a component takes fg only when no overlay candidate clears the floors (item 6's
+    retreat, correctly). Accent keeps the full union by mass. Expected: item 3 = fg black /
+    accent red (the reviewer's verbatim ask); sunset byte-identical; `28279e9184` fg `#ffffff`
+    held. Coverage remains near-inert post-union (decided 0/27) — granularity question stays
+    parked with the formula packet.
 
 ## Verification obligations (designed overlap)
 

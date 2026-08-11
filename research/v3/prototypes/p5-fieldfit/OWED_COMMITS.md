@@ -1,7 +1,7 @@
 # Owed commits — p5-fieldfit
 
-## OPEN — v0.8.0 state (signing failed twice 2026-08-05, "1Password: failed to fill whole
-buffer"; same transient class as the earlier incident that cleared on retry)
+## CLOSED — v0.8.0 state (flushed as `b3e1e94` per the collapse rule, combined with v0.8.1,
+after W-P15's files stabilized; signature G)
 
 Pathspec: `research/v3/prototypes/p5-fieldfit`
 
