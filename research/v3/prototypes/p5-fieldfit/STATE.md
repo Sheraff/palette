@@ -1,4 +1,14 @@
-# P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05)
+# P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05; updated 2026-08-11)
+
+**Delta since the 08-05 freeze:** pass 16 landed — foreground is class-first (overlay ink outranks
+ground-shaped components; the item-3 cover now publishes the reviewer's verbatim round-3 ask,
+fg `#000000` / accent `#f81107`, closing the mechanism side of the three-round rotation). v0.8.2
+robustness: 41.7% overall, **dither 47% and accent instability 43.3% both best-ever**, fg 33.0%
+flagged (class/coverage added threshold surface); stabilization pass still the queued fix. Round 4
+staged and with the installer (`phase2-cal-020`): four returning covers incl. the deliberate
+accent-union question (may a heavier region displace a reviewer-seen accent? two live instances),
+the first real escape-path firing, and the only known cover inside the fg-floor bracket. §3's
+"in flight at freeze" row is superseded by this paragraph.
 
 ## 1. Mechanism
 
