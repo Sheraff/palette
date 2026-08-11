@@ -1,0 +1,396 @@
+{
+	"_comment": [
+		"Staged pairwise round — NOT installed. The main orchestrator pushes it.",
+		"imagePath entries are repo-root-relative; the push API requires absolute paths, so the",
+		"installer rewrites them (the same convention as fixtures/demo-batch.json).",
+		"Blinded: variantIds are salted opaque tokens, side order is sorted by them, and both sides",
+		"carry one shared algorithmVersion. The arm mapping is in KEY.json, which is never served."
+	],
+	"imagePathsRelativeTo": "repo-root",
+	"batchId": "priors-pairwise-20260805a",
+	"purpose": "arm",
+	"fundedBy": [
+		"DESIGN.md M1 OUTCOME (2026-08-04): no pre-registered energy signal for either prior on legacy verdicts; the prior comparison waits on fresh palettes under current priors",
+		"data/falsifier + data/falsifier-m1b — M1 attribution: spread for one prior, single genericBits culprit for the other (coverage vs identity)",
+		"data/emitter/*-demo-20-2026-08-05.jsonl — the two M2 v0 emitter runs over demo-20 this round compares"
+	],
+	"items": [
+		{
+			"itemId": "m3-item-01",
+			"imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-819cb796d051c51b",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#a4140c",
+						"surface": "#e0e4e5",
+						"foreground": "#e9e6dd",
+						"accent": "#e9e6dd",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#a4140c",
+									"position": 0
+								},
+								{
+									"color": "#e0e4e5",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": true
+					}
+				},
+				{
+					"variantId": "v-ab479c0b1178ff60",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#e9e6df",
+						"surface": "#e9e6df",
+						"foreground": "#f13303",
+						"accent": "#f13303",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-02",
+			"imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-7de2e4fa4d93a2ff",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#000000",
+						"surface": "#000300",
+						"foreground": "#777b7c",
+						"accent": "#f9fafc",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					}
+				},
+				{
+					"variantId": "v-84db7805f1b21666",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#fafaf8",
+						"surface": "#fafaf8",
+						"foreground": "#fcd000",
+						"accent": "#fcd000",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-03",
+			"imagePath": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-7733ad607e0deabe",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#363634",
+						"surface": "#363634",
+						"foreground": "#000000",
+						"accent": "#fafdff",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": false
+					}
+				},
+				{
+					"variantId": "v-dbe6aa4b03c00b9b",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#363634",
+						"surface": "#363634",
+						"foreground": "#000000",
+						"accent": "#000000",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-04",
+			"imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-c3f373704c18fc76",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#985f66",
+						"surface": "#985f66",
+						"foreground": "#1f1f21",
+						"accent": "#1f1f21",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				},
+				{
+					"variantId": "v-eb6600caf9891ed6",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#f4ce61",
+						"surface": "#725060",
+						"foreground": "#fbbf79",
+						"accent": "#1f1f21",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-05",
+			"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-0119ccaf5b680f5e",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#d9e2e1",
+						"surface": "#d9e2e1",
+						"foreground": "#feffff",
+						"accent": "#feffff",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				},
+				{
+					"variantId": "v-ce0d4049be35fb1a",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#d9e2e1",
+						"surface": "#70ba27",
+						"foreground": "#f9090a",
+						"accent": "#f9090a",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#d9e2e1",
+									"position": 0
+								},
+								{
+									"color": "#70ba27",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": true
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-06",
+			"imagePath": "00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-4f5b66a4e4edad6b",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#1016f0",
+						"surface": "#1016f0",
+						"foreground": "#fafafa",
+						"accent": "#fafafa",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				},
+				{
+					"variantId": "v-902b097c76dec2a6",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#435df0",
+						"surface": "#1016f0",
+						"foreground": "#282828",
+						"accent": "#fcfafb",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#435df0",
+									"position": 0
+								},
+								{
+									"color": "#1016f0",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-07",
+			"imagePath": "00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-67c43dffb7f05ff3",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#cecece",
+						"surface": "#cecece",
+						"foreground": "#f9f9f9",
+						"accent": "#f9f9f9",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				},
+				{
+					"variantId": "v-c831e8edbe268cb6",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#021b2f",
+						"surface": "#13120e",
+						"foreground": "#004163",
+						"accent": "#004163",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": true
+					}
+				}
+			]
+		},
+		{
+			"itemId": "m3-item-08",
+			"imagePath": "00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"artworkId": null,
+			"sides": [
+				{
+					"variantId": "v-3f8c5e6d119be1fc",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#171c20",
+						"surface": "#171c20",
+						"foreground": "#cfd1dd",
+						"accent": "#eaebf0",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": false
+					}
+				},
+				{
+					"variantId": "v-eb981d69adb9c4f5",
+					"fingerprint": {
+						"algorithmVersion": "p1-mdl-v0-emitter-0.1.0",
+						"preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+						"gitCommit": "b257412",
+						"dirty": false
+					},
+					"palette": {
+						"background": "#d4e9ee",
+						"surface": "#d4e9ee",
+						"foreground": "#171c20",
+						"accent": "#171c20",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": true
+					}
+				}
+			]
+		}
+	]
+}

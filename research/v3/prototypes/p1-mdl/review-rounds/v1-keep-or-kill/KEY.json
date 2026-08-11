@@ -1,0 +1,349 @@
+{
+	"_warning": [
+		"ORCHESTRATOR-ONLY. This file unblinds the round. Do not serve it, do not push it, do not",
+		"read it while the batch is open, and never quote a variantId->arm pair in a report.",
+		"arm-a = candidate p1a, the mass-normalised prior, at lambda 0.1.",
+		"arm-aprime = candidate p1ap, the schema-derived serialization prior with the chromatic",
+		"residual density (the repair under test)."
+	],
+	"batchId": "b-20260811-9d47",
+	"round": {
+		"what": "P1's one bounded-iteration keep-or-kill round",
+		"spec": "research/v3/prototypes/p1-mdl/DESIGN.md § V1 — the one bounded iteration (reviewer ruling, 2026-08-05)",
+		"grantedScope": [
+			"chromatic residual density for arm-aprime (DESIGN item 11)",
+			"lambda recalibration + disentangling arm-a's collapse degeneracy (lambda_a = 0.1, MEASURED)",
+			"re-emit demo-20",
+			"ONE 8-item pairwise round on the same eight covers as the predecessor round"
+		],
+		"killCondition": "Pre-registered (DESIGN § V1): if the iteration needs ANYTHING beyond the recorded repair, that fact is itself the kill signal. Keep-or-kill is decided on this round's verdicts; the falsification record stands either way.",
+		"deliberatelyUntouched": "The indistinguishable-inks axis. Contract floors are the reviewer's; if this round dies there again, that is kill data, not a repair prompt."
+	},
+	"predecessorRound": {
+		"installedBatchId": "phase2-pair-010",
+		"stagedBatchId": "b-20260805-4a2e",
+		"stagingDir": "research/v3/prototypes/p1-mdl/review-rounds/m3-priors-pairwise/",
+		"verdicts": "research/v3/prototypes/p1-mdl/review-rounds/m3-priors-pairwise/verdicts.json",
+		"sameEightCovers": true,
+		"why": "Per-arm grade comparability across rounds. The keep-or-kill axis is the per-arm grade DELTA on the same cover, so the cover set is held fixed by design.",
+		"outcome": "MECHANISM-FALSIFIED filed on the predecessor round: zero strong grades, ink-recovery falsifier fired, coverage-vs-identity corroborated live, arm-a degenerate 20/20 two-colour."
+	},
+	"emissionOfRecord": {
+		"gitCommit": "6b40db9",
+		"dirty": false,
+		"note": "The fingerprint attributes both sides to the commit that carries the two emission files. The runs' own provenance headers name the code commits they executed at (arm-a 14e6616 clean; arm-aprime 0de3b06 with a dirty tree); those are recorded in the run headers, not on the served surface."
+	},
+	"blindingSalt": "bab621ce1267a20ee47e8431f3c4e2495b3bdabd332466171665c5b4b748698f",
+	"blindedAlgorithmVersion": "v3-emitter-0.2.0",
+	"trueAlgorithmVersions": {
+		"arm-a": "p1a-0.2.0",
+		"arm-aprime": "p1ap-0.2.0"
+	},
+	"variantIdDerivation": "sha256(`${blindingSalt}|${itemId}|${sourceTag}`) truncated to 16 hex, prefixed \"v-\"",
+	"items": [
+		{
+			"itemId": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+			"imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+			"predecessorGrades": {
+				"arm-a": "acceptable",
+				"arm-aprime": "unacceptable",
+				"preference": "arm-a"
+			},
+			"sides": [
+				{
+					"variantId": "v-1f1c09e1e5246409",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+					"minAbsApcaForeground": 53.67699896110548,
+					"minAbsApcaAccent": 69.56086992098773,
+					"gradientStops": 0,
+					"swapDelta": 0
+				},
+				{
+					"variantId": "v-6923c3941e580521",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+					"minAbsApcaForeground": 71.51976868100937,
+					"minAbsApcaAccent": 71.51976868100937,
+					"gradientStops": 2,
+					"swapDelta": null
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e020000269ead63cf2376a6b67d",
+			"imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+			"predecessorGrades": {
+				"arm-a": "weak",
+				"arm-aprime": "unacceptable",
+				"preference": "arm-a"
+			},
+			"sides": [
+				{
+					"variantId": "v-9df6b17176f7b0aa",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+					"minAbsApcaForeground": 45.96666587988411,
+					"minAbsApcaAccent": 69.6742482652671,
+					"gradientStops": 0,
+					"swapDelta": 0
+				},
+				{
+					"variantId": "v-c0b8f0d35857d52d",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+					"minAbsApcaForeground": 83.93436750587347,
+					"minAbsApcaAccent": 83.94221465288354,
+					"gradientStops": 2,
+					"swapDelta": 0
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e02000025b4e66a00806cb6dd7d",
+			"imagePath": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"inputContentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+			"predecessorGrades": {
+				"arm-a": "unacceptable",
+				"arm-aprime": "unacceptable",
+				"preference": null
+			},
+			"sides": [
+				{
+					"variantId": "v-8f0fca9f7247f111",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+					"minAbsApcaForeground": 28.917642631849084,
+					"minAbsApcaAccent": 8.844178849468552,
+					"gradientStops": 0,
+					"swapDelta": 0
+				},
+				{
+					"variantId": "v-c61426c0790a83af",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+					"minAbsApcaForeground": 98.52829092089499,
+					"minAbsApcaAccent": 106.8558624914332,
+					"gradientStops": 0,
+					"swapDelta": 0
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e02000022e7e9d11c908479200b",
+			"imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+			"predecessorGrades": {
+				"arm-a": "weak",
+				"arm-aprime": "unacceptable",
+				"preference": "arm-a"
+			},
+			"sides": [
+				{
+					"variantId": "v-3f366b42f3ae43d1",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+					"minAbsApcaForeground": 30.35393285213772,
+					"minAbsApcaAccent": 49.58205320180271,
+					"gradientStops": 0,
+					"swapDelta": 0
+				},
+				{
+					"variantId": "v-5be74ded1e2175f8",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+					"minAbsApcaForeground": 12.630085593024537,
+					"minAbsApcaAccent": 76.20874467803061,
+					"gradientStops": 0,
+					"swapDelta": 0
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e02000018e9b0ec8fc5ac790164",
+			"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+			"predecessorGrades": {
+				"arm-a": "unacceptable",
+				"arm-aprime": "weak",
+				"preference": "arm-aprime"
+			},
+			"sides": [
+				{
+					"variantId": "v-3b18288c3d1f0c29",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+					"minAbsApcaForeground": 49.62110035494236,
+					"minAbsApcaAccent": 49.62110035494236,
+					"gradientStops": 0,
+					"swapDelta": null
+				},
+				{
+					"variantId": "v-8bd30744ec0c3c65",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+					"minAbsApcaForeground": 90.49796679530576,
+					"minAbsApcaAccent": 90.54661178317328,
+					"gradientStops": 0,
+					"swapDelta": 0
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e0200000bbc3367a621256ce593",
+			"imagePath": "00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"inputContentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+			"predecessorGrades": {
+				"arm-a": "unacceptable",
+				"arm-aprime": "unacceptable",
+				"preference": null
+			},
+			"sides": [
+				{
+					"variantId": "v-355168957cfc5f90",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+					"minAbsApcaForeground": 14.094295001401902,
+					"minAbsApcaAccent": 13.7044011039127,
+					"gradientStops": 0,
+					"swapDelta": 0
+				},
+				{
+					"variantId": "v-dff422ade1e372b7",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+					"minAbsApcaForeground": 13.375217211853915,
+					"minAbsApcaAccent": 75.53572478104236,
+					"gradientStops": 0,
+					"swapDelta": 0
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e020000099e97d17d28279e9184",
+			"imagePath": "00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"inputContentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+			"predecessorGrades": {
+				"arm-a": "weak",
+				"arm-aprime": "unacceptable",
+				"preference": "arm-a"
+			},
+			"sides": [
+				{
+					"variantId": "v-1c508b7464dbc9b8",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+					"minAbsApcaForeground": 70.24456309804964,
+					"minAbsApcaAccent": 97.28972410471083,
+					"gradientStops": 0,
+					"swapDelta": 0
+				},
+				{
+					"variantId": "v-b9c73ab1c034e11c",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+					"minAbsApcaForeground": 66.27799789344301,
+					"minAbsApcaAccent": 93.41858347372958,
+					"gradientStops": 0,
+					"swapDelta": 0
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e0200001456cbd4881a798808bf",
+			"imagePath": "00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"inputContentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+			"predecessorGrades": {
+				"arm-a": "weak",
+				"arm-aprime": "weak",
+				"preference": "arm-aprime"
+			},
+			"sides": [
+				{
+					"variantId": "v-03720574b701cb01",
+					"source": "arm-a",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/a-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1a-0.2.0",
+					"candidateId": "p1a",
+					"lambda": 0.1,
+					"inputContentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+					"minAbsApcaForeground": 88.23647830282793,
+					"minAbsApcaAccent": 88.23647830282793,
+					"gradientStops": 0,
+					"swapDelta": null
+				},
+				{
+					"variantId": "v-55ad1e1ddac2184b",
+					"source": "arm-aprime",
+					"sourceFile": "research/v3/prototypes/p1-mdl/data/emitter/aprime-demo-20-2026-08-05-v1.jsonl",
+					"trueAlgorithmVersion": "p1ap-0.2.0",
+					"candidateId": "p1ap",
+					"lambda": 1,
+					"inputContentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+					"minAbsApcaForeground": 56.16061457436764,
+					"minAbsApcaAccent": 36.52048488065919,
+					"gradientStops": 0,
+					"swapDelta": 0
+				}
+			]
+		}
+	]
+}
