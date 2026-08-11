@@ -97,5 +97,13 @@ robustness-today, P2 is behind its own quality story and says so.
 antialias-halo publication in §3 row 1 are FIXED structurally, zero new constants (item 5's
 fg now node-backed `#43752e`; item 2's halo displaced by node-backed `#cba69d` with I4 still
 governing); reachability byte-identical (ordering, not retention, proven); robustness moved
-within intervals only (overall 8.5%, dither 20.0% agreement — no signal claimed). Nothing in
-flight. Round queue: round-4 with installer; pricing round staged next.)*
+within intervals only (overall 8.5%, dither 20.0% agreement — no signal claimed).)*
+
+*(Cycle-4 update: I4 CLOSED by pair-018 — floor stands, pick was the defect, W-L's fix is
+the fix of record (D14, `734c3f5`). Coverage gate ruled 0.25 by pick-one-and-state (D15,
+`2113128`), application pending W-N fan-in. Round-5 pricing staged (`95f85e6`), with
+installer. IN FLIGHT: worker N (excursion machinery, D6) — tos/candidate.ts + tos/gradient/
+are its uncommitted mid-flight work; the last committed candidate is at HEAD and is the
+provenance pin for any cross-arm use. This footnote is refreshed at every dispatch/fan-in —
+the previous revision went stale between fan-in and dispatch, which misled a cross-arm
+provenance check; corrected.)*
