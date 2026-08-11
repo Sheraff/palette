@@ -183,6 +183,43 @@ acceptable, 0 strong) — the pre-declared "≥4 of 6 at ≤2" outcome fires. Ru
    front of the reviewer, no decidable evidence returned (margin probe's negative — 0.0304
    survived — is the one usable point). §5 caveat stands.
 
+## D11 — instrument note: robustness --limit slices trials, no hang timeout (2026-08-05)
+
+`check.ts --limit` slices TRIALS (not covers), so limited smokes are trial-biased toward fast
+covers — quote them as biased partials only (the cycle-1 alpha `--limit 50` reading was one).
+The harness has no timeout: never point it at a candidate that can hang.
+
+## D12 — D10.1 falsified; the I4 escalation; assignment-stability negative ruled (2026-08-05)
+
+**Correction of record (third of the campaign for this orchestrator):** D10.1's suspected
+mechanism — text-detector colour recall — is falsified by W-I Q1. The detector was right both
+times. Item 2's true mechanism: the detector elected the artwork's real type `#1e2221`;
+**contract invariant I4's ε floor (2.5 |raw APCA|) refused it**; the assembly walk descended
+to a 1px antialias halo, which the reviewer then graded down as "not a color of the artwork".
+
+**ESCALATED to the main orchestrator (contract-level, standing demotion rule):** this is the
+recorded "an invariant that blocks the reviewer-correct colour" case. P2 will not tune around
+it; disposition belongs to the reviewer/contract.
+
+**W-J's honest negative ruled:** ruler-indifference landed (correct on its own terms: 92/92,
+palettes byte-identical, W-G's matched-repr swaps closed) but the robustness topline did not
+move — the residual churn is in candidate-SET membership under perturbation, and the two
+levers W-J measured (fall-through: worse; cluster-member publication: moves dither 23→24% and
+accent 447→42/100 in variants that each sacrifice a reviewer-endorsed colour) are
+**round-priced, not worker calls**. Queue: cluster-member-publication pairwise items (coral
+vs #ee5567 chroma-extremal; #070506 vs contrast-extremal fg) alongside W-K's adverse-case
+coverage item and T2's salience-cut item.
+
+**Antialias ineligibility (from W-I Q1/Q3, 30/113 reachability failures are halo-only):**
+boundary-tracing thin regions (inradius ≈1px, boundary fraction ≈1) are the measured
+"accidental shadow" class — D3's salience-gates-identity has its concrete implementation
+target; design as ordering/exclusion on existing attributes (inradius, boundary fraction),
+constants only via provenance.
+
+**Cross-lane dedup defect (item 5's phantom text group):** small follow-up fix in roles/ —
+merge coincident components across lanes before grouping; coincident centroids must not
+satisfy collinearity vacuously.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
