@@ -259,6 +259,30 @@ floor. However there *are* valid picks in the image such as Charcoal or Putty."
 3. STATE.md §4's first open question is answered; §3 row 1's contract-level cause is
    resolved (floor affirmed + pick fixed). Update at next natural STATE refresh.
 
+## D15 — coverage gate ruled: pick-one-and-state, 0.25, applied at W-N fan-in (2026-08-05)
+
+W-M's sweep (gate-sweep/, pinned `9aab5f2`, reproduces W-G exactly) measured: at 0.5 the
+gate false-unreadables 64.6% of reviewer-readable covers and caps the laminarity ceiling at
+63.9%; at 0.25 ceiling 93.1%, false-unreadable near-eliminated, ramp recall 11.8%→~47%,
+phantom 69.2%→54.3%; laminarity AGREEMENT sits at the majority baseline at every grid point
+(0/13 Holm, both tests) — no operating point is measurement-adoptable, and the decisive
+round would need ≈37 served items (disproportionate).
+
+**Ruling (the reviewer's own standard: resolve by measurement, or pick one, state it, move
+on):** `UNREADABLE_COVERAGE_FRACTION` 0.5 → **0.25**, provenance upgraded [UNCALIBRATED] →
+[MEASURED] citing the sweep — with the basis stated honestly: the pick is decided by the
+false-unreadable axis (definitionally measured against reviewer labels) and by the
+reviewer's demonstrated preference for ramp recall (sided with legacy on readable ramps,
+D13.3); it is NOT a laminarity-agreement improvement and must never be quoted as one. 0.25
+over the saturated 0.20 keeps a real gate (unreadable census 39→9, not →2).
+
+**Application deferred to W-N fan-in** — W-N is mid-flight on the live tree and a constant
+change under its verification would poison its measurements. Sequence: W-N lands → apply
+the one-line change (orchestrator exception, genuine one-liner) → full suite + devloop +
+robustness + reachability re-verified → the 9 remaining unreadable covers and a sample of
+newly-judged flip covers go preferentially into the next quality rounds, so ordinary grading
+validates or refutes the pick with zero dedicated reviewer items.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
