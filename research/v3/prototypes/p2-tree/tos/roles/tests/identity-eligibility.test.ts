@@ -20,6 +20,15 @@
  * rather than filaments would pass the item-2 assertion and be wrong: item 1's foreground is a blown
  * highlight whose bar mask is a 16,937-pixel region of inradius 57.9 px, and it must stay eligible.
  *
+ * *Amended after `DECISIONS.md` D15.* Lowering `UNREADABLE_COVERAGE_FRACTION` to 0.25 lifted item 1's
+ * cover off the unreadable fallback and onto the field path, so the pool no longer names that region
+ * with the residual triple `#fcfefd` the fallback used — it names it with a node's own representative.
+ * The **claim** is unchanged and the hex was never the claim: a large genuine flat region must stay
+ * eligible for identity roles, and only boundary-tracing regions are demoted. So the candidate is found
+ * by the contract's ruler (which pool colour *is* that region, at the bar) rather than by a literal, and
+ * "not demoted" is asserted on the ordering — no tracer ranks ahead of it — rather than on its rank. A
+ * later constant ruling can move the pool again without making this file wrong about anything.
+ *
  * ### What is deliberately not asserted
  *
  * **No hex is pinned on item 2.** D12 escalated invariant I4's ε floor to the main orchestrator as the
@@ -47,13 +56,13 @@ import assert from "node:assert/strict"
 import { existsSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { test } from "node:test"
-import { colorFromRgb, rgbToHex } from "../../../../../src/contract/color.ts"
+import { colorFromRgb, rgbToHex, sameColor } from "../../../../../src/contract/color.ts"
 import type { Rgb8 } from "../../../../../src/contract/types.ts"
 import { paletteWithDiagnostics } from "../../candidate.ts"
-import { barMaskOf } from "../../identity/pixels.ts"
+import { attribute, barMaskOf } from "../../identity/pixels.ts"
 import { decodeImage } from "../../pipeline.ts"
 import { mergeCoincidentComponents, type CoincidenceCandidate } from "../coincidence.ts"
-import { hasInteriorPixel } from "../eligibility.ts"
+import { boundaryTracingLevel, hasInteriorPixel } from "../eligibility.ts"
 
 /** The repository root: six levels up from `research/v3/prototypes/p2-tree/tos/roles/tests`. */
 const REPOSITORY_ROOT = resolve(import.meta.dirname, "../../../../../../..")
@@ -219,24 +228,93 @@ test("round 3a item 2: the published foreground is a region of the artwork, not 
 	)
 })
 
-test("round 3a item 1: the blown-highlight white stays eligible", async () => {
+test("round 3a item 1: the blown highlight stays eligible for an identity role", async (context) => {
 	const path = join(REPOSITORY_ROOT, HIGHLIGHT_COVER)
 	assert.ok(existsSync(path), `the corpus shard is missing: ${path}`)
 	const { palette, parse } = await paletteWithDiagnostics(path)
+	const image = await decodeImage(path)
+	const hasInterior = (color: Rgb8): boolean =>
+		hasInteriorPixel(barMaskOf(image, color), image.width, image.height)
 
-	// This cover has no text group at all, so the foreground is the residual's own order — which is
-	// exactly where a rule that demoted near-whites rather than filaments would show up.
+	// This cover still has no text group at all, so the foreground is decided inside the identity
+	// ordering — which is exactly where a rule that demoted near-whites rather than filaments would show
+	// up. (`parse.notes` carries `no-text-groups:contrast-ranking-only` for the same fact.)
+	assert.deepEqual(parse.textGroups.map((group) => rgbToHex(group.repr)), [], "this cover carries no type")
+	context.diagnostic(
+		`verdict=${parse.verdict} coverage=${parse.coverage.toFixed(4)} pool=${parse.foregroundPool.length} published=${palette.roles.foreground.hex}`,
+	)
+
+	// ---- the premise, re-measured rather than quoted -------------------------------------------------
+	//
+	// D12's counter-case is a *region*, and the instrument says so on its own: the blown highlight's bar
+	// mask is a thick area with an interior, nothing like the one-pixel tracers item 2 published. The
+	// measurement is re-run here rather than pinned, because the number is what the rule turns on.
+	const highlight: Rgb8 = [252, 254, 253]
+	const measured = attribute(image, highlight)
+	assert.equal(hasInterior(highlight), true, "the fixture's premise is wrong: the blown highlight has no region")
+	assert.equal(boundaryTracingLevel(true), 0, "a region with an interior is not demoted; that is the rule")
+	assert.ok(
+		measured.maxInradius > 1,
+		`the blown highlight measures as a filament (inradius ${measured.maxInradius}), so this cover no longer tests the counter-case`,
+	)
+	context.diagnostic(
+		`blown highlight: ${measured.barPixels} bar px, inradius ${measured.maxInradius.toFixed(1)} px, boundary fraction ${measured.boundaryFraction.toFixed(3)}`,
+	)
+
+	// ---- eligibility, on whichever path the cover now takes ------------------------------------------
+	//
+	// **No hex is pinned.** `DECISIONS.md` D15 moved `UNREADABLE_COVERAGE_FRACTION` to 0.25, this cover's
+	// coverage clears the new gate, and the pool is now built by the field path rather than by the
+	// unreadable fallback — so the exact triple the fallback used to publish for this region (`#fcfefd`,
+	// a residual) is not the triple the field path names it with. What must survive that change is the
+	// **region's eligibility**, so the candidate is found by the contract's own ruler: whatever colour
+	// the pool carries that *is* the blown highlight, at the bar.
+	const carriers = parse.foregroundPool
+		.map((color, rank) => ({ color, rank }))
+		.filter(({ color }) => sameColor(colorFromRgb(color), colorFromRgb(highlight)))
+	assert.ok(
+		carriers.length > 0,
+		`no candidate in the ${parse.foregroundPool.length}-colour pool is the blown highlight: ${
+			parse.foregroundPool.slice(0, 8).map(rgbToHex).join(" ")
+		}`,
+	)
+	const carrier = carriers[0]
+	context.diagnostic(`the highlight is carried by ${rgbToHex(carrier.color)} at rank ${carrier.rank} of ${parse.foregroundPool.length}`)
+
+	// It is a region of the artwork by the same instrument, and this pipeline's own statement that a
+	// colour is a region — a retained node names it.
+	assert.equal(hasInterior(carrier.color), true, `${rgbToHex(carrier.color)} carries the highlight but measures as a tracer`)
+	assert.ok(
+		parse.nodes.some((node) => rgbToHex(node.repr) === rgbToHex(carrier.color)),
+		`${rgbToHex(carrier.color)} is carried by no retained node`,
+	)
+
+	// ---- and if it loses, it loses on ordering ------------------------------------------------------
+	//
+	// `identityEligibilityLevel` puts the tracing level **outermost**, so a demoted candidate sorts behind
+	// every candidate that has an interior — that, and not a rank, is what a demotion looks like in the
+	// pool. Two readings of the ordering pin it from both sides, and neither one is a threshold:
+	//
+	//  - nothing ranked **ahead** of the highlight is a tracer, so the level is still an ordering rather
+	//    than a filter (item 2's halos are reachable, just last);
+	//  - at least one region ranks **behind** the highlight, which is impossible for a demoted candidate
+	//    and is therefore the falsifier for "a rule that demotes near-whites rather than filaments".
+	//
+	// Whatever separated the highlight from the colour that beat it lives in the readability ranking
+	// inside the level, which is the one place this rule is not allowed to reach.
+	const tracersAhead = parse.foregroundPool.slice(0, carrier.rank).filter((color) => !hasInterior(color)).map(rgbToHex)
+	assert.deepEqual(tracersAhead, [], `boundary tracers rank ahead of the blown highlight: ${tracersAhead.join(" ")}`)
+
+	const regionBehind = parse.foregroundPool.slice(carrier.rank + 1).find((color) => hasInterior(color))
+	assert.ok(
+		regionBehind !== undefined,
+		`the blown highlight sorts behind every region in the pool, which is exactly what a tracing demotion looks like`,
+	)
+	context.diagnostic(`a region still ranks behind the highlight: ${rgbToHex(regionBehind)}`)
+
 	assert.equal(
-		await barMaskHasInterior(path, palette.roles.foreground.rgb),
+		hasInterior(palette.roles.foreground.rgb),
 		true,
 		`the published foreground ${palette.roles.foreground.hex} is not a region of the artwork`,
-	)
-	// `#fcfefd`, the triple W-I attributed to a 16,937-pixel region of inradius 57.9 px, is still an
-	// eligible candidate in the pool — demoted by nothing, whatever its rank on readability.
-	const highlight: Rgb8 = [252, 254, 253]
-	assert.equal(await barMaskHasInterior(path, highlight), true, "the fixture's premise is wrong: #fcfefd has no region")
-	assert.ok(
-		parse.foregroundPool.some((color) => rgbToHex(color) === "#fcfefd"),
-		`#fcfefd left the foreground pool: ${parse.foregroundPool.slice(0, 8).map(rgbToHex).join(" ")}`,
 	)
 })

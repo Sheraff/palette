@@ -123,9 +123,16 @@ export const MIN_LAMINAR_CHAIN_LENGTH = 3
 /**
  * Below this fraction of image area explained by retained nodes, the parse is `unreadable`.
  *
- * **[UNCALIBRATED] — a guess.** arm-b′ §2.5 says "a small fraction" and stops there.
+ * **[MEASURED] — DECISIONS.md D15, pick-one-and-state on worker M's sweep**
+ * (`gate-sweep/report.json`, pinned `9aab5f2`, 144 reviewer-labelled covers): at the prior
+ * 0.5 the gate false-unreadabled 64.6% of reviewer-readable covers and capped the
+ * laminarity ceiling at 63.9%; at 0.25 false-unreadable ≈4.2%, ceiling 93.1%, ramp recall
+ * 11.8%→47.1%. The pick is decided by the false-unreadable axis and the reviewer's
+ * demonstrated ramp-recall preference (D13.3); laminarity AGREEMENT sat at the majority
+ * baseline at every grid point (0/13 Holm) — this value must NEVER be quoted as an
+ * agreement improvement. 0.25 over the saturated 0.20 keeps a real gate.
  */
-export const UNREADABLE_COVERAGE_FRACTION = 0.5
+export const UNREADABLE_COVERAGE_FRACTION = 0.25
 
 /**
  * How many mark nodes the role stage will look at, largest first.
