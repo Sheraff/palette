@@ -280,6 +280,20 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     identity families covered (family = bar-neighbourhood cluster family by salient mass) →
     the existing per-role criteria as tie-breaks. Never a weighted multi-term objective
     (decision 12's P6 exclusion binds). Sequenced after decisions 15–17 land.
+    *Rulings 2026-08-05 (wp14 — implemented correctly, measured insufficient for finding 3):*
+    (a) **The candidate pool re-unions per arm-f §2.4** ("field-like components and mark colour
+    groups are unioned into a single candidate pool… every colour group is in the pool for every
+    role") — v0.1 narrowed fg/accent candidacy to overlay clusters, leaving an extensive
+    field-like component that loses the field slots with no route into any role (item 3's red:
+    three components, two slots, overlay mass 34 vs 1424, sameColor with its own field ⇒
+    infeasible at any K). Component candidates: feasibility vs **published** colours (not their
+    own local field), salient mass = field mass. (b) **Identity-family granularity stays at
+    1× bar** — the 8× probe reproduces the reviewer's exact four colours on item 3 (fourth
+    strike, upward packet) but moves 11 covers including both silent STRONGs and a regression to
+    round-1's UNACCEPTABLE fg; coverage must not override role sourcing. Re-measure coverage
+    inertness after the pool union; `P5_IDENTITY_BAR_MULTIPLE` stays a diagnostic re-run knob,
+    default 1. (c) Per-foreground accent shortlists (the truncation trap) accepted as
+    implemented.
 
 ## Verification obligations (designed overlap)
 

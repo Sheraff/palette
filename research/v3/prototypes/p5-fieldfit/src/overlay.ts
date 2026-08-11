@@ -11,10 +11,26 @@
  * where all the evidence went:
  *
  *  - every comparison runs on published representatives, never on cluster centres;
- *  - **foreground** = argmax overlay mass among candidates clearing `FOREGROUND_MIN_RAW_APCA` over
- *    the published ramp (decision 13, resolved by measurement);
- *  - **accent** = argmax overlay mass among candidates clearing the contract's accent floor, distinct
- *    from both ends, and outside the foreground's twin radius (decision 14, measured).
+ *  - **foreground** candidates clear `FOREGROUND_MIN_RAW_APCA` over the published ramp and are ranked
+ *    by overlay mass (decision 13, resolved by measurement);
+ *  - **accent** candidates clear the contract's accent floor and decision 16's visibility floor, are
+ *    distinct from both ends, sit outside the foreground's twin radius (decision 14, measured), and
+ *    are ranked by overlay mass.
+ *
+ * **v0.8.1 — the pool is a union, not the overlay.** SPEC decision 18's ruling (a) restores arm-f
+ * §2.4: a field-like component that won no field slot is a first-class candidate for both ink roles,
+ * beside the overlay clusters, judged by the same floors against the same published colours. See the
+ * "pool re-union" block below for the four choices that entails (published colour, salient mass, which
+ * feasibility test is cluster-only, dedupe). Everything from here to there is unchanged; what changed
+ * is what the rankings and the gates run over.
+ *
+ * **v0.8.0 — the two rankings no longer decide anything on their own.** SPEC decision 18 (round-3
+ * ruling R5) restores arm-f §2.7's joint solve: this module shortlists the top
+ * `ROLE_SHORTLIST_SIZE` candidates *per role under exactly the criteria above*, and `assignment.ts`
+ * picks the pair, lexicographically — feasibility, then how many of the artwork's identity families
+ * the four published roles cover, then these per-role rankings as tie-breaks. Every gate below is
+ * unchanged and still hard; what changed is that the winner is chosen over pairs instead of one role
+ * at a time, because round 3 measured that *per-role argmax cannot satisfy a set criterion*.
  *
  * The Pareto front and the min-distance criterion both lived here and were both removed by reviewer
  * evidence; the history is in the accent block. Design sources: `phase-1/proposals/arm-f-r3.md`
@@ -55,7 +71,6 @@
 import {
 	colorDistance,
 	colorFromRgb,
-	okLabDistance,
 	okLabToRgb,
 	rgbToOkLab,
 	sameColor,
@@ -65,6 +80,7 @@ import { decompose } from "../../../src/contract/perception-model-spaces.ts"
 import {
 	ACCENT_FUNCTIONAL_DISTANCE,
 	ACCENT_VISIBILITY_COLOR_DISTANCE,
+	POOLED_SAME_COLOR_BAR,
 } from "../../../src/contract/constants.ts"
 import { firstInvisibleAccentOnRamp, minRawContrastOverRamp } from "../../../src/contract/ramp.ts"
 import type {
@@ -73,13 +89,26 @@ import type {
 	PaletteColor,
 	ResolvedContrastFloors,
 } from "../../../src/contract/types.ts"
-import { normalizedX, normalizedY, unpackRgb } from "./decode.ts"
+import {
+	agglomerateBarNeighbourhoods,
+	paletteColorOfLab,
+	readIdentitySet,
+	ROLE_SHORTLIST_SIZE,
+	sameColorLab,
+	solveAssignment,
+} from "./assignment.ts"
+import type { AssignmentTrace, BarNeighbourhood, RoleCandidate } from "./assignment.ts"
+import { componentCentre } from "./components.ts"
+import type { FieldComponent } from "./components.ts"
+import { normalizedX, normalizedY, packRgb, unpackRgb } from "./decode.ts"
+import { snapToArtwork } from "./snap.ts"
 import type {
 	DecodedRaster,
 	FieldFit,
 	Inventory,
 	OverlayCluster,
 	OverlayReading,
+	TripleStats,
 } from "./types.ts"
 
 // ---------------------------------------------------------------------------------------------
@@ -132,22 +161,12 @@ const SELECTION_RAMP_REFINEMENT_SAMPLES = 64
  */
 
 /**
- * A continuous OKLab value as a contract colour, for the two contract functions that only accept
- * one (`sameColorBar`'s region lookup and `apcaRaw`'s 8-bit input). Quantizing here is safe for
- * both: the region lookup is a four-way classification and APCA is defined on 8-bit triples.
+ * `paletteColorOfLab` and `sameColorLab` — choice 3 in the file header — moved to `assignment.ts` in
+ * v0.8.0, along with decision 6's agglomeration itself, because the identity-family reading needs the
+ * same three primitives over a different mass and one implementation is the only way the overlay and
+ * the identity set can be guaranteed to partition colour space by the same rule. They are imported
+ * back above; nothing about them changed.
  */
-function paletteColorOfLab(lab: OkLab): PaletteColor {
-	return colorFromRgb(okLabToRgb(lab))
-}
-
-/**
- * "Same colour" at this pair's regional bar, measured on the unquantized values (choice 3 in the
- * file header). Equivalent to `sameColor(a, b)` except that the distance does not round-trip.
- */
-function sameColorLab(first: OkLab, second: OkLab): boolean {
-	return okLabDistance(first, second) <
-		sameColorBar(paletteColorOfLab(first), paletteColorOfLab(second))
-}
 
 // ---------------------------------------------------------------------------------------------
 // Pass 1 — overlay mass per exact triple
@@ -231,100 +250,15 @@ function accumulateOverlayMass(
 // SPEC decision 6 — bar-neighbourhood agglomeration
 // ---------------------------------------------------------------------------------------------
 
-type Agglomerate = {
-	mass: number
-	/** Overlay-mass-weighted OKLab sums; the centre is these over `mass`. */
-	sumL: number
-	sumA: number
-	sumB: number
-	sumX: number
-	sumY: number
-	centre: OkLab
-	memberCount: number
-	representative: number
-	representativeMass: number
-}
-
-function recentre(cluster: Agglomerate): void {
-	cluster.centre = [
-		cluster.sumL / cluster.mass,
-		cluster.sumA / cluster.mass,
-		cluster.sumB / cluster.mass,
-	]
-}
-
-/**
- * Agglomerate triples into bar-neighbourhoods (SPEC decision 6, arm-e-r3 §2.4).
- *
- * Descending overlay mass, packed-int tie-break — a total, canonical order. Each triple joins the
- * nearest existing cluster whose running centre is within the pair's regional bar, else opens a
- * new one. The property the design leans on: a sub-bar perturbation cannot change the partition,
- * because anything a dither splits apart is by definition closer than the merge radius and gets
- * re-merged. That is the dither answer, and `tests/overlay.test.ts` case 2 is its self-test.
- */
-function agglomerate(candidates: readonly TripleOverlay[]): Agglomerate[] {
-	const ordered = [...candidates].sort((first, second) =>
-		second.mass - first.mass || first.packed - second.packed
-	)
-
-	const clusters: Agglomerate[] = []
-	for (const triple of ordered) {
-		let best: Agglomerate | null = null
-		let bestDistance = Number.POSITIVE_INFINITY
-		for (const cluster of clusters) {
-			const distance = okLabDistance(triple.lab, cluster.centre)
-			if (distance >= bestDistance) continue // ties keep the earlier (higher-mass) cluster
-			const bar = sameColorBar(
-				paletteColorOfLab(triple.lab),
-				paletteColorOfLab(cluster.centre),
-			)
-			if (distance >= bar) continue
-			best = cluster
-			bestDistance = distance
-		}
-
-		if (best === null) {
-			const created: Agglomerate = {
-				mass: triple.mass,
-				sumL: triple.lab[0] * triple.mass,
-				sumA: triple.lab[1] * triple.mass,
-				sumB: triple.lab[2] * triple.mass,
-				sumX: triple.sumX,
-				sumY: triple.sumY,
-				centre: triple.lab,
-				memberCount: 1,
-				representative: triple.packed,
-				representativeMass: triple.mass,
-				}
-			clusters.push(created)
-			continue
-		}
-
-		best.mass += triple.mass
-		best.sumL += triple.lab[0] * triple.mass
-		best.sumA += triple.lab[1] * triple.mass
-		best.sumB += triple.lab[2] * triple.mass
-		best.sumX += triple.sumX
-		best.sumY += triple.sumY
-		best.memberCount += 1
-		if (
-			triple.mass > best.representativeMass ||
-			(triple.mass === best.representativeMass && triple.packed < best.representative)
-		) {
-			best.representative = triple.packed
-			best.representativeMass = triple.mass
-		}
-		recentre(best)
-	}
-
-	return clusters
-}
+// Decision 6's agglomeration itself is `agglomerateBarNeighbourhoods` in `assignment.ts` (v0.8.0);
+// what stays here is its *application* to the overlay — which points are offered to it (the triples
+// the fit rejected, above the negligible-mass floor) and what a cluster means once it comes back.
 
 // ---------------------------------------------------------------------------------------------
 // Cluster construction
 // ---------------------------------------------------------------------------------------------
 
-function readCluster(cluster: Agglomerate, fit: FieldFit): OverlayCluster {
+function readCluster(cluster: BarNeighbourhood, fit: FieldFit): OverlayCluster {
 	const meanX = cluster.sumX / cluster.mass
 	const meanY = cluster.sumY / cluster.mass
 	const localField = fit.fieldAt(meanX, meanY)
@@ -470,19 +404,237 @@ export const ACCENT_FG_EXCLUSION_MULTIPLE = 8
 // grouping, still deferred by decision 12, is the shape of the thing that would supply one.
 
 // ---------------------------------------------------------------------------------------------
+// SPEC decision 18, ruling (a) — the pool re-union (arm-f §2.4)
+// ---------------------------------------------------------------------------------------------
+//
+// v0.8.0 narrowed the ink pool to overlay clusters, and round 3's finding 3 is what that costs: an
+// extensive **field-like component** that loses the two field slots carries no role and has no route
+// into one. On `2376a6b67d` the red is such a component — support 0.138, overlay mass 34 against the
+// black's 1424, and `sameColor` with its own local field — so it was infeasible as an ink candidate
+// at every `K`, whatever the assignment did. arm-f §2.4 says the opposite in as many words: field-like
+// components and mark colour groups are **unioned into a single candidate pool**, every colour group
+// is in the pool for every role, no role has an eligibility gate, and a low score is a loss rather
+// than an exclusion.
+//
+// So a component that won no field slot enters the pool beside the clusters. Four things have to be
+// said about it, and each is a choice this file makes rather than a translation:
+//
+//  1. **Published colour** — the component's centre colour (`componentCentre`: its own fitted surface
+//     at its own weighted centre), snapped **over its own support**, not over the whole inventory.
+//     Decision 4's mass-maximizing snap, with the same `POOLED_SAME_COLOR_BAR` ball the field ends
+//     use, run against an inventory restricted to the pixels the component claims. Snapping over the
+//     whole artwork would let a component publish a colour that occurs only somewhere else in the
+//     picture; the component is a region, and it should publish one of its own pixels.
+//  2. **Salient mass** — its **field mass** `Σ w` over the support (decision 18(a), literally). A
+//     component's rejected mass is near zero by construction, which is precisely why v0.8.0's ranking
+//     could not see it; field mass is the same quantity the identity set already sums when it adds
+//     rejected and field mass back together, in the same pixel units as a cluster's `Σ(1 − w)`.
+//  3. **Feasibility against the PUBLISHED colours, never against its own local field.** Every floor a
+//     cluster faces still binds — representative-distinctness from both published ends, decision 13's
+//     legibility floor over the ramp, decision 16's visibility floor, `firstInvisibleAccentOnRamp`,
+//     decision 14's twin exclusion. What does **not** apply is the cluster-only "distinct from the
+//     field at its own mean position" test: a component *is* the field at its own mean position, so
+//     that test rejects every component identically, and it is the exact comparison that made item 3's
+//     red infeasible. It is a *mark-selection* test (it asks whether a mark departs from the ground it
+//     sits on), not a publication test, and a component is not a mark.
+//  4. **Dedupe — the component supersedes the cluster of its own family, and that direction was
+//     measured.** A colour that is a field-like region also leaves a thin rim of rejected pixels at
+//     its edges, so it is usually in the pool twice: once as a component and once as a low-mass
+//     overlay cluster. arm-f §2.4's pool is a pool of *colour groups*, so the two are one entry, and
+//     the entry has to be the component's, for three reasons that are all visible on `2376a6b67d`:
+//
+//     - **mass** — the component measures the whole region (field mass 11 694), the cluster measures
+//       the rim the fit rejected (overlay mass 34). The first is the reading of "how much of this
+//       artwork is this colour"; the second is a measurement of the region's antialiasing.
+//     - **the published colour** — a cluster publishes its highest-*rejected*-mass triple, which on a
+//       region's rim is an edge pixel; the component publishes the mass-maximizing snap over its own
+//       support, which is the region's own dominant pixel.
+//     - **feasibility** — the cluster is judged by the mark-selection test in choice 3, which it fails
+//       identically, because the field beneath a region's rim *is* that region. Keeping the cluster
+//       and dropping the component would leave the colour in the pool in the one form that cannot be
+//       published — which is exactly v0.8.0's item-3 negative wearing a dedupe rule as a disguise, and
+//       is the eligibility gate arm-f §2.4 forbids.
+//
+//     So: every overlay cluster whose published representative is `sameColor` with an admitted
+//     component's published representative leaves the pool. `sameColor` is the contract's own
+//     predicate, and two colours it calls the same could not both be published anyway (invariant 3),
+//     so nothing publishable is lost. Between two components of the same family the more extensive one
+//     (first in `FieldReading`'s order) keeps the entry. **Ink-vetoed components need no rule here**:
+//     decision 15a keeps a vetoed component out of `FieldReading.components` entirely and its pixels
+//     unclaimed, so it is already in the pool as overlay mass and is never offered to this function —
+//     `candidate.ts` passes accepted components only.
+
+/**
+ * **Which roles a component candidate competes for.** `"both"` ships; `"accent"` is a measurement.
+ *
+ * Decision 18(a) is implemented as written — one pool, both ink roles, salient mass = field mass — and
+ * `"both"` is what every published palette uses. The knob exists because the *scale* of that salient
+ * mass is a finding the implementing pass owes upward rather than settles: a region's field mass runs
+ * 5 000–25 000 where an ink cluster's rejected mass runs 10²–10³, so a component out-ranks every ink
+ * on any mass tie-break it enters, and decision 13's foreground rule — whose stated principle is *the
+ * artwork's own ink, provided it registers* — becomes "the largest unslotted region". That is measured,
+ * not asserted: `reports/wp15.md` carries both columns, including the one silent STRONG that moves.
+ *
+ * `P5_COMPONENT_ROLES=accent` keeps components out of the foreground shortlist only. It is not a
+ * proposal and not an eligibility gate in the shipped path; it is the second column of a table, in the
+ * same spirit and with the same standing as `P5_IDENTITY_BAR_MULTIPLE` (v0.8.0).
+ */
+export const COMPONENT_ROLES: "both" | "accent" = (() => {
+	const raw = process.env.P5_COMPONENT_ROLES
+	if (raw === undefined || raw.trim() === "" || raw === "both") return "both"
+	if (raw === "accent") return "accent"
+	throw new RangeError(`P5_COMPONENT_ROLES must be "both" or "accent", got ${JSON.stringify(raw)}`)
+})()
+
+/** What one field-like component offered to the pool did, for the sidecar. Decides nothing. */
+export type ComponentCandidateReport = Readonly<{
+	/** Recursion depth that produced the component — its identity in `diagnose.ts`'s `attempts` table. */
+	depth: number
+	supportFraction: number
+	/** Field mass `Σ w` over the support: the salient mass this candidate competes on. */
+	supportMass: number
+	/** The component's own centre colour, pre-snap. */
+	centre: string
+	/** Published: the centre snapped over the component's own support (mass-maximizing, decision 4). */
+	published: string
+	/** False ⇒ a more extensive component of the same family already holds the entry. */
+	admitted: boolean
+	/** That component's published colour, when this one deduped against it. */
+	duplicateOf: string | null
+	/** Overlay clusters this component superseded: their published representatives, and their mass. */
+	supersedes: readonly Readonly<{ hex: string; overlayMass: number }>[]
+	/** Cleared representative-distinctness from both published ends. `null` when not admitted. */
+	feasible: boolean | null
+	/** `min|raw APCA|` over the published ramp — decision 13's gate. `null` when not admitted. */
+	legibility: number | null
+}>
+
+/**
+ * The component's claim as an `Inventory`, for the snap and for nothing else.
+ *
+ * Counts and moments are re-accumulated over the claim rather than copied from the whole-image
+ * inventory, so `count` means "pixels of this colour **inside this component**" — which is the mass
+ * decision 4's snap maximizes, and the only reason this object exists.
+ */
+function supportInventory(
+	component: FieldComponent,
+	raster: DecodedRaster,
+	inventory: Inventory,
+): Inventory {
+	const { width, height, packed } = raster
+	const triples = new Map<number, { packed: number; count: number; sumX: number; sumY: number }>()
+	let totalPixels = 0
+	for (let row = 0; row < height; row += 1) {
+		const y = normalizedY(row, height)
+		const rowOffset = row * width
+		for (let column = 0; column < width; column += 1) {
+			const index = rowOffset + column
+			if (component.claim[index] !== 1) continue
+			const key = packed[index]!
+			let entry = triples.get(key)
+			if (entry === undefined) {
+				entry = { packed: key, count: 0, sumX: 0, sumY: 0 }
+				triples.set(key, entry)
+			}
+			entry.count += 1
+			entry.sumX += normalizedX(column, width)
+			entry.sumY += y
+			totalPixels += 1
+		}
+	}
+
+	const stats = new Map<number, TripleStats>()
+	for (const entry of triples.values()) {
+		const rgb = unpackRgb(entry.packed)
+		// The whole-image inventory is authoritative for a triple's OKLab, exactly as in
+		// `accumulateOverlayMass`; the fallback cannot disagree, both derive it from the same triple.
+		const whole = inventory.triples.get(entry.packed)
+		stats.set(entry.packed, {
+			packed: entry.packed,
+			rgb,
+			lab: whole === undefined ? rgbToOkLab(rgb) : whole.lab,
+			count: entry.count,
+			sumX: entry.sumX,
+			sumY: entry.sumY,
+		})
+	}
+
+	return { triples: stats, has: (key: number) => stats.has(key), totalPixels }
+}
+
+/**
+ * One component as a pool entry, in the `OverlayCluster` shape everything downstream already reads.
+ *
+ * Two fields carry a different quantity for a component than for a cluster, and the names are
+ * `src/types.ts`'s, which is the orchestrator's file — the rename is proposed in
+ * `reports/wp15-types.md` and stated here in the meantime:
+ *
+ *  - `overlayMass` holds the component's **field mass**, decision 18(a)'s salient mass for this side
+ *    of the union. It is `Σ w` where a cluster's is `Σ(1 − w)`: the same pixel-weight units, the
+ *    complementary half of the same fit.
+ *  - `localField` holds the **published background** rather than the fit's field at the component's
+ *    own mean position, which would be the component's own surface and would make every delta zero.
+ *    The deltas exist to describe how a colour departs from the field it will be *seen against*, and
+ *    for a candidate that is about to be published as an ink role that field is the published one.
+ *    They are description only (`accentChromaOnly`); nothing selects on them.
+ */
+function componentPoolEntry(
+	component: FieldComponent,
+	centre: OkLab,
+	representative: number,
+	supportTriples: number,
+	backgroundLab: OkLab,
+): OverlayCluster {
+	const delta = decompose(backgroundLab, centre)
+	return {
+		representative,
+		lab: centre,
+		overlayMass: component.supportMass,
+		meanX: component.meanX,
+		meanY: component.meanY,
+		localField: backgroundLab,
+		deltaL: delta.deltaLightness,
+		deltaC: delta.deltaChroma,
+		deltaH: delta.deltaHue,
+		memberCount: supportTriples,
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------------------------
 
 /**
- * Read the overlay: cluster what the fit rejected, then pick foreground and accent off it.
+ * What `readOverlay` returns: the `OverlayReading` of `src/types.ts`, plus decision 18's trace.
  *
- * `fieldEnds` is the pair of field end colours (background and surface targets, continuous and
- * pre-snap) that `ramp.ts` produced. It is an argument rather than something derived here because
- * SPEC decision 8 requires the accent to be distinct from **both** ends and this module does not
- * read the ramp. For a collapsed (order-0 / flat) field pass the same OKLab value twice.
+ * The trace is an intersection declared here rather than a field added to `OverlayReading`, because
+ * `src/types.ts` is the orchestrator's file. The move is proposed in `reports/wp14-types.md`; until it
+ * is ratified this shape is structurally an `OverlayReading` everywhere one is expected, and
+ * `candidate.ts` carries the trace on `Analysis` exactly as v0.7.1 carried `PathExcursionReport`.
+ */
+export type OverlayReadingWithAssignment = OverlayReading & {
+	/** `null` when no assignment was solved: no overlay at all, or no admissible foreground. */
+	readonly assignment: AssignmentTrace | null
+	/**
+	 * Decision 18(a)'s union, from the component side: one row per field-like component offered to the
+	 * pool, admitted or deduped. Empty on every cover the global fit explained (no components exist)
+	 * and on the retreat (none was accepted). `clusters` above stays what it has always been — the
+	 * agglomerated *overlay* colours — so the two halves of the union are readable apart.
+	 */
+	readonly componentCandidates: readonly ComponentCandidateReport[]
+}
+
+/**
+ * Read the overlay: cluster what the fit rejected, then solve for foreground and accent jointly.
  *
- * Determinism: every ordering in this function ends at the packed 24-bit integer, which is unique
- * per triple, so there is no tie left for iteration order to decide.
+ * `publishedRamp` carries the field as the contract will see it — its ends are `roles.background` and
+ * `roles.surface`. It is an argument rather than something derived here because SPEC decisions 8 and
+ * 16 require the accent to be distinct from and visible against **both** ends, and this module does
+ * not read the ramp. For a collapsed (order-0 / flat) field the two ends are the same colour.
+ *
+ * Determinism: every ordering in this function, and every tie-break in `assignment.ts`, ends at the
+ * packed 24-bit integer, which is unique per triple, so there is no tie left for iteration order to
+ * decide.
  */
 export function readOverlay(
 	fit: FieldFit,
@@ -490,16 +642,36 @@ export function readOverlay(
 	inventory: Inventory,
 	contrast: ResolvedContrastFloors,
 	publishedRamp: readonly GradientStop[],
-): OverlayReading {
+	/**
+	 * SPEC decision 18(a): the field-like components that won **no** field slot. `candidate.ts` owns
+	 * which those are — the field reading assigns the slots — and passes accepted components only, so
+	 * an ink-vetoed component never appears here (it is already in the pool as overlay mass). Empty on
+	 * every cover the global fit explained, which is why those covers cannot move in v0.8.1.
+	 */
+	unslottedComponents: readonly FieldComponent[] = [],
+): OverlayReadingWithAssignment {
 	if (publishedRamp.length < 2) {
 		throw new RangeError(`readOverlay needs at least two published stops, got ${publishedRamp.length}`)
 	}
 	const { triples, totalMass } = accumulateOverlayMass(fit, raster, inventory)
 
-	if (totalMass <= 0) {
-		// The fit rejected nothing. There is no overlay, so there is no foreground: the escape path
-		// (SPEC decision 10) is the caller's, not ours.
-		return { clusters: [], foreground: null, accent: null, accentChromaOnly: false }
+	if (totalMass <= 0 && unslottedComponents.length === 0) {
+		// The fit rejected nothing **and** no component was offered. There is nothing in the pool, so
+		// there is no foreground: the escape path (SPEC decision 10) is the caller's, not ours.
+		//
+		// v0.8.1 added the second conjunct, and it is arm-f §2.4 again rather than a tidy-up: "the fit
+		// rejected nothing" was a proof that the pool was empty only while the pool *was* the overlay.
+		// A cover whose components explain every pixel has an empty overlay and a non-empty pool, and
+		// returning here would be an eligibility gate wearing an early return. With `totalMass` at 0 the
+		// mass floor is 0, no triple carries rejected mass, and `clusters` below is simply empty.
+		return {
+			clusters: [],
+			foreground: null,
+			accent: null,
+			accentChromaOnly: false,
+			assignment: null,
+			componentCandidates: [],
+		}
 	}
 
 	const massFloor = totalMass * NEGLIGIBLE_OVERLAY_MASS_FRACTION
@@ -508,7 +680,7 @@ export function readOverlay(
 		if (triple.mass >= massFloor) meaningful.push(triple)
 	}
 
-	const clusters = agglomerate(meaningful)
+	const clusters = agglomerateBarNeighbourhoods(meaningful)
 		.map((cluster) => readCluster(cluster, fit))
 		.sort((first, second) =>
 			second.overlayMass - first.overlayMass ||
@@ -521,8 +693,99 @@ export function readOverlay(
 		publishedRamp[0].color,
 		publishedRamp[publishedRamp.length - 1].color,
 	] as const
+
+	// --- decision 18(a): the union ------------------------------------------------------------------
+	//
+	// Built before the feasibility filter, because a component candidate is a first-class member of the
+	// pool the filter runs over — that is what "unioned into a single candidate pool" means. The dedupe
+	// is the only place a component is compared against a cluster rather than against a published
+	// colour, and it is a *no-double-entry* rule, never an eligibility gate: it drops the colour's
+	// second copy, not the colour.
+	const backgroundLab = rgbToOkLab(publishedEnds[0].rgb)
+	const componentSourced = new Set<OverlayCluster>()
+	const componentEntries: OverlayCluster[] = []
+	const componentReports: {
+		row: ComponentCandidateReport
+		cluster: OverlayCluster | null
+	}[] = []
+	const superseded = new Set<OverlayCluster>()
+	for (const component of unslottedComponents) {
+		const centre = componentCentre(component)
+		const support = supportInventory(component, raster, inventory)
+		if (support.totalPixels === 0) continue // a claim with no pixels cannot publish one
+		const snapped = snapToArtwork(centre, support, POOLED_SAME_COLOR_BAR)
+		const color = colorFromRgb(snapped.rgb)
+		const representative = packRgb(snapped.rgb)
+
+		// Component-versus-component first: the more extensive one is already in `componentEntries`.
+		const twin = componentEntries.find((entry) =>
+			sameColor(colorFromRgb(unpackRgb(entry.representative)), color)
+		)
+		if (twin !== undefined) {
+			componentReports.push({
+				row: {
+					depth: component.depth,
+					supportFraction: component.supportFraction,
+					supportMass: component.supportMass,
+					centre: colorFromRgb(okLabToRgb(centre)).hex,
+					published: color.hex,
+					admitted: false,
+					duplicateOf: colorFromRgb(unpackRgb(twin.representative)).hex,
+					supersedes: [],
+					feasible: null,
+					legibility: null,
+				},
+				cluster: null,
+			})
+			continue
+		}
+
+		// Component-versus-cluster: the component takes the entry, the clusters of its family leave.
+		const displaced = clusters.filter((cluster) =>
+			!superseded.has(cluster) &&
+			sameColor(colorFromRgb(unpackRgb(cluster.representative)), color)
+		)
+		for (const cluster of displaced) superseded.add(cluster)
+
+		const entry = componentPoolEntry(
+			component,
+			centre,
+			representative,
+			support.triples.size,
+			backgroundLab,
+		)
+		componentEntries.push(entry)
+		componentSourced.add(entry)
+		componentReports.push({
+			row: {
+				depth: component.depth,
+				supportFraction: component.supportFraction,
+				supportMass: component.supportMass,
+				centre: colorFromRgb(okLabToRgb(centre)).hex,
+				published: color.hex,
+				admitted: true,
+				duplicateOf: null,
+				supersedes: displaced.map((cluster) => ({
+					hex: colorFromRgb(unpackRgb(cluster.representative)).hex,
+					overlayMass: cluster.overlayMass,
+				})),
+				feasible: null,
+				legibility: null,
+			},
+			cluster: entry,
+		})
+	}
+
+	// One pool, one order. Mass descending then packed integer ascending, exactly as `clusters` was
+	// ordered on its own, so a cover with no component candidates enumerates in v0.8.0's order.
+	const pool = [...clusters.filter((cluster) => !superseded.has(cluster)), ...componentEntries]
+		.sort((first, second) =>
+			second.overlayMass - first.overlayMass ||
+			first.representative - second.representative
+		)
+
 	const published = new Map<OverlayCluster, PaletteColor>(
-		clusters.map((cluster) => [cluster, colorFromRgb(unpackRgb(cluster.representative))]),
+		pool.map((cluster) => [cluster, colorFromRgb(unpackRgb(cluster.representative))]),
 	)
 
 	/**
@@ -531,14 +794,23 @@ export function readOverlay(
 	 * contract judges. Round 1 caught the cost of not doing this — `#000000` and `#000009` published
 	 * as foreground and accent on `2376a6b67d`, two clusters whose *centres* were a bar apart.
 	 */
-	const feasible = clusters.filter((cluster) => {
+	const feasible = pool.filter((cluster) => {
 		const color = published.get(cluster)!
 		// Distinct from the field *at its own mean position* — the whole point of a fitted field is
 		// that "the background" is a different colour in different places. Measured on the
 		// representative too, per the ruling's "ALL comparisons".
-		if (sameColorLab(rgbToOkLab(color.rgb), cluster.localField)) return false
+		//
+		// **Cluster-only** (decision 18(a)): this is the mark-selection test — does this mark depart
+		// from the ground it sits on — and a component *is* the ground at its own mean position, so
+		// applying it to a component rejects every component identically. That is the comparison that
+		// made item 3's red infeasible at every K. A component's distinctness is judged against the
+		// published colours below, like everything the contract judges.
+		if (!componentSourced.has(cluster) && sameColorLab(rgbToOkLab(color.rgb), cluster.localField)) {
+			return false
+		}
 		return !publishedEnds.some((end) => sameColor(color, end))
 	})
+	const feasibleSet = new Set(feasible)
 
 	// --- foreground (SPEC decision 7, re-ranked by round-1 evidence) ------------------------------
 	//
@@ -566,22 +838,69 @@ export function readOverlay(
 		legibility.set(cluster, raw)
 	}
 
+	// The two per-candidate quantities the component rows quote, now that both are measured. Filled
+	// after the fact and read by nothing: this is the sidecar's copy, not a second source of truth.
+	const componentCandidates: ComponentCandidateReport[] = componentReports.map(({ row, cluster }) =>
+		cluster === null ? row : {
+			...row,
+			feasible: feasibleSet.has(cluster),
+			legibility: legibility.get(cluster) ?? null,
+		}
+	)
+
 	// The floor is the larger of the caller's request and the prototype's evidence-bracketed one, so
 	// raising `minTextContrast` tightens the gate and nothing can loosen it below the bracket.
 	const foregroundFloor = Math.max(textFloor, FOREGROUND_MIN_RAW_APCA)
-	const admissible = feasible.filter((cluster) => legibility.get(cluster)! >= foregroundFloor)
+	const admissible = feasible.filter((cluster) =>
+		legibility.get(cluster)! >= foregroundFloor &&
+		// Measurement only; `"both"` ships. See `COMPONENT_ROLES`.
+		(COMPONENT_ROLES === "both" || !componentSourced.has(cluster))
+	)
 
-	// `admissible` preserves `clusters`' descending-mass, ascending-packed order, so its first element
-	// *is* argmax mass with the packed int as tie-break (SPEC decision 13; 15b measured and refused
-	// above).
-	const foreground: OverlayCluster | null = admissible[0] ?? null
-
-	if (foreground === null) {
+	if (admissible.length === 0) {
 		// Nothing publishable and legible: SPEC decision 10's escape. The escape colour itself is
 		// assembled by `candidate.ts`, which owns the inventory-absence check; all this module can
 		// honestly say is that the overlay offers nothing.
-		return { clusters, foreground: null, accent: null, accentChromaOnly: false }
+		return {
+			clusters,
+			foreground: null,
+			accent: null,
+			accentChromaOnly: false,
+			assignment: null,
+			componentCandidates,
+		}
 	}
+
+	// One `RoleCandidate` per cluster, memoized, so identity is stable across every shortlist below and
+	// `assignment.ts` can key its per-candidate coverage on it.
+	const candidates = new Map<OverlayCluster, RoleCandidate>()
+	const candidateOf = (cluster: OverlayCluster): RoleCandidate => {
+		let candidate = candidates.get(cluster)
+		if (candidate === undefined) {
+			const color = published.get(cluster)!
+			candidate = {
+				cluster,
+				color,
+				lab: rgbToOkLab(color.rgb),
+				// Salient mass. `overlayMass` holds `Σ(1 − w)` for a cluster and the component's field
+				// mass `Σ w` for a component entry — decision 18(a)'s two definitions, one field.
+				mass: cluster.overlayMass,
+				legibility: legibility.get(cluster) ?? 0,
+				source: componentSourced.has(cluster) ? "component" : "overlay",
+			}
+			candidates.set(cluster, candidate)
+		}
+		return candidate
+	}
+
+	// `admissible` preserves the **pool's** descending-mass, ascending-packed order, so its first element
+	// *is* argmax salient mass with the packed int as tie-break (SPEC decision 13; 15b measured and
+	// refused above) — which is what v0.7.1 published on any cover with no component candidates.
+	// **v0.8.0 keeps that order and takes the top K**, because decision 18 needs the *shortlist*, not
+	// the argmax; v0.8.1 widens what the order runs over, not the order.
+	const foregroundShortlist: RoleCandidate[] = admissible
+		.slice(0, ROLE_SHORTLIST_SIZE)
+		.map(candidateOf)
 
 	// --- accent (SPEC decision 8, third and current ruling) --------------------------------------
 	//
@@ -617,22 +936,20 @@ export function readOverlay(
 	//
 	// `deltaL`/`deltaC`/`deltaH` stay on `OverlayCluster` as description and as `accentChromaOnly`'s
 	// input; nothing selects on them. `paretoFront` was deleted in v0.3 and stays deleted.
-	const resolvedForeground = foreground
-	const foregroundColor = published.get(resolvedForeground)!
+	//
+	// **v0.8.0 splits this loop in two, and the split is the whole of decision 18's mechanics here.**
+	// The gates below are *accent-only* — each asks about the candidate against the field and the ramp,
+	// and its answer does not depend on which foreground is published — so each is memoized once per
+	// cluster in `accentGated`. Decision 14's twin exclusion is the one gate that *is* pairwise, so the
+	// shortlist is taken **per foreground, after** it: see `AssignmentInput.accentFor` for the five
+	// covers that measured why shortlisting before a pairwise constraint is not a shortlist at all.
 	const accentFloor = contrast.minAccentContrast.effectiveRawMagnitude
 
-	let winner: OverlayCluster | null = null
-	for (const cluster of feasible) {
-		if (cluster === resolvedForeground) continue
+	const accentGate = new Map<OverlayCluster, boolean>()
+	function accentGated(cluster: OverlayCluster): boolean {
+		let verdict = accentGate.get(cluster)
+		if (verdict !== undefined) return verdict
 		const color = published.get(cluster)!
-		// Distinctness from the two ends came with `feasible`; this is the third published colour —
-		// and for this one pair `sameColor` is not enough. SPEC decision 14: a candidate inside
-		// `ACCENT_FG_EXCLUSION_MULTIPLE` bars of the foreground is the foreground's family, however
-		// the formula scores it, because a reviewer twice called such pairs indistinguishable.
-		if (
-			colorDistance(color, foregroundColor) <
-				ACCENT_FG_EXCLUSION_MULTIPLE * sameColorBar(color, foregroundColor)
-		) continue
 		// SPEC decision 16, the accent visibility floor (round-3 ruling R3). `sameColor` above already
 		// asked whether this colour is *a different colour* from each end; round 3 measured that the
 		// reviewer is asking something else — whether it can be *seen* on the field — and that the
@@ -645,33 +962,94 @@ export function readOverlay(
 		// **No `background × surface` analogue** — round-3 finding 5, and it is why this is a floor on
 		// the accent rather than a margin gate: the tightest pair in the batch was `background × surface`
 		// at 1.21 bars, on the item the reviewer graded STRONG in silence. Margins are role-aware.
-		if (publishedEnds.some((end) => colorDistance(color, end) < ACCENT_VISIBILITY_COLOR_DISTANCE)) {
-			continue
-		}
-		// Invisible anywhere on the ramp ⇒ not an accent. `null` means no such point exists. Same
-		// selection-density budget as the foreground's ranking, and for the same reason: at the
-		// contract's default 2048/4096 this call alone took the demo-20 run from 0.8 s to 6.8 s.
-		if (
+		verdict =
+			!publishedEnds.some((end) => colorDistance(color, end) < ACCENT_VISIBILITY_COLOR_DISTANCE) &&
+			// Invisible anywhere on the ramp ⇒ not an accent. `null` means no such point exists. Same
+			// selection-density budget as the foreground's ranking, and for the same reason: at the
+			// contract's default 2048/4096 this call alone took the demo-20 run from 0.8 s to 6.8 s.
 			firstInvisibleAccentOnRamp(
-				color,
-				publishedRamp,
-				accentFloor,
-				ACCENT_FUNCTIONAL_DISTANCE,
-				SELECTION_RAMP_SAMPLES_PER_SEGMENT,
-				SELECTION_RAMP_REFINEMENT_SAMPLES,
-			) !== null
-		) continue
-		// `feasible` preserves `clusters`' descending-mass, ascending-packed order, so the first
-		// survivor *is* argmax mass with the packed int as tie-break. Written as a break rather than
-		// as a scan so the ordering the answer depends on is impossible to miss.
-		winner = cluster
-		break
+					color,
+					publishedRamp,
+					accentFloor,
+					ACCENT_FUNCTIONAL_DISTANCE,
+					SELECTION_RAMP_SAMPLES_PER_SEGMENT,
+					SELECTION_RAMP_REFINEMENT_SAMPLES,
+				) === null
+		accentGate.set(cluster, verdict)
+		return verdict
 	}
+
+	// SPEC decision 14: a candidate inside `ACCENT_FG_EXCLUSION_MULTIPLE` bars of the foreground is the
+	// foreground's family, however the formula scores it, because a reviewer twice called such pairs
+	// indistinguishable. The radius is never below one bar, so this subsumes `sameColor` on the
+	// published pair as well.
+	const twinExcluded = (candidate: RoleCandidate, fg: RoleCandidate): boolean =>
+		colorDistance(candidate.color, fg.color) <
+			ACCENT_FG_EXCLUSION_MULTIPLE * sameColorBar(candidate.color, fg.color)
+
+	/**
+	 * The top-K accent candidates that are feasible **with this foreground**.
+	 *
+	 * `feasible` preserves the pool's descending-mass, ascending-packed order, so the first K survivors
+	 * *are* the top K by mass with the packed int as tie-break (decision 8's ranking, unchanged), and
+	 * for the top foreground the *first* survivor is exactly what v0.7.1 published. The cheap pairwise
+	 * checks run before the memoized gate, so `firstInvisibleAccentOnRamp` — the expensive call — is
+	 * made at most once per cluster and never for the tail beyond the last shortlist's Kth survivor.
+	 */
+	const accentFor = (fg: RoleCandidate): readonly RoleCandidate[] => {
+		const shortlist: RoleCandidate[] = []
+		for (const cluster of feasible) {
+			if (shortlist.length >= ROLE_SHORTLIST_SIZE) break
+			if (cluster === fg.cluster) continue
+			if (twinExcluded(candidateOf(cluster), fg)) continue
+			if (!accentGated(cluster)) continue
+			shortlist.push(candidateOf(cluster))
+		}
+		return shortlist
+	}
+
+	// --- the joint solve (SPEC decision 18, round-3 ruling R5) --------------------------------------
+	//
+	// The shortlists above are exactly the top-K of the two rankings v0.7.1 took an argmax of.
+	// `assignment.ts` does the rest: identity families off the inventory, the pairwise constraints,
+	// coverage, then those same rankings as tie-breaks. The field roles are inputs — see that module's
+	// header for why the surface is not a free variable — so the enumeration is K × (K + 1) at most.
+	const identity = readIdentitySet(inventory)
+	const trace = solveAssignment({
+		foreground: foregroundShortlist,
+		accentFor,
+		identity,
+		fieldLabs: publishedEnds.map((end) => rgbToOkLab(end.rgb)),
+		twinExcluded,
+	})
+
+	// A foreground always exists here (`admissible` is non-empty and the collapse option is always
+	// feasible), so `chosen` is non-null; the guard is a type narrowing, not a case.
+	const chosen = trace.chosen
+	if (chosen === null) {
+		return {
+			clusters,
+			foreground: null,
+			accent: null,
+			accentChromaOnly: false,
+			assignment: trace,
+			componentCandidates,
+		}
+	}
+	const resolvedForeground = chosen.foreground.cluster
+	const winner = chosen.accent?.cluster ?? null
 
 	if (winner === null) {
 		// Nothing both legible and distinct: decision 8's terminal clause. `candidate.ts` turns this
 		// into the declared collapse onto the foreground.
-		return { clusters, foreground: resolvedForeground, accent: null, accentChromaOnly: false }
+		return {
+			clusters,
+			foreground: resolvedForeground,
+			accent: null,
+			accentChromaOnly: false,
+			assignment: trace,
+			componentCandidates,
+		}
 	}
 
 	// The known-fragile case made visible rather than silent (arm-f-r3 §2.5): an accent that moves
@@ -681,5 +1059,12 @@ export function readOverlay(
 		paletteColorOfLab(winner.localField),
 	)
 
-	return { clusters, foreground: resolvedForeground, accent: winner, accentChromaOnly }
+	return {
+		clusters,
+		foreground: resolvedForeground,
+		accent: winner,
+		accentChromaOnly,
+		assignment: trace,
+		componentCandidates,
+	}
 }

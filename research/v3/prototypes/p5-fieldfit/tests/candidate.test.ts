@@ -62,7 +62,7 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.7.1")
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.8.1")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })
@@ -308,11 +308,15 @@ test("anchor: 2376a6b67d reads bimodal and keeps its two-block palette", async (
 	const path = resolve(REPO_ROOT, ANCHOR_BIMODAL)
 	const { palette, diagnostics } = await analyzeImage(path)
 
-	// Byte-identical to v0.5.1: this cover's reading must not move under the ruling.
+	// The **field** reading is byte-identical to v0.5.1, which is what this anchor is about: the
+	// discriminator's verdict must not move under decision 17's or 18's rulings.
 	assert.equal(palette.roles.background.hex, "#fad107")
 	assert.equal(palette.roles.surface.hex, "#f9fbf8")
-	assert.equal(palette.roles.foreground.hex, "#000000")
-	assert.equal(palette.roles.accent.hex, "#000300")
+	// The two ink roles **did** move in v0.8.1 (`#000000`/`#000300` → `#f81107`/`#000000`): decision
+	// 18(a)'s pool re-union let the red component reach a role. That is a role-sourcing change, not a
+	// field-reading one, and it is pinned with its trace in `tests/assignment.test.ts`'s anchor (a).
+	assert.equal(palette.roles.foreground.hex, "#f81107")
+	assert.equal(palette.roles.accent.hex, "#000000")
 	assert.equal(palette.gradient, null)
 	assert.equal(diagnostics.twoBlockFallback, true)
 
@@ -348,20 +352,28 @@ test("anchor: 2376a6b67d reads bimodal and keeps its two-block palette", async (
  * is the ruling's only cover-level evidence, so its measurement belongs in the suite rather than in a
  * report: if the path stops bending, or the stop stops reducing, this is where that shows up.
  *
- * The four roles are asserted byte-identical to v0.7.0. That is the other half of the claim — decision
- * 17 changes what the interpolation runs *through*, not which colours the palette publishes — and it is
- * the assertion that fails if a ramp change starts leaking into role selection through the
+ * The three roles decision 17 must not touch are asserted byte-identical to v0.7.0 — decision 17
+ * changes what the interpolation runs *through*, not which colours the palette publishes — and they
+ * are the assertions that fail if a ramp change starts leaking into role selection through the
  * foreground's over-the-ramp contrast floor (which it legitimately can: see `757a78343d`).
+ *
+ * **The accent moved in v0.8.1**, `#263143` → `#736e6a`, and not through the ramp: decision 18(a)'s
+ * pool re-union offers this cover's second field-like component (support 0.138, field mass 5 233) to
+ * the ink roles, and it outweighs every rejected-mass cluster on the cover by an order of magnitude
+ * (the deep blue it displaces carried 144). The foreground is untouched because the cream title's own
+ * legibility keeps it at the head of its shortlist. Recorded here rather than re-baselined silently.
  */
 test("anchor: 16a8247378 publishes a guide stop that leads the interpolation back to its path", async () => {
-	const { palette, diagnostics, pathExcursion } = await analyzeImage(
+	const { palette, diagnostics, pathExcursion, componentCandidates } = await analyzeImage(
 		resolve(REPO_ROOT, ANCHOR_GUIDE_STOP),
 	)
 
 	assert.equal(palette.roles.background.hex, "#484b5a")
 	assert.equal(palette.roles.surface.hex, "#5d3f27")
 	assert.equal(palette.roles.foreground.hex, "#fee2ba")
-	assert.equal(palette.roles.accent.hex, "#263143")
+	assert.equal(palette.roles.accent.hex, "#736e6a", "was #263143 before decision 18(a)'s union")
+	assert.equal(componentCandidates.length, 1, "one unslotted component, and it takes the accent")
+	assert.equal(componentCandidates[0]!.published, "#736e6a")
 
 	assert.ok(pathExcursion !== null, "a published gradient always measures its own path")
 	// The chord leaves the field's colour path by well over a bar — the ruling's premise on its own

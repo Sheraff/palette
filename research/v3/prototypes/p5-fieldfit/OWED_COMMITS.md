@@ -1,5 +1,25 @@
 # Owed commits — p5-fieldfit
 
+## OPEN — v0.8.0 state (signing failed twice 2026-08-05, "1Password: failed to fill whole
+buffer"; same transient class as the earlier incident that cleared on retry)
+
+Pathspec: `research/v3/prototypes/p5-fieldfit`
+
+Intended message:
+
+    p5-fieldfit v0.8.0: joint assignment + set coverage (26/27 byte-identical, STRONGs held);
+    measured insufficient for item-3 — pool re-union per arm-f ruled, 8x granularity rejected
+    with collateral, fourth formula strike recorded
+
+    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+
+Retry at next natural point; flush per the collapse rule if further commits stack behind it.
+
+*Unlock signal received 2026-08-05 while W-P15 is actively editing the same owned paths
+(assignment/overlay/candidate/tests). A mid-pass snapshot would commit an incoherent state, so
+the flush executes the moment wp15.md lands, as the collapse-rule combined commit
+(v0.8.0 rulings + v0.8.1 pool re-union), signed, explicit pathspec.*
+
 **Backlog empty.** The vault-locked backlog (two intended commits, 2026-08-04) was flushed as
 signed commit `3df30d9` per this file's own collapse note, on the main orchestrator's
 vault-unlocked signal. Signature verified `G`.

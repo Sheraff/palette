@@ -36,6 +36,7 @@ import {
 	ACCENT_VISIBILITY_COLOR_DISTANCE,
 } from "../../../src/contract/constants.ts"
 import { firstInvisibleAccentOnRamp } from "../../../src/contract/ramp.ts"
+import type { FieldComponent } from "../src/components.ts"
 import { normalizedX, normalizedY, packRgb, unpackRgb } from "../src/decode.ts"
 import { readOverlay } from "../src/overlay.ts"
 import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "../src/types.ts"
@@ -850,7 +851,17 @@ test("an empty overlay yields no clusters and no roles", () => {
 		DEFAULT_CONTRAST,
 		FLAT_STOPS,
 	)
-	assert.deepEqual(reading, { clusters: [], foreground: null, accent: null, accentChromaOnly: false })
+	// `assignment` is null on this path and on the escape path: SPEC decision 18's solve is never
+	// reached when there is no admissible foreground to assign (v0.8.0). `componentCandidates` is
+	// empty because no components were offered — decision 18(a)'s union has nothing to union (v0.8.1).
+	assert.deepEqual(reading, {
+		clusters: [],
+		foreground: null,
+		accent: null,
+		accentChromaOnly: false,
+		assignment: null,
+		componentCandidates: [],
+	})
 })
 
 /**
@@ -934,4 +945,270 @@ test("accent visibility floor: a comfortably distant accent is untouched", () =>
 
 	assert.equal(reading.foreground?.representative, pack(INK))
 	assert.equal(reading.accent?.representative, pack(ACCENT))
+})
+
+// ---------------------------------------------------------------------------------------------
+// SPEC decision 18, ruling (a) — the pool re-union (arm-f §2.4)
+// ---------------------------------------------------------------------------------------------
+//
+// A field-like component that won no field slot is a first-class ink candidate. These four cases pin
+// the four choices `overlay.ts`'s "pool re-union" block states, on scenes whose right answer is known
+// by construction. `FieldComponent` is a plain record, so a component is built here directly rather
+// than fitted — what is under test is the *pool*, not the recursion that fills it.
+
+/**
+ * A flat field-like component over a rectangle of the raster, at full inlier weight.
+ *
+ * `order` is 0 and `fieldAt` is constant, which is what makes the component's centre colour exactly
+ * the colour the rectangle is painted: a test that had to solve for its own component's surface could
+ * not say what the right answer was.
+ */
+function flatComponent(
+	rgb: Rgb8,
+	width: number,
+	height: number,
+	inside: (column: number, row: number) => boolean,
+	depth = 1,
+): FieldComponent {
+	const pixelCount = width * height
+	const claim = new Uint8Array(pixelCount)
+	const weights = new Float32Array(pixelCount)
+	const lab = rgbToOkLab(rgb)
+	let supportPixels = 0
+	let sumX = 0
+	let sumY = 0
+	for (let row = 0; row < height; row += 1) {
+		for (let column = 0; column < width; column += 1) {
+			if (!inside(column, row)) continue
+			const index = row * width + column
+			claim[index] = 1
+			weights[index] = 1
+			supportPixels += 1
+			sumX += normalizedX(column, width)
+			sumY += normalizedY(row, height)
+		}
+	}
+	return {
+		depth,
+		order: 0,
+		coefficients: new Float64Array(9),
+		fieldAt: () => lab,
+		claim,
+		weights,
+		supportMass: supportPixels,
+		supportPixels,
+		supportFraction: supportPixels / pixelCount,
+		explainedFractionOwn: 1,
+		coreFraction: 1,
+		meanX: supportPixels === 0 ? 0 : sumX / supportPixels,
+		meanY: supportPixels === 0 ? 0 : sumY / supportPixels,
+		residualScale: 0,
+		marginBars: 0,
+		seed: lab,
+		extensive: true,
+		smooth: true,
+		ink: null,
+		inkLike: false,
+	}
+}
+
+/**
+ * **Choice 3, the one that was load-bearing.** A component's feasibility is measured against the
+ * **published** colours, never against its own local field.
+ *
+ * This is v0.8.0's item-3 negative in miniature: the region's own field *is* the region's colour, so
+ * the cluster-only "distinct from the field at your own mean position" test rejects every component
+ * identically — `wp14.md` §2(a), *"it is `sameColor` with its own local field — infeasible as an ink
+ * candidate at any K"*. The scene is built so that this is the **only** test the component could fail:
+ * it is a different colour from both published ends and clears every floor.
+ */
+test("(18a) a component is judged against the published colours, not against its own field", () => {
+	const size = 20
+	const FIELD: Rgb8 = [0xfa, 0xd1, 0x07]
+	const REGION: Rgb8 = [0xf2, 0x00, 0x00]
+
+	const inside = (column: number, row: number) => inRectangle(column, row, 2, 7, 2, 7)
+	// The fit explains everything, including the region: weight 1 everywhere, so the region carries
+	// **no overlay mass at all** and cannot reach a role through the cluster half of the pool.
+	const scene = buildScene(
+		size,
+		size,
+		(column, row, index) => (inside(column, row) ? REGION : (index % 37 === 0 ? [0, 0, 0] : FIELD)),
+		() => 1,
+		() => rgbToOkLab(FIELD),
+		0,
+	)
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const component = flatComponent(REGION, size, size, inside)
+
+	// Without the union the component is invisible to the pool: nothing was rejected, so there is no
+	// overlay at all and `readOverlay` returns before it ever reaches a role.
+	const without = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+	assert.equal(without.foreground, null)
+	assert.deepEqual(without.componentCandidates, [])
+
+	// With it, the component is feasible and takes a role — and the colour it publishes is one of its
+	// own support's pixels, which is what invariant 2 requires of anything published.
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+		[component],
+	)
+	assert.equal(reading.componentCandidates.length, 1)
+	assert.equal(reading.componentCandidates[0]!.admitted, true)
+	assert.equal(reading.componentCandidates[0]!.feasible, true)
+	assert.equal(reading.componentCandidates[0]!.published, colorFromRgb(REGION).hex)
+	assert.equal(reading.foreground?.representative, pack(REGION))
+	assert.ok(scene.inventory.has(reading.foreground!.representative))
+	// And the salient mass it competed on is its **field** mass, not a rejected mass it does not have.
+	assert.equal(reading.assignment?.foregroundShortlist[0]!.source, "component")
+	assert.equal(reading.assignment?.foregroundShortlist[0]!.mass, component.supportMass)
+})
+
+/**
+ * **Choice 3's other half: a component is not exempt from anything else.** The same scene with the
+ * region painted the field's own colour — the component is `sameColor` with a published end, so it is
+ * admitted to the pool and loses on representative-distinctness, exactly as a cluster would.
+ *
+ * arm-f §2.4's sentence is *"a low score is a loss, never an exclusion"*, and the distinction this
+ * case pins is the other one: a **contract** floor is still a hard loss for both halves of the union.
+ */
+test("(18a) a component that is a published end is admitted and infeasible, like any candidate", () => {
+	const size = 20
+	const FIELD: Rgb8 = [0xfa, 0xd1, 0x07]
+	const INK: Rgb8 = [0x10, 0x10, 0x10]
+
+	const inside = (column: number, row: number) => inRectangle(column, row, 2, 7, 2, 7)
+	const scene = buildScene(
+		size,
+		size,
+		(column, row, index) => (index % 11 === 0 ? INK : FIELD),
+		(_column, _row, index) => (index % 11 === 0 ? 0 : 1),
+		() => rgbToOkLab(FIELD),
+		0,
+	)
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+		[flatComponent(FIELD, size, size, inside)],
+	)
+
+	assert.equal(reading.componentCandidates.length, 1)
+	assert.equal(reading.componentCandidates[0]!.admitted, true)
+	assert.equal(reading.componentCandidates[0]!.feasible, false)
+	assert.equal(reading.foreground?.representative, pack(INK))
+})
+
+/**
+ * **Choice 4, the dedupe, and its direction.** A region leaves a rim of rejected pixels, so its colour
+ * is in the pool twice; the component takes the entry and the cluster leaves.
+ *
+ * The direction is the whole test. The cluster here is the rim — 24 pixels of overlay mass against the
+ * component's 36 of field mass — and it publishes a *different* triple (the rim's exact colour, one
+ * LSB off the region's). If the cluster kept the entry, the published colour would be the rim's and
+ * the mass would be the rim's: v0.8.0's negative with a dedupe rule in front of it.
+ */
+test("(18a) a component supersedes the overlay cluster of its own family, and publishes its own pixel", () => {
+	const size = 20
+	const FIELD: Rgb8 = [0xfa, 0xd1, 0x07]
+	const REGION: Rgb8 = [0xf2, 0x00, 0x00]
+	const RIM: Rgb8 = [0xf3, 0x01, 0x01]
+	assert.ok(sameColor(colorFromRgb(REGION), colorFromRgb(RIM)), "the rim is the region's own family")
+
+	const inside = (column: number, row: number) => inRectangle(column, row, 2, 7, 2, 7)
+	const isRim = (column: number, row: number) => inRectangle(column, row, 8, 9, 2, 7)
+	const scene = buildScene(
+		size,
+		size,
+		(column, row, index) =>
+			inside(column, row) ? REGION : isRim(column, row) ? RIM : (index % 37 === 0 ? [0, 0, 0] : FIELD),
+		(column, row) => (isRim(column, row) ? 0 : 1),
+		() => rgbToOkLab(FIELD),
+		0,
+	)
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const component = flatComponent(REGION, size, size, inside)
+
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+		[component],
+	)
+
+	const row = reading.componentCandidates[0]!
+	assert.equal(row.admitted, true)
+	assert.deepEqual(row.supersedes.map((entry) => entry.hex), [colorFromRgb(RIM).hex])
+	// One entry for the family, and it is the component's: its own pixel, its own field mass.
+	const shortlist = reading.assignment!.foregroundShortlist
+	assert.equal(shortlist.filter((candidate) => sameColor(candidate.color, colorFromRgb(REGION))).length, 1)
+	assert.equal(reading.foreground?.representative, pack(REGION))
+	assert.equal(shortlist[0]!.mass, component.supportMass)
+})
+
+/**
+ * **The item-3 shape**: three field-like components, two field slots, and the third claims a role that
+ * v0.8.0 could not give it. Round 3's finding 3, as a synthetic with a known answer.
+ *
+ * Two components carry background and surface (they are the published ends here, so they never reach
+ * this function); the third is offered to the pool. Its field mass is deliberately set **below** the
+ * ink cluster's rejected mass, so decision 13's mass-led foreground still goes to the ink and the
+ * component takes the **accent** — the role rotation the reviewer asked for on `2376a6b67d` and the
+ * one the real cover does not reproduce, because there the region's field mass outweighs every ink by
+ * an order of magnitude (`reports/wp15.md`, the scale finding).
+ */
+test("(18a) three components, two slots: the third claims the accent", () => {
+	const size = 24
+	const BACKGROUND: Rgb8 = [0xfa, 0xd1, 0x07]
+	const SURFACE: Rgb8 = [0xf9, 0xfb, 0xf8]
+	const REGION: Rgb8 = [0xf2, 0x00, 0x00]
+	const INK: Rgb8 = [0x00, 0x00, 0x00]
+
+	// A small region: 16 pixels of field mass against the ink's 200 of rejected mass.
+	const inside = (column: number, row: number) => inRectangle(column, row, 2, 5, 2, 5)
+	const scene = buildScene(
+		size,
+		size,
+		(column, row, index) =>
+			inside(column, row) ? REGION : index < 200 + 24 && index >= 24 ? INK : BACKGROUND,
+		(column, row, index) =>
+			!inside(column, row) && index < 200 + 24 && index >= 24 ? 0 : 1,
+		() => rgbToOkLab(BACKGROUND),
+		0,
+	)
+	const stops = rampOf(rgbToOkLab(BACKGROUND), rgbToOkLab(SURFACE))
+	const component = flatComponent(REGION, size, size, inside)
+	assert.ok(component.supportMass < 200, "the fixture's point is that the ink outweighs the region")
+
+	const before = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+	assert.equal(before.foreground?.representative, pack(INK))
+	// v0.8.0: the region carries no rejected mass, so no assignment can reach it — the negative.
+	assert.equal(
+		before.clusters.some((cluster) => sameColor(colorFromRgb(unpackRgb(cluster.representative)), colorFromRgb(REGION))),
+		false,
+	)
+
+	const after = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+		[component],
+	)
+	assert.equal(after.foreground?.representative, pack(INK))
+	assert.equal(after.accent?.representative, pack(REGION))
+	assert.equal(
+		after.assignment!.accentShortlist.find((candidate) => candidate.color.hex === colorFromRgb(REGION).hex)?.source,
+		"component",
+	)
 })

@@ -39,16 +39,41 @@ import { fileURLToPath } from "node:url"
 import { isAbsolute, resolve } from "node:path"
 
 import { POOLED_SAME_COLOR_BAR } from "../../src/contract/constants.ts"
+import { colorFromRgb } from "../../src/contract/color.ts"
 import { analyzeImage } from "./candidate.ts"
+import type { RoleCandidate } from "./src/assignment.ts"
+import { unpackRgb } from "./src/decode.ts"
 
 /** The report shape. JSON only — a reader of this output is usually `jq`, not a human. */
 export type DiagnosticReport = Awaited<ReturnType<typeof diagnose>>
 
+/**
+ * One shortlist entry, as the trace prints it: the colour, its salient mass, its legibility, and —
+ * v0.8.1 — which half of decision 18(a)'s union it came from. `source` is the first thing to read on
+ * any delta a component candidate is suspected of causing, because `mass` means two different
+ * (commensurable, but differently sourced) quantities across the two: `Σ(1 − w)` for an overlay
+ * cluster, the component's field mass `Σ w` for a component.
+ */
+function shortlistRow(candidate: RoleCandidate) {
+	return {
+		hex: candidate.color.hex,
+		source: candidate.source,
+		mass: Number(candidate.mass.toFixed(1)),
+		minRawApca: Number(candidate.legibility.toFixed(2)),
+	}
+}
+
 export async function diagnose(imagePath: string) {
 	const absolute = isAbsolute(imagePath) ? imagePath : resolve(process.cwd(), imagePath)
-	const { palette, diagnostics, pathExcursion, fieldOrder, fieldComponents } = await analyzeImage(
-		absolute,
-	)
+	const {
+		palette,
+		diagnostics,
+		pathExcursion,
+		assignment,
+		componentCandidates,
+		fieldOrder,
+		fieldComponents,
+	} = await analyzeImage(absolute)
 	// `continuity` and `margins` are printed below, rounded to the digits a reader can act on; they are
 	// lifted out of the flat sidecar block rather than printed twice.
 	const { continuity, margins, ...flatDiagnostics } = diagnostics
@@ -99,6 +124,56 @@ export async function diagnose(imagePath: string) {
 				collapsed: margins.accentTwin.collapsed,
 			},
 		},
+		// SPEC decision 18's joint solve, entire: the artwork's identity set with each family's share of
+		// the image, which families the four published roles reach, the two shortlists the solve ran
+		// over, and — the number to read first on any delta — whether coverage or the per-role
+		// preference decided this palette. `null` when no assignment was solved.
+		assignment: assignment === null ? null : {
+			shortlistSize: assignment.shortlistSize,
+			familyCount: assignment.familyCount,
+			enumerated: assignment.enumerated,
+			feasible: assignment.feasible,
+			totalFamilies: assignment.identity.totalFamilies,
+			massRetained: Number(assignment.identity.massRetained.toFixed(4)),
+			families: assignment.identity.families.map((family) => ({
+				rank: family.rank,
+				hex: colorFromRgb(unpackRgb(family.representative)).hex,
+				massFraction: Number(family.massFraction.toFixed(4)),
+				members: family.memberCount,
+			})),
+			fieldCovered: assignment.fieldCovered,
+			coverage: assignment.chosen?.coverage ?? null,
+			covered: assignment.chosen?.covered ?? null,
+			coverageDecided: assignment.coverageDecided,
+			perRoleOnly: assignment.perRoleOnly === null ? null : {
+				foreground: assignment.perRoleOnly.foreground.color.hex,
+				accent: assignment.perRoleOnly.accent?.color.hex ?? null,
+				coverage: assignment.perRoleOnly.coverage,
+			},
+			foregroundShortlist: assignment.foregroundShortlist.map(shortlistRow),
+			accentShortlist: assignment.accentShortlist.map(shortlistRow),
+		},
+		// SPEC decision 18's ruling (a), the pool re-union: one row per field-like component that won no
+		// field slot and was therefore offered to the ink pool. `admitted: false` means a more extensive
+		// component of the same family already holds the entry (`duplicateOf` names it); `supersedes`
+		// lists the overlay clusters that left the pool because this component *is* their colour family
+		// (the dedupe direction, and the number to read when a cluster the last version published has
+		// gone); `feasible: false` means it entered and lost representative-distinctness from a published
+		// end. Empty on every cover the global fit explained — those covers cannot move in v0.8.1.
+		componentCandidates: componentCandidates.map((row) => ({
+			depth: row.depth,
+			supportFraction: Number(row.supportFraction.toFixed(4)),
+			supportMass: Number(row.supportMass.toFixed(1)),
+			centre: row.centre,
+			published: row.published,
+			admitted: row.admitted,
+			duplicateOf: row.duplicateOf,
+			supersedes: row.supersedes.map((entry) =>
+				`${entry.hex}@${entry.overlayMass.toFixed(1)}`
+			),
+			feasible: row.feasible,
+			minRawApca: row.legibility === null ? null : Number(row.legibility.toFixed(2)),
+		})),
 		attempts: fieldComponents === null
 			? null
 			: fieldComponents.attempts.map((component) => ({

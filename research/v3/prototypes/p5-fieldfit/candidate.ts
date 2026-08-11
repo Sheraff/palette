@@ -108,6 +108,45 @@
  * already receives the snapped ends as `fieldEnds`, so it is the one place that can apply the
  * constraint *before* max-overlay-mass picks a winner; filtering after selection would have thrown
  * away the best surviving cluster rather than skipping the infeasible one.
+ *
+ * ## Where the four roles are assigned, v0.8.0
+ *
+ * The two ink roles are now chosen **together**, by `src/assignment.ts`, under SPEC decision 18
+ * (round-3 ruling R5): feasibility, then how many of the artwork's identity families the four
+ * published roles cover between them, then the existing per-role rankings as tie-breaks. This module
+ * is unchanged by that — it still calls `readOverlay` once, against the ramp it built, and publishes
+ * the representatives it gets back. Two consequences worth stating, because both are visible in a
+ * delta table:
+ *
+ *  - **The field roles are the assignment's fixed inputs.** Background and surface are decided above,
+ *    by the field reading, and decision 18 does not reach back into them; the precedence note above
+ *    (a component that is a ramp publishes its ramp) is what makes the surface a decided quantity
+ *    rather than a second option. A cover whose field moves in v0.8.0 moved for some other reason.
+ *  - **The accent's published-pair collapse guard below is now unreachable in practice**, because
+ *    decision 14's twin exclusion — a radius of `ACCENT_FG_EXCLUSION_MULTIPLE` bars, never fewer than
+ *    one — is enforced inside the solve on the same published representatives this guard tests. It
+ *    stays, unchanged, as decision 8's terminal clause in its own words.
+ *
+ * ## Which components are offered to the ink pool, v0.8.1
+ *
+ * Decision 18's ruling (a) unions the field-like components that carry **no field role** into the
+ * candidate pool for foreground and accent (arm-f §2.4). *Which* components those are is assembly's
+ * question, not the overlay's, because it is exactly the complement of what the field reading above
+ * decided, so this module computes it and `overlay.ts` receives a list:
+ *
+ *  - `components[0]` always carries background (and the surface, when its own ramp separates) — it is
+ *    slotted, and never offered;
+ *  - `components[1]` is slotted **only** on the two-component reading, which is the one branch that
+ *    gives it the surface. When the primary published its own ramp instead, the second component
+ *    carries nothing and is offered;
+ *  - every other accepted component is offered.
+ *
+ * Two things are deliberately *not* offered. **Ink-vetoed components** (decision 15a) are not in
+ * `FieldReading.components` at all — the veto leaves them in `attempts` with their pixels unclaimed,
+ * which is precisely how "it stays in the pool as overlay material" is already implemented, so
+ * offering them here would enter the same colour twice. And on the **retreat** the pool is empty, so
+ * there is nothing to offer; the retreat's roles come from the overlay exactly as before. A cover the
+ * global fit explained never runs the recursion, so its list is empty and v0.8.1 cannot move it.
  */
 
 import {
@@ -145,11 +184,13 @@ import {
 import type { FieldReading } from "./src/components.ts"
 import { decodeAndInventory, packRgb, unpackRgb } from "./src/decode.ts"
 import { fitField, fitFieldComponents } from "./src/fieldfit.ts"
+import type { AssignmentTrace } from "./src/assignment.ts"
 import {
 	ACCENT_FG_EXCLUSION_MULTIPLE,
 	FOREGROUND_MIN_RAW_APCA,
 	readOverlay,
 } from "./src/overlay.ts"
+import type { ComponentCandidateReport } from "./src/overlay.ts"
 import {
 	bestGuideStop,
 	highestFieldMassTriple,
@@ -172,7 +213,7 @@ import type {
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.7.1"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.8.1"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -226,6 +267,23 @@ export type Analysis = Readonly<{
 	diagnostics: Diagnostics
 	/** SPEC decision 17's ramp-path excursion, re-measured on the published (snapped) polyline. */
 	pathExcursion: PathExcursionReport | null
+	/**
+	 * SPEC decision 18's joint solve: the identity set, the two shortlists, the enumeration counts and
+	 * whether coverage or the per-role preference decided the palette. `null` when no assignment was
+	 * solved (no overlay, or the escape path).
+	 *
+	 * Carried here rather than in the `Diagnostics` sidecar for the same reason `pathExcursion` is —
+	 * `src/types.ts` is the orchestrator's file, and the field is proposed in `reports/wp14-types.md`.
+	 * Everything else about it is ordinary sidecar: measured by the decision, printed by `diagnose.ts`,
+	 * read by nothing that decides.
+	 */
+	assignment: AssignmentTrace | null
+	/**
+	 * SPEC decision 18(a)'s union from the component side: one row per field-like component offered to
+	 * the ink pool, with its published colour, its field mass and whether it was admitted, feasible and
+	 * legible. Empty whenever no component was offered. Sidecar, for the same reason as the two above.
+	 */
+	componentCandidates: readonly ComponentCandidateReport[]
 	/** The fit's kept order, for the decision-9 deviation note above. */
 	fieldOrder: 0 | 1
 	/**
@@ -506,7 +564,16 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	]
 
 	// --- the overlay, against the field actually published ---------------------------------------------
-	const overlay = readOverlay(overlayFit, raster, inventory, contrast, stops)
+	//
+	// Decision 18(a)'s union, from this module's side: the accepted components that carry no field
+	// role. See the header block "Which components are offered to the ink pool". `slice(...)` rather
+	// than a filter over identities so the rule reads as what it is — the pool minus its first one or
+	// two entries, in `FieldReading`'s own extensiveness order.
+	const slottedComponents = fieldComponents === null ? 0 : twoComponentReading ? 2 : 1
+	const unslottedComponents = fieldComponents === null
+		? []
+		: fieldComponents.components.slice(slottedComponents)
+	const overlay = readOverlay(overlayFit, raster, inventory, contrast, stops, unslottedComponents)
 
 	// --- foreground, and decision 10's escape ----------------------------------------------------------
 	let foreground: PaletteColor
@@ -624,6 +691,8 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		palette,
 		diagnostics,
 		pathExcursion: pathReport,
+		assignment: overlay.assignment,
+		componentCandidates: overlay.componentCandidates,
 		fieldOrder: fit.order,
 		fieldComponents,
 	}
