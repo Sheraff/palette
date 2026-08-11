@@ -97,8 +97,14 @@ revealed a paired-family target (two greys gradient:true + two blues; EVIDENCE i
 figure-vs-ground family separation), and the general machinery REACHED it without
 special-casing. Row-0's black-fg prescription met (the |L−0.5| extremity read had made a white
 GROUND the L-extreme — fixed). Purple shade fix validated strong; first fresh-cover strong
-since round-2; cover-19 regression confirmed (neutral-accent branch in flight, W24, with a
-sub-rankable-lump guard).
+since round-2. **Cover-19 CLOSED by 0.4.4 (`affe3965`):** a neutral-accent branch (three
+measured clauses, no new constant, fires 3/220 with order-of-magnitude condition margins)
+publishes the reviewer's four named colours exactly; two refuted clause designs recorded. The
+sub-rankable-lump guard mostly honest-refuses (1 widened / 30 refused — widening cannot resolve
+the sliver tension, recorded as an open watch), and 168's paired shape SURVIVES it. Robustness
+slices identical through 0.4.3→0.4.4. Round-7 (staging) re-grades the four repaired covers,
+prices the deferred ink-score limitation on its worst cover, and watches the branch's
+dark-neutral twin risk.
 
 **Structural limitation, recorded per commissioning ruling (2026-08-05): rows 5/6 unmet, cause
 located — the ink score's surround-coherence ranks white-on-photo type low while source support
