@@ -196,6 +196,8 @@ import {
 	readOverlay,
 } from "./src/overlay.ts"
 import type { ComponentCandidateReport } from "./src/overlay.ts"
+import { readMarks } from "./src/marks.ts"
+import type { MarkReading } from "./src/marks.ts"
 import {
 	bestGuideStop,
 	highestFieldMassTriple,
@@ -218,7 +220,7 @@ import type {
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.8.2"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.9.0"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -297,6 +299,16 @@ export type Analysis = Readonly<{
 	 * unchanged — see the guard in `analyzeImage`.
 	 */
 	fieldComponents: FieldReading | null
+	/**
+	 * v0.9.0's mark/region reading — the scale the sweep chose, its whole `N(r)` curve, and every
+	 * entry with its spatial mass, chroma and shape verdicts.
+	 *
+	 * Carried here for the same reason `assignment` and `pathExcursion` are (`src/types.ts` is the
+	 * orchestrator's file; the shapes are proposed in `reports/wv9a-types.md`). Unlike those two this
+	 * one is **not** pure sidecar — `readOverlay` reads it — so it is the input to two decisions and
+	 * the print here is the record of what they were given.
+	 */
+	marks: MarkReading
 }>
 
 // ---------------------------------------------------------------------------------------------
@@ -578,7 +590,21 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	const unslottedComponents = fieldComponents === null
 		? []
 		: fieldComponents.components.slice(slottedComponents)
-	const overlay = readOverlay(overlayFit, raster, inventory, contrast, stops, unslottedComponents)
+	// v0.9.0's mark/region reading, measured here because `readMarks` needs the same two arguments the
+	// overlay does — the field actually published against (`overlayFit`) and the pool that produced it
+	// — and a second caller would have to reproduce this module's branch structure to get them right.
+	// Two consumers, both inside `readOverlay`: the accent half of the candidate pool, and the identity
+	// families. See `src/marks.ts` and the v0.9 brief.
+	const marks = readMarks(raster, overlayFit, fieldComponents)
+	const overlay = readOverlay(
+		overlayFit,
+		raster,
+		inventory,
+		contrast,
+		stops,
+		unslottedComponents,
+		marks,
+	)
 
 	// --- foreground, and decision 10's escape ----------------------------------------------------------
 	let foreground: PaletteColor
@@ -700,6 +726,7 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		componentCandidates: overlay.componentCandidates,
 		fieldOrder: fit.order,
 		fieldComponents,
+		marks,
 	}
 }
 

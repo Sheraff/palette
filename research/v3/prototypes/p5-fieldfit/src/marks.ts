@@ -61,6 +61,7 @@ import {
 	agglomerateBarNeighbourhoods,
 	IDENTITY_FAMILY_BAR_MULTIPLE,
 	IDENTITY_FAMILY_COUNT,
+	sameColorLab,
 } from "./assignment.ts"
 import type { IdentityFamily, IdentitySet, MassPoint } from "./assignment.ts"
 import {
@@ -101,25 +102,27 @@ import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "./types.ts
 //    is *unchanged*. So the primary criterion is the **longest run of consecutive rungs carrying the
 //    same count** — the plateau, which is also scale space's own notion of a stable structure (a long
 //    lifetime). Where a plateau exists this is unambiguous and needs no derivative.
-//  - **Where no count repeats there is no plateau**, and the criterion relaxes continuously to the
-//    **flattest centred log-log slope** `|Δln N / Δln(1 + r)|`. Both quantities are scale-free, which
-//    is what makes one criterion apply to a 300² and a 3000² cover; `1 + r` rather than `r` only so
-//    that `r = 0` has a logarithm. A centred derivative needs both neighbours, so the ladder's two
-//    endpoints cannot win it — a consequence rather than a rule, and it happens to exclude the two
-//    degenerate readings (every speck its own mark; everything merged into one).
+//  - **Where no count repeats there is no plateau**, the criterion has nothing to read and a
+//    **stated default scale** is taken instead (`MARK_SCALE_DEFAULT_DIAGONAL_FRACTION`, v0.9.0's
+//    ruling — see that constant for the two curves that bracket it). The continuous relaxation
+//    v0.9a measured in this slot — the flattest centred log-log slope `|Δln N / Δln(1 + r)|` — is
+//    **still computed and still published** on `MarkScaleChoice.flatness`, and it decides nothing:
+//    v0.9a measured it picking opposite ends of the ladder on two covers of the same corpus, which
+//    is what a criterion does when the curve it reads has no shoulder to find.
 //  - The sweep **stops at the first scale where nothing is left to merge** (`N ≤ 1`): the curve
 //    carries no information past it.
 //
 // Ties go to the finer scale on both readings: of two equally flat readings the more conservative one
 // keeps more structure apart, and it is the one whose marks are still marks.
 //
-// **V9a measures this criterion to be unstable across covers and says so** (`reports/wv9a.md`): the
-// fallback is reached on 3 of 6 probed covers, and on a residual that is pure texture the count curve
-// is convex with no shoulder, so the flattest slope sits at whichever end the convexity points to —
-// `r = 1` and 473 marks on round-3 item 4, `r = 23` and 7 marks on NARCOSIS. That is a finding about
-// arm-f's criterion, not a defect of this implementation of it, and it is reported rather than
-// patched: the whole `N(r)` curve is published on `MarkScaleChoice` so the ruling can be made against
-// it.
+// **V9a measured arm-f's criterion to be unstable across covers and said so** (`reports/wv9a.md`):
+// the fallback was reached on 3 of 6 probed covers, and on a residual that is pure texture the count
+// curve is convex with no shoulder, so the flattest slope sits at whichever end the convexity points
+// to — `r = 1` and 473 marks on round-3 item 4, `r = 23` and 7 marks on NARCOSIS. That is a finding
+// about arm-f's criterion rather than a defect of this implementation of it, and **v0.9.0's ruling is
+// to keep the criterion where it can be read and to stop pretending it can be read where it cannot**:
+// plateau when a plateau exists, a stated scale otherwise. The whole `N(r)` curve stays published on
+// `MarkScaleChoice`, which is the only thing that makes either half arguable.
 
 /**
  * Finest grouping scale in the sweep, as a fraction of the **image diagonal**.
@@ -145,6 +148,38 @@ export const MARK_SCALE_SWEEP_MAX_DIAGONAL_FRACTION = 0.05
 
 /** Geometric step of the ladder. `√2` — half an octave, the standard scale-space sampling. */
 export const MARK_SCALE_SWEEP_RATIO = Math.SQRT2
+
+/**
+ * **The grouping scale taken when the plateau criterion has nothing to read** (v0.9.0's ruling on
+ * V9a finding 2), as a fraction of the image diagonal.
+ *
+ * `[UNCALIBRATED]`, and bracketed by the two `N(r)` curves V9a published — the same shape of
+ * provenance as `FOREGROUND_MIN_RAW_APCA`'s reviewer bracket, with measurements rather than verdicts
+ * at the ends. Both are re-derivable with `measurements/v9b-scale.ts`:
+ *
+ *  - **Lower end — round-3 item 4, `4130886c02`, 300×300, diagonal 424.26.** Curve
+ *    `N(0)=907, N(1)=472, N(2)=182, N(3)=54, N(4)=24, N(5)=2, N(6)=1` over 7 044 unexplained px.
+ *    The slope reading took `r = 1`: **472 marks**, 15 px each, and the reviewer's asked-for white
+ *    title (6 px of exact `#ffffff`, 91 px of pale material) is spread over ≥ 4 marks of ~30 px
+ *    (`reports/wv9a.md` §c). A scale that fragments a word is below the structure it is grouping:
+ *    `1 / 424.26 = 0.00236` is falsified from below.
+ *  - **Upper end — NARCOSIS, `45baf46c90`, 640×640, diagonal 905.10.** Curve
+ *    `N(0)=3041, N(2)=440, N(3)=211, N(4)=118, N(6)=55, N(8)=35, N(11)=19, N(16)=13, N(23)=7,
+ *    N(32)=5, N(45)=1` over 44 798 unexplained px. The slope reading took `r = 23`: **7 marks**, and
+ *    at that scale one of them holds 41 195 of the 44 798 unexplained pixels — the sky's scrub, the
+ *    horizon line and the crimson field are one object. A scale that merges a picture into a blob is
+ *    above the structure it is grouping: `23 / 905.10 = 0.02541` is falsified from above.
+ *
+ * The value is the **geometric centre of that bracket** — `√(0.00236 × 0.02541) = 0.00774`, taken to
+ * two figures. Geometric because scale space is logarithmic: the midpoint between two scales is
+ * their ratio's square root, which is also why the sweep's own ladder steps by `√2`. It is 3 px on a
+ * 300² cover, 7 px on a 640² one and 34 px on a 3000² one.
+ *
+ * **This is a default, not a criterion.** Where a plateau exists it is what the sweep found and this
+ * number is not consulted; `MarkScaleChoice.criterion` says which of the two happened on every cover,
+ * and the curve it was read off is published beside it.
+ */
+export const MARK_SCALE_DEFAULT_DIAGONAL_FRACTION = 0.0077
 
 /**
  * The weight above which the field is said to explain a pixel.
@@ -245,12 +280,24 @@ export type MarkScaleChoice = Readonly<{
 	scales: readonly number[]
 	/** `N(r)` at each rung — the count of connected groups of unexplained material. */
 	counts: readonly number[]
-	/** Centred `|Δln N / Δln(1 + r)|` at each rung; `null` at the two endpoints, which cannot win. */
+	/**
+	 * Centred `|Δln N / Δln(1 + r)|` at each rung; `null` at the two endpoints, which a centred
+	 * derivative cannot reach. **Measured and published, and it decides nothing** since v0.9.0 —
+	 * see `MARK_SCALE_DEFAULT_DIAGONAL_FRACTION` for the two curves that retired it.
+	 */
 	flatness: readonly (number | null)[]
 	/** Index into `scales` of the chosen rung. */
 	chosenIndex: number
-	/** Which reading chose it: the plateau, its continuous relaxation, or a curve too short for either. */
-	criterion: "plateau" | "slope" | "degenerate"
+	/**
+	 * Which reading chose it: the plateau, v0.9.0's stated default (no count repeated), or a curve
+	 * with nothing on it at all (no unexplained material).
+	 */
+	criterion: "plateau" | "default" | "degenerate"
+	/**
+	 * The rung the retired slope reading would have taken, for the report — `null` when the curve is
+	 * too short for a centred derivative. Reported, never read.
+	 */
+	slopeIndex: number | null
 	/** Length of the chosen plateau in rungs; 1 when no count repeated. */
 	plateauLength: number
 	/** The image diagonal the ladder was built from, in pixels. */
@@ -284,6 +331,14 @@ export function readMarks(
 	raster: DecodedRaster,
 	fit: FieldFit,
 	reading: FieldReading | null,
+	/**
+	 * Force the grouping radius instead of choosing one. **Measurement only** — it exists so that
+	 * `measurements/v9b-scale.ts` can re-derive `MARK_SCALE_DEFAULT_DIAGONAL_FRACTION`'s bracket from
+	 * the covers themselves rather than from a remembered number. `candidate.ts` never passes it, and
+	 * `MarkScaleChoice` still reports the criterion the sweep *would* have used, so a forced reading
+	 * is never mistaken for a chosen one.
+	 */
+	forcedRadius: number | null = null,
 ): MarkReading {
 	const { width, height } = raster
 	const pixelCount = width * height
@@ -319,7 +374,8 @@ export function readMarks(
 		}
 	}
 
-	const scale = chooseGroupingScale(unexplained, width, height)
+	const chosen = chooseGroupingScale(unexplained, width, height)
+	const scale = forcedRadius === null ? chosen : { ...chosen, radius: forcedRadius }
 	const groups = groupAtScale(unexplained, width, height, scale.radius)
 
 	const entries: MarkRegion[] = []
@@ -415,6 +471,94 @@ export function identityFamiliesV2(
 }
 
 // ---------------------------------------------------------------------------------------------
+// Identity families, unioned — v0.9.0's decision-18 family definition
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The identity set decision 18 reads: v1 ∪ v2.** The whole of V9a's ruling 3, implemented.
+ *
+ * V9a measured the two readings against each other on four covers and the answer was neither
+ * "replace" nor "keep" (`reports/wv9a.md` §b): v2 reaches a colour v1 cannot see *at all* — the
+ * NARCOSIS crimson, which is ten thousand sub-floor triples to v1 and one 41 000-pixel mark to v2 —
+ * and v1 keeps colours v2 medians away, because a region is *one* colour and a ramped or illustrated
+ * field is many (`9646be9b20`'s published cream survives only in v1). Two readings that each see what
+ * the other cannot are a union, and taking either alone was measured to cost a real colour.
+ *
+ * ## What is unioned, and how
+ *
+ *  - **The whole ranking on both sides, not the top four.** Slicing to `F` first and unioning after
+ *    would let a family that is rank 5 on both sides but the artwork's second colour overall fall out
+ *    of a set it belongs in. Both sides are read at full depth, the union is ranked once, and the
+ *    slice happens last — so the published set is the top `F` of the union rather than a merge of two
+ *    top-`F`s.
+ *  - **Same-bar centres merge**, by the identical test `familyCovers` applies
+ *    (`sameColorLab(…, IDENTITY_FAMILY_BAR_MULTIPLE)`). Both sides were built by
+ *    `agglomerateBarNeighbourhoods` at that radius, so a cross-side pair inside one bar is a pair the
+ *    agglomeration would itself have merged had the two point sets been offered together.
+ *  - **The mass-combination rule is `max`, and there are no weights.** A family present on both sides
+ *    is *one* piece of the artwork measured twice — v1 counts its pixels through the triple floor, v2
+ *    accumulates its pixel weight spatially — so adding the two would count the same material twice
+ *    and publish a mass larger than the image. `max` takes the reading that saw more of it, which is
+ *    the only combination of two measurements of one quantity that needs no coefficient to justify.
+ *    A weighted blend would need a calibration this cycle has no evidence for, and V9a's own type
+ *    note (`reports/wv9a-types.md` §2) is that the two masses are not even in the same units — pixel
+ *    count against pixel weight — which is a second reason not to add them.
+ *  - **Every other field of a merged family comes from the dominant side** — the heavier of the two,
+ *    which because the walk is in descending mass order is simply the one that got there first. The
+ *    representative, the centre and the member count are therefore always a real reading's, never a
+ *    synthesized average of two.
+ *
+ * `massRetained` follows the same `max` rule over the same argument: the two are two measurements of
+ * how much of the image its identity set accounts for, and the union retains the better-covered one.
+ *
+ * Determinism: the walk is over both rankings concatenated and sorted by mass descending then packed
+ * integer ascending, so the merge order — and therefore every merged family's dominant side — is
+ * fixed by the data rather than by which list was passed first.
+ */
+export function identityFamiliesUnion(
+	v1: IdentitySet,
+	v2: IdentitySet,
+	totalPixels: number,
+	count: number = IDENTITY_FAMILY_COUNT,
+): IdentitySet {
+	const all = [...v1.families, ...v2.families].sort((first, second) =>
+		second.mass - first.mass || first.representative - second.representative
+	)
+
+	const merged: { family: IdentityFamily; mass: number }[] = []
+	for (const family of all) {
+		// Same-bar centres merge. The first match wins and the walk is heaviest-first, so the group's
+		// every published field is its heaviest member's and the mass is `max` by construction.
+		const host = merged.find((entry) => sameColorLab(entry.family.centre, family.centre, IDENTITY_FAMILY_BAR_MULTIPLE))
+		if (host === undefined) {
+			merged.push({ family, mass: family.mass })
+			continue
+		}
+		if (family.mass > host.mass) host.mass = family.mass
+	}
+
+	const families: IdentityFamily[] = merged
+		.sort((first, second) =>
+			second.mass - first.mass || first.family.representative - second.family.representative
+		)
+		.slice(0, count)
+		.map((entry, index) => ({
+			rank: index + 1,
+			representative: entry.family.representative,
+			centre: entry.family.centre,
+			mass: entry.mass,
+			massFraction: totalPixels > 0 ? entry.mass / totalPixels : 0,
+			memberCount: entry.family.memberCount,
+		}))
+
+	return {
+		families,
+		totalFamilies: merged.length,
+		massRetained: Math.max(v1.massRetained, v2.massRetained),
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
 // The sweep
 // ---------------------------------------------------------------------------------------------
 
@@ -464,6 +608,7 @@ export function chooseGroupingScale(
 			chosenIndex: 0,
 			criterion: "degenerate",
 			plateauLength: 1,
+			slopeIndex: null,
 			diagonal,
 		}
 	}
@@ -505,9 +650,9 @@ export function chooseGroupingScale(
 		}
 	}
 
-	// --- its continuous relaxation, always measured so the report can compare the two ----------
+	// --- the retired relaxation, still measured so the report can compare the two ---------------
 	const flatness: (number | null)[] = scales.map(() => null)
-	let slopeIndex = 0
+	let slopeIndex: number | null = null
 	let best = Number.POSITIVE_INFINITY
 	for (let rung = 1; rung < scales.length - 1; rung += 1) {
 		const spanScale = Math.log(1 + scales[rung + 1]!) - Math.log(1 + scales[rung - 1]!)
@@ -531,20 +676,54 @@ export function chooseGroupingScale(
 			chosenIndex: bestStart,
 			criterion: "plateau",
 			plateauLength: bestLength,
+			slopeIndex,
 			diagonal,
 		}
 	}
-	// No count repeated, so there is no plateau to take: the relaxation decides. With fewer than
-	// three rungs not even that exists, and the finest scale — plain connectivity — is what was
-	// measured; `criterion` says which of the three happened rather than leaving it to be inferred.
+
+	// No count repeated: there is no plateau, so arm-f's criterion has nothing to read and v0.9.0's
+	// stated default is taken. It is snapped to the nearest rung of the swept ladder rather than used
+	// raw, so that `counts[chosenIndex]` is the count actually measured at the radius actually used —
+	// a chosen scale the published curve does not cover would make the curve undiagnosable. Distance
+	// is measured in the ladder's own units (log scale, `1 + r` so `r = 0` has a logarithm); ties go
+	// to the finer rung, as everywhere else here.
+	//
+	// **The snap ranges over the ladder's interior, and that is the retired criterion's own domain
+	// preserved rather than a second rule.** A centred derivative cannot reach either endpoint, and
+	// the comment at the top of this file states the consequence it bought: *"it happens to exclude
+	// the two degenerate readings (every speck its own mark; everything merged into one)"*. A default
+	// snapped over the whole ladder does not inherit that, and V9b measured the cost on a real cover
+	// — `a8942d6547`, round-3 item 7, **graded STRONG in silence**, whose curve is
+	// `N(0)=451, N(2)=5, N(3)=4, N(4)=2, N(6)=1`: the target rung was the terminal `N = 1`, so the
+	// whole illustration became one mark holding 80% of the image, one median colour, and the
+	// identity set it dominated moved that STRONG's accent. Replacing a criterion's *reading* is
+	// v0.9.0's ruling; silently widening its *domain* to include the readings it was defined to
+	// exclude is not, so the domain is restored here explicitly.
+	const target = MARK_SCALE_DEFAULT_DIAGONAL_FRACTION * diagonal
+	let defaultIndex = -1
+	let bestGap = Number.POSITIVE_INFINITY
+	for (let rung = 1; rung < scales.length - 1; rung += 1) {
+		const gap = Math.abs(Math.log(1 + scales[rung]!) - Math.log(1 + target))
+		if (gap < bestGap) {
+			bestGap = gap
+			defaultIndex = rung
+		}
+	}
+	// Fewer than three rungs is a ladder with no interior: neither reading exists, and the finest
+	// scale — plain 8-connectivity — is what was measured.
+	if (defaultIndex < 0) defaultIndex = 0
 	return {
-		radius: scales[slopeIndex]!,
+		radius: scales[defaultIndex]!,
 		scales,
 		counts,
 		flatness,
-		chosenIndex: slopeIndex,
-		criterion: scales.length >= 3 ? "slope" : "degenerate",
+		chosenIndex: defaultIndex,
+		// A ladder with no interior is not a curve and cannot carry either reading; the finest scale —
+		// plain 8-connectivity — is what was measured, and `criterion` says so rather than leaving it
+		// to be inferred from a `plateauLength` of 1.
+		criterion: scales.length >= 3 ? "default" : "degenerate",
 		plateauLength: 1,
+		slopeIndex,
 		diagonal,
 	}
 }
@@ -974,6 +1153,22 @@ function robustColour(inventory: Inventory): OkLab {
  *    the case a full-bleed mark depends on.
  *
  * Cost, which is the point: the instrument is O(Σ box areas) instead of O(marks × pixels).
+ *
+ * ## The erosion short-circuit (v0.9.0, exact — `reports/wv9a.md` §e names it)
+ *
+ * Most marks are small, and for a small mark the erosion's answer is a **geometric certainty**: a
+ * mask contained in a box of `W × H` has no pixel further than `min(⌈W/2⌉, ⌈H/2⌉)` from the box's
+ * outside in the chessboard metric, so if that bound is `≤ inkRadius` the erosion kills every closed
+ * pixel and `erosionMortality` is exactly 1. Two conditions make the bound sound and both are
+ * checked rather than assumed: the closed mask lies inside the support's box grown by the closing
+ * radius, and the whole grown box must be strictly interior to the **image** — a support that
+ * touches the frame is eroded against `chessboardDistanceToComplement`'s border replication (*outside
+ * the image is support*), where no box bounds anything.
+ *
+ * When it fires, the crop's padding drops from `closing + ink + 2` to `closing + 2` (113 px → 23 px
+ * at 3000²) and the second distance transform is not run at all. `closedPixels` is still counted, on
+ * the same closing, so every published number is the one the long path would have produced;
+ * `tests/marks.test.ts` pins the equality on a fixture where the short circuit fires.
  */
 export function inkOnSupport(
 	support: Uint8Array,
@@ -982,8 +1177,15 @@ export function inkOnSupport(
 	height: number,
 	box: PixelBox,
 ): InkStatistics {
-	const pad = scaleRadius(width, height, INK_TEXTURE_CLOSING_FRACTION) +
-		scaleRadius(width, height, INK_SCALE_FRACTION) + 2
+	const closingRadius = scaleRadius(width, height, INK_TEXTURE_CLOSING_FRACTION)
+	const inkRadius = scaleRadius(width, height, INK_SCALE_FRACTION)
+	const grownWidth = box.maxX - box.minX + 1 + 2 * closingRadius
+	const grownHeight = box.maxY - box.minY + 1 + 2 * closingRadius
+	const interior = box.minX - closingRadius >= 1 && box.minY - closingRadius >= 1 &&
+		box.maxX + closingRadius <= width - 2 && box.maxY + closingRadius <= height - 2
+	const allDie = interior &&
+		Math.min(Math.ceil(grownWidth / 2), Math.ceil(grownHeight / 2)) <= inkRadius
+	const pad = closingRadius + (allDie ? 0 : inkRadius) + 2
 	const minX = Math.max(0, box.minX - pad)
 	const minY = Math.max(0, box.minY - pad)
 	const maxX = Math.min(width - 1, box.maxX + pad)
@@ -1008,21 +1210,19 @@ export function inkOnSupport(
 		}
 	}
 
-	const closed = closeSupport(
-		cropSupport,
-		cropWidth,
-		cropHeight,
-		scaleRadius(width, height, INK_TEXTURE_CLOSING_FRACTION),
-	)
-	const inkRadius = scaleRadius(width, height, INK_SCALE_FRACTION)
-	const distance = chessboardDistanceToComplement(closed, cropWidth, cropHeight)
+	const closed = closeSupport(cropSupport, cropWidth, cropHeight, closingRadius)
+
+	// The short circuit, and the whole of what it saves: on `allDie` the second distance transform is
+	// the expensive half of this function and its answer is already known, so it is not run. The
+	// closing still is — `closedPixels` is published and the bound says nothing about it.
+	const distance = allDie ? null : chessboardDistanceToComplement(closed, cropWidth, cropHeight)
 
 	let closedPixels = 0
 	let survivors = 0
 	for (let index = 0; index < closed.length; index += 1) {
 		if (closed[index] !== 1) continue
 		closedPixels += 1
-		if (distance[index]! > inkRadius) survivors += 1
+		if (distance !== null && distance[index]! > inkRadius) survivors += 1
 	}
 
 	let outwardBoundary = 0

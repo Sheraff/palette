@@ -23,6 +23,7 @@ import { colorFromRgb, okLabDistance, rgbToOkLab, sameColorBar } from "../../../
 import type { OkLab, PaletteColor, Rgb8 } from "../../../src/contract/types.ts"
 import { analyzeImage } from "../candidate.ts"
 import {
+	ACCENT_TIEBREAK,
 	agglomerateBarNeighbourhoods,
 	coveredFamilies,
 	familyCovers,
@@ -87,11 +88,15 @@ function candidateOf(
 	foregroundClass: RoleCandidate["foregroundClass"] = source === "component" ? "B" : "A",
 ): RoleCandidate {
 	const color: PaletteColor = colorFromRgb(rgb)
+	const lab = rgbToOkLab(rgb)
 	return {
 		cluster: clusterOf(rgb, mass),
 		color,
-		lab: rgbToOkLab(rgb),
+		lab,
 		mass,
+		// v0.9.0's accent term reads this, and it is measured from the colour rather than passed in so
+		// a fixture cannot claim a chroma its colour does not have.
+		chroma: Math.hypot(lab[1], lab[2]),
 		legibility,
 		source,
 		foregroundClass,
@@ -263,6 +268,12 @@ function bruteForce(
 			(second.foreground.foregroundClass === "A" ? 0 : 1) ||
 		second.foreground.mass - first.foreground.mass ||
 		second.foreground.legibility - first.foreground.legibility ||
+		// v0.9.0's accent term, written out longhand in the order `ACCENT_TIEBREAK` selects: chroma
+		// first, then decision 8's mass beneath it. `null` (the collapse) loses both, as it always did.
+		(ACCENT_TIEBREAK === "chroma"
+			? (second.accent === null ? -1 : second.accent.chroma) -
+				(first.accent === null ? -1 : first.accent.chroma)
+			: 0) ||
 		(second.accent === null ? -1 : second.accent.mass) -
 			(first.accent === null ? -1 : first.accent.mass) ||
 		first.foreground.cluster.representative - second.foreground.cluster.representative ||
@@ -565,6 +576,97 @@ test("determinism: every tie ends at the packed int", () => {
 })
 
 // ---------------------------------------------------------------------------------------------
+// 2b. The accent tie-break (v0.9.0)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **`ACCENT_TIEBREAK`, as an ordering rather than as a cover.**
+ *
+ * The rule ships as `"chroma"` because a 31-cover sweep scored it against every reviewer-graded
+ * accent verdict and it won 4–0 (`reports/wv9b.md`); what this test pins is where the term *sits*.
+ * Three positions, and all three matter:
+ *
+ *  - it leads salient mass, which is decision 8's term and is now beneath it;
+ *  - it sits below **coverage**, so decision 18's lexicographic order is unchanged;
+ *  - it sits below every **foreground** term, so it cannot move a foreground.
+ *
+ * Run against `solveAssignment` rather than the comparator directly, because the comparator is
+ * private and the ordering that ships is the one the solve applies.
+ */
+test("accent tie-break: chroma leads mass, and sits below both coverage and the foreground", () => {
+	assert.equal(ACCENT_TIEBREAK, "chroma", "the measured winner is what ships")
+
+	const fg = candidateOf([0x00, 0x00, 0x00], 1000)
+	const dullHeavy = candidateOf([0x5a, 0x5a, 0x5a], 900)
+	const vividLight = candidateOf([0xff, 0x00, 0x00], 10)
+	assert.ok(dullHeavy.mass > 50 * vividLight.mass, "the fixture must make mass and chroma disagree")
+	assert.ok(vividLight.chroma > dullHeavy.chroma)
+
+	// (a) with nothing to cover, chroma decides and the 90×-heavier neutral loses.
+	const noFamilies = identityOf([])
+	const byChroma = solveAssignment({
+		foreground: [fg],
+		accentFor: sharedShortlist([dullHeavy, vividLight]),
+		identity: noFamilies,
+		fieldLabs: [],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(byChroma.chosen?.accent?.color.hex, vividLight.color.hex)
+
+	// (b) coverage is above it: give the neutral a family to reach and it wins despite both readings.
+	const greyFamily = identityOf([[[0x5a, 0x5a, 0x5a], 0.5]])
+	const byCoverage = solveAssignment({
+		foreground: [fg],
+		accentFor: sharedShortlist([dullHeavy, vividLight]),
+		identity: greyFamily,
+		fieldLabs: [],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(byCoverage.chosen?.accent?.color.hex, dullHeavy.color.hex)
+	assert.equal(byCoverage.coverageDecided, true)
+
+	// (c) the foreground is decided before the accent term is ever consulted: the heavier foreground
+	// wins even though pairing the lighter one would give the more chromatic accent.
+	const heavyFg = candidateOf([0x00, 0x00, 0x00], 5000)
+	const lightFg = candidateOf([0x01, 0x01, 0x01], 10)
+	const dullOnly = candidateOf([0x60, 0x60, 0x60], 5)
+	const perForeground = (candidate: RoleCandidate) =>
+		candidate.cluster === heavyFg.cluster ? [dullOnly] : [vividLight]
+	const fgFirst = solveAssignment({
+		foreground: [heavyFg, lightFg],
+		accentFor: perForeground,
+		identity: noFamilies,
+		fieldLabs: [],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(fgFirst.chosen?.foreground.color.hex, heavyFg.color.hex)
+	assert.equal(fgFirst.chosen?.accent?.color.hex, dullOnly.color.hex)
+
+	// (d) equal chroma falls through to mass — decision 8, intact underneath.
+	const twinA = candidateOf([0xff, 0x00, 0x00], 500)
+	const twinB = candidateOf([0xff, 0x00, 0x00], 400)
+	assert.equal(twinA.chroma, twinB.chroma)
+	const byMass = solveAssignment({
+		foreground: [fg],
+		accentFor: sharedShortlist([twinB, twinA]),
+		identity: noFamilies,
+		fieldLabs: [],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(byMass.chosen?.accent?.mass, 500, "the heavier of two equally chromatic accents")
+
+	// (e) the collapse still sorts below every real accent, on both readings.
+	const collapsed = solveAssignment({
+		foreground: [fg],
+		accentFor: () => [],
+		identity: noFamilies,
+		fieldLabs: [],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(collapsed.chosen?.accent, null)
+})
+
+// ---------------------------------------------------------------------------------------------
 // 3. The anchors
 // ---------------------------------------------------------------------------------------------
 
@@ -615,9 +717,27 @@ test("anchor: item 3 publishes fg black / accent red — round 3's verbatim ask"
 	const families = assignment.identity.families.map((family) =>
 		colorFromRgb(unpackRgb(family.representative)).hex
 	)
-	assert.equal(families[2], "#fe0000", "the red is identity family 3, as it was")
-	assert.deepEqual(assignment.fieldCovered, [1, 2], "yellow and white come from the field roles")
-	assert.deepEqual(assignment.chosen?.covered, [1, 2, 3], "an ink role now reaches the red's family")
+	// **v0.9.0 re-ranks the families and the palette does not move** — which is the union's own claim
+	// under test here. The set is now yellow `#fad107` (.437) / a dark-olive mark `#26210b` (.228) /
+	// white `#f9fbf8` (.146) / red `#f81107` (.130): the v2 side sees a 20 556-mass olive mark the
+	// triple-wise reading never had, and it enters at rank 2. The red is still in the set, still
+	// covered by an ink role, and the published four colours are byte-identical to v0.8.2's — a
+	// reviewer-STRONG palette (round-4 item 1, silent) surviving a change to the family definition it
+	// is scored against is the anchor, not the rank number.
+	assert.ok(
+		families.some((hex) => hex === "#f81107"),
+		`the red is still in the identity set: ${families}`,
+	)
+	assert.deepEqual(assignment.fieldCovered, [1, 3], "yellow and white come from the field roles")
+	assert.deepEqual(assignment.chosen?.covered, [1, 3, 4], "an ink role still reaches the red's family")
+	// The olive is the heaviest accent candidate on the cover and it does **not** publish: this is the
+	// exact colour round 2 rejected here (*"doesn't feel like a part of this artwork"*), and the
+	// chroma-first tie-break is what keeps it out — .0367 against the red's .2489, against a 2×
+	// advantage in mass. Mass-first publishes `#26210b` on this cover and breaks the STRONG; the sweep
+	// that measured it is `measurements/v9b-accent-sweep.ts`.
+	assert.equal(assignment.accentShortlist[0]!.color.hex, "#26210b")
+	assert.ok(assignment.accentShortlist[0]!.mass > assignment.accentShortlist[1]!.mass)
+	assert.ok(assignment.accentShortlist[0]!.chroma < assignment.accentShortlist[1]!.chroma)
 
 	// The route: one unslotted component, admitted, superseding the two rejected-mass crumbs of its own
 	// family — which are the entries v0.8.0 had and could not publish.
@@ -640,9 +760,12 @@ test("anchor: item 3 publishes fg black / accent red — round 3's verbatim ask"
 		assignment.foregroundShortlist.every((candidate) => candidate.foregroundClass === "A"),
 		"class A fills the shortlist; the heavier class-B region sorts below all of it",
 	)
-	assert.equal(assignment.accentShortlist[0]!.source, "component")
+	// v0.9.0: the mark is heavier still, so the component is the shortlist's **second** entry rather
+	// than its first. The scale finding is unchanged and is asserted on the entry it was measured on.
+	const redAccent = assignment.accentShortlist.find((candidate) => candidate.source === "component")!
+	assert.equal(redAccent.color.hex, "#f81107")
 	assert.ok(
-		assignment.accentShortlist[0]!.mass > 8 * assignment.foregroundShortlist[0]!.mass,
+		redAccent.mass > 8 * assignment.foregroundShortlist[0]!.mass,
 		"11 694 of field mass against 1 424 of rejected mass — the scale finding, still true",
 	)
 	assert.equal(assignment.coverageDecided, false)
@@ -651,24 +774,81 @@ test("anchor: item 3 publishes fg black / accent red — round 3's verbatim ask"
 })
 
 /**
- * **The round-2/3 silent STRONGs.** Two of three hold byte-identical. **`908479200b` does not**, and
- * it is pinned below as a regression rather than quietly re-baselined, because a reviewer already
- * blessed the palette it used to publish.
+ * **The round-2/3 silent STRONGs, and v0.9.0's one accent regression among them.**
+ *
+ * `eaed77a9cb` is demo-20 and unreviewed; its accent moves and nothing is owed. **`a8942d6547` is
+ * round-3 item 7, graded STRONG in silence**, and its accent moves too — `#009cff` → `#39367d`. It is
+ * pinned here as a **regression**, in the same posture `908479200b` is pinned below, rather than
+ * quietly re-baselined.
+ *
+ * The cause is measured and is *not* the accent tie-break: the vivid blue has the higher chroma
+ * (.1807 against .1168) and would win that reading outright. **Coverage moved it**, and coverage
+ * outranks every per-role term. The cover's residual is one contiguous illustration — its curve is
+ * `N(0)=451, N(2)=5, N(3)=4, N(4)=2, N(6)=1`, so at *every* rung of the ladder one mark holds
+ * ~328 000 of the 409 600 pixels — and that mark's median colour `#39367d` therefore enters the
+ * unioned identity set at massFraction .80, as family 1. The accent that covers family 1 reaches
+ * coverage 4; the blue reaches 3. So the union's own premise (spatially-accumulated mass sees
+ * material the triple floor discards) is what displaced a reviewer-blessed colour here, on the one
+ * class of cover where a region is not a colour but a whole picture — wv9a §b's *"a region is one
+ * colour; a ramped or illustrated field is many"*, arriving as a published consequence.
+ *
+ * Nothing is patched around it: the v0.9 brief's byte-identity gate is over the **round-4** silent
+ * STRONGs (all three hold), this is a round-3 one, and the ruling on whether an 80%-of-frame median
+ * belongs in an identity set is the orchestrator's with this test as its evidence.
  */
 for (
-	const [label, shard, name, expected] of [
-		["a8942d6547 (round-3 item 7, STRONG)", "12", "ab67616d0000b27300125577fb06a6a8942d6547", ["#120032", "#0f002a", "#ffffff", "#009cff"]],
-		["eaed77a9cb (demo-20)", "00", "ab67616d00001e02000023e98b7381eaed77a9cb", ["#222335", "#474b56", "#ffffff", "#0f0b0c"]],
+	const [label, shard, name, expected, note] of [
+		[
+			"a8942d6547 (round-3 item 7, STRONG)",
+			"12",
+			"ab67616d0000b27300125577fb06a6a8942d6547",
+			["#120032", "#0f002a", "#ffffff", "#39367d"],
+			"REGRESSION (accent only): the reviewer's silent STRONG was #120032/#0f002a/#ffffff/#009cff",
+		],
+		[
+			"eaed77a9cb (demo-20)",
+			"00",
+			"ab67616d00001e02000023e98b7381eaed77a9cb",
+			["#222335", "#474b56", "#ffffff", "#61646d"],
+			"unreviewed; was #0f0b0c in v0.8.2",
+		],
 	] as const
 ) {
-	test(`anchor: ${label} is byte-identical under decision 18(a) and 18's class ordering`, async () => {
+	test(`anchor: ${label} is pinned under v0.9.0's pool and family union`, async () => {
 		const { palette } = await analyzeImage(await cover(shard, name))
 		assert.deepEqual(
 			[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
 			[...expected],
+			note,
 		)
 	})
 }
+
+/**
+ * The regression above, as the measurement that explains it rather than as a hex string: chroma-first
+ * did **not** choose this accent, coverage did, and the family it covers is one mark holding four
+ * fifths of the frame. If a later change puts the blue back, this is the test that says what had to
+ * move for it.
+ */
+test("a8942d6547: coverage, not chroma, displaced the STRONG's accent", async () => {
+	const { assignment, marks } = await analyzeImage(
+		await cover("12", "ab67616d0000b27300125577fb06a6a8942d6547"),
+	)
+	assert.ok(assignment !== null)
+	const published = assignment.accentShortlist.find((c) => c.color.hex === "#39367d")!
+	const blue = assignment.accentShortlist.find((c) => c.color.hex === "#009cff")!
+	assert.equal(published.source, "mark", "the published accent is a mark, not an overlay cluster")
+	assert.ok(blue.chroma > published.chroma, `the displaced blue is the more chromatic: ${blue.chroma} vs ${published.chroma}`)
+	assert.equal(assignment.coverageDecided, true, "so the per-role terms did not decide this")
+	assert.equal(assignment.chosen?.coverage, 4)
+	assert.equal(assignment.perRoleOnly?.coverage, 3)
+	// The cause, at its root: one mark is most of the image, at every rung the sweep offers.
+	const heaviest = marks.marks[0]!
+	assert.equal(heaviest.kind, "mark")
+	assert.ok(heaviest.massFraction > 0.75, `heaviest mark holds ${heaviest.massFraction} of the frame`)
+	assert.equal(assignment.identity.families[0]!.rank, 1)
+	assert.ok(assignment.identity.families[0]!.massFraction > 0.75)
+})
 
 /**
  * **Anchor (b) — `908479200b`, the sunset STRONG. The foreground comes back; the accent does not.**
@@ -760,35 +940,58 @@ test("anchor: 28279e9184 — the white is deduped out of the pool, and coverage 
 	)
 	assert.equal(assignment!.coverageDecided, true)
 	assert.equal(assignment!.classOverriddenByCoverage, true, "the only cover in 27 where it fires")
-	assert.equal(assignment!.chosen?.coverage, 4)
+	// v0.9.0: coverage falls 4 → 3 and the palette does not move. A 33 563-mass mark `#975968` enters
+	// the unioned set at rank 1 and **no published role covers it**, so the identity set gained a
+	// family the palette cannot reach rather than losing one it could. That is the honest reading of
+	// this cover under the new definition, and it is the number the class-override ruling is scored
+	// against — so it is recomputed here, not relaxed.
+	assert.equal(assignment!.chosen?.coverage, 3)
 	assert.equal(assignment!.perRoleOnly?.foreground.color.hex, "#eaeaea")
 	assert.equal(assignment!.perRoleOnly?.coverage, 2)
 })
 
 /**
- * **Anchor (b) — round-3 item 6, `9646be9b20`, the "many colors" complaint.** Neither coverage
- * (v0.8.0) nor the pool re-union (v0.8.1) improves it: the palette stays cream/cream/blue/black.
+ * **Anchor (b) — round-3 item 6 / round-4 item 3, `9646be9b20`, the "many colors" complaint.**
  *
- * The union cannot help here, and the reason is structural rather than a near miss — **the component
- * pool is empty**. Item 6's only extensive component is the display type, which decision 15a's veto
- * refuses as a field, so the cover takes the declared retreat and there is no unslotted component to
- * offer. Pinned as an identity, so that a later change which makes this cover move has to explain
- * where a component came from.
+ * v0.8.x could not move this cover and the reason was structural: **the component pool is empty**.
+ * Its only extensive component is the display type, which decision 15a's veto refuses as a field, so
+ * the cover takes the declared retreat and there is no unslotted component to offer.
+ *
+ * **v0.9.0 moves it, and the mark pool is where the movement comes from** — the retreat leaves the
+ * whole illustration unexplained, so it arrives as one region of spatial mass 320 540 and publishes
+ * `#7f7ca7`. The accent goes `#000000` → `#7f7ca7`, which is directly responsive to round-4 item 3's
+ * note (*"Black accent could work if all other color picks are very chromatic, but right now this is
+ * not the case and so we're losing a lot of the artwork's identity"*).
+ *
+ * **It is not obviously an improvement and this test says so.** `#7f7ca7` is the median of a vivid
+ * illustration — wv9a §b called exactly this reading *"the retreat's one region medians a vivid
+ * illustration to mud"* — and at chroma .0648 it is barely more chromatic than the black it replaced.
+ * The reviewer's complaint on this cover is *the artwork's colours are missing*, and a mud-coloured
+ * median of all of them is a different answer from any of them. Round 5 has this cover returning; the
+ * numbers it needs are pinned here rather than summarized.
  */
-test("anchor: item 6 is unchanged, and its component pool is empty by the 15a veto", async () => {
-	const { palette, assignment, diagnostics, componentCandidates } = await analyzeImage(
+test("anchor: item 6 moves on the mark pool, and the mark is a median of the whole illustration", async () => {
+	const { palette, assignment, diagnostics, componentCandidates, marks } = await analyzeImage(
 		await cover("09", "ab67616d0000b27300094a786a28459646be9b20"),
 	)
 	assert.deepEqual(
 		[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
-		["#fae8d0", "#fae8d0", "#01bdfd", "#000000"],
+		["#fae8d0", "#fae8d0", "#01bdfd", "#7f7ca7"],
+		"was #fae8d0/#fae8d0/#01bdfd/#000000 through v0.8.2",
 	)
 	assert.ok(assignment !== null)
 	assert.equal(assignment.coverageDecided, false)
-	assert.equal(assignment.chosen?.coverage, 2)
-	assert.equal(diagnostics.retreat, true, "the 15a veto emptied the pool")
+	assert.equal(assignment.chosen?.coverage, 3, "was 2: the accent now reaches the illustration's family")
+	assert.equal(diagnostics.retreat, true, "the 15a veto still empties the component pool")
 	assert.equal(diagnostics.fieldComponents, 0)
-	assert.deepEqual(componentCandidates, [], "nothing to union: the union is not this cover's answer")
+	assert.deepEqual(componentCandidates, [], "so the *component* union is still not this cover's answer")
+	// The mark half is, and this is what it offered.
+	const accent = assignment.accentShortlist[0]!
+	assert.equal(accent.source, "mark")
+	assert.equal(accent.color.hex, "#7f7ca7")
+	// The caveat, as a measurement: one entry is four fifths of the frame, and it is nearly neutral.
+	assert.ok(marks.marks[0]!.massFraction > 0.75)
+	assert.ok(accent.chroma < 0.07, `the published accent's chroma is ${accent.chroma} — a median, not a colour`)
 })
 
 /**
@@ -805,11 +1008,16 @@ test("91a16672c4: the class ordering hands the foreground back to the inks, and 
 	const { palette, assignment, componentCandidates } = await analyzeImage(
 		await cover("11", "ab67616d0000b27300113f74852a0091a16672c4"),
 	)
-	assert.equal(palette.roles.foreground.hex, "#d8a685", "was #d09d7e in v0.8.1, #c39170 in v0.7.1")
+	// **v0.9.0 hands the foreground back to `#c39170`** — v0.7.1's answer, and v0.8.0's `perRoleOnly`.
+	// The families changed under the union and `#d8a685`'s third family went with them: the set is now
+	// `#5d666f` .218 / `#d09d7e` .205 / `#15222a` .205 / `#2d3b46` .109, and both creams cover the same
+	// one of them, so the coverage tie that lifted `#d8a685` above `#c39170` no longer exists and the
+	// mass ordering decides the foreground again. Coverage still decides the *palette*, on the accent.
+	assert.equal(palette.roles.foreground.hex, "#c39170", "was #d8a685 in v0.8.2, #d09d7e in v0.8.1")
 	assert.equal(palette.roles.accent.hex, "#2c3a45", "was #3b4c56 in v0.7.1")
 	assert.ok(assignment !== null)
-	assert.equal(assignment.chosen?.coverage, 3, "the same coverage v0.8.0 reached")
-	assert.equal(assignment.coverageDecided, true, "and by the same route: coverage over mass")
+	assert.equal(assignment.chosen?.coverage, 2, "was 3 under the triple-wise families")
+	assert.equal(assignment.coverageDecided, true, "and still by that route: coverage over the per-role terms")
 	assert.equal(assignment.perRoleOnly?.foreground.color.hex, "#c39170")
 	assert.equal(componentCandidates.length, 2)
 	assert.ok(componentCandidates.every((row) => row.admitted && row.feasible))

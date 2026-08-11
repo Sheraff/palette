@@ -36,11 +36,14 @@ import {
 import type { FieldReading } from "../src/components.ts"
 import { normalizedX, normalizedY, unpackRgb } from "../src/decode.ts"
 import { fitField, fitFieldComponents } from "../src/fieldfit.ts"
+import type { IdentitySet } from "../src/assignment.ts"
 import {
 	chooseGroupingScale,
 	groupAtScale,
+	identityFamiliesUnion,
 	identityFamiliesV2,
 	inkOnSupport,
+	MARK_SCALE_DEFAULT_DIAGONAL_FRACTION,
 	MARK_SCALE_SWEEP_MAX_DIAGONAL_FRACTION,
 	MARK_SCALE_SWEEP_MIN_DIAGONAL_FRACTION,
 	readMarks,
@@ -472,6 +475,118 @@ test("identity families v2 is a pure function of the mark set", () => {
 	for (const entry of reading.marks) total += entry.mass
 	assert.equal(once.massRetained, total / reading.totalPixels)
 	assert.ok(once.massRetained > 0.5, `v2 must retain the image, got ${once.massRetained}`)
+})
+
+// ---------------------------------------------------------------------------------------------
+// v0.9.0 — the four wiring decisions, each on its own terms
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The family union's merge and mass rules** (`identityFamiliesUnion`).
+ *
+ * Three claims, and nothing about any particular cover: same-bar centres merge across the two sides;
+ * a merged family's mass is the `max` of the two readings and never their sum (they measure the same
+ * material twice, so adding would publish a mass larger than the image); and everything else about a
+ * merged family comes from its heavier side rather than from an average of the two.
+ */
+test("identity families union: same-bar centres merge, and the merged mass is max, never a sum", () => {
+	const raster = texturedRegionOnField()
+	const { reading } = read(raster)
+	const v2 = identityFamiliesV2(reading.marks, reading.totalPixels, 1024)
+
+	// A union of a set with itself is that set, with every mass unchanged: `max(m, m) = m`. A sum rule
+	// would double every one of them, which is the failure this asserts against directly.
+	const selfUnion = identityFamiliesUnion(v2, v2, reading.totalPixels, 1024)
+	assert.deepEqual(
+		selfUnion.families.map((family) => family.mass),
+		v2.families.map((family) => family.mass),
+		"merging a reading with itself must not add its mass to itself",
+	)
+	assert.equal(selfUnion.totalFamilies, v2.totalFamilies, "and must not create families")
+
+	// A disjoint side is carried through whole: no colour is lost by unioning.
+	const far: IdentitySet = {
+		families: [{
+			rank: 1,
+			representative: 0xff00ff,
+			centre: rgbToOkLab([0xff, 0x00, 0xff]),
+			mass: 1,
+			massFraction: 1 / reading.totalPixels,
+			memberCount: 1,
+		}],
+		totalFamilies: 1,
+		massRetained: 0.01,
+	}
+	const widened = identityFamiliesUnion(v2, far, reading.totalPixels, 1024)
+	assert.equal(widened.totalFamilies, v2.totalFamilies + 1, "a colour neither side shares is kept")
+	assert.ok(widened.families.some((family) => family.representative === 0xff00ff))
+
+	// The dominant side supplies the merged family's identity, and the mass is the larger reading.
+	const heavier: IdentitySet = {
+		families: v2.families.slice(0, 1).map((family) => ({ ...family, mass: family.mass * 2 })),
+		totalFamilies: 1,
+		massRetained: 0.99,
+	}
+	const merged = identityFamiliesUnion(v2, heavier, reading.totalPixels, 1024)
+	assert.equal(merged.totalFamilies, v2.totalFamilies, "the doubled copy merged rather than joined")
+	const top = merged.families[0]!
+	assert.equal(top.mass, v2.families[0]!.mass * 2, "the merged mass is the max of the two")
+	assert.equal(top.representative, v2.families[0]!.representative)
+	// `massRetained` follows the same rule, over the same argument.
+	assert.equal(merged.massRetained, Math.max(v2.massRetained, 0.99))
+})
+
+/**
+ * **The scale default** (`MARK_SCALE_DEFAULT_DIAGONAL_FRACTION`), and the domain it is chosen in.
+ *
+ * Three claims: the default is a fraction of the **diagonal**, so it is the same physical scale on a
+ * 300² and a 3000² cover; it is snapped onto a swept rung, so `counts[chosenIndex]` is the count
+ * actually measured at the radius actually used; and it is snapped inside the ladder's **interior**,
+ * because the two endpoints are the degenerate readings (every speck its own mark; everything merged
+ * into one) that the criterion it replaced could not reach either.
+ */
+test("scale default: a diagonal fraction, snapped to an interior rung of the swept ladder", () => {
+	assert.ok(
+		MARK_SCALE_DEFAULT_DIAGONAL_FRACTION > MARK_SCALE_SWEEP_MIN_DIAGONAL_FRACTION &&
+			MARK_SCALE_DEFAULT_DIAGONAL_FRACTION < MARK_SCALE_SWEEP_MAX_DIAGONAL_FRACTION,
+		"the default must be reachable inside the sweep's own envelope",
+	)
+	// The bracket it was ruled from, re-derived rather than remembered: r = 1 on a 300² cover
+	// (`4130886c02`, which fragments a word) and r = 23 on a 640² one (NARCOSIS, which merges a
+	// picture), and the value is the geometric centre of the two as fractions of their diagonals.
+	const low = 1 / Math.hypot(300, 300)
+    const high = 23 / Math.hypot(640, 640)
+	assert.ok(low < MARK_SCALE_DEFAULT_DIAGONAL_FRACTION && MARK_SCALE_DEFAULT_DIAGONAL_FRACTION < high)
+	assert.ok(
+		Math.abs(MARK_SCALE_DEFAULT_DIAGONAL_FRACTION - Math.sqrt(low * high)) < 5e-5,
+		`the geometric centre of the bracket is ${Math.sqrt(low * high)}`,
+	)
+
+	// A curve with no repeated count: strictly decreasing, so no plateau exists and the default fires.
+	// The mask is a diagonal line of isolated dots, whose groups merge one pair at a time.
+	for (const size of [300, 640] as const) {
+		const mask = new Uint8Array(size * size)
+		for (let step = 0; step < 24; step += 1) {
+			const position = 8 + step * 9
+			mask[position * size + position] = 1
+		}
+		const choice = chooseGroupingScale(mask, size, size)
+		assert.equal(choice.radius, choice.scales[choice.chosenIndex], "the radius is a swept rung")
+		if (choice.criterion === "default") {
+			assert.ok(choice.chosenIndex > 0, "never the finest rung — every speck its own mark")
+			assert.ok(
+				choice.chosenIndex < choice.scales.length - 1,
+				"never the coarsest rung — everything merged into one",
+			)
+			assert.ok(choice.counts[choice.chosenIndex]! > 1, "and so never a count of one")
+			// The snap is to the nearest rung in the ladder's own log units.
+			const target = MARK_SCALE_DEFAULT_DIAGONAL_FRACTION * choice.diagonal
+			const gap = (rung: number) => Math.abs(Math.log(1 + choice.scales[rung]!) - Math.log(1 + target))
+			for (let rung = 1; rung < choice.scales.length - 1; rung += 1) {
+				assert.ok(gap(choice.chosenIndex) <= gap(rung), `rung ${rung} was nearer the default`)
+			}
+		}
+	}
 })
 
 // ---------------------------------------------------------------------------------------------

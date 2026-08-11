@@ -106,6 +106,8 @@ import {
 import type { AssignmentTrace, BarNeighbourhood, RoleCandidate } from "./assignment.ts"
 import { componentCentre } from "./components.ts"
 import type { FieldComponent } from "./components.ts"
+import { identityFamiliesUnion, identityFamiliesV2 } from "./marks.ts"
+import type { MarkReading, MarkRegion } from "./marks.ts"
 import { normalizedX, normalizedY, packRgb, unpackRgb } from "./decode.ts"
 import { snapToArtwork } from "./snap.ts"
 import type {
@@ -643,6 +645,14 @@ function componentPoolEntry(
  * is ratified this shape is structurally an `OverlayReading` everywhere one is expected, and
  * `candidate.ts` carries the trace on `Analysis` exactly as v0.7.1 carried `PathExcursionReport`.
  */
+/**
+ * "Every family, not the identity set" — the depth both sides of the union are read at.
+ *
+ * Not a constant with a value to argue about: `readIdentitySet` and `identityFamiliesV2` both take a
+ * `count` that slices an already-complete ranking, and this asks for the whole of it.
+ */
+const ALL_FAMILIES = Number.MAX_SAFE_INTEGER
+
 export type OverlayReadingWithAssignment = OverlayReading & {
 	/** `null` when no assignment was solved: no overlay at all, or no admissible foreground. */
 	readonly assignment: AssignmentTrace | null
@@ -680,6 +690,15 @@ export function readOverlay(
 	 * every cover the global fit explained, which is why those covers cannot move in v0.8.1.
 	 */
 	unslottedComponents: readonly FieldComponent[] = [],
+	/**
+	 * **v0.9.0, SPEC decision 18(a) extended downward**: the image's mark/region set, or `null` on a
+	 * caller that measured none. Two things read it and nothing else does — the accent half of the
+	 * candidate pool (see the mark block below) and the identity families (`identityFamiliesUnion`).
+	 *
+	 * `null` and an empty reading are deliberately the same thing here: a cover with no marks offers
+	 * no mark candidates and unions with an empty family list, which is v0.8.2's behaviour exactly.
+	 */
+	markReading: MarkReading | null = null,
 ): OverlayReadingWithAssignment {
 	if (publishedRamp.length < 2) {
 		throw new RangeError(`readOverlay needs at least two published stops, got ${publishedRamp.length}`)
@@ -816,9 +835,84 @@ export function readOverlay(
 		})
 	}
 
+	// --- v0.9.0: the marks and regions join the pool -----------------------------------------------
+	//
+	// Decision 18(a)'s union principle extended one level down, which is the v0.9 brief's consumer 2.
+	// A mark is a connected piece of what the fit rejected and a region is a field-like component
+	// taken whole, so both are "material the image is made of" in exactly the sense the overlay
+	// clusters and the component entries already are — and one of them, the NARCOSIS crimson, is a
+	// 41 000-pixel colour that *no* existing pool entry represents at all (W-M1 §1).
+	//
+	// **Three rules, and all three are `no-double-entry` or `accent-only`, never eligibility gates:**
+	//
+	//  1. **Additive only.** A mark never supersedes a cluster and never supersedes a component: it is
+	//     dropped when its published colour is `sameColor` as any entry already in the pool — a
+	//     surviving cluster, an admitted component, or an earlier (heavier) mark. The existing pool is
+	//     therefore byte-identical to v0.8.2's on every cover, which is what makes the delta table
+	//     readable: anything that moves, moved because a *new* colour entered, never because an old
+	//     one was re-ranked. Marks are walked heaviest-first so which of two same-colour marks
+	//     survives is decided by mass, then by the packed integer.
+	//  2. **Accent-side only.** `foregroundShortlist` below is built from the non-mark pool, so the
+	//     foreground ordering is unchanged *by construction* rather than by measurement. That is
+	//     V9a §d's ruling honoured at the one place it can be honoured cheaply: mark-level ink
+	//     evidence displaced a reviewer-STRONG foreground, so the mark set does not get a vote on the
+	//     foreground until that is measured again. `MarkRegion.inkShaped` is published in the sidecar
+	//     and read by nothing.
+	//  3. **The distinctness test follows the kind, not the provenance.** A `"mark"` is a rejection of
+	//     the fit, so the cluster-side test (*does this depart from the ground it sits on*) is exactly
+	//     the right question and is applied. A `"region"` **is** a field surface at its own mean
+	//     position, so that test would reject every region identically — the same reason decision
+	//     18(a) exempts components — and it is skipped, with the published-colour tests below doing
+	//     the work instead.
+	const markEntries: OverlayCluster[] = []
+	const markSourced = new Set<OverlayCluster>()
+	/** A region behaves as a component under the distinctness test; a mark behaves as a cluster. */
+	const markIsRegion = new Set<OverlayCluster>()
+	const admittedMarks: { entry: OverlayCluster; mark: MarkRegion }[] = []
+	if (markReading !== null) {
+		const standing = [...clusters.filter((cluster) => !superseded.has(cluster)), ...componentEntries]
+		// `MarkReading.marks` is already mass-descending, packed-ascending (`readMarks` sorts it).
+		for (const mark of markReading.marks) {
+			if (!(mark.mass > 0)) continue
+			const color = colorFromRgb(unpackRgb(mark.representative))
+			const duplicate = standing.some((entry) =>
+				sameColor(colorFromRgb(unpackRgb(entry.representative)), color)
+			) || markEntries.some((entry) =>
+				sameColor(colorFromRgb(unpackRgb(entry.representative)), color)
+			)
+			if (duplicate) continue
+			const region = mark.kind === "region"
+			// The two `localField` conventions already in this file, applied by kind: a component's is
+			// the published background (`componentPoolEntry`), a cluster's is the field at its own mean
+			// position (`readCluster`). Description only either way — nothing selects on the deltas.
+			const localField = region ? backgroundLab : mark.localField
+			const delta = decompose(localField, mark.lab)
+			const entry: OverlayCluster = {
+				representative: mark.representative,
+				lab: mark.centre,
+				overlayMass: mark.mass,
+				meanX: mark.meanX,
+				meanY: mark.meanY,
+				localField,
+				deltaL: delta.deltaLightness,
+				deltaC: delta.deltaChroma,
+				deltaH: delta.deltaHue,
+				memberCount: mark.memberCount,
+			}
+			markEntries.push(entry)
+			markSourced.add(entry)
+			if (region) markIsRegion.add(entry)
+			admittedMarks.push({ entry, mark })
+		}
+	}
+
 	// One pool, one order. Mass descending then packed integer ascending, exactly as `clusters` was
 	// ordered on its own, so a cover with no component candidates enumerates in v0.8.0's order.
-	const pool = [...clusters.filter((cluster) => !superseded.has(cluster)), ...componentEntries]
+	const pool = [
+		...clusters.filter((cluster) => !superseded.has(cluster)),
+		...componentEntries,
+		...markEntries,
+	]
 		.sort((first, second) =>
 			second.overlayMass - first.overlayMass ||
 			first.representative - second.representative
@@ -845,7 +939,12 @@ export function readOverlay(
 		// applying it to a component rejects every component identically. That is the comparison that
 		// made item 3's red infeasible at every K. A component's distinctness is judged against the
 		// published colours below, like everything the contract judges.
-		if (!componentSourced.has(cluster) && sameColorLab(rgbToOkLab(color.rgb), cluster.localField)) {
+		//
+		// **v0.9.0** adds the third source with the same split, keyed on what the material *is*: a
+		// region is a field surface and is exempt exactly as a component is; a mark is a rejection of
+		// the fit and takes the test exactly as a cluster does.
+		const isSurface = componentSourced.has(cluster) || markIsRegion.has(cluster)
+		if (!isSurface && sameColorLab(rgbToOkLab(color.rgb), cluster.localField)) {
 			return false
 		}
 		return !publishedEnds.some((end) => sameColor(color, end))
@@ -895,8 +994,13 @@ export function readOverlay(
 	// class-B candidate is admissible exactly when it clears the floors, like anything else. The class
 	// enters below, in the order the shortlist is taken in, and again in the solve's comparator.
 	const admissible = feasible.filter((cluster) => legibility.get(cluster)! >= foregroundFloor)
+	// v0.9.0: the escape is a statement about the **foreground**, and a mark cannot be one, so the
+	// test runs over the candidates a foreground can actually come from. Without this split a cover
+	// whose only admissible entry is a mark would leave the escape unfired and hand the solve an empty
+	// foreground list — a different palette reached by a silently different route.
+	const foregroundAdmissible = admissible.filter((cluster) => !markSourced.has(cluster))
 
-	if (admissible.length === 0) {
+	if (foregroundAdmissible.length === 0) {
 		// Nothing publishable and legible: SPEC decision 10's escape. The escape colour itself is
 		// assembled by `candidate.ts`, which owns the inventory-absence check; all this module can
 		// honestly say is that the overlay offers nothing.
@@ -924,8 +1028,13 @@ export function readOverlay(
 				// Salient mass. `overlayMass` holds `Σ(1 − w)` for a cluster and the component's field
 				// mass `Σ w` for a component entry — decision 18(a)'s two definitions, one field.
 				mass: cluster.overlayMass,
+				chroma: Math.hypot(rgbToOkLab(color.rgb)[1], rgbToOkLab(color.rgb)[2]),
 				legibility: legibility.get(cluster) ?? 0,
-				source: componentSourced.has(cluster) ? "component" : "overlay",
+				source: markSourced.has(cluster)
+					? "mark"
+					: componentSourced.has(cluster)
+					? "component"
+					: "overlay",
 				// Decision 18's v0.8.2 class. An overlay cluster is class A by definition — it *is* what
 				// the fit rejected — and a component carries the shape verdict measured on its own claim.
 				foregroundClass: componentClass.get(cluster) ?? "A",
@@ -948,7 +1057,10 @@ export function readOverlay(
 	// 2 432, so an ordering applied only inside the solve would rank a shortlist the ink had already
 	// fallen out of. Sorting here and comparing there are the same order, stated twice, deliberately:
 	// the solve owns the ordering, and a shortlist that is not a prefix of it is not a shortlist.
-	const foregroundShortlist: RoleCandidate[] = [...admissible]
+	//
+	// **v0.9.0**: `markSourced` entries are filtered out here and only here. See the mark block's
+	// rule 2 — the foreground ordering is unchanged by construction, not by measurement.
+	const foregroundShortlist: RoleCandidate[] = [...foregroundAdmissible]
 		.sort((first, second) =>
 			(componentClass.get(first) === "B" ? 1 : 0) - (componentClass.get(second) === "B" ? 1 : 0) ||
 			second.overlayMass - first.overlayMass ||
@@ -1069,7 +1181,18 @@ export function readOverlay(
 	// `assignment.ts` does the rest: identity families off the inventory, the pairwise constraints,
 	// coverage, then those same rankings as tie-breaks. The field roles are inputs — see that module's
 	// header for why the surface is not a free variable — so the enumeration is K × (K + 1) at most.
-	const identity = readIdentitySet(inventory)
+	//
+	// **v0.9.0**: the families are the union of the two readings (`identityFamiliesUnion`, whose
+	// docstring carries the merge and mass rules and V9a's evidence for a union rather than a
+	// replacement). Both sides are read at **full depth** — `ALL_FAMILIES` rather than `F` — because
+	// the union is ranked once and sliced last; slicing each side to `F` first would drop a family
+	// that is fifth on both sides and second overall. With no mark reading the v2 side is empty, the
+	// union is v1 exactly, and the cover cannot move.
+	const identityV1 = readIdentitySet(inventory, ALL_FAMILIES)
+	const identityV2 = markReading === null
+		? { families: [], totalFamilies: 0, massRetained: 0 }
+		: identityFamiliesV2(markReading.marks, markReading.totalPixels, ALL_FAMILIES)
+	const identity = identityFamiliesUnion(identityV1, identityV2, inventory.totalPixels)
 	const trace = solveAssignment({
 		foreground: foregroundShortlist,
 		accentFor,

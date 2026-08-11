@@ -38,6 +38,7 @@ import {
 import { firstInvisibleAccentOnRamp } from "../../../src/contract/ramp.ts"
 import type { FieldComponent } from "../src/components.ts"
 import { normalizedX, normalizedY, packRgb, unpackRgb } from "../src/decode.ts"
+import { readMarks } from "../src/marks.ts"
 import { readOverlay } from "../src/overlay.ts"
 import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "../src/types.ts"
 
@@ -392,9 +393,17 @@ function paretoScene(lightnessPatchSize: number): Scene {
  *  - *v0.4.1*: **fg = argmax mass above a raised legibility floor** (decision 13), so `BLUE_MARK`
  *    takes it back — not because mass returned unchecked, but because it clears |raw| 15 (23.1) while
  *    the tiny 3-pixel `LIGHTNESS_ONLY` no longer outranks it for being *more* legible.
+ *  - *v0.9.0*: the **foreground is untouched** and the **accent** changes hands, `DOMINATED` →
+ *    `CHROMA_ONLY`, because the accent tie-break now reads chroma before mass (`ACCENT_TIEBREAK`).
+ *    This scene is where that reads most sharply: `DOMINATED` is a neutral grey and `CHROMA_ONLY` is
+ *    a saturated red placed to be isoluminant with the field, so the two rules disagree by
+ *    construction and the fixture states which one ships.
  *
  * The floor is what makes this different from v0.1, and `CHROMA_ONLY` is the proof: at |raw| 8.5 it
- * is now below the foreground floor even though it was above the old 2.5 one.
+ * is now below the foreground floor even though it was above the old 2.5 one. That it is *below the
+ * foreground floor and still an accent* is not an inconsistency — decision 8's accent clause is a
+ * pointwise conjunction of contrast and functional distance, deliberately weaker than the paragraph
+ * floor, because an accent is icons and can be read by hue where text cannot.
  */
 test("both roles: mass leads above the gates", () => {
 	const scene = paretoScene(3)
@@ -427,9 +436,11 @@ test("both roles: mass leads above the gates", () => {
 	// mass — the floor is what says so, and it says so far more loudly than the contract's 2.5 did.
 	assert.ok(rawAgainstField(CHROMA_ONLY) < 15)
 
-	// --- accent: the heaviest survivor that is not the foreground's family ---
-	assert.ok(dominated.overlayMass > chroma.overlayMass)
-	assert.equal(reading.accent?.representative, pack(DOMINATED))
+	// --- accent: the most chromatic survivor that is not the foreground's family ---
+	// The mass ordering is asserted first and still holds, so the assertion below is a statement about
+	// the *rule* rather than about the fixture: `DOMINATED` is heavier and loses anyway.
+	assert.ok(dominated.overlayMass > chroma.overlayMass, "mass-first would still publish DOMINATED")
+	assert.equal(reading.accent?.representative, pack(CHROMA_ONLY))
 })
 
 // ---------------------------------------------------------------------------------------------
@@ -450,6 +461,83 @@ function flatScene(size: number, field: Rgb8, marks: readonly (readonly [Rgb8, n
 		0,
 	)
 }
+
+/**
+ * **v0.9.0 — the accent pool's third source, and the three rules that make it additive.**
+ *
+ * The claim under test is not "a mark can win the accent" (the real covers measure that) but the
+ * three properties the delta table's readability rests on:
+ *
+ *  1. **No double entry.** A mark whose published colour is already in the pool is dropped, so no
+ *     colour is offered twice and the shortlists hold distinct colours.
+ *  2. **Additive only.** No mark supersedes a cluster, so the non-mark half of the pool — every
+ *     candidate v0.8.2 had, at the mass it had — is unchanged by the mark reading's presence.
+ *  3. **Accent-side only.** A mark is never offered to the foreground, so the foreground shortlist is
+ *     byte-identical with and without the mark reading. This is the one place V9a §d's deferral of
+ *     the ink preference is enforced, and it is enforced structurally rather than by ordering.
+ *
+ * The fixture hands `readOverlay` a mark reading built from the same scene, so the marks it offers
+ * are real ones rather than synthesized rows.
+ */
+test("v0.9.0 accent pool: marks are deduped, additive, and never foregrounds", () => {
+	const FIELD: Rgb8 = [0xf2, 0xf2, 0xf2]
+	const INK: Rgb8 = [0x10, 0x10, 0x10]
+	const VIVID: Rgb8 = [0xd0, 0x10, 0x20]
+	const scene = flatScene(24, FIELD, [[INK, 120], [VIVID, 60]])
+	const stops: GradientStop[] = [
+		{ color: colorFromRgb(FIELD), position: 0 },
+		{ color: colorFromRgb(FIELD), position: 1 },
+	]
+
+	const marks = readMarks(scene.raster, scene.fit, null)
+	const without = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops, [])
+	const with_ = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+		[],
+		marks,
+	)
+
+	assert.ok(marks.marks.length > 0, "the fixture must actually produce marks")
+
+	// (2) the existing pool is untouched — same clusters, same masses, same order.
+	assert.deepEqual(
+		with_.clusters.map((cluster) => [cluster.representative, cluster.overlayMass]),
+		without.clusters.map((cluster) => [cluster.representative, cluster.overlayMass]),
+	)
+
+	// (3) the foreground is decided over the same candidates it was decided over before.
+	assert.deepEqual(
+		with_.assignment?.foregroundShortlist.map((candidate) => candidate.color.hex),
+		without.assignment?.foregroundShortlist.map((candidate) => candidate.color.hex),
+	)
+	assert.ok(
+		(with_.assignment?.foregroundShortlist ?? []).every((candidate) => candidate.source !== "mark"),
+		"a mark must never be offered as a foreground",
+	)
+	assert.equal(with_.foreground?.representative, without.foreground?.representative)
+
+	// (1) no colour is offered twice, on either shortlist.
+	for (const shortlist of [with_.assignment?.foregroundShortlist ?? [], with_.assignment?.accentShortlist ?? []]) {
+		const hexes = shortlist.map((candidate) => candidate.color.hex)
+		assert.equal(new Set(hexes).size, hexes.length, `duplicate candidates: ${hexes}`)
+	}
+	// And the marks that *were* dropped were dropped for being duplicates: every mark colour already
+	// in the cluster pool must be absent from the mark-sourced entries.
+	const clusterHexes = new Set(
+		without.clusters.map((cluster) => colorFromRgb(unpackRgb(cluster.representative)).hex),
+	)
+	for (const candidate of with_.assignment?.accentShortlist ?? []) {
+		if (candidate.source !== "mark") continue
+		assert.ok(
+			!clusterHexes.has(candidate.color.hex),
+			`${candidate.color.hex} entered as a mark although a cluster already published it`,
+		)
+	}
+})
 
 /**
  * **Regression, decision 7's round-1 ruling: comparisons run on representatives.**
@@ -542,18 +630,27 @@ test("foreground ranking: a dull massive cluster loses to a legible small one", 
  * genuinely preferred the olive and this fixture reproduces that. Mass-led inverts it, and both
  * candidates still pass both gates — so the test is about the ranking, not about a filter.
  */
-test("accent identity: the artwork's white beats a more distant dark", () => {
+test("accent identity: the artwork's red beats a heavier dark olive", () => {
 	const BACKGROUND: Rgb8 = [0xfa, 0xd1, 0x07]
-	const SURFACE: Rgb8 = [0xf8, 0x11, 0x07]
+	// The white **is** the published surface on this cover, and that is the point of the fixture's
+	// current shape: v0.4 answered round 2's *"missing the white"* by publishing the white as an
+	// accent, and v0.8.1 answered it properly by putting the white in a field role — which is what
+	// freed the accent slot for the colour round 3 then asked for by name.
+	const SURFACE: Rgb8 = [0xfb, 0xfa, 0xff]
 	const INK: Rgb8 = [0, 0, 0]
-	const WHITE: Rgb8 = [0xfb, 0xfa, 0xff]
+	const RED: Rgb8 = [0xf8, 0x11, 0x07]
 	const DISTANT_DARK: Rgb8 = [0x45, 0x39, 0x07]
 
 	// The field is the background block; the surface block is published but the marks sit on one
 	// ground, which is all `readOverlay` needs — the ramp it measures against is passed in.
 	// The ink is the heaviest mark, so mass-led picks it as the foreground and the test is about the
 	// accent choice between the remaining two.
-	const scene = flatScene(20, BACKGROUND, [[INK, 90], [WHITE, 60], [DISTANT_DARK, 20]])
+	//
+	// **The mass ordering is the real cover's, not a convenient one**: on `2376a6b67d` the dark
+	// olive's mark carries 20 556 of spatial mass against the red's 11 694 of field mass, so the olive
+	// leads the accent shortlist there too. The fixture reproduces that relation (60 against 20) so
+	// that what it tests is the rule and not the arrangement.
+	const scene = flatScene(20, BACKGROUND, [[INK, 90], [DISTANT_DARK, 60], [RED, 20]])
 	const stops: GradientStop[] = [
 		{ color: colorFromRgb(BACKGROUND), position: 0 },
 		{ color: colorFromRgb(SURFACE), position: 1 },
@@ -568,12 +665,12 @@ test("accent identity: the artwork's white beats a more distant dark", () => {
 
 	assert.equal(reading.foreground?.representative, pack(INK))
 
-	const white = reading.clusters.find((c) => c.representative === pack(WHITE))!
+	const red = reading.clusters.find((c) => c.representative === pack(RED))!
 	const dark = reading.clusters.find((c) => c.representative === pack(DISTANT_DARK))!
 
 	// Both clear both gates, so neither is filtered out and the ranking decides alone.
 	const accentFloor = DEFAULT_CONTRAST.minAccentContrast.effectiveRawMagnitude
-	for (const rgb of [WHITE, DISTANT_DARK]) {
+	for (const rgb of [RED, DISTANT_DARK]) {
 		assert.equal(
 			firstInvisibleAccentOnRamp(colorFromRgb(rgb), stops, accentFloor, ACCENT_FUNCTIONAL_DISTANCE),
 			null,
@@ -589,13 +686,25 @@ test("accent identity: the artwork's white beats a more distant dark", () => {
 	const minDistance = (rgb: Rgb8) =>
 		Math.min(...published.map((other) => colorDistance(colorFromRgb(rgb), other)))
 	assert.ok(
-		minDistance(DISTANT_DARK) > minDistance(WHITE),
-		`the fixture must reproduce the v0.3 preference: ${minDistance(DISTANT_DARK)} vs ${minDistance(WHITE)}`,
+		minDistance(DISTANT_DARK) > minDistance(RED),
+		`the fixture must reproduce the v0.3 preference: ${minDistance(DISTANT_DARK)} vs ${minDistance(RED)}`,
 	)
-	// The v0.4 rule prefers the white: it is more of the artwork.
-	assert.ok(white.overlayMass > dark.overlayMass)
+	// **And so does the v0.4 mass rule**, on this cover's real mass ordering — which is the finding
+	// v0.9.0's sweep turned up: mass-first publishes the very colour round 2 rejected here
+	// (*"doesn't feel like a part of this artwork"*), and on the live cover it breaks a silent STRONG.
+	assert.ok(dark.overlayMass > red.overlayMass, "mass-first would publish the rejected olive")
 
-	assert.equal(reading.accent?.representative, pack(WHITE))
+	// v0.9.0's chroma-first tie-break is what separates them, and it separates them by an order of
+	// magnitude rather than at a margin.
+	const chromaOf = (rgb: Rgb8) => {
+		const lab = rgbToOkLab(rgb)
+		return Math.hypot(lab[1], lab[2])
+	}
+	assert.ok(
+		chromaOf(RED) > 3 * chromaOf(DISTANT_DARK),
+		`red ${chromaOf(RED)} vs olive ${chromaOf(DISTANT_DARK)}`,
+	)
+	assert.equal(reading.accent?.representative, pack(RED))
 })
 
 /**

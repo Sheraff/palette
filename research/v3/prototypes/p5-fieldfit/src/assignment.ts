@@ -237,6 +237,55 @@ function readEnvNumber(name: string, fallback: number): number {
 	return parsed
 }
 
+/**
+ * **The accent tie-break among coverage-tied, feasible candidates (v0.9.0's ruling).**
+ *
+ * Decision 8 has always ordered the accent by salient mass. v0.9.0 asked whether OKLab chroma should
+ * lead it instead, because chroma is the one quantity W-M1 found separating the reviewer's named
+ * NARCOSIS colour from the published one (crimson `.0949` against sky `.0424`), and because both
+ * historical accent rejections on record are rejections of a *dull* colour that mass had ranked
+ * first. The two rules were swept over all 31 covers and scored against every reviewer-graded accent
+ * verdict before either was wired; `reports/wv9b.md` carries the agreement table.
+ *
+ * `"mass"` — decision 8 unchanged: `Σ` salient mass, then the packed integer.
+ * `"chroma"` — `hypot(a, b)` of the published colour first, salient mass as the tie-break under it.
+ *
+ * **`"chroma"` is wired, and it is the measured winner rather than the preferred one.** The sweep ran
+ * both rules over all 31 covers and scored them against every reviewer-graded accent verdict on
+ * record; the agreement was not close (`reports/wv9b.md` §sweep):
+ *
+ *  - `2376a6b67d` — round-4 item 1, **STRONG in silence**, and the cover whose round-2 accent the
+ *    reviewer rejected as a dark olive (*"doesn't feel like a part of this artwork"*) and whose
+ *    round-3 accent he rejected as *"a 2nd shade of black… missing the strong red"*. Mass-first
+ *    publishes `#26210b` here — a dark olive-black, the rejected class twice over, and a broken
+ *    silent STRONG. Chroma-first keeps the reviewer's `#f81107` byte-identical.
+ *  - `45baf46c90` — round-4 item 7, *"accent should probably be the red color that occupies the
+ *    bottom half"*. Mass-first keeps the sky (45 730 against the crimson's 41 179). Chroma-first
+ *    publishes the crimson `#8d2639` (C `.1376` against the sky's `.0424`).
+ *  - `908479200b` and `fc8d58e0af` — the other two round-4 STRONGs, one of them the confirmation of
+ *    the round-2 *named* green family after its obsidian accent was rejected: byte-identical under
+ *    **both** rules, so neither is bought at their expense.
+ *
+ * So chroma-first satisfies every named ask and breaks no silent STRONG, and mass-first satisfies no
+ * named ask and breaks one. There was no conflict to trade off and no third rule was invented.
+ *
+ * The term sits **only on the accent**, exactly where decision 8's mass term sat, and only below
+ * coverage and below every foreground term: the foreground ordering is untouched by construction, so
+ * a cover whose accent shortlist holds one candidate cannot move.
+ *
+ * Overridable by `P5_ACCENT_TIEBREAK` **for measurement only** — the sweep that ruled on it is
+ * `measurements/v9b-accent-sweep.ts`, and re-running it is the only way this stops being a
+ * remembered result. The default is what every published palette uses.
+ */
+export const ACCENT_TIEBREAK: "mass" | "chroma" = readEnvAccentTieBreak()
+
+function readEnvAccentTieBreak(): "mass" | "chroma" {
+	const raw = process.env["P5_ACCENT_TIEBREAK"]
+	if (raw === undefined || raw.trim() === "") return "chroma"
+	if (raw === "mass" || raw === "chroma") return raw
+	throw new RangeError(`P5_ACCENT_TIEBREAK must be "mass" or "chroma", got ${JSON.stringify(raw)}`)
+}
+
 /** One point offered to agglomeration: an exact triple, its colour, its mass and its mass moments. */
 export type MassPoint = Readonly<{
 	packed: number
@@ -471,6 +520,13 @@ export type RoleCandidate = Readonly<{
 	lab: OkLab
 	/** Decision 13's / decision 8's ranking quantity. Salient mass: see `source`. */
 	mass: number
+	/**
+	 * `hypot(a, b)` of `lab` — OKLab chroma of the colour that would be published.
+	 *
+	 * Read by the accent tie-break when `ACCENT_TIEBREAK` is `"chroma"`, and by nothing else: not by
+	 * any feasibility test, and not by the foreground ordering.
+	 */
+	chroma: number
 	/** `min|raw APCA|` over the published ramp. Meaningful for the foreground; carried for both. */
 	legibility: number
 	/**
@@ -480,6 +536,11 @@ export type RoleCandidate = Readonly<{
 	 * cluster's representative triple, salient mass is `Σ(1 − w)`.
 	 * `"component"`: a field-like component that won no field slot; published colour is its centre
 	 * snapped over its own support, salient mass is its field mass `Σ w`.
+	 * `"mark"`: a mark or region of `marks.ts`'s spatial grouping (v0.9.0); published colour is its
+	 * robust colour snapped over its own support, salient mass is its spatially-accumulated mass —
+	 * `Σ(1 − w)` over a mark, `Σ w` over a region, the same two halves of the same fit. **Accent-side
+	 * only**: `overlay.ts` never offers a mark entry to the foreground shortlist, so the foreground
+	 * ordering is unchanged by construction rather than by measurement.
 	 *
 	 * Nothing in `compareLexicographic` or in any feasibility test reads this field: the ordering below
 	 * reads `foregroundClass`, which is a *shape* verdict rather than a provenance label, and the two
@@ -487,7 +548,7 @@ export type RoleCandidate = Readonly<{
 	 * stopped being a union and arm-f §2.4's "no role has an eligibility gate" has been quietly
 	 * repealed.
 	 */
-	source: "overlay" | "component"
+	source: "overlay" | "component" | "mark"
 	/**
 	 * **Decision 18's foreground class (v0.8.2)**: `"A"` = ink-shaped or overlay-sourced, `"B"` =
 	 * ground-shaped component. The header's class block is the rationale; `overlay.ts` is where the
@@ -582,6 +643,24 @@ function accentMass(option: AssignmentOption): number {
 	return option.accent === null ? -1 : option.accent.mass
 }
 
+/** `null` accents sort below every real one here too: chroma is `≥ 0`, so `−1` is unreachable. */
+function accentChroma(option: AssignmentOption): number {
+	return option.accent === null ? -1 : option.accent.chroma
+}
+
+/**
+ * The accent half of the per-role order, under whichever of the two swept rules is wired.
+ *
+ * Negative ⇒ `first` is the better accent. The collapse (`null`) loses both readings, which is what
+ * keeps decision 8's terminal clause below every real accent at equal foreground.
+ */
+function compareAccent(first: AssignmentOption, second: AssignmentOption): number {
+	if (ACCENT_TIEBREAK === "chroma") {
+		return accentChroma(second) - accentChroma(first) || accentMass(second) - accentMass(first)
+	}
+	return accentMass(second) - accentMass(first)
+}
+
 /** `null` accents sort last on the final packed-int tie-break. */
 function accentPacked(option: AssignmentOption): number {
 	return option.accent === null
@@ -596,17 +675,18 @@ function foregroundClassRank(option: AssignmentOption): number {
 
 /**
  * The per-role tie-breaks, in the order decision 18 fixes: foreground **class** (v0.8.2), foreground
- * mass, foreground legibility, accent mass, then the packed integers. Negative ⇒ `first` is better.
+ * mass, foreground legibility, the **accent term** (`ACCENT_TIEBREAK`, v0.9.0), then the packed
+ * integers. Negative ⇒ `first` is better.
  *
- * The class term is on the foreground and only on the foreground: the accent's ordering is decision
- * 8's, over the full union, by mass. See the header's class block.
+ * The class term is on the foreground and only on the foreground; the accent term is on the accent
+ * and only on the accent, over the full union. See the header's class block and `ACCENT_TIEBREAK`.
  */
 function comparePerRole(first: AssignmentOption, second: AssignmentOption): number {
 	return (
 		foregroundClassRank(first) - foregroundClassRank(second) ||
 		second.foreground.mass - first.foreground.mass ||
 		second.foreground.legibility - first.foreground.legibility ||
-		accentMass(second) - accentMass(first) ||
+		compareAccent(first, second) ||
 		first.foreground.cluster.representative - second.foreground.cluster.representative ||
 		accentPacked(first) - accentPacked(second)
 	)

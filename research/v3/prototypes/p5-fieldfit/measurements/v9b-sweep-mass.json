@@ -1,0 +1,1755 @@
+{
+  "rule": "mass",
+  "covers": {
+    "f39d397ba3": {
+      "background": "#eae7e0",
+      "surface": "#eae7e0",
+      "foreground": "#f03e00",
+      "accent": "#e09ea0",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0.0791,
+      "accentMass": 42,
+      "accentShortlist": [
+        {
+          "hex": "#e09ea0",
+          "source": "overlay",
+          "chroma": 0.0791,
+          "mass": 42
+        },
+        {
+          "hex": "#a5023b",
+          "source": "overlay",
+          "chroma": 0.1831,
+          "mass": 6
+        },
+        {
+          "hex": "#a20027",
+          "source": "overlay",
+          "chroma": 0.181,
+          "mass": 5
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.5317,
+        0.3848,
+        0.0772,
+        0.0169
+      ],
+      "totalFamilies": 17,
+      "massRetained": 0.9938,
+      "markEntries": 3,
+      "markScale": 5,
+      "markCriterion": "plateau"
+    },
+    "ca2eff2a4a": {
+      "background": "#000000",
+      "surface": "#000000",
+      "foreground": "#ffffff",
+      "accent": "#8d8d8d",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0,
+      "accentMass": 100,
+      "accentShortlist": [
+        {
+          "hex": "#8d8d8d",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 100
+        },
+        {
+          "hex": "#a9a9a9",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 99
+        },
+        {
+          "hex": "#d1d1d1",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 95
+        },
+        {
+          "hex": "#878787",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 90
+        },
+        {
+          "hex": "#0c0c0c",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 87
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.9258,
+        0.027,
+        0.0224,
+        0.0138
+      ],
+      "totalFamilies": 52,
+      "massRetained": 1,
+      "markEntries": 5,
+      "markScale": 1,
+      "markCriterion": "plateau"
+    },
+    "d859a69094": {
+      "background": "#ffffff",
+      "surface": "#c9c7c8",
+      "foreground": "#a8a8a8",
+      "accent": "#050304",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "overlay",
+      "accentChroma": 0.0078,
+      "accentMass": 706,
+      "accentShortlist": [
+        {
+          "hex": "#010000",
+          "source": "overlay",
+          "chroma": 0.0173,
+          "mass": 1309
+        },
+        {
+          "hex": "#000000",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 785
+        },
+        {
+          "hex": "#050304",
+          "source": "overlay",
+          "chroma": 0.0078,
+          "mass": 706
+        },
+        {
+          "hex": "#020001",
+          "source": "overlay",
+          "chroma": 0.024,
+          "mass": 567
+        },
+        {
+          "hex": "#040203",
+          "source": "overlay",
+          "chroma": 0.0096,
+          "mass": 530
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": true,
+      "families": [
+        0.8143,
+        0.1437,
+        0.1075,
+        0.0592
+      ],
+      "totalFamilies": 61,
+      "massRetained": 0.9889,
+      "markEntries": 3,
+      "markScale": 3,
+      "markCriterion": "plateau"
+    },
+    "28279e9184": {
+      "background": "#cccecd",
+      "surface": "#004164",
+      "foreground": "#fafafa",
+      "accent": "#ff00a0",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0.2712,
+      "accentMass": 1138,
+      "accentShortlist": [
+        {
+          "hex": "#ff00a0",
+          "source": "overlay",
+          "chroma": 0.2712,
+          "mass": 1138
+        },
+        {
+          "hex": "#f2039f",
+          "source": "overlay",
+          "chroma": 0.2632,
+          "mass": 403
+        },
+        {
+          "hex": "#011c2f",
+          "source": "overlay",
+          "chroma": 0.0502,
+          "mass": 402.8
+        },
+        {
+          "hex": "#002d44",
+          "source": "overlay",
+          "chroma": 0.0621,
+          "mass": 349.1
+        },
+        {
+          "hex": "#012640",
+          "source": "overlay",
+          "chroma": 0.0634,
+          "mass": 302.3
+        }
+      ],
+      "foregroundShortlist": 2,
+      "coverage": 3,
+      "coverageDecided": true,
+      "families": [
+        0.3729,
+        0.3056,
+        0.1311,
+        0.121
+      ],
+      "totalFamilies": 31,
+      "massRetained": 0.9327,
+      "markEntries": 16,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "0c4aab8aa7": {
+      "background": "#ececec",
+      "surface": "#f5f5f5",
+      "foreground": "#131313",
+      "accent": "#d3d3d3",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "overlay",
+      "accentChroma": 0,
+      "accentMass": 571.6,
+      "accentShortlist": [
+        {
+          "hex": "#d3d3d3",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 571.6
+        },
+        {
+          "hex": "#cccccc",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 531.4
+        },
+        {
+          "hex": "#c4c4c4",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 389
+        },
+        {
+          "hex": "#bdbdbd",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 347
+        },
+        {
+          "hex": "#000000",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 334
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.7973,
+        0.1778,
+        0.1374,
+        0.064
+      ],
+      "totalFamilies": 54,
+      "massRetained": 0.9805,
+      "markEntries": 57,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "21256ce593": {
+      "background": "#292728",
+      "surface": "#292728",
+      "foreground": "#fffeff",
+      "accent": "#9b97a5",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "mark",
+      "accentChroma": 0.0208,
+      "accentMass": 84786.8,
+      "accentShortlist": [
+        {
+          "hex": "#9b97a5",
+          "source": "mark",
+          "chroma": 0.0208,
+          "mass": 84786.8
+        },
+        {
+          "hex": "#070be9",
+          "source": "overlay",
+          "chroma": 0.2889,
+          "mass": 59.6
+        },
+        {
+          "hex": "#fdf049",
+          "source": "overlay",
+          "chroma": 0.1772,
+          "mass": 54.8
+        },
+        {
+          "hex": "#081bfb",
+          "source": "overlay",
+          "chroma": 0.3007,
+          "mass": 53.9
+        },
+        {
+          "hex": "#201beb",
+          "source": "overlay",
+          "chroma": 0.2809,
+          "mass": 12.9
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.9421,
+        0.0138,
+        0.0094,
+        0.0052
+      ],
+      "totalFamilies": 15,
+      "massRetained": 0.9421,
+      "markEntries": 1,
+      "markScale": 0,
+      "markCriterion": "degenerate"
+    },
+    "fc8d58e0af": {
+      "background": "#4a534e",
+      "surface": "#6c6c6a",
+      "foreground": "#201c13",
+      "accent": "#9ba193",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "component",
+      "accentChroma": 0.0211,
+      "accentMass": 5728.1,
+      "accentShortlist": [
+        {
+          "hex": "#9ba193",
+          "source": "component",
+          "chroma": 0.0211,
+          "mass": 5728.1
+        },
+        {
+          "hex": "#e0d0db",
+          "source": "overlay",
+          "chroma": 0.023,
+          "mass": 563
+        },
+        {
+          "hex": "#3a3026",
+          "source": "overlay",
+          "chroma": 0.0224,
+          "mass": 352
+        },
+        {
+          "hex": "#342e22",
+          "source": "overlay",
+          "chroma": 0.0222,
+          "mass": 330
+        },
+        {
+          "hex": "#373a33",
+          "source": "overlay",
+          "chroma": 0.0126,
+          "mass": 288
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.6999,
+        0.0636,
+        0.0449,
+        0.0422
+      ],
+      "totalFamilies": 80,
+      "massRetained": 0.7659,
+      "markEntries": 4,
+      "markScale": 8,
+      "markCriterion": "plateau"
+    },
+    "35b967964d": {
+      "background": "#f1f1f1",
+      "surface": "#f1f1f1",
+      "foreground": "#dd5255",
+      "accent": "#d2d5de",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0.0128,
+      "accentMass": 120,
+      "accentShortlist": [
+        {
+          "hex": "#d2d5de",
+          "source": "overlay",
+          "chroma": 0.0128,
+          "mass": 120
+        },
+        {
+          "hex": "#c2c3c8",
+          "source": "overlay",
+          "chroma": 0.007,
+          "mass": 118
+        },
+        {
+          "hex": "#cbcad0",
+          "source": "overlay",
+          "chroma": 0.0083,
+          "mass": 81
+        },
+        {
+          "hex": "#d8dcc5",
+          "source": "overlay",
+          "chroma": 0.0311,
+          "mass": 77
+        },
+        {
+          "hex": "#ced0dc",
+          "source": "overlay",
+          "chroma": 0.0167,
+          "mass": 67
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.7432,
+        0.2025,
+        0.1044,
+        0.0467
+      ],
+      "totalFamilies": 9,
+      "massRetained": 0.9466,
+      "markEntries": 59,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "949021f65e": {
+      "background": "#ffe7e2",
+      "surface": "#f2d2d3",
+      "foreground": "#cfbaa5",
+      "accent": "#2c323e",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 3,
+      "accentSource": "overlay",
+      "accentChroma": 0.0231,
+      "accentMass": 37,
+      "accentShortlist": [
+        {
+          "hex": "#2c323e",
+          "source": "overlay",
+          "chroma": 0.0231,
+          "mass": 37
+        },
+        {
+          "hex": "#847fa7",
+          "source": "overlay",
+          "chroma": 0.0601,
+          "mass": 28
+        },
+        {
+          "hex": "#171f2a",
+          "source": "overlay",
+          "chroma": 0.0243,
+          "mass": 26
+        },
+        {
+          "hex": "#000005",
+          "source": "overlay",
+          "chroma": 0.036,
+          "mass": 24
+        },
+        {
+          "hex": "#161c28",
+          "source": "overlay",
+          "chroma": 0.0252,
+          "mass": 24
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.7403,
+        0.1883,
+        0.0493,
+        0.0454
+      ],
+      "totalFamilies": 21,
+      "massRetained": 0.9334,
+      "markEntries": 3,
+      "markScale": 6,
+      "markCriterion": "plateau"
+    },
+    "5a94002abc": {
+      "background": "#95919f",
+      "surface": "#828896",
+      "foreground": "#beabb1",
+      "accent": "#2a2924",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "overlay",
+      "accentChroma": 0.0091,
+      "accentMass": 164.7,
+      "accentShortlist": [
+        {
+          "hex": "#2a2924",
+          "source": "overlay",
+          "chroma": 0.0091,
+          "mass": 164.7
+        },
+        {
+          "hex": "#2d2c28",
+          "source": "overlay",
+          "chroma": 0.0072,
+          "mass": 137.3
+        },
+        {
+          "hex": "#2f2f27",
+          "source": "overlay",
+          "chroma": 0.0139,
+          "mass": 103.5
+        },
+        {
+          "hex": "#272621",
+          "source": "overlay",
+          "chroma": 0.0091,
+          "mass": 76.9
+        },
+        {
+          "hex": "#332f2c",
+          "source": "overlay",
+          "chroma": 0.0078,
+          "mass": 69.1
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.924,
+        0.1318,
+        0.1154,
+        0.1154
+      ],
+      "totalFamilies": 16,
+      "massRetained": 0.9457,
+      "markEntries": 6,
+      "markScale": 5,
+      "markCriterion": "plateau"
+    },
+    "dd225466f4": {
+      "background": "#fbfae8",
+      "surface": "#fbfae8",
+      "foreground": "#3a180c",
+      "accent": "#986c47",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0.0765,
+      "accentMass": 2040,
+      "accentShortlist": [
+        {
+          "hex": "#986c47",
+          "source": "overlay",
+          "chroma": 0.0765,
+          "mass": 2040
+        },
+        {
+          "hex": "#967645",
+          "source": "overlay",
+          "chroma": 0.0774,
+          "mass": 1392
+        },
+        {
+          "hex": "#643926",
+          "source": "overlay",
+          "chroma": 0.0683,
+          "mass": 371
+        },
+        {
+          "hex": "#6a472b",
+          "source": "overlay",
+          "chroma": 0.0636,
+          "mass": 221
+        },
+        {
+          "hex": "#6d4b30",
+          "source": "overlay",
+          "chroma": 0.0614,
+          "mass": 59
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.6154,
+        0.1353,
+        0.1314,
+        0.0944
+      ],
+      "totalFamilies": 13,
+      "massRetained": 0.9644,
+      "markEntries": 4,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "1a798808bf": {
+      "background": "#171c1f",
+      "surface": "#171c1f",
+      "foreground": "#cfe2e9",
+      "accent": "#2d3236",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0.01,
+      "accentMass": 193,
+      "accentShortlist": [
+        {
+          "hex": "#2d3236",
+          "source": "overlay",
+          "chroma": 0.01,
+          "mass": 193
+        },
+        {
+          "hex": "#292e32",
+          "source": "overlay",
+          "chroma": 0.0101,
+          "mass": 149.2
+        },
+        {
+          "hex": "#2f3438",
+          "source": "overlay",
+          "chroma": 0.0099,
+          "mass": 135
+        },
+        {
+          "hex": "#363b3f",
+          "source": "overlay",
+          "chroma": 0.0097,
+          "mass": 116.3
+        },
+        {
+          "hex": "#3c4145",
+          "source": "overlay",
+          "chroma": 0.0096,
+          "mass": 111.5
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.7551,
+        0.1663,
+        0.1599,
+        0.1001
+      ],
+      "totalFamilies": 38,
+      "massRetained": 0.9247,
+      "markEntries": 68,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "c5ac790164": {
+      "background": "#f9fbf8",
+      "surface": "#f9fbf8",
+      "foreground": "#70ba25",
+      "accent": "#000000",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0,
+      "accentMass": 497,
+      "accentShortlist": [
+        {
+          "hex": "#000000",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 497
+        },
+        {
+          "hex": "#d9ebc1",
+          "source": "overlay",
+          "chroma": 0.0588,
+          "mass": 481
+        },
+        {
+          "hex": "#fb0000",
+          "source": "overlay",
+          "chroma": 0.2546,
+          "mass": 417
+        },
+        {
+          "hex": "#040404",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 132
+        },
+        {
+          "hex": "#020202",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 105
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.6646,
+        0.3661,
+        0.0595,
+        0.0055
+      ],
+      "totalFamilies": 54,
+      "massRetained": 1,
+      "markEntries": 3,
+      "markScale": 2,
+      "markCriterion": "default"
+    },
+    "16a8247378": {
+      "background": "#484b5a",
+      "surface": "#5d3f27",
+      "foreground": "#fee2ba",
+      "accent": "#746045",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 3,
+      "accentSource": "mark",
+      "accentChroma": 0.0476,
+      "accentMass": 55989,
+      "accentShortlist": [
+        {
+          "hex": "#746045",
+          "source": "mark",
+          "chroma": 0.0476,
+          "mass": 55989
+        },
+        {
+          "hex": "#736e6a",
+          "source": "component",
+          "chroma": 0.0088,
+          "mass": 5233.2
+        },
+        {
+          "hex": "#263143",
+          "source": "overlay",
+          "chroma": 0.0359,
+          "mass": 144
+        },
+        {
+          "hex": "#242f41",
+          "source": "overlay",
+          "chroma": 0.0361,
+          "mass": 142
+        },
+        {
+          "hex": "#1d2538",
+          "source": "overlay",
+          "chroma": 0.0375,
+          "mass": 125
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.6221,
+        0.097,
+        0.0581,
+        0.009
+      ],
+      "totalFamilies": 78,
+      "massRetained": 0.7797,
+      "markEntries": 7,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "20cac4b472": {
+      "background": "#0b0b0b",
+      "surface": "#1e1e1e",
+      "foreground": "#ffffff",
+      "accent": "#898989",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "overlay",
+      "accentChroma": 0,
+      "accentMass": 2172,
+      "accentShortlist": [
+        {
+          "hex": "#898989",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 2172
+        },
+        {
+          "hex": "#343434",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 1505
+        },
+        {
+          "hex": "#505050",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 1486
+        },
+        {
+          "hex": "#4c4c4c",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 1276
+        },
+        {
+          "hex": "#5a5a5a",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 1250
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 0,
+      "coverageDecided": false,
+      "families": [
+        0.4985,
+        0.2158,
+        0.1157,
+        0.0601
+      ],
+      "totalFamilies": 52,
+      "massRetained": 1,
+      "markEntries": 7,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "6e739e61bf": {
+      "background": "#37251b",
+      "surface": "#1f0a05",
+      "foreground": "#fffff6",
+      "accent": "#5a2515",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "overlay",
+      "accentChroma": 0.0827,
+      "accentMass": 109.3,
+      "accentShortlist": [
+        {
+          "hex": "#5a2515",
+          "source": "overlay",
+          "chroma": 0.0827,
+          "mass": 109.3
+        },
+        {
+          "hex": "#5d2d19",
+          "source": "overlay",
+          "chroma": 0.0768,
+          "mass": 101.8
+        },
+        {
+          "hex": "#61311d",
+          "source": "overlay",
+          "chroma": 0.0762,
+          "mass": 77
+        },
+        {
+          "hex": "#553123",
+          "source": "overlay",
+          "chroma": 0.0576,
+          "mass": 55.5
+        },
+        {
+          "hex": "#67331e",
+          "source": "overlay",
+          "chroma": 0.0814,
+          "mass": 52.7
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.8714,
+        0.12,
+        0.0691,
+        0.0611
+      ],
+      "totalFamilies": 66,
+      "massRetained": 0.9314,
+      "markEntries": 33,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "908479200b": {
+      "background": "#7a545f",
+      "surface": "#fd7b61",
+      "foreground": "#fed078",
+      "accent": "#231f20",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 3,
+      "accentSource": "component",
+      "accentChroma": 0.0064,
+      "accentMass": 24590.8,
+      "accentShortlist": [
+        {
+          "hex": "#231f20",
+          "source": "component",
+          "chroma": 0.0064,
+          "mass": 24590.8
+        },
+        {
+          "hex": "#412824",
+          "source": "overlay",
+          "chroma": 0.0387,
+          "mass": 224
+        },
+        {
+          "hex": "#3b2625",
+          "source": "overlay",
+          "chroma": 0.0321,
+          "mass": 219
+        },
+        {
+          "hex": "#5a312d",
+          "source": "overlay",
+          "chroma": 0.0605,
+          "mass": 212
+        },
+        {
+          "hex": "#542f27",
+          "source": "overlay",
+          "chroma": 0.0564,
+          "mass": 206
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.2732,
+        0.2396,
+        0.1326,
+        0.1136
+      ],
+      "totalFamilies": 45,
+      "massRetained": 0.7774,
+      "markEntries": 8,
+      "markScale": 4,
+      "markCriterion": "plateau"
+    },
+    "eaed77a9cb": {
+      "background": "#222335",
+      "surface": "#474b56",
+      "foreground": "#ffffff",
+      "accent": "#0f0b0c",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 3,
+      "accentSource": "overlay",
+      "accentChroma": 0.0072,
+      "accentMass": 133.5,
+      "accentShortlist": [
+        {
+          "hex": "#0f0b0c",
+          "source": "overlay",
+          "chroma": 0.0072,
+          "mass": 133.5
+        },
+        {
+          "hex": "#61646d",
+          "source": "overlay",
+          "chroma": 0.0147,
+          "mass": 105.8
+        },
+        {
+          "hex": "#757881",
+          "source": "overlay",
+          "chroma": 0.0142,
+          "mass": 96.3
+        },
+        {
+          "hex": "#656871",
+          "source": "overlay",
+          "chroma": 0.0146,
+          "mass": 92.4
+        },
+        {
+          "hex": "#120d11",
+          "source": "overlay",
+          "chroma": 0.0116,
+          "mass": 83.5
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.7377,
+        0.1827,
+        0.0763,
+        0.0687
+      ],
+      "totalFamilies": 84,
+      "massRetained": 0.9283,
+      "markEntries": 7,
+      "markScale": 3,
+      "markCriterion": "plateau"
+    },
+    "806cb6dd7d": {
+      "background": "#000000",
+      "surface": "#000000",
+      "foreground": "#be53a1",
+      "accent": "#363636",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0,
+      "accentMass": 5766,
+      "accentShortlist": [
+        {
+          "hex": "#363636",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 5766
+        },
+        {
+          "hex": "#341421",
+          "source": "overlay",
+          "chroma": 0.0544,
+          "mass": 924
+        },
+        {
+          "hex": "#1a090f",
+          "source": "overlay",
+          "chroma": 0.0315,
+          "mass": 723
+        },
+        {
+          "hex": "#441b2d",
+          "source": "overlay",
+          "chroma": 0.0674,
+          "mass": 701
+        },
+        {
+          "hex": "#13070b",
+          "source": "overlay",
+          "chroma": 0.0235,
+          "mass": 649
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.6111,
+        0.353,
+        0.0637,
+        0.0383
+      ],
+      "totalFamilies": 141,
+      "massRetained": 0.9642,
+      "markEntries": 3,
+      "markScale": 2,
+      "markCriterion": "default"
+    },
+    "2376a6b67d": {
+      "background": "#fad107",
+      "surface": "#f9fbf8",
+      "foreground": "#000000",
+      "accent": "#26210b",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "mark",
+      "accentChroma": 0.0367,
+      "accentMass": 20556,
+      "accentShortlist": [
+        {
+          "hex": "#26210b",
+          "source": "mark",
+          "chroma": 0.0367,
+          "mass": 20556
+        },
+        {
+          "hex": "#f81107",
+          "source": "component",
+          "chroma": 0.2489,
+          "mass": 11694.5
+        },
+        {
+          "hex": "#000300",
+          "source": "overlay",
+          "chroma": 0.0286,
+          "mass": 387
+        },
+        {
+          "hex": "#000200",
+          "source": "overlay",
+          "chroma": 0.025,
+          "mass": 323
+        },
+        {
+          "hex": "#000500",
+          "source": "overlay",
+          "chroma": 0.0339,
+          "mass": 225
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.4373,
+        0.2284,
+        0.1456,
+        0.1299
+      ],
+      "totalFamilies": 89,
+      "massRetained": 0.9414,
+      "markEntries": 7,
+      "markScale": 3,
+      "markCriterion": "plateau"
+    },
+    "2bf569f953": {
+      "background": "#b8d8ed",
+      "surface": "#a1c7de",
+      "foreground": "#ffffff",
+      "accent": "#060000",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "overlay",
+      "accentChroma": 0.0315,
+      "accentMass": 317,
+      "accentShortlist": [
+        {
+          "hex": "#060000",
+          "source": "overlay",
+          "chroma": 0.0315,
+          "mass": 317
+        },
+        {
+          "hex": "#77a1ba",
+          "source": "mark",
+          "chroma": 0.0586,
+          "mass": 277.6
+        },
+        {
+          "hex": "#040000",
+          "source": "overlay",
+          "chroma": 0.0275,
+          "mass": 255
+        },
+        {
+          "hex": "#0a0000",
+          "source": "overlay",
+          "chroma": 0.0373,
+          "mass": 225
+        },
+        {
+          "hex": "#110000",
+          "source": "overlay",
+          "chroma": 0.0458,
+          "mass": 168
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.6469,
+        0.3222,
+        0.0465,
+        0.0408
+      ],
+      "totalFamilies": 16,
+      "massRetained": 0.9698,
+      "markEntries": 5,
+      "markScale": 8,
+      "markCriterion": "default"
+    },
+    "b948ee7f1b": {
+      "background": "#f4942e",
+      "surface": "#f37c1e",
+      "foreground": "#ffffff",
+      "accent": "#d9b992",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "mark",
+      "accentChroma": 0.0638,
+      "accentMass": 67198,
+      "accentShortlist": [
+        {
+          "hex": "#d9b992",
+          "source": "mark",
+          "chroma": 0.0638,
+          "mass": 67198
+        },
+        {
+          "hex": "#d44509",
+          "source": "component",
+          "chroma": 0.1886,
+          "mass": 6982.1
+        },
+        {
+          "hex": "#000000",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 476
+        },
+        {
+          "hex": "#040404",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 153
+        },
+        {
+          "hex": "#000100",
+          "source": "overlay",
+          "chroma": 0.0198,
+          "mass": 144
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.7466,
+        0.0776,
+        0.0665,
+        0.0419
+      ],
+      "totalFamilies": 70,
+      "massRetained": 0.8907,
+      "markEntries": 4,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "4130886c02": {
+      "background": "#45820d",
+      "surface": "#67ad19",
+      "foreground": "#1f5a00",
+      "accent": "#c5d8aa",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "mark",
+      "accentChroma": 0.065,
+      "accentMass": 19,
+      "accentShortlist": [
+        {
+          "hex": "#c5d8aa",
+          "source": "mark",
+          "chroma": 0.065,
+          "mass": 19
+        },
+        {
+          "hex": "#8fc556",
+          "source": "overlay",
+          "chroma": 0.1531,
+          "mass": 17.7
+        },
+        {
+          "hex": "#9bc07b",
+          "source": "overlay",
+          "chroma": 0.1019,
+          "mass": 14.5
+        },
+        {
+          "hex": "#003700",
+          "source": "overlay",
+          "chroma": 0.0993,
+          "mass": 13.9
+        },
+        {
+          "hex": "#99cd68",
+          "source": "overlay",
+          "chroma": 0.1425,
+          "mass": 12.3
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.8397,
+        0.0472,
+        0.0289,
+        0.0186
+      ],
+      "totalFamilies": 28,
+      "massRetained": 0.8982,
+      "markEntries": 55,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "91a16672c4": {
+      "background": "#132028",
+      "surface": "#17252e",
+      "foreground": "#c39170",
+      "accent": "#2c3a45",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "component",
+      "accentChroma": 0.0268,
+      "accentMass": 44510.2,
+      "accentShortlist": [
+        {
+          "hex": "#2c3a45",
+          "source": "component",
+          "chroma": 0.0268,
+          "mass": 44510.2
+        },
+        {
+          "hex": "#3b4c56",
+          "source": "overlay",
+          "chroma": 0.0273,
+          "mass": 1758.2
+        },
+        {
+          "hex": "#40505d",
+          "source": "overlay",
+          "chroma": 0.0296,
+          "mass": 1502.7
+        },
+        {
+          "hex": "#42535d",
+          "source": "overlay",
+          "chroma": 0.0269,
+          "mass": 1457.8
+        },
+        {
+          "hex": "#354650",
+          "source": "overlay",
+          "chroma": 0.0276,
+          "mass": 1438.4
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.2181,
+        0.2054,
+        0.2053,
+        0.1087
+      ],
+      "totalFamilies": 41,
+      "massRetained": 0.7375,
+      "markEntries": 7,
+      "markScale": 8,
+      "markCriterion": "default"
+    },
+    "9646be9b20": {
+      "background": "#fae8d0",
+      "surface": "#fae8d0",
+      "foreground": "#01bdfd",
+      "accent": "#7f7ca7",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "mark",
+      "accentChroma": 0.0648,
+      "accentMass": 320540.3,
+      "accentShortlist": [
+        {
+          "hex": "#7f7ca7",
+          "source": "mark",
+          "chroma": 0.0648,
+          "mass": 320540.3
+        },
+        {
+          "hex": "#000000",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 506.3
+        },
+        {
+          "hex": "#000100",
+          "source": "overlay",
+          "chroma": 0.0198,
+          "mass": 198.5
+        },
+        {
+          "hex": "#000007",
+          "source": "overlay",
+          "chroma": 0.0403,
+          "mass": 184.4
+        },
+        {
+          "hex": "#000300",
+          "source": "overlay",
+          "chroma": 0.0286,
+          "mass": 178.5
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 3,
+      "coverageDecided": false,
+      "families": [
+        0.7826,
+        0.1623,
+        0.0227,
+        0.0066
+      ],
+      "totalFamilies": 74,
+      "massRetained": 0.9449,
+      "markEntries": 3,
+      "markScale": 6,
+      "markCriterion": "plateau"
+    },
+    "a8942d6547": {
+      "background": "#120032",
+      "surface": "#0f002a",
+      "foreground": "#ffffff",
+      "accent": "#39367d",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "mark",
+      "accentChroma": 0.1168,
+      "accentMass": 328009,
+      "accentShortlist": [
+        {
+          "hex": "#39367d",
+          "source": "mark",
+          "chroma": 0.1168,
+          "mass": 328009
+        },
+        {
+          "hex": "#009cff",
+          "source": "overlay",
+          "chroma": 0.1807,
+          "mass": 6964
+        },
+        {
+          "hex": "#2e00ba",
+          "source": "overlay",
+          "chroma": 0.2366,
+          "mass": 3634
+        },
+        {
+          "hex": "#200089",
+          "source": "overlay",
+          "chroma": 0.1888,
+          "mass": 3365
+        },
+        {
+          "hex": "#2b00b1",
+          "source": "overlay",
+          "chroma": 0.2281,
+          "mass": 3136
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 4,
+      "coverageDecided": false,
+      "families": [
+        0.8008,
+        0.1123,
+        0.0395,
+        0.0181
+      ],
+      "totalFamilies": 108,
+      "massRetained": 0.9131,
+      "markEntries": 3,
+      "markScale": 4,
+      "markCriterion": "default"
+    },
+    "757a78343d": {
+      "background": "#f2190a",
+      "surface": "#868825",
+      "foreground": "#d0d749",
+      "accent": "#8c3406",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 3,
+      "accentSource": "overlay",
+      "accentChroma": 0.13,
+      "accentMass": 1539.9,
+      "accentShortlist": [
+        {
+          "hex": "#8c3406",
+          "source": "overlay",
+          "chroma": 0.13,
+          "mass": 1539.9
+        },
+        {
+          "hex": "#953100",
+          "source": "overlay",
+          "chroma": 0.1431,
+          "mass": 1064.1
+        },
+        {
+          "hex": "#863d0a",
+          "source": "overlay",
+          "chroma": 0.1153,
+          "mass": 919.8
+        },
+        {
+          "hex": "#ff8068",
+          "source": "overlay",
+          "chroma": 0.1596,
+          "mass": 906.5
+        },
+        {
+          "hex": "#9a3000",
+          "source": "overlay",
+          "chroma": 0.1491,
+          "mass": 579.3
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 0,
+      "coverageDecided": false,
+      "families": [
+        0.8596,
+        0.1936,
+        0.0978,
+        0.0556
+      ],
+      "totalFamilies": 33,
+      "massRetained": 0.9003,
+      "markEntries": 3,
+      "markScale": 16,
+      "markCriterion": "plateau"
+    },
+    "8395a0f57b": {
+      "background": "#2485ba",
+      "surface": "#2485ba",
+      "foreground": "#000000",
+      "accent": "#000000",
+      "accentCollapsed": true,
+      "escape": true,
+      "gradient": 0,
+      "accentSource": null,
+      "accentChroma": null,
+      "accentMass": null,
+      "accentShortlist": [],
+      "foregroundShortlist": 0,
+      "coverage": null,
+      "coverageDecided": null,
+      "families": [],
+      "totalFamilies": null,
+      "massRetained": null,
+      "markEntries": 8,
+      "markScale": 0,
+      "markCriterion": "degenerate"
+    },
+    "45baf46c90": {
+      "background": "#e9d3df",
+      "surface": "#d7e2e4",
+      "foreground": "#161010",
+      "accent": "#98a9c3",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 2,
+      "accentSource": "component",
+      "accentChroma": 0.0424,
+      "accentMass": 45730,
+      "accentShortlist": [
+        {
+          "hex": "#98a9c3",
+          "source": "component",
+          "chroma": 0.0424,
+          "mass": 45730
+        },
+        {
+          "hex": "#8d2639",
+          "source": "mark",
+          "chroma": 0.1376,
+          "mass": 41179
+        },
+        {
+          "hex": "#5a1921",
+          "source": "component",
+          "chroma": 0.0949,
+          "mass": 23632.9
+        },
+        {
+          "hex": "#36181a",
+          "source": "overlay",
+          "chroma": 0.0479,
+          "mass": 55.6
+        },
+        {
+          "hex": "#6a1d27",
+          "source": "mark",
+          "chroma": 0.1088,
+          "mass": 6
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 1,
+      "coverageDecided": false,
+      "families": [
+        0.3337,
+        0.1116,
+        0.1005,
+        0.082
+      ],
+      "totalFamilies": 44,
+      "massRetained": 0.6945,
+      "markEntries": 39,
+      "markScale": 8,
+      "markCriterion": "default"
+    },
+    "c65408f632": {
+      "background": "#604a3f",
+      "surface": "#453832",
+      "foreground": "#feff42",
+      "accent": "#060000",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 3,
+      "accentSource": "overlay",
+      "accentChroma": 0.0315,
+      "accentMass": 152.3,
+      "accentShortlist": [
+        {
+          "hex": "#060000",
+          "source": "overlay",
+          "chroma": 0.0315,
+          "mass": 152.3
+        },
+        {
+          "hex": "#030000",
+          "source": "overlay",
+          "chroma": 0.025,
+          "mass": 147.2
+        },
+        {
+          "hex": "#010000",
+          "source": "overlay",
+          "chroma": 0.0173,
+          "mass": 114.1
+        },
+        {
+          "hex": "#000000",
+          "source": "overlay",
+          "chroma": 0,
+          "mass": 108.9
+        },
+        {
+          "hex": "#0a0000",
+          "source": "overlay",
+          "chroma": 0.0373,
+          "mass": 88.2
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.8419,
+        0.053,
+        0.0341,
+        0.0315
+      ],
+      "totalFamilies": 123,
+      "massRetained": 0.9031,
+      "markEntries": 32,
+      "markScale": 3,
+      "markCriterion": "default"
+    },
+    "4510266bb9": {
+      "background": "#fafafa",
+      "surface": "#fafafa",
+      "foreground": "#dcdcdc",
+      "accent": "#9a9f98",
+      "accentCollapsed": false,
+      "escape": false,
+      "gradient": 0,
+      "accentSource": "overlay",
+      "accentChroma": 0.0115,
+      "accentMass": 336,
+      "accentShortlist": [
+        {
+          "hex": "#9a9f98",
+          "source": "overlay",
+          "chroma": 0.0115,
+          "mass": 336
+        },
+        {
+          "hex": "#a4a7a0",
+          "source": "overlay",
+          "chroma": 0.0105,
+          "mass": 325
+        },
+        {
+          "hex": "#aeb2b1",
+          "source": "overlay",
+          "chroma": 0.0047,
+          "mass": 323
+        },
+        {
+          "hex": "#a9b2b1",
+          "source": "overlay",
+          "chroma": 0.0102,
+          "mass": 280
+        },
+        {
+          "hex": "#69746c",
+          "source": "overlay",
+          "chroma": 0.018,
+          "mass": 261
+        }
+      ],
+      "foregroundShortlist": 5,
+      "coverage": 2,
+      "coverageDecided": false,
+      "families": [
+        0.8233,
+        0.1898,
+        0.0136,
+        0.0069
+      ],
+      "totalFamilies": 17,
+      "massRetained": 1,
+      "markEntries": 10,
+      "markScale": 0,
+      "markCriterion": "degenerate"
+    }
+  }
+}

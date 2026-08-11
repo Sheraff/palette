@@ -59,6 +59,9 @@ function shortlistRow(candidate: RoleCandidate) {
 		hex: candidate.color.hex,
 		source: candidate.source,
 		mass: Number(candidate.mass.toFixed(1)),
+		// v0.9.0: the accent tie-break's quantity, printed beside the mass it now leads, so a published
+		// accent can be read against the candidate it beat without re-deriving either number.
+		chroma: Number(candidate.chroma.toFixed(4)),
 		minRawApca: Number(candidate.legibility.toFixed(2)),
 	}
 }
@@ -73,6 +76,7 @@ export async function diagnose(imagePath: string) {
 		componentCandidates,
 		fieldOrder,
 		fieldComponents,
+		marks,
 	} = await analyzeImage(absolute)
 	// `continuity` and `margins` are printed below, rounded to the digits a reader can act on; they are
 	// lifted out of the flat sidecar block rather than printed twice.
@@ -174,6 +178,47 @@ export async function diagnose(imagePath: string) {
 			feasible: row.feasible,
 			minRawApca: row.legibility === null ? null : Number(row.legibility.toFixed(2)),
 		})),
+		// v0.9.0's mark/region reading — the input to the accent pool's third source and to the identity
+		// families, printed as what it is rather than summarized. `scale.curve` is the whole `N(r)` the
+		// grouping scale was chosen off, because `criterion` is only arguable against it: `"plateau"`
+		// means the count stood still over consecutive rungs and the sweep took that; `"default"` means
+		// no count repeated, arm-f's criterion had nothing to read, and
+		// `MARK_SCALE_DEFAULT_DIAGONAL_FRACTION` was taken instead. `slopeIndex` is the rung the retired
+		// log-log reading would have taken — reported so the retirement stays checkable, read by nothing.
+		marks: {
+			scale: {
+				radius: marks.scale.radius,
+				diagonal: Number(marks.scale.diagonal.toFixed(1)),
+				criterion: marks.scale.criterion,
+				plateauLength: marks.scale.plateauLength,
+				chosenIndex: marks.scale.chosenIndex,
+				slopeIndex: marks.scale.slopeIndex,
+				curve: marks.scale.scales.map((radius, index) => ({
+					r: radius,
+					n: marks.scale.counts[index],
+				})),
+			},
+			entries: marks.marks.length,
+			unexplainedPixels: marks.unexplainedPixels,
+			massRetained: Number(marks.massRetained.toFixed(4)),
+			// The heaviest sixteen. `inkShaped` is V9a's mark-level shape verdict and is **diagnostics
+			// only** — no role ordering reads it (V9a §d measured that an ink preference would displace a
+			// reviewer-STRONG foreground), and it is printed so the deferral stays measurable.
+			top: marks.marks.slice(0, 16).map((entry) => ({
+				kind: entry.kind,
+				hex: colorFromRgb(unpackRgb(entry.representative)).hex,
+				pixels: entry.pixels,
+				mass: Number(entry.mass.toFixed(1)),
+				massFraction: Number(entry.massFraction.toFixed(4)),
+				chroma: Number(entry.chroma.toFixed(4)),
+				erosionMortality: entry.ink === null
+					? null
+					: Number(entry.ink.erosionMortality.toFixed(3)),
+				groundAdjacency: entry.ink === null ? null : Number(entry.ink.groundAdjacency.toFixed(3)),
+				inkLike: entry.inkLike,
+				inkShaped: entry.inkShaped,
+			})),
+		},
 		attempts: fieldComponents === null
 			? null
 			: fieldComponents.attempts.map((component) => ({
