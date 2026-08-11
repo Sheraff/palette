@@ -30,6 +30,7 @@ import { fileURLToPath } from "node:url"
 import sharp from "sharp"
 
 import { hex, rgbToOkLab } from "../../../src/contract/color.ts"
+import { POOLED_SAME_COLOR_BAR } from "../../../src/contract/constants.ts"
 import type { Rgb8 } from "../../../src/contract/types.ts"
 import {
 	ALGORITHM_VERSION,
@@ -40,7 +41,7 @@ import {
 } from "../candidate.ts"
 import { decodeAndInventory, packRgb } from "../src/decode.ts"
 import { fitField } from "../src/fieldfit.ts"
-import { rampContinuity } from "../src/ramp.ts"
+import { guideStopRefusal, rampContinuity } from "../src/ramp.ts"
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 /** `tests/` → `p5-fieldfit/` → `prototypes/` → `v3/` → `research/` → the repository root. */
@@ -61,7 +62,7 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.7.0")
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.7.1")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })
@@ -279,6 +280,8 @@ test("a many-colour collage retreats to one colour: nothing to rescue", async ()
  */
 const ANCHOR_CONTINUOUS = "09/ab67616d0000b27300096440c40e31757a78343d"
 const ANCHOR_BIMODAL = "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg"
+/** Round-3 item 1, the cover whose reviewer comment decision 17 exists to answer. */
+const ANCHOR_GUIDE_STOP = "00/ab67616d00001e0200001a9be12b7116a8247378.jpg"
 
 test("anchor: round-3 item 8 reads continuous and publishes its ramp", async () => {
 	const { palette, diagnostics } = await analyzeImage(resolve(REPO_ROOT, ANCHOR_CONTINUOUS))
@@ -333,4 +336,63 @@ test("anchor: 2376a6b67d reads bimodal and keeps its two-block palette", async (
 		`2376a6b67d's middle-band mass was 0.0446 when the threshold was set, now ${continuity.middleBandMass}`,
 	)
 	assert.ok(inventory.has(packRgb(palette.roles.surface.rgb)))
+})
+
+// ---------------------------------------------------------------------------------------------
+// SPEC decision 17: the cover the ruling was written for
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * Round-3 item 1 drew the comment decision 17 quotes verbatim — *"the gradient might be better with a
+ * 3rd or 4th stop added to lead the interpolation through colors that better match the artwork"*. It
+ * is the ruling's only cover-level evidence, so its measurement belongs in the suite rather than in a
+ * report: if the path stops bending, or the stop stops reducing, this is where that shows up.
+ *
+ * The four roles are asserted byte-identical to v0.7.0. That is the other half of the claim — decision
+ * 17 changes what the interpolation runs *through*, not which colours the palette publishes — and it is
+ * the assertion that fails if a ramp change starts leaking into role selection through the
+ * foreground's over-the-ramp contrast floor (which it legitimately can: see `757a78343d`).
+ */
+test("anchor: 16a8247378 publishes a guide stop that leads the interpolation back to its path", async () => {
+	const { palette, diagnostics, pathExcursion } = await analyzeImage(
+		resolve(REPO_ROOT, ANCHOR_GUIDE_STOP),
+	)
+
+	assert.equal(palette.roles.background.hex, "#484b5a")
+	assert.equal(palette.roles.surface.hex, "#5d3f27")
+	assert.equal(palette.roles.foreground.hex, "#fee2ba")
+	assert.equal(palette.roles.accent.hex, "#263143")
+
+	assert.ok(pathExcursion !== null, "a published gradient always measures its own path")
+	// The chord leaves the field's colour path by well over a bar — the ruling's premise on its own
+	// evidence cover. 2.573 bars when the rule was written.
+	assert.ok(
+		pathExcursion.chord / POOLED_SAME_COLOR_BAR > 2,
+		`path excursion of the chord was 2.573 bars, now ${pathExcursion.chord / POOLED_SAME_COLOR_BAR}`,
+	)
+	// And one interior stop more than halves it. 1.213 bars when the rule was written.
+	assert.ok(
+		pathExcursion.published * 2 < pathExcursion.chord,
+		`published path excursion ${pathExcursion.published} against a chord of ${pathExcursion.chord}`,
+	)
+	assert.equal(diagnostics.thirdStopAccepted, true)
+
+	const stops = palette.gradient?.stops ?? []
+	assert.equal(stops.length, 3, "a third stop is what the reviewer asked for here")
+	assert.equal(stops[0].color.hex, palette.roles.background.hex)
+	assert.equal(stops[2].color.hex, palette.roles.surface.hex)
+	// Decision 17's own conjuncts, on the published colours: monotone, spaced, and a colour the ends
+	// do not carry.
+	assert.equal(
+		guideStopRefusal(
+			stops[1].position,
+			stops[1].color,
+			palette.roles.background,
+			palette.roles.surface,
+		),
+		null,
+	)
+	// Invariant 2: the stop is an exact artwork triple, published without a second snap.
+	const { inventory } = await decodeAndInventory(resolve(REPO_ROOT, ANCHOR_GUIDE_STOP))
+	assert.ok(inventory.has(packRgb(stops[1].color.rgb)), `${stops[1].color.hex} is not in the artwork`)
 })

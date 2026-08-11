@@ -38,6 +38,12 @@
  *    `snap.ts` is W-CORE's module and this one is given only the fit, so the test here is the
  *    pre-snap one. Since a snap moves each end by less than the bar, the pre-snap excursion and
  *    the post-snap excursion differ by less than the bar as well.
+ *    *v0.7.1: that last sentence is true of the **occupied-colour** excursion and false of decision
+ *    17's path excursion* — the path sits bars away from the chord, so rotating the chord by a
+ *    sub-bar move at each end changes the measurement by more than a bar (measured: 1.90 → 2.57 bars
+ *    on `16a8247378`). The stop rule is therefore exported (`bestGuideStop`) and re-run by the caller
+ *    on the published colours, which is arm-f-r3 §2.4's own instruction taken literally. This module
+ *    still does not snap and still never touches the ledger's discrete choice.
  *
  * Everything is deterministic: no randomness, no map-iteration-order dependence (every candidate
  * list is sorted on `(value, …, packed int)`), and every accumulation is in a fixed pixel order.
@@ -89,11 +95,67 @@
  * sample step and two excursions closer than that are the same measurement. Nothing new is
  * `[UNCALIBRATED]` there. The one genuinely uncalibrated number is the continuity threshold, and it is
  * anchored on two measured covers — see `CONTINUOUS_MIDDLE_BAND_MASS`.
+ *
+ * ## v0.7.1: the **ramp-path excursion** is what decides a stop (SPEC decision 17)
+ *
+ * Round-3 items 1 and 4 asked, unprompted, for *"a 3rd or 4th stop added to lead the interpolation
+ * through colors that better match the artwork"*. Decision 17 answers it by restoring arm-f §2.6's
+ * original formulation: the deciding quantity is the distance from **the field's own colour path
+ * `g(t)`** to the rendered polyline — not the distance from the polyline to the nearest occupied
+ * colour, which is what v0.1–v0.7.0 measured. The two questions differ: "does the drawn line pass
+ * through colours the picture contains" (any colours, anywhere on it) versus "does the drawn line
+ * follow the colours the field actually runs through". Only the second can ask for a stop that leads
+ * the interpolation somewhere.
+ *
+ * **What `g(t)` is, and the one reading that has content.** Taken literally, "the fitted field
+ * evaluated along the ramp coordinate" is `fieldAt(t·d)`, and `fieldAt` is affine
+ * (`fieldfit.ts::fieldAtCoefficients`), so `fieldAt(t·d) = c + t·(B d)` is **exactly linear in t**:
+ * that path *is* the chord, for every image, with excursion identically zero. A second reading —
+ * average `fieldAt` over the support's slice at each t — bends only through `B`'s *second* singular
+ * direction weighted by where the support happens to sit, which measures the shape of the mask, not
+ * the colours of the picture. arm-f §2.6 states the intended construction and it is neither of those:
+ *
+ * > *"Parameterise the field's true colour path by the ramp coordinate `t ∈ [0,1]` — this is a
+ * > one-dimensional curve obtained by binning the field-weighted pixels along `t` and taking the
+ * > robust colour per bin, so it is again an integral."*
+ *
+ * So `g(t)` is **empirical in colour and fitted in everything else**: the coordinate is the fit's own
+ * ramp coordinate, the support and the weights are the fit's (the component's, when a component is
+ * being read), and the estimator is the fit's own weighted mean. "Robust colour per bin" is the
+ * biweight weight doing the work it already does — a rejected pixel has `w = 0` and contributes
+ * nothing, and the pixels left inside the cut are what the fit calls this field. Applying a *second*
+ * robust estimator on top of the first would be a new uncalibrated choice inside a bin that the IRLS
+ * has already cleaned.
+ *
+ * **Bins are equal-inlier-mass, not equal-t.** Every sample of `g` then rests on the same amount of
+ * evidence, so no sample is noisier than another and a sparsely-travelled stretch of t cannot
+ * manufacture a bend out of a handful of pixels. The failure mode this picks is the conservative one:
+ * a bend in a region the field barely occupies is under-sampled rather than invented.
+ *
+ * **Only the span the ramp renders counts.** Path samples projecting outside `[0, 1]` of the chord
+ * are excluded from the excursion and reported separately (`beyondEnds`), for the reason
+ * `rampContinuity` already excludes out-of-span mass and W-P10's premise correction to decision 5
+ * already gave: no interior vertex can shorten an endpoint's own distance, so deviation past an end is
+ * an endpoint signal, not a stop one. Measured consequence on the dev sets: it is the *majority*
+ * signal — 8 of 16 gradient covers put their worst path deviation past an end, and including it
+ * admitted two stops on covers whose in-span path sat 0.19 and 0.69 bars from the chord.
+ *
+ * **What is decided by which quantity, stated.** Ramp-versus-two-blocks is *unchanged* — SPEC
+ * decision 5's t-continuity discriminator owns it, and it is still triggered by the chord's distance
+ * to the occupied colours. What decision 17 moves is **stop insertion**: the trigger, the candidate
+ * neighbourhood, the ranking and the acceptance all run on `g(t)`→polyline. The occupied-colour
+ * distance stays measured and stays published (`excursionMax`, `residualExcursion`) as the
+ * "stays-on-artwork" half of the doctrine — it is a report, no longer a decision.
+ *
+ * **Where the rule runs.** `bestGuideStop` is the whole of it, and it is invoked twice: here on the
+ * fit's own targets (the pre-snap proxy `RampReading` publishes), and again by `candidate.ts` on the
+ * snapped, collapse-resolved colours that are actually drawn. Under the old quantity a re-check
+ * sufficed; under this one the frame matters — see `bestGuideStop`.
  */
 
 import { colorFromRgb, okLabDistance, okLabToRgb, sameColor } from "../../../src/contract/color.ts"
 import { POOLED_SAME_COLOR_BAR } from "../../../src/contract/constants.ts"
-import type { OkLab, Rgb8 } from "../../../src/contract/types.ts"
+import type { OkLab, PaletteColor, Rgb8 } from "../../../src/contract/types.ts"
 import { normalizedX, normalizedY } from "./decode.ts"
 import type {
 	DecodedRaster,
@@ -153,6 +215,40 @@ const POLYLINE_SAMPLES_PER_SEGMENT = 32
 const CONTINUITY_BAND_LOW = 1 / 3
 const CONTINUITY_BAND_HIGH = 2 / 3
 const CONTINUOUS_MIDDLE_BAND_MASS = 1 / 6
+
+/**
+ * **Samples of the field's colour path `g(t)`** (SPEC decision 17), as equal-inlier-mass bands of the
+ * ramp coordinate over the published span (`ENDPOINT_QUANTILE_LOW`…`HIGH`).
+ *
+ * 64 because that is the chord's own sample budget (`CHORD_SAMPLES`): the two things being compared —
+ * a path and a polyline — are then measured at the same density, and one number was fixed before this
+ * one existed. Not `[UNCALIBRATED]`: it is a sampling budget shared with a budget already stated, and
+ * the resolution it implies is computed rather than assumed (`pathSamplingResolution`).
+ */
+const PATH_BANDS = CHORD_SAMPLES
+
+/**
+ * **The adjacent-stop spacing floor**, as a fraction of the ramp (SPEC decision 17). `[UNCALIBRATED]`.
+ *
+ * Anchor, quoted: *"adjacent stops 3.1% apart read as 'very significant banding' to the reviewer"*
+ * (`review-rounds/round-3/NOTES-cross-arm.md` §2 — another arm's round, folded in before ours). That
+ * is one measured **complaint**, so it bounds the floor from below and says nothing about where above
+ * it the floor belongs; a floor set *at* the complaint would re-publish the geometry that drew it.
+ *
+ * 0.10 is chosen for two stated reasons and no fitting. (a) It clears the anchor by **3.2×**, which is
+ * the same order of margin decision 14 required of its twin-exclusion multiple (≥20% was the minimum
+ * there; this is far past it) — one complaint at 3.1% is thin evidence and a thin margin over thin
+ * evidence is not a floor. (b) It is the coarsest fraction that still leaves the guide stop the
+ * **middle 80% of the ramp** to land in, and every guide stop this prototype has ever accepted sat
+ * inside that band (the two-lobe fixture's is at 0.35, the bend fixture's at 0.50), so the floor is
+ * paid for by geometry nothing has yet needed rather than by refusing observed stops.
+ *
+ * With one interior stop there are exactly two adjacent gaps — `position` and `1 − position` — so the
+ * floor reads as `position ∈ [0.10, 0.90]`. It is not the only guard: monotonicity and the reduction
+ * requirement already bind, and this one exists because *those two* say nothing about how close to an
+ * end a stop may sit.
+ */
+export const STOP_SPACING_MIN_FRACTION = 0.1
 
 /** Candidate colours are occupied triples within `max(this × excursion, 3 × bar)` of the worst sample. */
 const THIRD_STOP_RADIUS_FACTOR = 2
@@ -275,6 +371,14 @@ type TStatistics = Readonly<{
 	/** Standard error of the weighted median (uniform-density approximation, see below). */
 	medianStandardError: number
 	weightSum: number
+	/**
+	 * The weighted t histogram the three order statistics were read from, kept so decision 17's colour
+	 * path can cut its equal-mass bands out of **the same** distribution the ends came from rather than
+	 * re-accumulating a second one that could differ from it.
+	 */
+	histogram: Float64Array
+	tMin: number
+	binWidth: number
 }>
 
 /**
@@ -353,7 +457,264 @@ function tStatistics(
 		? (tHigh - tLow) / (2 * Math.sqrt(effectiveSamples))
 		: 0
 
-	return { tLow, tHigh, tMedian, medianStandardError, weightSum }
+	return {
+		tLow,
+		tHigh,
+		tMedian,
+		medianStandardError,
+		weightSum,
+		histogram,
+		tMin,
+		binWidth,
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
+// The field's own colour path g(t) (SPEC decision 17, arm-f §2.6)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **`g(t)`: the colour the field actually runs through, sampled along the ramp coordinate.**
+ *
+ * See the header for why this is empirical in colour rather than a re-evaluation of the affine
+ * surface (which is the chord, identically, for every image). Construction, in one pass:
+ *
+ *  1. cut the ramp's published span — the mass between the two endpoint quantiles — into `PATH_BANDS`
+ *     **equal-inlier-mass** bands, using the same t histogram the endpoints were read from. A band is
+ *     a contiguous run of histogram bins, so the assignment is exact at the histogram's own
+ *     resolution (`range / 4096`, three orders below the colour differences that follow) and needs no
+ *     per-pixel search;
+ *  2. accumulate `Σw·colour` and `Σw` per band over the raster, in fixed pixel order;
+ *  3. the band's sample is `Σw·colour / Σw` — the fit's own weighted mean, which is where the
+ *     robustness lives (rejected pixels carry `w = 0`).
+ *
+ * Bands that no bin fell into are dropped rather than interpolated: a gap in t is an absence of
+ * evidence, and inventing a sample there would be inventing the very bend the caller is about to
+ * measure. The result is ordered by t (background end first), so a caller may compare it against a
+ * polyline drawn between the same two ends.
+ */
+function fittedColourPath(
+	fit: FieldFit,
+	raster: DecodedRaster,
+	direction: readonly [number, number],
+	statistics: TStatistics,
+): { samples: readonly OkLab[]; precision: number } {
+	const { histogram, tMin, binWidth, weightSum } = statistics
+	const lowMass = ENDPOINT_QUANTILE_LOW * weightSum
+	const highMass = ENDPOINT_QUANTILE_HIGH * weightSum
+	const spanMass = highMass - lowMass
+	if (!(spanMass > 0)) return { samples: [], precision: 0 }
+
+	// Bin → band, over the published span only. A bin is placed by where the *middle* of its mass
+	// sits, which is the same convention the quantile reader uses when it interpolates inside a bin.
+	const bandOfBin = new Int32Array(T_HISTOGRAM_BINS).fill(-1)
+	let cumulative = 0
+	for (let bin = 0; bin < T_HISTOGRAM_BINS; bin++) {
+		const mass = histogram[bin]
+		if (mass > 0) {
+			const centre = cumulative + mass / 2
+			if (centre >= lowMass && centre <= highMass) {
+				const band = Math.floor(((centre - lowMass) / spanMass) * PATH_BANDS)
+				bandOfBin[bin] = band < 0 ? 0 : band >= PATH_BANDS ? PATH_BANDS - 1 : band
+			}
+		}
+		cumulative += mass
+	}
+
+	// Per band: Σw·L, Σw·a, Σw·b, Σw, Σw·L², Σw·a², Σw·b², Σw². The second moments are what turn the
+	// band mean into a mean **with a standard error** — see `precision` below.
+	const STRIDE = 8
+	const sums = new Float64Array(PATH_BANDS * STRIDE)
+	const { width, height, lab } = raster
+	const weights = fit.weights
+	const xs = new Float64Array(width)
+	for (let px = 0; px < width; px++) xs[px] = normalizedX(px, width) * direction[0]
+	const ys = new Float64Array(height)
+	for (let py = 0; py < height; py++) ys[py] = normalizedY(py, height) * direction[1]
+
+	for (let py = 0; py < height; py++) {
+		const rowOffset = py * width
+		const yPart = ys[py]
+		for (let px = 0; px < width; px++) {
+			const index = rowOffset + px
+			const weight = weights[index]
+			if (!(weight > 0)) continue
+			let bin = Math.floor((xs[px] + yPart - tMin) / binWidth)
+			if (bin < 0) bin = 0
+			else if (bin >= T_HISTOGRAM_BINS) bin = T_HISTOGRAM_BINS - 1
+			const band = bandOfBin[bin]
+			if (band < 0) continue
+			const slot = band * STRIDE
+			const offset = index * 3
+			const l = lab[offset]
+			const a = lab[offset + 1]
+			const b = lab[offset + 2]
+			sums[slot] += weight * l
+			sums[slot + 1] += weight * a
+			sums[slot + 2] += weight * b
+			sums[slot + 3] += weight
+			sums[slot + 4] += weight * l * l
+			sums[slot + 5] += weight * a * a
+			sums[slot + 6] += weight * b * b
+			sums[slot + 7] += weight * weight
+		}
+	}
+
+	const path: OkLab[] = []
+	let precision = 0
+	for (let band = 0; band < PATH_BANDS; band++) {
+		const slot = band * STRIDE
+		const mass = sums[slot + 3]
+		if (!(mass > 0)) continue
+		const mean: OkLab = [sums[slot] / mass, sums[slot + 1] / mass, sums[slot + 2] / mass]
+		path.push(mean)
+		// **How precisely this sample locates the field's colour.** Weighted variance per channel
+		// `Σw·c²/Σw − c̄²`, divided by the effective sample size the band's weight carries
+		// (`n_eff = (Σw)² / Σw²`); the standard error is the norm of the three per-channel errors. This
+		// is the honest noise floor of the path — *not* the gap between consecutive samples, which the
+		// band budget was measured against and found not to shrink with it (that gap is a real jump in
+		// the field's colour where the ramp coordinate carries little mass, so it is a fact about the
+		// picture rather than about the sampling).
+		let variance = 0
+		for (let channel = 0; channel < 3; channel++) {
+			const spread = sums[slot + 4 + channel] / mass - mean[channel] * mean[channel]
+			if (spread > 0) variance += spread
+		}
+		const effective = (mass * mass) / sums[slot + 7]
+		const error = effective > 0 ? Math.sqrt(variance / effective) : 0
+		if (error > precision) precision = error
+	}
+	return { samples: path, precision }
+}
+
+/**
+ * **Why a guide stop is inadmissible before its excursion is even measured** — the three conjuncts of
+ * SPEC decision 17 that are properties of the *stop*, not of the reduction it buys. `null` means
+ * admissible. Exported so the rule can be tested as a rule: the geometries that isolate each refusal
+ * are knife-edge to construct out of a raster, and a fixture tuned until it trips a clause is a test
+ * of the tuning.
+ *
+ *  - `"monotone"` — the stop does not project strictly between the ends (C7's measured midpoint hazard;
+ *    the check decision 5's ruling points at, carried forward unchanged);
+ *  - `"spacing"` — it sits closer to an end than `STOP_SPACING_MIN_FRACTION` of the ramp. With one
+ *    interior stop the two adjacent gaps are `position` and `1 − position`, so one test covers both;
+ *  - `"endpoint-colour"` — it is not a colour the endpoints do not already carry. Judged by the
+ *    calibrated formula on the 8-bit colours, which is the test decision 2 applies to the ends
+ *    themselves: a stop inside a bar of an end is that end published twice and leads the interpolation
+ *    nowhere.
+ */
+export type GuideStopRefusal = "monotone" | "spacing" | "endpoint-colour" | null
+
+export function guideStopRefusal(
+	position: number,
+	candidate: PaletteColor,
+	background: PaletteColor,
+	surface: PaletteColor,
+): GuideStopRefusal {
+	if (!(position > 0 && position < 1)) return "monotone"
+	if (position < STOP_SPACING_MIN_FRACTION || position > 1 - STOP_SPACING_MIN_FRACTION) {
+		return "spacing"
+	}
+	if (sameColor(candidate, background) || sameColor(candidate, surface)) return "endpoint-colour"
+	return null
+}
+
+/** OKLab distance from `point` to the segment `from`→`to` (not to its infinite line). */
+function pointToSegmentDistance(point: OkLab, from: OkLab, to: OkLab): number {
+	const axis = subtract(to, from)
+	const lengthSquared = dot(axis, axis)
+	if (!(lengthSquared > 0)) return okLabDistance(point, from)
+	let u = dot(subtract(point, from), axis) / lengthSquared
+	if (u < 0) u = 0
+	else if (u > 1) u = 1
+	return okLabDistance(point, mix(from, to, u))
+}
+
+type PathExcursion = Readonly<{
+	/** Largest distance to the polyline over path samples **inside the ramp's span**. */
+	max: number
+	worst: OkLab
+	/** Largest such distance over the samples that projected **outside** it. Reported, never compared. */
+	beyondEnds: number
+}>
+
+/**
+ * **Decision 17's deciding quantity**: the largest distance from the field's colour path to the
+ * rendered polyline, over the stretch of the path the interpolation is responsible for.
+ *
+ * Exact against the polyline (point-to-segment, minimised over segments) and sampled only along the
+ * path, so the only discretisation is the path's own — and the path is a finite measured object, not a
+ * curve being approximated (see `fittedColourPath`).
+ *
+ * **Samples projecting outside `[0, 1]` of the chord are excluded, not clamped**, and their worst
+ * distance is reported separately. Two reasons, one house precedent and one measurement:
+ *
+ *  - `rampContinuity` already draws this exact line, in this file, for this reason — *"a colour beyond
+ *    the ends is not evidence about what happens between them"*. The rendered ramp only exists for
+ *    `u ∈ [0, 1]`; a field colour that projects past an end is a statement about **endpoint choice**;
+ *  - W-P10's premise correction to decision 5 (2026-08-05) is the same point in the older quantity:
+ *    *"no middle vertex can shorten an endpoint's own distance"*. Measured here on the 27-cover dev
+ *    sets: **8 of 16** gradient covers put their worst path deviation outside the span, and on two of
+ *    them an interior stop was admitted that shaved an irreducible endpoint term while the in-span
+ *    path sat 0.19 and 0.69 bars from the chord — under the bar, i.e. exactly the "the straight line
+ *    is already right, adding a stop is metric fitting" case the doctrine names inadmissible.
+ *
+ * The span is the polyline's own two ends, so the chord and the three-stop polyline are always scored
+ * over the **same** set of samples and the comparison between them is a comparison.
+ */
+export function pathToPolylineExcursion(
+	path: readonly OkLab[],
+	polyline: readonly OkLab[],
+): PathExcursion {
+	if (path.length === 0 || polyline.length < 2) {
+		return { max: 0, worst: polyline[0] ?? [0, 0, 0], beyondEnds: 0 }
+	}
+	const from = polyline[0]
+	const to = polyline[polyline.length - 1]
+	let max = -1
+	let worst = path[0]
+	let beyondEnds = 0
+	for (let index = 0; index < path.length; index++) {
+		const point = path[index]
+		let nearest = Number.POSITIVE_INFINITY
+		for (let vertex = 0; vertex + 1 < polyline.length; vertex++) {
+			const distance = pointToSegmentDistance(point, polyline[vertex], polyline[vertex + 1])
+			if (distance < nearest) nearest = distance
+		}
+		const span = projectionFraction(from, to, point)
+		if (span < 0 || span > 1) {
+			if (nearest > beyondEnds) beyondEnds = nearest
+			continue
+		}
+		if (nearest > max) {
+			max = nearest
+			worst = point
+		}
+	}
+	return { max: max < 0 ? 0 : max, worst, beyondEnds }
+}
+
+/**
+ * **The widest gap between consecutive path samples**, halved — reported, never compared against.
+ *
+ * This is the quantity `excursionResolution` would be if `g` were a continuum sampled at these points:
+ * distance-to-a-polyline is 1-Lipschitz, so between two samples the true maximum could exceed the
+ * sampled one by half the gap. It is *measured and published* rather than used, because the
+ * measurement refuted the premise: quadrupling `PATH_BANDS` (64 → 256) left the worst cover's gap at
+ * 1.10 bars against 1.22 — it does not shrink with density, because it is a genuine jump in the
+ * field's colour across a stretch of the ramp coordinate that carries almost no mass. A guard built on
+ * it would be charging a real property of the picture as if it were sampling noise, and it refused a
+ * measured 30% reduction on the very cover decision 17 was written for (`16a8247378`, 1.90 → 1.32
+ * bars against a 0.70-bar gap). The acceptance guard is the band means' own standard error instead —
+ * see `fittedColourPath`.
+ */
+export function pathLargestGap(path: readonly OkLab[]): number {
+	let widest = 0
+	for (let index = 0; index + 1 < path.length; index++) {
+		const gap = okLabDistance(path[index], path[index + 1])
+		if (gap > widest) widest = gap
+	}
+	return widest / 2
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -566,6 +927,135 @@ function pickCandidates(grid: ColorGrid, worst: OkLab, radius: number): readonly
 }
 
 // ---------------------------------------------------------------------------------------------
+// The guide stop (SPEC decision 17)
+// ---------------------------------------------------------------------------------------------
+
+/** An admitted interior stop. Always an **exact occupied triple**, so a caller publishes it directly. */
+export type GuideStopChoice = Readonly<{
+	target: OkLab
+	rgb: Rgb8
+	packed: number
+	position: number
+	/** Decision 17's quantity for the polyline this stop makes: path → `background`→stop→`surface`. */
+	pathExcursion: number
+	/** The same polyline's distance to the nearest occupied colour. Reported, never compared. */
+	occupiedExcursion: number
+	turn: number
+}>
+
+/**
+ * **The whole of decision 17's stop rule, in one place, over one pair of ends.**
+ *
+ * Returns the stop to publish, or `null` when the chord already follows the path to within the bar,
+ * when nothing admissible exists, or when nothing admissible reduces the path excursion.
+ *
+ * *Called twice per image, and that is the point.* `ramp.ts`'s own header note 3 records arm-f-r3
+ * §2.4's insistence that *"the projection comes first, because the rendered ramp interpolates
+ * published colours"*, and that the pre-snap test "remains the caller's obligation to re-check after
+ * snapping". Under the old occupied-colour quantity re-checking was enough: a snap moves each end by
+ * less than the bar, so the two measurements differed by less than the bar. Under decision 17 it is
+ * not: the path sits one to three bars off the chord, and rotating the chord by a sub-bar move at each
+ * end changes the path excursion by **more than a bar** (measured on `16a8247378`: 1.90 bars pre-snap,
+ * 2.57 post-snap). A stop chosen against the pre-snap chord is then chosen in the wrong frame — on
+ * that cover it survived selection and was refused by the re-check, while the best stop *for the
+ * published ends* cut 2.57 bars to 1.07. So the rule is exported and `candidate.ts` re-runs it on the
+ * published colours; the perceptual decision stays in this module, and the polyline that is judged is
+ * the polyline that is drawn.
+ *
+ * Ranking, in order: lowest path excursion; ties within the path's own precision go to the **flattest
+ * path** (smallest turning angle — the doctrine's anti-meander guard, and the reason a tie band exists
+ * at all); exact ties to the packed integer. Two passes rather than one running argmin, because a
+ * tolerant comparator is not a total order and a single scan would make the answer depend on the order
+ * candidates arrive in.
+ */
+export function bestGuideStop(options: {
+	inventory: Inventory
+	/** `g(t)` from `RampPathReading.samples`. */
+	path: readonly OkLab[]
+	/** `RampPathReading.precision` — the tie band and the reduction floor. */
+	precision: number
+	background: { target: OkLab; color: PaletteColor }
+	surface: { target: OkLab; color: PaletteColor }
+}): GuideStopChoice | null {
+	const { inventory, path, precision, background, surface } = options
+	if (path.length === 0) return null
+	const grid = buildColorGrid(inventory)
+	if (grid.size === 0) return null
+
+	const chord = pathToPolylineExcursion(path, [background.target, surface.target])
+	// The chord follows the path to within the bar: a stop would be metric fitting (arm-f §2.6).
+	if (chord.max <= POOLED_SAME_COLOR_BAR) return null
+
+	// Candidates are occupied triples around **the path's worst point** — the colour the field shows
+	// where the chord is furthest from it. Searching the artwork's own colours there is what keeps a
+	// guide stop on-artwork (decision 5's surviving half) while decision 17 decides *whether* it helps.
+	const radius = Math.max(THIRD_STOP_RADIUS_FACTOR * chord.max, 3 * POOLED_SAME_COLOR_BAR)
+	// `occupiedExcursion` is reported, never compared, so it is measured **once, on the winner** rather
+	// than on every candidate: it costs 64 nearest-occupied-colour queries a piece and the ranking does
+	// not read it. (Measured over the 27-cover dev sets: computing it for every candidate cost 1.48×
+	// the v0.7.0 palette; deferring it to the winner brings that to 1.36×, byte-identical output.)
+	type Ranked = Omit<GuideStopChoice, "occupiedExcursion">
+	const admissible: Ranked[] = []
+	for (const candidate of pickCandidates(grid, chord.worst, radius)) {
+		const position = projectionFraction(background.target, surface.target, candidate.lab)
+		// Monotonicity, decision 17's spacing floor and decision 17's new-colour requirement, in the one
+		// predicate that states them.
+		if (
+			guideStopRefusal(position, colorFromRgb(candidate.rgb), background.color, surface.color) !==
+				null
+		) continue
+		admissible.push({
+			target: candidate.lab,
+			rgb: candidate.rgb,
+			packed: candidate.packed,
+			position,
+			pathExcursion: pathToPolylineExcursion(
+				path,
+				[background.target, candidate.lab, surface.target],
+			).max,
+			turn: turningAngle(background.target, candidate.lab, surface.target),
+		})
+	}
+	if (admissible.length === 0) return null
+
+	let lowest = admissible[0]
+	for (const candidate of admissible) {
+		if (
+			candidate.pathExcursion < lowest.pathExcursion ||
+			(candidate.pathExcursion === lowest.pathExcursion && candidate.packed < lowest.packed)
+		) lowest = candidate
+	}
+	// The tie band is the *minimum's* own band, fixed before any candidate is preferred — a per-pair
+	// tolerance would not be an equivalence relation.
+	const tieBand = lowest.pathExcursion + precision
+	let best: Ranked | null = null
+	for (const candidate of admissible) {
+		if (candidate.pathExcursion > tieBand) continue
+		if (
+			best === null ||
+			candidate.turn < best.turn ||
+			(candidate.turn === best.turn && candidate.packed < best.packed)
+		) best = candidate
+	}
+	if (best === null) return null
+
+	// Decision 17's first conjunct: admitted only when it **reduces the path excursion** — by more than
+	// the precision with which the path's own samples are located, or it is one measurement twice. No
+	// "under the bar outright" clause is needed beside it: the chord is above the bar by the guard
+	// above, so any stop that lands under the bar has reduced it by more than the gap between them.
+	if (!(best.pathExcursion + precision < chord.max)) return null
+	return {
+		...best,
+		occupiedExcursion: polylineExcursion(
+			background.target,
+			best.target,
+			surface.target,
+			grid,
+		),
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
 // t-continuity: is this one field with a bend, or two blocks? (SPEC decision 5, ruling 2026-08-05)
 // ---------------------------------------------------------------------------------------------
 
@@ -713,14 +1203,46 @@ function flatReading(
 	}
 }
 
-/** A reading, plus what the t-continuity discriminator saw — `null` when it was never consulted. */
+/**
+ * **What decision 17 measured** — the field's own colour path and its distance to the two polylines
+ * that were considered. `null` when no ramp was read at all (flat, collapsed, or the two-block
+ * fallback, none of which draw an interpolation for a path to lead).
+ *
+ * This lives here rather than in `src/types.ts` because `types.ts` is the orchestrator's to change;
+ * the shape is proposed for `Diagnostics` in `reports/wp13-types.md` and is carried through
+ * `candidate.ts`'s `Analysis` in the meantime, so `diagnose.ts` can print the numbers the ruling turns
+ * on without a frozen file being edited by a worker.
+ */
+export type RampPathReading = Readonly<{
+	/** `g(t)`, background end first. Fewer than `PATH_BANDS` entries when bands came up empty. */
+	samples: readonly OkLab[]
+	/** Path → straight chord: the quantity that asks for a stop. */
+	chordExcursion: number
+	/** Path → the polyline actually returned (equal to `chordExcursion` when no stop was accepted). */
+	publishedExcursion: number
+	/** The measurement's noise floor: the worst band mean's own standard error. What accepts a stop. */
+	precision: number
+	/** Half the widest gap between consecutive samples. Reported only — see `pathLargestGap`. */
+	largestGap: number
+	/**
+	 * Worst distance to the chord among path samples that project **outside** the ramp's span — the
+	 * field colours the published ends do not reach. Reported only: no interior stop can shorten an
+	 * endpoint's own distance (W-P10's premise correction), so this is an endpoint signal, not a stop
+	 * one. Large here with a small `chordExcursion` means the ends are cut short of the field, which is
+	 * decision 18's territory rather than decision 17's.
+	 */
+	beyondEnds: number
+}>
+
+/** A reading, plus what the t-continuity discriminator and decision 17's path measurement saw. */
 export type RampDetail = Readonly<{
 	reading: RampReading
 	continuity: RampContinuity | null
+	path: RampPathReading | null
 }>
 
 function withoutContinuity(reading: RampReading): RampDetail {
-	return { reading, continuity: null }
+	return { reading, continuity: null, path: null }
 }
 
 /**
@@ -801,7 +1323,11 @@ export function readRampDetailed(
 		})
 	}
 
-	// --- excursion (SPEC decision 5) ------------------------------------------------------------
+	// --- the occupied-colour excursion: the "stays on-artwork" half, now a report ------------------
+	//
+	// Decision 17 moved the *deciding* quantity to the path measurement below. This one is still
+	// measured, still published, and still owns exactly one decision that is not decision 17's: it is
+	// what asks decision 5's t-continuity discriminator whether this cover is a ramp at all.
 	const grid = buildColorGrid(inventory)
 	// An empty inventory carries no evidence either way; it cannot make a chord "off-artwork".
 	const excursion = grid.size === 0
@@ -813,8 +1339,50 @@ export function readRampDetailed(
 		{ target: surfaceTarget, position: 1 },
 	]
 
-	if (excursion.max <= POOLED_SAME_COLOR_BAR) {
-		return withoutContinuity({
+	// --- which reading applies (SPEC decision 5, ruling 2026-08-05) ---------------------------------
+	//
+	// Unchanged by decision 17, deliberately: when the chord leaves the artwork, before asking whether
+	// a stop can fix it — a question about the polyline — ask what the picture is: one field the
+	// straight chord is cutting the corner of, or two blocks the fit spanned. The inlier mass along the
+	// ramp coordinate answers it, and it is the only thing that decides. A guide stop is never the
+	// reason a cover is called a ramp, and a failure to find one is never the reason a cover is called
+	// two blocks. A chord that never left the artwork never raised the question at all.
+	let continuity: RampContinuity | null = null
+	if (excursion.max > POOLED_SAME_COLOR_BAR) {
+		continuity = rampContinuity(fit, raster, backgroundTarget, surfaceTarget)
+		if (continuity.bimodal) {
+			// --- two blocks: no polyline can describe what is not a path (SPEC decision 5) ------------
+			const blocks = twoBlockTargets(twoBlockCandidates(fit, raster, inventory), backgroundTarget)
+			return {
+				reading: {
+					gradientCandidate: false,
+					direction,
+					backgroundTarget: blocks.background,
+					surfaceTarget: blocks.surface,
+					orientationMargin,
+					stops: [],
+					excursionMax: excursion.max,
+					thirdStopAccepted: false,
+					residualExcursion: excursion.max,
+					twoBlockFallback: true,
+				},
+				continuity,
+				// Two flat blocks draw no interpolation, so there is no path to lead through anything.
+				path: null,
+			}
+		}
+	}
+
+	// --- the ramp path (SPEC decision 17) -----------------------------------------------------------
+	//
+	// From here the cover is a ramp, and the only question left is whether the straight line between
+	// its ends follows the colours the field runs through. That is `g(t)` against the chord.
+	const { samples: path, precision } = fittedColourPath(fit, raster, axis, statistics)
+	const largestGap = pathLargestGap(path)
+	const chordPathExcursion = pathToPolylineExcursion(path, [backgroundTarget, surfaceTarget])
+
+	const straightRamp = (pathExcursionMax: number): RampDetail => ({
+		reading: {
 			gradientCandidate: true,
 			direction,
 			backgroundTarget,
@@ -825,104 +1393,34 @@ export function readRampDetailed(
 			thirdStopAccepted: false,
 			residualExcursion: excursion.max,
 			twoBlockFallback: false,
-		})
-	}
+		},
+		continuity,
+		path: {
+			samples: path,
+			chordExcursion: chordPathExcursion.max,
+			publishedExcursion: pathExcursionMax,
+			precision,
+			largestGap,
+			beyondEnds: chordPathExcursion.beyondEnds,
+		},
+	})
 
-	// --- which reading applies (SPEC decision 5, ruling 2026-08-05) ---------------------------------
-	//
-	// The chord leaves the artwork. Before asking whether a stop can fix it — a question about the
-	// polyline — ask what the picture is: one field the straight chord is cutting the corner of, or
-	// two blocks the fit spanned. The inlier mass along the ramp coordinate answers it, and it is the
-	// only thing that decides. A guide stop is never the reason a cover is called a ramp, and a
-	// failure to find one is never the reason a cover is called two blocks.
-	const continuity = rampContinuity(fit, raster, backgroundTarget, surfaceTarget)
+	// The chord follows the path to within the bar: the straight line never visibly leaves the colours
+	// the field runs through, and a stop would be metric fitting — arm-f §2.6's own words, and the
+	// clause decision 17 restores. Two stops is the answer, including on covers whose chord *does* pass
+	// off-artwork: that is a report about the picture's colour density, not about the interpolation.
+	if (chordPathExcursion.max <= POOLED_SAME_COLOR_BAR) return straightRamp(chordPathExcursion.max)
 
-	if (continuity.bimodal) {
-		// --- two blocks: no polyline can describe what is not a path (SPEC decision 5) --------------
-		const blocks = twoBlockTargets(twoBlockCandidates(fit, raster, inventory), backgroundTarget)
-		return {
-			reading: {
-				gradientCandidate: false,
-				direction,
-				backgroundTarget: blocks.background,
-				surfaceTarget: blocks.surface,
-				orientationMargin,
-				stops: [],
-				excursionMax: excursion.max,
-				thirdStopAccepted: false,
-				residualExcursion: excursion.max,
-				twoBlockFallback: true,
-			},
-			continuity,
-		}
-	}
+	// --- the guide stop (SPEC decision 17) -----------------------------------------------------------
+	const best = bestGuideStop({
+		inventory,
+		path,
+		precision,
+		background: { target: backgroundTarget, color: backgroundColor },
+		surface: { target: surfaceTarget, color: surfaceColor },
+	})
 
-	// --- the guide stop: best monotone excursion-reducing stop, flattest path among ties ------------
-	//
-	// Two passes rather than one running argmin, because the tie-break is *within a tolerance* and a
-	// tolerant comparator is not a total order — scanning once with "is this within noise of the best
-	// so far" would make the answer depend on the order candidates arrive in. The minimum is found
-	// first; the flattest path is then chosen among everything indistinguishable from it.
-	const radius = Math.max(
-		THIRD_STOP_RADIUS_FACTOR * excursion.max,
-		3 * POOLED_SAME_COLOR_BAR,
-	)
-	type GuideStop = {
-		target: OkLab
-		position: number
-		excursion: number
-		resolution: number
-		turn: number
-		packed: number
-	}
-	const admissible: GuideStop[] = []
-	for (const candidate of pickCandidates(grid, excursion.worst, radius)) {
-		const position = projectionFraction(backgroundTarget, surfaceTarget, candidate.lab)
-		// Monotone in t: the middle stop must project strictly between the two ends. C7's measured
-		// midpoint hazard binds here, and this is the check the ruling points at.
-		if (!(position > 0 && position < 1)) continue
-		admissible.push({
-			target: candidate.lab,
-			position,
-			excursion: polylineExcursion(backgroundTarget, candidate.lab, surfaceTarget, grid),
-			resolution: excursionResolution([backgroundTarget, candidate.lab, surfaceTarget]),
-			turn: turningAngle(backgroundTarget, candidate.lab, surfaceTarget),
-			packed: candidate.packed,
-		})
-	}
-
-	let best: GuideStop | null = null
-	if (admissible.length > 0) {
-		let lowest = admissible[0]
-		for (const candidate of admissible) {
-			if (
-				candidate.excursion < lowest.excursion ||
-				(candidate.excursion === lowest.excursion && candidate.packed < lowest.packed)
-			) lowest = candidate
-		}
-		// The tie band is the *minimum's* own resolution, so which candidates count as tied is fixed
-		// before any of them is preferred — a per-pair tolerance would not be an equivalence relation.
-		const tieBand = lowest.excursion + lowest.resolution
-		for (const candidate of admissible) {
-			if (candidate.excursion > tieBand) continue
-			if (
-				best === null ||
-				candidate.turn < best.turn ||
-				(candidate.turn === best.turn && candidate.packed < best.packed)
-			) best = candidate
-		}
-	}
-
-	// Accept when the stop takes the excursion under the bar (the ideal, unchanged), or when it
-	// reduces the excursion by more than the coarser of the two measurements' resolutions. The ≥2×
-	// prong is gone: on a cover the discriminator has already called one field, a real reduction is
-	// the whole of what a guide stop is for, and the residual — above the bar or not — is published.
-	const chordResolution = excursionResolution([backgroundTarget, surfaceTarget])
-	const accepted = best !== null &&
-		(best.excursion <= POOLED_SAME_COLOR_BAR ||
-			best.excursion + Math.max(chordResolution, best.resolution) < excursion.max)
-
-	if (accepted && best) {
+	if (best !== null) {
 		return {
 			reading: {
 				gradientCandidate: true,
@@ -937,34 +1435,28 @@ export function readRampDetailed(
 				],
 				excursionMax: excursion.max,
 				thirdStopAccepted: true,
-				residualExcursion: best.excursion,
+				residualExcursion: best.occupiedExcursion,
 				twoBlockFallback: false,
 			},
 			continuity,
+			path: {
+				samples: path,
+				chordExcursion: chordPathExcursion.max,
+				publishedExcursion: best.pathExcursion,
+				precision,
+				largestGap,
+				beyondEnds: chordPathExcursion.beyondEnds,
+			},
 		}
 	}
 
-	// --- continuous, but nothing occupied reduces the excursion -------------------------------------
+	// --- the chord leaves the path, and nothing admissible leads it back ----------------------------
 	//
-	// The two-block fallback is not the answer here and is no longer reachable from this branch: the
-	// mass said one field, and refusing the ramp because no *stop* helped would be the ≥2× prong's
-	// mistake in a new place. The straight ramp is published with its excursion in `residualExcursion`,
-	// which is what "the residual is published" means when the residual is all there is.
-	return {
-		reading: {
-			gradientCandidate: true,
-			direction,
-			backgroundTarget,
-			surfaceTarget,
-			orientationMargin,
-			stops: twoStops,
-			excursionMax: excursion.max,
-			thirdStopAccepted: false,
-			residualExcursion: excursion.max,
-			twoBlockFallback: false,
-		},
-		continuity,
-	}
+	// The two-block fallback is not the answer here and is not reachable from this branch: the mass
+	// said one field, and refusing the ramp because no *stop* helped would be the ≥2× prong's mistake
+	// in a new place. The straight ramp is published with both residuals — the path's and the
+	// artwork's — which is what "the residual is published" means when the residual is all there is.
+	return straightRamp(chordPathExcursion.max)
 }
 
 /** `readRampDetailed` for callers that do not report the discriminator's measurement. */

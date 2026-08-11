@@ -38,6 +38,7 @@
 import { fileURLToPath } from "node:url"
 import { isAbsolute, resolve } from "node:path"
 
+import { POOLED_SAME_COLOR_BAR } from "../../src/contract/constants.ts"
 import { analyzeImage } from "./candidate.ts"
 
 /** The report shape. JSON only — a reader of this output is usually `jq`, not a human. */
@@ -45,7 +46,9 @@ export type DiagnosticReport = Awaited<ReturnType<typeof diagnose>>
 
 export async function diagnose(imagePath: string) {
 	const absolute = isAbsolute(imagePath) ? imagePath : resolve(process.cwd(), imagePath)
-	const { palette, diagnostics, fieldOrder, fieldComponents } = await analyzeImage(absolute)
+	const { palette, diagnostics, pathExcursion, fieldOrder, fieldComponents } = await analyzeImage(
+		absolute,
+	)
 	// `continuity` and `margins` are printed below, rounded to the digits a reader can act on; they are
 	// lifted out of the flat sidecar block rather than printed twice.
 	const { continuity, margins, ...flatDiagnostics } = diagnostics
@@ -58,6 +61,20 @@ export async function diagnose(imagePath: string) {
 			middleBandMass: Number(continuity.middleBandMass.toFixed(4)),
 			spanMassFraction: Number(continuity.spanMassFraction.toFixed(4)),
 			reading: continuity.bimodal ? "bimodal" : "continuous",
+		},
+		// SPEC decision 17's deciding quantity, on the published polyline, beside the bar it is judged
+		// against and the resolution below which a "reduction" is one measurement twice. `null` when no
+		// gradient was published. In bars as well as raw units because every ruling about stops so far
+		// has been argued in bars.
+		pathExcursion: pathExcursion === null ? null : {
+			chord: Number(pathExcursion.chord.toFixed(5)),
+			published: Number(pathExcursion.published.toFixed(5)),
+			chordBars: Number((pathExcursion.chord / POOLED_SAME_COLOR_BAR).toFixed(3)),
+			publishedBars: Number((pathExcursion.published / POOLED_SAME_COLOR_BAR).toFixed(3)),
+			precision: Number(pathExcursion.precision.toFixed(6)),
+			largestGap: Number(pathExcursion.largestGap.toFixed(5)),
+			beyondEnds: Number(pathExcursion.beyondEnds.toFixed(5)),
+			samples: pathExcursion.samples,
 		},
 		margins: {
 			pairs: margins.pairs.map((pair) => ({

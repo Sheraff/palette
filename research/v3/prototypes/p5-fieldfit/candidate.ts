@@ -20,13 +20,18 @@
  *    "publish both and set the flag" is not a nicety: the contract's invariant 3 refuses
  *    near-identical-but-unequal as hard as it refuses equal-without-flag, so the only legal answer to
  *    "these two snapped inside the bar of each other" is one colour.
- * 2. **The guide stop is re-earned post-snap.** `ramp.ts`'s excursion test ran on the pre-snap
- *    targets and says so in its own header; snapping moves each vertex, so the polyline that earned
- *    a stop may no longer beat the chord. The stop is dropped when it snapped onto an end, when its
- *    projection is no longer strictly inside the ends, or when the re-measured polyline no longer
- *    passes decision 5's acceptance rule. The measurement is `ramp.ts`'s `pathExcursion`, not a copy,
- *    and since v0.6 the rule on both sides of the snap is *under the bar, or a reduction larger than
- *    `excursionResolution`* — the `≥2×` prong is gone from here and from `ramp.ts` in one edit.
+ * 2. **The guide stop is re-earned post-snap — by re-running the rule, not by re-checking a stale
+ *    vertex.** `ramp.ts`'s excursion test ran on the pre-snap targets and says so in its own header;
+ *    snapping moves each vertex, so the polyline that earned a stop may no longer beat the chord.
+ *    **v0.7.1: the quantity is decision 17's** — the fitted colour path `g(t)` against the polyline,
+ *    not the polyline's distance to the nearest occupied colour, which is still measured and still
+ *    reported (`residualExcursion`) but decides nothing. That change is what forces re-selection
+ *    rather than re-checking: the path sits one to three bars off the chord, so a sub-bar move at each
+ *    end rotates the chord by more than a bar's worth of path excursion, and the stop chosen against
+ *    the pre-snap chord was chosen in the wrong frame (measured on `16a8247378`, `bestGuideStop`'s
+ *    note). `ramp.ts` decides *whether* the cover wants a stop; `bestGuideStop` — its function, not a
+ *    copy of its rule — is invoked here a second time to decide *which*, on the colours that will be
+ *    drawn. It returns an exact occupied triple, so the stop is published without a second snap.
  *    **What is not re-decided here is ramp-versus-two-blocks**: that is the t-continuity
  *    discriminator's call, it is made once, on the field's own inlier mass, and a snapped vertex
  *    cannot change what the picture is.
@@ -146,10 +151,10 @@ import {
 	readOverlay,
 } from "./src/overlay.ts"
 import {
-	excursionResolution,
+	bestGuideStop,
 	highestFieldMassTriple,
 	pathExcursion,
-	projectionFraction,
+	pathToPolylineExcursion,
 	readRampDetailed,
 } from "./src/ramp.ts"
 import { snapToArtwork } from "./src/snap.ts"
@@ -167,7 +172,7 @@ import type {
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.7.0"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.7.1"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -191,10 +196,36 @@ const ESCAPE_BLACK = colorFromHex("#000000")
  * edit, on both sides of the snap.
  */
 
+/**
+ * **Decision 17's numbers, on the published polyline.** `null` when no gradient was published, so no
+ * interpolation was drawn for a path to lead through.
+ *
+ * Carried on `Analysis` rather than in the `Diagnostics` sidecar only because `src/types.ts` is the
+ * orchestrator's file; the fields are proposed for `Diagnostics` in `reports/wp13-types.md`. Everything
+ * else about them is ordinary sidecar: measured after the decision, printed by `diagnose.ts`, read by
+ * nothing that decides.
+ */
+export type PathExcursionReport = Readonly<{
+	/** Path → the straight chord between the **snapped** ends: the quantity that asks for a stop. */
+	chord: number
+	/** Path → the polyline actually published. Equal to `chord` when no interior stop survived. */
+	published: number
+	/** The measurement's noise floor: the worst band mean's own standard error. */
+	precision: number
+	/** Half the widest gap between consecutive path samples. Reported only (see `pathLargestGap`). */
+	largestGap: number
+	/** Worst path deviation *outside* the ramp's span — an endpoint signal. Reported only. */
+	beyondEnds: number
+	/** How many equal-mass bands of the ramp carried inlier weight (at most `PATH_BANDS`). */
+	samples: number
+}>
+
 /** Everything `diagnose.ts` prints, and everything `paletteOf` throws away. */
 export type Analysis = Readonly<{
 	palette: Palette
 	diagnostics: Diagnostics
+	/** SPEC decision 17's ramp-path excursion, re-measured on the published (snapped) polyline. */
+	pathExcursion: PathExcursionReport | null
 	/** The fit's kept order, for the decision-9 deviation note above. */
 	fieldOrder: 0 | 1
 	/**
@@ -409,34 +440,51 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	const surfaceLab: OkLab = surfaceCollapses ? backgroundSnap.lab : surfaceSnap.lab
 	const publishGradient = gradientCandidate && !surfaceCollapses
 
-	// --- decision 5, re-earned on the snapped ends ---------------------------------------------------
+	// --- decisions 5 and 17, re-earned on the snapped ends -------------------------------------------
 	let interiorStop: { color: PaletteColor; position: number } | null = null
 	let residualExcursion = ramp.residualExcursion
+	let pathReport: PathExcursionReport | null = null
 	if (publishGradient) {
-		const chord = pathExcursion(inventory, [backgroundSnap.lab, surfaceLab])
-		residualExcursion = chord
-		if (ramp.thirdStopAccepted && ramp.stops.length === 3) {
-			const middleSnap = snapToArtwork(ramp.stops[1].target, inventory, POOLED_SAME_COLOR_BAR)
-			const middle = colorFromRgb(middleSnap.rgb)
-			const position = projectionFraction(backgroundSnap.lab, surfaceLab, middleSnap.lab)
-			// Snapped onto an end, or no longer monotone in t: the stop has stopped being a stop.
-			const distinctFromEnds = !sameColor(middle, background) && !sameColor(middle, surface)
-			const monotone = position > 0 && position < 1
-			if (distinctFromEnds && monotone) {
-				const polyline = pathExcursion(inventory, [backgroundSnap.lab, middleSnap.lab, surfaceLab])
-				// Decision 5's post-2026-08-05 rule, the same two clauses `ramp.ts` applies pre-snap:
-				// under the bar outright, or a reduction bigger than the coarser of the two
-				// measurements' own resolutions.
-				const resolution = Math.max(
-					excursionResolution([backgroundSnap.lab, surfaceLab]),
-					excursionResolution([backgroundSnap.lab, middleSnap.lab, surfaceLab]),
-				)
-				const earnsItsPlace = polyline <= POOLED_SAME_COLOR_BAR ||
-					polyline + resolution < chord
-				if (earnsItsPlace) {
-					interiorStop = { color: middle, position }
-					residualExcursion = polyline
-				}
+		// The occupied-colour distance: reported (decision 17 keeps it as the "stays on-artwork" half),
+		// no longer the quantity anything here compares against.
+		const chordOccupied = pathExcursion(inventory, [backgroundSnap.lab, surfaceLab])
+		residualExcursion = chordOccupied
+		// Decision 17's quantity, re-measured against the snapped chord. The path itself is the fit's
+		// and does not move when a vertex snaps — only the polyline it is measured against does.
+		const samples = detail.path?.samples ?? []
+		const precision = detail.path?.precision ?? 0
+		const chordPath = pathToPolylineExcursion(samples, [backgroundSnap.lab, surfaceLab])
+		pathReport = {
+			chord: chordPath.max,
+			published: chordPath.max,
+			precision,
+			largestGap: detail.path?.largestGap ?? 0,
+			beyondEnds: chordPath.beyondEnds,
+			samples: samples.length,
+		}
+		{
+			// **The stop is decided here, by re-running the rule on the published colours.**
+			// `ramp.ts` applies decision 17's rule to the fit's own targets, and that reading is the
+			// pre-snap **proxy** — the same standing this module's header gives `ramp.ts`'s gradient
+			// boolean (item 1), which is likewise re-decided here on the published colours. It has to be
+			// re-decided rather than re-checked: the path sits one to three bars off the chord, so a
+			// sub-bar move at each end rotates the chord by more than a bar's worth of path excursion,
+			// and both *whether* and *which* can change with it (measured on `16a8247378` and
+			// `908479200b` — see `bestGuideStop`'s note). The rule itself lives in `ramp.ts`, because
+			// assembly owns no perceptual decision; what happens here is a second invocation of it on the
+			// colours that will actually be drawn. Its result is an exact occupied triple, so the stop is
+			// published directly: no second snap, and invariant 2 holds by construction.
+			const chosen = bestGuideStop({
+				inventory,
+				path: samples,
+				precision,
+				background: { target: backgroundSnap.lab, color: background },
+				surface: { target: surfaceLab, color: surface },
+			})
+			if (chosen !== null) {
+				interiorStop = { color: colorFromRgb(chosen.rgb), position: chosen.position }
+				residualExcursion = chosen.occupiedExcursion
+				pathReport = { ...pathReport, published: chosen.pathExcursion }
 			}
 		}
 	}
@@ -575,6 +623,7 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	return {
 		palette,
 		diagnostics,
+		pathExcursion: pathReport,
 		fieldOrder: fit.order,
 		fieldComponents,
 	}

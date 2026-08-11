@@ -246,6 +246,15 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     ink-like mass leads (the "artwork's own ink" principle, now measured rather than
     approximated by raw mass). Ink-scale constant per arm-e-r3's anchor (stroke-width of
     designed marks), `[UNCALIBRATED]` with stated provenance.
+    *Rulings 2026-08-05 (wp12, both deviations accepted on measurement):* (a) the component-level
+    conjunct is mortality-high AND ground-adjacency **LOW** (`< 0.10`) — grounds tile, ink
+    floats; a field candidate competes to be the ground rather than sitting on one (type
+    0.994/0.000 vs the item-1 sky 0.977/0.214, spared by adjacency at 2.14×). (b) **15b is
+    deferred, not implemented**: erosion mortality is degenerate on bar-neighbourhood clusters
+    (1.0000 on 60/60 floor-clearing candidates — a cluster is a colour family, not a mark). The
+    fg-sourcing ask (round-3 items 4/8) requires mark-level connected support = arm-f's deferred
+    scale-space mark grouping; revisit as v0.8 after decisions 17–18. Unanswered until then,
+    stated.
 
 16. **Accent visibility floor (v0.7, ruling R3 — verified 8-for-8 on `phase2-cal-013`)** —
     `ACCENT_VISIBILITY_COLOR_DISTANCE` (0.07444, the contract's own accent-vs-field constant,

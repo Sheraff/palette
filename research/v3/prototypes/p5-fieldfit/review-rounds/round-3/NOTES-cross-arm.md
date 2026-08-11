@@ -50,3 +50,15 @@ composition is untouched (staging was in flight when this arrived).
    overlay-mass share of its family cluster vs the floor — so the exposure claim is verified, not
    assumed. Concentration-shaped eligibility (our overlay-mass denominator) over raw population
    share is precisely the arms' original design choice; the audit checks it held.
+   *Audit result (wp11 §3):* held — nothing reviewer-named was floor-excluded (cluster shares
+   69.6×–722× the floor); measured caveat: the floor drops most *triples* of a family (white
+   519/554, pink 1183/1440) and two named colours sit at only ~5× triple-level headroom —
+   concentration carries them.
+   *Cross-arm follow-up (2026-08-05):* another arm replaced its raw population floor with
+   **coherence-shaped eligibility** and measured it clean (robustness within noise, contract
+   identical, 0.97× cost, 18 spurious accent collapses removed, floor-blocked named marks
+   published at rank 0; residual risk — compact-artifact shapes — sent to the judge). For P5 this
+   is the same mechanism family as the deferred decision-15b **mark-level grouping**: one
+   mark-support instrument would serve both coherence eligibility and ink-likeness. If any round
+   ever shows a P5 floor-blocked named colour, this is the measured-viable alternative shape;
+   until then our floor stands on its verified audit.

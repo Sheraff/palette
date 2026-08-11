@@ -15,18 +15,27 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
-import { okLabDistance, okLabToRgb, rgbToHex, rgbToOkLab } from "../../../src/contract/color.ts"
+import {
+	colorFromRgb,
+	okLabDistance,
+	okLabToRgb,
+	rgbToHex,
+	rgbToOkLab,
+} from "../../../src/contract/color.ts"
 import { POOLED_SAME_COLOR_BAR } from "../../../src/contract/constants.ts"
 import type { OkLab, Rgb8 } from "../../../src/contract/types.ts"
 import { normalizedX, normalizedY, packRgb } from "../src/decode.ts"
 import { fieldAtCoefficients } from "../src/fieldfit.ts"
 import {
 	excursionResolution,
+	guideStopRefusal,
 	pathExcursion,
+	pathToPolylineExcursion,
 	projectionFraction,
 	rampContinuity,
 	readRamp,
 	readRampDetailed,
+	STOP_SPACING_MIN_FRACTION,
 } from "../src/ramp.ts"
 import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "../src/types.ts"
 
@@ -357,50 +366,60 @@ test("two-block red/blue: chord leaves the artwork, no third stop rescues it, fa
 // 3. A genuine bend: the one admissible reason to add a third stop
 // ---------------------------------------------------------------------------------------------
 
-test("bent three-colour path: the third stop is accepted at the bend and stays monotone", () => {
+/**
+ * The artwork densely occupies the two-segment OKLab path `BEND_START → BEND_MIDDLE → BEND_END`; the
+ * colour at a column is that polyline sampled there, quantised to 8 bits. The order-1 fit of a bent
+ * path is the chord between its ends, which is exactly why the straight two-stop ramp misses the
+ * artwork — and, since v0.7.1, misses the field's own colour path — in the middle.
+ */
+function bentPathScene(): {
+	raster: DecodedRaster
+	inventory: Inventory
+	fit: FieldFit
+	start: OkLab
+	middle: OkLab
+	end: OkLab
+} {
 	const width = 192
 	const height = 24
 	const start = rgbToOkLab(BEND_START)
 	const middle = rgbToOkLab(BEND_MIDDLE)
 	const end = rgbToOkLab(BEND_END)
 
-	// The artwork densely occupies the two-segment OKLab path start→middle→end. The colour at a
-	// column is the polyline sampled there, quantised to 8 bits.
-	const pathColorAt = (column: number): Rgb8 => {
-		const u = column / (width - 1)
+	const pathAt = (u: number): OkLab => {
 		const [from, to, local] = u < 0.5
 			? [start, middle, u / 0.5]
 			: [middle, end, (u - 0.5) / 0.5]
-		return okLabToRgb([
-			from[0] + (to[0] - from[0]) * local,
-			from[1] + (to[1] - from[1]) * local,
-			from[2] + (to[2] - from[2]) * local,
-		])
+		return interpolate(from, to, local)
 	}
+	const pathColorAt = (column: number): Rgb8 => okLabToRgb(pathAt(column / (width - 1)))
 	const { raster, inventory } = buildImage(width, height, (column) => pathColorAt(column))
 
 	// Guard the fixture: if any path colour left the sRGB gamut, the quantised artwork would no
-	// longer lie on the polyline and this test would be measuring gamut clipping instead.
+	// longer lie on the polyline and the tests would be measuring gamut clipping instead.
 	let worstRoundTrip = 0
 	for (let column = 0; column < width; column++) {
-		const u = column / (width - 1)
-		const [from, to, local] = u < 0.5
-			? [start, middle, u / 0.5]
-			: [middle, end, (u - 0.5) / 0.5]
-		const wanted: OkLab = [
-			from[0] + (to[0] - from[0]) * local,
-			from[1] + (to[1] - from[1]) * local,
-			from[2] + (to[2] - from[2]) * local,
-		]
-		worstRoundTrip = Math.max(worstRoundTrip, okLabDistance(wanted, rgbToOkLab(pathColorAt(column))))
+		worstRoundTrip = Math.max(
+			worstRoundTrip,
+			okLabDistance(pathAt(column / (width - 1)), rgbToOkLab(pathColorAt(column))),
+		)
 	}
 	assert.ok(worstRoundTrip < 0.005, `fixture path must stay in gamut (worst ${worstRoundTrip})`)
 
-	// The order-1 fit of a bent path is the chord between its ends — which is exactly why the
-	// straight two-stop ramp misses the artwork in the middle.
 	const origin: OkLab = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2, (start[2] + end[2]) / 2]
 	const step = difference(end, start).map((value) => value / 2) as [number, number, number]
-	const fit = affineFit(origin, step, [0, 0, 0], filledWeights(width, height))
+	return {
+		raster,
+		inventory,
+		fit: affineFit(origin, step, [0, 0, 0], filledWeights(width, height)),
+		start,
+		middle,
+		end,
+	}
+}
+
+test("bent three-colour path: the third stop is accepted at the bend and stays monotone", () => {
+	const { raster, inventory, fit, start, middle, end } = bentPathScene()
 	const reading = readRamp(fit, raster, inventory)
 
 	assert.equal(reading.gradientCandidate, true)
@@ -758,4 +777,196 @@ test("a continuous ramp no stop can fix publishes the straight ramp, never the t
 	assert.equal(reading.stops.length, 2)
 	// The residual is published rather than hidden behind a refusal: that is the ruling's own phrase.
 	assert.equal(reading.residualExcursion, reading.excursionMax)
+})
+
+// ---------------------------------------------------------------------------------------------
+// 7. v0.7.1 — SPEC decision 17: the ramp-path excursion is what decides a stop
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **Why `g(t)` is empirical.** Decision 17 says the excursion runs from "the component's fitted colour
+ * path". Read as *the affine surface evaluated along the ramp coordinate*, that path is
+ * `c + t·(B d)` — linear in `t`, i.e. **exactly the chord**, for every image, with excursion
+ * identically zero and no stop ever admissible. This test pins that so the reading in `ramp.ts`'s
+ * header cannot be quietly re-litigated: it is not a preference between two constructions, it is that
+ * one of them is empty. `fittedColourPath` uses arm-f §2.6's own definition instead (bin the
+ * field-weighted pixels along `t`, take the robust colour per bin), which is what the tests below
+ * exercise.
+ */
+test("decision 17's literal reading is vacuous: the affine field along the ramp axis IS the chord", () => {
+	const origin: OkLab = [0.5, 0.02, -0.03]
+	const slopeX: [number, number, number] = [0.21, -0.05, 0.11]
+	const slopeY: [number, number, number] = [-0.07, 0.13, 0.04]
+	const fit = affineFit(origin, slopeX, slopeY, filledWeights(4, 4))
+	const direction: [number, number] = [0.6, 0.8]
+
+	const at = (t: number): OkLab => fit.fieldAt(t * direction[0], t * direction[1])
+	const ends: [OkLab, OkLab] = [at(-1), at(1)]
+	for (let step = 0; step <= 20; step += 1) {
+		const t = -1 + (2 * step) / 20
+		const sample = at(t)
+		// Distance from the sample to the segment between the two ends, the same measurement the
+		// excursion makes. Zero to floating-point noise, at every t.
+		const excursion = pathToPolylineExcursion([sample], ends).max
+		assert.ok(excursion < 1e-12, `fieldAt at t=${t} sits ${excursion} off its own chord`)
+	}
+})
+
+test("guideStopRefusal states decision 17's three stop-side conjuncts", () => {
+	const background = colorFromRgb(BEND_START)
+	const surface = colorFromRgb(BEND_END)
+	const middle = colorFromRgb(BEND_MIDDLE)
+
+	// (c) monotone in t — the stop must project strictly between the ends.
+	assert.equal(guideStopRefusal(0, middle, background, surface), "monotone")
+	assert.equal(guideStopRefusal(1, middle, background, surface), "monotone")
+	assert.equal(guideStopRefusal(-0.2, middle, background, surface), "monotone")
+	assert.equal(guideStopRefusal(1.4, middle, background, surface), "monotone")
+
+	// (d) the spacing floor, on both sides, and its two boundaries (inclusive).
+	assert.equal(guideStopRefusal(0.05, middle, background, surface), "spacing")
+	assert.equal(guideStopRefusal(0.95, middle, background, surface), "spacing")
+	assert.equal(guideStopRefusal(STOP_SPACING_MIN_FRACTION, middle, background, surface), null)
+	assert.equal(guideStopRefusal(1 - STOP_SPACING_MIN_FRACTION, middle, background, surface), null)
+	// The floor sits above the cross-arm banding complaint it is anchored to (3.1% of the ramp).
+	assert.ok(
+		STOP_SPACING_MIN_FRACTION > 0.031,
+		`the floor must exceed the 3.1% spacing the reviewer called "very significant banding"`,
+	)
+
+	// (b) it must carry a colour the endpoints do not.
+	assert.equal(guideStopRefusal(0.5, background, background, surface), "endpoint-colour")
+	assert.equal(guideStopRefusal(0.5, surface, background, surface), "endpoint-colour")
+	// One LSB off an end is still that end, by the calibrated formula rather than by equality.
+	const nearlyBackground = colorFromRgb([BEND_START[0] + 1, BEND_START[1], BEND_START[2]])
+	assert.equal(guideStopRefusal(0.5, nearlyBackground, background, surface), "endpoint-colour")
+
+	// Admissible: mid-ramp, and a colour neither end carries.
+	assert.equal(guideStopRefusal(0.5, middle, background, surface), null)
+})
+
+test("a bent path asks for a stop, and the stop carries a colour the endpoints do not", () => {
+	const { raster, inventory, fit, middle } = bentPathScene()
+	const { reading, path } = readRampDetailed(fit, raster, inventory)
+
+	assert.ok(path !== null, "a published ramp always measures its own path")
+	assert.ok(
+		path.chordExcursion > POOLED_SAME_COLOR_BAR,
+		`the chord must leave the field's colour path (${path.chordExcursion / POOLED_SAME_COLOR_BAR} bars)`,
+	)
+	assert.equal(reading.thirdStopAccepted, true)
+	assert.equal(reading.stops.length, 3)
+
+	// (a) it reduces the path excursion, by more than the measurement's own precision.
+	assert.ok(
+		path.publishedExcursion + path.precision < path.chordExcursion,
+		`published ${path.publishedExcursion} must beat the chord's ${path.chordExcursion}`,
+	)
+	// …and on a fixture whose path is exactly two straight segments, all the way under the bar.
+	assert.ok(
+		path.publishedExcursion < POOLED_SAME_COLOR_BAR,
+		`a path that IS a two-segment polyline must be followed to under the bar, got ` +
+			`${path.publishedExcursion / POOLED_SAME_COLOR_BAR} bars`,
+	)
+
+	const stop = reading.stops[1]
+	// (b) the stop carries a colour the endpoints do not, and (c)/(d) it is monotone and spaced.
+	assert.equal(
+		guideStopRefusal(
+			stop.position,
+			colorFromRgb(okLabToRgb(stop.target)),
+			colorFromRgb(okLabToRgb(reading.backgroundTarget)),
+			colorFromRgb(okLabToRgb(reading.surfaceTarget)),
+		),
+		null,
+	)
+	// And it is the bend itself — an artwork colour, not an invention.
+	assert.ok(okLabDistance(stop.target, middle) < 0.03, "the stop sits at the bend")
+	assert.ok(inventory.has(packRgb(okLabToRgb(stop.target))), "the stop is an occupied triple")
+})
+
+/**
+ * **The straight path: two stops, even where the chord leaves the artwork.** This is the case that
+ * separates decision 17's quantity from the one it replaces. The artwork is a ramp travelled from end
+ * to end with a **hole punched in its colour coverage** near the middle: the field's own colour path
+ * is dead straight (every field pixel sits on the chord), but the chord passes more than a bar from
+ * any occupied colour where the hole is. The old deciding quantity — polyline to nearest occupied
+ * colour — reads that as an excursion to be fixed. Decision 17's reads it as what it is: a fact about
+ * how densely the picture samples its own ramp, and nothing an interpolation can lead anywhere.
+ */
+function holedRampScene(): { raster: DecodedRaster; inventory: Inventory; fit: FieldFit } {
+	const { start, end, axis, centre } = chordFrame()
+	// u ∈ [0, 0.46] ∪ [0.54, 1] of the chord: the middle 8% is never occupied.
+	const at = (u: number): OkLab => interpolate(start, end, u < 0.5 ? u * 0.92 : 0.08 + u * 0.92)
+	const width = 240
+	const height = 24
+	const colorAt = (column: number): Rgb8 => okLabToRgb(at(column / (width - 1)))
+	const { raster, inventory } = buildImage(width, height, (column) => colorAt(column))
+	const step = axis.map((value) => value / 2) as [number, number, number]
+	return { raster, inventory, fit: affineFit(centre, step, [0, 0, 0], filledWeights(width, height)) }
+}
+
+test("a straight path publishes two stops even where the chord leaves the artwork", () => {
+	const { raster, inventory, fit } = holedRampScene()
+	const { reading, continuity, path } = readRampDetailed(fit, raster, inventory)
+
+	// The cover is one travelled ramp, so the two-block fallback is not in play.
+	assert.ok(continuity !== null && !continuity.bimodal, "a holed ramp is still one travelled path")
+	assert.equal(reading.twoBlockFallback, false)
+	assert.equal(reading.gradientCandidate, true)
+
+	// The **old** deciding quantity says the chord leaves the artwork…
+	assert.ok(
+		reading.excursionMax > POOLED_SAME_COLOR_BAR,
+		`occupied-colour excursion ${reading.excursionMax} must exceed the bar for this test to bite`,
+	)
+	// …and the **new** one says the chord is exactly where the field's colours are.
+	assert.ok(path !== null)
+	assert.ok(
+		path.chordExcursion <= POOLED_SAME_COLOR_BAR,
+		`path excursion ${path.chordExcursion / POOLED_SAME_COLOR_BAR} bars must stay under the bar`,
+	)
+	assert.equal(reading.thirdStopAccepted, false, "nothing to lead the interpolation through")
+	assert.equal(reading.stops.length, 2)
+	// The occupied-colour residual is still measured and still published: it is the "stays on-artwork"
+	// half of the doctrine, now a report rather than a decision.
+	assert.equal(reading.residualExcursion, reading.excursionMax)
+})
+
+/**
+ * **The two-lobe fixture, reconciled.** Pass 10 built it for decision 5's ruling: the colours run
+ * `START → P → Q → END` with `P` three bars off the chord and `Q` one bar off it on the other side,
+ * so one stop straightens the big lobe, nothing straightens both, and the best polyline lands *above*
+ * the bar. Under the old deciding quantity it was accepted because the polyline came closer to the
+ * artwork's occupied colours; under decision 17 it is accepted because the polyline comes closer to
+ * **the field's own path** — measured 2.94 bars → 1.81 bars — and the published vertex moves by one
+ * 8-bit step (`#7a9d9d` → `#799d9d`). The fixture's point survives the change of quantity intact,
+ * which is the reconciliation the ruling asks for: the two criteria agree on a genuinely travelled
+ * path, and they part company only where the artwork's colour *coverage* and the field's colour
+ * *route* disagree (the holed ramp above).
+ */
+test("the two-lobe fixture is accepted by the path quantity, with its residual still above the bar", () => {
+	const { raster, inventory, fit } = twoLobeScene()
+	const { reading, path } = readRampDetailed(fit, raster, inventory)
+
+	assert.ok(path !== null)
+	assert.equal(reading.thirdStopAccepted, true)
+	assert.ok(
+		path.chordExcursion > POOLED_SAME_COLOR_BAR,
+		`path excursion ${path.chordExcursion / POOLED_SAME_COLOR_BAR} bars must exceed the bar`,
+	)
+	assert.ok(
+		path.publishedExcursion + path.precision < path.chordExcursion,
+		"the stop reduces the path excursion beyond the measurement's precision",
+	)
+	// Above the bar and kept anyway — decision 5's ruling of 2026-08-05, which decision 17 does not
+	// disturb: the residual is published, not refused.
+	assert.ok(
+		path.publishedExcursion > POOLED_SAME_COLOR_BAR,
+		`residual path excursion ${path.publishedExcursion} is meant to stay above the bar here`,
+	)
+	assert.ok(
+		reading.residualExcursion > POOLED_SAME_COLOR_BAR,
+		"and so is the occupied-colour residual the sidecar publishes",
+	)
 })
