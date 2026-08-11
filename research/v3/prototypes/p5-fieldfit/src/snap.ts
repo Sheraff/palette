@@ -178,6 +178,139 @@ function bucketKeysAround(grid: HashGrid, l: number, a: number, b: number, radiu
 }
 
 // ---------------------------------------------------------------------------------------------
+// The one-pass neighbourhood (v0.9.1) — wv9a's second named optimization, and why it is *exact*
+// ---------------------------------------------------------------------------------------------
+//
+// wv9a profiled `barNeighbourhoodMass` at **3.4 s of an 8.2 s** 3000² mark read and wv9b re-measured
+// the term at **5.0 s of 9.4 s**, in one entry: an 8.3 M-pixel region carrying 426 200 distinct
+// triples. The shape of the cost is a product, and both factors are large — for every candidate in
+// the ball around the target, the old path ran an **independent grid query** (a `Set`, 27 `cellHash`
+// calls, 27 `Map` lookups, then a `Math.hypot` per entry of each bucket). With a few thousand
+// candidates each seeing tens of thousands of neighbours, that is `O(10⁸)` `Math.hypot` calls made
+// through three levels of pointer chasing.
+//
+// **This is an exact-value optimization or it does not ship** (the pass's hard requirement), so
+// nothing below changes which triples are summed or which comparison decides a tie. Three changes,
+// each with its own exactness argument:
+//
+//  1. **One pool instead of one query per candidate.** Every candidate is within `r` of the target,
+//     so every neighbour of every candidate is within `2r` of the target (triangle inequality). The
+//     pool is collected once, into flat typed arrays, and each candidate then scans it linearly —
+//     contiguous memory instead of 27 hash-bucket dereferences. The pool is built at
+//     `2r × (1 + POOL_SLACK)` and with a non-strict comparison, so it is a **superset** of what the
+//     triangle inequality guarantees even after floating-point rounding; a superset is safe because
+//     every pool member is still distance-tested against the candidate exactly as before, so extra
+//     members are filtered out rather than summed.
+//  2. **A squared-distance prefilter around the one comparison that matters.** The decision is
+//     `Math.hypot(dl, da, db) < radius`, and `Math.hypot` is *implementation-approximated* by the
+//     spec — so it is never replaced. Instead the squared distance `s = dl² + da² + db²` is used only
+//     to skip the call where the answer cannot be in doubt: `s < r²(1 − ε)` ⇒ certainly inside,
+//     `s > r²(1 + ε)` ⇒ certainly outside, and the thin shell in between calls `Math.hypot` and takes
+//     its verdict. `ε = 1e-9` is seven orders of magnitude above any plausible `hypot` error (V8's is
+//     sub-ulp, ~1e-16 relative), so the shell is a correctness margin rather than a tuning knob, and
+//     `tests/snap.test.ts` asserts pairwise agreement with the direct comparison over randomized
+//     inventories.
+//  3. **The sum is over the same set, and float addition order cannot matter here** — the summands
+//     are `TripleStats.count`, i.e. pixel counts, so every partial sum is an integer far below `2⁵³`
+//     and is represented exactly. That is what makes reordering the accumulation safe at all; it
+//     would not be for a general float mass, and this is the reason to state it rather than assume it.
+
+/**
+ * The relative half-width of the shell where the squared-distance prefilter defers to `Math.hypot`.
+ *
+ * `[UNCALIBRATED]` and deliberately enormous: it is not a threshold on any perceptual quantity, it is
+ * a bound on floating-point disagreement between `sqrt(Σd²)` and `Math.hypot(d…)`. Any value between
+ * ~1e-14 and ~1e-6 produces byte-identical answers; smaller only risks the bound, larger only costs
+ * `hypot` calls.
+ */
+const POOL_SLACK = 1e-9
+
+/**
+ * `Math.hypot(dl, da, db) < radius`, decided by the squared distance wherever that is certain.
+ *
+ * Takes the squared distance and the squared radius already computed by the caller (they are loop
+ * invariants there). The `Math.hypot` branch is the same expression `okLabDistance` evaluates, so a
+ * pair in the shell gets exactly the answer the unoptimized path gave it.
+ */
+function withinRadius(
+	dl: number,
+	da: number,
+	db: number,
+	squared: number,
+	radiusSquaredLow: number,
+	radiusSquaredHigh: number,
+	radius: number,
+): boolean {
+	if (squared < radiusSquaredLow) return true
+	if (squared > radiusSquaredHigh) return false
+	return Math.hypot(dl, da, db) < radius
+}
+
+/** The pool: every table index whose colour is within `2 × radius` (plus slack) of the target. */
+type Pool = { readonly indices: Int32Array; readonly size: number }
+
+function poolAround(
+	grid: HashGrid,
+	table: TripleTable,
+	l: number,
+	a: number,
+	b: number,
+	radius: number,
+): Pool {
+	// A superset by construction — see exactness argument 1. `<=` and the slack are both deliberate.
+	const reach = 2 * radius * (1 + POOL_SLACK)
+	const reachSquared = reach * reach
+	const indices = new Int32Array(table.size)
+	let size = 0
+	for (const key of bucketKeysAround(grid, l, a, b, reach)) {
+		const bucket = grid.buckets.get(key)
+		if (bucket === undefined) continue
+		for (const index of bucket) {
+			const base = index * 3
+			const dl = l - table.lab[base]!
+			const da = a - table.lab[base + 1]!
+			const db = b - table.lab[base + 2]!
+			if (dl * dl + da * da + db * db <= reachSquared) {
+				indices[size] = index
+				size += 1
+			}
+		}
+	}
+	return { indices, size }
+}
+
+/** Bar-neighbourhood mass of table entry `index`, summed over `pool`. Exact; see the block above. */
+function massWithinPool(
+	table: TripleTable,
+	pool: Pool,
+	index: number,
+	radius: number,
+	radiusSquaredLow: number,
+	radiusSquaredHigh: number,
+): number {
+	const base = index * 3
+	const l = table.lab[base]!
+	const a = table.lab[base + 1]!
+	const b = table.lab[base + 2]!
+	const { indices, size } = pool
+	const lab = table.lab
+	const count = table.count
+	let mass = 0
+	for (let slot = 0; slot < size; slot += 1) {
+		const other = indices[slot]!
+		const otherBase = other * 3
+		const dl = l - lab[otherBase]!
+		const da = a - lab[otherBase + 1]!
+		const db = b - lab[otherBase + 2]!
+		const squared = dl * dl + da * da + db * db
+		if (withinRadius(dl, da, db, squared, radiusSquaredLow, radiusSquaredHigh, radius)) {
+			mass += count[other]!
+		}
+	}
+	return mass
+}
+
+// ---------------------------------------------------------------------------------------------
 // Public surface
 // ---------------------------------------------------------------------------------------------
 
@@ -190,6 +323,13 @@ function bucketKeysAround(grid: HashGrid, l: number, a: number, b: number, radiu
  *
  * Strict `<` throughout, matching `sameColor()` in `src/contract/color.ts`, which is `distance <
  * bar`. "Within the bar" means the same thing in both places.
+ *
+ * **v0.9.1: `snapToArtwork` no longer calls this, and it is deliberately left unoptimized.** The snap
+ * computes the same quantity over a pre-collected pool (see the one-pass block below) because calling
+ * this per candidate was 5.0 s of a 9.4 s 3000² mark read. Keeping the straightforward implementation
+ * here costs nothing — it is called by tests and by nothing on the hot path — and buys the one thing
+ * an exact-value optimization needs: an independent oracle that `tests/snap.test.ts` checks the fast
+ * path against, rather than a fast path checked against itself.
  */
 export function barNeighbourhoodMass(lab: OkLab, inventory: Inventory, ballRadius: number): number {
 	if (!(ballRadius > 0)) return 0
@@ -232,28 +372,43 @@ export function snapToArtwork(target: OkLab, inventory: Inventory, ballRadius: n
 
 	if (ballRadius > 0) {
 		const grid = gridOf(inventory, table, ballRadius)
-		for (const key of bucketKeysAround(grid, target[0], target[1], target[2], ballRadius)) {
-			const bucket = grid.buckets.get(key)
-			if (bucket === undefined) continue
-			for (const index of bucket) {
-				const base = index * 3
-				const candidateLab: OkLab = [table.lab[base], table.lab[base + 1], table.lab[base + 2]]
-				const distance = okLabDistance(target, candidateLab)
-				if (!(distance < ballRadius)) continue
+		// **v0.9.1's one pass.** The candidates and every neighbour any of them can have both live
+		// inside one ball of radius `2 × ballRadius` around the target, so that ball is collected once
+		// into a flat index array and every candidate's mass is summed by a linear scan of it. The
+		// answers are the answers the per-candidate grid queries gave: see the exactness block above,
+		// and `tests/snap.test.ts`, which pins them against a literal transcription of the old path.
+		const radiusSquared = ballRadius * ballRadius
+		const radiusSquaredLow = radiusSquared * (1 - POOL_SLACK)
+		const radiusSquaredHigh = radiusSquared * (1 + POOL_SLACK)
+		const pool = poolAround(grid, table, target[0], target[1], target[2], ballRadius)
+		const { indices, size } = pool
+		for (let slot = 0; slot < size; slot += 1) {
+			const index = indices[slot]!
+			const base = index * 3
+			const dl = target[0] - table.lab[base]!
+			const da = target[1] - table.lab[base + 1]!
+			const db = target[2] - table.lab[base + 2]!
+			const squared = dl * dl + da * da + db * db
+			// The candidate test is the target-side one, and it decides a tie-break below, so the
+			// *distance itself* is still the `Math.hypot` value wherever it is used — only the
+			// membership test is allowed to short-circuit.
+			if (!withinRadius(dl, da, db, squared, radiusSquaredLow, radiusSquaredHigh, ballRadius)) {
+				continue
+			}
+			const distance = Math.hypot(dl, da, db)
 
-				const mass = barNeighbourhoodMass(candidateLab, inventory, ballRadius)
-				// Mass first, then proximity to the target, then the packed integer. The last one
-				// is a total order, so the answer never depends on iteration order.
-				const better = bestIndex < 0 ||
-					mass > bestMass ||
-					(mass === bestMass &&
-						(distance < bestDistance ||
-							(distance === bestDistance && table.packed[index] < table.packed[bestIndex])))
-				if (better) {
-					bestIndex = index
-					bestMass = mass
-					bestDistance = distance
-				}
+			const mass = massWithinPool(table, pool, index, ballRadius, radiusSquaredLow, radiusSquaredHigh)
+			// Mass first, then proximity to the target, then the packed integer. The last one
+			// is a total order, so the answer never depends on iteration order.
+			const better = bestIndex < 0 ||
+				mass > bestMass ||
+				(mass === bestMass &&
+					(distance < bestDistance ||
+						(distance === bestDistance && table.packed[index]! < table.packed[bestIndex]!)))
+			if (better) {
+				bestIndex = index
+				bestMass = mass
+				bestDistance = distance
 			}
 		}
 	}

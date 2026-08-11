@@ -372,3 +372,133 @@ test("snap over a large synthetic inventory stays fast and deterministic", async
 	assert.ok(inventory.has(packRgb(first.rgb)))
 	assert.ok(elapsedMs < 5000, `first snap took ${elapsedMs} ms`)
 })
+
+// ---------------------------------------------------------------------------------------------
+// v0.9.1: the one-pass snap is an **exact-value** optimization, checked against the path it replaced
+// ---------------------------------------------------------------------------------------------
+//
+// `snapToArtwork` no longer calls `barNeighbourhoodMass` per candidate: it collects one pool of every
+// triple within `2 × ballRadius` of the target and scans it linearly, and it decides the membership
+// test by squared distance wherever `Math.hypot` cannot disagree (`src/snap.ts`, the one-pass block).
+// That bought 5.0 s → 1.8 s on a 3000² mark read, and it is only allowed to exist if it changes no
+// answer — so the two tests below are the licence, not a smoke check.
+//
+// The oracle is a **literal transcription of the pre-v0.9.1 loop**, written out here rather than
+// imported, so the fast path is checked against the old algorithm rather than against itself.
+
+/** The v0.9.0 snap decision, transcribed: gather the ball, score each candidate by its own mass. */
+function referenceSnap(
+	inventory: Awaited<ReturnType<typeof decodeAndInventory>>["inventory"],
+	target: readonly [number, number, number],
+	ballRadius: number,
+): { rgb: Rgb8; mass: number; distance: number } | null {
+	let best: { rgb: Rgb8; mass: number; distance: number; packed: number } | null = null
+	for (const stats of inventory.triples.values()) {
+		const distance = okLabDistance(target, stats.lab)
+		if (!(distance < ballRadius)) continue
+		const mass = barNeighbourhoodMass(stats.lab, inventory, ballRadius)
+		const better = best === null ||
+			mass > best.mass ||
+			(mass === best.mass &&
+				(distance < best.distance ||
+					(distance === best.distance && stats.packed < best.packed)))
+		if (better) best = { rgb: stats.rgb, mass, distance, packed: stats.packed }
+	}
+	return best === null ? null : { rgb: best.rgb, mass: best.mass, distance: best.distance }
+}
+
+test("the one-pass snap agrees with the transcribed v0.9.0 loop, target by target", async () => {
+	// A dithered two-lobe field: thousands of distinct triples, dense enough that a candidate's
+	// neighbourhood genuinely overlaps its neighbours' — the regime where a pooled scan and 27
+	// independent grid queries could differ if either were wrong.
+	const width = 200
+	const height = 200
+	const pixels: number[] = []
+	for (let row = 0; row < height; row += 1) {
+		for (let column = 0; column < width; column += 1) {
+			const lobe = column < width / 2 ? 90 : 150
+			const jitter = (row * 31 + column * 17) % 11
+			pixels.push(
+				Math.min(255, lobe + jitter),
+				Math.min(255, lobe + ((row * 13 + column * 7) % 9)),
+				Math.min(255, lobe + ((row * 5 + column * 23) % 13)),
+			)
+		}
+	}
+	const path = await writePng("one-pass-agreement.png", width, height, 3, pixels)
+	const { inventory } = await decodeAndInventory(path)
+	assert.ok(inventory.triples.size > 500, `distinct triples ${inventory.triples.size}`)
+
+	// Targets taken from the artwork's own colours and then pushed off them by a fraction of the
+	// radius, at three radii. Off-triple targets are the real case (a field end is a continuous value
+	// that belongs to no pixel), and pushing by a *fraction* of the radius is what lands the ball
+	// boundary between triples, which is where a sloppy prefilter would show.
+	const sample = [...inventory.triples.values()]
+		.sort((first, second) => first.packed - second.packed)
+		.filter((_stats, index) => index % 97 === 0)
+	assert.ok(sample.length >= 6, `sampled ${sample.length} targets`)
+
+	let checked = 0
+	for (const radius of [0.005, 0.01535, 0.04]) {
+		for (const stats of sample) {
+			for (const push of [0, 0.31, 0.73, 1.4]) {
+				const target = [
+					stats.lab[0] + push * radius * 0.6,
+					stats.lab[1] - push * radius * 0.5,
+					stats.lab[2] + push * radius * 0.4,
+				] as const
+				const expected = referenceSnap(inventory, target, radius)
+				const actual = snapToArtwork(target, inventory, radius)
+				const where = `#${stats.packed.toString(16)} +${push} r ${radius}`
+				if (expected === null) {
+					assert.equal(actual.offArtwork, true, `${where}: ball should be empty`)
+					continue
+				}
+				checked += 1
+				assert.equal(actual.offArtwork, false, where)
+				assert.deepEqual(actual.rgb, expected.rgb, where)
+				// The published distance is the tie-break's own quantity, so it is pinned exactly and
+				// not approximately: any drift here is drift in a comparison that decides palettes.
+				assert.equal(actual.distance, expected.distance, `${where}: distance`)
+			}
+		}
+	}
+	assert.ok(checked > 40, `only ${checked} non-empty balls were exercised`)
+})
+
+test("the squared-distance prefilter never disagrees with Math.hypot on the ball boundary", async () => {
+	// The prefilter's whole risk is a pair whose distance sits *on* the radius. This fixture puts one
+	// there on purpose: the radius is set to the exact `Math.hypot` distance of a real pair, so the
+	// strict `<` must exclude it, and to one ulp either side of that, where it must flip.
+	const path = await writePng("boundary.png", 3, 2, 3, [
+		100, 100, 100, 104, 100, 100, 108, 100, 100,
+		100, 104, 100, 100, 108, 100, 200, 200, 200,
+	])
+	const { inventory } = await decodeAndInventory(path)
+	const anchor = rgbToOkLab([100, 100, 100])
+
+	for (const other of [[104, 100, 100], [108, 100, 100], [100, 104, 100]] as const) {
+		const exact = okLabDistance(anchor, rgbToOkLab(other as unknown as Rgb8))
+		for (const radius of [exact, nextAfter(exact, 1), nextAfter(exact, -1)]) {
+			if (!(radius > 0)) continue
+			// `barNeighbourhoodMass` is the unoptimized reader of the same predicate; the snap's pooled
+			// scan must agree with it on whether this pair is inside the ball.
+			const mass = barNeighbourhoodMass(anchor, inventory, radius)
+			const reference = referenceSnap(inventory, anchor, radius)
+			const actual = snapToArtwork(anchor, inventory, radius)
+			assert.ok(mass >= 1, "the anchor is always in its own neighbourhood")
+			assert.ok(reference !== null)
+			assert.deepEqual(actual.rgb, reference.rgb, `radius ${radius}`)
+			assert.equal(actual.distance, reference.distance, `radius ${radius}`)
+		}
+	}
+})
+
+/** One ulp up or down from `value`, via the bit pattern — no library, and exact. */
+function nextAfter(value: number, direction: 1 | -1): number {
+	const buffer = new DataView(new ArrayBuffer(8))
+	buffer.setFloat64(0, value)
+	const bits = buffer.getBigUint64(0)
+	buffer.setBigUint64(0, direction > 0 ? bits + 1n : bits - 1n)
+	return buffer.getFloat64(0)
+}

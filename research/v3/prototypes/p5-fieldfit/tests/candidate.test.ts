@@ -62,7 +62,10 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.9.0")
+	// v0.9.2 wires the family self-coherence gate v0.9.1 measured: 3 of 31 covers move, all on the
+	// accent, one of them a restoration of a silent STRONG's colour (the constant's own note names all
+	// three).
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.9.2")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })
@@ -372,13 +375,20 @@ test("anchor: 16a8247378 publishes a guide stop that leads the interpolation bac
 	assert.equal(palette.roles.background.hex, "#484b5a")
 	assert.equal(palette.roles.surface.hex, "#5d3f27")
 	assert.equal(palette.roles.foreground.hex, "#fee2ba")
-	// v0.9.0: the accent moves to a **mark**, and it is the *pool* that moves it rather than the
-	// tie-break — `#746045` leads `#736e6a` on both readings (mass 55 989 against 5 233, chroma .0476
-	// against .0088), so mass-first reaches the same answer. Round-3 item 1 graded this cover
-	// *acceptable* with the one note *"accent is a little hard to see on top of the background"*, so
-	// no reviewer-blessed accent is displaced; whether the browner, 10×-heavier mark answers that note
-	// is round 5's to say.
-	assert.equal(palette.roles.accent.hex, "#746045", "was #263143 pre-union, #736e6a in v0.8.x")
+	// v0.9.0 moved the accent to a **mark**: `#746045` led `#736e6a` on both readings (mass 55 989
+	// against 5 233, chroma .0476 against .0088), so the *pool* moved it rather than the tie-break.
+	//
+	// **v0.9.2's coherence gate moves it back**, and this is one of the pass's three movers. The mark
+	// is 62.2% of the frame at **.294** self-coherence — a blend median by the gate's own definition —
+	// so it contributes no identity family, the component's `#736e6a` leads on coverage, and the
+	// published accent returns to **v0.8.x's answer byte-identically**.
+	//
+	// **The standing note comes back with it.** Round-3 item 1 graded this cover *acceptable* with the
+	// one remark *"accent is a little hard to see on top of the background"* — said about `#736e6a`,
+	// which is what is published again here (chroma .0088 against the background's `#484b5a`). No
+	// reviewer-blessed accent is displaced either way; what v0.9.2 does is trade an unreviewed browner
+	// mark for the reviewed colour that drew a note, and round 5 is where that is answered.
+	assert.equal(palette.roles.accent.hex, "#736e6a", "was #263143 pre-union, #746045 in v0.9.0–0.9.1")
 	assert.equal(componentCandidates.length, 1, "one unslotted component, and it is still offered")
 	assert.equal(componentCandidates[0]!.published, "#736e6a")
 

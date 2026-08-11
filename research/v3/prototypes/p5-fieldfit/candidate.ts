@@ -219,8 +219,25 @@ import type {
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p5-fieldfit"
 
-/** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.9.0"
+/**
+ * `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes.
+ *
+ * **v0.9.2 ships the family self-coherence gate**, which v0.9.1 measured and deliberately did not
+ * wire. A mark or region contributes an identity family only if at least half of its own pixels lie
+ * within `COHERENCE_GATE_BAR_MULTIPLE` bars of the colour it publishes — so the blend median of a
+ * whole illustration no longer defines what the artwork's identity is. The radius is the gate's own
+ * `[UNCALIBRATED]` constant carrying its own three-anchor bracket, not a reuse of the family-merge
+ * radius the ruling first named (at which the gate failed on its own anchor); `src/marks.ts` has the
+ * curves, the window `[5, 10]`, and why 8 here and 8 in `ACCENT_FG_EXCLUSION_MULTIPLE` are a
+ * coincidence rather than one number.
+ *
+ * **Three of the 31 dev covers move against v0.9.0, all on the accent**: `a8942d6547` (round-3 item
+ * 7, a silent STRONG) is restored to `#009cff` byte-identically to v0.8.2, `16a8247378` moves
+ * `#746045` → `#736e6a`, and `21256ce593` moves `#070be9` → `#081bfb`. NARCOSIS and all three
+ * round-4 silent STRONGs are byte-identical. What the gate does **not** move is `9646be9b20`: it is
+ * not a pool gate, so round 4's identity ask stays open (`tests/assignment.test.ts`).
+ */
+export const ALGORITHM_VERSION = "p5-fieldfit-0.9.2"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"

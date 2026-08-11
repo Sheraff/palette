@@ -36,6 +36,12 @@ import {
 } from "../src/assignment.ts"
 import type { AssignmentOption, IdentitySet, RoleCandidate } from "../src/assignment.ts"
 import { packRgb, unpackRgb } from "../src/decode.ts"
+import { decodeAndInventory } from "../src/decode.ts"
+import {
+	COHERENCE_GATE_BAR_MULTIPLE,
+	coherenceSpectrum,
+	MARK_IDENTITY_COHERENCE_FRACTION,
+} from "../src/marks.ts"
 import type { Inventory, OverlayCluster, TripleStats } from "../src/types.ts"
 
 const REPO_ROOT = resolve(import.meta.dirname, "..", "..", "..", "..", "..")
@@ -717,19 +723,28 @@ test("anchor: item 3 publishes fg black / accent red — round 3's verbatim ask"
 	const families = assignment.identity.families.map((family) =>
 		colorFromRgb(unpackRgb(family.representative)).hex
 	)
-	// **v0.9.0 re-ranks the families and the palette does not move** — which is the union's own claim
-	// under test here. The set is now yellow `#fad107` (.437) / a dark-olive mark `#26210b` (.228) /
-	// white `#f9fbf8` (.146) / red `#f81107` (.130): the v2 side sees a 20 556-mass olive mark the
-	// triple-wise reading never had, and it enters at rank 2. The red is still in the set, still
-	// covered by an ink role, and the published four colours are byte-identical to v0.8.2's — a
-	// reviewer-STRONG palette (round-4 item 1, silent) surviving a change to the family definition it
-	// is scored against is the anchor, not the rank number.
+	// **The family definition has now moved twice under this palette and the palette has not moved
+	// once**, which is the anchor here — a reviewer-STRONG set (round-4 item 1, silent) surviving a
+	// change to the very thing it is scored against.
+	//
+	// v0.9.0 re-ranked the families: yellow `#fad107` (.437) / a dark-olive mark `#26210b` (.228) /
+	// white `#f9fbf8` (.146) / red `#f81107` (.130), because the v2 side saw a 20 556-mass olive mark
+	// the triple-wise reading never had and it entered at rank 2. **v0.9.2's gate withholds exactly
+	// that olive** — 22.8% of the frame at .0865 self-coherence — so the set is yellow (.437) / white
+	// (.146) / red (.130) / `#ffda00` (.016) and white and red move up one rank each. `massRetained`
+	// falls to .715 with it, as it must.
+	//
+	// That the withheld colour is the one round 2 rejected here by name (*"doesn't feel like a part of
+	// this artwork"*) is a corroboration and not a mechanism: chroma-first already kept the olive out
+	// of the *accent*, and the gate is what now keeps it out of the *identity set* as well. Two
+	// independent rules, one colour, same verdict.
 	assert.ok(
 		families.some((hex) => hex === "#f81107"),
 		`the red is still in the identity set: ${families}`,
 	)
-	assert.deepEqual(assignment.fieldCovered, [1, 3], "yellow and white come from the field roles")
-	assert.deepEqual(assignment.chosen?.covered, [1, 3, 4], "an ink role still reaches the red's family")
+	assert.ok(!families.some((hex) => hex === "#26210b"), `the olive is withheld: ${families}`)
+	assert.deepEqual(assignment.fieldCovered, [1, 2], "yellow and white come from the field roles")
+	assert.deepEqual(assignment.chosen?.covered, [1, 2, 3], "an ink role still reaches the red's family")
 	// The olive is the heaviest accent candidate on the cover and it does **not** publish: this is the
 	// exact colour round 2 rejected here (*"doesn't feel like a part of this artwork"*), and the
 	// chroma-first tie-break is what keeps it out — .0367 against the red's .2489, against a 2×
@@ -795,6 +810,19 @@ test("anchor: item 3 publishes fg black / accent red — round 3's verbatim ask"
  * Nothing is patched around it: the v0.9 brief's byte-identity gate is over the **round-4** silent
  * STRONGs (all three hold), this is a round-3 one, and the ruling on whether an 80%-of-frame median
  * belongs in an identity set is the orchestrator's with this test as its evidence.
+ *
+ * **v0.9.1 kept the pin and measured why; v0.9.2 pays it back.** The ruling that followed — withhold
+ * an identity family from material whose own colour explains less than half of it — was implemented
+ * as a measurement first, and its gate check failed at the family-merge radius the ruling named (the
+ * NARCOSIS crimson, the colour the whole mechanism exists to reach, is .0589 self-coherent there and
+ * would have been withheld beside this cover's .0009). The radius became the gate's own constant with
+ * its own measured window, and at `COHERENCE_GATE_BAR_MULTIPLE` the 328 009-pixel mark reads .274 —
+ * withheld — while the crimson reads .712 and survives.
+ *
+ * **So this is no longer a regression: the expectation below is the reviewer's silent STRONG, back
+ * byte-identically** (all four roles equal v0.8.2's). It is left in the regression harness, with its
+ * history intact, because the palette is the same object either way and the next change to the family
+ * definition has to keep it.
  */
 for (
 	const [label, shard, name, expected, note] of [
@@ -802,8 +830,8 @@ for (
 			"a8942d6547 (round-3 item 7, STRONG)",
 			"12",
 			"ab67616d0000b27300125577fb06a6a8942d6547",
-			["#120032", "#0f002a", "#ffffff", "#39367d"],
-			"REGRESSION (accent only): the reviewer's silent STRONG was #120032/#0f002a/#ffffff/#009cff",
+			["#120032", "#0f002a", "#ffffff", "#009cff"],
+			"RESTORED in v0.9.2: the reviewer's silent STRONG, byte-identical to v0.8.2",
 		],
 		[
 			"eaed77a9cb (demo-20)",
@@ -825,29 +853,51 @@ for (
 }
 
 /**
- * The regression above, as the measurement that explains it rather than as a hex string: chroma-first
- * did **not** choose this accent, coverage did, and the family it covers is one mark holding four
- * fifths of the frame. If a later change puts the blue back, this is the test that says what had to
- * move for it.
+ * The restoration above, as the measurement that explains it rather than as a hex string.
+ *
+ * **Coverage displaced this accent in v0.9.0 and coverage restores it in v0.9.2 — the ranking rule
+ * never changed, what changed is what the identity set contains.** v0.9.0's set had the 328 009-pixel
+ * blend median at rank 1 with massFraction .80, so the mark covered a family the blue could not reach
+ * and won on coverage 4 against 3. The gate withholds that median (.274 at the gate's radius, against
+ * the 0.5 fraction), the set becomes the field's own colours plus `#009cff` at rank 4, and now it is
+ * the *blue* that reaches a family the mark misses — coverage 4 against 3, the same margin the other
+ * way round.
+ *
+ * The mark is still the heaviest thing in the accent pool and still ranked first in the shortlist:
+ * this is not a pool gate, and the test asserts that directly, because "the gate deleted the
+ * candidate" is the wrong reading of the restoration and the easy one to reach for.
  */
-test("a8942d6547: coverage, not chroma, displaced the STRONG's accent", async () => {
+test("a8942d6547: coverage displaced the STRONG's accent, and coverage restores it", async () => {
 	const { assignment, marks } = await analyzeImage(
 		await cover("12", "ab67616d0000b27300125577fb06a6a8942d6547"),
 	)
 	assert.ok(assignment !== null)
-	const published = assignment.accentShortlist.find((c) => c.color.hex === "#39367d")!
+	const blend = assignment.accentShortlist.find((c) => c.color.hex === "#39367d")!
 	const blue = assignment.accentShortlist.find((c) => c.color.hex === "#009cff")!
-	assert.equal(published.source, "mark", "the published accent is a mark, not an overlay cluster")
-	assert.ok(blue.chroma > published.chroma, `the displaced blue is the more chromatic: ${blue.chroma} vs ${published.chroma}`)
-	assert.equal(assignment.coverageDecided, true, "so the per-role terms did not decide this")
+	// Not a pool gate: the withheld colour still leads the shortlist on mass, by 47×.
+	assert.equal(assignment.accentShortlist[0]!.color.hex, "#39367d")
+	assert.equal(blend.source, "mark")
+	assert.ok(blend.mass > 40 * blue.mass, `${blend.mass} against ${blue.mass}`)
+	assert.ok(blue.chroma > blend.chroma, `the restored blue is the more chromatic: ${blue.chroma} vs ${blend.chroma}`)
+	// And coverage still outranks every per-role term — it is simply now pointing the other way.
+	assert.equal(assignment.coverageDecided, true, "so the per-role terms did not decide this either")
+	assert.equal(assignment.chosen?.accent?.color.hex, "#009cff")
 	assert.equal(assignment.chosen?.coverage, 4)
 	assert.equal(assignment.perRoleOnly?.coverage, 3)
-	// The cause, at its root: one mark is most of the image, at every rung the sweep offers.
+	// The cause, at its root: one mark is most of the image at every rung the sweep offers, and it is
+	// a colour none of that image is.
 	const heaviest = marks.marks[0]!
 	assert.equal(heaviest.kind, "mark")
 	assert.ok(heaviest.massFraction > 0.75, `heaviest mark holds ${heaviest.massFraction} of the frame`)
-	assert.equal(assignment.identity.families[0]!.rank, 1)
-	assert.ok(assignment.identity.families[0]!.massFraction > 0.75)
+	assert.equal(heaviest.identityCoherent, false)
+	assert.ok(heaviest.selfCoherence < MARK_IDENTITY_COHERENCE_FRACTION)
+	// So the family it used to define is gone: rank 1 is now the field's own background at .112, and
+	// the retained mass falls to .32 — the set claims only what it can still stand behind.
+	assert.ok(
+		assignment.identity.families.every((family) => family.massFraction < 0.75),
+		"no family may be four fifths of the frame any more",
+	)
+	assert.ok(assignment.identity.massRetained < 0.4)
 })
 
 /**
@@ -969,6 +1019,21 @@ test("anchor: 28279e9184 — the white is deduped out of the pool, and coverage 
  * The reviewer's complaint on this cover is *the artwork's colours are missing*, and a mud-coloured
  * median of all of them is a different answer from any of them. Round 5 has this cover returning; the
  * numbers it needs are pinned here rather than summarized.
+ *
+ * **v0.9.2 ships the gate, this region is withheld, and the accent still does not move. Round 4's
+ * identity ask therefore stays open.**
+ *
+ * The region reads **.250** self-coherent at the gate's radius, against the 0.5 fraction, so it is
+ * withheld — family 1 (`#7f7ca7`) disappears from the identity set, `massRetained` falls to .221 and
+ * the chosen coverage falls 3 → 2. That is the gate doing exactly what it was ruled to do, on the
+ * single most incoherent contributing entry of the 31 covers (.0012 at 1×, the lowest measured).
+ *
+ * **And the published accent is still `#7f7ca7`.** The gate withholds a colour's right to define the
+ * artwork's *identity*; it is not an eligibility gate on the candidate pool (arm-f §2.4), so the
+ * region remains an accent candidate and the chroma-first tie-break still ranks its .0648 above
+ * `#000000`'s zero. Reverting this accent would take a **pool** gate — a different and much larger
+ * ruling than the one that was made, and the level the ask is now pending at. Nothing here anticipates
+ * that ruling; the numbers it would be made against are pinned below.
  */
 test("anchor: item 6 moves on the mark pool, and the mark is a median of the whole illustration", async () => {
 	const { palette, assignment, diagnostics, componentCandidates, marks } = await analyzeImage(
@@ -977,11 +1042,21 @@ test("anchor: item 6 moves on the mark pool, and the mark is a median of the who
 	assert.deepEqual(
 		[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
 		["#fae8d0", "#fae8d0", "#01bdfd", "#7f7ca7"],
-		"was #fae8d0/#fae8d0/#01bdfd/#000000 through v0.8.2",
+		"was #fae8d0/#fae8d0/#01bdfd/#000000 through v0.8.2; unchanged by v0.9.2's gate",
 	)
 	assert.ok(assignment !== null)
 	assert.equal(assignment.coverageDecided, false)
-	assert.equal(assignment.chosen?.coverage, 3, "was 2: the accent now reaches the illustration's family")
+	// 2 in v0.8.2, 3 in v0.9.0 (the accent reached the illustration's family), and **2 again** in
+	// v0.9.2 — the gate took that family away without taking the accent that covered it. Recomputed,
+	// not relaxed: the palette below is the thing that is pinned, and it did not move.
+	assert.equal(assignment.chosen?.coverage, 2)
+	assert.ok(
+		!assignment.identity.families.some((family) =>
+			colorFromRgb(unpackRgb(family.representative)).hex === "#7f7ca7"
+		),
+		"the withheld region defines no family",
+	)
+	assert.ok(assignment.identity.massRetained < 0.25, `${assignment.identity.massRetained}`)
 	assert.equal(diagnostics.retreat, true, "the 15a veto still empties the component pool")
 	assert.equal(diagnostics.fieldComponents, 0)
 	assert.deepEqual(componentCandidates, [], "so the *component* union is still not this cover's answer")
@@ -1027,4 +1102,104 @@ test("91a16672c4: the class ordering hands the foreground back to the inks, and 
 	assert.ok(assignment.foregroundShortlist.every((candidate) => candidate.foregroundClass === "A"))
 	assert.equal(assignment.classOverriddenByCoverage, false)
 	assert.equal(assignment.accentShortlist[0]!.source, "component")
+})
+
+
+// ---------------------------------------------------------------------------------------------
+// v0.9.2 — **the gate's three anchors, and the window its radius is uncalibrated inside**
+// ---------------------------------------------------------------------------------------------
+//
+// v0.9.0's loud finding was ruled on: a mark/region contributes an identity family only if at least
+// `NO_FIELD_EXPLAINED_FRACTION` of its own pixels lie within a bar multiple of its own colour — the
+// explained-fraction principle's third application (field→image, component→support, family→mark).
+//
+// The rule was measured before it was wired, and the measurement moved the radius. At the
+// family-merge radius the ruling first named, the colour the gate exists to *protect* failed it, so
+// the radius became `COHERENCE_GATE_BAR_MULTIPLE` — its own `[UNCALIBRATED]` constant, sitting inside
+// a measured window rather than on a fitted point.
+//
+// These two tests are that evidence, on real covers, so neither the constant nor the window can drift
+// silently: the first pins the three anchors' verdicts **at the shipped radius**, the second pins the
+// window they define. `measurements/v9c-radius-sweep.json` is the whole 18-rung curve;
+// `measurements/v9d-delta.json` is what the shipped gate publishes on all 31 covers.
+
+test("gate anchors: at the shipped radius the crimson passes and both blend medians fail", async () => {
+	assert.equal(COHERENCE_GATE_BAR_MULTIPLE, 8)
+	assert.equal(MARK_IDENTITY_COHERENCE_FRACTION, 0.5)
+
+	const anchors = [
+		// [label, shard, name, the entry's published hex, must the gate withhold it?]
+		["a8942d6547 giant illustration mark", "12", "ab67616d0000b27300125577fb06a6a8942d6547", "#39367d", true],
+		["9646be9b20 78%-of-frame region", "09", "ab67616d0000b27300094a786a28459646be9b20", "#7f7ca7", true],
+		["45baf46c90 NARCOSIS crimson", "01", "ab67616d0000b27300012525e62c7f45baf46c90", "#8d2639", false],
+	] as const
+
+	const measured: { label: string; coherence: number; coherent: boolean }[] = []
+	for (const [label, shard, name, wantedHex, mustFail] of anchors) {
+		const path = await cover(shard, name)
+		const { marks } = await analyzeImage(path)
+		const entry = marks.marks.find((mark) =>
+			`#${mark.representative.toString(16).padStart(6, "0")}` === wantedHex
+		)
+		assert.ok(entry !== undefined, `${label}: no entry publishes ${wantedHex}`)
+		assert.ok(entry.mass > 0, `${label}: the gate only acts on material with mass`)
+		// The verdict itself, on each anchor, in the direction the ruling asked for. This is the
+		// assertion the whole pass turns on.
+		assert.equal(
+			entry.identityCoherent,
+			!mustFail,
+			`${label}: wanted ${mustFail ? "withheld" : "kept"}, measured ${entry.selfCoherence}`,
+		)
+		measured.push({ label, coherence: entry.selfCoherence, coherent: entry.identityCoherent })
+	}
+
+	const [illustration, retreat, crimson] = measured as [typeof measured[0], typeof measured[0], typeof measured[0]]
+
+	// The fractions, so a later change that keeps the verdicts by a hair is visible as one. The
+	// must-fail pair clears the 0.5 fraction downward by .23 and .25; the must-pass anchor clears it
+	// upward by .21. That two-sided margin is what "8 sits in the interior of the window" means in
+	// published numbers rather than in a swept curve.
+	assert.ok(illustration.coherence < 0.30, `a8942d6547 #39367d: ${illustration.coherence}`)
+	assert.ok(illustration.coherence > 0.24, `a8942d6547 #39367d: ${illustration.coherence}`)
+	assert.ok(retreat.coherence < 0.30, `9646be9b20 #7f7ca7: ${retreat.coherence}`)
+	assert.ok(retreat.coherence > 0.20, `9646be9b20 #7f7ca7: ${retreat.coherence}`)
+	assert.ok(crimson.coherence > 0.68, `45baf46c90 #8d2639: ${crimson.coherence}`)
+
+	// And the separation is asserted as a gap rather than as three thresholds, because the gap is the
+	// property a radius has to have and the thresholds are only where it currently sits.
+	assert.ok(crimson.coherence > illustration.coherence + 0.2)
+	assert.ok(crimson.coherence > retreat.coherence + 0.2)
+})
+
+test("gate anchors: the window is [5, 10] and the shipped radius is in its interior", async () => {
+	// The sweep's conclusion, pinned on the same three anchors: the crimson clears the fraction at 5x
+	// the bar and the two blend medians do not reach it until past 10x, so every rung in [5, 10] gives
+	// all three the verdict the ruling asked for. `measurements/v9c-radius-sweep.json` is the curve.
+	const at = async (shard: string, name: string, wantedHex: string) => {
+		const path = await cover(shard, name)
+		const [{ marks }, { raster }] = await Promise.all([analyzeImage(path), decodeAndInventory(path)])
+		const entry = marks.marks.find((mark) =>
+			`#${mark.representative.toString(16).padStart(6, "0")}` === wantedHex
+		)!
+		return coherenceSpectrum(entry, raster, [5, 10, 11])
+	}
+
+	const crimson = await at("01", "ab67616d0000b27300012525e62c7f45baf46c90", "#8d2639")
+	const illustration = await at("12", "ab67616d0000b27300125577fb06a6a8942d6547", "#39367d")
+	const retreat = await at("09", "ab67616d0000b27300094a786a28459646be9b20", "#7f7ca7")
+
+	// The window's lower end: at 5x the crimson survives a gate the other two still fail.
+	assert.ok(crimson[0]! >= MARK_IDENTITY_COHERENCE_FRACTION, `crimson at 5x: ${crimson[0]}`)
+	assert.ok(illustration[0]! < MARK_IDENTITY_COHERENCE_FRACTION, `#39367d at 5x: ${illustration[0]}`)
+	assert.ok(retreat[0]! < MARK_IDENTITY_COHERENCE_FRACTION, `#7f7ca7 at 5x: ${retreat[0]}`)
+
+	// The upper end: at 10x all three verdicts still hold, and by 11x the illustration crosses over.
+	assert.ok(crimson[1]! >= MARK_IDENTITY_COHERENCE_FRACTION, `crimson at 10x: ${crimson[1]}`)
+	assert.ok(illustration[1]! < MARK_IDENTITY_COHERENCE_FRACTION, `#39367d at 10x: ${illustration[1]}`)
+	assert.ok(retreat[1]! < MARK_IDENTITY_COHERENCE_FRACTION, `#7f7ca7 at 10x: ${retreat[1]}`)
+	assert.ok(illustration[2]! >= MARK_IDENTITY_COHERENCE_FRACTION, `#39367d at 11x: ${illustration[2]}`)
+
+	// So the shipped radius is strictly inside the window, not at either end — which is the claim the
+	// constant's `[UNCALIBRATED]` note makes and the one thing a re-tune has to preserve.
+	assert.ok(5 < COHERENCE_GATE_BAR_MULTIPLE && COHERENCE_GATE_BAR_MULTIPLE < 10)
 })

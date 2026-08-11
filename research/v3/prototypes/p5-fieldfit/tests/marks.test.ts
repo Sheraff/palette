@@ -39,10 +39,12 @@ import { fitField, fitFieldComponents } from "../src/fieldfit.ts"
 import type { IdentitySet } from "../src/assignment.ts"
 import {
 	chooseGroupingScale,
+	COHERENCE_GATE_BAR_MULTIPLE,
 	groupAtScale,
 	identityFamiliesUnion,
 	identityFamiliesV2,
 	inkOnSupport,
+	MARK_IDENTITY_COHERENCE_FRACTION,
 	MARK_SCALE_DEFAULT_DIAGONAL_FRACTION,
 	MARK_SCALE_SWEEP_MAX_DIAGONAL_FRACTION,
 	MARK_SCALE_SWEEP_MIN_DIAGONAL_FRACTION,
@@ -469,11 +471,21 @@ test("identity families v2 is a pure function of the mark set", () => {
 	const once = identityFamiliesV2(reading.marks, reading.totalPixels)
 	const twice = identityFamiliesV2([...reading.marks], reading.totalPixels)
 	assert.deepEqual(twice, once)
-	// The masses it ranks on are the entries' own, and the retained mass is their sum — the number
-	// whose collapse to 0.1819 on NARCOSIS is why this function exists.
+	// The masses it ranks on are the entries' own, and the retained mass is the sum over the entries it
+	// actually kept — the number whose collapse to 0.1819 on NARCOSIS is why this function exists.
+	//
+	// **Recomputed under v0.9.2's gate, not relaxed.** The sum is now over the *coherent* entries: this
+	// fixture's textured patch is withheld, so `massRetained` is 0.9375 rather than 1. That fall is the
+	// gate working — a set that kept claiming 1 after refusing a point would be reporting a coverage it
+	// no longer has.
+	let coherent = 0
 	let total = 0
-	for (const entry of reading.marks) total += entry.mass
-	assert.equal(once.massRetained, total / reading.totalPixels)
+	for (const entry of reading.marks) {
+		total += entry.mass
+		if (entry.identityCoherent) coherent += entry.mass
+	}
+	assert.equal(once.massRetained, coherent / reading.totalPixels)
+	assert.ok(coherent < total, "the fixture must exercise the gate, or this asserts nothing")
 	assert.ok(once.massRetained > 0.5, `v2 must retain the image, got ${once.massRetained}`)
 })
 
@@ -587,6 +599,145 @@ test("scale default: a diagonal fraction, snapped to an interior rung of the swe
 			}
 		}
 	}
+})
+
+// ---------------------------------------------------------------------------------------------
+// v0.9.2 — the family self-coherence gate (wired, on, no flag)
+// ---------------------------------------------------------------------------------------------
+//
+// The quantity: what share of a piece of material's own pixels are the same colour as the colour it
+// publishes, at the gate's own radius. The synthetic obligations are the two ends of it, the dither
+// property every instrument in this file has to have, and the one thing the gate must never become
+// (an eligibility gate on the pool).
+//
+// The radius is **not** the family-merge radius. v0.9.1 measured the gate at 1× and it failed on its
+// own anchor — the NARCOSIS crimson, the colour the mechanism exists to reach, is .0589 self-coherent
+// at one bar. `COHERENCE_GATE_BAR_MULTIPLE` = 8 sits in the interior of the measured window `[5, 10]`;
+// the three real-cover anchors that fix that window are pinned in `tests/assignment.test.ts`, since
+// they are the evidence the constant is uncalibrated *against*. What is pinned here is that the
+// instrument reading them measures what it claims to, and that the gate it feeds actually fires.
+
+test("the gate ships on, at its own radius and the inherited fraction", () => {
+	assert.equal(MARK_IDENTITY_COHERENCE_FRACTION, 0.5, "NO_FIELD_EXPLAINED_FRACTION, inherited")
+	assert.equal(COHERENCE_GATE_BAR_MULTIPLE, 8, "the gate's own constant, inside the [5, 10] window")
+	// There is no flag and no env override: the gate is what every published palette uses. Asserted
+	// against the environment rather than against a constant, so a re-introduced escape hatch fails it.
+	assert.equal(process.env["P5_MARK_COHERENCE_GATE"], undefined)
+	assert.equal(process.env["P5_MARK_COHERENCE_MULTIPLE"], undefined)
+})
+
+test("the gate fires: an incoherent entry contributes neither a family nor retained mass", () => {
+	// The end-to-end obligation, on the fixture built to fail the gate. `readMarks` still reports the
+	// entry (it is not a pool gate, below); `identityFamiliesV2` refuses its point *and* its mass.
+	const { reading } = read(texturedRegionOnField())
+	const withheld = reading.marks.filter((entry) => entry.mass > 0 && !entry.identityCoherent)
+	assert.ok(withheld.length > 0, "the fixture must offer the gate something to withhold")
+
+	// Every family, not the top few, so "absent" cannot be an artefact of the rank cut.
+	const families = identityFamiliesV2(reading.marks, reading.totalPixels, 1024)
+	let coherentMass = 0
+	for (const entry of reading.marks) if (entry.identityCoherent) coherentMass += entry.mass
+	assert.ok(coherentMass < reading.marks.reduce((sum, entry) => sum + entry.mass, 0))
+	assert.equal(
+		families.massRetained,
+		coherentMass / reading.totalPixels,
+		"massRetained must fall with the evidence, or it claims a coverage the set no longer has",
+	)
+	// And a withheld colour is absent from the set, not merely out-ranked in it — unless some *other*,
+	// coherent entry publishes the same triple, which is the only way it may legitimately reappear.
+	const offered = new Set(
+		reading.marks.filter((entry) => entry.identityCoherent).map((entry) => entry.representative),
+	)
+	const published = new Set(families.families.map((family) => family.representative))
+	for (const entry of withheld) {
+		if (offered.has(entry.representative)) continue
+		assert.ok(!published.has(entry.representative), `${entry.representative} was not withheld`)
+	}
+})
+
+test("(gate) a flat mark is self-coherent; a textured blend median is not", () => {
+	// One flat ink colour drawn on one flat page: the word's median *is* the ink, so essentially every
+	// pixel of the mark is the same colour as the colour it would contribute.
+	const word = marksOnly(read(textOnField()).reading)
+		.sort((first, second) => second.pixels - first.pixels)[0]!
+	assert.ok(word.pixels > 100, `the word is ${word.pixels} px`)
+	assert.ok(
+		word.selfCoherence > 0.99,
+		`a flat mark must speak for itself: ${word.selfCoherence}`,
+	)
+	assert.equal(word.identityCoherent, true)
+
+	// Structureless noise spread across a third of OKLab's lightness range: the median is a colour most
+	// of the patch's pixels are not, which is the shape v0.9.0's loud finding is about (`a8942d6547`'s
+	// 328 009-pixel mark, .274 self-coherent at this radius).
+	//
+	// **Recomputed for the 8× radius, not relaxed to it.** At the 1× radius v0.9.1 measured, this patch
+	// read under .1; at the gate's own radius it reads **.3906**, because a radius wide enough to let
+	// the NARCOSIS scrub through lets a good deal of any texture through. The margin under the 0.5
+	// fraction is therefore .11 rather than .4, and it is asserted at the value it has.
+	const patch = marksOnly(read(texturedRegionOnField()).reading)
+		.sort((first, second) => second.pixels - first.pixels)[0]!
+	assert.ok(patch.pixels > 500, `the patch is ${patch.pixels} px`)
+	assert.ok(
+		patch.selfCoherence < MARK_IDENTITY_COHERENCE_FRACTION,
+		`a blend median must not speak for its material: ${patch.selfCoherence}`,
+	)
+	assert.ok(patch.selfCoherence > 0.3, `and the 8x radius is genuinely wide: ${patch.selfCoherence}`)
+	assert.equal(patch.identityCoherent, false)
+
+	// The separation is the finding, so it is asserted as a ratio rather than as two thresholds — a
+	// smaller ratio than 1× gave, and the honest one for a radius chosen to admit textures.
+	assert.ok(
+		word.selfCoherence > 2 * patch.selfCoherence,
+		`flat ${word.selfCoherence} vs textured ${patch.selfCoherence}`,
+	)
+
+	// And the median-side reading agrees with the published-colour one on both — same verdict, close
+	// fraction (.359 against .391) — which is why the choice between them is a reporting detail rather
+	// than a second rule.
+	assert.ok(word.selfCoherenceMedian > 0.9)
+	assert.ok(patch.selfCoherenceMedian < MARK_IDENTITY_COHERENCE_FRACTION)
+	assert.ok(Math.abs(patch.selfCoherenceMedian - patch.selfCoherence) < 0.1)
+})
+
+test("(gate) the coherence verdict is idempotent under +/-1 LSB dither", () => {
+	// The same property the grouping and the family set already have (obligation (c)): a sub-bar
+	// perturbation cannot move a decision whose merge radius is the bar. Asserted on the verdict
+	// rather than on the fraction — the fraction moves by a pixel or two and should.
+	for (const build of [textOnField, texturedRegionOnField]) {
+		const plain = read(build()).reading
+		const shifted = read(dither(build())).reading
+		const verdicts = (reading: MarkReading) =>
+			marksOnly(reading)
+				.sort((first, second) => second.pixels - first.pixels)
+				.slice(0, 3)
+				.map((entry) => entry.identityCoherent)
+		assert.deepEqual(verdicts(shifted), verdicts(plain), `${build.name} under dither`)
+
+		const heaviest = (reading: MarkReading) =>
+			marksOnly(reading).sort((first, second) => second.pixels - first.pixels)[0]!
+		const before = heaviest(plain)
+		const after = heaviest(shifted)
+		assert.ok(
+			Math.abs(after.selfCoherence - before.selfCoherence) < 0.05,
+			`${build.name}: ${before.selfCoherence} -> ${after.selfCoherence}`,
+		)
+	}
+})
+
+test("(gate) it is not a pool gate: every entry is still in the mark reading", () => {
+	// The one thing the gate must never become is an eligibility gate (arm-f 2.4, "no role has an
+	// eligibility gate"). `readMarks` reports the verdict; it never drops an entry for it, on either
+	// setting of the flag, and `overlay.ts` reads `MarkReading.marks` unfiltered.
+	const reading = read(texturedRegionOnField()).reading
+	assert.ok(reading.marks.some((entry) => !entry.identityCoherent), "the fixture must have one")
+	let total = 0
+	for (const entry of reading.marks) total += entry.mass
+	assert.equal(
+		reading.massRetained,
+		total / reading.totalPixels,
+		"massRetained still sums every entry, gated or not",
+	)
 })
 
 // ---------------------------------------------------------------------------------------------

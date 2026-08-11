@@ -132,6 +132,11 @@ export async function diagnose(imagePath: string) {
 		// the image, which families the four published roles reach, the two shortlists the solve ran
 		// over, and — the number to read first on any delta — whether coverage or the per-role
 		// preference decided this palette. `null` when no assignment was solved.
+		//
+		// Since v0.9.2, `massRetained` is the share of the image held by the entries the coherence gate
+		// **kept**, not by every entry with mass. It falls when material is withheld, and it is supposed
+		// to: a set that kept claiming the whole frame after refusing a point would be reporting a
+		// coverage it can no longer stand behind. `marks.top[].identityCoherent` names what was refused.
 		assignment: assignment === null ? null : {
 			shortlistSize: assignment.shortlistSize,
 			familyCount: assignment.familyCount,
@@ -204,6 +209,12 @@ export async function diagnose(imagePath: string) {
 			// The heaviest sixteen. `inkShaped` is V9a's mark-level shape verdict and is **diagnostics
 			// only** — no role ordering reads it (V9a §d measured that an ink preference would displace a
 			// reviewer-STRONG foreground), and it is printed so the deferral stays measurable.
+			//
+			// `selfCoherence` / `identityCoherent` are v0.9.2's gate, and unlike `inkShaped` they **are**
+			// read: an entry with `identityCoherent: false` contributes no point and no mass to the
+			// identity families above, so this pair is the first place to look when a family that a mark
+			// obviously carries is missing from the set. Never a pool gate — a withheld entry is still in
+			// the accent shortlist below.
 			top: marks.marks.slice(0, 16).map((entry) => ({
 				kind: entry.kind,
 				hex: colorFromRgb(unpackRgb(entry.representative)).hex,
@@ -211,6 +222,8 @@ export async function diagnose(imagePath: string) {
 				mass: Number(entry.mass.toFixed(1)),
 				massFraction: Number(entry.massFraction.toFixed(4)),
 				chroma: Number(entry.chroma.toFixed(4)),
+				selfCoherence: Number(entry.selfCoherence.toFixed(4)),
+				identityCoherent: entry.identityCoherent,
 				erosionMortality: entry.ink === null
 					? null
 					: Number(entry.ink.erosionMortality.toFixed(3)),

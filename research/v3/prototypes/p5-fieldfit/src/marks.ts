@@ -76,6 +76,7 @@ import {
 } from "./components.ts"
 import type { FieldComponent, FieldReading, InkStatistics } from "./components.ts"
 import { normalizedX, normalizedY, unpackRgb } from "./decode.ts"
+import { NO_FIELD_EXPLAINED_FRACTION } from "./fieldfit.ts"
 import { snapToArtwork } from "./snap.ts"
 import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "./types.ts"
 
@@ -191,6 +192,135 @@ export const MARK_SCALE_DEFAULT_DIAGONAL_FRACTION = 0.0077
 const FIELD_INLIER_WEIGHT = 0.5
 
 // ---------------------------------------------------------------------------------------------
+// The family self-coherence gate (v0.9.2, wired and on) — the explained-fraction principle, third
+// application
+// ---------------------------------------------------------------------------------------------
+//
+// **The ruling v0.9.0's loud finding earned** (`reports/wv9b.md` §"Loud finding"; the v0.9.0 commit
+// message). A mark's identity contribution is *one colour standing for its whole support*, and that
+// standing has to be earned rather than assumed: on an illustrated residual the median of 328 000
+// pixels is a colour **no** pixel of the mark is, and on `a8942d6547` — round-3 item 7, graded STRONG
+// in silence — that blend median entered the identity set at massFraction .80, took family 1, and
+// displaced the reviewer's `#009cff` through coverage. The mechanism's own premise (spatially
+// accumulated mass sees material the triple floor discards) is sound; what was missing is the check
+// that the accumulated material is *one* material.
+//
+// So: **a mark/region contributes an identity family only if at least
+// `NO_FIELD_EXPLAINED_FRACTION` of its own pixels lie within `COHERENCE_GATE_BAR_MULTIPLE` bars of
+// its own published colour.** In v0.9.2 that rule is wired, on, and read on every published palette;
+// there is no flag. The two halves have different standing, and the difference is what v0.9.1's
+// measurement pass was for:
+//
+//  - the **fraction** is `NO_FIELD_EXPLAINED_FRACTION` (0.5), inherited rather than re-derived;
+//  - the **radius** is *not* the family-merge radius. The ruling first named
+//    `IDENTITY_FAMILY_BAR_MULTIPLE` = 1, and measured there the gate failed on its own anchor — the
+//    NARCOSIS crimson, the colour the whole mechanism exists to reach, is .0589 self-coherent at one
+//    bar and would have been withheld beside the two blend medians the gate exists to withhold. So
+//    the radius became `COHERENCE_GATE_BAR_MULTIPLE`, a constant carrying its own measured bracket.
+//    That is precedent 2's shape below (`COMPONENT_CORE_FRACTION` decoupling from decision 9's
+//    fraction on measured evidence), and it means "coherent" reads as *these pixels sit within one
+//    gate radius of the colour offered for them*, not *they would have merged into one family had
+//    they been offered as triples*.
+//
+// ## Why reusing 0.5 is the principle rather than a coincidence
+//
+// This is the **third application of one idea**: *a fit may speak for a domain only when it explains
+// at least half of it.* The two already in the stack are
+//
+//  1. **field → image** — `NO_FIELD_EXPLAINED_FRACTION` itself (`fieldfit.ts`, SPEC decision 9): one
+//     global surface is the picture's field only if it explains half the picture, else `noField`;
+//  2. **component → support** — `COMPONENT_CORE_FRACTION` (`fieldfit.ts`, decision 12's smooth-gate
+//     ruling): a component is a field-like surface only if enough of its own claim sits inside its
+//     inlier core. That one **decoupled** to 0.39 on a single measured cover, which is the standing
+//     precedent for *how* this constant may move: with a cover that measures it, under its own name;
+//  3. **family → mark** — here. A mark's colour speaks for the mark only if it is the same colour as
+//     half the mark.
+//
+// The value is therefore inherited, not chosen, and it is inherited under an explicit warning: if a
+// cover is ever measured that wants a different fraction *here*, the answer is precedent 2's — a new
+// constant with that cover as its anchor, never a quiet edit of decision 9's number.
+//
+// ## What it is not
+//
+// Not an eligibility gate on the **candidate pool**. A blend median is still a colour the image
+// contains and it still enters the accent pool with its spatial mass, exactly as in v0.9.0 — arm-f
+// §2.4's "no role has an eligibility gate" is untouched. What the gate withholds is the right to
+// define what *the artwork's identity* is, which is a claim about the whole image and is the one
+// place a colour nothing is actually made of does measurable damage.
+//
+// The verdict is measured on the **published** colour (`MarkRegion.lab`, the exact artwork triple the
+// entry would contribute), not on the pre-snap median: the published colour is what enters the
+// agglomeration as a point and what `familyCovers` tests, so it is the colour whose standing is in
+// question. `selfCoherenceMedian` publishes the same fraction against the raw median beside it, so
+// the choice is arguable against its own numbers rather than asserted (`measurements/v9c-*`).
+//
+// The consequence of *not* being a pool gate is published and is not a rounding error: on
+// `9646be9b20` (round-3 item 6 / round-4 item 3) the 78%-of-frame region **is** withheld — family 1
+// disappears and the chosen coverage falls 3 → 2 — and the accent stays `#7f7ca7` anyway, because the
+// region is still an accent candidate and chroma-first still ranks its .0648 above `#000000`'s zero.
+// Round 4's identity ask therefore stays open, and closing it would take a *pool* gate, which is a
+// different and much larger ruling than the one that was made (`tests/assignment.test.ts`).
+
+/**
+ * **The fraction of its own pixels a mark's published colour must account for** before that colour
+ * may contribute an identity family.
+ *
+ * `[INHERITED]` — `NO_FIELD_EXPLAINED_FRACTION`, re-exported under the name of its third application
+ * so that a reader of `identityFamiliesV2` sees which question is being asked. See the block above
+ * for the principle, the two prior applications, and the rule for how it may move.
+ */
+export const MARK_IDENTITY_COHERENCE_FRACTION = NO_FIELD_EXPLAINED_FRACTION
+
+/**
+ * **The radius, in `sameColorBar` multiples, at which a piece of material's self-coherence is
+ * measured** — the gate's own constant, with its own bracket.
+ *
+ * `[UNCALIBRATED]` — chosen *inside* a measured separating window rather than fitted to a cover, so
+ * it carries the window rather than a point estimate.
+ *
+ * ## Provenance: the three-anchor bracket (W-V9c, `measurements/v9c-radius-sweep.json`, 18 rungs over
+ * every entry that contributes a published family on all 31 covers)
+ *
+ * The gate has three named anchors — one that **must pass** because it is the colour the whole mark
+ * mechanism exists to reach, and two that **must fail** because they are the blend medians the gate
+ * exists to withhold. Their curves, against the 0.5 fraction:
+ *
+ * | multiple | 1 | 4 | **5** | 6 | **8** | **10** | 11 | 12 |
+ * |---|---|---|---|---|---|---|---|---|
+ * | `45baf46c90` `#8d2639`, the NARCOSIS crimson — **must pass** | .059 | .452 | **.532** | .603 | **.712** | .787 | .827 | .861 |
+ * | `a8942d6547` `#39367d`, 80% of frame — **must fail** | .001 | .014 | .024 | .049 | **.274** | .473 | .534 | .583 |
+ * | `9646be9b20` `#7f7ca7`, 78% of frame — **must fail** | .001 | .039 | .067 | .109 | **.250** | .427 | .508 | .565 |
+ *
+ * The crimson clears 0.5 at **5×**; the two blend medians do not reach it until **11×**. The clean
+ * window is therefore `[5, 10]` — six rungs wide, all three verdicts correct at every rung — and
+ * **8 sits in its interior**, with the crimson .712 (must-pass, and clear by .21) against .274 and
+ * .250 (must-fail, and clear by .23 and .25). It is the widest-margin rung of the window, which is
+ * the whole reason it was taken; the window's lower end is not (at 5× the crimson holds by only .03,
+ * and two further covers move, one of them a round-3 *foreground*).
+ *
+ * At 1× — the family-merge radius the ruling first named — the gate withholds 64 of the 102 entries
+ * that contribute a family, and the crimson is one of them. At 8× it withholds 16 of 102. A rule
+ * that silences two thirds of the identity evidence is a different family definition, not a
+ * coherence gate; that is the second, independent reason 1× was wrong.
+ *
+ * ## 8 here and 8 in `ACCENT_FG_EXCLUSION_MULTIPLE` are a numeric coincidence, not a reuse
+ *
+ * `ACCENT_FG_EXCLUSION_MULTIPLE` is also 8, and the resemblance is worth stating precisely so nobody
+ * later "unifies" them: that constant answers *when are an accent and a foreground too close for a
+ * viewer to tell apart* (decision 14, three reviewer-named pairs near black); this one answers *how
+ * far from its own colour may a mark's pixels sit and still be said to be that colour*. Different
+ * question, different evidence, different anchors. **They are two constants that happen to hold the
+ * same number, and either may move without the other.** Nothing here imports or derives from it.
+ *
+ * ## How this may move
+ *
+ * Precedent 2's rule (`COMPONENT_CORE_FRACTION` decoupling from `NO_FIELD_EXPLAINED_FRACTION`): with
+ * a cover that measures it, under its own name, and with the three anchors re-swept — the bracket is
+ * the artefact to update, not the point value alone.
+ */
+export const COHERENCE_GATE_BAR_MULTIPLE = 8
+
+// ---------------------------------------------------------------------------------------------
 // Shapes
 // ---------------------------------------------------------------------------------------------
 
@@ -233,6 +363,29 @@ export type MarkRegion = Readonly<{
 	chroma: number
 	/** Distinct exact triples inside the support. */
 	memberCount: number
+	/**
+	 * **The self-coherence fraction**: what share of this material's own pixels are the same colour as
+	 * the colour it publishes — `|{px : sameColorLab(px, lab, COHERENCE_GATE_BAR_MULTIPLE)}| / pixels`,
+	 * at the gate's own radius.
+	 *
+	 * 1 on a mark that is one flat colour; low on a mark that is a whole illustration, whose median is
+	 * a colour none of its pixels is. See the gate block above for the radius and its bracket.
+	 */
+	selfCoherence: number
+	/**
+	 * The same fraction measured against the **pre-snap** median (`centre`) instead of the published
+	 * triple (`lab`). Reported, never read: it exists so the choice of which colour's standing is being
+	 * tested can be argued against a number.
+	 */
+	selfCoherenceMedian: number
+	/**
+	 * `selfCoherence >= MARK_IDENTITY_COHERENCE_FRACTION` — whether this material may contribute an
+	 * identity family. **Read by `identityFamiliesV2` on every published palette** (v0.9.2).
+	 *
+	 * Never a pool gate: `readMarks` reports the verdict and never drops an entry for it, and
+	 * `overlay.ts` offers every mark to the accent pool with its spatial mass regardless.
+	 */
+	identityCoherent: boolean
 	/** Mass-weighted mean normalized position of the support. */
 	meanX: number
 	meanY: number
@@ -429,6 +582,16 @@ export function readMarks(
  *
  * That is the whole mechanism, and it is why the NARCOSIS crimson can appear at all: as a triple it
  * is ten thousand sub-floor points, as material it is one point of mass 23 633.
+ *
+ * ## v0.9.2 and the self-coherence gate: applied
+ *
+ * The one line below that reads `identityCoherent` is live on every published palette. Material whose
+ * own colour explains less than `MARK_IDENTITY_COHERENCE_FRACTION` of it at
+ * `COHERENCE_GATE_BAR_MULTIPLE` bars contributes **neither a point nor retained mass** — the blend
+ * median of a whole illustration no longer gets to say what the artwork's identity is. Three of the
+ * 31 dev covers move against v0.9.0, all on the accent, and one of them (`a8942d6547`) is a round-3
+ * silent STRONG whose reviewer-blessed `#009cff` is restored byte-identically. The radius, its
+ * bracket and the two must-fail / one must-pass anchors: `COHERENCE_GATE_BAR_MULTIPLE`.
  */
 export function identityFamiliesV2(
 	marks: readonly MarkRegion[],
@@ -439,6 +602,10 @@ export function identityFamiliesV2(
 	let retained = 0
 	for (const entry of marks) {
 		if (!(entry.mass > 0)) continue
+		// The gate; see the block above. An incoherent entry contributes neither a point nor retained
+		// mass — `massRetained` has to fall with the evidence, or it would report a coverage the set no
+		// longer claims.
+		if (!entry.identityCoherent) continue
 		retained += entry.mass
 		points.push({
 			packed: entry.representative,
@@ -1005,6 +1172,10 @@ function measured(
 	}
 	const localField = fit.fieldAt(base.meanX, base.meanY)
 	const delta = decompose(localField, lab)
+	// The gate's quantity, measured here because this is where both the support's inventory and the colour
+	// that will be published exist. Two passes over the support's *distinct triples* (not its pixels),
+	// which is the same table the median and the snap already walked.
+	const selfCoherence = coherentPixelFraction(inventory, lab)
 	return {
 		kind: base.kind,
 		index: base.index,
@@ -1020,6 +1191,9 @@ function measured(
 		lab,
 		chroma: Math.hypot(lab[1], lab[2]),
 		memberCount: inventory.triples.size,
+		selfCoherence,
+		selfCoherenceMedian: coherentPixelFraction(inventory, centre),
+		identityCoherent: selfCoherence >= MARK_IDENTITY_COHERENCE_FRACTION,
 		meanX: base.meanX,
 		meanY: base.meanY,
 		localField,
@@ -1107,6 +1281,52 @@ function reachable(inventory: Inventory, target: OkLab): Inventory {
 	}
 	if (triples.size === 0) return inventory
 	return { triples, has: (key: number) => triples.has(key), totalPixels }
+}
+
+/**
+ * **The self-coherence fraction**: what share of the support's pixels are the same colour as `colour`,
+ * at the gate's own radius.
+ *
+ * The predicate is `sameColorLab(…, COHERENCE_GATE_BAR_MULTIPLE)`, so the quantity reads as *"how much
+ * of this material sits within one gate radius of the colour being offered for it"*. Summed over
+ * distinct triples weighted by their counts, which is the same number as a walk over the pixels for a
+ * fraction of the work; 0 on an empty support, which the gate reads as *not coherent* (a support with
+ * no pixels speaks for nothing).
+ */
+function coherentPixelFraction(inventory: Inventory, colour: OkLab): number {
+	if (inventory.totalPixels <= 0) return 0
+	let within = 0
+	for (const stats of inventory.triples.values()) {
+		if (sameColorLab(stats.lab, colour, COHERENCE_GATE_BAR_MULTIPLE)) within += stats.count
+	}
+	return within / inventory.totalPixels
+}
+
+/**
+ * The self-coherence fraction of a finished entry at an arbitrary merge multiple — **measurement
+ * only**, and the reason it exists is that `COHERENCE_GATE_BAR_MULTIPLE` is a bracket rather than a
+ * point.
+ *
+ * Nothing in the pipeline calls it: `MarkRegion.selfCoherence` is measured once, at the gate's own
+ * radius, on the path above. This re-derives the same quantity at other radii so that the separating
+ * window `[5, 10]` stays a swept curve (`measurements/v9c-radius-sweep.ts`) that a later pass can
+ * re-run rather than a remembered claim. It rebuilds the support's inventory, so it costs one pass
+ * over the entry's box per call and is not for the hot path.
+ */
+export function coherenceSpectrum(
+	entry: MarkRegion,
+	raster: DecodedRaster,
+	multiples: readonly number[],
+): number[] {
+	const inventory = supportInventory(entry.support, entry.box, raster)
+	if (inventory.totalPixels <= 0) return multiples.map(() => 0)
+	const within = multiples.map(() => 0)
+	for (const stats of inventory.triples.values()) {
+		for (let slot = 0; slot < multiples.length; slot += 1) {
+			if (sameColorLab(stats.lab, entry.lab, multiples[slot]!)) within[slot]! += stats.count
+		}
+	}
+	return within.map((sum) => sum / inventory.totalPixels)
 }
 
 /**
