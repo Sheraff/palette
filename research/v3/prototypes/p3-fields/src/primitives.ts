@@ -199,6 +199,33 @@ export function splitAtLargestDecileGap(
 	key: (index: number) => number,
 	gapRatio: number,
 ): LumpSplit | null {
+	return splitAtWidestAcceptedDecileGap(population, key, gapRatio, () => true)
+}
+
+/**
+ * **The same split, restricted to the cuts a caller will accept** (0.4.4).
+ *
+ * The decile gaps are enumerated widest first and the first split the predicate accepts is returned;
+ * `accept: () => true` is `splitAtLargestDecileGap` exactly, which is how that function is now spelled,
+ * so there is one implementation of "cut a scalar ordering at a decile gap" and not two.
+ *
+ * It exists for the sub-rankable lump guard in `foreground.ts`: when the widest gap elects a lump too
+ * small to take a rank of, the cut moves to **the next-widest gap that leaves the elected side
+ * rankable** — the elected lump absorbing the band's next lump rather than the cascade running over a
+ * sliver. The `gapRatio` bar still applies to every candidate cut, so a relocated cut is a cut this
+ * file would have been willing to make in the first place; a caller that accepts nothing gets `null`
+ * and owns what that means.
+ *
+ * Permutation-invariance and the scalar-only argument are `splitAtLargestDecileGap`'s, unchanged: the
+ * enumeration order is by gap width with ties broken toward the *lower* decile index, so the answer is
+ * a function of the values alone.
+ */
+export function splitAtWidestAcceptedDecileGap(
+	population: Int32Array,
+	key: (index: number) => number,
+	gapRatio: number,
+	accept: (split: LumpSplit) => boolean,
+): LumpSplit | null {
 	const n = population.length
 	// Fewer pixels than deciles and the "deciles" are repeats of the same handful of values, which
 	// manufactures gaps of zero width and ratios of one. A band that small is one lump by fiat.
@@ -209,35 +236,40 @@ export function splitAtLargestDecileGap(
 	const spread = at(LUMP_DECILES) - at(0)
 	if (!(spread > 0)) return null
 
-	let widest = 0
-	let widestIndex = -1
+	// Every candidate cut, widest gap first. Ties keep the *earlier* decile index, so the enumeration is
+	// a function of the values and not of which way the loop runs — the property the single-gap version
+	// bought with its strict `>`.
+	const candidates: { index: number; gap: number }[] = []
 	for (let decile = 0; decile < LUMP_DECILES; decile += 1) {
-		const gap = at(decile + 1) - at(decile)
-		// Strictly greater keeps the *earliest* widest gap, so the winner is a function of the values
-		// and not of which way the loop runs.
-		if (gap > widest) {
-			widest = gap
-			widestIndex = decile
-		}
+		candidates.push({ index: decile, gap: at(decile + 1) - at(decile) })
 	}
-	if (widestIndex < 0) return null
-	const ratio = widest / spread
-	if (ratio < gapRatio) return null
+	candidates.sort((first, second) => second.gap - first.gap || first.index - second.index)
 
-	const threshold = (at(widestIndex) + at(widestIndex + 1)) / 2
-	const lower: number[] = []
-	const upper: number[] = []
-	for (let i = 0; i < n; i += 1) {
-		if (key(population[i]) < threshold) lower.push(population[i])
-		else upper.push(population[i])
+	for (const candidate of candidates) {
+		const ratio = candidate.gap / spread
+		// Descending by width, so the first candidate under the bar means no candidate clears it.
+		if (ratio < gapRatio) return null
+
+		const threshold = (at(candidate.index) + at(candidate.index + 1)) / 2
+		const lower: number[] = []
+		const upper: number[] = []
+		for (let i = 0; i < n; i += 1) {
+			if (key(population[i]) < threshold) lower.push(population[i])
+			else upper.push(population[i])
+		}
+		// Unreachable — the threshold is strictly between two attained order statistics, so both sides hold
+		// the pixel that attains their end of the gap. Kept as the single-gap version kept it, and stepping
+		// to the next candidate rather than returning is the reading that serves the guard.
+		if (lower.length === 0 || upper.length === 0) continue
+		const split: LumpSplit = {
+			lower: Int32Array.from(lower),
+			upper: Int32Array.from(upper),
+			gapRatio: ratio,
+			threshold,
+		}
+		if (accept(split)) return split
 	}
-	if (lower.length === 0 || upper.length === 0) return null
-	return {
-		lower: Int32Array.from(lower),
-		upper: Int32Array.from(upper),
-		gapRatio: ratio,
-		threshold,
-	}
+	return null
 }
 
 // ---------------------------------------------------------------------------------------------

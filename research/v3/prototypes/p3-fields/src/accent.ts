@@ -198,6 +198,89 @@
  * `fieldFamily` / `inFieldFamily` / `bandInFieldFamily` / `publishedFieldFamily` are computed and
  * recorded, and decide nothing. They are the instrument the next attempt needs.
  *
+ * ## 0.4.4 — the neutral branch, which is the change 0.4.3 said was missing
+ *
+ * The paragraph above named it: *"what is missing is a branch this role does not have: the artwork
+ * carries no chromatic mark outside the field's own families, so the accent should be the artwork's
+ * neutral figure rather than the least-bad shade of the ground."* This is that branch, and the
+ * evidence for it is two rounds of the same prescription on the same cover — round 1's *"accent
+ * white"* and round 6's *"the colors are Taxi Yellow, Torch Red, black (Soot is ok), white"*.
+ *
+ * **The condition is a property of the qualified population, in three clauses, with no cover in any of
+ * them and no new number in any of them.**
+ *
+ *  1. **The ground family set is two families wide.** Both field ends clear `REGION_CHROMA_BOUNDARY`
+ *     and the *tangential separation between them* clears it too. This is `EVIDENCE_2026-08-04.md`
+ *     item 13's figure-versus-ground principle read as arithmetic: separation binds between the figure
+ *     family and the **ground family set**, and when the ground has already spent two families there is
+ *     no third one for a mark to occupy. Where an end is neutral (168, the purple cover, r2-item-1) or
+ *     the two ends are shades of one family (130's two tans), the artwork still has family-room and the
+ *     chromatic ordering is the right instrument — **which is why none of those covers can reach this
+ *     branch, structurally rather than by measurement**.
+ *  2. **The band the accent is actually chosen from holds nothing outside the ground family set worth
+ *     taking a rank of.** A pixel is *outside the ground family set* when it is chromatic, a shade of
+ *     neither end (the 0.4.3 tangential test) **and** not a blend of the two (its distance across the
+ *     chord joining the two ends, clamped to the chord, reaches the same boundary). Fewer than
+ *     `ceil(1/τ)` of the opening top-τ band are, so the population every narrowing below operates on
+ *     has no departure mark in it to elect.
+ *  3. **The neutrals are worth taking a rank of** (`ceil(1/τ)`, `luminanceOrdering`'s rule).
+ *
+ * **Measured on cover 19:** ends separation **0.1606** (a yellow ground, a red field end, two
+ * families), **0 of 2001** band pixels outside the ground family set, 25 491 qualified neutrals — the
+ * branch fires and publishes **`#f8ffff`** against `#fdd001` / `#fe0000` / `#010101`. That is the
+ * reviewer's four colours. On the covers whose marks this file exists to publish it does not fire, and
+ * **clause 1 is what stops it every time**: 168 **0.0032**, 039 **0.0047**, r2-item-4's purple
+ * **0.0000**, 130 **0.0007**, r2-item-1 **0.0000**, 208 **0.0386**, r2-item-8 **0.0237** — all below
+ * the boundary the ordering itself uses to decide whether a colour is a colour. On coverage-220 the
+ * branch fires on **3**, and demo-20 adds cover 19 itself.
+ *
+ * **Clause 2 is the third spelling of itself, and the first two were refuted by measurement.**
+ *
+ * - **Departure counts alone**, the obvious reading of 0.4.3's own instrument, are refuted by the
+ *   measurement that refuted them as a sort key: on 039 the absolute tangential test calls **95 078 of
+ *   95 083** chromatic pixels shades of a dark navy surface, so a raw departure count fires *harder*
+ *   on the magenta cover (5 departures) than on cover 19 (569). Clause 1 is what makes any such count
+ *   safe to read at all — it admits the test only where both ends are chromatic enough for "the same
+ *   family as this end" to mean something.
+ * - **Departures fewer than the top-τ band**, τ-relative and clause-1 protected, still fires where a
+ *   real mark exists: 8 of 220 coverage covers, and on three of them it replaced a mark the ordering
+ *   had correctly found — a vivid blue `#1500cb` became a brown-grey, a red `#f11505` a near-white,
+ *   and a red `#f50002` collapsed the accent onto the foreground. A mark is *small by nature* (this
+ *   file's own words, one section up), so "fewer pixels than the band" cannot mean "no mark".
+ * - **Departures fewer than `ceil(1/τ)`, with the blend correction**, is the opposite failure: cover 19
+ *   carries **179** pixels outside the ground family set — JPEG fringing on the striped band, none of
+ *   it anywhere near the top of the ordering — so the branch stops firing on the cover it exists for.
+ *
+ * What separates the two failures is **where** the departures sit, and the object that answers it is
+ * the band: on cover 19 those 179 pixels put **zero** into the top-τ band, while on the blue cover the
+ * mark tops the ordering. The shipped clause asks the question of the object that elects.
+ *
+ * **The branch's own ordering is `min-ramp |raw APCA| × lightness extremity`, by percentile product,
+ * band-then-cascade.** Both factors are numbers attached to a pixel, both are already load-bearing
+ * elsewhere (the ink preference reads the first, `refineInkWindow` the second), and neither is a hue
+ * quantity — inside a neutral population a chroma or hue ordering ranks the low bits of two 8-bit
+ * channels, which is 0.4.2's gate-2 argument in the one place it decides everything. The five
+ * narrowings do not run: every one of them is a statement about a chromatic mark, and a lump split on
+ * the departure product or a top-τ chroma band has no meaning inside a population the branch fired
+ * *because* it is neutral. What narrows here is the ordering.
+ *
+ * **Stated rather than smoothed, twice.**
+ *
+ * 1. The branch publishes the neutral **extreme** that is most legible against the ramp, and on a cover
+ *    carrying both a white title and black type it elects whichever of the two the product ranks
+ *    higher — the other is normally the foreground already, and where it is not, invariant 3's
+ *    separation steps the rank. On cover 19 the machinery lands white with black already published as
+ *    the ink; that is the prescription, and it is also luck in the sense that no clause here *ordered*
+ *    white. If a later round says the accent should have been the other neutral, this paragraph is
+ *    what failed and the repair is in the ordering, not the condition.
+ * 2. **Two of the three coverage firings publish a dark neutral beside a dark foreground.** On
+ *    `…0003748f` the palette becomes mauve / cream / `#000000` / `#0e0011` and on `…00096440`
+ *    red / olive / `#000002` / `#613c07`; both clear invariant 3's separation and both are the shape
+ *    `EVIDENCE_2026-08-04.md` item 2 warns about. The third, `…05687107`, goes the other way and
+ *    *removes* a twin — an orange foreground beside an orange accent becomes an orange beside a warm
+ *    grey. Three covers is not a rate and none of them is a graded item; they are named here so the
+ *    next round can look at them rather than discover them.
+ *
  * ## The salience guard (requirement 4)
  *
  * `EVIDENCE_2026-08-04.md` item 6: presence is not eligibility, and a colour that occurs only as an
@@ -259,7 +342,12 @@
 
 import { REGION_CHROMA_BOUNDARY } from "../../../src/contract/constants.ts"
 import type { Rgb8 } from "../../../src/contract/types.ts"
-import { ACCENT_LUMP_DEPARTURE_TIE_BAND, LUMP_GAP_RATIO, TRIM_LEVEL } from "./constants.ts"
+import {
+	ACCENT_LUMP_DEPARTURE_TIE_BAND,
+	LIGHTNESS_AXIS_MIDPOINT,
+	LUMP_GAP_RATIO,
+	TRIM_LEVEL,
+} from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import { minRampContrast } from "./foreground.ts"
 import {
@@ -315,6 +403,40 @@ export type AccentOrdering = Readonly<{
 	qualified: number
 	/** How many of the qualified sit in a chromatic field end's own family (0.4.3). */
 	inFieldFamily: number
+	/** How many of the qualified are chromatic at all — `chroma ≥ REGION_CHROMA_BOUNDARY` (0.4.4). */
+	chromaticQualified: number
+	/**
+	 * How many of the qualified are a **chromatic departure**: chromatic, and in no chromatic field
+	 * end's family (0.4.4). This is the population the branch condition below counts.
+	 */
+	departureQualified: number
+	/**
+	 * The **tangential separation between the two field ends** (0.4.4) — the same scalar the ordering's
+	 * hue term measures, read between `background` and `surface` instead of between a pixel and an end.
+	 * It is how wide the *ground family set* is: at or above `REGION_CHROMA_BOUNDARY` the two ends are
+	 * two different families, below it they are two shades of one.
+	 */
+	endsSeparation: number
+	/** `departureQualified / qualified` (0.4.4) — recorded beside the branch, decides nothing. */
+	departureShare: number
+	/**
+	 * How many qualified pixels sit **outside the ground family set** (0.4.4): chromatic, a shade of
+	 * neither end, and not a blend of the two. Recorded beside the branch; clause 2 counts the same
+	 * property over the opening band rather than over the whole population — see `bandOutsideGround`.
+	 */
+	outsideGroundQualified: number
+	/**
+	 * How many of the chromatic ordering's **opening top-τ band** sit outside the ground family set
+	 * (0.4.4). Clause 2 of the branch condition is `< ceil(1/τ)` of these.
+	 */
+	bandOutsideGround: number
+	/** The qualified **neutrals**: `chroma < REGION_CHROMA_BOUNDARY` (0.4.4). */
+	neutralQualified: number
+	/**
+	 * True when the three-clause branch condition holds and `sorted` is therefore the **neutral**
+	 * ordering rather than the chromatic-departure one (0.4.4). See `computeAccentOrdering`.
+	 */
+	neutralBranch: boolean
 }>
 
 /**
@@ -340,10 +462,13 @@ export function computeAccentOrdering(
 	image: DecodedImage,
 	background: number,
 	surface: number,
+	preference: AccentContrastPreference,
 ): AccentOrdering {
 	const { lab, bar, eligibleIndices } = image
 
 	const qualified: number[] = []
+	const chromaticOf: number[] = []
+	const outsideGroundOf: number[] = []
 	const chromaDepartureOf: number[] = []
 	const hueSeparationOf: number[] = []
 	const marginOf: number[] = []
@@ -361,6 +486,16 @@ export function computeAccentOrdering(
 	const surfaceHasFamily = chromaSurface >= REGION_CHROMA_BOUNDARY
 	const backgroundAt = background * 3
 	const surfaceAt = surface * 3
+
+	// **The ground chord** (0.4.4): the chroma-plane direction from one field end to the other, as a
+	// difference of two published pixels' coordinates. A pixel's displacement from the background end
+	// resolves into a component **along** this direction and one across it, and the across-component is
+	// how far the pixel sits off the line the two ends span — which is what "a blend of the two ends" is
+	// as a number. Written in dot products of pixel differences: no point on the chord is ever formed,
+	// and the discipline line's *projections onto directions* clause is the one this uses.
+	const chordA = lab[surfaceAt + 1] - lab[backgroundAt + 1]
+	const chordB = lab[surfaceAt + 2] - lab[backgroundAt + 2]
+	const chordLengthSquared = chordA * chordA + chordB * chordB
 
 	for (let i = 0; i < eligibleIndices.length; i += 1) {
 		const index = eligibleIndices[i]
@@ -406,7 +541,39 @@ export function computeAccentOrdering(
 			((backgroundHasFamily && backgroundHue < REGION_CHROMA_BOUNDARY) ||
 				(surfaceHasFamily && surfaceHue < REGION_CHROMA_BOUNDARY))
 
+		// **Outside the ground family set** (0.4.4, the branch's clause 2). A chromatic pixel is outside
+		// it when it is a shade of neither end *and* is not a blend of the two — the across-chord distance
+		// below, clamped to the chord's own extent so a pixel beyond an end is measured to that end rather
+		// than to a line that has stopped. This is the correction cover 19 forced: a JPEG transition
+		// between a yellow ground and a red field end is tangentially far from **both** families, which is
+		// what makes it top a family test, and is nonetheless not a third colour in the artwork. Computed
+		// only in dot products of differences of actual pixels.
+		let outsideGround = 0
+		if (chromatic && !inFamily) {
+			const fromBackgroundA = lab[at + 1] - lab[backgroundAt + 1]
+			const fromBackgroundB = lab[at + 2] - lab[backgroundAt + 2]
+			let acrossChordSquared: number
+			if (chordLengthSquared <= 0) {
+				acrossChordSquared = fromBackgroundA * fromBackgroundA + fromBackgroundB * fromBackgroundB
+			} else {
+				const along = (fromBackgroundA * chordA + fromBackgroundB * chordB) / chordLengthSquared
+				if (along <= 0) acrossChordSquared = fromBackgroundA * fromBackgroundA + fromBackgroundB * fromBackgroundB
+				else if (along >= 1) {
+					const fromSurfaceA = lab[at + 1] - lab[surfaceAt + 1]
+					const fromSurfaceB = lab[at + 2] - lab[surfaceAt + 2]
+					acrossChordSquared = fromSurfaceA * fromSurfaceA + fromSurfaceB * fromSurfaceB
+				} else {
+					const projected = fromBackgroundA * fromBackgroundA + fromBackgroundB * fromBackgroundB -
+						along * along * chordLengthSquared
+					acrossChordSquared = projected > 0 ? projected : 0
+				}
+			}
+			if (acrossChordSquared >= REGION_CHROMA_BOUNDARY * REGION_CHROMA_BOUNDARY) outsideGround = 1
+		}
+
 		qualified.push(index)
+		chromaticOf.push(chromatic ? 1 : 0)
+		outsideGroundOf.push(outsideGround)
 		chromaDepartureOf.push(backgroundChroma < surfaceChroma ? backgroundChroma : surfaceChroma)
 		hueSeparationOf.push(backgroundHue < surfaceHue ? backgroundHue : surfaceHue)
 		marginOf.push(backgroundMargin < surfaceMargin ? backgroundMargin : surfaceMargin)
@@ -415,12 +582,39 @@ export function computeAccentOrdering(
 	}
 
 	const pixels = lab.length / 3
+	// One byte per pixel rather than a fifth `Float64Array`: this plane is read by the branch condition
+	// and by nothing else, and it carries a flag rather than a measurement.
+	const outsideGround = new Uint8Array(pixels)
 	const departure = new Float64Array(pixels).fill(Number.NaN)
 	const margin = new Float64Array(pixels).fill(Number.NaN)
 	const lightnessMove = new Float64Array(pixels).fill(Number.NaN)
 	const fieldFamily = new Float64Array(pixels).fill(Number.NaN)
+	// The ground family set's own width, measured once: the tangential separation between the two field
+	// ends. Same construction as the ordering's hue term, both arguments being published pixels.
+	const endsPlane = Math.hypot(
+		lab[backgroundAt + 1] - lab[surfaceAt + 1],
+		lab[backgroundAt + 2] - lab[surfaceAt + 2],
+	)
+	const endsSeparation = endsPlane - Math.abs(chromaBackground - chromaSurface)
+
 	if (qualified.length === 0) {
-		return { sorted: new Int32Array(0), departure, margin, lightnessMove, fieldFamily, qualified: 0, inFieldFamily: 0 }
+		return {
+			sorted: new Int32Array(0),
+			departure,
+			margin,
+			lightnessMove,
+			fieldFamily,
+			qualified: 0,
+			inFieldFamily: 0,
+			chromaticQualified: 0,
+			departureQualified: 0,
+			endsSeparation,
+			departureShare: 0,
+			outsideGroundQualified: 0,
+			bandOutsideGround: 0,
+			neutralQualified: 0,
+			neutralBranch: false,
+		}
 	}
 
 	// The percentile product. Weight-free by construction: each factor is a rank in [0, 1] and the
@@ -428,12 +622,19 @@ export function computeAccentOrdering(
 	const chromaPercentile = percentileRanks(Float64Array.from(chromaDepartureOf))
 	const huePercentile = percentileRanks(Float64Array.from(hueSeparationOf))
 	let inFieldFamily = 0
+	let chromaticQualified = 0
+	let outsideGroundQualified = 0
 	for (let i = 0; i < qualified.length; i += 1) {
 		departure[qualified[i]] = chromaPercentile[i] * huePercentile[i]
 		margin[qualified[i]] = marginOf[i]
 		lightnessMove[qualified[i]] = lightnessMoveOf[i]
 		fieldFamily[qualified[i]] = fieldFamilyOf[i]
 		if (fieldFamilyOf[i] === 1) inFieldFamily += 1
+		if (chromaticOf[i] === 1) chromaticQualified += 1
+		if (outsideGroundOf[i] === 1) {
+			outsideGround[qualified[i]] = 1
+			outsideGroundQualified += 1
+		}
 	}
 
 	// Sorted once, here, rather than at each step of the verify-and-step loop: stepping a rank moves
@@ -446,14 +647,88 @@ export function computeAccentOrdering(
 	// both**. The field is computed and recorded so the next attempt starts from the measurement rather
 	// than from the same guess.
 	const rank = (index: number): number => departure[index]
+	const chromaticSorted = sortByKey(Int32Array.from(qualified), rank)
+
+	// -------------------------------------------------------------------------------------------
+	// **The neutral branch (0.4.4).** See the module docstring's "0.4.4 — the neutral branch".
+	// -------------------------------------------------------------------------------------------
+	//
+	// Three clauses, every one of them a property of *this* population measured in quantities that
+	// already exist; there is no cover in any of them.
+	//
+	//  1. **The ground family set is two families wide.** Both ends are chromatic by the contract's own
+	//     boundary and their mutual tangential separation reaches it, so the artwork has spent two
+	//     colour families on its ground. Where an end is neutral, or where the two ends are shades of
+	//     one family, the artwork still has family-room a chromatic mark could occupy and the ordering
+	//     above is the right instrument for finding it.
+	//  2. **The band the accent is actually chosen from holds nothing outside the ground family set that
+	//     is worth taking a rank of.** Of the top-τ band of the chromatic ordering — the population every
+	//     narrowing below operates on — fewer than `ceil(1/τ)` pixels are a shade of neither end and a
+	//     blend of neither pair of them. The question the branch has to answer is *what this ordering has
+	//     to elect*, so it is asked of the object that elects: the band, at the rank the search starts
+	//     from. Both halves are house rules — the band is τ's, the floor is `luminanceOrdering`'s.
+	//  3. **The neutrals are worth taking a rank of** — the same `ceil(1/τ)`, applied to the population
+	//     the branch would rank.
+	const rankable = Math.ceil(1 / TRIM_LEVEL)
+	const departureQualified = chromaticQualified - inFieldFamily
+	const departureShare = departureQualified / qualified.length
+	const neutrals: number[] = []
+	for (let i = 0; i < qualified.length; i += 1) if (chromaticOf[i] === 0) neutrals.push(qualified[i])
+	const openingBand = topWindow(chromaticSorted, TRIM_LEVEL, 0)
+	let bandOutsideGround = 0
+	for (let i = 0; i < openingBand.length; i += 1) if (outsideGround[openingBand[i]] === 1) bandOutsideGround += 1
+	const groundSpansTwoFamilies = backgroundHasFamily && surfaceHasFamily &&
+		endsSeparation >= REGION_CHROMA_BOUNDARY
+	const neutralBranch = groundSpansTwoFamilies &&
+		bandOutsideGround < rankable &&
+		neutrals.length >= rankable
+
+	let sorted = chromaticSorted
+	if (neutralBranch) {
+		// **The neutral extreme, as a percentile product of two scalars** — the same weight-free
+		// combination the chromatic ordering uses, over the same qualified population's neutral half:
+		//
+		// - **min-ramp |raw APCA|** against the published ramp's stops (`minRampContrast`, the metric the
+		//   ink preference, narrowing 3 and the swap comparator all already read). It is what makes the
+		//   figure legible *against the ground the artwork chose*, which is the only thing a neutral has
+		//   to offer a palette that has already spent both its chromatic seats;
+		// - **lightness extremity**, `|L − LIGHTNESS_AXIS_MIDPOINT|` — `refineInkWindow`'s own scalar,
+		//   absolute and scale-free on OKLab's bounded axis, which is what "the artwork's black" and
+		//   "the artwork's white" are as numbers.
+		//
+		// Neither is a hue quantity, and that is the point: inside a neutral population a chroma or hue
+		// ordering ranks nothing but the low bits of two channels (0.4.2's gate 2 is the same argument).
+		const contrast = new Float64Array(neutrals.length)
+		const extremity = new Float64Array(neutrals.length)
+		for (let i = 0; i < neutrals.length; i += 1) {
+			contrast[i] = minRampContrast(image, neutrals[i], preference.anchorRgb)
+			extremity[i] = Math.abs(lab[neutrals[i] * 3] - LIGHTNESS_AXIS_MIDPOINT)
+		}
+		const contrastPercentile = percentileRanks(contrast)
+		const extremityPercentile = percentileRanks(extremity)
+		const neutralRank = new Float64Array(pixels).fill(Number.NaN)
+		for (let i = 0; i < neutrals.length; i += 1) {
+			neutralRank[neutrals[i]] = contrastPercentile[i] * extremityPercentile[i]
+		}
+		sorted = sortByKey(Int32Array.from(neutrals), (index) => neutralRank[index])
+	}
+
 	return {
-		sorted: sortByKey(Int32Array.from(qualified), rank),
+		sorted,
 		departure,
 		margin,
 		lightnessMove,
 		fieldFamily,
 		qualified: qualified.length,
 		inFieldFamily,
+		chromaticQualified,
+		departureQualified,
+		endsSeparation,
+		departureShare,
+		outsideGroundQualified,
+		bandOutsideGround,
+		neutralQualified: neutrals.length,
+		neutralBranch,
 	}
 }
 
@@ -477,6 +752,8 @@ export type AccentRefinement = Readonly<{
 		| "lower-departure-lump"
 		| "lower-chroma-lump-fallback"
 		| "lump-unrankable"
+		/** The 0.4.4 neutral branch: the band of the neutral ordering, cascaded, no narrowing at all. */
+		| "neutral-branch"
 	/** How many pixels survived the headroom clause. */
 	headroomSize: number
 	/** The lump's median qualification margin — the level the headroom clause cut at. */
@@ -538,6 +815,42 @@ export function chooseAccent(
 ): AccentChoice | null {
 	const band = topWindow(ordering.sorted, TRIM_LEVEL, step)
 	if (band.length === 0) return null
+
+	// **The neutral branch (0.4.4).** `ordering.sorted` is the neutral ordering, and the five narrowings
+	// below are every one of them a statement about a chromatic mark — a lump split on the departure
+	// product, a chroma band, a lightness-*movement* predicate measured against the chroma plane. None of
+	// them has a meaning inside a population the branch fired *because* it is neutral, so the branch is
+	// band-then-cascade and nothing else: the top-τ band of the neutral ordering, cascaded. What narrows
+	// here is the ordering itself.
+	if (ordering.neutralBranch) {
+		const pixel = cascadePixel(band, band.length, image.lab, image.rgb)
+		return {
+			pixel,
+			populationSize: band.length,
+			refinement: {
+				bandSize: band.length,
+				gapRatio: null,
+				lumpTieBandFired: false,
+				lumpMasses: null,
+				chosen: "neutral-branch",
+				headroomSize: band.length,
+				medianMargin: medianOfKey(band, (index) => ordering.margin[index]),
+				legibleSize: 0,
+				contrastPreferenceApplied: false,
+				lightnessMovingSize: 0,
+				lightnessPreferenceApplied: false,
+				bandMedianChroma: medianOfKey(band, (index) => chromaOf(image.lab, index)),
+				chromaBandApplied: false,
+				chromaBandSize: 0,
+				cascadedOver: band.length,
+				publishedMargin: pixel < 0 ? Number.NaN : ordering.margin[pixel],
+				publishedDeparture: pixel < 0 ? Number.NaN : ordering.departure[pixel],
+				bandInFieldFamily: 0,
+				publishedFieldFamily: false,
+				publishedChroma: pixel < 0 ? Number.NaN : chromaOf(image.lab, pixel),
+			},
+		}
+	}
 
 	const departureOf = (index: number): number => ordering.departure[index]
 	const marginKey = (index: number): number => ordering.margin[index]

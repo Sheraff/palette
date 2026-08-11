@@ -147,6 +147,30 @@
  *    two paragraphs up. **That is a structural finding about §2.5's ink score on photographic covers and
  *    it is reported upward, not tuned around here.**
  *
+ * ### 0.4.4 — what the exclusion cost, counted and guarded
+ *
+ * W23 shipped the exclusion with its own tension attached: on **31 of the 82** covers where it fires,
+ * the lump left standing holds fewer than `ceil(1/τ)` pixels and **six** hold exactly one. A cascade
+ * over one pixel is the single-extremum read 0.3.0 removed from `luminanceOrdering` and from the field
+ * ends — reintroduced at small scale, in the clause that had just been added. 0.4.4 guards it at the
+ * site (see the comment there): the elected side keeps its side and moves its **cut**, absorbing the
+ * band's next lump until it is rankable, and the widened lump must still pass the exclusion's own
+ * ground test.
+ *
+ * **The guard's refusal is as load-bearing as its firing, and 168 is why.** That cover's ink window is
+ * 1587 pixels of which the blue mark is 10; every widened cut pulls the lump's median lightness into
+ * the dark-grey ground, so the guard **refuses** and the 10-pixel blue stands. The paired-family shape
+ * `EVIDENCE_2026-08-04.md` item 13 prescribes — two dark greys, two blues — survives *because* the
+ * refusal clause is the same statement the shape rests on, not because the cover was special-cased.
+ * `lumpGuard` counts firings and refusals separately for exactly this reason.
+ *
+ * **The scope is stated and narrower than the tension.** The guard runs only on exclusion elections.
+ * The extremity rule and its tie band elect a lump on a positive property *of that lump*, and they too
+ * elect slivers — cover 19's black type is 3 pixels, 130's is 5, and both are reviewer-endorsed
+ * foregrounds. Widening those walks straight into the white or the ground behind the type and would
+ * trade two graded-strong answers for a stability argument. That is a real open: the single-extremum
+ * objection applies to them too, and 0.4.4 does not answer it.
+ *
  * **The regime is never left on a contrast failure.** Falling through to the luminance ordering happens
  * only where it always did, on the source-support test (§2.5 / `clearsInkRegimeMargin`). An earlier draft
  * of this iteration made clause 2 a hard feasibility mask that could empty the population and evict the
@@ -189,6 +213,7 @@ import {
 	medianOfKey,
 	sortByKey,
 	splitAtLargestDecileGap,
+	splitAtWidestAcceptedDecileGap,
 	topWindow,
 } from "./primitives.ts"
 
@@ -330,7 +355,22 @@ export type InkRefinement = Readonly<{
 	lumpMasses: readonly [number, number] | null
 	/** Median L of each lump, or `null`. */
 	lumpMedianL: readonly [number, number] | null
-	chosen: "whole-population" | "extreme-lump" | "darker-convention" | "ground-lump-excluded"
+	chosen:
+		| "whole-population"
+		| "extreme-lump"
+		| "darker-convention"
+		| "ground-lump-excluded"
+		/** The 0.4.4 guard relocated the cut and the exclusion's own side grew to a rankable lump. */
+		| "ground-lump-excluded-widened"
+	/**
+	 * What the sub-rankable lump guard did (0.4.4): `not-triggered` when the elected lump was rankable
+	 * or the election was not the exclusion's, `widened` when the cut moved, `refused` when no cut left
+	 * a rankable lump outside the field's lightness span and the sliver stands.
+	 *
+	 * Counted rather than argued: `refused` is the honest name for "this cover's ink really is ten
+	 * pixels", and a guard whose refusals are invisible is a guard nobody can audit.
+	 */
+	lumpGuard: "not-triggered" | "widened" | "refused"
 	/**
 	 * Which lump the 0.4.3 ground exclusion refused, or `null` when it did not fire (0.4.3).
 	 *
@@ -404,6 +444,10 @@ function refineInkWindow(
 	let lumpMasses: readonly [number, number] | null = null
 	let lumpMedianL: readonly [number, number] | null = null
 	let groundLump: "lower" | "upper" | null = null
+	let lumpGuard: InkRefinement["lumpGuard"] = "not-triggered"
+	// `luminanceOrdering`'s own "worth taking a rank of" rule, the same `ceil(1/τ)` the accent's lump
+	// guard and its chroma band use. Not a new constant.
+	const rankableLump = Math.ceil(1 / TRIM_LEVEL)
 	if (split !== null) {
 		const lowerL = medianOfKey(split.lower, lightnessOf)
 		const upperL = medianOfKey(split.upper, lightnessOf)
@@ -455,6 +499,48 @@ function refineInkWindow(
 		}
 		lumpMasses = [split.lower.length, split.upper.length]
 		lumpMedianL = [lowerL, upperL]
+
+		// **The sub-rankable lump guard (0.4.4).** W23 measured the exclusion's own cost: on 31 of the 82
+		// covers where it fires, the lump it leaves standing holds fewer than `ceil(1/τ)` pixels and six
+		// of those hold **one**. A cascade over one pixel is the single-extremum read 0.3.0 removed from
+		// `luminanceOrdering` and from the field ends, reintroduced at small scale — and it is
+		// reintroduced *here* rather than anywhere else because the exclusion elects a lump by what the
+		// other lump **is not**, so "whatever was left" can be a sliver. The extremity rule and its tie
+		// band elect on a positive property of the lump itself and are left alone; the scope is stated
+		// rather than universal, and it is the scope the measurement covers.
+		//
+		// **The rule: the cut moves, the side does not.** When the excluded election leaves fewer than
+		// `ceil(1/τ)` pixels, the split is re-taken at the **next-widest decile gap** that leaves the same
+		// side rankable — the elected lump absorbing the band's next lump. Two conditions on the widened
+		// lump, and no new constant in either:
+		//
+		//  - it must hold `ceil(1/τ)` pixels — `luminanceOrdering`'s rankability rule, the reason the guard
+		//    exists;
+		//  - **its median L must still sit outside the field's own lightness span** — the 0.4.3 exclusion's
+		//    own test, re-applied to the widened lump. Widening walks *toward* the ground, and a lump that
+		//    has walked into it is the ground under a bigger name. Where no cut satisfies both, the guard
+		//    is **refused** and the sliver stands: a sliver of the artwork's ink is a worse answer than a
+		//    rankable population of it, and a better answer than the ground.
+		//
+		// 168 is the cover this refusal exists for and it is a *measurement*, not a carve-out: its ink
+		// window is 1587 pixels of which the blue mark is 10, so every widened cut pulls the median into
+		// the dark-grey ground and the guard refuses on the ground clause. The paired-family shape
+		// (`EVIDENCE_2026-08-04.md` item 13) survives because the rule's second condition is the same
+		// statement the shape rests on.
+		if (chosen === "ground-lump-excluded" && population.length < rankableLump) {
+			const excludedIsLower = groundLump === "lower"
+			const wider = splitAtWidestAcceptedDecileGap(window, lightnessOf, LUMP_GAP_RATIO, (candidate) => {
+				const side = excludedIsLower ? candidate.upper : candidate.lower
+				return side.length >= rankableLump && !insideField(medianOfKey(side, lightnessOf))
+			})
+			if (wider === null) {
+				lumpGuard = "refused"
+			} else {
+				lumpGuard = "widened"
+				population = excludedIsLower ? wider.upper : wider.lower
+				chosen = "ground-lump-excluded-widened"
+			}
+		}
 	}
 
 	// 2. Contrast, as a **preference inside** the chosen lump and never as an eviction from it. If some
@@ -480,6 +566,7 @@ function refineInkWindow(
 			lumpMedianL,
 			chosen,
 			groundLump,
+			lumpGuard,
 			contrastPreferenceApplied: legible !== population,
 			cascadedOver: legible.length,
 		},

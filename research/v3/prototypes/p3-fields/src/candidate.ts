@@ -36,6 +36,24 @@
  * band-then-cascade change at the field ends moves *toward* that discipline rather than away: e₁ and e₂
  * were this pipeline's only single-pixel reads and are now populations like every other role.
  *
+ * **0.4.4 adds no number and closes one open, guards one tension.** Two contained changes, both in
+ * quantities that already exist (`constants.ts`'s `0.4.4 — inherited, not introduced` block):
+ *
+ *  1. **The neutral accent branch** (`accent.ts`) — the branch 0.4.3 reported upward as missing. When
+ *     the two field ends are two different chromatic families *and* the accent's own opening top-τ
+ *     band holds fewer than `ceil(1/τ)` pixels outside the ground family set (a shade of neither end
+ *     and a blend of neither), the artwork has spent both its colour families on the ground and the
+ *     accent is ranked over the qualified **neutrals** instead, by `min-ramp |APCA| × lightness
+ *     extremity`. Cover 19 publishes `#f8ffff` beside `#fdd001` / `#fe0000` / `#010101` — the
+ *     reviewer's four colours, prescribed in round 1 and again in round 6. The condition is a measured
+ *     population property, it fires on **3 of 220** coverage covers, and on 168, 039, the purple
+ *     cover, 130, r2-item-1, 208 and r2-item-8 it is the *first* clause that refuses.
+ *  2. **The sub-rankable lump guard** (`foreground.ts`) — W23's own flagged tension, that 31 of 82
+ *     ground-lump exclusions leave a lump too small to take a rank of. The cut moves to the next-widest
+ *     decile gap that leaves the elected side rankable **and** still outside the field's lightness
+ *     span; where none does, the guard refuses and the sliver stands, which is what keeps 168's
+ *     10-pixel blue and its paired-family palette intact.
+ *
  * **0.4.3 adds one number and answers a round.** Round 6 (`review-rounds/round-6-calibration/`) graded
  * four held covers at min-ramp 2.67–4.93 and returned four unacceptables naming the text, three of them
  * prescribing the foreground colour; the pre-registered LEGIBILITY-WINS branch fired. Two changes and

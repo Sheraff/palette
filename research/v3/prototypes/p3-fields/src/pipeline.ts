@@ -973,7 +973,7 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		if (ranked !== null) orderings.push(ranked)
 		const luminance = luminanceOrdering(image, depthOrdering, rampAnchors, boundaryFloor)
 		if (luminance !== null) orderings.push(luminance)
-		const accentOrdering = computeAccentOrdering(image, ends.background, ends.surface)
+		const accentOrdering = computeAccentOrdering(image, ends.background, ends.surface, accentPreference)
 		intermediates.accentQualified = accentOrdering.qualified
 
 		record("ink", {
@@ -991,6 +991,15 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			// 0.4.3's instrument, which decides nothing: how many qualified pixels are shades of a
 			// chromatic field end. See `accent.ts`'s "the cover-19 family defect, located and not repaired".
 			inFieldFamily: accentOrdering.inFieldFamily,
+			// 0.4.4's branch condition, as its three clauses' own scalars. See `accent.ts`'s neutral branch.
+			chromaticQualified: accentOrdering.chromaticQualified,
+			departureQualified: accentOrdering.departureQualified,
+			endsSeparation: accentOrdering.endsSeparation,
+			departureShare: accentOrdering.departureShare,
+			outsideGroundQualified: accentOrdering.outsideGroundQualified,
+			bandOutsideGround: accentOrdering.bandOutsideGround,
+			neutralQualified: accentOrdering.neutralQualified,
+			neutralBranch: accentOrdering.neutralBranch,
 			// The top of the ordering, as colours, so a divergence in "which chromatic mark won" is
 			// readable without re-deriving the percentile product.
 			topDeparture: Array.from(accentOrdering.sorted.slice(-5)).reverse().map((pixel) => ({

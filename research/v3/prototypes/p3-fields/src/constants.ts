@@ -39,7 +39,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.4.3"
+export const CANDIDATE_ID = "p3-fields-0.4.4"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -47,7 +47,7 @@ export const CANDIDATE_ID = "p3-fields-0.4.3"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.4.3"
+export const ALGORITHM_VERSION = "p3-fields-0.4.4"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -791,6 +791,36 @@ export const ACCENT_LUMP_DEPARTURE_TIE_BAND = 0.1
  * comparator, the ink preference and the accent preference all already read.
  */
 export const MIN_RAMP_HOLD_FLOOR = 5.0
+
+// ---------------------------------------------------------------------------------------------
+// 0.4.4 — inherited, not introduced (the neutral accent branch and the sub-rankable lump guard)
+// ---------------------------------------------------------------------------------------------
+//
+// **0.4.4 adds no number to this file.** Both changes are decisions this release had to *state*, and
+// both are stated in quantities that already exist and are already load-bearing somewhere else:
+//
+//  1. **The neutral accent branch** (`accent.ts`). Its three clauses read
+//     `REGION_CHROMA_BOUNDARY` [INHERITED — the contract's own chroma axis, see the 0.4.2 block] three
+//     times — whether each field end is chromatic at all, the bar the two ends' mutual tangential
+//     separation must clear for the ground to count as two families, and the bar a pixel's distance
+//     across the ends' chord must clear to be more than a blend of them — and `TRIM_LEVEL` twice: the
+//     **opening top-τ band** is the population clause 2 counts over, and `ceil(1/τ)`,
+//     `luminanceOrdering`'s rankability rule, is the floor both clause 2 and clause 3 use. The
+//     branch's own ordering combines `minRampContrast` (the contract's text-versus-field metric, the
+//     same one the ink preference and narrowings 3 read) with `LIGHTNESS_AXIS_MIDPOINT` [UNCALIBRATED
+//     as declared below, unchanged and unmoved] as a percentile product — the weight-free combination
+//     0.4.0 already uses, which has no coefficient to tune.
+//  2. **The sub-rankable lump guard** (`foreground.ts`). `ceil(1 / TRIM_LEVEL)` for "worth taking a
+//     rank of", `LUMP_GAP_RATIO` for "a cut this file would have made anyway", and the 0.4.3 ground
+//     test — a comparison of a lump median to two **published pixels'** lightness — for "the widened
+//     lump has not walked into the ground". No third one exists to tune.
+//
+// **Stated rather than smoothed.** A branch with no number of its own is not thereby free of a
+// judgement: the judgement is the *shape* of the three clauses, and it is falsifiable in the ordinary
+// way. Clause 2 was written three times and the first two were refuted on coverage-220 — see
+// `accent.ts` for both refutations and their cover-level cost. If a later round grades a neutral
+// accent wrong on a cover the branch fired on, or names a chromatic mark on one, clause 2 is the
+// clause to re-measure: it is the one with a corpus fire rate (3/220) rather than a structural bar.
 
 // =================================================================================================
 // The substrate experiment (W13) — one branch adopted at 0.4.1, two retained as dev-flagged vehicles
