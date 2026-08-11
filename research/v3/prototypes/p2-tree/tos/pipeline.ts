@@ -47,6 +47,14 @@ import {
 } from "./constants.ts"
 import { ACCENT_CANDIDATE_LIMIT } from "./lanes/constants.ts"
 import { COMPONENT_CHAIN_AREA_AGREEMENT, TEXT_COMPONENT_LIMIT } from "./roles/constants.ts"
+import {
+	RAW_APCA_INDIFFERENCE,
+	areaFractionBand,
+	colorQuantityBand,
+	indifferenceClasses,
+	ramPolarityAIsBackground,
+	stableCut,
+} from "./roles/indifference.ts"
 import { minFieldContrast, rankByFieldContrast, renderedFieldOf } from "./roles/rank.ts"
 import { findTextGroups, lowerMedian, strokeWidthFromDistanceField, type TextComponent, type TextGroup } from "./roles/text.ts"
 import { buildTreeOfShapes, type ShapeTree } from "./tree.ts"
@@ -913,20 +921,30 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	let surface: Rgb8
 	let gradient = false
 	if (verdict === "laminar") {
-		// The consumer draws `linear-gradient(135deg in oklab, …)`, whose first stop sits at the
-		// top-left. Project each end's centroid onto that axis; the smaller projection is stop 0,
-		// which the contract says *is* the background.
+		// **Ground-chain end selection**, three levels, in `roles/indifference.ts`.
+		//
+		// Level 1 is the geometry and keeps priority: the consumer draws
+		// `linear-gradient(135deg in oklab, …)` whose first stop sits at the top-left, so the end whose
+		// centroid projects smaller onto that axis is stop 0, which the contract says *is* the
+		// background. What changed in cycle 3 is that "smaller" is now measured **against a ruler** —
+		// `NORMALISED_LENGTH_INDIFFERENCE`, the linear extent of the grain — instead of exactly, so a
+		// sub-pixel centroid movement can no longer reverse the ramp.
+		//
+		// Level 2 is D10.2: when the projection is indifferent, the **lighter** end is the background.
+		// Level 3 is arm-b′ §2.6's declared chain, unchanged.
 		const projectionA = endsA.centroidX * RENDER_AXIS_UNIT[0] + endsA.centroidY * RENDER_AXIS_UNIT[1]
 		const projectionB = endsB.centroidX * RENDER_AXIS_UNIT[0] + endsB.centroidY * RENDER_AXIS_UNIT[1]
-		let firstIsA = projectionA < projectionB
-		if (projectionA === projectionB) {
-			// Declared tie-break chain, arm-b′ §2.6: larger area, then lower lightness.
-			firstIsA =
-				endsA.areaFraction > endsB.areaFraction ||
-				(endsA.areaFraction === endsB.areaFraction && rgbToOkLab(endsA.repr)[0] < rgbToOkLab(endsB.repr)[0])
-		}
-		background = firstIsA ? endsA.repr : endsB.repr
-		surface = firstIsA ? endsB.repr : endsA.repr
+		const polarity = ramPolarityAIsBackground({
+			projectionA,
+			projectionB,
+			reprA: endsA.repr,
+			reprB: endsB.repr,
+			areaFractionA: endsA.areaFraction,
+			areaFractionB: endsB.areaFraction,
+		})
+		notes.push(`ramp-polarity:${polarity.decidedBy}`)
+		background = polarity.aIsBackground ? endsA.repr : endsB.repr
+		surface = polarity.aIsBackground ? endsB.repr : endsA.repr
 		gradient = true
 	} else if (verdict === "partitioned") {
 		const ranked = (fieldSiblings.length >= 2 ? fieldSiblings.map((id) => nodes[id]) : [endsA, endsB]).slice()
@@ -1110,26 +1128,73 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	}
 	const lightnessMove = (color: Rgb8): number => Math.abs(labFor(packOfColor(color))[0] - backgroundLab[0])
 
-	const accentComponents = poolMarks
-		.slice()
-		.sort(
-			(first, second) =>
-				chromaFromField(second.node.repr) - chromaFromField(first.node.repr) ||
-				lightnessMove(second.node.repr) - lightnessMove(first.node.repr) ||
-				first.laneIndex - second.laneIndex ||
-				first.node.id - second.node.id,
-		)
-		.slice(0, ACCENT_CANDIDATE_LIMIT)
+	//
+	// **Cycle 3 — the cut is made at a stable boundary, and the ranking above it is indifferent inside
+	// the bar.** Truncating down the right ordering was cycle 2's fix; it left the *cut itself* exact,
+	// so a candidate sitting beside the 256th could be pushed across it by a change smaller than the bar.
+	// Both quantities are OKLab distances, so both are compared against `sameColorBar` for the pair
+	// (`roles/indifference.ts`), and the cut is extended through the class that straddles it — a class
+	// spans strictly less than one bar, so the overshoot is bounded by the population inside one bar.
+	const poolChromaClass = indifferenceClasses(
+		poolMarks.length,
+		(index) => chromaFromField(poolMarks[index].node.repr),
+		(leader, candidate) => colorQuantityBand(poolMarks[leader].node.repr, poolMarks[candidate].node.repr),
+		(first, second) => packOfColor(poolMarks[first].node.repr) - packOfColor(poolMarks[second].node.repr),
+	)
+	const poolLightnessClass = indifferenceClasses(
+		poolMarks.length,
+		(index) => lightnessMove(poolMarks[index].node.repr),
+		(leader, candidate) => colorQuantityBand(poolMarks[leader].node.repr, poolMarks[candidate].node.repr),
+		(first, second) => packOfColor(poolMarks[first].node.repr) - packOfColor(poolMarks[second].node.repr),
+	)
+	const poolOrder = Array.from({ length: poolMarks.length }, (_unused, index) => index).sort(
+		(first, second) =>
+			poolChromaClass[first] - poolChromaClass[second] ||
+			poolLightnessClass[first] - poolLightnessClass[second] ||
+			packOfColor(poolMarks[first].node.repr) - packOfColor(poolMarks[second].node.repr) ||
+			poolMarks[first].laneIndex - poolMarks[second].laneIndex ||
+			poolMarks[first].node.id - poolMarks[second].node.id,
+	)
+	const accentCut = stableCut(
+		poolOrder,
+		ACCENT_CANDIDATE_LIMIT,
+		(first, second) => poolChromaClass[first] === poolChromaClass[second] && poolLightnessClass[first] === poolLightnessClass[second],
+	)
+	const accentComponents = poolOrder.slice(0, accentCut).map((index) => poolMarks[index])
+	if (accentCut > ACCENT_CANDIDATE_LIMIT) notes.push(`accent-cut-extended:${accentCut}`)
 
 	// ---- the text detector's component set -------------------------------------------------------
 	//
 	// Largest first, because the detector's cost is one exact distance transform per component and
 	// `TEXT_COMPONENT_LIMIT` is a cost guard. The cut is shared across lanes rather than applied per
 	// lane: the pool is one pool, and a per-lane cap would be three cost guards where the spec has one.
-	const markComponents = components
-		.slice()
-		.sort((first, second) => second.node.areaFraction - first.node.areaFraction || first.node.id - second.node.id)
-		.slice(0, TEXT_COMPONENT_LIMIT)
+	//
+	// **Cycle 3 — indifferent inside the area tolerance the role stage already uses, and cut at a class
+	// boundary.** Area is compared through `areaFractionBand` (relative, `1 −
+	// COMPONENT_CHAIN_AREA_AGREEMENT`, the ratio at which this stage already calls two areas one
+	// region's), so two components of indistinguishable size are ordered by their colours rather than by
+	// which one happened to measure a pixel larger, and the 512th's neighbours cannot swap across the cut
+	// under a sub-bar change. `stableCut` extends through the straddling class; a class spans strictly
+	// less than 20% of its leader's area, so this is a bounded overshoot and not the tail.
+	const componentAreaClass = indifferenceClasses(
+		components.length,
+		(index) => components[index].node.areaFraction,
+		(leader, candidate) => areaFractionBand(components[leader].node.areaFraction, components[candidate].node.areaFraction),
+		(first, second) => packOf(components[first].node.repr) - packOf(components[second].node.repr),
+	)
+	const componentOrder = Array.from({ length: components.length }, (_unused, index) => index).sort(
+		(first, second) =>
+			componentAreaClass[first] - componentAreaClass[second] ||
+			packOf(components[first].node.repr) - packOf(components[second].node.repr) ||
+			components[first].node.id - components[second].node.id,
+	)
+	const componentCut = stableCut(
+		componentOrder,
+		TEXT_COMPONENT_LIMIT,
+		(first, second) => componentAreaClass[first] === componentAreaClass[second],
+	)
+	if (componentCut > TEXT_COMPONENT_LIMIT) notes.push(`component-cut-extended:${componentCut}`)
+	const markComponents = componentOrder.slice(0, componentCut).map((index) => components[index])
 	const marks = markComponents.map((component) => component.node)
 
 	// One distance transform per component, read twice: the inradius gives arm-b′ §2.6's thinness, the
@@ -1167,12 +1232,40 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	// This is also arm-b §2.4's fourth grouping clause — "colours the same under the bar" — so the text
 	// detector inherits it structurally rather than re-testing it, and inherits it across lanes.
 	const clusterIndexOfComponent = new Int32Array(marks.length).fill(-1)
+	// The rendered field every candidate is judged against: both field roles and, when a gradient is
+	// published, every point of the OKLab interpolation between them. `roles/rank.ts` measures it with
+	// the contract's own `minRawContrastOverRamp`, which is the function invariant 4 itself calls.
+	const renderedField = renderedFieldOf(background, surface, gradient)
+	// Memoised per exact triple: a ramp minimum costs `RAMP_SAMPLES_PER_SEGMENT +
+	// RAMP_REFINEMENT_SAMPLES` APCA evaluations, both rankings score overlapping candidate sets, and the
+	// score is a pure function of the triple and the field.
+	const contrastCache = new Map<number, number>()
+	const contrastOf = (color: Rgb8): number => {
+		const key = packOfColor(color)
+		let score = contrastCache.get(key)
+		if (score === undefined) {
+			score = minFieldContrast(color, renderedField)
+			contrastCache.set(key, score)
+		}
+		return score
+	}
+
 	const clusters = clusterByBar(marks.map((mark) => mark.repr)).map((members, clusterIndex) => {
 		for (const index of members) clusterIndexOfComponent[index] = clusterIndex
 		const thicknesses = members.map((index) => marks[index].thinness).filter((value): value is number => value !== null)
 		const thinness = thicknesses.length > 0 ? thicknesses.reduce((sum, value) => sum + value, 0) / thicknesses.length : 1
 		const geometryOfCluster = collinearityResidual(members.map((index) => [marks[index].centroidX, marks[index].centroidY] as const))
 		const collinearity = geometryOfCluster.length > 0 ? geometryOfCluster.residual / geometryOfCluster.length : 1
+		// **Which member publishes — measured, and left alone.** The accent's clusters now publish their
+		// most *chromatic* member instead of their largest (below), because area churns and chroma is what
+		// the accent is ranked on. The symmetric move here — publish the most *readable* member, since
+		// readability is what the foreground is ranked on — was implemented and **refused by both
+		// acceptance cases**: on `…35b967964d` the published accent fell to `#f6b3bc` (chroma 0.085, from
+		// the coral's 0.169) because the foreground moved and took the separation budget with it, and on
+		// `…d859a69094` the artwork's own `#070506` stopped leading the foreground. A cluster is one colour
+		// by the bar but its members are *not* all within a bar of each other — the relation is a transitive
+		// closure — so an extremal choice on a contrast axis can walk to the far end of a chain. The area
+		// rule stays until a round prices the alternative. Recorded in `roles/NOTES.md`.
 		const largest = members.slice().sort((first, second) => marks[second].areaFraction - marks[first].areaFraction || first - second)[0]
 		return {
 			members,
@@ -1234,13 +1327,23 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	const commonEnough = Array.from(wholeImage.entries())
 		.filter(([, count]) => count >= areaFloor)
 		.map(([color]) => color)
-	const residualPool = (commonEnough.length > 0 ? commonEnough : Array.from(wholeImage.keys()))
-		.sort((first, second) => {
-			const difference = Math.abs(apcaRaw(unpack(second), background)) - Math.abs(apcaRaw(unpack(first), background))
-			return difference !== 0 ? difference : first - second
-		})
-		.slice(0, RESIDUAL_POOL_SIZE)
-		.map(unpack)
+	// Ordered, and cut, against the same APCA ruler as everything else that ranks on readability: the
+	// residual is a set of the image's own exact triples, so its packed value *is* the house tie-break and
+	// the ordering is a function of the artwork's colours alone once the level is indifferent.
+	const residualCandidates = commonEnough.length > 0 ? commonEnough : Array.from(wholeImage.keys())
+	const residualScore = residualCandidates.map((packed) => Math.abs(apcaRaw(unpack(packed), background)))
+	const residualClass = indifferenceClasses(
+		residualCandidates.length,
+		(index) => residualScore[index],
+		() => RAW_APCA_INDIFFERENCE,
+		(first, second) => residualCandidates[first] - residualCandidates[second],
+	)
+	const residualOrder = Array.from({ length: residualCandidates.length }, (_unused, index) => index).sort(
+		(first, second) => residualClass[first] - residualClass[second] || residualCandidates[first] - residualCandidates[second],
+	)
+	const residualPool = residualOrder
+		.slice(0, stableCut(residualOrder, RESIDUAL_POOL_SIZE, (first, second) => residualClass[first] === residualClass[second]))
+		.map((index) => unpack(residualCandidates[index]))
 	if (clusters.length === 0) notes.push("no-mark-clusters:residual-degradation")
 
 	const dedupe = (colors: readonly Rgb8[]): Rgb8[] => {
@@ -1253,24 +1356,6 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 			kept.push(color)
 		}
 		return kept
-	}
-
-	// The rendered field every candidate is judged against: both field roles and, when a gradient is
-	// published, every point of the OKLab interpolation between them. `roles/rank.ts` measures it with
-	// the contract's own `minRawContrastOverRamp`, which is the function invariant 4 itself calls.
-	const renderedField = renderedFieldOf(background, surface, gradient)
-	// Memoised per exact triple: a ramp minimum costs `RAMP_SAMPLES_PER_SEGMENT +
-	// RAMP_REFINEMENT_SAMPLES` APCA evaluations, both rankings score overlapping candidate sets, and the
-	// score is a pure function of the triple and the field.
-	const contrastCache = new Map<number, number>()
-	const contrastOf = (color: Rgb8): number => {
-		const key = packOfColor(color)
-		let score = contrastCache.get(key)
-		if (score === undefined) {
-			score = minFieldContrast(color, renderedField)
-			contrastCache.set(key, score)
-		}
-		return score
 	}
 
 	// **D3's level, as a lookup.** Salience is a property of the *nodes* behind a colour, so it is defined
@@ -1299,12 +1384,34 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	// The ranking is not a gate. The contract's floors stay where the constraint sheet puts them; what
 	// this chooses is the most readable of the artwork's *own* candidates, every one of them still an
 	// exact triple of the source.
-	const rankedTextGroups = textGroups
-		.map((group) => ({ group, contrast: contrastOf(group.repr) }))
+	//
+	// **Cycle 3 — both levels are compared against their rulers.** A text group's summed area is a churny
+	// quantity: its membership is the truncated component set, which turns over at 10% under a dither
+	// (`stability/q1-dither/REPORT.md`), so an exact area comparison between two groups of much the same
+	// size decides the foreground on noise. Area falls through inside `areaFractionBand`, readability
+	// inside `RAW_APCA_INDIFFERENCE`, and the settled tie-break is the group's **colour** rather than the
+	// smallest node id behind it — a node id is an artefact of the retained set and moves with it, a
+	// colour does not.
+	const groupScored = textGroups.map((group) => ({ group, contrast: contrastOf(group.repr) }))
+	const groupAreaClass = indifferenceClasses(
+		groupScored.length,
+		(index) => groupScored[index].group.areaFraction,
+		(leader, candidate) => areaFractionBand(groupScored[leader].group.areaFraction, groupScored[candidate].group.areaFraction),
+		(first, second) => packOfColor(groupScored[first].group.repr) - packOfColor(groupScored[second].group.repr),
+	)
+	const groupContrastClass = indifferenceClasses(
+		groupScored.length,
+		(index) => groupScored[index].contrast,
+		() => RAW_APCA_INDIFFERENCE,
+		(first, second) => packOfColor(groupScored[first].group.repr) - packOfColor(groupScored[second].group.repr),
+	)
+	const rankedTextGroups = groupScored
+		.map((entry, index) => ({ ...entry, areaClass: groupAreaClass[index], contrastClass: groupContrastClass[index] }))
 		.sort(
 			(first, second) =>
-				second.group.areaFraction - first.group.areaFraction ||
-				second.contrast - first.contrast ||
+				first.areaClass - second.areaClass ||
+				first.contrastClass - second.contrastClass ||
+				packOfColor(first.group.repr) - packOfColor(second.group.repr) ||
 				first.group.firstNodeId - second.group.firstNodeId,
 		)
 	for (const entry of rankedTextGroups) levelByColor.set(packOfColor(entry.group.repr), 0)
@@ -1336,13 +1443,61 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	// need is written there, `stabilityLevel` is published per candidate in `accentCandidates` so the
 	// round can price it, and the accent's published order is D1's, unqualified. The foreground keeps the
 	// level, where nothing in D1 is at stake.
+	//
+	// **Cycle 3 — the two colour levels are compared against the bar, and the settled tie-break is the
+	// colour itself.** Both keys are OKLab distances measured from the published background, so the ruler
+	// for both is `sameColorBar` for the pair being compared (`roles/indifference.ts`); the accent is the
+	// role the dither moved most often (48% of covers changed the supplying node, 45% changed the
+	// published colour) and 82% of that is this comparison resolving a difference below the bar. Lane
+	// index and node id stay as the last two levels but are now unreachable unless two candidates carry
+	// the *same colour*, which is the only case in which they say anything about the artwork.
 	type AccentKeyed = Readonly<{ repr: Rgb8; firstLaneIndex: number; firstMarkId: number }>
-	const rankAccent = (first: AccentKeyed, second: AccentKeyed): number =>
-		chromaFromField(second.repr) - chromaFromField(first.repr) ||
-		lightnessMove(second.repr) - lightnessMove(first.repr) ||
-		first.firstLaneIndex - second.firstLaneIndex ||
-		first.firstMarkId - second.firstMarkId
+	const rankAccentOrder = <T extends AccentKeyed>(items: readonly T[]): T[] => {
+		const chromaClass = indifferenceClasses(
+			items.length,
+			(index) => chromaFromField(items[index].repr),
+			(leader, candidate) => colorQuantityBand(items[leader].repr, items[candidate].repr),
+			(first, second) => packOfColor(items[first].repr) - packOfColor(items[second].repr),
+		)
+		const lightnessClass = indifferenceClasses(
+			items.length,
+			(index) => lightnessMove(items[index].repr),
+			(leader, candidate) => colorQuantityBand(items[leader].repr, items[candidate].repr),
+			(first, second) => packOfColor(items[first].repr) - packOfColor(items[second].repr),
+		)
+		return Array.from({ length: items.length }, (_unused, index) => index)
+			.sort(
+				(first, second) =>
+					chromaClass[first] - chromaClass[second] ||
+					chromaFromField(items[second].repr) - chromaFromField(items[first].repr) ||
+					lightnessClass[first] - lightnessClass[second] ||
+					lightnessMove(items[second].repr) - lightnessMove(items[first].repr) ||
+					packOfColor(items[first].repr) - packOfColor(items[second].repr) ||
+					items[first].firstLaneIndex - items[second].firstLaneIndex ||
+					items[first].firstMarkId - items[second].firstMarkId,
+			)
+			.map((index) => items[index])
+	}
 
+	// **Which member of a cluster publishes — the cycle-3 experiment, measured and NOT taken.**
+	//
+	// Every choice inside a cluster is a sub-bar choice by construction, so the rule that makes it decides
+	// the published triple, and it is currently *area* — which `stability/q1-dither/REPORT.md` measures as
+	// one of the churniest orders in the parse. Publishing the most **chromatic** member instead — the
+	// accent's own ranking quantity, an existing attribute, no constant — is the single largest stability
+	// lever this cycle found: on the dither arm it moves the accent on **42 of 100** covers against 50, and
+	// carries the arm's agreement from 23% to 24%. It is refused anyway, on quality:
+	//
+	//  - on `…35b967964d` it publishes `#ee5567` in place of `#d25068`, and `#d25068` is the one accent hex
+	//    in this campaign with a direct reviewer endorsement — D9, verbatim, *"the correct shade of red
+	//    (Strawberry Moon)"*. Agreement is not quality (`src/robustness/check.ts`'s own header) and one
+	//    point of it does not buy the named shade;
+	//  - on `…d859a69094` it moves the published accent `#161415` → `#282425`, breaking that cover's pinned
+	//    context;
+	//  - it also makes the **L-only** pool reach the same 0.18996 chroma as the merged pool on the coral
+	//    cover, which would dissolve the recall evidence D2's lanes rest on.
+	//
+	// The trade is a round item, not a worker's call. Recorded in `roles/NOTES.md` with the numbers.
 	const accentClusters = clusterByBar(accentComponents.map((component) => component.node.repr)).map((members) => {
 		const largest = members
 			.slice()
@@ -1364,8 +1519,8 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	// Three tiers, and nothing the L-only parse offered is lost: the accent's own truncated candidates
 	// first, then the text stage's clusters under the same key — the components the area cut kept and the
 	// chroma cut did not — then the residual.
-	const rankedAccentClusters = accentClusters.slice().sort(rankAccent)
-	const rankedMarkClusters = clusters.slice().sort(rankAccent)
+	const rankedAccentClusters = rankAccentOrder(accentClusters)
+	const rankedMarkClusters = rankAccentOrder(clusters)
 	const accentPool = dedupe([
 		...rankedAccentClusters.map((cluster) => cluster.repr),
 		...rankedMarkClusters.map((cluster) => cluster.repr),

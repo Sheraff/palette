@@ -24,7 +24,7 @@
  * `candidate-chroma.ts` is now this module under its other id, so the two runs are the same palette.
  */
 
-import { CONTRACT_VERSION } from "../../../src/contract/constants.ts"
+import { CONTRACT_VERSION, ROLE_NAMES } from "../../../src/contract/constants.ts"
 import { colorFromRgb } from "../../../src/contract/color.ts"
 import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
 import type { GradientStop, Palette, Rgb8 } from "../../../src/contract/types.ts"
@@ -33,6 +33,7 @@ import type { CandidatePalette } from "../../../src/devloop/types.ts"
 import { MAX_ASSEMBLY_ATTEMPTS, PREPROCESSING_VERSION } from "./constants.ts"
 import { runChromaPipeline } from "./lanes/pool.ts"
 import { resolveRoles, roleSwapImproves } from "./roles/assemble.ts"
+import { type RoleMargin, roleMargins } from "./roles/indifference.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p2-tos"
@@ -64,6 +65,17 @@ export type CandidateDiagnostics = Readonly<{
 	/** Whether the role-swap check both fired and produced a palette the contract accepted. */
 	swapped: boolean
 	attempts: number
+	/**
+	 * **D7's margin report for the palette that was actually published**, worst ratio first.
+	 *
+	 * *"The reviewer grades margins; optimizers sit on floors."* The twins-must-collapse walk enforces
+	 * distinctness **at** the bar, so a pair at bar + 1e-4 publishes as "distinct" and is, in D7's words,
+	 * a complaint waiting to happen. This makes the number visible per palette instead of leaving it to
+	 * be reconstructed by a round's staging script (`review-rounds/round-3-quality/build.ts` computed its
+	 * own). It is **report-only**: no ranking, no filter, no floor — D10.5 records the one data point
+	 * there is (a 0.0304 margin the reviewer did not read as one colour), which is not a calibration.
+	 */
+	margins: readonly RoleMargin[]
 }>
 
 export async function paletteWithDiagnostics(imagePath: string): Promise<CandidateDiagnostics> {
@@ -142,10 +154,24 @@ export async function paletteWithDiagnostics(imagePath: string): Promise<Candida
 	) {
 		const swapped = assemble(resolved.accent, resolved.foreground)
 		if (validatePalette(swapped).violations.length === 0) {
-			return { palette: swapped, parse, notes: resolved.notes, swapped: true, attempts: resolved.attempts }
+			return {
+				palette: swapped,
+				parse,
+				notes: resolved.notes,
+				swapped: true,
+				attempts: resolved.attempts,
+				margins: roleMargins(swapped.roles, ROLE_NAMES),
+			}
 		}
 	}
-	return { palette: resolved.palette, parse, notes: resolved.notes, swapped: false, attempts: resolved.attempts }
+	return {
+		palette: resolved.palette,
+		parse,
+		notes: resolved.notes,
+		swapped: false,
+		attempts: resolved.attempts,
+		margins: roleMargins(resolved.palette.roles, ROLE_NAMES),
+	}
 }
 
 export const paletteOf: CandidatePalette = async (imagePath) => (await paletteWithDiagnostics(imagePath)).palette

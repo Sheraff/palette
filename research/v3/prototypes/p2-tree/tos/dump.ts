@@ -25,7 +25,9 @@ import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, isAbsolute, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { rgbToHex } from "../../../src/contract/color.ts"
+import { ROLE_NAMES } from "../../../src/contract/constants.ts"
 import { runChromaPipeline } from "./lanes/pool.ts"
+import { roleMargins } from "./roles/indifference.ts"
 
 /** The per-image record written to the dump. */
 export type NodeDump = Readonly<{
@@ -42,6 +44,21 @@ export type NodeDump = Readonly<{
 	/** The retained nodes forming the ground stack, outermost first. */
 	groundChain: readonly number[]
 	roles: Readonly<{ background: string; surface: string; foreground: string; accent: string }>
+	/**
+	 * **D7's pairwise role margins**, worst ratio first — the OKLab distance between each pair of the
+	 * roles above, the contract's regional bar for that pair, and the ratio of the two.
+	 *
+	 * `DECISIONS.md` D7: *"the reviewer grades margins; optimizers sit on floors"* — the
+	 * twins-must-collapse walk enforces distinctness **at** the bar, so a pair at bar + 1e-4 publishes as
+	 * "distinct" and is a complaint waiting to happen. Reported here so a round's staging does not have to
+	 * recompute it and so a margin audit is a read of an artefact. **Report-only**: nothing ranks or
+	 * filters on it.
+	 *
+	 * These are the **parse's** roles, which is what the `roles` field above already reports; the
+	 * assembly walk in `candidate.ts` can move the foreground and the accent, and its margins are on
+	 * `CandidateDiagnostics.margins`.
+	 */
+	roleMargins: readonly DumpRoleMargin[]
 	nodes: readonly DumpNode[]
 	/**
 	 * Every clustered accent candidate, in the published order, with all four measurements.
@@ -51,6 +68,15 @@ export type NodeDump = Readonly<{
 	 * identity exchange rate on the numbers the pipeline actually saw.
 	 */
 	accentCandidates: readonly DumpAccentCandidate[]
+}>
+
+export type DumpRoleMargin = Readonly<{
+	/** `"<role>|<role>"`, roles in `ROLE_NAMES` order. */
+	pair: string
+	distance: number
+	bar: number
+	/** `distance / bar`. Below 1 the pair is inside the bar. */
+	ratio: number
 }>
 
 export type DumpAccentCandidate = Readonly<{
@@ -102,6 +128,15 @@ export async function nodesOf(imagePath: string): Promise<NodeDump> {
 			foreground: rgbToHex(parse.roles.foreground),
 			accent: rgbToHex(parse.roles.accent),
 		},
+		roleMargins: roleMargins(
+			{
+				background: { rgb: parse.roles.background },
+				surface: { rgb: parse.roles.surface },
+				foreground: { rgb: parse.roles.foreground },
+				accent: { rgb: parse.roles.accent },
+			},
+			ROLE_NAMES,
+		),
 		nodes: parse.nodes
 			.slice()
 			.sort((first, second) => first.id - second.id)

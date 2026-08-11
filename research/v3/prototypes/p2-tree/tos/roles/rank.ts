@@ -40,6 +40,7 @@
 import { apcaRaw, colorFromRgb } from "../../../../src/contract/color.ts"
 import { minRawContrastOverRamp } from "../../../../src/contract/ramp.ts"
 import type { GradientStop, PaletteColor, Rgb8 } from "../../../../src/contract/types.ts"
+import { RAW_APCA_INDIFFERENCE, indifferenceClasses } from "./indifference.ts"
 
 /**
  * The field a candidate is judged against: the two field roles, and the ramp if one is published.
@@ -112,10 +113,26 @@ function packed(color: Rgb8): number {
  * ranking competing with readability. The default is a constant 0, which is the ordering this function
  * had before D3 and is what every caller without a node population still gets.
  *
- * Ties break on lexicographic RGB. There is no bar on this quantity — the contract measures APCA in
- * raw units and has never published a just-noticeable difference for them — so the comparison is
- * exact, and the tie-break is what makes exactness safe: two candidates whose scores differ in the
- * last float bit are ordered by their pixel values and not by the input order.
+ * ### Cycle 3: the score is compared **against its own ruler**
+ *
+ * This function used to compare scores exactly, on the stated grounds that *"the contract measures APCA
+ * in raw units and has never published a just-noticeable difference for them"*. That is still true and
+ * it is no longer the relevant fact. `stability/q1-dither/REPORT.md` attributes 82% of this candidate's
+ * dither failures to the ranking naming a different node while both nodes' colours held, and an exact
+ * comparison over a float score is the mechanism: two candidates whose readability differs in the fifth
+ * decimal are strictly ordered, and ±1 LSB reverses them.
+ *
+ * The score is therefore compared through `indifferenceClasses` at `RAW_APCA_INDIFFERENCE` — the
+ * contract's `[MEASURED]` `APCA_RAW_IDENTICAL_CEILING`, the magnitude the metric returns for two
+ * *identical* colours and so the size of its own zero. This is not a JND and is not used as one: it is
+ * the floor under which a difference in readability is known to be an artefact of the metric rather
+ * than a fact about the two colours. Inside one class the level is **indifferent** and the comparison
+ * falls through, exactly as arm-b′ §2.6 asks.
+ *
+ * Ties then break on lexicographic RGB, and that tie-break now carries real weight rather than
+ * guarding a float coincidence: it is a function of the candidate's *pixel values*, so two runs that
+ * recover the same colours agree on the order regardless of how the node population churned between
+ * them.
  */
 export function rankByFieldContrast(
 	colors: readonly Rgb8[],
@@ -129,6 +146,16 @@ export function rankByFieldContrast(
 		score: scoreOf(color, field),
 		key: packed(color),
 	}))
-	scored.sort((first, second) => first.level - second.level || second.score - first.score || first.key - second.key)
-	return scored.map((entry) => entry.color)
+	const contrastClass = indifferenceClasses(
+		scored.length,
+		(index) => scored[index].score,
+		() => RAW_APCA_INDIFFERENCE,
+		(first, second) => scored[first].key - scored[second].key,
+	)
+	const ranked = scored.map((entry, index) => ({ ...entry, contrastClass: contrastClass[index] }))
+	ranked.sort(
+		(first, second) =>
+			first.level - second.level || first.contrastClass - second.contrastClass || first.key - second.key,
+	)
+	return ranked.map((entry) => entry.color)
 }

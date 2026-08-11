@@ -148,6 +148,11 @@ export function strokeWidthFromDistanceField(
 	return STROKE_WIDTH_RIDGE_FACTOR * lowerMedian(ridge)
 }
 
+/** `r << 16 | g << 8 | b` — the house tie-break, ascending lexicographic RGB. */
+function packedRgb(color: Rgb8): number {
+	return (color[0] << 16) | (color[1] << 8) | color[2]
+}
+
 /** Coefficient of variation, population form. Zero mean answers `Infinity`, which fails every cut. */
 function coefficientOfVariation(values: readonly number[]): number {
 	if (values.length === 0) return Number.POSITIVE_INFINITY
@@ -253,11 +258,24 @@ export function isCoherentRow(components: readonly TextComponent[], members: rea
  * title are one designer decision, and splitting them would make the same colour compete with itself
  * for the same role.
  *
+ * **Which member publishes** is `memberScore`, largest first, tie-broken on lexicographic RGB. It
+ * defaults to area, which is what this function has always used. The parameter exists because every
+ * member of a group is inside one same-colour cluster, so the choice among them is a **sub-bar** choice
+ * by construction and the rule that makes it decides the published triple — and area is the churniest
+ * statistic in the parse (`stability/q1-dither/REPORT.md`). Cycle 3 measured the obvious alternative
+ * (readability against the rendered field, the quantity the foreground is ranked on) and **the
+ * acceptance cases refused it**: `…d859a69094` stopped publishing the artwork's own `#070506`. The
+ * default therefore stands and the hook is here so the next attempt is a one-line experiment rather
+ * than a rewrite. See `roles/NOTES.md`.
+ *
  * Groups come back ordered by summed coherent area descending — arm-b §2.6's *"text-shaped groups
  * first by total area fraction"* — with the smallest parsed node id as the tie-break. The caller
  * applies the readability ordering on top; this function has no opinion about contrast.
  */
-export function findTextGroups(components: readonly TextComponent[]): TextGroup[] {
+export function findTextGroups(
+	components: readonly TextComponent[],
+	memberScore: (component: TextComponent) => number = (component) => component.areaFraction,
+): TextGroup[] {
 	const byCluster = new Map<number, number[]>()
 	for (let index = 0; index < components.length; index += 1) {
 		const clusterId = components[index].clusterId
@@ -302,11 +320,9 @@ export function findTextGroups(components: readonly TextComponent[]): TextGroup[
 		let firstNodeId = components[kept[0]].nodeId
 		for (const index of kept) {
 			areaFraction += components[index].areaFraction
-			if (
-				components[index].areaFraction > components[largest].areaFraction ||
-				(components[index].areaFraction === components[largest].areaFraction &&
-					components[index].nodeId < components[largest].nodeId)
-			) {
+			const better = memberScore(components[index])
+			const incumbent = memberScore(components[largest])
+			if (better > incumbent || (better === incumbent && packedRgb(components[index].repr) < packedRgb(components[largest].repr))) {
 				largest = index
 			}
 			if (components[index].nodeId < firstNodeId) firstNodeId = components[index].nodeId
