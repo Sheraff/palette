@@ -87,6 +87,19 @@ substrate family (no candidate; full design cycle), or judging the mechanism on
 quality/identity as-is. Read P3 as: quality-strong,
 robustness-plateaued-with-located-cause-and-refuted-first-fix.
 
+## Round-6 state — THE ONE PENDING INPUT (phase2-cal-022 RELEASED; decode in flight at park)
+
+8 items on 0.4.2 (`b9c41a4`): 4 identity-vs-legibility conflict covers (min-ramp 2.67–4.93,
+chromatic accent held over a weak fg), 4 re-grades (168 blue-as-accent delivered after three
+rounds of asking; 039 magenta returned at fg 3.07; purple shade `#5d1988` C 0.1714; cover-19
+`#f3f300` vs the reviewer's round-1 prescribed white — regression check), 1 fresh (watch).
+**Pre-registered branches, quoted:** *identity wins → 0.4.2's chromatic-mark hold rule stands
+and legibility floors stay user-parameters; legibility wins → the hold rule gains a floor
+clause and the swap partially returns.* A grade-split across the min-ramp range is surfaced,
+never interpolated. Whichever branch fires is the LAST queued change; applying it closes P3's
+active iteration at the local optimum described in §6. Pairs on 0.4.2 measured 8.5% (flat vs
+9.0%; slot migration confirmed — accent stabilised at fg's expense; substrate bound unchanged).
+
 ## Round-5 state (decoded 2026-08-05, after this document's first commit)
 
 phase2-cal-017: 1 strong / 3 acceptable / 3 weak / 2 unacceptable, 0 vetoes. **Named marks
