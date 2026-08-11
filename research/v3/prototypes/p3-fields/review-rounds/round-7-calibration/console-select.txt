@@ -1,0 +1,71 @@
+header  run-coverage-220-0.4.4.jsonl  candidateId=p3-fields-0.4.4  codeVersion=2d750e713af4dcb2…  set=coverage-set-1-220  setHash=9cf1eec630b7cc9e…  n=220
+header  run-demo-20-0.4.4.jsonl  candidateId=p3-fields-0.4.4  codeVersion=2d750e713af4dcb2…  set=demo-20  setHash=72272a5edd6e7d82…  n=20
+prior rounds 1–6: 34 distinct covers shown (round 6 contributed 8)
+contract: 200 pass / 20 fail of 220
+accent collapsed: 23
+gradient published: 86
+diag chains matched: 220/220
+
+== the four RE-GRADES: round-6 palette → 0.4.4 palette ==
+168 — the paired-family shape (r6 weak, 'the foreground should be blue')
+  r6:    bg=#0b0800 sf=#26211d fg=#3d3936 ac=#2aa5e9  grad=yes
+  0.4.4: ab67616d0000b2730011a326091e7dd7df58b175  idx=168  bg=#0b0800 sf=#26211d fg=#259dd1 ac=#4db2bc  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.0940 fgMinRamp=44.81 acMinRamp=53.48  neutralBranch=false  edgeFrac=0.4946
+  fg↔ac: distance=0.08123 bar=0.07444 margin=0.00679 ratio=1.09×
+  gradient=[["#0b0800",0],["#26211d",1]]  path=11/ab67616d0000b2730011a326091e7dd7df58b175
+r6 row 0 — black fg prescribed (r6 unacceptable)
+  r6:    bg=#ffffff sf=#ffeded fg=#ebebf5 ac=#0000e6  grad=none
+  0.4.4: ab67616d00001e020010ac96d501c4170f39c4f0  idx=163  bg=#ffffff sf=#ffeded fg=#0b0b17 ac=#0000e6  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2897 fgMinRamp=100.07 acMinRamp=83.54  neutralBranch=false  edgeFrac=0.5339
+  fg↔ac: distance=0.37295 bar=0.07444 margin=0.29851 ratio=5.01×
+  gradient=null  path=10/ab67616d00001e020010ac96d501c4170f39c4f0
+r6 row 2 — mildest conflict, min-ramp 4.93 (r6 unacceptable)
+  r6:    bg=#e2e1e6 sf=#493421 fg=#dad9de ac=#ae3e10  grad=none
+  0.4.4: 4e6dee3a672e62f84d6fab9d90a2af26  idx=16  bg=#e2e1e6 sf=#493421 fg=#ae3e10 ac=#dad9de  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=true held=false accentChroma=0.1556 fgMinRamp=4.93 acMinRamp=18.01  neutralBranch=false  edgeFrac=0.6056
+  fg↔ac: distance=0.40314 bar=0.07444 margin=0.32870 ratio=5.42×
+  gradient=null  path=music-artworks/4/e/6/4e6dee3a672e62f84d6fab9d90a2af26.jpeg
+  [not in coverage-set-1-220 — taken from the demo-20 run]
+cover 19 — the four named colours (r6 unacceptable, regression)
+  r6:    bg=#fdd001 sf=#fe0000 fg=#010101 ac=#f3f300  grad=none
+  0.4.4: ab67616d00001e020000269ead63cf2376a6b67d  idx=19  bg=#fdd001 sf=#fe0000 fg=#010101 ac=#f8ffff  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0074 fgMinRamp=42.40 acMinRamp=27.10  neutralBranch=true  edgeFrac=0.4923
+  fg↔ac: distance=0.92759 bar=0.07444 margin=0.85315 ratio=12.46×
+  gradient=null  path=00/ab67616d00001e020000269ead63cf2376a6b67d.jpg
+
+== the NEUTRAL-BRANCH firings (0.4.4's new branch) — the twin-risk shortlist ==
+neutralBranch fired on 3/220 coverage covers
+  margin=0.05590  ratio=1.75×  distance=0.13034 vs bar=0.07444  fg=#000000 ac=#0e0011  bg=#a16485 sf=#e8d49f  contract=pass  seen=no  ab67616d00001e020003748f0b2cb5347f9c0779
+    ab67616d00001e020003748f0b2cb5347f9c0779  idx=74  bg=#a16485 sf=#e8d49f fg=#000000 ac=#0e0011  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=true held=false accentChroma=0.0000 fgMinRamp=35.63 acMinRamp=35.78  neutralBranch=true  edgeFrac=0.5872  path=03/ab67616d00001e020003748f0b2cb5347f9c0779.jpg
+  margin=0.11352  ratio=2.53×  distance=0.18796 vs bar=0.07444  fg=#e0580a ac=#b3a29b  bg=#e2ca12 sf=#520d06  contract=pass  seen=YES  05687107a2a9019ee68c3b7f70ff47b6
+    05687107a2a9019ee68c3b7f70ff47b6  idx=0  bg=#e2ca12 sf=#520d06 fg=#e0580a ac=#b3a29b  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0224 fgMinRamp=35.91 acMinRamp=20.03  neutralBranch=true  edgeFrac=0.7020  path=music-artworks/0/5/6/05687107a2a9019ee68c3b7f70ff47b6.jpg
+  margin=0.29434  ratio=4.95×  distance=0.36878 vs bar=0.07444  fg=#000002 ac=#613c07  bg=#ff2c00 sf=#949921  contract=pass  seen=no  ab67616d0000b27300096440c40e31757a78343d
+    ab67616d0000b27300096440c40e31757a78343d  idx=111  bg=#ff2c00 sf=#949921 fg=#000002 ac=#613c07  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=true held=false accentChroma=0.0265 fgMinRamp=30.23 acMinRamp=43.97  neutralBranch=true  edgeFrac=0.2874  path=09/ab67616d0000b27300096440c40e31757a78343d
+
+== the conflict cohort at 0.4.4: chromatic mark HELD, published foreground below min-ramp 5.0 ==
+chromaticMarkHeld total = 34; of those below min-ramp 5.0 = 0
+
+-- row-6's residual, in full (round-6 prescribed a WHITE foreground) --
+  r6:    bg=#170a02 sf=#374d0d fg=#2a1e06 ac=#cdaf19
+  0.4.4: ab67616d0000b2730011e7b5c1023c70f7a3d767  idx=170  bg=#170a02 sf=#374d0d fg=#cdaf19 ac=#2a1e06  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=true held=false accentChroma=0.1511 fgMinRamp=2.67 acMinRamp=50.82  neutralBranch=false  edgeFrac=0.3128  path=11/ab67616d0000b2730011e7b5c1023c70f7a3d767
+
+== swap fire rate ==
+comparator ran on 220; applied on 19
+
+== fresh pool: unseen in rounds 1–6, contract-passing, accent published ==
+159 candidates
+top 10 by edge fraction (the round-5 fresh rule, third application):
+  ab67616d0000b273000d54cb2f5226d1dbcb62b9  idx=138  bg=#efebdf sf=#e3dfd3 fg=#7e090f ac=#cf0d28  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2146 fgMinRamp=77.15 acMinRamp=59.53  neutralBranch=false  edgeFrac=0.9760  path=0d/ab67616d0000b273000d54cb2f5226d1dbcb62b9
+  ab67616d0000b273000146db0ad7d43bebdb3152  idx=63  bg=#feffff sf=#faede5 fg=#050505 ac=#970b16  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1686 fgMinRamp=99.37 acMinRamp=81.50  neutralBranch=false  edgeFrac=0.9451  path=01/ab67616d0000b273000146db0ad7d43bebdb3152.jpg
+  d6ff23ac29d736da4a6385d7d13c801c  idx=38  bg=#fdfdf5 sf=#e3d8d6 fg=#222224 ac=#4d4445  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0124 fgMinRamp=84.04 acMinRamp=73.00  neutralBranch=false  edgeFrac=0.9390  path=music-artworks/d/6/f/d6ff23ac29d736da4a6385d7d13c801c.jpg
+  ab67616d0000b273000a83b7c6800384e7844947  idx=117  bg=#0c1b32 sf=#545aee fg=#c8f9f5 ac=#6e67f5  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2059 fgMinRamp=72.83 acMinRamp=7.72  neutralBranch=false  edgeFrac=0.9364  path=0a/ab67616d0000b273000a83b7c6800384e7844947
+  ab67616d0000b27300018a1a84604edc97ce428f  idx=66  bg=#121214 sf=#d8cbbb fg=#edeae1 ac=#8a804b  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.0736 fgMinRamp=19.35 acMinRamp=36.62  neutralBranch=false  edgeFrac=0.9280  path=01/ab67616d0000b27300018a1a84604edc97ce428f.jpg
+  ab67616d0000b2730006465a4f831bc200cd919c  idx=93  bg=#f4eacf sf=#3d282f fg=#82824e ac=#aa6d51  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0881 fgMinRamp=32.39 acMinRamp=30.99  neutralBranch=false  edgeFrac=0.9084  path=06/ab67616d0000b2730006465a4f831bc200cd919c
+  ab67616d0000b273000ac18459a4179115743af2  idx=118  bg=#f4f9fd sf=#676f36 fg=#051012 ac=#ff54d6  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2442 fgMinRamp=29.52 acMinRamp=25.93  neutralBranch=false  edgeFrac=0.9080  path=0a/ab67616d0000b273000ac18459a4179115743af2
+  ab67616d0000b27300096a633744f98a17e8f81f  idx=112  bg=#110f10 sf=#191516 fg=#dea41c ac=#f7be27  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1618 fgMinRamp=60.34 acMinRamp=74.43  neutralBranch=false  edgeFrac=0.9063  path=09/ab67616d0000b27300096a633744f98a17e8f81f
+  ab67616d0000b2730000e6ca22755038ff7a09b8  idx=56  bg=#f9e278 sf=#d26115 fg=#242424 ac=#fe9b00  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1725 fgMinRamp=37.97 acMinRamp=26.68  neutralBranch=false  edgeFrac=0.9000  path=00/ab67616d0000b2730000e6ca22755038ff7a09b8.jpg
+  ab67616d00001e02000acce65f2cf84ea8655e1c  idx=119  bg=#d8dfe9 sf=#242424 fg=#8389c5 ac=#5f71a3  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0811 fgMinRamp=41.24 acMinRamp=28.41  neutralBranch=false  edgeFrac=0.8985  path=0a/ab67616d00001e02000acce65f2cf84ea8655e1c
+
+== selected item paths ==
+  ab67616d0000b2730011a326091e7dd7df58b175  idx=168  11/ab67616d0000b2730011a326091e7dd7df58b175
+  ab67616d00001e020010ac96d501c4170f39c4f0  idx=163  10/ab67616d00001e020010ac96d501c4170f39c4f0
+  4e6dee3a672e62f84d6fab9d90a2af26  idx=16  music-artworks/4/e/6/4e6dee3a672e62f84d6fab9d90a2af26.jpeg
+  [not in coverage-set-1-220 — taken from the demo-20 run]
+  ab67616d00001e020000269ead63cf2376a6b67d  idx=19  00/ab67616d00001e020000269ead63cf2376a6b67d.jpg
+  ab67616d0000b2730011e7b5c1023c70f7a3d767  idx=170  11/ab67616d0000b2730011e7b5c1023c70f7a3d767
