@@ -151,6 +151,53 @@
  * exactly where it always was**, when the qualified set is empty or nothing in it survives verification
  * (`pipeline.ts`'s `searchAccent`), and it collapses to exactly the foreground.
  *
+ * ## 0.4.3 — the cover-19 family defect, located and not repaired
+ *
+ * Round 6 re-graded cover 19 from **strong to unacceptable**: *"there aren't 2 shades of yellow on that
+ * artwork… Taxi Yellow, Torch Red, black (Soot is ok), white"*. The published accent `#f3f300` sits
+ * beside a `#fdd001` background. **Where the hue term failed, measured:**
+ *
+ * `#f3f300`'s hue separation from the background is **0.0359** — an absolute chroma-plane length, about
+ * 17° of hue between two saturated yellows. Its **percentile is 0.944**, because the qualified
+ * population's hue separations are massed at zero: median **0.0027**, 74.2 % below 0.01, 88 % below
+ * 0.02. The reason they are massed there is structural rather than particular to this cover — a
+ * **neutral** pixel is radially collinear with any end, so its hue separation is *identically zero*, and
+ * on a cover whose non-field content is black type and a white title most of the qualified set is
+ * neutral. So a rank over this scalar reads "0.036 away from the background" as *the top 6 % of hue
+ * departure*, and the min-over-ends logic is **not** implicated: it correctly took the yellow's minimum
+ * against the yellow end (0.0359 vs 0.2469 against the red).
+ *
+ * **The absolute test that the rank is missing was built and refuted, in two forms.** *In family* was
+ * defined with no new constant — the end is chromatic, the pixel is chromatic, and the pixel's
+ * tangential departure from the end is below `REGION_CHROMA_BOUNDARY` — and shades of the field were
+ * sorted below everything else:
+ *
+ * - **Both ends.** Coverage-220: 76 of 220 accents move, and **039's magenta `#803a82` is destroyed** —
+ *   a mark this reviewer asked for twice — because an absolute tangential threshold cannot tell "same
+ *   family" from "both colours are dark", and a chroma-0.135 magenta sits 0.055 from a chroma-0.06 navy
+ *   surface.
+ * - **Background only** (the figure-vs-ground reading: an accent may share the *figure's* family, never
+ *   the *ground's*). 35 of 220 move, the magenta survives, but a `#a11d06` red mark is demoted to a
+ *   muted `#834e46` on a tan-ground cover.
+ * - **And on cover 19 itself neither form produces the reviewer's answer.** They publish `#f99100` and
+ *   `#ff7007` — *oranges*, the JPEG blend between the yellow background and the red surface, which is
+ *   maximally far in tangential terms from **both** families and is therefore what a family test
+ *   promotes. Trading one wrong yellow for a transition artifact is not the repair.
+ *
+ * **What the measurement actually says, and it is a mechanism finding rather than a tuning miss.** The
+ * reviewer's answer on this cover is **white**. Cover 19 has *no third chromatic family*: its entire
+ * chromatic content is the two field ends' own families, and everything else in it is neutral. A
+ * chromatic-departure ordering must therefore elect a shade of a field end or a blend between two of
+ * them — a neutral is at the *bottom* of the chroma term by construction (the best near-white here
+ * ranks at the 61st chroma percentile and 16.8 % from the top of the ordering). No reordering of the
+ * hue factor can reach it. **What is missing is a branch this role does not have:** *the artwork
+ * carries no chromatic mark outside the field's own families, so the accent should be the artwork's
+ * neutral figure rather than the least-bad shade of the ground.* That is a designed change with its own
+ * evidence requirement, and it is reported upward rather than improvised here.
+ *
+ * `fieldFamily` / `inFieldFamily` / `bandInFieldFamily` / `publishedFieldFamily` are computed and
+ * recorded, and decide nothing. They are the instrument the next attempt needs.
+ *
  * ## The salience guard (requirement 4)
  *
  * `EVIDENCE_2026-08-04.md` item 6: presence is not eligibility, and a colour that occurs only as an
@@ -259,8 +306,15 @@ export type AccentOrdering = Readonly<{
 	margin: Float64Array
 	/** `|ΔL| − ‖Δ(a,b)‖` from the nearer field end, by pixel index. Positive is lightness-moving. */
 	lightnessMove: Float64Array
+	/**
+	 * `1` where the pixel is a **shade of a chromatic field end** rather than a mark on it, `0`
+	 * otherwise; `NaN` where the pixel did not qualify (0.4.3). See `computeAccentOrdering`.
+	 */
+	fieldFamily: Float64Array
 	/** How many pixels cleared the bar from both ends. */
 	qualified: number
+	/** How many of the qualified sit in a chromatic field end's own family (0.4.3). */
+	inFieldFamily: number
 }>
 
 /**
@@ -294,9 +348,17 @@ export function computeAccentOrdering(
 	const hueSeparationOf: number[] = []
 	const marginOf: number[] = []
 	const lightnessMoveOf: number[] = []
+	const fieldFamilyOf: number[] = []
 
 	const chromaBackground = chromaOf(lab, background)
 	const chromaSurface = chromaOf(lab, surface)
+	// Which ends have a hue family at all (0.4.3). A neutral end is a point at the origin of the chroma
+	// plane: every pixel is radially collinear with it, the hue separation from it is identically zero,
+	// and "the same family as this end" is a statement with no content. Reading it as one would demote
+	// **every** chromatic pixel on every greyscale-field cover — the purple, the cinnamon, 168's blue —
+	// so the family test is conditioned on the end being chromatic by the contract's own boundary.
+	const backgroundHasFamily = chromaBackground >= REGION_CHROMA_BOUNDARY
+	const surfaceHasFamily = chromaSurface >= REGION_CHROMA_BOUNDARY
 	const backgroundAt = background * 3
 	const surfaceAt = surface * 3
 
@@ -333,40 +395,65 @@ export function computeAccentOrdering(
 		const nearerAt = (toBackground <= toSurface ? background : surface) * 3
 		const nearerPlane = toBackground <= toSurface ? backgroundPlane : surfacePlane
 
+		// **The field-family test (0.4.3, cover-19's regression).** A pixel is a *shade of a field end*
+		// when the end has a hue family, the pixel is itself chromatic, and its **tangential** departure
+		// from that end is smaller than `REGION_CHROMA_BOUNDARY` — the smallest chroma-plane displacement
+		// the contract is willing to call a colour at all. It is the same boundary, read on the same axis,
+		// as an absolute rather than as a rank. See the module docstring for what it repairs and why the
+		// rank alone could not.
+		const chromatic = chroma >= REGION_CHROMA_BOUNDARY
+		const inFamily = chromatic &&
+			((backgroundHasFamily && backgroundHue < REGION_CHROMA_BOUNDARY) ||
+				(surfaceHasFamily && surfaceHue < REGION_CHROMA_BOUNDARY))
+
 		qualified.push(index)
 		chromaDepartureOf.push(backgroundChroma < surfaceChroma ? backgroundChroma : surfaceChroma)
 		hueSeparationOf.push(backgroundHue < surfaceHue ? backgroundHue : surfaceHue)
 		marginOf.push(backgroundMargin < surfaceMargin ? backgroundMargin : surfaceMargin)
 		lightnessMoveOf.push(Math.abs(lab[at] - lab[nearerAt]) - nearerPlane)
+		fieldFamilyOf.push(inFamily ? 1 : 0)
 	}
 
 	const pixels = lab.length / 3
 	const departure = new Float64Array(pixels).fill(Number.NaN)
 	const margin = new Float64Array(pixels).fill(Number.NaN)
 	const lightnessMove = new Float64Array(pixels).fill(Number.NaN)
+	const fieldFamily = new Float64Array(pixels).fill(Number.NaN)
 	if (qualified.length === 0) {
-		return { sorted: new Int32Array(0), departure, margin, lightnessMove, qualified: 0 }
+		return { sorted: new Int32Array(0), departure, margin, lightnessMove, fieldFamily, qualified: 0, inFieldFamily: 0 }
 	}
 
 	// The percentile product. Weight-free by construction: each factor is a rank in [0, 1] and the
 	// combination is a product of ranks, so there is no unit conversion and nothing to tune.
 	const chromaPercentile = percentileRanks(Float64Array.from(chromaDepartureOf))
 	const huePercentile = percentileRanks(Float64Array.from(hueSeparationOf))
+	let inFieldFamily = 0
 	for (let i = 0; i < qualified.length; i += 1) {
 		departure[qualified[i]] = chromaPercentile[i] * huePercentile[i]
 		margin[qualified[i]] = marginOf[i]
 		lightnessMove[qualified[i]] = lightnessMoveOf[i]
+		fieldFamily[qualified[i]] = fieldFamilyOf[i]
+		if (fieldFamilyOf[i] === 1) inFieldFamily += 1
 	}
 
 	// Sorted once, here, rather than at each step of the verify-and-step loop: stepping a rank moves
 	// where the cut is and must never be able to move what the order is.
+	//
+	// **`fieldFamily` does not appear in this key, and 0.4.3 measured why** — see the module docstring's
+	// "0.4.3 — the cover-19 family defect, located and not repaired". The obvious repair is to sort the
+	// shades of a chromatic field end below everything else (`departure + (inFamily ? 0 : 1)`); it was
+	// implemented, run over coverage-220 in both its two-end and background-only forms, and **refuted in
+	// both**. The field is computed and recorded so the next attempt starts from the measurement rather
+	// than from the same guess.
 	const rank = (index: number): number => departure[index]
 	return {
 		sorted: sortByKey(Int32Array.from(qualified), rank),
 		departure,
 		margin,
 		lightnessMove,
+		fieldFamily,
 		qualified: qualified.length,
+		inFieldFamily,
 	}
 }
 
@@ -417,6 +504,13 @@ export type AccentRefinement = Readonly<{
 	/** The published pixel's departure product. */
 	publishedDeparture: number
 	/**
+	 * How many of the top-τ band are shades of a chromatic field end, and whether the published pixel
+	 * is one (0.4.3). `bandInFieldFamily === bandSize` is the "the artwork has no other family" case,
+	 * where the family sort is a constant offset and decides nothing.
+	 */
+	bandInFieldFamily: number
+	publishedFieldFamily: boolean
+	/**
 	 * The published pixel's own OKLab chroma (0.4.2). The round-5 note was about *this* number — "the
 	 * accent is darker than the real purple" — and a shade nuance that is not countable is not a fix.
 	 */
@@ -447,6 +541,8 @@ export function chooseAccent(
 
 	const departureOf = (index: number): number => ordering.departure[index]
 	const marginKey = (index: number): number => ordering.margin[index]
+	let bandInFieldFamily = 0
+	for (let i = 0; i < band.length; i += 1) if (ordering.fieldFamily[band[i]] === 1) bandInFieldFamily += 1
 
 	// 1. The dominant chromatic lump — the `e1`/`e2` pattern, on the departure score, with the higher
 	//    departure winning rather than the greater mass. See the module docstring for why mass is the
@@ -601,6 +697,8 @@ export function chooseAccent(
 			cascadedOver: population.length,
 			publishedMargin: pixel < 0 ? Number.NaN : ordering.margin[pixel],
 			publishedDeparture: pixel < 0 ? Number.NaN : ordering.departure[pixel],
+			bandInFieldFamily,
+			publishedFieldFamily: pixel >= 0 && ordering.fieldFamily[pixel] === 1,
 			publishedChroma: pixel < 0 ? Number.NaN : chromaOf(image.lab, pixel),
 		},
 	}

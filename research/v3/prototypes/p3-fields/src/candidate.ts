@@ -36,6 +36,26 @@
  * band-then-cascade change at the field ends moves *toward* that discipline rather than away: e₁ and e₂
  * were this pipeline's only single-pixel reads and are now populations like every other role.
  *
+ * **0.4.3 adds one number and answers a round.** Round 6 (`review-rounds/round-6-calibration/`) graded
+ * four held covers at min-ramp 2.67–4.93 and returned four unacceptables naming the text, three of them
+ * prescribing the foreground colour; the pre-registered LEGIBILITY-WINS branch fired. Two changes and
+ * one refutation:
+ *
+ *  1. **`MIN_RAMP_HOLD_FLOOR` (5.0, `[UNCALIBRATED]`, the release's only new number)** — 0.4.2's
+ *     chromatic-mark hold now applies only above it, so the swap returns on the covers where identity
+ *     was buying an unreadable foreground (`pipeline.ts`). Bracket one-sided, stated at the constant.
+ *  2. **The ground-lump exclusion** in the ink regime's lump clause (`foreground.ts`), which is the
+ *     root cause behind one of the three prescriptions: a lump whose median L sits inside the *field's
+ *     own lightness span* is the ground, and "distance from the fixed midpoint 0.5" elects it whenever
+ *     the artwork's ground is the L-extreme — a `#ffffff` ground beats black lettering by construction.
+ *     No new constant: the test is against two published pixels.
+ *  3. **Cover 19's family defect is located and deliberately not repaired** (`accent.ts`). The
+ *     hue-separation *rank* reads a 0.036 tangential departure as the 94th percentile because neutrals
+ *     have identically zero separation; but both absolute repairs were built and measured to be worse
+ *     (039's magenta destroyed, or a JPEG blend orange published), and the reviewer's answer on that
+ *     cover is a **neutral**, which a chromatic-departure ordering cannot reach. Reported upward with
+ *     its instrument (`fieldFamily`) recorded and inert.
+ *
  * **0.4.2 adds no number at all.** Two evidence-driven selection refinements from round 5
  * (`review-rounds/round-5-calibration/VERDICTS.md`) and both are expressed in quantities that already
  * exist. The fg↔accent comparator gains a **chromatic-mark clause** — the labels do not move when the

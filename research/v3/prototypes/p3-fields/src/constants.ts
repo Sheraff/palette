@@ -39,7 +39,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.4.2"
+export const CANDIDATE_ID = "p3-fields-0.4.3"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -47,7 +47,7 @@ export const CANDIDATE_ID = "p3-fields-0.4.2"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.4.2"
+export const ALGORITHM_VERSION = "p3-fields-0.4.3"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -754,6 +754,43 @@ export const ACCENT_LUMP_DEPARTURE_TIE_BAND = 0.1
 // (`#010012`, chroma 0.0548) counts as a mark while a slightly darker one does not, and the swap
 // refinement is measurably sensitive to that on at least one coverage cover — reported in the
 // 0.4.2 report rather than tuned around.
+
+// ---------------------------------------------------------------------------------------------
+// 0.4.3 — the round-6 legibility arbitration (phase2-cal-022)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The chromatic-mark hold's floor** — the min-ramp |raw APCA| a displaced foreground candidate must
+ * clear before identity is allowed to keep it (`pipeline.ts`, `shouldSwapRoles`).
+ *
+ * [UNCALIBRATED] — provisional **5.0**, bracketed by round 6 and by nothing else.
+ *
+ * **What the round measured.** `review-rounds/round-6-calibration/VERDICTS.md` (phase2-cal-022): all
+ * four conflict covers — min-ramp **2.67 / 3.07 / 3.27 / 4.93** — graded *unacceptable* with
+ * text-readability notes, and three of the four prescribed the foreground outright (*"we should use
+ * black as the foreground"*, *"the main text is white… we should have a white foreground"* ×2). The
+ * round's pre-registered LEGIBILITY-WINS branch therefore fires: holding is right in principle (rows 1
+ * and 5's chromatic accents are the reviewer's own three-round ask, delivered) but 2.5 is the wrong
+ * number, and the comparator must be allowed to swap back below a floor the grades bracket.
+ *
+ * **The bracket is one-sided and that is stated rather than smoothed.** The highest *complaining*
+ * min-ramp is **4.93**; there is no non-complaining conflict cover anywhere in the tested span, so the
+ * floor is bounded below by 4.93 and **unbounded above** by this round's evidence. 5.0 is the smallest
+ * round number above the bracket's floor — it is a *lower* edge honestly placed, not a measured
+ * optimum, and a later round that carries a legible cover *above* 5.0 is what would close it from
+ * above. **Anchor plan:** one calibration round whose conflict cohort spans 5–15 min-ramp; the floor
+ * moves to the lowest min-ramp that stops drawing a text complaint.
+ *
+ * **What it costs, per the round's own constraint.** A floor above 3.07 takes 039's magenta back out
+ * of the accent slot on the cover where the reviewer asked for it — the round pre-registered that
+ * collision and it is real, not a surprise. It is resolved in the direction the same reviewer's
+ * *three* text prescriptions point, and 168 (min-ramp 6.66) clears 5.0, so the accent the reviewer
+ * asked for three rounds running survives untouched.
+ *
+ * Raw |APCA| and not Lc, because it is compared against `minRampContrast`, which is the quantity the
+ * comparator, the ink preference and the accent preference all already read.
+ */
+export const MIN_RAMP_HOLD_FLOOR = 5.0
 
 // =================================================================================================
 // The substrate experiment (W13) — one branch adopted at 0.4.1, two retained as dev-flagged vehicles

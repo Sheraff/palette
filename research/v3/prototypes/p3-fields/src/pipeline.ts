@@ -71,6 +71,7 @@ import {
 	INK_REGIME_SUPPORT_MARGIN,
 	MAX_RANK_STEPS,
 	MIN_GUIDE_STOP_SPACING,
+	MIN_RAMP_HOLD_FLOOR,
 	PREPROCESSING_VERSION,
 	substrateFlags,
 	TRIM_LEVEL,
@@ -523,6 +524,26 @@ function namesRole(subjects: readonly string[], role: string): boolean {
  * was a 28 % path and is now a 3 % one, so anything round 2 credited to it on a cover outside the named
  * two is now credited to the foreground search instead, unmeasured until the next round grades it.
  *
+ * ## 0.4.3 — the floor clause the round-6 arbitration bought
+ *
+ * The clause above was written with the round that would judge it already staged, and it was judged.
+ * Round 6 (phase2-cal-022) put four held covers in front of the reviewer at min-ramp **2.67 / 3.07 /
+ * 3.27 / 4.93** and **all four came back unacceptable with the text named** — three of them
+ * prescribing the foreground colour outright. The pre-registered LEGIBILITY-WINS branch fired,
+ * unanimously and with no split to interpolate.
+ *
+ * > **The floor clause.** The hold applies only when the displaced foreground candidate clears
+ * > `MIN_RAMP_HOLD_FLOOR`. Below it the labels move again and the chromatic mark goes to the
+ * > foreground, which is the 0.4.1 behaviour *on those covers only*.
+ *
+ * This is the smallest change that answers the verdict: the principle 0.4.2 established is untouched
+ * (a chromatic mark is still worth keeping in the accent slot), and what moves is the price identity
+ * is allowed to pay for it. 168 at 6.66 clears the floor and keeps the blue accent it asked for three
+ * rounds running; 039 at 3.07 does not, and its magenta returns to the foreground slot — the collision
+ * between two of the same reviewer's verdicts that `ROUND.md`'s branch (a) pre-registered, resolved in
+ * the direction three text prescriptions point rather than averaged. The floor's bracket is one-sided
+ * (nothing legible was graded in the tested span) and `MIN_RAMP_HOLD_FLOOR` says so.
+ *
  * **Reported rather than smoothed.** The clause has no opinion about the *foreground* candidate's chroma,
  * so on a cover where both colours are saturated it does not fire and the comparator behaves as before —
  * deliberately, because moving one chromatic colour past another loses no identity, and a two-sided rule
@@ -543,11 +564,13 @@ function shouldSwapRoles(
 	if (minRampContrast(image, accent, rampAnchorRgb) <= foregroundMinRamp) {
 		return { swap: false, chromaticMarkHeld: false }
 	}
-	// **The chromatic-mark clause (0.4.2).** Read the docstring's last section before changing either
-	// half: the chroma test is what keeps round 2's validated ink swaps, and the floor test is what
-	// keeps identity from buying an illegible foreground.
+	// **The chromatic-mark clause (0.4.2), with 0.4.3's floor.** Read the docstring's last two sections
+	// before changing any of the three tests: the chroma test is what keeps round 2's validated ink
+	// swaps, the contract text floor is the bound 0.4.2 gave the hold, and `MIN_RAMP_HOLD_FLOOR` is what
+	// round 6 measured that bound to be too low by (phase2-cal-022, all four conflict verdicts).
 	const chromaticMarkHeld = chromaOf(image.lab, accent) >= REGION_CHROMA_BOUNDARY &&
-		foregroundMinRamp >= CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude
+		foregroundMinRamp >= CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude &&
+		foregroundMinRamp >= MIN_RAMP_HOLD_FLOOR
 	if (chromaticMarkHeld) return { swap: false, chromaticMarkHeld: true }
 	// The accent's own qualification, applied to the colour about to be labelled accent: the bar from
 	// both field ends, and 0.3.0's min-ramp floor.
@@ -936,6 +959,9 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		const inkPreference: InkContrastPreference = {
 			anchorRgb: rampAnchorRgb,
 			floor: CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude,
+			// The same anchors as OKLab L (0.4.3): the ink regime's lump clause asks whether a lump is the
+			// *field's own lightness*, which is a question about these pixels and not about their contrast.
+			anchorL: rampAnchors.map((anchor) => image.lab[anchor * 3]),
 		}
 		const accentPreference: AccentContrastPreference = {
 			anchorRgb: rampAnchorRgb,
@@ -962,6 +988,9 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		record("accentOrdering", {
 			qualified: accentOrdering.qualified,
 			eligible: image.eligibleIndices.length,
+			// 0.4.3's instrument, which decides nothing: how many qualified pixels are shades of a
+			// chromatic field end. See `accent.ts`'s "the cover-19 family defect, located and not repaired".
+			inFieldFamily: accentOrdering.inFieldFamily,
 			// The top of the ordering, as colours, so a divergence in "which chromatic mark won" is
 			// readable without re-deriving the percentile product.
 			topDeparture: Array.from(accentOrdering.sorted.slice(-5)).reverse().map((pixel) => ({

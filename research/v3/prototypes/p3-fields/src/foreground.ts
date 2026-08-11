@@ -124,6 +124,29 @@
  *    cascade runs over them instead of over the whole lump. If *none* of the ink clears the floor, the
  *    whole lump is still the answer: the artwork's own ink is published at whatever contrast it has.
  *
+ * ### 0.4.3 — what round 6 measured clause 1 to be wrong about
+ *
+ * Round 6 (`review-rounds/round-6-calibration/VERDICTS.md`) prescribed the foreground on three covers —
+ * *"we should use black as the foreground"*, *"the main text is white… we should have a white
+ * foreground"* ×2 — and on all three the prescribed colour **exists in the artwork**. Diagnosed with
+ * `P3_DIAG`, the three misses are **two different defects and only one of them is local**:
+ *
+ * 1. **The lump election elected the ground** (one cover, repaired here). The black lettering was in the
+ *    step-0 ink window as an 18-pixel lump; the 125-pixel near-white lump beat it on extremity because
+ *    the ground was `#ffffff`. Clause 1 gains the **ground-lump exclusion** at its site below.
+ * 2. **The prescribed colour never entered the window at all** (two covers, *not* repaired here, and
+ *    reported rather than smoothed). Both prescribe white; on one the white type sits at 44.8 % from the
+ *    top of the ink ordering, on the other at 5.9 %, so no rank the search may step to reaches it
+ *    (8 windows and 1 window away respectively, against `MAX_RANK_STEPS` 6 — and the second is inside
+ *    the cap only in the sense that the *topmost* white pixel is, not a rankable lump of them). The
+ *    cause is the ink **score**, not any clause over it: the score is the coherence of a mark's
+ *    surround, and white lettering over a photograph has an incoherent surround while the flat
+ *    near-black corners of the same cover score 1.0. On both covers the *luminance* regime's rank-0
+ *    answer is exactly the prescribed white (`#fafaf8`, `#ffffff`, min-ramp 105.4 and 98.6) — but the
+ *    ink regime is entered on source support and is never left on anything else, by the design decision
+ *    two paragraphs up. **That is a structural finding about §2.5's ink score on photographic covers and
+ *    it is reported upward, not tuned around here.**
+ *
  * **The regime is never left on a contrast failure.** Falling through to the luminance ordering happens
  * only where it always did, on the source-support test (§2.5 / `clearsInkRegimeMargin`). An earlier draft
  * of this iteration made clause 2 a hard feasibility mask that could empty the population and evict the
@@ -307,7 +330,14 @@ export type InkRefinement = Readonly<{
 	lumpMasses: readonly [number, number] | null
 	/** Median L of each lump, or `null`. */
 	lumpMedianL: readonly [number, number] | null
-	chosen: "whole-population" | "extreme-lump" | "darker-convention"
+	chosen: "whole-population" | "extreme-lump" | "darker-convention" | "ground-lump-excluded"
+	/**
+	 * Which lump the 0.4.3 ground exclusion refused, or `null` when it did not fire (0.4.3).
+	 *
+	 * Recorded at its own site so that "the published foreground moved between 0.4.2 and 0.4.3" splits
+	 * into *the exclusion fired* and *something upstream moved the window*, without re-deriving either.
+	 */
+	groundLump: "lower" | "upper" | null
 	/** True when the contrast preference actually narrowed the lump. */
 	contrastPreferenceApplied: boolean
 	/** How many pixels the cascade actually ran over. */
@@ -321,7 +351,19 @@ export type InkRefinement = Readonly<{
  * Pixel triples rather than pixel indices because `apcaRaw` takes triples, and the anchors are read
  * once per ends step and consulted once per candidate pixel.
  */
-export type InkContrastPreference = Readonly<{ anchorRgb: readonly Rgb8[]; floor: number }>
+export type InkContrastPreference = Readonly<{
+	anchorRgb: readonly Rgb8[]
+	floor: number
+	/**
+	 * The published ramp's stop pixels **as OKLab L**, in ramp order (0.4.3).
+	 *
+	 * Read by the lump clause, not by the contrast preference — it is the field's own lightness span,
+	 * which is what "this lump is the ground rather than the ink" is a statement about. Lightnesses of
+	 * actual published pixels, resolved by the pipeline beside the triples so the two views of one ramp
+	 * cannot drift apart. Empty means "no ramp available" and the ground exclusion does not run.
+	 */
+	anchorL: readonly number[]
+}>
 
 /**
  * The contract's text-versus-field metric for one pixel: **min |raw APCA| over the ramp's stops**.
@@ -361,9 +403,41 @@ function refineInkWindow(
 	let chosen: InkRefinement["chosen"] = "whole-population"
 	let lumpMasses: readonly [number, number] | null = null
 	let lumpMedianL: readonly [number, number] | null = null
+	let groundLump: "lower" | "upper" | null = null
 	if (split !== null) {
 		const lowerL = medianOfKey(split.lower, lightnessOf)
 		const upperL = medianOfKey(split.upper, lightnessOf)
+		// **The ground-lump exclusion (0.4.3, round-6 root cause).** A lump whose median L sits *inside the
+		// field's own lightness span* is the ground, not the ink — the field is the thing the artwork's
+		// ground is published as, and a mark that is the same lightness as the field is the ground showing
+		// through the window rather than a designer's mark on it. It is the same membership test
+		// `luminanceOrdering` cuts its bands with (a comparison of a pixel's L to two published pixels'),
+		// applied to a lump median instead of to a pixel, and it is an **identity** statement rather than a
+		// contrast one: no APCA, no ramp minimum, nothing about readability.
+		//
+		// **What it repairs, measured** (`review-rounds/round-6-calibration/VERDICTS.md`). On row 0's cover
+		// the reviewer prescribed a black foreground; the artwork's black lettering *was* in the step-0 ink
+		// window as an 18-pixel lump at median L 0.157, and the extremity rule below elected the 125-pixel
+		// near-white lump at median L 0.970 instead — because on a `#ffffff` ground the **ground** is the
+		// L-extreme (|0.970 − 0.5| = 0.470 > |0.157 − 0.5| = 0.344) and the ink is not. That is the
+		// extremity rule's premise failing on its own worked example: its docstring assumed a ground at
+		// L 0.83, and a white ground is at 1.0. Distance from a fixed abstract midpoint cannot tell ink
+		// from ground; distance from *this artwork's field* can, and the field is two published pixels.
+		//
+		// It fires only when exactly one lump is inside the span, so it can never empty the population and
+		// never has to choose between two grounds. Where it does not fire, the extremity rule and its tie
+		// band decide exactly as they did at 0.3.0 — including cover 19's 3-pixel black ink lump, which is
+		// a round-2 hard constraint and is outside the span at both ends.
+		let darkestAnchorL = Number.POSITIVE_INFINITY
+		let lightestAnchorL = Number.NEGATIVE_INFINITY
+		for (const anchor of preference.anchorL) {
+			if (anchor < darkestAnchorL) darkestAnchorL = anchor
+			if (anchor > lightestAnchorL) lightestAnchorL = anchor
+		}
+		const insideField = (l: number): boolean => l >= darkestAnchorL && l <= lightestAnchorL
+		const lowerIsGround = preference.anchorL.length > 0 && insideField(lowerL)
+		const upperIsGround = preference.anchorL.length > 0 && insideField(upperL)
+
 		// Extremity is distance from the lightness axis's own midpoint: OKLab L is bounded [0, 1], so this
 		// is an absolute, scale-free quantity and not a statistic of this corpus. A cover with black type
 		// on white puts the ink lump at |0 − 0.5| and the ground lump at |0.83 − 0.5|; a cover with white
@@ -371,8 +445,14 @@ function refineInkWindow(
 		const lowerExtremity = Math.abs(lowerL - LIGHTNESS_AXIS_MIDPOINT)
 		const upperExtremity = Math.abs(upperL - LIGHTNESS_AXIS_MIDPOINT)
 		const tied = Math.abs(lowerExtremity - upperExtremity) < INK_LUMP_EXTREMITY_TIE_BAND
-		population = tied ? split.lower : (lowerExtremity > upperExtremity ? split.lower : split.upper)
-		chosen = tied ? "darker-convention" : "extreme-lump"
+		if (lowerIsGround !== upperIsGround) {
+			groundLump = lowerIsGround ? "lower" : "upper"
+			population = lowerIsGround ? split.upper : split.lower
+			chosen = "ground-lump-excluded"
+		} else {
+			population = tied ? split.lower : (lowerExtremity > upperExtremity ? split.lower : split.upper)
+			chosen = tied ? "darker-convention" : "extreme-lump"
+		}
 		lumpMasses = [split.lower.length, split.upper.length]
 		lumpMedianL = [lowerL, upperL]
 	}
@@ -399,6 +479,7 @@ function refineInkWindow(
 			lumpMasses,
 			lumpMedianL,
 			chosen,
+			groundLump,
 			contrastPreferenceApplied: legible !== population,
 			cascadedOver: legible.length,
 		},
