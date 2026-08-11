@@ -1,0 +1,796 @@
+{
+ "what": "P1 V1 keep-or-kill pairwise round — de-blinded verdicts, batch phase2-pair-019 (staged as b-20260811-9d47)",
+ "generatedAt": "2026-08-11",
+ "analyst": "P1 post-release round analyst",
+ "sources": {
+  "warehouse": "research/v3/data/warehouse/warehouse.jsonl",
+  "batchLog": "research/v3/data/review-server/batches.jsonl",
+  "key": "research/v3/prototypes/p1-mdl/review-rounds/v1-keep-or-kill/KEY.json",
+  "fixture": "research/v3/prototypes/p1-mdl/review-rounds/v1-keep-or-kill/batch.json",
+  "round": "research/v3/prototypes/p1-mdl/review-rounds/v1-keep-or-kill/ROUND.md",
+  "predecessorVerdicts": "research/v3/prototypes/p1-mdl/review-rounds/m3-priors-pairwise/verdicts.json"
+ },
+ "arms": {
+  "a": "p1a — mass-normalised prior (nats), lambda 0.1 [MEASURED]",
+  "aprime": "p1ap — schema-derived serialization prior (bits) with the chromatic residual density (the repair under test), lambda 1"
+ },
+ "decodeVerification": {
+  "installedBatchId": "phase2-pair-019",
+  "stagedBatchId": "b-20260811-9d47",
+  "itemCount": 8,
+  "itemIdSetsAndOrderEqual_key_fixture_installed_released": true,
+  "variantIdSetsEqual_key_fixture": true,
+  "variantIdSetsEqualPerItem_key_verdicts": true,
+  "unknownVariantIdsInVerdicts": 0,
+  "crossItemVariantMismatches": 0,
+  "paletteBytesIdentical_fixture_served": true,
+  "sideArrangementReconciled_viaKEY_andViaServerBlindingRecord": true,
+  "artworkSha256Agrees_key_batchLog_warehouse": true,
+  "verdictRows": 41,
+  "itemsWithVerdicts": 7,
+  "itemsVetoed": 1,
+  "endorsedSamples": 1,
+  "batchCompleteRows": 1,
+  "releasedItemIds": 8,
+  "serverBlindingSalt": "8b48ff5fdd714804b50f7a89ef1e265d75fa474325c8877da21775a292893e29",
+  "roundBlindingSalt": "bab621ce1267a20ee47e8431f3c4e2495b3bdabd332466171665c5b4b748698f",
+  "saltsDistinct": true,
+  "prefillRuleConsistent": "every equal-graded item carries an explicit preference; every differing-graded item carries a prefilled one — matches the page rule stated in ROUND.md",
+  "result": "PASS"
+ },
+ "tallies": {
+  "gradedItems": 7,
+  "vetoedItems": 1,
+  "gradeDeltaVsV0": {
+   "a": {
+    "improved": 4,
+    "same": 2,
+    "worse": 1
+   },
+   "aprime": {
+    "improved": 3,
+    "same": 2,
+    "worse": 2
+   }
+  },
+  "gradeDistributionV1": {
+   "a": {
+    "strong": 2,
+    "acceptable": 0,
+    "weak": 4,
+    "unacceptable": 1
+   },
+   "aprime": {
+    "strong": 0,
+    "acceptable": 1,
+    "weak": 2,
+    "unacceptable": 4
+   }
+  },
+  "gradeDistributionV0_sameSevenItems": {
+   "a": {
+    "strong": 0,
+    "acceptable": 1,
+    "weak": 4,
+    "unacceptable": 2
+   },
+   "aprime": {
+    "strong": 0,
+    "acceptable": 0,
+    "weak": 2,
+    "unacceptable": 5
+   }
+  },
+  "preferenceByArm": {
+   "a": 7,
+   "aprime": 0,
+   "none": 0
+  },
+  "preferenceExplicitOnly": {
+   "a": 2,
+   "aprime": 0,
+   "none": 0
+  },
+  "preferencePrefilled": 5,
+  "confoundFlags": 0,
+  "vetoes": 1
+ },
+ "items": [
+  {
+   "index": 1,
+   "itemId": "00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+   "servedSides": {
+    "A": {
+     "variantId": "v-1f1c09e1e5246409",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-6923c3941e580521",
+     "arm": "aprime"
+    }
+   },
+   "gradesV0": {
+    "a": "acceptable",
+    "aprime": "unacceptable"
+   },
+   "gradesV1": {
+    "a": "strong",
+    "aprime": "acceptable"
+   },
+   "gradeDelta": {
+    "a": "improved",
+    "aprime": "improved"
+   },
+   "preferenceV0": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "preferenceV1": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": null,
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 1,
+   "revisionTimestamps": [
+    "2026-08-11T11:40:04.424Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "variantId": "v-1f1c09e1e5246409",
+     "minAbsApcaForeground": 53.68,
+     "minAbsApcaAccent": 69.56,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#e9e6df",
+      "surface": "#e9e6df",
+      "foreground": "#f13303",
+      "accent": "#b22013",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": false
+     }
+    },
+    "aprime": {
+     "variantId": "v-6923c3941e580521",
+     "minAbsApcaForeground": 71.52,
+     "minAbsApcaAccent": 71.52,
+     "gradientStops": 2,
+     "swapDelta": null,
+     "servedPalette": {
+      "background": "#e9e6dd",
+      "surface": "#e0e4e5",
+      "foreground": "#a4140c",
+      "accent": "#a4140c",
+      "gradient": {
+       "stops": [
+        {
+         "color": "#e9e6dd",
+         "position": 0
+        },
+        {
+         "color": "#e0e4e5",
+         "position": 1
+        }
+       ]
+      },
+      "surfaceCollapsed": false,
+      "accentCollapsed": true
+     }
+    }
+   }
+  },
+  {
+   "index": 2,
+   "itemId": "ab67616d00001e020000269ead63cf2376a6b67d",
+   "servedSides": {
+    "A": {
+     "variantId": "v-c0b8f0d35857d52d",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-9df6b17176f7b0aa",
+     "arm": "a"
+    }
+   },
+   "gradesV0": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "gradesV1": {
+    "a": "unacceptable",
+    "aprime": "unacceptable"
+   },
+   "gradeDelta": {
+    "a": "worse",
+    "aprime": "same"
+   },
+   "preferenceV0": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "preferenceV1": {
+    "raw": "b",
+    "source": "explicit",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": null,
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "no gradient\nthe background is yellow\nthe 4 colors (correct in side B) are red, black, yellow and white",
+   "revisionCount": 8,
+   "revisionTimestamps": [
+    "2026-08-11T11:40:26.461Z",
+    "2026-08-11T11:40:31.108Z",
+    "2026-08-11T11:40:36.579Z",
+    "2026-08-11T11:40:50.910Z",
+    "2026-08-11T11:40:59.421Z",
+    "2026-08-11T11:41:01.046Z",
+    "2026-08-11T11:41:04.952Z",
+    "2026-08-11T11:41:15.291Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "variantId": "v-9df6b17176f7b0aa",
+     "minAbsApcaForeground": 45.97,
+     "minAbsApcaAccent": 69.67,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#fc0402",
+      "surface": "#000300",
+      "foreground": "#fcd000",
+      "accent": "#fafaf8",
+      "gradient": null,
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+     }
+    },
+    "aprime": {
+     "variantId": "v-c0b8f0d35857d52d",
+     "minAbsApcaForeground": 83.93,
+     "minAbsApcaAccent": 83.94,
+     "gradientStops": 2,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#fafaf8",
+      "surface": "#fcd000",
+      "foreground": "#000300",
+      "accent": "#000000",
+      "gradient": {
+       "stops": [
+        {
+         "color": "#fafaf8",
+         "position": 0
+        },
+        {
+         "color": "#fcd000",
+         "position": 1
+        }
+       ]
+      },
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+     }
+    }
+   }
+  },
+  {
+   "index": 3,
+   "itemId": "ab67616d00001e02000025b4e66a00806cb6dd7d",
+   "servedSides": {
+    "A": {
+     "variantId": "v-c61426c0790a83af",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-8f0fca9f7247f111",
+     "arm": "a"
+    }
+   },
+   "gradesV0": {
+    "a": "unacceptable",
+    "aprime": "unacceptable"
+   },
+   "gradesV1": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "gradeDelta": {
+    "a": "improved",
+    "aprime": "same"
+   },
+   "preferenceV0": {
+    "raw": "no-preference",
+    "source": "explicit",
+    "arm": null
+   },
+   "preferenceV1": {
+    "raw": "b",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": null,
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "the background is black\nat least one color must be pink (good pick on side B with the Compote pink)",
+   "revisionCount": 6,
+   "revisionTimestamps": [
+    "2026-08-11T11:41:32.811Z",
+    "2026-08-11T11:42:12.723Z",
+    "2026-08-11T11:42:15.850Z",
+    "2026-08-11T11:42:32.402Z",
+    "2026-08-11T11:42:35.911Z",
+    "2026-08-11T11:42:47.746Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "variantId": "v-8f0fca9f7247f111",
+     "minAbsApcaForeground": 28.92,
+     "minAbsApcaAccent": 8.84,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#363634",
+      "surface": "#363634",
+      "foreground": "#be53a1",
+      "accent": "#000000",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": false
+     }
+    },
+    "aprime": {
+     "variantId": "v-c61426c0790a83af",
+     "minAbsApcaForeground": 98.53,
+     "minAbsApcaAccent": 106.86,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#fcfcfa",
+      "surface": "#fcfcfa",
+      "foreground": "#363634",
+      "accent": "#000000",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": false
+     }
+    }
+   }
+  },
+  {
+   "index": 4,
+   "itemId": "ab67616d00001e02000022e7e9d11c908479200b",
+   "servedSides": {
+    "A": {
+     "variantId": "v-3f366b42f3ae43d1",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-5be74ded1e2175f8",
+     "arm": "aprime"
+    }
+   },
+   "gradesV0": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "gradesV1": {
+    "a": "strong",
+    "aprime": "weak"
+   },
+   "gradeDelta": {
+    "a": "improved",
+    "aprime": "improved"
+   },
+   "preferenceV0": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "preferenceV1": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": null,
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "",
+   "revisionCount": 3,
+   "revisionTimestamps": [
+    "2026-08-11T11:43:02.615Z",
+    "2026-08-11T11:43:04.556Z",
+    "2026-08-11T11:43:14.335Z"
+   ],
+   "gradesStableAcrossRevisions": false,
+   "revisionTrail": [
+    "a|acceptable|aprime|unacceptable|a",
+    "a|strong|aprime|unacceptable|a",
+    "a|strong|aprime|weak|a"
+   ],
+   "diagnostics": {
+    "a": {
+     "variantId": "v-3f366b42f3ae43d1",
+     "minAbsApcaForeground": 30.35,
+     "minAbsApcaAccent": 49.58,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#1f1f21",
+      "surface": "#9a5e66",
+      "foreground": "#fb8953",
+      "accent": "#ffbe6a",
+      "gradient": null,
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+     }
+    },
+    "aprime": {
+     "variantId": "v-5be74ded1e2175f8",
+     "minAbsApcaForeground": 12.63,
+     "minAbsApcaAccent": 76.21,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#ffbf73",
+      "surface": "#ffd785",
+      "foreground": "#ff9d52",
+      "accent": "#1f1f21",
+      "gradient": null,
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+     }
+    }
+   }
+  },
+  {
+   "index": 5,
+   "itemId": "ab67616d00001e02000018e9b0ec8fc5ac790164",
+   "servedSides": {
+    "A": {
+     "variantId": "v-8bd30744ec0c3c65",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-3b18288c3d1f0c29",
+     "arm": "a"
+    }
+   },
+   "gradesV0": {
+    "a": "unacceptable",
+    "aprime": "weak"
+   },
+   "gradesV1": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "gradeDelta": {
+    "a": "improved",
+    "aprime": "worse"
+   },
+   "preferenceV0": {
+    "raw": "b",
+    "source": "prefilled",
+    "arm": "aprime"
+   },
+   "preferenceV1": {
+    "raw": "b",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": {
+    "palette": {
+     "background": "#feffff",
+     "surface": "#70ba25",
+     "foreground": "#020202",
+     "accent": "#fb0000",
+     "gradient": null,
+     "surfaceCollapsed": false,
+     "accentCollapsed": false
+    },
+    "basedOnPaletteHash": "3b66ad935b205d665d98a08007b93e35c5265dc391b889816056667694b03555",
+    "basedOnArm": "a",
+    "comment": "this palette would capture all the main colors of the artwork, and is a faithful representation of the vibe of the artwork"
+   },
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "side A: surface should not be Ivory grey, there is no grey in that artwork\nside B: almost good, but missing the distinctive red color (could be a good pick for the accent for example)",
+   "revisionCount": 7,
+   "revisionTimestamps": [
+    "2026-08-11T11:43:26.182Z",
+    "2026-08-11T11:43:30.830Z",
+    "2026-08-11T11:43:42.758Z",
+    "2026-08-11T11:43:47.257Z",
+    "2026-08-11T11:43:53.336Z",
+    "2026-08-11T11:43:58.230Z",
+    "2026-08-11T11:44:10.659Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "variantId": "v-3b18288c3d1f0c29",
+     "minAbsApcaForeground": 49.62,
+     "minAbsApcaAccent": 49.62,
+     "gradientStops": 0,
+     "swapDelta": null,
+     "servedPalette": {
+      "background": "#feffff",
+      "surface": "#feffff",
+      "foreground": "#70ba27",
+      "accent": "#70ba27",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": true
+     }
+    },
+    "aprime": {
+     "variantId": "v-8bd30744ec0c3c65",
+     "minAbsApcaForeground": 90.5,
+     "minAbsApcaAccent": 90.55,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#ffffff",
+      "surface": "#d9e2e1",
+      "foreground": "#040605",
+      "accent": "#000000",
+      "gradient": null,
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+     }
+    }
+   }
+  },
+  {
+   "index": 6,
+   "itemId": "ab67616d00001e0200000bbc3367a621256ce593",
+   "servedSides": {
+    "A": {
+     "variantId": "v-355168957cfc5f90",
+     "arm": "aprime"
+    },
+    "B": {
+     "variantId": "v-dff422ade1e372b7",
+     "arm": "a"
+    }
+   },
+   "gradesV0": {
+    "a": "unacceptable",
+    "aprime": "unacceptable"
+   },
+   "gradesV1": {
+    "a": null,
+    "aprime": null
+   },
+   "gradeDelta": {
+    "a": null,
+    "aprime": null
+   },
+   "preferenceV0": {
+    "raw": "no-preference",
+    "source": "explicit",
+    "arm": null
+   },
+   "preferenceV1": null,
+   "veto": {
+    "scope": "artwork",
+    "reason": "this artwork is too ugly for me to be comfortable accepting anything, so keeping it would introduce bias",
+    "ts": "2026-08-11T11:46:06.754Z"
+   },
+   "endorsedSample": null,
+   "confound": null,
+   "confoundNote": null,
+   "commentVerbatim": null,
+   "revisionCount": 0,
+   "revisionTimestamps": [],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "aprime": {
+     "variantId": "v-355168957cfc5f90",
+     "minAbsApcaForeground": 14.09,
+     "minAbsApcaAccent": 13.7,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": null
+    },
+    "a": {
+     "variantId": "v-dff422ade1e372b7",
+     "minAbsApcaForeground": 13.38,
+     "minAbsApcaAccent": 75.54,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": null
+    }
+   }
+  },
+  {
+   "index": 7,
+   "itemId": "ab67616d00001e020000099e97d17d28279e9184",
+   "servedSides": {
+    "A": {
+     "variantId": "v-1c508b7464dbc9b8",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-b9c73ab1c034e11c",
+     "arm": "aprime"
+    }
+   },
+   "gradesV0": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "gradesV1": {
+    "a": "weak",
+    "aprime": "weak"
+   },
+   "gradeDelta": {
+    "a": "same",
+    "aprime": "improved"
+   },
+   "preferenceV0": {
+    "raw": "b",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "preferenceV1": {
+    "raw": "a",
+    "source": "explicit",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": null,
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "missing the main pink text in both of those palettes\nthe Zen grey is not a foreground or accent color. If we must include it in the palette, it must be either background or surface\nThe background of both of these palettes is a good pick, it represents this artwork, and could work as either background or surface",
+   "revisionCount": 11,
+   "revisionTimestamps": [
+    "2026-08-11T11:46:19.244Z",
+    "2026-08-11T11:46:27.196Z",
+    "2026-08-11T11:46:30.305Z",
+    "2026-08-11T11:46:33.602Z",
+    "2026-08-11T11:46:37.266Z",
+    "2026-08-11T11:46:56.718Z",
+    "2026-08-11T11:47:07.476Z",
+    "2026-08-11T11:47:10.476Z",
+    "2026-08-11T11:47:11.756Z",
+    "2026-08-11T11:47:26.520Z",
+    "2026-08-11T11:47:43.364Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "variantId": "v-1c508b7464dbc9b8",
+     "minAbsApcaForeground": 70.24,
+     "minAbsApcaAccent": 97.29,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#004163",
+      "surface": "#004163",
+      "foreground": "#cecece",
+      "accent": "#f9f9f9",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": false
+     }
+    },
+    "aprime": {
+     "variantId": "v-b9c73ab1c034e11c",
+     "minAbsApcaForeground": 66.28,
+     "minAbsApcaAccent": 93.42,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#003d5e",
+      "surface": "#024e72",
+      "foreground": "#cecece",
+      "accent": "#f9f9fb",
+      "gradient": null,
+      "surfaceCollapsed": false,
+      "accentCollapsed": false
+     }
+    }
+   }
+  },
+  {
+   "index": 8,
+   "itemId": "ab67616d00001e0200001456cbd4881a798808bf",
+   "servedSides": {
+    "A": {
+     "variantId": "v-03720574b701cb01",
+     "arm": "a"
+    },
+    "B": {
+     "variantId": "v-55ad1e1ddac2184b",
+     "arm": "aprime"
+    }
+   },
+   "gradesV0": {
+    "a": "weak",
+    "aprime": "weak"
+   },
+   "gradesV1": {
+    "a": "weak",
+    "aprime": "unacceptable"
+   },
+   "gradeDelta": {
+    "a": "same",
+    "aprime": "worse"
+   },
+   "preferenceV0": {
+    "raw": "b",
+    "source": "explicit",
+    "arm": "aprime"
+   },
+   "preferenceV1": {
+    "raw": "a",
+    "source": "prefilled",
+    "arm": "a"
+   },
+   "veto": null,
+   "endorsedSample": null,
+   "confound": false,
+   "confoundNote": null,
+   "commentVerbatim": "the background of this artwork is dark, neither candidate chose a dark background (the Umbra color could work)",
+   "revisionCount": 5,
+   "revisionTimestamps": [
+    "2026-08-11T11:47:51.948Z",
+    "2026-08-11T11:48:00.932Z",
+    "2026-08-11T11:48:09.308Z",
+    "2026-08-11T11:48:13.947Z",
+    "2026-08-11T11:48:22.364Z"
+   ],
+   "gradesStableAcrossRevisions": true,
+   "diagnostics": {
+    "a": {
+     "variantId": "v-03720574b701cb01",
+     "minAbsApcaForeground": 88.24,
+     "minAbsApcaAccent": 88.24,
+     "gradientStops": 0,
+     "swapDelta": null,
+     "servedPalette": {
+      "background": "#cfe3ea",
+      "surface": "#cfe3ea",
+      "foreground": "#171c20",
+      "accent": "#171c20",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": true
+     }
+    },
+    "aprime": {
+     "variantId": "v-55ad1e1ddac2184b",
+     "minAbsApcaForeground": 56.16,
+     "minAbsApcaAccent": 36.52,
+     "gradientStops": 0,
+     "swapDelta": 0,
+     "servedPalette": {
+      "background": "#7e7d7b",
+      "surface": "#7e7d7b",
+      "foreground": "#cfe3ea",
+      "accent": "#171c20",
+      "gradient": null,
+      "surfaceCollapsed": true,
+      "accentCollapsed": false
+     }
+    }
+   }
+  }
+ ]
+}
