@@ -444,12 +444,18 @@ export function insertGuideStops(
 		)
 		maxExcursion = ranked[0].excursion
 
-		if (insertion === stopBudget) {
-			halt = "stop-budget"
-			break
-		}
+		// **`bar-met` is tested first, and that order is the whole of the 0.4.1 change here** (the W15
+		// audit's correction 4, diagnostic-only). Both conditions can hold on the last iteration, and
+		// 0.4.0 reported `stop-budget` for that case — which reads as *"the ramp ran out of stops"* when
+		// what actually happened is *"the excursion is under the bar and no further stop is wanted"*. The
+		// two branches are otherwise identical: each sets a label and breaks, nothing downstream reads the
+		// label, and no published stop moves.
 		if (maxExcursion <= excursionBar) {
 			halt = "bar-met"
+			break
+		}
+		if (insertion === stopBudget) {
+			halt = "stop-budget"
 			break
 		}
 

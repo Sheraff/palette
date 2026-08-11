@@ -48,6 +48,12 @@ the wall (not the ranking inside it) is the defect. Accent is also the robustnes
    accent barely past qualification is a twin to the eye and a flip to the harness; chromatic-
    departure-leads already encodes this, but no tie-break may ever settle AT the bar's edge
    when a higher-margin candidate qualifies.
+
+   > **AMENDED 2026-08-05 by measurement (W16): ranking by margin lets high-margin neutrals beat
+   > the chromatic mark (138/220 churn, headline marks destroyed, 2–11-pixel cascades) and is
+   > refuted. The principle is served by the lump lower-median FILTER plus the twin-collapse
+   > watch. Evidence: W16 report + probe; orchestrator ruling.**
+
 8. **Collapse semantics unchanged** (accent→fg when no qualified population survives), and the
    swap comparator keeps operating downstream of the new ordering — re-measure its fire rate
    after (36.4% at 0.3.0; expect it to drop if fg/accent selection improves).
@@ -57,6 +63,21 @@ the wall (not the ranking inside it) is the defect. Accent is also the robustnes
 - The seven identity-coverage covers, re-run: the named chromatic marks (purple, pink/blue,
   magenta, yellow, cinnamon/coffee, blue-family) should be published or beaten by something
   defensibly more salient — check each by eye + diagnostics before any round.
+
+  **Annotation (W16, 2026-08-05, per `measurements/substrate/ADOPTION_RULING.md` §4).** Two of
+  the four covers this set treats as floor-blocked are **re-attributed** and must not be counted
+  as evidence about `SOURCE_POPULATION_FLOOR` in round 5 or anywhere downstream:
+
+  | cover | 0.4.0 attribution | measured (SUBSTRATE.md §5, ruling §4) |
+  |---|---|---|
+  | r2-item-4 | the floor | **confirmed** — with the wall retired, `#421b50` publishes at rank 0 |
+  | 130 | the floor | **confirmed** — `#97191a` publishes at rank 0 |
+  | **208** | the floor | **re-attributed to the ordering.** The wall is gone; rank 0 passes verification and publishes, and it is a **dark red, not the yellow**. The hue-separation term demotes a yellow against a warm beige field — 168's rule doing what 168 asked for. Nothing about the population |
+  | **188** | the floor | **re-attributed downstream.** Rank 0 passes verification (fill 0.0157) and is refused by the accent↔foreground separation and the invariant-4 clauses. Never a population question |
+
+  W12's claim that *"what keeps four of them out is the floor, not the ordering"* is therefore
+  measured **wrong for 208 and 188**. Round-5 material that quotes those two as floor evidence is
+  quoting a refuted attribution.
 - Robustness: accent instability must not worsen (69.5% baseline; attribution block 22). A
   redesign that publishes the right colour unstably trades one graded-down failure for another.
 - Round-4 calibration then re-grades a sample of the seven + fresh covers.

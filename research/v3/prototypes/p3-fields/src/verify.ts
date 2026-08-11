@@ -15,9 +15,32 @@
  * exact-triple form as a verdict*: `BELONGS_STUDY.md` measured that it has no discriminating power at
  * any threshold and that it refused 340 of 351 palettes whose colours the reviewer endorsed.
  *
- * So `SOURCE_POPULATION_FLOOR` is used here **as a selection predicate inside this prototype only**. It
- * can step a rank; it can never make a palette invalid, and this module returns no violations. The
- * contract's own verdict is computed where it always was, by `validatePalette`.
+ * Whatever this module refuses is a **selection predicate inside this prototype only**. It can step a
+ * rank; it can never make a palette invalid, and this module returns no violations. The contract's own
+ * verdict is computed where it always was, by `validatePalette`.
+ *
+ * ## What the support test is at 0.4.1, and what it stopped being at 0.4.1
+ *
+ * **The raw-share wall (`SOURCE_POPULATION_FLOOR`, 0.1 % of the artwork) is retired.** Until 0.4.0 it
+ * was the whole support test; the substrate experiment measured a coherence-shaped replacement free
+ * (`measurements/substrate/SUBSTRATE.md` §9.1: pairs 8.5 % vs control 8.0 %, perturbations pooled
+ * identical at 18.7 %, every coverage-220 contract number identical, cost 0.97×) and the orchestrator
+ * adopted it as the 0.4.1 default (`measurements/substrate/ADOPTION_RULING.md` §2). What replaced the
+ * wall is **support ≥ `COHERENT_SUPPORT_MIN` AND fill ≥ `COHERENT_FILL_FLOOR`**: a floor under the
+ * population at the level where its own spread statistics stop meaning anything, and a *concentration*
+ * test above it. Size stops being the question; being a mark rather than a smear becomes the question.
+ *
+ * `SOURCE_POPULATION_FLOOR` is still imported and still reported as `rawSharePasses`, so a run file can
+ * still be read against the 0.1.0–0.4.0 attribution record — it decides nothing.
+ *
+ * **One distinction the ruling's numbers do not cover, measured here rather than assumed.** W13's
+ * `eligibility` branch kept the raw share as a *second sufficient route* (`raw OR coherent`), so
+ * "adopted" and "retired" are not the same predicate: retiring the route can only *narrow*, and it
+ * narrows exactly where a colour is large but smeared. Measured on coverage-220 at 0.4.1, `raw OR
+ * coherent` against `coherent` alone: **every contract number identical (PASS 200/220, 17/4/2, gradient
+ * 86, collapses 24/29, 0 escapes) and one published palette differs of 220** — the accent on
+ * `ab67616d00001e0200085a34e8d215c0bd5afa26` (`#f8c8b1` strict, `#7c3440` with the route kept). The
+ * strict reading is what ships, on that number.
  *
  * ## The spread measure, and why it is deliberately weak
  *
@@ -39,7 +62,6 @@ import {
 	COHERENT_SUPPORT_MIN,
 	SPATIAL_SPREAD_FLOOR,
 	SPREAD_POSITION_BINS,
-	substrateFlags,
 } from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import { labDistance } from "./primitives.ts"
@@ -59,12 +81,13 @@ export type SupportVerdict = Readonly<{
 	 *
 	 * The size-aware concentration statistic (W13). A title-text line is tiny but confined to a thin box
 	 * and fills it; a JPEG shadow of the same population size is smeared across the artwork and does not.
-	 * Computed on every path and reported on every path; only the substrate branch *reads* it.
+	 * Computed and reported on every path, and from 0.4.1 **read** on every path: it is half the support
+	 * verdict.
 	 */
 	fill: number
-	/** True when the raw-share wall passed — recorded separately from the verdict it no longer owns. */
+	/** True when the retired raw-share wall would have passed. Reported only; decides nothing at 0.4.1. */
 	rawSharePasses: boolean
-	/** True when the coherence route passed. Always false with the flag off. */
+	/** True when the coherence rule passed. **This is the support verdict at 0.4.1.** */
 	coherencePasses: boolean
 	supportPasses: boolean
 	spreadPasses: boolean
@@ -129,22 +152,28 @@ export function verifyColor(image: DecodedImage, pixel: number): SupportVerdict 
 	const box = Math.max(spreadX, bin) * Math.max(spreadY, bin)
 	const fill = support / box
 
+	// **The retired raw-share wall.** Still computed, still reported, and no longer a route: at 0.4.1 it
+	// decides nothing. Kept as a number because every attribution of a stepped rank in the 0.1.0–0.4.0
+	// measurement record is written in its terms, and a diagnostic that stopped printing it would make
+	// those files unreadable against a current run.
 	const rawSharePasses = support >= SOURCE_POPULATION_FLOOR
-	// **The coherence route** (`P3_SUBSTRATE=eligibility`). `accent.ts` measured the defect: the accent
-	// ordering now puts the reviewer's named mark at or near rank 0 on five of the seven identity covers,
-	// and four of them are refused *here*, at 0.025 %, 0.002 %, 0.060 % and 0.025 % against a 0.1 % floor.
-	// The corpus fact is that the median ENDORSED role colour's exact-triple share is 8.89e-5. A raw-share
-	// wall an order of magnitude above the thing it is meant to admit is a candidacy wall, and the
-	// campaign's goal 3 forbids exactly that shape. The route replaces *share* with **spatial coherence
-	// of the bar-population**: still a population statistic, still quantiles of positions, never a mean.
+	// **The coherence route**, the eligibility rule at 0.4.1 (`ADOPTION_RULING.md` §2). `accent.ts`
+	// measured the defect: the accent ordering puts the reviewer's named mark at or near rank 0 on five of
+	// the seven identity covers, and four of them were refused *here*, at 0.025 %, 0.002 %, 0.060 % and
+	// 0.025 % against a 0.1 % floor. The corpus fact is that the median ENDORSED role colour's
+	// exact-triple share is **8.89e-5** — a raw-share wall an order of magnitude above the thing it is
+	// meant to admit is a candidacy wall, and the campaign's goal 3 forbids exactly that shape. The rule
+	// replaces *share* with **spatial coherence of the bar-population**: still a population statistic,
+	// still quantiles of positions, never a mean.
 	//
-	// It is a second sufficient route and not a replacement of the first, so the predicate can only widen.
-	// Stated plainly: this cannot fix a colour that is genuinely a diffuse artefact and happens to be
-	// concentrated by accident of binning, and `COHERENT_FILL_FLOOR` is `[UNCALIBRATED]`.
-	const coherencePasses = substrateFlags().eligibility &&
-		support >= COHERENT_SUPPORT_MIN &&
-		fill >= COHERENT_FILL_FLOOR
-	const supportPasses = rawSharePasses || coherencePasses
+	// Stated plainly, twice, because adoption is not vindication: this cannot fix a colour that is
+	// genuinely a diffuse artefact and happens to be concentrated by an accident of binning;
+	// `COHERENT_FILL_FLOOR` is `[UNCALIBRATED]` and fitted on five covers, four of which are the covers
+	// it was judged on; and the ruling names the risk it takes — eligibility admits small coherent lumps,
+	// which is the shape item-009's artifact accent wore. The 18 accents this admits on coverage-220 are
+	// unreviewed and round-5 carries a sample of them.
+	const coherencePasses = support >= COHERENT_SUPPORT_MIN && fill >= COHERENT_FILL_FLOOR
+	const supportPasses = coherencePasses
 	const spreadPasses = spread >= SPATIAL_SPREAD_FLOOR
 	return {
 		pixel,

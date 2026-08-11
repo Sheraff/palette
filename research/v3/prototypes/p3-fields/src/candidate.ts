@@ -36,9 +36,20 @@
  * band-then-cascade change at the field ends moves *toward* that discipline rather than away: e₁ and e₂
  * were this pipeline's only single-pixel reads and are now populations like every other role.
  *
+ * **0.4.1 retires a wall and adds one number.** `SOURCE_POPULATION_FLOOR` — the contract's 0.1 %
+ * raw-share floor, consumed here as a selection predicate — stops deciding eligibility; the rule is now
+ * a floor at the level where spread statistics stop meaning anything plus a **concentration** test
+ * (`verify.ts`, `measurements/substrate/ADOPTION_RULING.md` §2). The one new constant is
+ * `ACCENT_LUMP_DEPARTURE_TIE_BAND`, the fourth declared tie band, which closes the W15 audit's
+ * requirement-5 finding: the accent's lump election was a near-tied comparison with no declared band and
+ * no stated convention. The audit's other correction — promoting margin from a filter to a *rank* — was
+ * drafted, measured, and **refuted** (it moved 138/220 coverage accents and destroyed the two
+ * reviewer-named marks this release exists to publish); see `accent.ts` and `ACCENT_REDESIGN.md`
+ * requirement 7's amendment.
+ *
  * **0.4.0 deletes a wall and adds two numbers.** The accent's lexicographic tier wall is gone: the role
  * is now one ordering, the **product of two percentile ranks** (chroma relative to the field, hue
- * separation from it), narrowed by four preferences that can none of them empty the population. Both
+ * separation from it), narrowed by preferences that can none of them empty the population. Both
  * scalars are differences of two pixels' OKLab coordinates and percentile ranks are order statistics of
  * a scalar field, so the redesign introduces **no new constant at all** and materialises nothing. The
  * gradient's guide-stop canon adds the only two new constants in this release —

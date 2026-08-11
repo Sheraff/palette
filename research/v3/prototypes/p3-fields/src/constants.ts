@@ -18,6 +18,12 @@
  * that is 0.4.0's centrepiece adds **none** — its ordering is a product of percentile ranks, which has
  * no coefficient, and every narrowing below it is an order statistic of the population it narrows.
  *
+ * 0.4.1 adds **exactly one**, `ACCENT_LUMP_DEPARTURE_TIE_BAND` — the fourth tie band, closing the W15
+ * audit's requirement-5 finding (a near-tied lump election with no declared band and no stated
+ * convention). It is `[UNCALIBRATED]` on the same terms as the other three, with the same anchor
+ * (the robustness plateau). 0.4.1 also **retires** the raw-share wall as this prototype's eligibility
+ * rule; see `verify.ts` and `measurements/substrate/ADOPTION_RULING.md` §2.
+ *
  * Three quantities are **inherited** from the contract and are used unchanged: the regional
  * same-colour bar (`SAME_COLOR_BAR_BY_REGION`), the population floor
  * (`SOURCE_POPULATION_FLOOR`), and the P1 excursion multiplier. They are imported at their use sites
@@ -26,7 +32,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.4.0"
+export const CANDIDATE_ID = "p3-fields-0.4.1"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -34,7 +40,7 @@ export const CANDIDATE_ID = "p3-fields-0.4.0"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.4.0"
+export const ALGORITHM_VERSION = "p3-fields-0.4.1"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -288,22 +294,29 @@ export const MAX_GUIDE_STOPS = 2
  * ### The measurement
  *
  * r2-item-0 was held at unacceptable for seven drafts on *"very significant banding (purple at 71.9%,
- * green at 74.7%)"* — a **3.1%** gap. `phase2-pair-007` then graded eight covers as flat-vs-gradient
- * pairs and named banding on **all four 4-stop covers and none of the four 2-stop covers**. Replaying
- * those four under the 0.3.0 machinery (`gradient.ts`'s diagnosis table) gives their narrowest published
- * spacings:
+ * green at 74.7%)"* — a **3.125%** gap, and the one anchor in this evidence set that is independent of
+ * the replay below. `phase2-pair-007` then graded eight covers as flat-vs-gradient pairs and named
+ * banding on **all four 4-stop covers and none of the four 2-stop covers**.
+ *
+ * **The replay numbers below are W15's, not this comment's first draft's** (`audit/w15/`, re-derived
+ * from the pinned `5a4f845` run with `bead404`/W9 corroboration). The table 0.4.0 shipped claimed
+ * 3.13% for both 114 and 188 and mixed 0.4.0 hexes with 0.3.0 stop positions on the 048 row; the
+ * correct narrowest published spacings for the four named round-3 covers are:
  *
  * | cover | narrowest spacing |
  * |---|---|
- * | 114 | 3.13% |
- * | 188 | 3.13% |
  * | 048 | 6.25% |
  * | 181 | 12.50% |
+ * | 114 | 12.50% |
+ * | 188 | 6.25% |
  *
- * 12.50% is the **widest spacing a reviewer has called banding**, so a strictly-greater cut at 0.125
- * rejects every named case and nothing else. The two 3.1% covers are the machinery's own floor —
- * `1/(EXCURSION_GRID_SAMPLES − 1)`, one grid step — which is what makes them the class rather than the
- * accident.
+ * 12.50% is still the **widest spacing a reviewer has called banding**, so a strictly-greater cut at
+ * 0.125 still rejects all four named cases and nothing else: **the cut survives its own audit, the
+ * argument for it does not.** Struck with the old table: the claim that the narrow covers sat at the
+ * machinery's own floor `1/(EXCURSION_GRID_SAMPLES − 1)` — "one grid step is the class". No named
+ * cover sits at one grid step; the only 3.125% in this evidence set is r2-item-0's reviewer-reported
+ * gap, which arrives from a different instrument (a graded draft, not a replayed run file) and is
+ * therefore the corroboration rather than the pattern.
  *
  * ### Carry the caveats with the number
  *
@@ -668,9 +681,52 @@ export const INK_LUMP_EXTREMITY_TIE_BAND = 0.05
  */
 export const SPATIAL_DICTIONARY_ANGLES = [0, 45, 90, 135] as const
 
+// ---------------------------------------------------------------------------------------------
+// 0.4.1 — the fourth tie band (the W15 audit's requirement-5 correction)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **δ_acc** — the accent's lump-election tie band, in units of the split's own `gapRatio`.
+ *
+ * `ACCENT_REDESIGN.md` requirement 5 forbids *"no near-tied lump election without the declared tie-band
+ * + stated-convention pattern already used elsewhere"*, and the W15 audit found 0.4.0 shipped exactly
+ * that: `chooseAccent` elected the higher-**departure** lump at any separation, including a separation
+ * that had only just cleared `LUMP_GAP_RATIO`. That is a cliff in the role `ATTRIBUTION.md` block 22
+ * measures as the least stable in the pipeline (69.5 % instability), which is the one place the design
+ * had said it would not put one.
+ *
+ * [UNCALIBRATED] — provisional 0.10, chosen here, and set equal to `BACKGROUND_PREVALENCE_TIE_BAND` and
+ * `LUMP_MASS_TIE_BAND` for the reason δ_lump gives: all three are *"two order statistics of one
+ * population are this close, so the difference between them is not evidence"*, and three different
+ * numbers for one question would be three levers where the design has one. **Anchor plan:** the same
+ * sweep — the robustness plateau, the smallest δ_acc at which accent agreement on the perturbation arms
+ * stops rising. Not run.
+ *
+ * **Why the convention is the higher-*chroma* lump.** A convention has to be (i) stable, (ii) defensible
+ * without a measurement, and (iii) *not* a restatement of the near-tied quantity it replaces. Median
+ * OKLab chroma over a lump is all three: it is an order statistic of a scalar field over a large
+ * population, it is what seven reviewer counts asked this role for in so many words (*"very distinct
+ * purple"*, *"the significant yellow"*, *"beautiful brown colors"*), and it is a genuinely different
+ * statistic from the departure product — departure is `chroma-percentile × hue-percentile` minimised
+ * over the two field ends, so a lump can top it through the hue term while holding the *lower* absolute
+ * chroma. Stated rather than smoothed: on most covers the two agree, and where they agree this band
+ * buys stability and nothing else.
+ */
+export const ACCENT_LUMP_DEPARTURE_TIE_BAND = 0.1
+
 // =================================================================================================
-// The substrate experiment (0.5.0-dev, W13) — three dev-flagged branches, all default OFF
+// The substrate experiment (W13) — one branch adopted at 0.4.1, two retained as dev-flagged vehicles
 // =================================================================================================
+//
+// **Read the ruling before this block** (`measurements/substrate/ADOPTION_RULING.md`): of the three
+// branches below, `eligibility` is **ADOPTED as the 0.4.1 default** and is no longer reachable through
+// the flag in any meaningful sense (the flag member survives so the measurement record's command lines
+// still parse; nothing reads it). `field` is **NOT ADOPTED** — the pooled perturbation block regresses
+// 18.7 % → 12.0 % with the control outside the substrate's interval, and its own central claim, reduced
+// resolution coupling of the edge field, was never measured; the design survives as a vehicle and
+// re-proposal needs that coupling measurement plus a pre-registered pooled non-regression gate.
+// `prevalence` is **REFUTED**: coherence mass is itself a flatness measure and widened white's lead on
+// cover-114 (1.44 → 1.70), which is the opposite of the hypothesis.
 //
 // `measurements/attribution/PAIRS_ATTRIBUTION.md` §8 named the load-bearing site: the k = 3 **binary**
 // edge map. Its edge fraction is resolution-coupled (slope −0.212), it drifts twice as much between
@@ -683,17 +739,24 @@ export const SPATIAL_DICTIONARY_ANGLES = [0, 45, 90, 135] as const
 //  3. bar-count prevalence is spread-sensitive (cover-114: a flat shirt at 6.06 % beats the textured
 //     red field at 1.45 % whose median *is* the field colour).
 //
-// Every constant below is `[UNCALIBRATED]` and **measurement-only**: with `P3_SUBSTRATE` unset none of
-// them is read, and demo-20 is byte-identical to the 0.4.0 default path. Nothing here is adopted until
-// `measurements/substrate/SUBSTRATE.md`'s pre-registered rule says the numbers earned it.
+// Every constant below is `[UNCALIBRATED]`. Two of them — `COHERENT_SUPPORT_MIN` and
+// `COHERENT_FILL_FLOOR` — are on the default path from 0.4.1 and are read on every run; the rest are
+// still measurement-only, read only when `P3_SUBSTRATE` names their branch.
 
-/** Which substrate branches a run has enabled. All false is the shipped 0.4.0 path. */
+/**
+ * Which substrate branches a run has enabled.
+ *
+ * `eligibility` is **adopted**: it is the default at 0.4.1 and nothing reads this member. It survives in
+ * the type and in the parser so that every command line in `measurements/substrate/SUBSTRATE.md` §11
+ * still runs rather than throwing, and so that `all` keeps meaning what it meant. All false is the
+ * shipped 0.4.1 path.
+ */
 export type SubstrateFlags = Readonly<{
-	/** The continuous multi-scale coherence field replaces the binary edge map + EDT depth. */
+	/** The continuous multi-scale coherence field replaces the binary edge map + EDT depth. NOT adopted. */
 	field: boolean
-	/** Coherence-shaped eligibility widens `verifyColor`'s raw-share wall. */
+	/** Adopted at 0.4.1 and unconditional in `verify.ts`. Accepted here, read nowhere. */
 	eligibility: boolean
-	/** Prevalence is coherence mass within F rather than a raw bar count. */
+	/** Prevalence is coherence mass within F rather than a raw bar count. Refuted, not adopted. */
 	prevalence: boolean
 }>
 
@@ -707,6 +770,12 @@ const NO_SUBSTRATE: SubstrateFlags = { field: false, eligibility: false, prevale
  * behaviour is exactly what it was, and an unrecognised value **throws** rather than silently
  * returning the baseline — a typo in a measurement's environment must never be read as "the
  * experiment does nothing".
+ *
+ * **The one exception is stated rather than hidden:** `eligibility` is accepted and then ignored,
+ * because at 0.4.1 it names the default. That is exactly the "reads as doing nothing" shape the
+ * paragraph above forbids, and it is tolerated only because the branch it named is now unconditional —
+ * a run that passes it gets the behaviour it asked for. If `field` is ever retired for good, this
+ * member should be deleted rather than left accepted.
  */
 export function substrateFlags(): SubstrateFlags {
 	const raw = process.env.P3_SUBSTRATE
@@ -761,7 +830,24 @@ export const COHERENCE_SCALE_COUNT = 3
 export const COHERENCE_SCALE_BASE_LONG_EDGE = 512
 
 /**
- * **The minimum bar-population share a coherence-eligible colour must still hold.**
+ * **The minimum bar-population share an eligible colour must hold.** On the default path from 0.4.1.
+ *
+ * ### The wall this replaced, and why it is retired
+ *
+ * `SOURCE_POPULATION_FLOOR` (the contract's 0.1 %) was this prototype's eligibility rule through 0.4.0
+ * and is **retired at 0.4.1** — still imported by `verify.ts`, still reported as `rawSharePasses`,
+ * reading on no decision. Three pieces of evidence, all pre-dating the adoption:
+ *
+ * 1. `ADOPTION_RULING.md` §2 — the coherence rule measured free (pairs 8.5 % vs 8.0 %, perturbations
+ *    pooled identical, every coverage-220 contract number identical, cost 0.97×) and quality-positive
+ *    (18 accent collapses removed; two reviewer-named marks published at rank 0);
+ * 2. the **goal-3 candidacy wall** finding — a floor that refuses a colour for being small is the exact
+ *    shape the campaign forbids, and `accent.ts` measured it refusing four reviewer-named identity
+ *    marks at 0.025 %, 0.002 %, 0.060 % and 0.025 %;
+ * 3. the corpus fact: the **median endorsed role colour's exact-triple share is 8.89e-5**, an order of
+ *    magnitude below the floor that was supposed to admit it.
+ *
+ * ### The number
  *
  * [UNCALIBRATED] — provisional 1e-5, chosen here. It is not a re-run of `SOURCE_POPULATION_FLOOR` at a
  * lower number: it is the floor below which the *spread statistics themselves* stop meaning anything,

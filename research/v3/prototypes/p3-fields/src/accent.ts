@@ -66,6 +66,14 @@
  *    desaturated ones**, so a mass rule elects the desaturated lump every time — which is the tier wall
  *    again, wearing a lump's clothes, because low-departure pixels are always the more numerous. Mass
  *    enters only as the salience floor below, never as the choice.
+ *
+ *    **0.4.1 puts a declared tie band on that election** (requirement 5's other half, and the W15
+ *    audit's correction 3). "Higher departure wins" is a comparison between two lumps, and at 0.4.0 it
+ *    was allowed to decide at *any* separation, in the role the attribution block measures as the
+ *    least stable in the pipeline. When the lumps' departure separation sits inside
+ *    `ACCENT_LUMP_DEPARTURE_TIE_BAND` of the split threshold, the separation is declared to carry no
+ *    information and a **stated convention** decides instead: the lump with the higher **median OKLab
+ *    chroma**. See the constant for why that convention and not another.
  * 2. **Headroom** (requirement 7, `EVIDENCE_2026-08-04.md` item 11: the reviewer called pairs clearing a
  *    bar by 1e-4–3e-3 indistinguishable, 6/6 graded low). The lump is restricted to the pixels whose
  *    qualification margin is at or above the **lump's own median margin**. That is an order statistic of
@@ -81,6 +89,12 @@
  *    lightness than in the chroma plane — 0.3.0's tier-1 predicate, demoted from wall to preference —
  *    are preferred, and if none does, the whole population is still the answer. `perception-4`'s
  *    direction, spent as a direction.
+ *
+ * **A fifth narrowing was drafted at 0.4.1 and refuted by measurement** — a top-τ margin *band* between
+ * 3 and 4, reading requirement 7's "margins rank" as an ordering step. It moved 138/220 coverage accents,
+ * destroyed both headline marks (r2-item-4's `#421b50`, 130's `#97191a`) by letting high-margin neutrals
+ * outrank the chromatic mark, and left 2–11-pixel cascade populations. Requirement 7 is discharged by
+ * step 2's **filter** and the twin-collapse watch; see the amendment in `ACCENT_REDESIGN.md`.
  *
  * None of the four can empty the population, so none of them can evict the accent; **collapse is reached
  * exactly where it always was**, when the qualified set is empty or nothing in it survives verification
@@ -111,14 +125,22 @@
  * magenta at 0.9997, 130's cinnamon-red at 0.9629, 188's coral at 0.9953, r2-item-2's red-pink at
  * 0.9704. The tier wall is gone and the ordering is answering the question the reviewer asked.
  *
- * **What keeps four of them out of the palette is `SOURCE_POPULATION_FLOOR`, not the ordering.** The
- * rank-0 band's cascade pixel is refused by `verifyColor`'s support test at 0.025 % (r2-item-4's
- * purple), 0.002 % (208), 0.060 % (130) and 0.025 % (188) of the artwork, against a floor of 0.1 %. A
- * purple subtitle line is genuinely smaller than one pixel in a thousand. That floor is the contract's,
- * consumed here as a selection predicate (`verify.ts`), it is not this redesign's to move, and it is
- * now the binding constraint on identity coverage — which is a **finding for the substrate work**, not
- * a defect of the ordering. The same mechanism is why accent collapse rose from 19/220 to 47/220 on the
- * coverage set: on 15 of 25 collapsed covers examined, the rank-0 refusal is `support`.
+ * **0.4.0 claimed all four were kept out by `SOURCE_POPULATION_FLOOR` rather than by the ordering.
+ * Measured, that claim is right about two of them and wrong about the other two** — `SUBSTRATE.md` §5
+ * ran each cover with the wall removed, and `ADOPTION_RULING.md` §4 accepts the re-attribution:
+ *
+ * - **r2-item-4 and 130: the wall, as claimed.** With the raw-share floor retired at 0.4.1 the rank-0
+ *   purple `#421b50` and the rank-0 cinnamon-red `#97191a` pass verification by concentration and
+ *   publish, where 0.4.0 stepped past both.
+ * - **208: the ordering, not the wall.** Rank 0 passes verification now and is *still not the yellow* —
+ *   it is a dark red. This file predicted it two paragraphs down: the hue-separation term demotes a
+ *   yellow against a warm beige field, which is 168's rule doing what 168 asked for.
+ * - **188: neither.** Rank 0 passes verification and is refused **downstream**, by the accent↔foreground
+ *   separation and the invariant-4 clauses in `pipeline.ts`. It was never a population question.
+ *
+ * The mechanism was nonetheless the bulk of the collapse rate: accent collapse rose from 19/220 to
+ * 47/220 at 0.4.0 and falls to 29/220 with the wall retired, on 220 covers whose contract numbers do
+ * not move at all.
  *
  * **One reviewer count pulls against another, and the hue term is where.** 168 asks for an accent in a
  * *different colour family* from the field; 208 asks for the artwork's yellow, on a cover whose
@@ -138,7 +160,7 @@
  */
 
 import type { Rgb8 } from "../../../src/contract/types.ts"
-import { LUMP_GAP_RATIO, TRIM_LEVEL } from "./constants.ts"
+import { ACCENT_LUMP_DEPARTURE_TIE_BAND, LUMP_GAP_RATIO, TRIM_LEVEL } from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import { minRampContrast } from "./foreground.ts"
 import {
@@ -296,9 +318,20 @@ export type AccentRefinement = Readonly<{
 	bandSize: number
 	/** `null` when the band was one lump, or when the split was refused as unrankable. */
 	gapRatio: number | null
-	/** Masses of the two lumps, `[higher-departure, lower-departure]`. */
+	/**
+	 * True when `gapRatio` sat inside δ_acc of the split threshold and the **higher-chroma convention**
+	 * elected the lump instead of the departure comparison (0.4.1, requirement 5).
+	 */
+	lumpTieBandFired: boolean
+	/** Masses of the two lumps, `[elected, rejected]` — by departure, or by the convention when it fired. */
 	lumpMasses: readonly [number, number] | null
-	chosen: "whole-band" | "higher-departure-lump" | "lower-departure-lump" | "lump-unrankable"
+	chosen:
+		| "whole-band"
+		| "higher-departure-lump"
+		| "higher-chroma-lump-convention"
+		| "lower-departure-lump"
+		| "lower-chroma-lump-fallback"
+		| "lump-unrankable"
 	/** How many pixels survived the headroom clause. */
 	headroomSize: number
 	/** The lump's median qualification margin — the level the headroom clause cut at. */
@@ -353,20 +386,43 @@ export function chooseAccent(
 	let chosen: AccentRefinement["chosen"] = "whole-band"
 	let lumpMasses: readonly [number, number] | null = null
 	let gapRatio: number | null = null
+	let lumpTieBandFired = false
 	if (split !== null) {
-		const higher = split.upper
-		const lower = split.lower
-		lumpMasses = [higher.length, lower.length]
 		gapRatio = split.gapRatio
+		// **The tie band (0.4.1, `ACCENT_LUMP_DEPARTURE_TIE_BAND`).** Requirement 5 forbids a near-tied lump
+		// election in this role without a declared band and a stated convention, and the W15 audit found the
+		// 0.4.0 election was exactly that: whichever lump held the higher departure won, at any separation,
+		// including a separation that had only just cleared `LUMP_GAP_RATIO`. When the two lumps' departure
+		// separation sits inside δ_acc of the split threshold, **the separation is not evidence about which
+		// lump is the mark**, and a fixed convention decides instead: **the higher-chroma lump**, compared by
+		// each lump's own median OKLab chroma. Same shape as `field-roles.ts`'s δ_bs and δ_lump; the reason
+		// the convention is chroma and not departure is in `ACCENT_LUMP_DEPARTURE_TIE_BAND`'s own comment.
+		lumpTieBandFired = split.gapRatio - LUMP_GAP_RATIO < ACCENT_LUMP_DEPARTURE_TIE_BAND
+		let higher = split.upper
+		let lower = split.lower
+		if (lumpTieBandFired) {
+			const chromaKey = (index: number): number => chromaOf(image.lab, index)
+			const upperChroma = medianOfKey(split.upper, chromaKey)
+			const lowerChroma = medianOfKey(split.lower, chromaKey)
+			// Ties inside the convention itself keep the departure order, so the answer is still a function
+			// of the two populations and never of which way a comparison was written.
+			if (lowerChroma > upperChroma) {
+				higher = split.lower
+				lower = split.upper
+			}
+		}
+		lumpMasses = [higher.length, lower.length]
 		if (higher.length >= rankable) {
 			population = higher
-			chosen = "higher-departure-lump"
+			chosen = lumpTieBandFired ? "higher-chroma-lump-convention" : "higher-departure-lump"
 		} else if (lower.length >= rankable) {
 			// The chromatic lump is a handful of pixels — a specular highlight or a compression artifact,
 			// not a mark. Fall to the other lump rather than publish it; `verifyColor`'s support and spread
 			// in `pipeline.ts` is the second half of the same guard.
 			population = lower
-			chosen = "lower-departure-lump"
+			// The label names *which rule elected the other lump*, so a diagnostic reader is never told
+			// "lower departure" about a lump the chroma convention rejected.
+			chosen = lumpTieBandFired ? "lower-chroma-lump-fallback" : "lower-departure-lump"
 		} else {
 			chosen = "lump-unrankable"
 		}
@@ -393,6 +449,15 @@ export function chooseAccent(
 	const contrastPreferenceApplied = legibleList.length > 0 && legibleList.length < population.length
 	if (contrastPreferenceApplied) population = Int32Array.from(legibleList)
 
+	// **No margin *rank* sits here** (amended 2026-08-05, `ACCENT_REDESIGN.md` requirement 7). A 0.4.1
+	// draft put a top-τ margin band between the contrast preference and lightness, reading requirement 7's
+	// "margins rank" as an ordering step. Measured, that band lets high-margin neutrals beat the chromatic
+	// mark: 138/220 accent changes on coverage, both headline marks destroyed (r2-item-4 published a grey
+	// at cursor 2 instead of `#421b50`; 130 left `#97191a`), and cascade populations of 2–11 pixels — the
+	// single-rank instability class 0.3.0 removed. Requirement 7's principle is served where it always
+	// was: by step 2's lump lower-median margin **filter**, plus the twin-collapse watch. Refuted by
+	// measurement, not by taste — see the amendment in `ACCENT_REDESIGN.md`.
+
 	// 4. Lightness movement, the old tier-1 predicate as a preference. Same shape, same guarantee.
 	const movingList: number[] = []
 	for (let i = 0; i < population.length; i += 1) {
@@ -408,6 +473,7 @@ export function chooseAccent(
 		refinement: {
 			bandSize: band.length,
 			gapRatio,
+			lumpTieBandFired,
 			lumpMasses,
 			chosen,
 			headroomSize,
