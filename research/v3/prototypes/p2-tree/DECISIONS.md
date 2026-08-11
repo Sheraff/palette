@@ -220,6 +220,27 @@ constants only via provenance.
 merge coincident components across lanes before grouping; coincident centroids must not
 satisfy collinearity vacuously.
 
+## D13 — field-gradient-labels-1 ruled (2026-08-05)
+
+Verified decode in round-2-flat-vs-ramp/OUTCOME.md. Rulings, all per the pre-declared
+mapping except where its non-MECE defect required an orchestrator reading (recorded there):
+
+1. No laminarity constant moves — `MONOTONE_MIGRATION_FRACTION` stays 0.8 [UNCALIBRATED]
+   (3–5 split).
+2. `UNREADABLE_COVERAGE_FRACTION` is the next constant to MEASURE (≥3 cant_tell trigger;
+   converges with W-G's ceiling finding). Work item: sweep the coverage gate over the
+   144-labelled corpus, report ceiling movement + verdict-distribution shift; measurement
+   first, any residual judgment via a round.
+3. The stricter laminarity cuts (monotone-only, best-agreement) are REJECTED as-is: the
+   reviewer sided with legacy on both readable ramp regressions — they flip real ramps to
+   buy phantom reduction. Phantom-gradient work resumes only after the coverage gate is
+   measured.
+4. Anchor phantom stands ("neither").
+5. REPEAT process defect: second non-MECE outcome table. Binding: every future P2 ROUND.md
+   outcome table is MECE with stated denominators, and the requirement now goes into the
+   staging-brief template text itself (third strike escalates to the main orchestrator as a
+   process failure).
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
