@@ -72,11 +72,13 @@ for (const file of snapshot.copied) {
  * Is each copied file's byte content actually *in* the home worktree's HEAD commit?
  *
  * SPEC §4 says members are "pinned by worktree commit + fingerprint". Those two can disagree, and on
- * this campaign one of them does: `p2-tree`'s carried candidate is snapshotted from a working tree
- * with uncommitted edits and an entirely untracked directory, so no commit contains the code the
- * member actually runs. That is a fact about the member, not a defect in the snapshot — and it is the
- * reason the fingerprint, not the commit, is the pin. It is measured here instead of being asserted
- * in prose.
+ * this campaign one of them did: `p2-tree` was for two milestones snapshotted from a working tree with
+ * uncommitted edits and an entirely untracked directory, so no commit contained the code the member
+ * actually ran. P2 has since committed that closure (`041fc4b4`) and all four members now report
+ * `committedAtHead: true`. The lesson survives the fix: that state was transient, prose asserting it
+ * went stale, and this is why the answer is *measured* here every run rather than written down — the
+ * fingerprint is the pin, and whether a commit also reproduces it is a fact to be re-checked, not
+ * assumed in either direction.
  */
 const notInHead: string[] = []
 const differsFromHead: string[] = []

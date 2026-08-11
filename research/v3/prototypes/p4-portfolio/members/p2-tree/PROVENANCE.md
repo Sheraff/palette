@@ -1,6 +1,6 @@
 # `p2-tree` — member snapshot provenance
 
-**Verified 2026-08-11T17:51:57.536Z. Member code is READ-ONLY (P4 SPEC §4): copied, never edited.**
+**Verified 2026-08-11T18:44:28.480Z. Member code is READ-ONLY (P4 SPEC §4): copied, never edited.**
 
 The member worktrees are live — two of them moved HEAD during M1 — so a commit hash alone does not pin a snapshot. What pins it is the per-file sha-256 of the measured import closure below, re-checked against the home worktree by `tools/verify-pin.ts`; the commit is recorded as the checkout those bytes were found in.
 
@@ -9,19 +9,19 @@ The member worktrees are live — two of them moved HEAD during M1 — so a comm
 | what | value |
 |---|---|
 | source worktree | `/Users/Flo/GitHub/palette/.worktrees/p2-tree` |
-| pinned commit (HEAD at verification) | `0ae6254260d8e170eb932bc9abc86a2a35f61ab8` |
+| pinned commit (HEAD at verification) | `041fc4b4d51fe23058b044cd4970b523a9fe6945` |
 | branch | `proto/p2-tree` |
 | home candidate module | `prototypes/p2-tree/tos/candidate.ts` |
 | snapshot candidate module | `members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts` |
 | home `codeVersion` | `93291d0f55348ad12fd0df30d0235c48a874af084f81bc2a2dd172ad841a831b` |
 | snapshot `codeVersion` | `0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4` |
-| snapshot content is in that commit | **NO** (0 copied file(s) untracked in the home worktree, 1 with uncommitted edits) |
-| closure re-verified | **PINNED** at 2026-08-11T17:51:57.536Z (19 copied + 8 shared files re-hashed; 0 copied drifted, 0 shared drifted) |
+| snapshot content is in that commit | **YES** (0 copied file(s) untracked in the home worktree, 0 with uncommitted edits) |
+| closure re-verified | **PINNED** at 2026-08-11T18:44:28.480Z (19 copied + 8 shared files re-hashed; 0 copied drifted, 0 shared drifted) |
 
 The two `codeVersion`s differ **by construction and only by construction**: `code-version.ts` hashes each file's path *relative to its own `research/v3`* into the digest, and the snapshot lives at a different relative path. The per-file sha-256s below are the checkout-independent identity, and the byte-identity gate is what actually proves the code is the same code.
 
 
-> **The commit does not contain this member.** The files below were snapshotted from the home worktree's *working tree*: 1 carry uncommitted edits (`prototypes/p2-tree/tos/constants.ts`). So no commit reproduces what this member runs, and the sha-256 fingerprint below is the only pin there is. Recorded, not worked around — resolving it is the home prototype's call.
+> **The commit now contains this member.** All 19 files below are byte-identical to `041fc4b4:research/v3/…` in the home worktree. The commit and the fingerprint agree for the first time on this campaign, so `041fc4b4` reproduces exactly what this member runs. The sha-256 fingerprint remains the pin of record (it is checkout-independent); the commit is no longer a weaker statement than it.
 
 ## Import resolution — how the snapshot runs unmodified
 
@@ -35,6 +35,12 @@ members/p2-tree/v3/prototypes/…  copied files, at their original relative path
 So the candidate's own `../../../src/contract/types.ts` lands on **this worktree's one contract** through the symlink, and its intra-prototype imports resolve inside the copy. Nothing under `src/` is duplicated: those files were verified byte-identical between this worktree and the member's home before copying (`sharedFileDiffs` below), and forking the contract per member is exactly what a portfolio must not do. The symlink is inside p4's owned subtree.
 
 **Note.** RE-PINNED 2026-08-11 (M3 prerequisite, PARKED.md resume step 3). The M1 snapshot (commit `21131282af`) is superseded: P2 has since committed the four previously-untracked `tos/gradient/*` files and `tos/candidate.ts`'s edits at `2da8b74b`, and its STATE.md restates the provenance pin at `1b830141` as *any commit from `78f0285` through HEAD*. Commit chain, oldest first: `78f0285` (content-final, P2's own pin floor) → `21131282af` (M1's recorded HEAD) → `2da8b74b` (the gradient closure committed) → `1b830141` (pin restated) → `0ae62542` (HEAD at this re-pin). **One member file still differs from HEAD's bytes:** `tos/constants.ts` carries an uncommitted working-tree edit — `UNREADABLE_COVERAGE_FRACTION` 0.5 → 0.25, P2's DECISIONS.md D15, retagged [UNCALIBRATED] → [MEASURED]. That is a live behavioural change to the member, and it is what the re-pin captures: the fingerprint below, not the commit, remains the pin. Byte-identity gate re-run after the re-snapshot: **PASS, 3/3 rows** (`data/m1/runs/p2-tree-gate3-{home,snapshot}.jsonl`).
+
+**Note.** RE-PINNED again 2026-08-11T18:44:28.480Z (M3 follow-up). P2 has committed the D15 edit that the previous re-pin recorded as uncommitted: `041fc4b4` ("apply D15 — `UNREADABLE_COVERAGE_FRACTION` 0.5 → 0.25 [MEASURED] + gate-affected tests re-asserted"). Commit chain, oldest first: `78f0285` (content-final, P2's own pin floor) → `21131282af` (M1's recorded HEAD) → `2da8b74b` (gradient closure committed) → `1b830141` (pin restated) → `0ae62542` (previous re-pin's HEAD) → `041fc4b4` (**this pin**; P2's HEAD, working tree clean of member-relevant edits — only untracked `out/` run artifacts remain).
+
+**Correction, per the main tier.** The previous re-pin's claim that this member's code lived only in P2's *live working tree*, with no commit reproducing it, was **wrong as a durable statement** — it described a transient mid-flight state and then outlived it. `041fc4b4` contains all 19 files byte-for-byte. Concretely retracted: the "the commit does not contain this member" blockquote above (now replaced), the `snapshot content is in that commit: NO` row, and `pin-p2-tree.json`'s `committedAtHead: false` (now `true`, `differsFromHead: []`).
+
+**No re-snapshot was needed and none was taken.** All 19 copied files were diffed against `041fc4b4:research/v3/…` before this pin: **byte-identical, 19/19**. The snapshot bytes are untouched, so the per-file sha-256 table below is unchanged, `codeVersion` `0795f6e7…` is unchanged, the byte-identity gate result above still stands unmodified (not re-run — its inputs did not move), and **no M3/M4 palette can differ under the new pin**: `data/m3/runs/p2-tree-coverage1{,-resume-1}.jsonl` record `codeVersion` `0795f6e7…`, the same code this pin certifies. The re-pin is a provenance correction with **zero code delta**.
 
 ## Files copied
 

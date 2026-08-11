@@ -1,6 +1,6 @@
 {
 	"kind": "p4-portfolio-m1-disagreement",
-	"generatedAt": "2026-08-11T18:10:08.186Z",
+	"generatedAt": "2026-08-11T18:46:13.109Z",
 	"ruler": {
 		"source": "research/v3/src/adjudication/match.ts compareRole()/barFor()",
 		"regional": "sameColorBar(first, second) — the calibrated per-pair bar; headline",
@@ -45,12 +45,12 @@
 		},
 		{
 			"slug": "p2-tree",
-			"commit": "0ae6254260d8e170eb932bc9abc86a2a35f61ab8",
+			"commit": "041fc4b4d51fe23058b044cd4970b523a9fe6945",
 			"branch": "proto/p2-tree",
 			"pinVerdict": "PINNED",
-			"committedAtHead": false,
+			"committedAtHead": true,
 			"filesUntrackedInHome": 0,
-			"filesWithUncommittedEdits": 1,
+			"filesWithUncommittedEdits": 0,
 			"worktree": "/Users/Flo/GitHub/palette/.worktrees/p2-tree",
 			"snapshotCandidate": "members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts",
 			"homeCodeVersion": "93291d0f55348ad12fd0df30d0235c48a874af084f81bc2a2dd172ad841a831b",

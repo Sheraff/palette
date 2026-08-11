@@ -7,7 +7,7 @@
 | member | pinned commit | in that commit? | closure re-verified | snapshot candidate | byte-identity gate |
 |---|---|---|---|---|---|
 | `p3-fields` | `b474fec4b2` | yes | PINNED | `members/p3-fields/v3/prototypes/p3-fields/src/candidate.ts` | **PASS** (3/3 rows) |
-| `p2-tree` | `0ae6254260` | **NO** — 0 untracked, 1 uncommitted | PINNED | `members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts` | **PASS** (3/3 rows) |
+| `p2-tree` | `041fc4b4d5` | yes | PINNED | `members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts` | **PASS** (3/3 rows) |
 | `p5-fieldfit` | `0bdfb5fe54` | yes | PINNED | `members/p5-fieldfit/v3/prototypes/p5-fieldfit/candidate.ts` | **PASS** (3/3 rows) |
 | `p1-mdl` | `149ee6d7fa` | yes | PINNED | `members/p1-mdl/v3/prototypes/p1-mdl/candidates/p1a-v1.ts` | **PASS** (3/3 rows) |
 
@@ -134,3 +134,16 @@ Appended verbatim from `data/m1/notes.md`; everything above this line is derived
    M2 table's only edit at this milestone is SPEC §3.1's σ floor, and re-pinning a member in the same
    pass would have made the floor's measured effect uninterpretable. The demo-20 numbers are M1's,
    and are labelled as M1's.
+
+8. **`p2-tree` re-pinned at a commit, 2026-08-11T18:44:28Z — zero code delta.** P2 has committed the
+   D15 edit that item 6 recorded as uncommitted: `041fc4b4` ("apply D15 — `UNREADABLE_COVERAGE_FRACTION`
+   0.5 → 0.25 [MEASURED] + gate-affected tests re-asserted"). All 19 copied files were diffed against
+   `041fc4b4:research/v3/…`: **byte-identical, 19/19**, so **no re-snapshot was taken** and the
+   byte-identity gate was **not** re-run — its inputs did not move, and the PASS 3/3 above still holds.
+   `committedAtHead` is now **true** (`notInHead` 0, `differsFromHead` 0). P2's working tree carries no
+   member-relevant edits; only untracked `out/` run artifacts remain. **Correction, per the main tier:**
+   item 1's and item 6's claim that this member lives only in a live working tree with no commit
+   reproducing it was a transient state stated as a durable one, and is **retracted** — the commit and
+   the fingerprint now agree. **No M3/M4 palette can differ under the new pin:**
+   `data/m3/runs/p2-tree-coverage1{,-resume-1}.jsonl` record `codeVersion` `0795f6e7…`, the same
+   snapshot bytes this pin certifies, so the M3 corpus was not re-run and needs no re-run.
