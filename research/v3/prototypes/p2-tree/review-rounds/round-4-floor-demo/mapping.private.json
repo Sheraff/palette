@@ -1,0 +1,125 @@
+{
+	"_note": "NOT SERVABLE. The decode key for round-4-floor-demo, and the whole record of the waiver this round is built on.",
+	"_roundId": "p2-round-4-floor-demo",
+	"_kind": "pairwise",
+	"_variants": {
+		"variant-01": {
+			"meaning": "true-ink-floor-waived",
+			"candidateId": "p2-tos",
+			"family": "tree of shapes",
+			"algorithmVersion": "p2-tree-cycle2-0.3.0-v1",
+			"trueAlgorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+			"foreground": "#1e2221",
+			"isPipelineOutput": false,
+			"provenance": "the published palette of round-3-quality item 2 with the foreground replaced by the colour the detector elected at rank 0 and invariant I4's epsilon floor refused (tos/identity/q1/report.json, walk.foregroundSteps[0])",
+			"waiver": "this side deliberately violates I4's minTextContrast epsilon floor, for this demonstration only; it is not a publishable palette and no candidate produces it"
+		},
+		"variant-02": {
+			"meaning": "published-halo",
+			"candidateId": "p2-tos",
+			"family": "tree of shapes",
+			"algorithmVersion": "p2-tree-cycle2-0.3.0-v1",
+			"trueAlgorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+			"foreground": "#fcffff",
+			"isPipelineOutput": true,
+			"provenance": "round-3-quality/items.json item 2, byte-identical — the palette graded 'acceptable' in batch phase2-cal-014 with the note about the foreground not being a colour of the artwork",
+			"waiver": null
+		}
+	},
+	"_variantAliases": {
+		"variant-02": "the same palette round-3-quality/mapping.private.json records under the label p2-tree-cycle2-v1"
+	},
+	"_sideOrder": {
+		"rule": "round 1's parity mechanic: sides ordered by item index parity over the fixed variant order; item 0 is even, so the substituted side takes FIXTURE position A",
+		"fixtureOrder": {
+			"A": "variant-01",
+			"B": "variant-02"
+		},
+		"caveat": "FIXTURE order only. The review server reshuffles A/B at push under a fresh random salt and records the blinding index in the batch log; the released decode must join this file to that index, exactly as the pair-015 analyst did."
+	},
+	"_item": {
+		"itemId": "ab67616d0000b27300008912d4517960ad020c7a",
+		"imagePath": "00/ab67616d0000b27300008912d4517960ad020c7a.jpg",
+		"collection": "coverage-set-1",
+		"priorRound": "round-3-quality item 2 (batch phase2-cal-014), graded acceptable",
+		"priorNote": "The white foreground does not seem to be a color that is part of the artwork, and as a result the identity of this artwork is not well conveyed by this palette"
+	},
+	"_demonstration": {
+		"question": "is the contrast floor wrong here, or the colour pick?",
+		"epsilonRawMagnitude": 2.5,
+		"parameter": "minTextContrast",
+		"invariant": "I4.below-contrast-floor",
+		"substituted": {
+			"foreground": "#1e2221",
+			"against": [
+				{
+					"field": "#131919",
+					"raw": -2.0316643129313854,
+					"rawMagnitude": 2.0316643129313854,
+					"shortfallBelowEpsilon": 0.4683356870686146,
+					"clearsEpsilon": false,
+					"oklabDistance": 0.040380542746038056
+				},
+				{
+					"field": "#182023",
+					"raw": -1.1880116365726292,
+					"rawMagnitude": 1.1880116365726292,
+					"shortfallBelowEpsilon": 1.3119883634273708,
+					"clearsEpsilon": false,
+					"oklabDistance": 0.014129877296819896
+				}
+			]
+		},
+		"published": {
+			"foreground": "#fcffff",
+			"against": [
+				{
+					"field": "#131919",
+					"raw": -109.0564249519352,
+					"rawMagnitude": 109.0564249519352,
+					"shortfallBelowEpsilon": 0,
+					"clearsEpsilon": true,
+					"oklabDistance": 0.7905144813182129
+				},
+				{
+					"field": "#182023",
+					"raw": -108.21277227557641,
+					"rawMagnitude": 108.21277227557641,
+					"shortfallBelowEpsilon": 0,
+					"clearsEpsilon": true,
+					"oklabDistance": 0.7608363092567257
+				}
+			]
+		},
+		"marginNote": "the substituted foreground sits under D7's 0.02 OKLab selection bar against the surface; it is staged anyway, because a colour the instrument would normally refuse to show is exactly what this round exists to show"
+	},
+	"_singleItemDecision": {
+		"decision": "one item",
+		"rule": "a second item is built only if the diagnosis shows another cover of the SAME clean class — the detector's election refused by I4, with a near-white halo published instead",
+		"candidatesConsidered": [
+			{
+				"item": "cal-014 item 1 (…39b7dbc802fd)",
+				"class": "no text group at all; the near-white was pool rank 0 and the walk accepted it with zero refusals",
+				"sameClass": false,
+				"source": "tos/identity/q1/report.json"
+			},
+			{
+				"item": "cal-014 item 5 (…f57bc46a3680)",
+				"class": "phantom text group (one mark named four times across lanes); published at rank 0 with zero refusals — a bypass, not a refusal",
+				"sameClass": false,
+				"source": "tos/identity/q2/report.json, DECISIONS.md D12"
+			},
+			{
+				"item": "cal-014 item 6 (…d5fd547eb7f3)",
+				"class": "two I4 refusals, but the accepted rank-2 colour IS the admissible pool maximum — a field-stage ceiling set by the published ramp, not a halo",
+				"sameClass": false,
+				"source": "tos/identity/q2/report.json"
+			}
+		]
+	},
+	"_sources": {
+		"publishedSide": "review-rounds/round-3-quality/items.json (ab67616d0000b27300008912d4517960ad020c7a)",
+		"substitutedForeground": "tos/identity/q1/report.json (p2-tos-identity/q1@1, candidate p2-tos-0.3.0-cycle-2-merged)",
+		"candidatePath": "research/v3/prototypes/p2-tree/tos/candidate.ts"
+	}
+}
