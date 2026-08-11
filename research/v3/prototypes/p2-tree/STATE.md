@@ -1,109 +1,96 @@
-# P2 — where we're at (reviewer pick document, 2026-08-05)
+# P2 — where we're at (reviewer pick document, refreshed 2026-08-05, tree `9060fb3`)
 
 ## 1. Mechanism
 
 Hierarchical region decomposition: build a tree over the image (tree of shapes on L, a, b),
 read the four roles off nodes by lexicographic structural orders. Carried family: tree of
-shapes (`p2-tos-0.3.0-cycle-2-merged`, 627–727 ms/palette). Quasi-flat-zone family built,
-judged, frozen as reference (`p2-alpha`).
+shapes — merged candidate `p2-tos-0.3.0-cycle-2-merged`, **provenance pin: any commit from
+`78f0285` through HEAD (candidate bytes identical; cross-arm consumers pin `734c3f5`)**,
+~670 ms/palette. Quasi-flat-zone family built, judged, frozen as reference (`p2-alpha`).
 
 ## 2. Judge-validated strengths (provenance per claim)
 
 - **Endorsed colours live in tree nodes:** 91.9% of 1,397 endorsed role slots reachable from
-  retained nodes vs 36.4% control; pre-registered falsifier 1.7% against its >25% line
-  (endorsed-173 corpus, merged pool). The paradigm's premise is measured, not assumed.
-- **Reviewer preferred this family** 5–3 over the α-tree on the same covers (phase2-pair-002).
-- **The artwork's-own-text-colour foreground rule:** validated in round-1 (`…d859a69094`
-  "we should have black as the foreground" — the detector's election) and again by the I4
-  diagnosis (the detector found the true ink even where the contract refused it).
-- **Structural vivid-accent recall:** the reviewer named our mined coral "the correct shade
-  of red (Strawberry Moon)" (phase2-pair-015 verbatim); recovered from a b-lane node at area
-  rank 602/963 — past every mass-based cut, on stability not population (D8's principle,
-  working).
-- **Determinism/exactness:** independent 6-check verification — byte-identical double runs,
-  0 exact-triple violations over 128k published colours/reprs, 0 contract violations.
-- **Margins:** zero epsilon-margin pairs published (worst 0.0322 vs bars 0.009–0.023); the
-  deliberate 0.0304 margin probe survived review without complaint (phase2-cal-014 item 2's
-  bg/surface, the round's only acceptable).
+  retained nodes vs 36.4% control; pre-registered falsifier 1.7% vs its >25% line. The
+  paradigm's premise is measured, not assumed.
+- **Reviewer preferred this family** 5–3 over the α-tree (phase2-pair-002).
+- **Artwork's-own-text-colour foreground:** validated round-1 (black title, `…d859a69094`);
+  reaffirmed by pair-018 ("side A has the right idea to take a color from the artwork").
+- **Structural vivid-accent recall:** the mined coral named "the correct shade of red"
+  (pair-015 verbatim), recovered on stability at area rank 602/963 — mass floors would have
+  killed it (D8 working).
+- **I4 floor demonstration (pair-018) closed a contract question in P2's favour on process:**
+  floor affirmed, the halo pick named the defect — and the fix (antialias-ineligibility,
+  zero constants) was landed BEFORE the verdict; the current build publishes a putty-family
+  colour on that cover, in the family the reviewer volunteered as valid. Unvalidated until
+  the next quality round; recorded as convergence, not claim.
+- **Determinism/exactness:** independent 6-check verification — byte-identical runs, 0
+  exact-triple violations over 128k colours, 0 contract violations; margins healthy (worst
+  pair 0.0322; the deliberate 0.0304 probe survived review).
 
-## 3. Measured weaknesses, causes located
+## 3. Measured weaknesses, causes located, current status
 
-- **Fresh-cover quality is low: 5/6 at ≤ weak (phase2-cal-014).** Per-item causes, measured
-  (tos/identity/): one contract-level (I4 ε-floor refused the true ink; halo published —
-  demonstration staged, reviewer's call); one pipeline defect (phantom cross-lane text
-  group — fix in flight); one genuine ceiling (no readable colour exists over that ramp);
-  one mechanism limit (photo cover with no structure → blown-highlight white; the class
-  arm-b predicted as its worst stratum).
-- **Palette-level robustness unsolved: overall agreement 9.0%, dither 23.0%** (both families
-  fired the pre-registered dither falsifier). Cause located (stability/q1): role-assignment
-  identity swaps over churning candidate sets (82% of failures; representatives held).
-  Ruler-indifference elections landed (matched-swap class closed, palettes byte-identical)
-  — topline unmoved; the two remaining levers are measured and each sacrifices a
-  reviewer-endorsed colour, so they are round-priced, not engineering calls. Cross-arm
-  comparisons of these numbers need direction-checking (this campaign's own reading was
-  inverted once; topline = agreement).
-- **Gradients: 69% of published ramps are phantom vs legacy labels;** laminarity cut is
-  unsettleable by measurement (0/77 Holm) and the reviewer rejected both stricter cuts
-  (sided with legacy on real ramps, field-gradient-labels-1). Binding constant:
-  `UNREADABLE_COVERAGE_FRACTION` (unmeasured, caps agreement at 63.9%) — promoted to
-  next-measured (D13).
-- **One accent slot cannot carry two colour families** (pair-015 verbatim note): coverage
-  allocation prototype built (zero new constants, produces the reviewer-described structure
-  on the named cover), un-judged; its adverse case (chroma traded for family) is staged for
-  pricing.
+- **Fresh-cover quality low (cal-014: 5/6 ≤ weak).** All four causes located and now:
+  contract-level cause RESOLVED (I4 affirmed + pick fixed, D14); phantom text group FIXED
+  (cross-lane dedup, `78f0285`); one genuine readability ceiling (ramp field — real limit);
+  one mechanism limit (photo covers with no structure; arm-b predicted it). Post-fix
+  quality is unmeasured by the judge — next quality round carries it.
+- **Palette-level robustness unsolved: agreement 8.5% overall, 20.0% dither** (pre-registered
+  dither falsifiers fired, both families; deltas from fixes are within CIs, claimed as
+  no-signal). Cause located: candidate-set churn at role assignment; ruler-indifference
+  landed (matched-swap class closed); the two remaining levers each trade a
+  reviewer-endorsed colour and are staged in round-5 for pricing, not taken unilaterally.
+  Direction caveat: topline = agreement; cross-arm comparisons must direction-check.
+- **Gradients:** 69% of published ramps phantom vs legacy; laminarity unsettleable by
+  measurement (0/77 Holm) and both stricter cuts rejected by the reviewer (sided with
+  legacy ramps, D13). The binding constant was measured (W-M sweep): coverage gate ruled
+  0.5→**0.25** by pick-one-and-state (D15 — false-unreadable 64.6%→4.2%, ramp recall
+  11.8%→47%, explicitly NOT an agreement improvement), application pending worker N's
+  fan-in. Guide-stop machinery (D6's owed excursion census) is worker N's in-flight task.
+- **One accent slot cannot carry two colour families** (pair-015): coverage-allocation
+  prototype built (zero new constants, produces the reviewer-described structure on the
+  named cover); its adverse cases are round-5 items 3–4.
 
 ## 4. Open questions and answer cost
 
 | question | state | cost to answer |
 |---|---|---|
-| I4 floor wrong, or colour pick? | round-4 staged, REVIEW-READY sent (true ink, floor waived vs published halo) | 1 reviewer item |
-| coverage gate (`UNREADABLE_COVERAGE_FRACTION`) | unmeasured; sweep spec'd over 144 labelled covers | dev-days, no reviewer time |
-| cluster-member publication (the dither lever) | two variants measured, each trades an endorsed colour | 2 pairwise items |
-| salience eligibility cut | T2-funded (level-first preferred, no note) | 1 pairwise item + dev-days |
-| coverage allocation adverse case | prototype built, byte-identity proven off-case | 2 pairwise items |
-| ramp polarity ("background should be white") | no constant-free mechanism found (projection decides 4.4× over band) | design work, then 1 round item |
-| guide-stop/excursion machinery | owed (D6); currently cannot detect an owed guide stop | dev-days, no reviewer time |
+| I4 floor wrong, or colour pick? | **ANSWERED** (pair-018, D14): floor stands, pick fixed | 0 — spent |
+| coverage gate | **ANSWERED** (W-M sweep + D15): 0.25, applied at W-N fan-in | 0 — spent; validation rides future rounds |
+| cluster-member publication (dither lever) | round-5 items 1–2, with installer | 2 items |
+| coverage adverse cases | round-5 items 3–4, with installer | 2 items |
+| low-contrast text cover (W-L owed) | round-5 item 5, with installer | 1 item |
+| salience eligibility cut | T2-funded, queued behind round-5 | 1 item + dev-days |
+| ramp polarity ("background should be white") | no constant-free mechanism found (projection decides 4.4×) | design work, then 1 item |
+| guide-stop/excursion machinery | worker N in flight (census + insertion + preconditions) | dev-days, no reviewer time |
+| item-4 (cal-014) note-less unacceptable | evidence gap, queued for a noted re-ask | 1 item |
 
 ## 5. Components graftable to other arms
 
-- **Reachability falsifier harness** (`falsifier/`): pipeline-agnostic, consumes node/colour
-  dumps, pre-registered lines, control-set ceiling printed — any candidate-pool arm.
-- **Ruler-indifference election machinery** (`roles/indifference.ts`): semiorder-safe
-  leader-linkage classes + truncation-stable cuts — any lexicographic-ranking arm.
-- **Text detector** (stroke-width/height/collinearity grouping, lane-agnostic) with the
-  text-colour-leads rule; cross-lane dedup landing now.
-- **Antialias-ineligibility** (measured "accidental shadow" class: inradius ≈1px,
-  boundary-tracing): any arm publishing exact pixels near edges.
-- **Family census + coverage allocation** (`coverage/`): zero new constants, derived hue
-  separation — any arm with a candidate pool and role slots.
-- **Process artifacts:** release-analyst decode protocol, MECE outcome-table template
-  lessons, margin reporting (D7).
+Reachability falsifier harness (pipeline-agnostic; pre-registered lines; control ceiling
+printed) · ruler-indifference election machinery (semiorder-safe classes, truncation-stable
+cuts) · text detector + cross-lane dedup + text-colour-leads rule · antialias-ineligibility
+(measured accidental-shadow class: no-interior-pixel regions) · family census + coverage
+allocation (zero new constants) · release-analyst decode protocol · mechanical MECE
+outcome-table validation (round-5's validate.ts — enumerates all answer states, proves
+exactly one row fires) · D7 margin reporting.
 
 ## 6. Honest promise assessment
 
 The candidate-generation half of this mechanism is validated by the judge and by
-measurement: the tree finds what the reviewer endorses (91.9% reachability, coral, black
-title), the structural orders carry his stated principles without invented constants, and
-every located failure so far has resolved into a specific, addressable cause rather than a
-paradigm mystery — including two that turned out not to be P2's fault (a contract floor, a
-review-instrument reading). The unsolved half is election stability: palettes move under
-perturbations that should not matter, the cheap fixes are exhausted, and the remaining
-levers genuinely trade reviewer-endorsed colours, so they cannot be taken unilaterally.
-Gradients are honestly blocked on one unmeasured constant. If the bake-off weighs faithful,
-judge-agreeing colour selection with located, priced risks, P2 is promising; if it weighs
-robustness-today, P2 is behind its own quality story and says so.
+measurement: the tree finds what the reviewer endorses, the structural orders carry his
+stated principles without invented constants, and every located failure has resolved into a
+specific cause — two of them closed by fixes the reviewer's own later words converged with
+(the putty foreground; ramp recall). The unsolved half is election stability: palettes move
+under perturbations that should not matter, the cheap fixes are exhausted with honestly-null
+toplines, and the remaining levers are with the reviewer in round-5 because each trades an
+endorsed colour. Gradient truth is now unblocked (gate ruled, machinery landing) but its
+agreement ceiling is real and low until the reviewer's labels say otherwise. If the
+bake-off weighs faithful, judge-agreeing colour selection with located, priced risks, P2 is
+promising; if it weighs robustness-today, P2 is behind its own quality story and says so.
 
-*(Update, same day: worker L landed (`78f0285`) — the phantom-text-group defect and the
-antialias-halo publication in §3 row 1 are FIXED structurally, zero new constants (item 5's
-fg now node-backed `#43752e`; item 2's halo displaced by node-backed `#cba69d` with I4 still
-governing); reachability byte-identical (ordering, not retention, proven); robustness moved
-within intervals only (overall 8.5%, dither 20.0% agreement — no signal claimed).)*
-
-*(Cycle-4 update: I4 CLOSED by pair-018 — floor stands, pick was the defect, W-L's fix is
-the fix of record (D14, `734c3f5`). Coverage gate ruled 0.25 by pick-one-and-state (D15,
-`2113128`), application pending W-N fan-in. Round-5 pricing staged (`95f85e6`), with
-installer. IN FLIGHT: worker N (excursion machinery, D6) — tos/candidate.ts + tos/gradient/
-are its uncommitted mid-flight work; the last committed candidate is at HEAD and is the
-provenance pin for any cross-arm use. This footnote is refreshed at every dispatch/fan-in —
-the previous revision went stale between fan-in and dispatch, which misled a cross-arm
-provenance check; corrected.)*
+*(In-flight footnote — refreshed at every dispatch/fan-in: worker N (excursion machinery,
+D6) owns tos/candidate.ts + tos/gradient/ uncommitted mid-flight; everything else committed
+through `9060fb3`. Rounds: round-5 staged (`95f85e6`) with installer; all released rounds
+(pair-002, cal-014, pair-015, field-gradient-labels-1, pair-018) analyzed, verified, ruled —
+D9/D10/D13/D14. Ledger empty.)*
