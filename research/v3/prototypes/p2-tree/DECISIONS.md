@@ -241,6 +241,24 @@ mapping except where its non-MECE defect required an orchestrator reading (recor
    staging-brief template text itself (third strike escalates to the main orchestrator as a
    process failure).
 
+## D14 — floor demonstration ruled: the floor stands, the pick was the defect (2026-08-05)
+
+phase2-pair-018 verified decode in round-4-floor-demo/OUTCOME.md. Reviewer verbatim: the
+true ink's contrast "is *indeed* too low and should not pass the minimum hard contrast
+floor. However there *are* valid picks in the image such as Charcoal or Putty."
+
+1. **The D12 I4 escalation is CLOSED — no contract change requested.** I4's ε floor is
+   reviewer-affirmed. The defect class is the colour pick under refusal, exactly what worker
+   L's antialias-ineligibility (`78f0285`) already fixed structurally; the current build
+   publishes node-backed `#cba69d` (putty family) on the demonstrated cover — validation
+   belongs to the next quality round, not to this verdict.
+2. **Generalisable principle recorded:** "take a colour from the artwork" is endorsed as the
+   right idea even when the detector's literal ink fails the floor — the fallback must stay
+   within artwork-true, structure-backed candidates (never halos, never synthetics). P2's
+   assembly walk already has this shape; the eligibility ordering is the load-bearing part.
+3. STATE.md §4's first open question is answered; §3 row 1's contract-level cause is
+   resolved (floor affirmed + pick fixed). Update at next natural STATE refresh.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
