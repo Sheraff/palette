@@ -22,7 +22,13 @@
 
 import { PAIR_SIZE } from "./constants.ts"
 import { priceMember } from "./currency.ts"
-import { assessMateriality, blockBootstrap, decidedBySchemaPrice, rankMembers } from "./select.ts"
+import {
+	assessMateriality,
+	blockBootstrap,
+	decidedBySchemaPrice,
+	electFromBootstrap,
+	rankMembers,
+} from "./select.ts"
 import { buildSubstrate } from "./substrate.ts"
 import type { DecodedImage, MemberPalette, Selection, Substrate } from "./types.ts"
 
@@ -67,6 +73,9 @@ export function selectOnCover(
 				winner: null,
 				runnerUp: null,
 				marginBits: null,
+				elected: null,
+				electedBy: null,
+				electionContradictsCheapestTotal: false,
 				tieBrokenBySchemaPrice: false,
 				bootstrap: null,
 			},
@@ -91,6 +100,9 @@ export function selectOnCover(
 				winner: null,
 				runnerUp: null,
 				marginBits: null,
+				elected: null,
+				electedBy: null,
+				electionContradictsCheapestTotal: false,
 				tieBrokenBySchemaPrice: false,
 				bootstrap: null,
 			},
@@ -116,6 +128,10 @@ export function selectOnCover(
 		)
 	}
 
+	// The election (SPEC §2 (c), as the orchestrator ruled on M3 §3.1): where the bootstrap measured a
+	// majority, the majority is what gets published — including where it names the runner-up.
+	const election = electFromBootstrap(winner.slug, runnerUp?.slug ?? null, bootstrap)
+
 	return {
 		selection: {
 			...base,
@@ -124,6 +140,9 @@ export function selectOnCover(
 			winner: winner.slug,
 			runnerUp: runnerUp?.slug ?? null,
 			marginBits: runnerUp === null ? null : runnerUp.totalBits - winner.totalBits,
+			elected: election.elected,
+			electedBy: election.electedBy,
+			electionContradictsCheapestTotal: election.contradictsCheapestTotal,
 			tieBrokenBySchemaPrice: decidedBySchemaPrice(ranked),
 			bootstrap,
 		},

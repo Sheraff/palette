@@ -1,0 +1,324 @@
+{
+	"kind": "p4-portfolio-m4-selection",
+	"round": "selector's elected palette vs the fixed best single member, on disagreement covers",
+	"bestMember": "p3-fields",
+	"source": {
+		"table": "data/m3/bit-table-coverage.json",
+		"memberRuns": [
+			{
+				"slug": "p2-tree",
+				"runPaths": [
+					"data/m3/runs/p2-tree-coverage1.jsonl",
+					"data/m3/runs/p2-tree-coverage1-resume-1.jsonl"
+				]
+			},
+			{
+				"slug": "p3-fields",
+				"runPaths": [
+					"data/m3/runs/p3-fields-coverage1.jsonl"
+				]
+			},
+			{
+				"slug": "p5-fieldfit",
+				"runPaths": [
+					"data/m3/runs/p5-fieldfit-coverage1.jsonl"
+				]
+			}
+		],
+		"freshnessExclusions": {
+			"demoSet": "research/v3/data/devloop/sets/demo-20.txt",
+			"otherPrototypeRounds": [
+				".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-1-tree-families/items.json",
+				".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json",
+				".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-tradeoffs/items.json",
+				".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-4-floor-demo/items.json",
+				".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-5-pricing/items.json",
+				".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-1/items.json",
+				".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-2/items.json",
+				".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-3/items.json",
+				".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-4/items.json"
+			],
+			"itemIdsExcludedForFreshness": [
+				{
+					"itemId": "ab67616d0000b27300005f98559139b7dbc802fd",
+					"stagedIn": [
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b27300008912d4517960ad020c7a",
+					"stagedIn": [
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json",
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-4-floor-demo/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b2730000aa80d6d7c54a1d85db99",
+					"stagedIn": [
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b273000131a334d00155369bb7b9",
+					"stagedIn": [
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d00001e020002653adc4ef57bc46a3680",
+					"stagedIn": [
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d00001e020002fc520894d5fd547eb7f3",
+					"stagedIn": [
+						".worktrees/p2-tree/research/v3/prototypes/p2-tree/review-rounds/round-3-quality/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b2730014816eee85382bf569f953",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-2/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d00001e0200083d2741c5ebb948ee7f1b",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-2/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-3/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b27300113f74852a0091a16672c4",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-3/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b27300094a786a28459646be9b20",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-3/items.json",
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-4/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b27300125577fb06a6a8942d6547",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-3/items.json"
+					]
+				},
+				{
+					"itemId": "ab67616d0000b27300096440c40e31757a78343d",
+					"stagedIn": [
+						".worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/review-rounds/round-3/items.json"
+					]
+				}
+			]
+		}
+	},
+	"eligibility": {
+		"candidates": 130,
+		"rejected": {
+			"stem is not the campaign's 40-hex id": 46,
+			"selector elects P3 — nothing to compare": 30,
+			"already staged in another prototype's round — not fresh": 13,
+			"immaterial against P3 at the regional bar": 1
+		},
+		"bar": "src/adjudication/match.ts compareRole() with DEFAULT_MATCH_OPTIONS (regional) — M1's ruler"
+	},
+	"composition": {
+		"requested": "4 elected p5-fieldfit + 3 elected p2-tree + 1 election flipped by the M3 §3.1 fix",
+		"flipCoverAvailable": true,
+		"fallbackUsed": null,
+		"bands": {
+			"narrow (<10⁴)": 2,
+			"mid (10⁴–10⁵)": 2,
+			"large (10⁵–10⁶)": 2,
+			"huge (≥10⁶)": 2
+		},
+		"figureGroundItems": 5
+	},
+	"items": [
+		{
+			"contentHash": "0314258bd69fc56211265c7dc88ba12745c5f6c1a2b114705dd310dcb1857bf9",
+			"itemId": "ab67616d00001e020006bd0cd831e3e78a7dda49",
+			"imagePath": "/Users/Flo/GitHub/palette/06/ab67616d00001e020006bd0cd831e3e78a7dda49",
+			"elected": "p5-fieldfit",
+			"cheapestTotal": "p5-fieldfit",
+			"flipped": false,
+			"marginBits": 8052.922914689625,
+			"marginBand": "narrow (<10⁴)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": false,
+				"best": false
+			},
+			"winFraction": 1,
+			"resamples": 4
+		},
+		{
+			"contentHash": "08fd83a54d790986d18e6a7fc7c0ebda135ab8c8933f369157df6018fc53d73b",
+			"itemId": "ab67616d0000b27300133fe10d39cafd71ab8a6b",
+			"imagePath": "/Users/Flo/GitHub/palette/13/ab67616d0000b27300133fe10d39cafd71ab8a6b",
+			"elected": "p5-fieldfit",
+			"cheapestTotal": "p5-fieldfit",
+			"flipped": false,
+			"marginBits": 1712029.6797889248,
+			"marginBand": "huge (≥10⁶)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": false,
+				"best": false
+			},
+			"winFraction": 0.6458333333333334,
+			"resamples": 48
+		},
+		{
+			"contentHash": "0ed696228aa5867a21dd202a48e0a1462ea72ea0eebf67efec499a758899036d",
+			"itemId": "ab67616d0000b273000def1df4b5be93d1073d33",
+			"imagePath": "/Users/Flo/GitHub/palette/0d/ab67616d0000b273000def1df4b5be93d1073d33",
+			"elected": "p5-fieldfit",
+			"cheapestTotal": "p5-fieldfit",
+			"flipped": false,
+			"marginBits": 12172.504839323694,
+			"marginBand": "mid (10⁴–10⁵)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": true,
+				"best": false
+			},
+			"winFraction": 0.875,
+			"resamples": 8
+		},
+		{
+			"contentHash": "118deaee18650b79fc26d106f1122fe27885c57001fa2f3c6ed46a63575fcf15",
+			"itemId": "ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+			"imagePath": "/Users/Flo/GitHub/palette/0f/ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+			"elected": "p2-tree",
+			"cheapestTotal": "p5-fieldfit",
+			"flipped": true,
+			"marginBits": 971.5274451085133,
+			"marginBand": "narrow (<10⁴)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": false,
+				"best": false
+			},
+			"winFraction": 0.21428571428571427,
+			"resamples": 14
+		},
+		{
+			"contentHash": "25dd2969c9556bbdcf6089bb62a46543222e3c7d8333aea489132976aca35af5",
+			"itemId": "ab67616d0000b27300103b70ede16610224c5ca4",
+			"imagePath": "/Users/Flo/GitHub/palette/10/ab67616d0000b27300103b70ede16610224c5ca4",
+			"elected": "p2-tree",
+			"cheapestTotal": "p2-tree",
+			"flipped": false,
+			"marginBits": 493698.8900947729,
+			"marginBand": "large (10⁵–10⁶)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": false,
+				"best": true
+			},
+			"winFraction": 1,
+			"resamples": 4
+		},
+		{
+			"contentHash": "364b6e33eb51ef5187031224d07663005fa25f77cb276d952b090e248b95ff95",
+			"itemId": "ab67616d0000b2730008e0e708edbad8a3783eee",
+			"imagePath": "/Users/Flo/GitHub/palette/08/ab67616d0000b2730008e0e708edbad8a3783eee",
+			"elected": "p2-tree",
+			"cheapestTotal": "p2-tree",
+			"flipped": false,
+			"marginBits": 98724.04123736522,
+			"marginBand": "mid (10⁴–10⁵)",
+			"differingRoles": [
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": true,
+				"best": false
+			},
+			"winFraction": 1,
+			"resamples": 4
+		},
+		{
+			"contentHash": "4ce786cb8101c446dd68f2573ab8f895d1f8389166873581cdf93e7499b286dd",
+			"itemId": "ab67616d0000b27300046beb8271bf285a15a23d",
+			"imagePath": "/Users/Flo/GitHub/palette/04/ab67616d0000b27300046beb8271bf285a15a23d",
+			"elected": "p2-tree",
+			"cheapestTotal": "p2-tree",
+			"flipped": false,
+			"marginBits": 6283763.604664575,
+			"marginBand": "huge (≥10⁶)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": false,
+				"best": true
+			},
+			"winFraction": 1,
+			"resamples": 4
+		},
+		{
+			"contentHash": "e9de916b13beaea7764bee2726f4cc8a877da87f75fc7e2c5376680e8a30457d",
+			"itemId": "ab67616d0000b2730014c3a0501a86757a275520",
+			"imagePath": "/Users/Flo/GitHub/palette/14/ab67616d0000b2730014c3a0501a86757a275520",
+			"elected": "p5-fieldfit",
+			"cheapestTotal": "p5-fieldfit",
+			"flipped": false,
+			"marginBits": 116916.93261586304,
+			"marginBand": "large (10⁵–10⁶)",
+			"differingRoles": [
+				"background",
+				"surface",
+				"foreground",
+				"accent"
+			],
+			"figureGroundClass": {
+				"elected": true,
+				"best": false
+			},
+			"winFraction": 1,
+			"resamples": 4
+		}
+	]
+}

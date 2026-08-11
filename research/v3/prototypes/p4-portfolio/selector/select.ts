@@ -32,6 +32,11 @@
  * **(d) the tie-break.** Equal totals go to the cheaper `L(palette)` — fewer published distinctions
  * — and an exact remaining tie goes to the lexicographically first slug, a determinism device
  * rather than a judgement.
+ *
+ * **(c′) the election.** §2.3c's sentence is *"the winner stands if it wins a majority"*, and a
+ * majority is a thing the bootstrap measures rather than a thing the point total asserts. Where the
+ * two disagree — the interval clears ½ on the losing side — the measurement is what is published.
+ * See {@link electFromBootstrap}.
  */
 
 import { compareRole, DEFAULT_MATCH_OPTIONS } from "../../../src/adjudication/match.ts"
@@ -47,7 +52,13 @@ import {
 	INDIFFERENT_WIN_FRACTION,
 	PAIR_SIZE,
 } from "./constants.ts"
-import type { BootstrapReport, MaterialityReport, MemberPalette, MemberPrice } from "./types.ts"
+import type {
+	BootstrapReport,
+	Election,
+	MaterialityReport,
+	MemberPalette,
+	MemberPrice,
+} from "./types.ts"
 
 // ---------------------------------------------------------------------------------------------
 // (b) Immateriality
@@ -244,4 +255,59 @@ export function rankMembers(prices: readonly MemberPrice[]): MemberPrice[] {
 export function decidedBySchemaPrice(ranked: readonly MemberPrice[]): boolean {
 	if (ranked.length < PAIR_SIZE) return false
 	return ranked[0]!.totalBits === ranked[1]!.totalBits
+}
+
+// ---------------------------------------------------------------------------------------------
+// (c′) The election
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * Which member the selector **elects**, once the margin has been measured.
+ *
+ * arm-c′ §2.3c's sentence is *"the winner stands if it wins a majority"*. A majority is measured, not
+ * asserted: the point bit-total is a single arithmetic estimate of a difference of two sums, and the
+ * block bootstrap is a measurement of how that difference behaves when the lattice it was summed over
+ * is resampled. **Where the two disagree, the measurement is published.** That is the orchestrator's
+ * ruling on M3 §3.1, and it is the only reading of §2.3c under which the resampling was worth paying
+ * for at all — a bootstrap that can never overturn the point estimate is a report, not a mechanism.
+ *
+ * The rule, in full:
+ *
+ *  - **The bootstrap separated from ½** — `separatedFromHalf` — and the fraction is *above* it: the
+ *    cheapest total won its majority. Elected, `electedBy: "bootstrap-majority"`; nothing moved.
+ *  - **It separated from ½ and the fraction is *below* it:** the resampled evidence names the *runner
+ *    up*, with the interval clearing ½ on the cheapest total's losing side. The runner-up is elected,
+ *    `electedBy: "bootstrap-majority"`, and `contradictsCheapestTotal` records that the published
+ *    choice is not the point winner. This is the branch M3 §3.1 found on two covers, both at margins
+ *    under a thousand bits against totals in the hundreds of thousands.
+ *  - **It did not separate** — the compute cap was paid without a measured majority — or there was no
+ *    bootstrap at all (an immaterial cover, a lone member): nothing was measured that could overturn
+ *    anything, so the cheapest total stands, `electedBy: "cheapest-total"`.
+ *
+ * **The tie-break path is untouched by construction, not by exception.** Where §2.3d decided the
+ * order the two totals are exactly equal, every resample of an identically-zero difference ties, and
+ * `blockBootstrap` returns `separatedFromHalf: false` — so this function falls through to the
+ * cheapest total, which on that cover *is* the tie-break's answer. No branch here names the
+ * tie-break, and none needs to.
+ *
+ * No constant is introduced: the comparison is against `INDIFFERENT_WIN_FRACTION`, the same one half
+ * the stopping rule and the report already use.
+ */
+export function electFromBootstrap(
+	cheapestTotal: string,
+	runnerUp: string | null,
+	bootstrap: BootstrapReport | null,
+): Election {
+	const stands: Election = {
+		elected: cheapestTotal,
+		electedBy: "cheapest-total",
+		contradictsCheapestTotal: false,
+	}
+	if (bootstrap === null || runnerUp === null || !bootstrap.separatedFromHalf) return stands
+	if (bootstrap.winFraction > INDIFFERENT_WIN_FRACTION) {
+		return { elected: cheapestTotal, electedBy: "bootstrap-majority", contradictsCheapestTotal: false }
+	}
+	// Separation is two-sided and an interval that excludes ½ cannot sit at ½, so this is the below
+	// branch: the majority belongs to the runner-up and the runner-up is what gets published.
+	return { elected: runnerUp, electedBy: "bootstrap-majority", contradictsCheapestTotal: true }
 }

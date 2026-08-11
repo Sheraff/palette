@@ -132,6 +132,21 @@ export type BootstrapReport = Readonly<{
 }>
 
 /**
+ * arm-c′ §2.3c's *"the winner stands if it wins a majority"*, resolved: who the selector publishes.
+ *
+ * `elected` is the member whose palette is served. `electedBy` says which of the two readings decided
+ * it — `"bootstrap-majority"` when the resampled evidence separated from ½ and therefore measured a
+ * majority, `"cheapest-total"` when it did not (the cap was paid, or no bootstrap ran) and the point
+ * estimate stands unopposed. `contradictsCheapestTotal` is the honest flag: true exactly where the
+ * elected member is *not* the cheapest total, which is the case M3 §3.1 surfaced.
+ */
+export type Election = Readonly<{
+	elected: string
+	electedBy: "cheapest-total" | "bootstrap-majority"
+	contradictsCheapestTotal: boolean
+}>
+
+/**
  * Why a cover could not be priced at all.
  *
  * The currency divides the residual by σ², so a cover with no scale has no exchange rate between
@@ -164,10 +179,19 @@ export type Selection = Readonly<{
 	prices: readonly MemberPrice[]
 	/** Assessed from the palettes alone, so it is available even on an unpriceable cover. */
 	materiality: MaterialityReport
+	/** The cheapest total — the point estimate, and the ranking's head. Not necessarily `elected`. */
 	winner: string | null
 	runnerUp: string | null
 	/** Winner's margin over the runner-up, in bits. */
 	marginBits: number | null
+	/**
+	 * **What the selector publishes**, per {@link Election}. Equal to `winner` except on covers where
+	 * the bootstrap measured a majority for the runner-up; `null` only where nothing was priced.
+	 */
+	elected: string | null
+	electedBy: Election["electedBy"] | null
+	/** True where `elected !== winner`: the measured majority overturned the point total. */
+	electionContradictsCheapestTotal: boolean
 	/** Set when the totals tied and arm-c′ §2.3d's cheaper-L(palette) rule decided it. */
 	tieBrokenBySchemaPrice: boolean
 	bootstrap: BootstrapReport | null

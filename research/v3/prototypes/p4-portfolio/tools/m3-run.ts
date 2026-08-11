@@ -31,12 +31,10 @@ import type { Palette } from "../../../src/contract/types.ts"
 import { INDIFFERENT_WIN_FRACTION, LATTICE_RESOLUTION_C, decodeImage, selectOnCover } from "../selector/index.ts"
 import { SubstrateRefusal } from "../selector/substrate.ts"
 import type { MemberPalette, Selection } from "../selector/types.ts"
+import { bitTableRow, electionSummary, renderMarkdown } from "./m3-report.ts"
 
 const HERE = dirname(new URL(import.meta.url).pathname)
 const PROTOTYPE = resolve(HERE, "..")
-
-/** [STRUCTURAL] A full turn in degrees. Presentation only. */
-const DEGREES_PER_TURN = 360
 
 /**
  * The window this report calls "near ½", stated once.
@@ -146,10 +144,6 @@ async function loadCovers(): Promise<{ covers: Cover[]; perMemberRows: Record<st
 	return { covers, perMemberRows }
 }
 
-function shortHash(hash: string): string {
-	return hash.slice(0, 10)
-}
-
 function histogram(values: readonly number[], edges: readonly number[]): Record<string, number> {
 	const bins: Record<string, number> = {}
 	for (const [at, edge] of edges.entries()) {
@@ -170,39 +164,6 @@ function histogram(values: readonly number[], edges: readonly number[]): Record<
 	return bins
 }
 
-/** One cover's row, in the shape the bit table publishes and the determinism check compares. */
-function bitTableRow(selection: Selection, cover: Cover, priceMs: number): Record<string, unknown> {
-	return {
-		contentHash: selection.contentHash,
-		imagePath: selection.imagePath,
-		sigma: selection.sigma,
-		sigmaMeasured: selection.sigmaMeasured,
-		sigmaQuantization: selection.sigmaQuantization,
-		sigmaFlooredByQuantization: selection.sigmaFlooredByQuantization,
-		membersPriced: selection.prices.map((price) => price.slug),
-		membersMissing: cover.missing,
-		unpriceable: selection.unpriceable,
-		immaterial: !selection.materiality.material,
-		winner: selection.winner,
-		runnerUp: selection.runnerUp,
-		marginBits: selection.marginBits,
-		tieBrokenBySchemaPrice: selection.tieBrokenBySchemaPrice,
-		winFraction: selection.bootstrap?.winFraction ?? null,
-		bootstrap: selection.bootstrap,
-		members: selection.prices.map((price) => ({
-			slug: price.slug,
-			schemaBits: price.schema.bits,
-			publishedColors: price.schema.publishedColors,
-			residualBits: price.residualBits,
-			totalBits: price.totalBits,
-			field: price.field,
-			explainedPixelFraction: price.explainedPixelFraction,
-		})),
-		pairsDiffering: selection.materiality.pairs,
-		priceMs,
-	}
-}
-
 /** Price one cover. A decode the substrate refuses is recorded as a refusal, never skipped. */
 async function priceCover(
 	cover: Cover,
@@ -211,7 +172,7 @@ async function priceCover(
 	try {
 		const image = await decodeImage(cover.imagePath)
 		const { selection } = selectOnCover(image, cover.members, LATTICE_RESOLUTION_C)
-		return { row: bitTableRow(selection, cover, Date.now() - startedAt), selection, refusal: null }
+		return { row: bitTableRow(selection, cover.missing, Date.now() - startedAt), selection, refusal: null }
 	} catch (error) {
 		const reason = error instanceof SubstrateRefusal ? error.message : `${(error as Error).message}`
 		return {
@@ -223,6 +184,11 @@ async function priceCover(
 				unpriceable: { reason, sigma: null },
 				refusedAtDecode: true,
 				winner: null,
+				// A cover that never decoded elects nobody. Carried explicitly so the election summary
+				// reads the same key on every row rather than inferring absence.
+				elected: null,
+				electedBy: null,
+				electionContradictsCheapestTotal: false,
 				priceMs: Date.now() - startedAt,
 			},
 			selection: null,
@@ -365,6 +331,7 @@ async function run(): Promise<void> {
 			flooredCovers: priced.filter((selection) => selection.sigmaFlooredByQuantization).length,
 		},
 		winnerCounts,
+		election: electionSummary(rows),
 		materialCovers: material.length,
 		immaterialCovers: immaterial,
 		marginBits:
@@ -433,213 +400,6 @@ async function run(): Promise<void> {
 	await writeFile(outPath, `${JSON.stringify(report, null, "\t")}\n`)
 	await writeFile(resolve(PROTOTYPE, "M3.md"), renderMarkdown(report, rows))
 	process.stdout.write(`${outPath}\n`)
-}
-
-function fixed(value: number | null, digits: number): string {
-	return value !== null && Number.isFinite(value) ? value.toFixed(digits) : "—"
-}
-
-function renderMarkdown(report: Record<string, unknown>, rows: readonly Record<string, unknown>[]): string {
-	const lines: string[] = []
-	const f1 = report.f1 as Record<string, unknown>
-	const set = report.set as { name: string; definition: string; setFile: string; covers: number }
-	const members = report.members as { slug: string; rows: number; pricedOn: number }[]
-	const wall = report.wallMs as { pricing: number; members: Record<string, number | null> }
-	const refusals = report.refusalsAfterFloor as { count: number; covers: { contentHash: string; reason: string }[] }
-	const floor = report.sigmaFloor as { measuredZeroCovers: number; flooredCovers: number }
-	const determinism = report.determinism as { covers: number; allIdentical: boolean }
-
-	lines.push("# P4 M3 — the selector on coverage-set-1, and the F1 measurement")
-	lines.push("")
-	lines.push(
-		"**Generated by `tools/m3-run.ts` from the M3 member runs. Do not hand-edit.** Every number " +
-			"below is re-derivable from `data/m3/bit-table-coverage.json`.",
-	)
-	lines.push("")
-	lines.push(
-		`**Set.** \`${set.name}\`, ${set.covers} covers, defined by \`${set.definition}\` and listed for ` +
-			`the dev loop in \`${set.setFile}\` (derived from that definition's own \`artworks\` order; each ` +
-			"path verified present and sha-256-identical to the definition's digest before the runs).",
-	)
-	lines.push("")
-	lines.push(
-		`**Lattice resolution C = ${report.latticeResolution}**, and σ = \`max(σ_measured, σ_quant)\` per ` +
-			"SPEC §3.1 — the same pricing path as M2, unchanged for this milestone.",
-	)
-	lines.push("")
-	lines.push("## 1. What ran")
-	lines.push("")
-	lines.push("| member | rows | priced on | member wall (ms) |")
-	lines.push("|---|---|---|---|")
-	for (const member of members) {
-		lines.push(
-			`| \`${member.slug}\` | ${member.rows} | ${member.pricedOn} | ${wall.members[member.slug] ?? "—"} |`,
-		)
-	}
-	lines.push("")
-	const excluded = report.excluded as { slug: string; why: string }
-	lines.push(`\`${excluded.slug}\` is **excluded**: ${excluded.why}.`)
-	lines.push("")
-	lines.push(
-		`Pricing wall time: **${wall.pricing} ms** for ${set.covers} covers. Member wall time is the sum ` +
-			"over that member's runs. Member runs were driven by `tools/m3-member-run.ts`, which watches " +
-			"the run file and kills a member that writes no result row for 60 s; at one worker the rows " +
-			"come out in set order, so a stall names the exact cover.",
-	)
-	lines.push("")
-	const timeouts = report.memberRunTimeouts as {
-		count: number
-		timeouts: { slug: string; stalledOn: string | null; rowsWritten: number; stallMs: number }[]
-	}
-	if (timeouts.count === 0) {
-		lines.push("**No member run timed out.**")
-	} else {
-		lines.push(`**Member runs killed by the stall watchdog: ${timeouts.count}.**`)
-		lines.push("")
-		lines.push("| member | rows before the kill | stalled on | stall budget (ms) |")
-		lines.push("|---|---|---|---|")
-		for (const timeout of timeouts.timeouts) {
-			lines.push(
-				`| \`${timeout.slug}\` | ${timeout.rowsWritten} | \`${timeout.stalledOn ?? "—"}\` | ${timeout.stallMs} |`,
-			)
-		}
-		lines.push("")
-		lines.push(
-			"A killed cover is **recorded and not retried**: the member is resumed over everything it had " +
-				"not reached, the stalled cover is left out of that resume set, and the cover is priced " +
-				"with the members that did publish on it — which the per-cover table below marks as " +
-				"`missing`. Retrying it would either hang the milestone or need a second, longer budget " +
-				"nobody measured.",
-		)
-	}
-	lines.push("")
-	lines.push("## 2. Headline")
-	lines.push("")
-	lines.push(`- Covers priced: **${report.pricedCovers}** of ${set.covers}.`)
-	lines.push(`- Refusals after the floor: **${refusals.count}**.`)
-	lines.push(
-		`- σ_measured exactly 0: **${floor.measuredZeroCovers}**; covers where the floor bound: **${floor.flooredCovers}**.`,
-	)
-	lines.push(
-		`- Winner counts: ${Object.entries(report.winnerCounts as Record<string, number>)
-			.map(([slug, count]) => `\`${slug}\` ${count}`)
-			.join(", ")}.`,
-	)
-	lines.push(
-		`- Material covers (at least one pair past the contract's regional bar): **${report.materialCovers}**; immaterial: **${report.immaterialCovers}**.`,
-	)
-	const marginBits = report.marginBits as { histogram: Record<string, number> } | null
-	if (marginBits !== null) {
-		lines.push(`- Margin distribution (bits, winner over runner-up): ${JSON.stringify(marginBits.histogram)}.`)
-	}
-	lines.push(
-		`- Determinism spot-check: ${determinism.covers} covers re-priced, byte-identical rows: **${determinism.allIdentical ? "yes" : "NO"}**.`,
-	)
-	lines.push("")
-	lines.push("## 3. F1")
-	lines.push("")
-	lines.push(`> ${f1.criterion as string}`)
-	lines.push("")
-	const window = f1.nearHalfWindow as [number, number]
-	lines.push(
-		`**"Near ½" is reported as the closed interval [${window[0]}, ${window[1]}]**, symmetric about one ` +
-			"half, stated once and consulted by nothing in the selector. The full distribution is below, so " +
-			"a reader who prefers a different window can compute it from the same rows.",
-	)
-	lines.push("")
-	lines.push(`- Material covers: **${f1.materialCovers}**.`)
-	lines.push(`- Win fractions measured on them: **${f1.winFractionsMeasured}**.`)
-	lines.push(`- Win-fraction distribution: ${JSON.stringify(f1.winFractionHistogram)}.`)
-	lines.push(
-		`- **Share inside [${window[0]}, ${window[1]}]: ${f1.nearHalfCovers} / ${f1.winFractionsMeasured} = ` +
-			`${fixed(f1.nearHalfShare as number | null, 4)}.**`,
-	)
-	lines.push(`- Win fraction exactly 1: **${f1.winFractionsExactlyOne}**.`)
-	lines.push(
-		`- Wilson interval separated from ½ before the compute cap: **${f1.separatedFromHalf}**; capped without separating: **${f1.cappedWithoutSeparation}**.`,
-	)
-	lines.push("")
-	lines.push(
-		"No verdict is attached. F1 asks whether the share is *large*, and that ruling is the " +
-			"orchestrator's; this milestone measures the share.",
-	)
-	lines.push("")
-	const against = f1.separatedAgainstTheCheapestTotal as {
-		count: number
-		covers: {
-			contentHash: string
-			winner: string | null
-			runnerUp: string | null
-			marginBits: number | null
-			winFraction: number
-			intervalLow: number
-			intervalHigh: number
-			resamples: number
-			separatedFromHalf: boolean
-		}[]
-	}
-	lines.push("### 3.1 An observation the F1 read does not cover, recorded rather than resolved")
-	lines.push("")
-	lines.push(
-		"Separation from ½ is **two-sided**. arm-c′ §2.3c says the winner stands when the Wilson interval " +
-			"on its win fraction excludes ½; it does not say what to do with a winner whose interval " +
-			`excludes ½ **from below**. That happened on **${against.count}** cover(s): the cheapest total ` +
-			"names one member, and the block bootstrap's resampled evidence points at the other, with the " +
-			"interval clearing ½ on the losing side — so the resampling stopping rule fires and the run " +
-			"records `separatedFromHalf: true`. These are not near-½ covers and they are not in the share " +
-			"above; they are covers where the point estimate and the measured margin disagree in " +
-			"direction. Deciding what the selector should do there is the orchestrator's.",
-	)
-	lines.push("")
-	if (against.covers.length > 0) {
-		lines.push("| cover | winner (cheapest total) | runner-up | margin (bits) | win fraction | Wilson interval | resamples |")
-		lines.push("|---|---|---|---|---|---|---|")
-		for (const cover of against.covers) {
-			lines.push(
-				`| \`${shortHash(cover.contentHash)}\` | ${cover.winner ?? "—"} | ${cover.runnerUp ?? "—"} | ` +
-					`${fixed(cover.marginBits, 1)} | ${fixed(cover.winFraction, 3)} | ` +
-					`[${fixed(cover.intervalLow, 3)}, ${fixed(cover.intervalHigh, 3)}] | ${cover.resamples} |`,
-			)
-		}
-		lines.push("")
-	}
-	lines.push("## 4. Per cover")
-	lines.push("")
-	lines.push(
-		"`winner` is the cheapest total in bits; `margin` is the runner-up's total minus the winner's; " +
-			"`immaterial` says every pair agreed on every role at the contract's regional bar, in which " +
-			"case no bootstrap was paid for; `win fraction` is the block bootstrap's, where one ran.",
-	)
-	lines.push("")
-	lines.push("| cover | winner | margin (bits) | immaterial | win fraction | resamples | σ floored | members |")
-	lines.push("|---|---|---|---|---|---|---|---|")
-	for (const row of rows) {
-		const bootstrap = row.bootstrap as { resamples: number } | null | undefined
-		const priced = row.membersPriced as string[]
-		lines.push(
-			`| \`${shortHash(row.contentHash as string)}\` | ` +
-				`${row.winner === null || row.winner === undefined ? "**refused**" : `**${row.winner as string}**`} | ` +
-				`${fixed(row.marginBits as number | null, 0)} | ` +
-				`${row.immaterial === true ? "**yes**" : "no"} | ` +
-				`${fixed(row.winFraction as number | null, 3)} | ` +
-				`${bootstrap === null || bootstrap === undefined ? "—" : String(bootstrap.resamples)} | ` +
-				`${row.sigmaFlooredByQuantization === true ? (row.sigmaMeasured === 0 ? "**converted**" : "yes") : "no"} | ` +
-				`${priced.length === 0 ? "—" : priced.length}${(row.membersMissing as string[]).length > 0 ? ` (missing ${(row.membersMissing as string[]).join(", ")})` : ""} |`,
-		)
-	}
-	lines.push("")
-	if (refusals.count > 0) {
-		lines.push("## 5. Refusals")
-		lines.push("")
-		lines.push("| cover | reason |")
-		lines.push("|---|---|")
-		for (const cover of refusals.covers) {
-			lines.push(`| \`${shortHash(cover.contentHash)}\` | ${cover.reason} |`)
-		}
-		lines.push("")
-	}
-	void DEGREES_PER_TURN
-	return `${lines.join("\n")}\n`
 }
 
 await run()

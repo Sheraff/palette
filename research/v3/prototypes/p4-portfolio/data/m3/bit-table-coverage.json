@@ -220,6 +220,39 @@
 		"p3-fields": 29,
 		"p5-fieldfit": 106
 	},
+	"election": {
+		"rule": "arm-c′ §2.3c — the winner stands if it wins a majority. Where the block bootstrap separates from ½, the ELECTED member is the bootstrap-majority member, including where that contradicts the point bit-total: the point total is the estimate, the resampled evidence is the measurement (orchestrator ruling on M3 §3.1). Where it does not separate, the cheapest total stands — which leaves §2.3d's tie-break path untouched, every resample of an exact tie being a tie.",
+		"electedCounts": {
+			"p2-tree": 85,
+			"p5-fieldfit": 105,
+			"p3-fields": 30
+		},
+		"contradictoryCovers": 2,
+		"covers": [
+			{
+				"contentHash": "8cd4b238048fbe873b59a056af106513cc633af910f2356ac128aa9f2d9c01d9",
+				"imagePath": "/Users/Flo/GitHub/palette/music-artworks/e/d/d/edd28ba0f4a489a0b3f1f5851003ede1.jpg",
+				"cheapestTotal": "p2-tree",
+				"elected": "p3-fields",
+				"marginBits": 867.1065666070208,
+				"winFraction": 0.125,
+				"intervalLow": 0.02241749142449584,
+				"intervalHigh": 0.4708881825034564,
+				"resamples": 8
+			},
+			{
+				"contentHash": "118deaee18650b79fc26d106f1122fe27885c57001fa2f3c6ed46a63575fcf15",
+				"imagePath": "/Users/Flo/GitHub/palette/0f/ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+				"cheapestTotal": "p5-fieldfit",
+				"elected": "p2-tree",
+				"marginBits": 971.5274451085133,
+				"winFraction": 0.21428571428571427,
+				"intervalLow": 0.07571386706622024,
+				"intervalHigh": 0.4758923060823839,
+				"resamples": 14
+			}
+		]
+	},
 	"materialCovers": 220,
 	"immaterialCovers": 0,
 	"marginBits": {
@@ -311,6 +344,35 @@
 			}
 		]
 	},
+	"bootstrapSemanticsFix": {
+		"appliedAt": "2026-08-11T18:28:24.434Z",
+		"tool": "tools/m3-election-fix.ts",
+		"implementedIn": "selector/select.ts electFromBootstrap()",
+		"ruling": "arm-c′ §2.3c — the winner stands if it wins a majority; where the bootstrap separates from ½ the ELECTED member is the bootstrap-majority member, including where that contradicts the point bit-total (orchestrator ruling on M3 §3.1).",
+		"coversAffected": 2,
+		"coversReprice": [
+			{
+				"contentHash": "8cd4b238048fbe873b59a056af106513cc633af910f2356ac128aa9f2d9c01d9",
+				"imagePath": "/Users/Flo/GitHub/palette/music-artworks/e/d/d/edd28ba0f4a489a0b3f1f5851003ede1.jpg",
+				"cheapestTotal": "p2-tree",
+				"elected": "p3-fields",
+				"pricedNumbersIdentical": true,
+				"repriceMs": 667
+			},
+			{
+				"contentHash": "118deaee18650b79fc26d106f1122fe27885c57001fa2f3c6ed46a63575fcf15",
+				"imagePath": "/Users/Flo/GitHub/palette/0f/ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+				"cheapestTotal": "p5-fieldfit",
+				"elected": "p2-tree",
+				"pricedNumbersIdentical": true,
+				"repriceMs": 164
+			}
+		],
+		"coversNotRepriced": 218,
+		"whyNotRepriced": "the ruling can only move an election on a cover whose recorded bootstrap separated from ½ against its own cheapest total; on every other row the rule returns the cheapest total, so the published numbers are unchanged by construction and re-decoding them would measure nothing.",
+		"tieBreakPath": "unchanged — an exact tie ties every resample, never separates, and falls through to §2.3d.",
+		"newConstants": 0
+	},
 	"rows": [
 		{
 			"contentHash": "53575270ab37c2db321d1a8c079d6a2b0dd64fa92dead0edd0bf986147492826",
@@ -330,6 +392,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 324344.72689861263,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -437,6 +502,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 167508.2379507795,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -545,6 +613,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 1740280.6907795575,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -649,6 +720,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 46377.448906522244,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -752,6 +826,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 40567557.20956951,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -854,6 +931,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 155797.4697833109,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -962,6 +1042,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 38112.02044176939,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1070,6 +1153,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 10261859.47019343,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1177,6 +1263,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 396127.8600758079,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1283,6 +1372,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 7317385.587684322,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1387,6 +1479,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 16511.087399177646,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1494,6 +1589,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 457652.6869552471,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1601,6 +1699,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 383881.11701872543,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1708,6 +1809,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 107487.90099352784,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.7857142857142857,
 			"bootstrap": {
@@ -1814,6 +1918,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 344041.70205032616,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -1921,6 +2028,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 148178.10812417534,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2027,6 +2137,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 232977.99869144522,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2133,6 +2246,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 195406.8233483123,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2241,6 +2357,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 3457686.3672667406,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6764705882352942,
 			"bootstrap": {
@@ -2344,6 +2463,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 1931382.9965744913,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2447,6 +2569,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 166693.67588144913,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2553,6 +2678,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 173590.39695123018,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2660,6 +2788,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 175284.12384379073,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2762,6 +2893,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 110630.26920215704,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2870,6 +3004,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 3051.2338854211994,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -2977,6 +3114,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 595945.9062810488,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3084,6 +3224,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 63542.99350443878,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3183,6 +3326,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 523481.2838926371,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3290,6 +3436,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 208203.18435605732,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3396,6 +3545,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 39227.835644667386,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3503,6 +3655,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 3964343.232224349,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3610,6 +3765,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 88706.064537036,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3717,6 +3875,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 6410536.551813595,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3821,6 +3982,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 2890467.0431121103,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -3926,6 +4090,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 118036.9758580986,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4032,6 +4199,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 170745.34319488704,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -4140,6 +4310,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 187497.16948892607,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4248,6 +4421,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 84880.49502017675,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4353,6 +4529,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 54847.230428657655,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4461,6 +4640,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 172757.46322348271,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4566,6 +4748,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 3206.348999515598,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4673,6 +4858,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 52958.37477383521,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4779,6 +4967,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 15531.44536139426,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -4886,6 +5077,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 3684611.734995581,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.631578947368421,
 			"bootstrap": {
@@ -4991,6 +5185,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 598053.6731046066,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5098,6 +5295,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 2044732.5228167716,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5195,6 +5395,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 11629137.620879631,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5302,6 +5505,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 388648.2541310922,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5410,6 +5616,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 867.1065666070208,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": true,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.125,
 			"bootstrap": {
@@ -5517,6 +5726,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 94302.27149071533,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5625,6 +5837,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 166087.53801153065,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5733,6 +5948,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 947059.5074075238,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5841,6 +6059,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 1467555.7803388825,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -5948,6 +6169,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 2563995.614764154,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6052,6 +6276,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 164154.83602118568,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6158,6 +6385,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 81576.49669228507,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6265,6 +6495,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 3807.8844750150456,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6373,6 +6606,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 484016.01867366023,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6477,6 +6713,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 102650.24662527931,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6583,6 +6822,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 102435.03142937872,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6689,6 +6931,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 3678721.116036474,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6796,6 +7041,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 2672468.1052579833,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -6902,6 +7150,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 85801.4893795466,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7010,6 +7261,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 431.1865629610802,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7118,6 +7372,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 167137.40942770313,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7226,6 +7483,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 26937.094026533392,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7333,6 +7593,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 94036.16413175286,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7441,6 +7704,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 1661052.6444385145,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7548,6 +7814,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 23386.17011281033,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7650,6 +7919,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 576454.6681548166,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7758,6 +8030,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 53109.805055686564,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7865,6 +8140,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 887669.4048026428,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -7973,6 +8251,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 230866.3736360774,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8081,6 +8362,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 128465.34737576637,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8186,6 +8470,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 15320.024637721712,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.5877862595419847,
 			"bootstrap": {
@@ -8294,6 +8581,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 161874.86624219525,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8398,6 +8688,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 221192.10386200142,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8505,6 +8798,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 5934680.781039536,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8612,6 +8908,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 142942.4316903937,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8719,6 +9018,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 68795.6659470821,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8826,6 +9128,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 6283763.604664575,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -8931,6 +9236,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 178072.82377253097,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9038,6 +9346,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 294047.428603807,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9145,6 +9456,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 3362.9198080416136,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9251,6 +9565,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 20310.52142202206,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9357,6 +9674,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 261777.43321417656,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9464,6 +9784,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 55492.54703254107,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9572,6 +9895,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 1158453.0525829312,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9680,6 +10006,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 763676.2407112382,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9787,6 +10116,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 79108.82171141263,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -9895,6 +10227,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 417580.5591549708,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10003,6 +10338,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 70947.02309410274,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10110,6 +10448,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 57496.204641350545,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6041666666666666,
 			"bootstrap": {
@@ -10218,6 +10559,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 11019.165412454808,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10326,6 +10670,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 280704.0219738167,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.8181818181818182,
 			"bootstrap": {
@@ -10433,6 +10780,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 798773.4635111599,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10541,6 +10891,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 8052.922914689625,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10648,6 +11001,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 28416886.986583106,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10755,6 +11111,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 107567.74661367724,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -10863,6 +11222,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 88820.89105777221,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -10968,6 +11330,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 2475863.59463655,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11075,6 +11440,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 2967297.2657305636,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11181,6 +11549,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 16823.49475845728,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11288,6 +11659,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 11738.386464222567,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6290322580645161,
 			"bootstrap": {
@@ -11395,6 +11769,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 9825883.217973374,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11502,6 +11879,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 305875.17219604366,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11609,6 +11989,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 19381197.12784022,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11713,6 +12096,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 695610.598694385,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11819,6 +12205,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 98724.04123736522,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -11924,6 +12313,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 261477.2142478531,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12031,6 +12423,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 25918848.497481644,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12135,6 +12530,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 602632.9128993464,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12243,6 +12641,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 5385.0514060121495,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6363636363636364,
 			"bootstrap": {
@@ -12351,6 +12752,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 7601186.752936296,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12456,6 +12860,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 69813.39630284219,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12563,6 +12970,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 95196.5623317901,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12670,6 +13080,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 567540.1620028596,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -12777,6 +13190,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 7102.2215395237145,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -12884,6 +13300,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 11856.821277391573,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.8181818181818182,
 			"bootstrap": {
@@ -12991,6 +13410,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 43302.62218696097,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13098,6 +13520,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 269837.9627165231,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.8181818181818182,
 			"bootstrap": {
@@ -13202,6 +13627,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 1639722.4553481713,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13308,6 +13736,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 587128.6765235197,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -13416,6 +13847,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 1099519.2324779439,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13524,6 +13958,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 976017.4149959359,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13632,6 +14069,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 39398712.05018833,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13736,6 +14176,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 471606.69444987737,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13844,6 +14287,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 86000.8302003541,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -13952,6 +14398,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 38384.871971726185,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14055,6 +14504,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 111244.08209891681,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14160,6 +14612,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 465397.7728171103,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14267,6 +14722,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 343083.9347939087,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14375,6 +14833,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 88754.49037453922,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14481,6 +14942,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 13684.95316017454,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.7142857142857143,
 			"bootstrap": {
@@ -14589,6 +15053,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 70917.9472258315,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14697,6 +15164,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 188500.6160795926,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -14805,6 +15275,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 36565.88308749674,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -14913,6 +15386,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 292736.22820898565,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15020,6 +15496,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 13152.95468256347,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15128,6 +15607,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 12172.504839323694,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -15236,6 +15718,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 48000.226121068,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15343,6 +15828,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 23385.345643286593,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15447,6 +15935,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 105768.19366675033,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15555,6 +16046,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 35590359.55999293,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15661,6 +16155,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 73418.75891821057,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15768,6 +16265,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 31591.50806401251,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15874,6 +16374,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 263541.385085116,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -15980,6 +16483,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 392829.97055634286,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16084,6 +16590,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 14711973.023165861,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16188,6 +16697,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 47723.30170457813,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16295,6 +16807,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 105216.77605777443,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16401,6 +16916,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 110895.68892742397,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16508,6 +17026,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 971.5274451085133,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": true,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.21428571428571427,
 			"bootstrap": {
@@ -16616,6 +17137,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 333641.6387773454,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.7857142857142857,
 			"bootstrap": {
@@ -16724,6 +17248,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 4989252.221747919,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16832,6 +17359,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 6343.144550919955,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -16939,6 +17469,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 191615.5876440527,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17046,6 +17579,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 628065.3152488638,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17152,6 +17688,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 145939.77456133178,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17257,6 +17796,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 493698.8900947729,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17364,6 +17906,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 190699.1660303172,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17472,6 +18017,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 160196.8918072586,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17579,6 +18127,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 33615.659228898294,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -17687,6 +18238,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 202585.8496090863,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17792,6 +18346,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 189552.70969318785,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -17898,6 +18455,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 44911.681708794174,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18004,6 +18564,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 30700.893956627617,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18113,6 +18676,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 27936.215281380857,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18188,6 +18754,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 7161.483817889006,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.5462555066079295,
 			"bootstrap": {
@@ -18296,6 +18865,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 25918.196945170697,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18403,6 +18975,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 335833.96096419217,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18509,6 +19084,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 3484464.3227638155,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18611,6 +19189,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 2187.833114722889,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6212121212121212,
 			"bootstrap": {
@@ -18718,6 +19299,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 715424.0995761222,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18824,6 +19408,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 76352.95930509432,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -18929,6 +19516,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 234944.53507851262,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19033,6 +19623,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 257996.04211729357,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19140,6 +19733,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 934647.8839478581,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19246,6 +19842,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 633444.4894194943,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19348,6 +19947,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 79681.73262984306,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19454,6 +20056,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 191325.8508953529,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19562,6 +20167,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 10811.61475968,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6521739130434783,
 			"bootstrap": {
@@ -19668,6 +20276,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 168387.23788362544,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19775,6 +20386,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 48062459.57946089,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -19878,6 +20492,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 1712029.6797889248,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.6458333333333334,
 			"bootstrap": {
@@ -19984,6 +20601,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 132528.1162652123,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20092,6 +20712,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 67337.69538876094,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.8181818181818182,
 			"bootstrap": {
@@ -20199,6 +20822,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 393048.67454557866,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20304,6 +20930,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 694187.0446814694,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20412,6 +21041,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 124979.3935772538,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -20520,6 +21152,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 76785.98444436828,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20625,6 +21260,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 256854.92243451765,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20733,6 +21371,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 48285.98205432939,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20840,6 +21481,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 13367.236184110952,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -20946,6 +21590,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 2212008.16622515,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21047,6 +21694,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 123880.01502078562,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21153,6 +21803,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 3043842.9685034854,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21259,6 +21912,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 278192.6310459476,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21365,6 +22021,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 116916.93261586304,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21473,6 +22132,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 4532931.196603762,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21577,6 +22239,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 75371.53208475692,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21684,6 +22349,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 781658.0850498041,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21790,6 +22458,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 190853.64248105683,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -21898,6 +22569,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 35478.757063414785,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.75,
 			"bootstrap": {
@@ -22006,6 +22680,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 43849.31791017705,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22112,6 +22789,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 148271.249340087,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22218,6 +22898,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 472666.9681160444,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22326,6 +23009,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p3-fields",
 			"marginBits": 273213.6133320215,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22434,6 +23120,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 206607.31307882722,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -22538,6 +23227,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 1970118.6221589893,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 0.875,
 			"bootstrap": {
@@ -22644,6 +23336,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 15764.016716805665,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22751,6 +23446,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 2355431.2843450974,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22857,6 +23555,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 54354.05271982326,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -22965,6 +23666,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 74056.12947856763,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -23072,6 +23776,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 203250.2824688314,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -23180,6 +23887,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 18270.131187917752,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -23287,6 +23997,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p3-fields",
 			"marginBits": 460662.9991435986,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -23384,6 +24097,9 @@
 			"winner": "p3-fields",
 			"runnerUp": "p2-tree",
 			"marginBits": 159155.29630846204,
+			"elected": "p3-fields",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -23492,6 +24208,9 @@
 			"winner": "p5-fieldfit",
 			"runnerUp": "p2-tree",
 			"marginBits": 118417847.73314916,
+			"elected": "p5-fieldfit",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {
@@ -23597,6 +24316,9 @@
 			"winner": "p2-tree",
 			"runnerUp": "p5-fieldfit",
 			"marginBits": 20444.566212953447,
+			"elected": "p2-tree",
+			"electedBy": "bootstrap-majority",
+			"electionContradictsCheapestTotal": false,
 			"tieBrokenBySchemaPrice": false,
 			"winFraction": 1,
 			"bootstrap": {

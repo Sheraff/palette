@@ -1,0 +1,833 @@
+{
+	"_readme": "NOT SERVABLE. The decode key for the M4 round: which fixture position holds the selector's elected palette, which holds p3-fields, the salt both the variant tokens and the fixture order come from, every side's served colour names, and the selection evidence behind each item. Never copy into a batch fixture, a media directory, or anywhere the review server can reach.",
+	"salt": "f2c5468533b68ba3f6e5c3a23f9db19dd286ec9815a328c2f14eda39596d43d8",
+	"saltUse": "variantId = 'v' + sha256(salt|itemId|member)[0:15]; fixture side order = sha256(salt|itemId|'order') parity. Regenerating with this file present reuses the salt, which is what makes the build deterministic.",
+	"pin": {
+		"gitCommit": "892ad6a5",
+		"dirty": true,
+		"note": "the palettes are the M3 member runs' own rows (data/m3/runs/*.jsonl), keyed on the cover's content hash; this build ran no member and decoded no image. The commit is this worktree's HEAD at build time and the members' true code versions are on each side below.",
+		"memberRuns": [
+			{
+				"slug": "p2-tree",
+				"runPaths": [
+					"data/m3/runs/p2-tree-coverage1.jsonl",
+					"data/m3/runs/p2-tree-coverage1-resume-1.jsonl"
+				]
+			},
+			{
+				"slug": "p3-fields",
+				"runPaths": [
+					"data/m3/runs/p3-fields-coverage1.jsonl"
+				]
+			},
+			{
+				"slug": "p5-fieldfit",
+				"runPaths": [
+					"data/m3/runs/p5-fieldfit-coverage1.jsonl"
+				]
+			}
+		],
+		"table": "data/m3/bit-table-coverage.json (post bootstrap-semantics fix)"
+	},
+	"blindingCaution": {
+		"source": "src/review-server/blinding.ts — 'the shuffle is unguessable; the arms may still be recognisable'",
+		"itemsWhereElectedSidePublishesAGradient": 7,
+		"itemsWhereBestSidePublishesAGradient": 4,
+		"note": "a served field that separates the arms systematically unblinds the round whatever the salt does. These two counts are the measurement of that risk on this payload; ROUND.md discloses it."
+	},
+	"items": [
+		{
+			"itemId": "ab67616d00001e020006bd0cd831e3e78a7dda49",
+			"contentHash": "0314258bd69fc56211265c7dc88ba12745c5f6c1a2b114705dd310dcb1857bf9",
+			"imagePath": "06/ab67616d00001e020006bd0cd831e3e78a7dda49",
+			"selector": {
+				"elected": "p5-fieldfit",
+				"cheapestTotal": "p5-fieldfit",
+				"electionFlippedByFix": false,
+				"marginBits": 8052.922914689625,
+				"marginBand": "narrow (<10⁴)",
+				"winFraction": 1,
+				"resamples": 4,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": false
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "vc50c7bb96c7fac8",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#3d3522",
+						"surface": "#655d4a",
+						"foreground": "#9c8152",
+						"accent": "#c8da90",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#3d3522",
+									"position": 0
+								},
+								{
+									"color": "#655d4a",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Walnut",
+							"surface": "Caveman",
+							"foreground": "Lost in Time",
+							"accent": "Spring Roll"
+						},
+						"gradientStops": [
+							"Walnut",
+							"Caveman"
+						]
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "v1791b473788f50b",
+					"member": "p5-fieldfit",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p5-fieldfit-0.8.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d",
+					"palette": {
+						"background": "#544933",
+						"surface": "#5c5038",
+						"foreground": "#deffff",
+						"accent": "#3c362a",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#544933",
+									"position": 0
+								},
+								{
+									"color": "#5c5038",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Kelp",
+							"surface": "Field Drab",
+							"foreground": "Ice",
+							"accent": "Walnut"
+						},
+						"gradientStops": [
+							"Kelp",
+							"Field Drab"
+						]
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d0000b27300133fe10d39cafd71ab8a6b",
+			"contentHash": "08fd83a54d790986d18e6a7fc7c0ebda135ab8c8933f369157df6018fc53d73b",
+			"imagePath": "13/ab67616d0000b27300133fe10d39cafd71ab8a6b",
+			"selector": {
+				"elected": "p5-fieldfit",
+				"cheapestTotal": "p5-fieldfit",
+				"electionFlippedByFix": false,
+				"marginBits": 1712029.6797889248,
+				"marginBand": "huge (≥10⁶)",
+				"winFraction": 0.6458333333333334,
+				"resamples": 48,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": false
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "v2baf741f4cc2a03",
+					"member": "p5-fieldfit",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p5-fieldfit-0.8.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d",
+					"palette": {
+						"background": "#010000",
+						"surface": "#010000",
+						"foreground": "#b9a799",
+						"accent": "#ffffff",
+						"gradient": null,
+						"surfaceCollapsed": true,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Pitch Black",
+							"surface": "Pitch Black",
+							"foreground": "Sesame",
+							"accent": "Snow"
+						},
+						"gradientStops": null
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "vf861cdd95875b25",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#010101",
+						"surface": "#000000",
+						"foreground": "#c7bfb2",
+						"accent": "#ff5100",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Soot",
+							"surface": "Pitch Black",
+							"foreground": "Greige",
+							"accent": "Orange You Glad"
+						},
+						"gradientStops": null
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d0000b273000def1df4b5be93d1073d33",
+			"contentHash": "0ed696228aa5867a21dd202a48e0a1462ea72ea0eebf67efec499a758899036d",
+			"imagePath": "0d/ab67616d0000b273000def1df4b5be93d1073d33",
+			"selector": {
+				"elected": "p5-fieldfit",
+				"cheapestTotal": "p5-fieldfit",
+				"electionFlippedByFix": false,
+				"marginBits": 12172.504839323694,
+				"marginBand": "mid (10⁴–10⁵)",
+				"winFraction": 0.875,
+				"resamples": 8,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": true,
+					"best": false
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "v1293072a5c15bff",
+					"member": "p5-fieldfit",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p5-fieldfit-0.8.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d",
+					"palette": {
+						"background": "#555459",
+						"surface": "#47484c",
+						"foreground": "#0f1014",
+						"accent": "#26292e",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#555459",
+									"position": 0
+								},
+								{
+									"color": "#47484c",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Iron Grey",
+							"surface": "Tuna",
+							"foreground": "Obsidian",
+							"accent": "Lead"
+						},
+						"gradientStops": [
+							"Iron Grey",
+							"Tuna"
+						]
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "vabff120a7f89d25",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#c7a08f",
+						"surface": "#19191b",
+						"foreground": "#d2e3fd",
+						"accent": "#9a6962",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Hickory",
+							"surface": "Umbra",
+							"foreground": "Starlight",
+							"accent": "Rustling Leaves"
+						},
+						"gradientStops": null
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+			"contentHash": "118deaee18650b79fc26d106f1122fe27885c57001fa2f3c6ed46a63575fcf15",
+			"imagePath": "0f/ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+			"selector": {
+				"elected": "p2-tree",
+				"cheapestTotal": "p5-fieldfit",
+				"electionFlippedByFix": true,
+				"marginBits": 971.5274451085133,
+				"marginBand": "narrow (<10⁴)",
+				"winFraction": 0.21428571428571427,
+				"resamples": 14,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": false
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "vde66547f54abb01",
+					"member": "p2-tree",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4",
+					"palette": {
+						"background": "#049b4a",
+						"surface": "#674136",
+						"foreground": "#24a473",
+						"accent": "#d386a8",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#049b4a",
+									"position": 0
+								},
+								{
+									"color": "#674136",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Shamrock Green",
+							"surface": "Rosy Taupe",
+							"foreground": "Jade",
+							"accent": "Primrose"
+						},
+						"gradientStops": [
+							"Shamrock Green",
+							"Rosy Taupe"
+						]
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "v8e895161f843d2f",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#e7bbd2",
+						"surface": "#005c33",
+						"foreground": "#007a4a",
+						"accent": "#00b831",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Brume",
+							"surface": "Amazon",
+							"foreground": "Mana Tree",
+							"accent": "Luigi"
+						},
+						"gradientStops": null
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d0000b27300103b70ede16610224c5ca4",
+			"contentHash": "25dd2969c9556bbdcf6089bb62a46543222e3c7d8333aea489132976aca35af5",
+			"imagePath": "10/ab67616d0000b27300103b70ede16610224c5ca4",
+			"selector": {
+				"elected": "p2-tree",
+				"cheapestTotal": "p2-tree",
+				"electionFlippedByFix": false,
+				"marginBits": 493698.8900947729,
+				"marginBand": "large (10⁵–10⁶)",
+				"winFraction": 1,
+				"resamples": 4,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": true
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "v7caba4c954b1448",
+					"member": "p2-tree",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4",
+					"palette": {
+						"background": "#a9bfe4",
+						"surface": "#95a2ab",
+						"foreground": "#2d3035",
+						"accent": "#ab9274",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#a9bfe4",
+									"position": 0
+								},
+								{
+									"color": "#95a2ab",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Powder Cornflower",
+							"surface": "Storm's Coming",
+							"foreground": "Oil",
+							"accent": "Khaki"
+						},
+						"gradientStops": [
+							"Powder Cornflower",
+							"Storm's Coming"
+						]
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "v651f3bd2ff1e173",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#cbdaef",
+						"surface": "#9cb4e0",
+						"foreground": "#6f738c",
+						"accent": "#73822d",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#cbdaef",
+									"position": 0
+								},
+								{
+									"color": "#9cb4e0",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Bare Mintimum",
+							"surface": "Adrift on the Nile",
+							"foreground": "Lamplighter",
+							"accent": "Duckweed"
+						},
+						"gradientStops": [
+							"Bare Mintimum",
+							"Adrift on the Nile"
+						]
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d0000b2730008e0e708edbad8a3783eee",
+			"contentHash": "364b6e33eb51ef5187031224d07663005fa25f77cb276d952b090e248b95ff95",
+			"imagePath": "08/ab67616d0000b2730008e0e708edbad8a3783eee",
+			"selector": {
+				"elected": "p2-tree",
+				"cheapestTotal": "p2-tree",
+				"electionFlippedByFix": false,
+				"marginBits": 98724.04123736522,
+				"marginBand": "mid (10⁴–10⁵)",
+				"winFraction": 1,
+				"resamples": 4,
+				"differingRolesVsBest": [
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": true,
+					"best": false
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "v225a43aef24fb4e",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#3e87b0",
+						"surface": "#abc7dc",
+						"foreground": "#342b2c",
+						"accent": "#bc3e18",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#3e87b0",
+									"position": 0
+								},
+								{
+									"color": "#abc7dc",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Blue Blood",
+							"surface": "Rain Check",
+							"foreground": "Mole",
+							"accent": "Paprika"
+						},
+						"gradientStops": [
+							"Blue Blood",
+							"Rain Check"
+						]
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "v55526717584b2df",
+					"member": "p2-tree",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4",
+					"palette": {
+						"background": "#458eb7",
+						"surface": "#554234",
+						"foreground": "#b6ddcb",
+						"accent": "#fdd408",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#458eb7",
+									"position": 0
+								},
+								{
+									"color": "#554234",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Lake Blue",
+							"surface": "Cocoa",
+							"foreground": "Bay",
+							"accent": "Taxi Yellow"
+						},
+						"gradientStops": [
+							"Lake Blue",
+							"Cocoa"
+						]
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d0000b27300046beb8271bf285a15a23d",
+			"contentHash": "4ce786cb8101c446dd68f2573ab8f895d1f8389166873581cdf93e7499b286dd",
+			"imagePath": "04/ab67616d0000b27300046beb8271bf285a15a23d",
+			"selector": {
+				"elected": "p2-tree",
+				"cheapestTotal": "p2-tree",
+				"electionFlippedByFix": false,
+				"marginBits": 6283763.604664575,
+				"marginBand": "huge (≥10⁶)",
+				"winFraction": 1,
+				"resamples": 4,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": true
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "v86911c90cb0e797",
+					"member": "p2-tree",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p2-tos-0.3.0-cycle-2-merged",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4",
+					"palette": {
+						"background": "#d9baa5",
+						"surface": "#292637",
+						"foreground": "#fbf5d1",
+						"accent": "#eff070",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#d9baa5",
+									"position": 0
+								},
+								{
+									"color": "#292637",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Marzipan",
+							"surface": "Starling",
+							"foreground": "Sour",
+							"accent": "Lemon Posset"
+						},
+						"gradientStops": [
+							"Marzipan",
+							"Starling"
+						]
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "v09b8142b4c973ae",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#d4c4b7",
+						"surface": "#d1a298",
+						"foreground": "#0d0d31",
+						"accent": "#151c60",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#d4c4b7",
+									"position": 0
+								},
+								{
+									"color": "#d1a298",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Beige",
+							"surface": "Sheaf",
+							"foreground": "Oblivion",
+							"accent": "Fly-by-Night"
+						},
+						"gradientStops": [
+							"Beige",
+							"Sheaf"
+						]
+					}
+				}
+			]
+		},
+		{
+			"itemId": "ab67616d0000b2730014c3a0501a86757a275520",
+			"contentHash": "e9de916b13beaea7764bee2726f4cc8a877da87f75fc7e2c5376680e8a30457d",
+			"imagePath": "14/ab67616d0000b2730014c3a0501a86757a275520",
+			"selector": {
+				"elected": "p5-fieldfit",
+				"cheapestTotal": "p5-fieldfit",
+				"electionFlippedByFix": false,
+				"marginBits": 116916.93261586304,
+				"marginBand": "large (10⁵–10⁶)",
+				"winFraction": 1,
+				"resamples": 4,
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": true,
+					"best": false
+				}
+			},
+			"sides": [
+				{
+					"fixturePosition": 0,
+					"variantId": "v352f4c4e2f46bc7",
+					"member": "p3-fields",
+					"role": "best single member (SPEC §3 F3's comparator)",
+					"trueAlgorithmVersion": "p3-fields-0.4.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample/alpha-excluded",
+					"runCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+					"palette": {
+						"background": "#ffdf38",
+						"surface": "#843435",
+						"foreground": "#77aa6f",
+						"accent": "#d06253",
+						"gradient": null,
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Dandelion",
+							"surface": "Garnet",
+							"foreground": "A Frond in Need",
+							"accent": "Marsala"
+						},
+						"gradientStops": null
+					}
+				},
+				{
+					"fixturePosition": 1,
+					"variantId": "ve92ed0cc5f3e1ed",
+					"member": "p5-fieldfit",
+					"role": "the selector's elected palette",
+					"trueAlgorithmVersion": "p5-fieldfit-0.8.2",
+					"truePreprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+					"runCodeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d",
+					"palette": {
+						"background": "#776c6a",
+						"surface": "#948683",
+						"foreground": "#ffd930",
+						"accent": "#eef3f6",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#776c6a",
+									"position": 0
+								},
+								{
+									"color": "#948683",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"servedColorNames": {
+						"roles": {
+							"background": "Rum",
+							"surface": "Pebble",
+							"foreground": "Taxi Yellow",
+							"accent": "Frost"
+						},
+						"gradientStops": [
+							"Rum",
+							"Pebble"
+						]
+					}
+				}
+			]
+		}
+	]
+}

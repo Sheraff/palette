@@ -206,6 +206,9 @@ test("selector: an unpriceable selection still has no ranking, so a sweep cannot
 		winner: null,
 		runnerUp: null,
 		marginBits: null,
+		elected: null,
+		electedBy: null,
+		electionContradictsCheapestTotal: false,
 		tieBrokenBySchemaPrice: false,
 		bootstrap: null,
 	} as const
