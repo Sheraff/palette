@@ -283,6 +283,27 @@ robustness + reachability re-verified → the 9 remaining unreadable covers and 
 newly-judged flip covers go preferentially into the next quality rounds, so ordinary grading
 validates or refutes the pick with zero dedicated reviewer items.
 
+## D16 — served colour names are judged surface (2026-08-05, cross-arm; awareness)
+
+Another arm's decode shows the reviewer grading partly from the DISPLAY NAMES of served
+colours (colornames-oklab at render). Binding on P2 staging from round-6 on: every staging
+validate/report includes the served names of all published colours (eyeball line in the
+stager's report); a name that misdescribes its colour is a staging flag, not a silent pass.
+
+## D17 — family separation is figure-vs-ground, not accent-vs-all (2026-08-05; evidence)
+
+Fresh reviewer ground truth (one cover, principle weight): on a two-gradient artwork the
+stated ideal is two greys as background/surface (gradient:true) and two blues as
+foreground/accent — family separation runs BETWEEN the figure pair and the ground pair;
+WITHIN a pair, sharing a family can be exactly right. Refines D5's accent-family note and
+reframes D9/W-K allocation: the unit of coverage is the pair (ground family ↔ bg/surface,
+figure family ↔ fg/accent), and the allocator must not force the accent away from the
+foreground's family when the figure family is coherent. Bears directly on interpreting
+round-5 items 3–4 (adverse cases trade accent chroma for a SECOND family — under this
+refinement the trade is only right when the second family is a FIGURE family not already
+carried by fg). Integration change deferred until round-5 verdicts land; recorded now so
+the decode reads the items under the refined principle.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
