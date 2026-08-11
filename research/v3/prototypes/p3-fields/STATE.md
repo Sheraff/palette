@@ -80,9 +80,17 @@ currently unproven and trending flat. Net: high promise on quality/identity with
 verdict-response loop of my visibility; robustness is a single, named, designed-and-gated
 experiment away from being either rescued or honestly falsified.
 
-## Round-5 state
+## Round-5 state (decoded 2026-08-05, after this document's first commit)
 
-phase2-cal-017 (9 items: 3 named-mark, 4 admitted-shape spanning support 1.71e-5–8.91e-4 incl.
-thin-fill edges, 2 fresh) RELEASED; decode in flight at the time of this document — verdicts not
-yet read. Pre-registered branches in its ROUND.md; the swap arbitration and the eligibility-shape
-ruling land with the decode.
+phase2-cal-017: 1 strong / 3 acceptable / 3 weak / 2 unacceptable, 0 vetoes. **Named marks
+validated** (3/4/3 — branch (a); purple's only note is a within-lump shade nuance). **The
+eligibility-shape risk discharged for the sample** (0/4 artifact notes on the admitted covers,
+thin-fill edges included). **Both fresh covers ≤2** — the overfitting watch fired, corroborating
+the harness's unseen-cover decline (§3): fresh-cover regression is measured AND judged. **168:
+the reviewer wants the blue in the accent slot, third round running** — the swap comparator
+mis-assigns the chromatic mark; fix direction recorded in the round's VERDICTS.md. **The
+dominant complaint class moved to field roles** (6/9 notes: background/surface correctness,
+gradient existence — third gradient-existence error on record): the judge's complaints and the
+robustness attribution now CONVERGE on the edge/depth substrate. §4's first row is therefore
+both the robustness lever and the top quality item — the decisive experiment for this
+mechanism, designed, gated, and cheap.
