@@ -40,6 +40,220 @@ import type { OkLab } from "../../../src/contract/types.ts"
 import { normalizedX, normalizedY } from "./decode.ts"
 import type { DecodedRaster, FieldFit } from "./types.ts"
 
+// ---------------------------------------------------------------------------------------------
+// SPEC decision 15 — the ink-likeness instrument (arm-e-r3 §2.4's ink statistics)
+// ---------------------------------------------------------------------------------------------
+//
+// Two **shape** measurements over a support — a set of pixels — and nothing semantic:
+//
+//  - **erosion mortality**: the fraction of the support that fails to survive a morphological
+//    erosion at the ink scale. Text and line art nearly vanish; a depicted region does not.
+//  - **ground adjacency**: the fraction of the support's outward boundary whose neighbour is
+//    field-claimed. An ink sits *on* a ground; a depicted region abuts other depicted regions.
+//
+// Both are computed from one chessboard (L∞) distance transform, which is the exact companion of an
+// erosion by a square structuring element: a pixel survives an erosion of radius `r` iff its
+// chessboard distance to the support's complement exceeds `r`.
+//
+// **Why the support is closed first, measured rather than assumed.** The first thing a claim mask
+// off a JPEG cover is *not* is a clean region: a painted sky's claim is a speckle field whose raw
+// erosion mortality is 1.00 at every scale, which would make the instrument read every textured
+// field as ink. Closing (dilate then erode) at the texture scale fills the dither holes without
+// thickening a stroke, and it is the difference between a discriminating instrument and one that
+// fires on everything — see `INK_TEXTURE_CLOSING_FRACTION` for the measurement.
+
+/**
+ * The erosion radius at which mortality is measured, as a fraction of the **short side** —
+ * `CONVENTIONS.md`'s scale-free form, and arm-e-r3 §4's parameter 3.
+ *
+ * `[UNCALIBRATED]`, anchored per arm-e-r3 to *the stroke-width of designed marks*, measured on the
+ * round-3 covers' own typography (W-P12; medial-axis widths `2·D − 1` at the local maxima of the
+ * chessboard distance transform over each reviewer-named type colour's support):
+ *
+ *  - fine type — round-3 item 7's white title 1–7 px and its blue sub-title 1–7 px (modal 5) on a
+ *    640² cover, item 3's black type 1–7 px on a 300² cover: **0.002 – 0.023** of the short side;
+ *  - display type — item 6's `HiROQUEST 3` lettering, modal widths 31/33/35/37 px on 640²:
+ *    **0.048 – 0.058** of the short side.
+ *
+ * An erosion of radius `r` kills every structure narrower than `2r + 1`. At `r = 0.03` of the short
+ * side that is `0.06` of the short side — 19 px on a 300² cover, 39 px on a 640² one — which covers
+ * the whole measured range, fine and display, on both cover sizes. A radius chosen from the *fine*
+ * end alone would have left item 6's display type standing, which is the case the instrument exists
+ * for.
+ */
+export const INK_SCALE_FRACTION = 0.03
+
+/**
+ * The radius of the closing applied to a support before it is eroded, as a fraction of the short
+ * side.
+ *
+ * `[UNCALIBRATED]` and **measured by margin**: over the round-3 batch's twelve extensive components,
+ * the closing radius was swept at 0.004 / 0.007 / 0.0133 / 0.02 and 0.007 maximises the gap between
+ * the one component the reviewer called ink (item 6, mortality **0.99**) and the highest-mortality
+ * component the reviewer accepted as a field among those the adjacency conjunct does not already
+ * clear (item 3's second component, **0.67**). Without any closing the same sweep reads item 5's
+ * rock field at 1.00 and item 7's at 0.97 — indistinguishable from the type.
+ *
+ * 0.007 is 2 px on a 300² cover and 4 px on a 640² one: the scale of JPEG/dither speckle, well below
+ * the thinnest measured designed stroke.
+ */
+export const INK_TEXTURE_CLOSING_FRACTION = 0.007
+
+/** What the instrument measured over one support. Shape only; nothing here is a colour. */
+export type InkStatistics = Readonly<{
+	/** |support| after the texture closing — the denominator both fractions are taken over. */
+	closedPixels: number
+	/** 1 − (survivors of the erosion at the ink scale) / `closedPixels`. */
+	erosionMortality: number
+	/** Fraction of the support's outward 4-neighbour boundary whose neighbour is field-claimed. */
+	groundAdjacency: number
+}>
+
+/**
+ * Chessboard (L∞) distance from every support pixel to the support's complement; 0 off the support.
+ *
+ * Two sequential passes, which is exact for the chessboard metric. **Outside the image is support**
+ * (border replication): a region that runs to the frame must not be eroded by the frame, which would
+ * otherwise read every full-bleed field as thin.
+ */
+export function chessboardDistanceToComplement(
+	support: Uint8Array,
+	width: number,
+	height: number,
+): Int32Array {
+	const distance = new Int32Array(width * height)
+	const unreached = width + height + 1
+	for (let index = 0; index < distance.length; index += 1) {
+		distance[index] = support[index] === 1 ? unreached : 0
+	}
+	for (let row = 0; row < height; row += 1) {
+		for (let column = 0; column < width; column += 1) {
+			const index = row * width + column
+			if (distance[index] === 0) continue
+			let best = unreached
+			for (let dy = -1; dy <= 0; dy += 1) {
+				for (let dx = -1; dx <= 1; dx += 1) {
+					if (dy === 0 && dx >= 0) continue
+					const ny = row + dy
+					const nx = column + dx
+					if (ny < 0 || nx < 0 || nx >= width) continue
+					const value = distance[ny * width + nx]
+					if (value < best) best = value
+				}
+			}
+			if (best + 1 < distance[index]) distance[index] = best + 1
+		}
+	}
+	for (let row = height - 1; row >= 0; row -= 1) {
+		for (let column = width - 1; column >= 0; column -= 1) {
+			const index = row * width + column
+			if (distance[index] === 0) continue
+			let best = unreached
+			for (let dy = 0; dy <= 1; dy += 1) {
+				for (let dx = -1; dx <= 1; dx += 1) {
+					if (dy === 0 && dx <= 0) continue
+					const ny = row + dy
+					const nx = column + dx
+					if (ny >= height || nx < 0 || nx >= width) continue
+					const value = distance[ny * width + nx]
+					if (value < best) best = value
+				}
+			}
+			if (best + 1 < distance[index]) distance[index] = best + 1
+		}
+	}
+	return distance
+}
+
+/** Morphological closing at chessboard radius `radius`: dilate, then erode. */
+export function closeSupport(
+	support: Uint8Array,
+	width: number,
+	height: number,
+	radius: number,
+): Uint8Array {
+	if (radius <= 0) return support
+	const complement = new Uint8Array(support.length)
+	for (let index = 0; index < support.length; index += 1) {
+		complement[index] = support[index] === 1 ? 0 : 1
+	}
+	// Distance from a non-support pixel to the support: ≤ radius ⇒ the dilation covers it.
+	const outward = chessboardDistanceToComplement(complement, width, height)
+	const dilated = new Uint8Array(support.length)
+	for (let index = 0; index < support.length; index += 1) {
+		dilated[index] = support[index] === 1 || outward[index] <= radius ? 1 : 0
+	}
+	const inward = chessboardDistanceToComplement(dilated, width, height)
+	const closed = new Uint8Array(support.length)
+	for (let index = 0; index < support.length; index += 1) {
+		closed[index] = inward[index] > radius ? 1 : 0
+	}
+	return closed
+}
+
+/** `Math.round`ed pixel radius of a fraction-of-short-side scale, never below 1. */
+export function scaleRadius(width: number, height: number, fraction: number): number {
+	return Math.max(1, Math.round(fraction * Math.min(width, height)))
+}
+
+/**
+ * The two ink statistics over one support, against one ground map.
+ *
+ * `ground[i] === 1` means "some field surface claims pixel i". The caller owns what that means at
+ * its own site — the composite field's claim for an overlay cluster, the other accepted components'
+ * claims for a field candidate — because "the field" is a different object in the two places and
+ * this function must not guess which.
+ */
+export function inkStatistics(
+	support: Uint8Array,
+	ground: Uint8Array,
+	width: number,
+	height: number,
+): InkStatistics {
+	const closed = closeSupport(support, width, height, scaleRadius(width, height, INK_TEXTURE_CLOSING_FRACTION))
+	const inkRadius = scaleRadius(width, height, INK_SCALE_FRACTION)
+	const distance = chessboardDistanceToComplement(closed, width, height)
+
+	let closedPixels = 0
+	let survivors = 0
+	for (let index = 0; index < closed.length; index += 1) {
+		if (closed[index] !== 1) continue
+		closedPixels += 1
+		if (distance[index] > inkRadius) survivors += 1
+	}
+
+	let outwardBoundary = 0
+	let onGround = 0
+	for (let row = 0; row < height; row += 1) {
+		for (let column = 0; column < width; column += 1) {
+			const index = row * width + column
+			if (support[index] !== 1) continue
+			if (row > 0) {
+				const n = index - width
+				if (support[n] !== 1) { outwardBoundary += 1; if (ground[n] === 1) onGround += 1 }
+			}
+			if (row < height - 1) {
+				const n = index + width
+				if (support[n] !== 1) { outwardBoundary += 1; if (ground[n] === 1) onGround += 1 }
+			}
+			if (column > 0) {
+				const n = index - 1
+				if (support[n] !== 1) { outwardBoundary += 1; if (ground[n] === 1) onGround += 1 }
+			}
+			if (column < width - 1) {
+				const n = index + 1
+				if (support[n] !== 1) { outwardBoundary += 1; if (ground[n] === 1) onGround += 1 }
+			}
+		}
+	}
+
+	return {
+		closedPixels,
+		erosionMortality: closedPixels > 0 ? 1 - survivors / closedPixels : 0,
+		groundAdjacency: outwardBoundary > 0 ? onGround / outwardBoundary : 0,
+	}
+}
+
 /**
  * One field-like component: a robust affine surface plus the pixels it explains.
  *
@@ -95,6 +309,15 @@ export type FieldComponent = Readonly<{
 	/** Both gates, recorded so a rejected attempt says which one it failed. */
 	extensive: boolean
 	smooth: boolean
+	/**
+	 * SPEC decision 15's shape measurements over this component's claim, or `null` for a level that
+	 * never reached the ink test (not extensive, or the whole recursion never ran). Filled by
+	 * `fitFieldComponents` after the pool is known, because the ground the adjacency is measured
+	 * against is *the other components*.
+	 */
+	ink: InkStatistics | null
+	/** SPEC decision 15a's verdict: true ⇒ this component may not carry the field. */
+	inkLike: boolean
 }>
 
 /**
@@ -115,6 +338,57 @@ export type FieldReading = Readonly<{
 	/** Per-pixel accepted-component index + 1; 0 = claimed by nothing (overlay). */
 	labels: Uint8Array
 }>
+
+// ---------------------------------------------------------------------------------------------
+// SPEC decision 15a — the field-candidacy veto's own thresholds
+// ---------------------------------------------------------------------------------------------
+//
+// **The polarity of the adjacency conjunct differs between the two sites, and it was measured, not
+// chosen.** Arm-e-r3's ink is high-mortality *and* high-ground-adjacency because an ink sits on the
+// arm's single fitted ground. A P5 *component candidate* is not measured against a ground — it is
+// the thing competing to be one — and the round-3 batch says so unambiguously (twelve extensive
+// components, ground = the other components' claims):
+//
+// | component | mortality | ground adjacency | reviewer |
+// |---|---|---|---|
+// | item 6 depth 0 — `HiROQUEST 3` display type + frame | **0.99** | **0.02** | UNACCEPTABLE, "not the gradient but the main typography color" |
+// | item 1 depth 0 / 1 — painted autumn sky, its landscape | 0.98 / 1.00 | 0.23 / 0.31 | acceptable, field kept |
+// | item 3 depth 1 — second block | 0.67 | 0.16 | acceptable |
+// | item 7 depth 0 — the fence-and-halo field | 0.63 | 0.00 | **strong** |
+// | item 2 depth 0/1/2, item 3 depth 0/2, item 5 depth 0/1/2 | 0.13–0.61 | 0.00–0.89 | acceptable/strong |
+//
+// A ground **tiles** with the other grounds; an ink layer **floats** over material no surface
+// explains. So the veto's conjunction is *thin* AND *floating*, and it is a conjunction of two
+// thresholds — never a blend. Under arm-e's literal both-high reading the veto is unreachable on its
+// own evidence cover (item 6 sits at adjacency 0.02), and the mortality conjunct alone cannot carry
+// it: item 1's sky, which must keep its field, measures 0.98–1.00.
+
+/**
+ * The mortality a component's claim must reach to be called ink-shaped.
+ *
+ * `[UNCALIBRATED]`, bracketed by the round-3 batch: among the components the adjacency conjunct does
+ * not already spare (those below `COMPONENT_INK_GROUND_ADJACENCY_MAX`), the reviewer-refuted one
+ * measures **0.99** and the highest reviewer-accepted one **0.67** (item 3 depth 1; item 7's STRONG
+ * field is next at 0.63). Every value in (0.67, 0.99) honours all current evidence; 0.85 is chosen
+ * inside it — 1.27× the largest accepted, 0.86× the refuted one.
+ */
+export const COMPONENT_INK_MORTALITY = 0.85
+
+/**
+ * The ground adjacency a component's claim must stay **below** to be called floating.
+ *
+ * `[UNCALIBRATED]`, bracketed the same way: item 6's ink measures **0.02**, and the two components
+ * that must keep their fields at high mortality (item 1's sky at 0.98 and its landscape at 1.00)
+ * measure **0.23** and **0.31**. Every value in (0.02, 0.23) honours the evidence; 0.10 is chosen
+ * inside it — 5× the ink's, 0.43× the nearest field's.
+ */
+export const COMPONENT_INK_GROUND_ADJACENCY_MAX = 0.10
+
+/** SPEC decision 15a's verdict on one component: ink-shaped ⇒ it may not carry the field. */
+export function componentIsInkLike(ink: InkStatistics): boolean {
+	return ink.erosionMortality >= COMPONENT_INK_MORTALITY &&
+		ink.groundAdjacency < COMPONENT_INK_GROUND_ADJACENCY_MAX
+}
 
 /**
  * A `FieldFit` view of one component, for `ramp.ts`.
@@ -203,6 +477,45 @@ export function compositeFieldFit(
 		residualScale: primary.residualScale,
 		marginBars: primary.marginBars,
 		noField: false,
+	}
+}
+
+/**
+ * A `FieldFit` view of the global fit with every **ink-vetoed** component's claim removed from the
+ * field — the third view, and the one that makes SPEC decision 15a's "it stays in the pool as
+ * overlay material" literally true on the retreat path.
+ *
+ * Without it the veto is half a rule. On a cover whose only extensive component is ink-shaped
+ * (round-3 item 6) the pool empties, decision 9's retreat fires, and the retreat ranks field mass on
+ * *the global fit's* weights — which on a cover with no field are near 1 everywhere, so the ink's own
+ * colour walks straight back in as the background through a different door. Zeroing the weights
+ * inside the vetoed claims says the one thing the veto exists to say — this colour is not field — in
+ * the only units the retreat and the overlay both read.
+ *
+ * A view, not a decision: no threshold, no ranking, no new number. `weights` is the only field that
+ * changes; `noField`, the coefficients and `fieldAt` are the global fit's, unchanged, because what
+ * was fitted did not change — only what counts as field did.
+ */
+export function fieldFitWithoutInk(base: FieldFit, reading: FieldReading, raster: DecodedRaster): FieldFit {
+	const pixelCount = raster.width * raster.height
+	const vetoed = reading.attempts.filter((component) => component.inkLike)
+	if (vetoed.length === 0) return base
+
+	const weights = new Float32Array(pixelCount)
+	weights.set(base.weights.subarray(0, pixelCount))
+	for (const component of vetoed) {
+		for (let index = 0; index < pixelCount; index += 1) {
+			if (component.claim[index] === 1) weights[index] = 0
+		}
+	}
+
+	let inliers = 0
+	for (let index = 0; index < pixelCount; index += 1) if (weights[index] > 0.5) inliers += 1
+
+	return {
+		...base,
+		weights,
+		inlierFraction: pixelCount > 0 ? inliers / pixelCount : 0,
 	}
 }
 

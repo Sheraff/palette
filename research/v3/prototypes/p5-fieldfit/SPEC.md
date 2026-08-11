@@ -274,6 +274,11 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
 
 ## Verification obligations (designed overlap)
 
+*Instrument note (cross-arm, 2026-08-05):* `robustness/check.ts --limit` slices **trials**, not
+covers — a limited run is trial-biased toward fast covers; P5 runs the full 600 only. The harness
+has no timeout: never point it at a candidate that can hang (P5's termination is pinned by the
+components tests — keep it that way).
+
 - Every module ships a synthetic self-test with a known right answer: W-FIT — a known affine ramp +
   outlier marks + 1-LSB dither must recover coefficients within tolerance and must NOT split
   (fit stability); a pure-noise image must trigger `noField`. W-READ — known ramp orientation and a

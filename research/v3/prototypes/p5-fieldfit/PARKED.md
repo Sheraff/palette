@@ -1,47 +1,47 @@
-# PARKED — reviewer-ordered pause #2, 2026-08-05
+# PARKED — reviewer-ordered park #3, 2026-08-05
+
+## Correction of record, first
+
+The park order lists "your round-3 verdict analysis" as owed. **It is complete and committed**:
+verdicts decoded (batch `phase2-cal-013`) by my analyst, decode re-verified by me against the
+warehouse (8/8 grades+comments; five distances to 5 decimals), the record + rulings R1–R7 appended
+to `review-rounds/round-3/ROUND.md` and committed `8f63fda`; v0.7 SPEC decisions 15–18 authored
+and committed `408455f`. If something further was meant by "analysis owed", it needs naming at
+RESUME.
 
 ## Current state
 
-- **v0.5.1 shipped to round 3** (batch not yet released to my knowledge): 3 returning + 5 fresh
-  calibration items, staged/validated/committed `79926a5`, robustness artifact `014c262`. All
-  commits signed G through `014c262`.
-- **Uncommitted in worktree:** SPEC.md decision 5's guide-stop ruling paragraph (2026-08-05),
-  NOTES-cross-arm.md items 4–6, and whatever W-P10 has written so far. Intended commit after
-  pass-10 collection: "p5-fieldfit v0.6.0: guide-stop doctrine (t-continuity discriminator,
-  best-monotone acceptance), margin reporting; SPEC 5 ruling + cross-arm notes".
+- Committed and signed through `408455f`: round-3 verdicts + rulings; W-P11 cost pass (v0.6.1,
+  byte-identical, 2.5–3.3×, `d0fc7e2`); v0.6.0 robustness artifact (`c0c324f`, 40.8% overall).
+- Uncommitted: SPEC.md instrument note (robustness `--limit` slices trials; no-timeout warning) —
+  rides with the next commit.
+- Round-3 grades summary: returning +5 net (1.67 mean), fresh 2.40, two silent STRONGs, one
+  UNACCEPTABLE (typography-as-field).
 
-## Mid-flight (may complete during pause; output NOT to be acted on until RESUME)
+## Mid-flight (may complete during park; output NOT acted on)
 
-- **W-P10** (fresh worker): guide-stop doctrine + margin reporting, v0.6.0. Reports to
-  `reports/wp10.md`; may also write `reports/wp10-types.md` (Diagnostics fields proposal —
-  types.ts is frozen pending my edit). My watcher for it may fire during the pause — noted here,
-  not acted on.
+- **W-P12** (fresh worker): SPEC decisions 15+16 — ink-likeness instrument (erosion mortality ×
+  ground adjacency), field-candidacy ink veto, fg ink preference, accent visibility floor
+  (`ACCENT_VISIBILITY_COLOR_DISTANCE` vs both ends) + the items-1/5/8 admitting-rule measurement.
+  Reports to `reports/wp12.md`; my watcher may fire during the park — noted, not acted on.
 
-## Exact next actions on RESUME, in order
+## Exact resume actions, in order
 
-1. Read `reports/wp10.md` (stall protocol if absent: check file mtimes under src/, worker output
-   mtime). If `wp10-types.md` exists: review proposed Diagnostics fields, edit types.ts (mine),
-   resume-or-respawn a fresh worker to wire them (W-P10 itself is one-shot; spawn fresh with
-   pointers).
-2. Verify pass-10 anchors from the report: item-8 cover publishes a monotone 3-stop guided ramp;
-   `2376a6b67d` byte-identical two-block; measured t-continuity values for both anchors and the
-   constant between them; blast radius vs run `20260805T062638253Z`.
-3. Commit v0.6.0 + SPEC ruling + notes (signed, pathspec `research/v3/prototypes/p5-fieldfit`).
-4. Full robustness on v0.6.0 (background, `--out data/robustness/reports/p5-fieldfit-0.6.0.json`)
-   — the guide-stop change touches gradient publication, expect movement in bg/surface agreement.
-5. Then the standing queue: **cost pass** (component recursion ≈ 9.4 s/palette at robustness
-   scale — lattice-subsample the component solves as the global fit does); **robustness
-   stabilization** (accent 46.3% instability; margin-aware selection once margin reporting is in).
-6. If round-3 verdicts (batch id unknown yet) arrive first: analyst flow per the standing process
-   change — spawn my own Opus analyst on the released payload + batch log + round-3 ROUND.md
-   mapping, re-verify its decode from the warehouse myself (final record per item — the warehouse
-   is append-only with mid-edit snapshots), then rule. Cross-arm priors for that analysis are in
-   `review-rounds/round-3/NOTES-cross-arm.md` (identity-coverage axis first, family-separation
-   accent shape, stop-count posture, margins-not-floors).
-
-## Standing open items (unchanged from the last §7 report)
-
-Cost pass owed; stabilization queue (v0.5.1: 40.8% overall, accent 46.3); upward
-formula-calibration packet (near-black ratios 6.6/11.4, twin-ratio spread 1.8–6.6, cross-arm
-epsilon-margins); guide stops never yet accepted on any real cover (pass 10 addresses); E1
-multi-start still deferred; escape + post-snap third-stop paths unexercised on dev sets.
+1. Read `reports/wp12.md` (stall protocol if absent: src/ mtimes, worker output mtime). Verify its
+   six named-cover validations: item-6 cover stops publishing type-blue as field; 16a8247378 +
+   908479200b fields byte-stable; item-4 fg → white-title family; item-8 fg → black type; item-7
+   white fg holds; items 1/5/8 accents clear the floor; items 2/7 hold. Weigh the admitting-rule
+   measurement and the ink-scale anchor. Rule on deviations; commit (include the SPEC instrument
+   note).
+2. Dispatch pass 13 (fresh worker): SPEC decision 17 — ramp-path excursion from the component's
+   fitted g(t), interior stops must carry new colours, spacing floor. Then pass 14: decision 18 —
+   joint four-role assignment with lexicographic set coverage.
+3. After pass 14: full robustness (600 trials, no --limit) on v0.7; compare v0.6.0's 40.8%/46.2%.
+4. Round 4: composition per rulings R7 + ROUND.md appendix — item-6 cover returns post-veto;
+   light-field class drawn from BEYOND coverage-set-1 (0/213 there; widen the pool, never relax
+   `markLightShare`); targeted item-7 confirmation question; remaining slots fresh via census.
+   Stage with a fresh worker on the round-2/3 protocol, validate, commit, REVIEW-READY.
+5. Standing: robustness stabilization (accent 46.2%); upward formula packet (4 streams: near-black
+   0.08871 third strike, twin-ratio spread 1.8–6.6, epsilon-margins, accent-visibility 8-for-8);
+   mass-floor caveat (two named colours at 5× triple-level headroom); E1 multi-start deferred;
+   escape path still unexercised.

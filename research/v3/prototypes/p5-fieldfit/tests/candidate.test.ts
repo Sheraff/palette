@@ -61,7 +61,7 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.6.0")
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.7.0")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })

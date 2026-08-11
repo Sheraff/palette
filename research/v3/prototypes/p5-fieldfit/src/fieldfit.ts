@@ -29,6 +29,7 @@
 import { POOLED_SAME_COLOR_BAR } from "../../../src/contract/constants.ts"
 import type { OkLab } from "../../../src/contract/types.ts"
 
+import { componentIsInkLike, inkStatistics } from "./components.ts"
 import type { FieldComponent, FieldReading } from "./components.ts"
 import { normalizedX, normalizedY } from "./decode.ts"
 import type { DecodedRaster, FieldFit } from "./types.ts"
@@ -811,25 +812,55 @@ export function fitFieldComponents(raster: DecodedRaster): FieldReading {
 		if (depth === MAX_COMPONENT_DEPTH - 1) depthCapReached = domainCount >= minimumClaim
 	}
 
-	accepted.sort((first, second) =>
+	// --- SPEC decision 15a, the field-candidacy veto ------------------------------------------------
+	//
+	// The recursion above is **unchanged**: every level is fitted, measured and peeled exactly as
+	// before, so a cover on which no component is ink-shaped is bit-identical to v0.6.1. The veto runs
+	// after the pool is known, because the ground a candidate's adjacency is measured against is *the
+	// other candidates* (`components.ts`, decision 15a's measured polarity) — a quantity that does not
+	// exist while the level is being fitted.
+	//
+	// A vetoed component is not deleted: it keeps its place in `attempts` with its statistics, and its
+	// pixels are simply never claimed by the composite field, which is exactly what "it stays in the
+	// pool as overlay material" means for `overlay.ts` (`compositeFieldFit` reads accepted components
+	// only, so Σ(1 − w) over a vetoed claim is its full mass).
+	const acceptedSet = new Set(accepted)
+	const survivors: FieldComponent[] = []
+	for (let index = 0; index < attempts.length; index += 1) {
+		const component = attempts[index]
+		if (!acceptedSet.has(component)) continue
+		const ground = new Uint8Array(pixelCount)
+		for (const other of accepted) {
+			if (other === component) continue
+			for (let pixel = 0; pixel < pixelCount; pixel += 1) {
+				if (other.claim[pixel] === 1) ground[pixel] = 1
+			}
+		}
+		const ink = inkStatistics(component.claim, ground, width, height)
+		const measured: FieldComponent = { ...component, ink, inkLike: componentIsInkLike(ink) }
+		attempts[index] = measured
+		if (!measured.inkLike) survivors.push(measured)
+	}
+
+	survivors.sort((first, second) =>
 		second.supportPixels - first.supportPixels ||
 		second.supportMass - first.supportMass ||
 		first.depth - second.depth
 	)
 
 	const labels = new Uint8Array(pixelCount)
-	for (let rank = 0; rank < accepted.length; rank += 1) {
-		const claim = accepted[rank].claim
+	for (let rank = 0; rank < survivors.length; rank += 1) {
+		const claim = survivors[rank].claim
 		for (let index = 0; index < pixelCount; index += 1) {
 			if (claim[index] === 1) labels[index] = rank + 1
 		}
 	}
 
 	return {
-		components: accepted,
+		components: survivors,
 		attempts,
 		depthCapReached,
-		retreat: accepted.length === 0,
+		retreat: survivors.length === 0,
 		labels,
 	}
 }
@@ -1053,6 +1084,10 @@ function measureComponent(
 		extensive: supportFraction >= EXTENSIVE_SUPPORT_FRACTION,
 		smooth: supportFraction >= EXTENSIVE_SUPPORT_FRACTION &&
 			coreFraction >= COMPONENT_CORE_FRACTION,
+		// SPEC decision 15a's statistics need the rest of the pool, which does not exist yet; they are
+		// filled by `fitFieldComponents` once it does. A level that never reaches the test keeps null.
+		ink: null,
+		inkLike: false,
 	}
 }
 

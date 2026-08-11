@@ -131,7 +131,12 @@ import type {
 import { hashFileBytes } from "../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../src/devloop/types.ts"
 
-import { componentCentre, componentFieldFit, compositeFieldFit } from "./src/components.ts"
+import {
+	componentCentre,
+	componentFieldFit,
+	compositeFieldFit,
+	fieldFitWithoutInk,
+} from "./src/components.ts"
 import type { FieldReading } from "./src/components.ts"
 import { decodeAndInventory, packRgb, unpackRgb } from "./src/decode.ts"
 import { fitField, fitFieldComponents } from "./src/fieldfit.ts"
@@ -162,7 +167,7 @@ import type {
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.6.0"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.7.0"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -370,10 +375,16 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 				twoComponentReading = true
 			}
 		} else {
-			// Decision 9's declared retreat, reached only now that no component qualified.
+			// Decision 9's declared retreat, reached only now that no component qualified — including
+			// the case decision 15a creates, where the only extensive component was ink-shaped and was
+			// vetoed. `fieldFitWithoutInk` is what makes the veto hold on this path: the vetoed claim's
+			// pixels are not field, so they neither rank in the retreat's field mass nor sit outside the
+			// overlay. On a cover with no veto the view is the fit itself and this branch is unchanged.
 			declaredRetreat = true
 			gradientCandidate = false
-			const retreatTriple = highestFieldMassTriple(fit, raster, inventory)
+			const retreatFit = fieldFitWithoutInk(fit, fieldComponents, raster)
+			overlayFit = retreatFit
+			const retreatTriple = highestFieldMassTriple(retreatFit, raster, inventory)
 			if (retreatTriple) {
 				backgroundTarget = retreatTriple.lab
 				surfaceTarget = retreatTriple.lab

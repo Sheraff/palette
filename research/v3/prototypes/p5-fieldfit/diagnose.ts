@@ -91,6 +91,14 @@ export async function diagnose(imagePath: string) {
 				coreFraction: Number(component.coreFraction.toFixed(4)),
 				extensive: component.extensive,
 				smooth: component.smooth,
+				// SPEC decision 15a: `null` on a level the ink test never reached (never accepted).
+				erosionMortality: component.ink === null
+					? null
+					: Number(component.ink.erosionMortality.toFixed(4)),
+				groundAdjacency: component.ink === null
+					? null
+					: Number(component.ink.groundAdjacency.toFixed(4)),
+				inkLike: component.inkLike,
 			})),
 		palette: {
 			background: palette.roles.background.hex,

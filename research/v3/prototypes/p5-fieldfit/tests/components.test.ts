@@ -39,7 +39,14 @@ import { okLabDistance, okLabToRgb, rgbToOkLab } from "../../../src/contract/col
 import type { OkLab, Rgb8 } from "../../../src/contract/types.ts"
 
 import { analyzeImage } from "../candidate.ts"
-import { compositeFieldFit, pixelIndexOnAxis } from "../src/components.ts"
+import {
+	COMPONENT_INK_GROUND_ADJACENCY_MAX,
+	COMPONENT_INK_MORTALITY,
+	compositeFieldFit,
+	fieldFitWithoutInk,
+	inkStatistics,
+	pixelIndexOnAxis,
+} from "../src/components.ts"
 import { normalizedX, normalizedY } from "../src/decode.ts"
 import {
 	COMPONENT_CORE_FRACTION,
@@ -484,4 +491,156 @@ test("the smooth gate admits a painted ramp at 0.4–0.5 core and still refuses 
 		assert.equal(component.smooth, false)
 	}
 	assert.equal(noisyReading.retreat, true, "a region whose pixels sit at the rim is not a field")
+})
+
+// ---------------------------------------------------------------------------------------------
+// SPEC decision 15 — the ink-likeness instrument, and 15a's field-candidacy veto
+// ---------------------------------------------------------------------------------------------
+
+/** Draw a support mask with a callback, so each fixture below reads as the shape it is. */
+function mask(width: number, height: number, inside: (x: number, y: number) => boolean): Uint8Array {
+	const out = new Uint8Array(width * height)
+	for (let row = 0; row < height; row += 1) {
+		for (let column = 0; column < width; column += 1) {
+			if (inside(column, row)) out[row * width + column] = 1
+		}
+	}
+	return out
+}
+
+function count(support: Uint8Array): number {
+	let total = 0
+	for (const value of support) if (value === 1) total += 1
+	return total
+}
+
+test("ink instrument: strokes die at the ink scale, a blob of the same mass does not", () => {
+	// 300×300, so the ink radius is 9 px and the texture closing is 2 px — the same numbers a 300²
+	// cover gets. Strokes are 7 px wide (inside the measured designed-mark range); the blob is a
+	// square carrying the *same* number of pixels, so the only thing that differs is shape.
+	const size = 300
+	const strokeWidth = 7
+	const strokePitch = 30
+	const strokes = mask(size, size, (x) => x % strokePitch < strokeWidth)
+	const side = Math.round(Math.sqrt(count(strokes)))
+	const blob = mask(size, size, (x, y) => x < side && y < side)
+	assert.ok(
+		Math.abs(count(blob) - count(strokes)) / count(strokes) < 0.01,
+		`matched mass: strokes ${count(strokes)}, blob ${count(blob)}`,
+	)
+
+	const ground = new Uint8Array(size * size).fill(1)
+	const strokeInk = inkStatistics(strokes, ground, size, size)
+	const blobInk = inkStatistics(blob, ground, size, size)
+
+	assert.equal(strokeInk.erosionMortality, 1, "a 7 px stroke cannot survive a 9 px erosion")
+	assert.ok(
+		blobInk.erosionMortality < 0.5,
+		`a compact blob of the same mass must mostly survive, measured ${blobInk.erosionMortality}`,
+	)
+	// The instrument is a shape measurement: mass is held fixed and the verdict still separates.
+	assert.ok(strokeInk.erosionMortality - blobInk.erosionMortality > 0.5)
+})
+
+test("ink instrument: ground adjacency counts only outward neighbours the ground claims", () => {
+	const size = 32
+	const support = mask(size, size, (x, y) => x >= 8 && x < 24 && y >= 8 && y < 24)
+	const all = new Uint8Array(size * size).fill(1)
+	const none = new Uint8Array(size * size)
+	assert.equal(inkStatistics(support, all, size, size).groundAdjacency, 1)
+	assert.equal(inkStatistics(support, none, size, size).groundAdjacency, 0)
+
+	// Half the frame is ground: the boundary is counted per outward neighbour, so a square whose
+	// left/right sides face ground and top/bottom do not sits at exactly one half.
+	const half = mask(size, size, (x) => x < 8 || x >= 24)
+	assert.equal(inkStatistics(support, half, size, size).groundAdjacency, 0.5)
+})
+
+test("ink instrument: the border is replicated, so a full-bleed support is not eroded by the frame", () => {
+	const size = 300
+	const full = new Uint8Array(size * size).fill(1)
+	const ground = new Uint8Array(size * size)
+	assert.equal(inkStatistics(full, ground, size, size).erosionMortality, 0)
+})
+
+test("(15a) a type-shaped extensive component cannot carry the field", () => {
+	// A flat vector colour laid out as strokes over material no surface explains — the shape of
+	// round-3 item 6, where the display type and its frame were published as the gradient. The
+	// strokes are extensive (they claim well over `EXTENSIVE_SUPPORT_FRACTION`) and smooth (a flat
+	// colour's fit holds its pixels in the core), so both v0.6.1 gates admit them.
+	const ink: OkLab = [0.72, -0.06, -0.14]
+	const size = 128
+	const strokeWidth = 5
+	const strokePitch = 24
+	const raster = makeRaster(size, size, (_x, _y, index) => {
+		const column = index % size
+		return column % strokePitch < strokeWidth ? ink : textureAt(index)
+	})
+
+	const fit = fitField(raster)
+	assert.equal(fit.noField, true, "the trigger must fire, or the recursion never runs")
+
+	const reading = fitFieldComponents(raster)
+	const typeLevel = reading.attempts.find((component) => component.extensive)
+	assert.ok(typeLevel !== undefined, "the strokes must be found as an extensive component")
+	assert.equal(typeLevel.smooth, true, "extensive and smooth: v0.6.1 would have published it")
+	assert.ok(typeLevel.ink !== null, "an accepted component is measured")
+	assert.ok(
+		typeLevel.ink.erosionMortality >= COMPONENT_INK_MORTALITY,
+		`strokes must read thin, measured ${typeLevel.ink.erosionMortality}`,
+	)
+	assert.ok(
+		typeLevel.ink.groundAdjacency < COMPONENT_INK_GROUND_ADJACENCY_MAX,
+		`strokes over residue must read floating, measured ${typeLevel.ink.groundAdjacency}`,
+	)
+	assert.equal(typeLevel.inkLike, true)
+
+	// The veto's whole content: it is not in the pool, and the pool has nothing else, so the reading
+	// retreats rather than publishing the type colour as the field.
+	assert.ok(
+		!reading.components.includes(typeLevel),
+		"an ink-shaped component must not carry the field",
+	)
+	assert.equal(reading.retreat, true)
+	// And it is kept, with its statistics, so a report can say why.
+	assert.ok(reading.attempts.includes(typeLevel))
+})
+
+test("(15a) a smooth extensive field is untouched by the veto", () => {
+	// Obligation (a)'s fixture, re-asserted through the veto: the sky is a region, it tiles with what
+	// else the recursion explains, and nothing about v0.7 may move it.
+	const reading = fitFieldComponents(skyOverTexture())
+	assert.equal(reading.retreat, false)
+	const primary = reading.components[0]
+	assert.equal(primary.inkLike, false)
+	assert.ok(primary.ink !== null)
+	assert.ok(
+		primary.ink.erosionMortality < COMPONENT_INK_MORTALITY ||
+			primary.ink.groundAdjacency >= COMPONENT_INK_GROUND_ADJACENCY_MAX,
+		`the sky must fail at least one conjunct: mortality ${primary.ink.erosionMortality}, ` +
+			`adjacency ${primary.ink.groundAdjacency}`,
+	)
+})
+
+test("(15a) the vetoed material is overlay: fieldFitWithoutInk zeroes its weights", () => {
+	const ink: OkLab = [0.72, -0.06, -0.14]
+	const size = 128
+	const raster = makeRaster(size, size, (_x, _y, index) => {
+		const column = index % size
+		return column % 24 < 5 ? ink : textureAt(index)
+	})
+	const fit = fitField(raster)
+	const reading = fitFieldComponents(raster)
+	const vetoed = reading.attempts.find((component) => component.inkLike)
+	assert.ok(vetoed !== undefined)
+
+	const masked = fieldFitWithoutInk(fit, reading, raster)
+	assert.notEqual(masked, fit, "a veto must produce a different view")
+	for (let index = 0; index < size * size; index += 1) {
+		if (vetoed.claim[index] === 1) assert.equal(masked.weights[index], 0)
+	}
+	// No veto ⇒ the view is the fit itself, so a cover without ink pays nothing and cannot move.
+	const clean = skyOverTexture()
+	const cleanFit = fitField(clean)
+	assert.equal(fieldFitWithoutInk(cleanFit, fitFieldComponents(clean), clean), cleanFit)
 })

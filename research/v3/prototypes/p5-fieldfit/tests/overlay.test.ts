@@ -31,7 +31,10 @@ import {
 	resolveContrastParameters,
 } from "../../../src/contract/invariants.ts"
 import type { GradientStop, OkLab, Rgb8 } from "../../../src/contract/types.ts"
-import { ACCENT_FUNCTIONAL_DISTANCE } from "../../../src/contract/constants.ts"
+import {
+	ACCENT_FUNCTIONAL_DISTANCE,
+	ACCENT_VISIBILITY_COLOR_DISTANCE,
+} from "../../../src/contract/constants.ts"
 import { firstInvisibleAccentOnRamp } from "../../../src/contract/ramp.ts"
 import { normalizedX, normalizedY, packRgb, unpackRgb } from "../src/decode.ts"
 import { readOverlay } from "../src/overlay.ts"
@@ -848,4 +851,87 @@ test("an empty overlay yields no clusters and no roles", () => {
 		FLAT_STOPS,
 	)
 	assert.deepEqual(reading, { clusters: [], foreground: null, accent: null, accentChromaOnly: false })
+})
+
+/**
+ * **Regression, SPEC decision 16: the accent visibility floor, on both published field colours.**
+ *
+ * Built from round-3 item 8's refuted pair — background `#f2190a`, accent `#ff2c00`, measured OKLab
+ * distance **0.03357** on a `sameColorBar` of 0.02293, so it clears distinctness at 1.46 bars and the
+ * reviewer still called it *"very hard to read on top of the background"*. It also cleared the
+ * contract's accent clause, because that clause is a pointwise conjunction and this pair's
+ * `min|raw APCA|` over the ramp is 4.28 against a floor of 2.5 — which is the measurement decision 16
+ * asked for, asserted here so the ruling's premise cannot drift.
+ */
+test("accent visibility floor: a near-background candidate loses to a distant one", () => {
+	const BACKGROUND: Rgb8 = [0xf2, 0x19, 0x0a]
+	const NEAR: Rgb8 = [0xff, 0x2c, 0x00]
+	const FAR: Rgb8 = [0x86, 0x88, 0x25]
+	const INK: Rgb8 = [0x8c, 0x34, 0x06]
+
+	// The evidence, reproduced: distinct by the bar, admitted by the contract's accent clause.
+	const near = colorFromRgb(NEAR)
+	const background = colorFromRgb(BACKGROUND)
+	const distance = colorDistance(near, background)
+	assert.ok(distance > 0.033 && distance < 0.034, `the evidenced distance is 0.03357, got ${distance}`)
+	assert.ok(!sameColor(near, background), "distinctness passed it — that is why decision 16 exists")
+	assert.ok(distance < ACCENT_VISIBILITY_COLOR_DISTANCE, "and the new floor must refuse it")
+
+	const scene = flatScene(20, BACKGROUND, [[INK, 120], [NEAR, 90], [FAR, 20]])
+	const stops = rampOf(rgbToOkLab(BACKGROUND), rgbToOkLab(BACKGROUND))
+	const reading = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+
+	assert.equal(reading.foreground?.representative, pack(INK))
+	// The near candidate carries four times the far one's mass and still loses.
+	const nearCluster = reading.clusters.find((c) => c.representative === pack(NEAR))!
+	const farCluster = reading.clusters.find((c) => c.representative === pack(FAR))!
+	assert.ok(nearCluster.overlayMass > farCluster.overlayMass * 3)
+	assert.equal(reading.accent?.representative, pack(FAR))
+})
+
+/**
+ * **Regression, SPEC decision 16: both ends, never one.** Round-3 item 5's accent cleared the
+ * background at 0.06262 and failed the surface at 0.04205, and the complaint named the surface — so
+ * the floor is a conjunction over the two published field colours, not a test against one of them.
+ */
+test("accent visibility floor: clearing one end is not enough", () => {
+	const BACKGROUND: Rgb8 = [0x13, 0x20, 0x28]
+	const SURFACE: Rgb8 = [0x17, 0x25, 0x2e]
+	const NEAR_SURFACE: Rgb8 = [0x1f, 0x30, 0x38]
+	const FAR: Rgb8 = [0xc3, 0x91, 0x70]
+	const INK: Rgb8 = [0xff, 0xff, 0xff]
+
+	const near = colorFromRgb(NEAR_SURFACE)
+	assert.ok(
+		colorDistance(near, colorFromRgb(BACKGROUND)) > colorDistance(near, colorFromRgb(SURFACE)),
+		"the fixture must be nearer the surface than the background, as the evidence is",
+	)
+	assert.ok(colorDistance(near, colorFromRgb(SURFACE)) < ACCENT_VISIBILITY_COLOR_DISTANCE)
+
+	const scene = flatScene(20, BACKGROUND, [[INK, 150], [NEAR_SURFACE, 90], [FAR, 20]])
+	const stops = rampOf(rgbToOkLab(BACKGROUND), rgbToOkLab(SURFACE))
+	const reading = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+
+	assert.equal(reading.accent?.representative, pack(FAR))
+})
+
+/**
+ * **Regression, SPEC decision 16: an accent already clear of both ends does not move.** Round-3
+ * item 2's accent `#412824` sat at 0.185 / 0.440 and the item was graded STRONG in silence; nothing
+ * in v0.7 may touch it.
+ */
+test("accent visibility floor: a comfortably distant accent is untouched", () => {
+	const BACKGROUND: Rgb8 = [0x7a, 0x54, 0x5f]
+	const ACCENT: Rgb8 = [0x41, 0x28, 0x24]
+	const INK: Rgb8 = [0xfe, 0xd0, 0x78]
+
+	assert.ok(
+		colorDistance(colorFromRgb(ACCENT), colorFromRgb(BACKGROUND)) > ACCENT_VISIBILITY_COLOR_DISTANCE,
+	)
+	const scene = flatScene(20, BACKGROUND, [[INK, 120], [ACCENT, 60]])
+	const stops = rampOf(rgbToOkLab(BACKGROUND), rgbToOkLab(BACKGROUND))
+	const reading = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+
+	assert.equal(reading.foreground?.representative, pack(INK))
+	assert.equal(reading.accent?.representative, pack(ACCENT))
 })

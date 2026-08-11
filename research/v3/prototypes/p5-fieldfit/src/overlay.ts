@@ -62,7 +62,10 @@ import {
 	sameColorBar,
 } from "../../../src/contract/color.ts"
 import { decompose } from "../../../src/contract/perception-model-spaces.ts"
-import { ACCENT_FUNCTIONAL_DISTANCE } from "../../../src/contract/constants.ts"
+import {
+	ACCENT_FUNCTIONAL_DISTANCE,
+	ACCENT_VISIBILITY_COLOR_DISTANCE,
+} from "../../../src/contract/constants.ts"
 import { firstInvisibleAccentOnRamp, minRawContrastOverRamp } from "../../../src/contract/ramp.ts"
 import type {
 	GradientStop,
@@ -292,7 +295,7 @@ function agglomerate(candidates: readonly TripleOverlay[]): Agglomerate[] {
 				memberCount: 1,
 				representative: triple.packed,
 				representativeMass: triple.mass,
-			}
+				}
 			clusters.push(created)
 			continue
 		}
@@ -439,6 +442,34 @@ export const FOREGROUND_MIN_RAW_APCA = 15
 export const ACCENT_FG_EXCLUSION_MULTIPLE = 8
 
 // ---------------------------------------------------------------------------------------------
+// SPEC decision 15b — measured, and NOT adopted
+// ---------------------------------------------------------------------------------------------
+//
+// Decision 15b asks for the foreground preference to run on ink-like mass rather than raw mass. It is
+// **not implemented here, because the instrument it names does not measure anything on this object**,
+// and the measurement is recorded so the ruling can be re-opened on better grounds rather than
+// re-attempted on these.
+//
+// W-P12 built the instrument (`components.ts`), ran it over every floor-clearing candidate on the
+// three covers decision 15b names (round-3 items 4, 7 and 8 — 60 clusters), and measured:
+//
+//  - **erosion mortality = 1.0000 on 60 of 60 clusters.** A bar-neighbourhood cluster's support is a
+//    colour family's pixels, and at bar resolution *every* family on a photographic cover is a set of
+//    filaments — the artwork's type and the depicted regions alike. Dropping the erosion radius does
+//    not recover the signal, it inverts it: at r = 1 px the reviewer-named type families measure 0.52
+//    (item 7's white title) and 0.76 (item 3's black type) while the *fields* measure 0.26, 0.58, 0.70
+//    and 0.996. There is no radius at which thinness distinguishes a title from a leaf.
+//  - **ground adjacency carries no more.** On a globally-fitted cover it is ≈ 1 for everything (the
+//    fit's inliers are the whole canvas); on a component cover it is ≈ 0 for everything (the pool
+//    claims a fifth of it). On item 4, where it does vary, it ranks the droplet shadows (0.99) above
+//    the white title family (0.70) — the wrong way round on the cover the ruling cites.
+//
+// The instrument is real where the support is a *region* — that is the field-candidacy veto, decision
+// 15a, which it decides cleanly (`components.ts`). A cluster is not a region. Foreground therefore
+// stays on decision 13's rule until a mark-level support exists to measure; arm-f's scale-space mark
+// grouping, still deferred by decision 12, is the shape of the thing that would supply one.
+
+// ---------------------------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------------------------
 
@@ -538,14 +569,12 @@ export function readOverlay(
 	// The floor is the larger of the caller's request and the prototype's evidence-bracketed one, so
 	// raising `minTextContrast` tightens the gate and nothing can loosen it below the bracket.
 	const foregroundFloor = Math.max(textFloor, FOREGROUND_MIN_RAW_APCA)
-	let foreground: OverlayCluster | null = null
-	for (const cluster of feasible) {
-		if (legibility.get(cluster)! < foregroundFloor) continue
-		// `feasible` preserves `clusters`' descending-mass, ascending-packed order, so the first
-		// survivor *is* argmax mass with the packed int as tie-break.
-		foreground = cluster
-		break
-	}
+	const admissible = feasible.filter((cluster) => legibility.get(cluster)! >= foregroundFloor)
+
+	// `admissible` preserves `clusters`' descending-mass, ascending-packed order, so its first element
+	// *is* argmax mass with the packed int as tie-break (SPEC decision 13; 15b measured and refused
+	// above).
+	const foreground: OverlayCluster | null = admissible[0] ?? null
 
 	if (foreground === null) {
 		// Nothing publishable and legible: SPEC decision 10's escape. The escape colour itself is
@@ -604,6 +633,21 @@ export function readOverlay(
 			colorDistance(color, foregroundColor) <
 				ACCENT_FG_EXCLUSION_MULTIPLE * sameColorBar(color, foregroundColor)
 		) continue
+		// SPEC decision 16, the accent visibility floor (round-3 ruling R3). `sameColor` above already
+		// asked whether this colour is *a different colour* from each end; round 3 measured that the
+		// reviewer is asking something else — whether it can be *seen* on the field — and that the
+		// answer orders by raw OKLab distance rather than by bar ratio: complained-about accents sat at
+		// 0.034 / 0.042 / 0.048 (up to 5.2 bars), silent ones at ≥ 0.092. The contract's own
+		// `ACCENT_VISIBILITY_COLOR_DISTANCE` separates the batch 8-for-8 and sits inside that gap, at
+		// the site it was written for. Both ends, never one: item 5's accent cleared the background and
+		// failed the surface, and the complaint named the surface.
+		//
+		// **No `background × surface` analogue** — round-3 finding 5, and it is why this is a floor on
+		// the accent rather than a margin gate: the tightest pair in the batch was `background × surface`
+		// at 1.21 bars, on the item the reviewer graded STRONG in silence. Margins are role-aware.
+		if (publishedEnds.some((end) => colorDistance(color, end) < ACCENT_VISIBILITY_COLOR_DISTANCE)) {
+			continue
+		}
 		// Invisible anywhere on the ramp ⇒ not an accent. `null` means no such point exists. Same
 		// selection-density budget as the foreground's ranking, and for the same reason: at the
 		// contract's default 2048/4096 this call alone took the demo-20 run from 0.8 s to 6.8 s.
