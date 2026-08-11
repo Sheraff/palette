@@ -19,7 +19,11 @@ accent pool, verdict-scored accent tie-break sweep) in flight at this update. Ro
 baseline v0.8.2: 41.7% overall, dither 47% / accent 43.3% best-ever, fg 33.0% flagged. Also
 recorded: the escape machinery, a double collapse, a speck foreground, and the first 3-stop ramp
 all survived reviewer contact silently; identity coverage is the dominant open axis (4 of 5
-round-4 notes); two new unowned axes (semantic referent, set-conditioned accent).
+round-4 notes); two new unowned axes (semantic referent, set-conditioned accent). *Paradigm-level
+datum (2026-08-11):* on fresh ground truth the reviewer stated, unprompted, exactly this
+mechanism's role architecture as their ideal — ground pair as one family's two shades (the field
+ramp's ends), figure pair from the marks laid over it. The field-and-marks reading is no longer
+only surviving tests; the judge has now articulated it back.
 
 **Delta since the 08-05 freeze:** pass 16 landed — foreground is class-first (overlay ink outranks
 ground-shaped components; the item-3 cover now publishes the reviewer's verbatim round-3 ask,
