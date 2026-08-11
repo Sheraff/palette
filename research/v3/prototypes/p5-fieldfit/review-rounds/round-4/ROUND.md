@@ -145,3 +145,17 @@ was R2's, not R3's — verified right).** Best round of the campaign: **3 STRONG
   orchestrator.
 - **R6 (round 5, when it comes)**: item 3 returns after the v0.9 identity cycle; item 8's
   endpoint-membership note watches for a second instance before any endpoint rule changes.
+
+## Rulings R2/R3 finalized after measurement (W-M1, 2026-08-11)
+
+- **R2 FINAL — no rule change now; item-7 provenance attaches to v0.9.** Measured: class-first
+  selects a 55.6-mass speck (worse); coverage-first is inert by construction (triple-wise
+  identity accumulation discards the textured crimson entirely — massRetained 0.1819, the
+  crimson in no family at any radius); only chroma (0.0949 vs ≤0.0479 published) and legibility
+  (79 vs 27) separate the reviewer's colour. The accent union stands unchanged until the v0.9
+  spatially-accumulated family definition exists.
+- **R3 FINAL — the floor stays at 15.** The sweep falsified the raise: round-4 item 4 is a
+  reviewer-STRONG foreground at raw 16.93, below any floor that would fix item 5; the honest
+  bracket is (10.6, 16.93], and a margin-preference rule is equally falsified (it would displace
+  the same STRONG fg at 57.04). Item 5's datum is recorded as margin evidence no currently-safe
+  rule addresses; its own note points at identity — v0.9 again.
