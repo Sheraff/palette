@@ -1,0 +1,34 @@
+
+summaries 539/539 files, 0 errors, 0 incomplete comparisons
+comparisons: 200 pairs (29 same-resolution), 100 perturbation
+statistic                 pairs n | med|logR| |    p90 |  perturb n | med|logR| |    p90 |
+binary.fFraction              200 |    0.0254 | 0.4399 |        100 |    0.0183 | 0.1924 |
+binary.e1Q95                  160 |    0.1084 | 0.6714 |         88 |    0.0117 | 0.1129 |
+binary.e1Q50                  136 |    0.2323 | 1.0173 |         82 |    0.0635 | 0.2665 |
+binary.betaDepth              162 |    0.2504 | 1.0253 |         70 |    0.0025 | 0.1312 |
+binary.edgeFraction           200 |    0.1136 | 0.4424 |        100 |    0.0200 | 0.0732 |
+coherence.fFraction           200 |    0.0000 | 0.0879 |        100 |    0.0000 | 0.0082 |
+coherence.e1Q95               156 |    0.0890 | 0.4981 |         88 |    0.0060 | 0.0884 |
+coherence.e1Q50               137 |    0.1833 | 0.6054 |         80 |    0.0383 | 0.2447 |
+
+dither-lsb1 (n=50): binary.fFraction=0.0124  binary.e1Q95=0.0121  binary.e1Q50=0.0755  binary.betaDepth=0.0000  binary.edgeFraction=0.0151  coherence.fFraction=0.0000  coherence.e1Q95=0.0138  coherence.e1Q50=0.0467
+jpeg-q92 (n=50): binary.fFraction=0.0214  binary.e1Q95=0.0115  binary.e1Q50=0.0405  binary.betaDepth=0.0123  binary.edgeFraction=0.0273  coherence.fFraction=0.0000  coherence.e1Q95=0.0044  coherence.e1Q50=0.0270
+
+--- paired common subset (both substrates non-degenerate on both sides) ---
+pairs          n= 155  binary e1Q95 0.1119  coherence e1Q95 0.0889  (coherence smaller on 81/155 rows)
+perturbations  n=  88  binary e1Q95 0.0117  coherence e1Q95 0.0060  (coherence smaller on 53/88 rows)
+
+--- cross-rendition, split by resolution (e1Q95) ---
+resolution differs         n= 145  binary 0.1146  coherence 0.0974  (coherence smaller on 76/145)
+  … radii triple differs   n= 121  binary 0.1145  coherence 0.0840  (coherence smaller on 66/121)
+  … radii triple equal     n=  24  binary 0.1292  coherence 0.1703  (coherence smaller on 10/24)
+same resolution            n=  10  binary 0.0457  coherence 0.0435  (coherence smaller on 5/10)
+radii triple identical on 29/171 resolution-differing pairs (coherence.ts line tension 1, counted)
+
+coherence F fraction over 539 files: min 0.0000  p50 0.2500  p90 0.4442  max 0.8922  |  not exactly (1−β): 205/539
+
+--- SUBSTRATE_2_PREREG.md Measurement A, mechanical evaluation ---
+fFraction: binary-pairs 0.0254 (half 0.0127) | coherence-pairs 0.0000 → clause (i) PASS | coherence-perturb 0.0000 → cross/own Infinity×
+e1Q95: binary-pairs 0.1084 (half 0.0542) | coherence-pairs 0.0890 → clause (i) FAIL | coherence-perturb 0.0060 → cross/own 14.88×
+
+wrote /Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/prototypes/p3-fields/measurements/substrate/field-drift.json

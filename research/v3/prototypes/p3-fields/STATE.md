@@ -44,7 +44,7 @@ audited twice: HOLDS-WITH-RULINGS, zero violations).
 
 | question | state | cost |
 |---|---|---|
-| Substrate replacement (continuous coherence field) — the decisive robustness experiment | vehicle BUILT, flag-gated, first trial moved stability between axes (pairs +6pp, perturbation −6.7pp); needs the coupling measurement + pooled non-regression gate, pre-registered | one worker cycle + one full robustness run |
+| Substrate replacement (continuous coherence field) | **ANSWERED 2026-08-05: FALSIFIED** (pre-registered Measurement A: e1-ordering drift reduced only 18% vs 50% required, 14.9× own perturbation drift, inverts on same-radius pairs; ruling in `measurements/substrate/SUBSTRATE_2_RULING.md`) | closed; a NEW family would cost a fresh design + trial cycle, no candidate exists |
 | Swap role-assignment (chromatic mark → fg or accent?) | round-5 item df58b175 arbitrates; decode pending | decode + one targeted cycle |
 | Eligibility shape at thin-fill edges (admitted set = 48) | round-5 branch (b); decode pending | if fired: one small cycle + re-round |
 | Identity-vs-legibility bracket (ink at min-ramp 6.12 vs 89.37) | unpurchased twice | one round item pair |
@@ -76,9 +76,16 @@ core is robustness: rank discipline alone did not deliver stability, because the
 ranks are computed on is the noise amplifier, and the one designed replacement so far moved
 stability between axes rather than creating it. Absent a substrate win, P3 plateaus near 16%
 agreement against an incumbent anchor of 72.8% — the mechanism's founding robustness claim is
-currently unproven and trending flat. Net: high promise on quality/identity with the fastest
-verdict-response loop of my visibility; robustness is a single, named, designed-and-gated
-experiment away from being either rescued or honestly falsified.
+currently unproven and trending flat. **Update 2026-08-05: the designed-and-gated substrate
+experiment RAN and FALSIFIED the coherence-field family** (pre-registered Measurement A;
+worker-escalated ambiguity; conjunctive ruling — the passing statistic was constant by
+construction and confirming on it would have been a tautology). Net, current: high promise on
+quality/identity with the fastest verdict-response loop of my visibility; robustness is
+plateaued (~16% pooled, pairs 9%) with the cause LOCATED but the first designed fix REFUTED —
+remaining options are incremental decision-site work (measured diminishing returns), a new
+substrate family (no candidate; full design cycle), or judging the mechanism on
+quality/identity as-is. Read P3 as: quality-strong,
+robustness-plateaued-with-located-cause-and-refuted-first-fix.
 
 ## Round-5 state (decoded 2026-08-05, after this document's first commit)
 
