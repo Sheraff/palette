@@ -1,0 +1,32 @@
+candidate: p3-fields-0.4.1  (research/v3/prototypes/p3-fields/src/candidate.ts)
+bar mode:  regional
+
+overall                  16.0% [13.3–19.1]  (96/600)
+
+by pair type
+  rendition-pair           9.0% [5.8–13.8]  (18/200)
+  jpeg-q92                 28.0% [20.1–37.5]  (28/100)
+  jpeg-q85                 13.0% [7.8–21.0]  (13/100)
+  jpeg-q75                 18.0% [11.7–26.7]  (18/100)
+  dither-lsb1              19.0% [12.5–27.8]  (19/100)
+
+reviewed vs unseen  (v2-3: 1.61x, healthy ~1.0)  [labels: live-warehouse, 0 relabelled since the draw]
+  perturbation     1.294x
+    perturbation|reviewed    22.0% [16.8–28.2]  (44/200)
+    perturbation|unseen      17.0% [12.4–22.8]  (34/200)
+  rendition-pair   1.118x  UNDERPOWERED
+    rendition-pair|reviewed  10.0% [1.8–40.4]  (1/10)
+    rendition-pair|unseen    8.9% [5.7–13.9]  (17/190)
+
+role instability (share of comparisons where the role moved)
+  background   23.5%  (141/600)
+  surface      45.2%  (271/600)
+  foreground   58.5%  (351/600)
+  accent       68.3%  (410/600)
+
+disagreeing trials: 504
+errored trials:     0
+timing: 600 trials, 1758.5s wall, 5855.2s in candidate
+
+report: research/v3/prototypes/p3-fields/measurements/robustness-p3-fields-0.4.1.json
+diff set: prototypes/p3-fields/measurements/robustness-disagreeing-images-0.4.1.txt (813 images)
