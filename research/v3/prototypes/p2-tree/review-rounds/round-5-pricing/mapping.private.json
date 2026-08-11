@@ -1,0 +1,316 @@
+{
+	"_readme": "NOT SERVABLE. The decode key for round 5: which fixture position is the published palette on each item, what the other side is, and every measurement behind both. Never copy into a batch fixture, a media directory, or anywhere the review server can reach.",
+	"_pin": {
+		"commit": "734c3f564f16ce9cf829fb420ddbf220fa1103cf",
+		"how": "every side is built by probe.ts inside a git-archive export of this commit (pin.sh); the two variant exports carry one asserted single-line substitution each (patch.ts). No side is built from the live worktree.",
+		"variants": {
+			"accent-member": "an accent cluster publishes its most chromatic member instead of its largest (tos/pipeline.ts, the accentClusters site)",
+			"fg-member": "a text group publishes its most readable member instead of its largest (roles/text.ts's memberScore hook)",
+			"coverage": "tos/coverage/candidate-coverage.ts, worker K's identity-coverage allocation, unmodified",
+			"next-in-ranking": "the published pipeline's own assembly walk with one pool candidate moved to the front of the foreground ranking it already sits in"
+		}
+	},
+	"_items": {
+		"ab67616d00001e0200000f92552b0935b967964d": {
+			"imagePath": "00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"question": "Which of these two reds should the palette use as its accent?",
+			"roleUnderTest": "accent",
+			"fixturePositionA": "published-largest-member",
+			"fixturePositionB": "chroma-extremal-member",
+			"published": {
+				"name": "published-largest-member",
+				"hex": "#d25068",
+				"palette": {
+					"background": "#dfe0d0",
+					"surface": "#f3f3f3",
+					"foreground": "#edbab9",
+					"accent": "#d25068",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"variant": {
+				"name": "chroma-extremal-member",
+				"hex": "#ee5567",
+				"palette": {
+					"background": "#dfe0d0",
+					"surface": "#f3f3f3",
+					"foreground": "#edbab9",
+					"accent": "#ee5567",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"measurements": {
+				"publishedChromaFromField": 0.16848012527407363,
+				"variantChromaFromField": 0.18995717803932852,
+				"separation": {
+					"oklab": 0.056227217661618416,
+					"bar": 0.02293,
+					"bars": 2.452124625452177
+				},
+				"leverEffect": "dither arm 23% -> 24% agreement; the accent moves on 42 of 100 dithered covers against 50 (tos/roles/NOTES.md, worker J)"
+			}
+		},
+		"ab67616d00001e02000001335fe604d859a69094": {
+			"imagePath": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"question": "Which of these two near-blacks should the palette use for its text colour?",
+			"roleUnderTest": "foreground",
+			"fixturePositionA": "contrast-extremal-member",
+			"fixturePositionB": "published-largest-member",
+			"published": {
+				"name": "published-largest-member",
+				"hex": "#070506",
+				"palette": {
+					"background": "#ffffff",
+					"surface": "#e0e0e0",
+					"foreground": "#070506",
+					"accent": "#161415",
+					"gradient": {
+						"stops": [
+							{
+								"color": "#ffffff",
+								"position": 0
+							},
+							{
+								"color": "#e0e0e0",
+								"position": 1
+							}
+						]
+					},
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"variant": {
+				"name": "contrast-extremal-member",
+				"hex": "#050304",
+				"palette": {
+					"background": "#ffffff",
+					"surface": "#e0e0e0",
+					"foreground": "#050304",
+					"accent": "#161415",
+					"gradient": {
+						"stops": [
+							{
+								"color": "#ffffff",
+								"position": 0
+							},
+							{
+								"color": "#e0e0e0",
+								"position": 1
+							}
+						]
+					},
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"measurements": {
+				"publishedFieldContrast": 90.46617114546785,
+				"variantFieldContrast": 90.49742751646667,
+				"separation": {
+					"oklab": 0.016462681193014788,
+					"bar": 0.00932,
+					"bars": 1.7663821022548056
+				},
+				"declaredNearCase": "the two sides are the round's near case: above the contract's own same-colour bar but under the 0.02 OKLab selection margin every earlier P2 round used to keep items off that boundary (D7)"
+			}
+		},
+		"ab67616d00001e0200001a9be12b7116a8247378": {
+			"imagePath": "00/ab67616d00001e0200001a9be12b7116a8247378.jpg",
+			"question": "Which of these two accents belongs on this artwork?",
+			"roleUnderTest": "accent",
+			"fixturePositionA": "published-most-chromatic-accent",
+			"fixturePositionB": "family-allocated-accent",
+			"published": {
+				"name": "published-most-chromatic-accent",
+				"hex": "#c18d20",
+				"palette": {
+					"background": "#434554",
+					"surface": "#3a394b",
+					"foreground": "#8e6a52",
+					"accent": "#c18d20",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"variant": {
+				"name": "family-allocated-accent",
+				"hex": "#362545",
+				"palette": {
+					"background": "#434554",
+					"surface": "#3a394b",
+					"foreground": "#8e6a52",
+					"accent": "#362545",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"measurements": {
+				"publishedChromaFromField": 0.1552884893432498,
+				"variantChromaFromField": 0.039544841074171756,
+				"chromaRetained": 0.2546540393393989,
+				"separation": {
+					"oklab": 0.41644778968733226,
+					"bar": 0.02293,
+					"bars": 18.16170037886316
+				},
+				"familyCount": 3,
+				"families": [
+					{
+						"rank": 0,
+						"hueStartDegrees": 17.522446869690963,
+						"hueEndDegrees": 102.44406495485504,
+						"memberCount": 450
+					},
+					{
+						"rank": 1,
+						"hueStartDegrees": 254.5269965604029,
+						"hueEndDegrees": 307.6066143533063,
+						"memberCount": 22
+					},
+					{
+						"rank": 2,
+						"hueStartDegrees": 336.6793841819982,
+						"hueEndDegrees": 336.6793841819982,
+						"memberCount": 1
+					}
+				],
+				"allocationNotes": [
+					"coverage-prefer-family:1:#202f4e:4/241",
+					"coverage-accent:#c18d20->#362545"
+				]
+			}
+		},
+		"ab67616d00001e02000022e7e9d11c908479200b": {
+			"imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"question": "Which of these two accents belongs on this artwork?",
+			"roleUnderTest": "accent",
+			"fixturePositionA": "family-allocated-accent",
+			"fixturePositionB": "published-most-chromatic-accent",
+			"published": {
+				"name": "published-most-chromatic-accent",
+				"hex": "#fea851",
+				"palette": {
+					"background": "#8b5964",
+					"surface": "#8c4936",
+					"foreground": "#8f5e59",
+					"accent": "#fea851",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"variant": {
+				"name": "family-allocated-accent",
+				"hex": "#242e09",
+				"palette": {
+					"background": "#8b5964",
+					"surface": "#8c4936",
+					"foreground": "#8f5e59",
+					"accent": "#242e09",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"measurements": {
+				"publishedChromaFromField": 0.12187827694306079,
+				"variantChromaFromField": 0.10795304149618377,
+				"chromaRetained": 0.8857447299375374,
+				"separation": {
+					"oklab": 0.5330376645706995,
+					"bar": 0.02293,
+					"bars": 23.246300242943718
+				},
+				"familyCount": 2,
+				"families": [
+					{
+						"rank": 0,
+						"hueStartDegrees": 330.29124749956736,
+						"hueEndDegrees": 76.93312083940123,
+						"memberCount": 147
+					},
+					{
+						"rank": 1,
+						"hueStartDegrees": 123.1637867335427,
+						"hueEndDegrees": 123.1637867335427,
+						"memberCount": 1
+					}
+				],
+				"allocationNotes": [
+					"coverage-prefer-family:1:#242e09:1/46",
+					"coverage-accent:#fea851->#242e09"
+				]
+			}
+		},
+		"ab67616d00001e0200001073a73e3a949021f65e": {
+			"imagePath": "00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"question": "Which of these two colours should the artwork's text be written in?",
+			"roleUnderTest": "foreground",
+			"fixturePositionA": "published-artwork-type",
+			"fixturePositionB": "next-in-ranking",
+			"published": {
+				"name": "published-artwork-type",
+				"hex": "#f8dab8",
+				"palette": {
+					"background": "#f6d4d5",
+					"surface": "#fce4e0",
+					"foreground": "#f8dab8",
+					"accent": "#96d7ad",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"variant": {
+				"name": "next-in-ranking",
+				"hex": "#16151a",
+				"palette": {
+					"background": "#f6d4d5",
+					"surface": "#fce4e0",
+					"foreground": "#16151a",
+					"accent": "#96d7ad",
+					"gradient": null,
+					"surfaceCollapsed": false,
+					"accentCollapsed": false
+				}
+			},
+			"measurements": {
+				"publishedFieldContrast": 2.7188491702226747,
+				"publishedProvenance": "text-group",
+				"variantFieldContrast": 87.00587993490993,
+				"variantProvenance": "pool",
+				"variantPoolRank": 1,
+				"separation": {
+					"oklab": 0.7084661529269326,
+					"bar": 0.02293,
+					"bars": 30.896910289007092
+				},
+				"moreReadableButLowerRanked": [
+					{
+						"hex": "#070705",
+						"fieldContrast": 88.09960140873535,
+						"poolIndex": 50
+					},
+					{
+						"hex": "#080b14",
+						"fieldContrast": 87.9071092209153,
+						"poolIndex": 51
+					},
+					{
+						"hex": "#0f121b",
+						"fieldContrast": 87.375190201184,
+						"poolIndex": 52
+					}
+				],
+				"admissibleCount": 90
+			}
+		}
+	}
+}
