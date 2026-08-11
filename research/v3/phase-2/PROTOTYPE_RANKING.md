@@ -1,17 +1,19 @@
 # Phase 2 prototype ranking — pause snapshot
 
 **Written 2026-08-05 by the Phase 2 orchestrator at the reviewer's request; updated at the
-park order the same day.** Criteria, in order: reviewer verdicts (the only judge), instrument
-health, trajectory.
+second park order the same day.** Criteria, in order: reviewer verdicts (the only judge),
+instrument health, trajectory. **Each arm now keeps its own reviewer-facing STATE.md at its
+prototype root** (six fixed sections ending in an honest promise paragraph) — those are the
+primary mechanism-selection documents; this file is the cross-arm summary.
 
-**Parked state.** The fleet is parked; each orchestrator's PARKED.md holds its exact resume
-sequence. Inputs pending at park time, in whoever-resumes' inbox: three released rounds not yet
-analyzed by their arms (P5's phase2-cal-013; P2's phase2-cal-014 and phase2-pair-015); P2's
-oracle ground-truth fixture restaged and awaiting REVIEW-READY + install; P1's v1 re-emission
-finishing on CPU with its keep-or-kill round owed after. Grade counts across rounds are not
-strictly comparable — different covers, and difficulty escalates as arms probe their own
-weaknesses. This is a main-tier synthesis of reported evidence, not a fresh decode of warehouse
-rows.
+**Parked state (second park).** Inputs pending in the resume inbox: P2's floor-demonstration
+verdict (phase2-pair-018, released, unanalyzed — feeds the reviewer's I4 contract ruling) and
+its ground-truth gradient labels (field-gradient-labels-1, released, absorbed into calibration
+queue); P1's detached v1 re-emission completing on CPU, with reads → robustness screen →
+keep-or-kill round all serialized behind it; P5's round-3 verdicts (phase2-cal-013) analysis
+state as recorded in its STATE.md. Grade counts across rounds are not strictly comparable —
+difficulty escalates as arms probe their own weaknesses. This is a main-tier synthesis of
+reported evidence, not a fresh decode of warehouse rows.
 
 ## 1. P3 — per-pixel scalar fields and ranks
 
