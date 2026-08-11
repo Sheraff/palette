@@ -93,6 +93,9 @@ Gradients are honestly blocked on one unmeasured constant. If the bake-off weigh
 judge-agreeing colour selection with located, priced risks, P2 is promising; if it weighs
 robustness-today, P2 is behind its own quality story and says so.
 
-*(In flight at writing: worker L — cross-lane dedup + antialias ineligibility; its fan-in
-may improve §3's first two rows. Round queue: round-4 with installer; pricing round staged
-next.)*
+*(Update, same day: worker L landed (`78f0285`) — the phantom-text-group defect and the
+antialias-halo publication in §3 row 1 are FIXED structurally, zero new constants (item 5's
+fg now node-backed `#43752e`; item 2's halo displaced by node-backed `#cba69d` with I4 still
+governing); reachability byte-identical (ordering, not retention, proven); robustness moved
+within intervals only (overall 8.5%, dither 20.0% agreement — no signal claimed). Nothing in
+flight. Round queue: round-4 with installer; pricing round staged next.)*
