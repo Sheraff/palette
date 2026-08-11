@@ -58,15 +58,18 @@ next-after-verdicts milestone. Valuable as benchmark and parts-donor; less likel
 
 ## 4. P1 — one global objective priced as description length
 
-MECHANISM-FALSIFIED at v0 (mass-weighted residual pricing condemned by legacy evidence and live
-verdicts; degenerate collapses traced to λ=1 uncalibrated × budget-exhausted searches). Alive on
-the reviewer's one-bounded-iteration grant, and v1 is measurably repairing both defects: the
-chromatic residual (zero new constants, isolation-decides naming) reproduces the reviewer's own
-item-2 pattern in tests, and the λ-probe put the collapse degeneracy on record (λ=1 collapses
-11/12 cells; structure at λ=0.1, now the [MEASURED] operating point) — mid-re-emission, arm A is
-producing mixed structure including its first-ever ramp, versus v0's 20/20 two-colour collapse.
-Everything rests on the single keep-or-kill round owed after re-emission. Fleet-best record of
-intellectual honesty.
+**Closed: MECHANISM-FALSIFIED, final (2026-08-11)** — the pre-registered kill condition fired on
+the v1 keep-or-kill round and the arm declared it against its own iteration. Two-layer record:
+v0's currency mispriced what the reviewer grades (proven on the legacy corpus, then live); v1's
+role assignment is inexpressible in any single-scalar-indifferent objective of this family (the
+reviewer certified extractions and rejected roles; swap deltas structurally zero). The split
+finding stands: the λ repair genuinely worked (P1's first two STRONG grades, 7/7 preference,
+zero-strong wall broken, v0's readability falsifier did not repeat) while the chromatic residual
+failed its own target class. A reviewer-authored endorsed palette from this round is preserved as
+campaign ground truth. Survives for grafting: score-any-palette energies, verified measurement
+layer, the campaign's only excursion probe, id-surface staging hardening, and the λ-repaired
+arm-a instantiation with fleet-best rendition stability. Fleet-best record of intellectual
+honesty, start to finish.
 
 ## 5. P6 — one continuous joint figure–ground measure
 
