@@ -24,10 +24,12 @@ why did fg selection land elsewhere? The deeper fix may be fg selection, not the
   on that artwork... Taxi Yellow, Torch Red, black (Soot is ok), white"). The accent redesign's
   chromatic ordering elected a second yellow against a yellow field — family-separation defect
   on this cover; diagnose why hue-separation didn't exclude it.
-- **168: acceptable → weak, "the foreground should be blue."** Fourth round on this cover, and
-  the prescription MOVED: r3/r5 asked for blue in the accent; blue is now the accent; r6 asks
-  for blue in the foreground. SURFACED AS A CONTRADICTION per the standing rule (never
-  averaged, never chased): reported upward; no code responds to 168 this cycle.
+- **168: acceptable → weak, "the foreground should be blue." RESOLVED post-decode by reviewer
+  ground truth (2026-08-05):** the target is a PAIRED-FAMILY palette — two dark greys as the
+  field pair (gradient:true), two blues as fg + accent. The prescription never moved; we only
+  ever published one blue, so the unfilled seat complained each round. Principle recorded as
+  EVIDENCE item 13 (figure-family vs ground-family separation); W23's scope amended — 168 is an
+  active diagnosis target (reachability of the paired shape, no special-casing).
 
 ## Off-branch
 
