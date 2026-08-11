@@ -20,6 +20,27 @@
  * doc comment (an identity of the arithmetic — a pair is two, OKLab has three coordinates). There is
  * no fourth register, and adding one is a visible edit to this test.
  *
+ * ### The σ floor, and why it did not need a fourth register
+ *
+ * SPEC §3.1 — pre-registered before implementation, acknowledged by the main tier — resolves the σ = 0
+ * degeneracy with `σ_effective = max(σ_measured, σ_quant)`. A noise floor is exactly the failure shape
+ * F2 names, so the whitelist question had to be answered explicitly rather than by silence, and the
+ * answer is: **nothing was whitelisted, because σ_quant is not a constant.** It is
+ * `measureQuantizationScale()`, a function of the image's mean colour and of the 8-bit sRGB encoding,
+ * and it returns a different number on every cover. Concretely:
+ *
+ *  - **Rule A is untouched.** The floor added no registered constant. What it added to `constants.ts`
+ *    is two `[STRUCTURAL]` identities — the 12 of `Var(U) = w²/12` and the 2 of a symmetric difference
+ *    quotient's span — neither of which can carry a magnitude, both of which are integrals or algebra.
+ *  - **Rule B is untouched, and it is what guards the floor.** `substrate.ts` is scanned like
+ *    everything else, so a `1e-3` smuggled in as the floor's value fails this suite. The synthetic
+ *    offender at the bottom of this file is exactly that: a hard-set `SIGMA_FLOOR`, which the scanner
+ *    must catch.
+ *  - `DERIVED_QUANTITIES` in `constants.ts` records the derivation and the consequence. It is a
+ *    *register of functions*, not of numbers — it cannot hold a magnitude, and the function it names
+ *    is still scanned by rule B. `derivedQuantitiesAreHonest` below checks that the function it claims
+ *    actually exists under `selector/`, so the register cannot vouch for code that is not there.
+ *
  * **Rule B — everywhere else under `selector/`.** The only numeric literals admitted in the pricing
  * code are `0`, `1` and `-1` — the additive identity, the unit loop step, and a comparator's
  * sentinel — plus `2` where it indexes a three-coordinate OKLab buffer. None of those can encode a
@@ -49,7 +70,12 @@ import test from "node:test"
 
 import ts from "typescript"
 
-import { ANCHORED_DECISIONS, COMPUTE_BOUNDS, HELD_DECISIONS } from "../selector/constants.ts"
+import {
+	ANCHORED_DECISIONS,
+	COMPUTE_BOUNDS,
+	DERIVED_QUANTITIES,
+	HELD_DECISIONS,
+} from "../selector/constants.ts"
 
 const HERE = dirname(new URL(import.meta.url).pathname)
 const SELECTOR = resolve(HERE, "../selector")
@@ -218,7 +244,7 @@ test("F2: every registered decision is one of arm-c′ §4's eight, and none is 
 	// decision 1 (the lattice resolution), anchored by the C sweep, and decision 3 (the noise-scale
 	// estimator's form), whose anchor is another arm's instrument and which is therefore HELD.
 	const numberOf = (decision: string): number => Number(decision.match(/decision (\d+)/u)?.[1])
-	for (const decision of [...ANCHORED_DECISIONS, ...HELD_DECISIONS]) {
+	for (const decision of [...ANCHORED_DECISIONS, ...HELD_DECISIONS, ...DERIVED_QUANTITIES]) {
 		const number = numberOf(decision.decision)
 		assert.ok(
 			Number.isInteger(number) && number >= 1 && number <= ARM_C_PRIME_FREE_PARAMETERS,
@@ -246,9 +272,56 @@ test("F2: a held decision declares its missing anchor and its measured consequen
 	}
 })
 
+test("F2: a derived quantity names a real function and states its arithmetic", () => {
+	// SPEC §3.1's floor is admissible only because it is computed, not set. That claim is checkable:
+	// the register must name a function that actually exists under `selector/` — a register vouching
+	// for code that is not there would be prose, and prose is what F2 is written to distrust.
+	assert.ok(DERIVED_QUANTITIES.length > 0, "the σ floor is derived; the register must say so")
+	const sources = SELECTOR_FILES.map((name) => readFileSync(resolve(SELECTOR, name), "utf8")).join("\n")
+	for (const derived of DERIVED_QUANTITIES) {
+		assert.equal(derived.tag, "[DERIVED]", `${derived.implementedBy} is registered without the tag`)
+		const functionName = derived.implementedBy.split("(")[0]!.trim()
+		assert.match(
+			sources,
+			new RegExp(`export function ${functionName}\\b`, "u"),
+			`${derived.implementedBy} is registered but no such exported function exists under selector/`,
+		)
+		assert.ok(derived.derivation.trim().length > 0, `${derived.implementedBy}: no derivation`)
+		assert.ok(derived.consequence.trim().length > 0, `${derived.implementedBy}: no consequence`)
+		// The derivation has to say what it is derived FROM, or "derived" is decoration.
+		assert.match(derived.derivation, /image|file|encoding/u, `${derived.implementedBy}: derived from what?`)
+	}
+})
+
 // ---------------------------------------------------------------------------------------------
 // The scanner is armed — synthetic offenders it must catch
 // ---------------------------------------------------------------------------------------------
+
+test("F2 scanner catches a hard-set σ noise floor — the failure shape SPEC §3.1 walks past", () => {
+	// The floor as it must NOT be written: a number somebody picked because it made the run finish.
+	// This is the single most likely relapse in this prototype, so the scanner is armed against it
+	// directly rather than trusted to catch it as a generic literal.
+	const asConstant = `
+		/** The smallest σ we will price at. */
+		const SIGMA_FLOOR = 1e-3
+		export function effectiveSigma(measured: number): number {
+			return Math.max(measured, SIGMA_FLOOR)
+		}
+	`
+	const constantOffences = scan("substrate.ts", asConstant, REGISTERED)
+	assert.equal(constantOffences.length, 1, "the scanner missed a hard-set σ floor constant")
+	assert.equal(constantOffences[0]!.rule, "A")
+
+	const inlined = `
+		export function effectiveSigma(measured: number): number {
+			return measured > 0 ? measured : 0.001
+		}
+	`
+	const inlinedOffences = scan("substrate.ts", inlined, REGISTERED)
+	assert.equal(inlinedOffences.length, 1, "the scanner missed an inlined σ floor")
+	assert.equal(inlinedOffences[0]!.rule, "B")
+	assert.equal(inlinedOffences[0]!.value, "0.001")
+})
 
 test("F2 scanner catches a fabricated per-member reliability weight", () => {
 	const offender = `

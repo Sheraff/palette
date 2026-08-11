@@ -1,0 +1,20 @@
+{
+	"kind": "p4-portfolio-m3-member-run",
+	"candidatePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/members/p5-fieldfit/v3/prototypes/p5-fieldfit/candidate.ts",
+	"setPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m3/coverage-set-1.txt",
+	"outPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m3/runs/p5-fieldfit-coverage1.jsonl",
+	"workers": 1,
+	"stallMs": 60000,
+	"startedAt": "2026-08-11T17:55:08.664Z",
+	"wallMs": 145304,
+	"covers": 220,
+	"rowsWritten": 220,
+	"timedOut": false,
+	"stalledOn": null,
+	"stalledAttribution": null,
+	"notReached": [],
+	"exitCode": 0,
+	"exitSignal": null,
+	"stdout": "{\"kind\":\"devloop-run-footer\",\"runId\":\"p5-fieldfit-coverage-set-1-20260811T175508789Z\",\"finishedAt\":\"2026-08-11T17:57:33.126Z\",\"imageCount\":220,\"okCount\":220,\"failedCount\":0,\"cacheHits\":0,\"cacheMisses\":220,\"wallMs\":144335}",
+	"stderr": ""
+}

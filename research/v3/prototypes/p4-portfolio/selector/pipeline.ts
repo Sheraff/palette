@@ -40,21 +40,27 @@ export function selectOnCover(
 		contentHash: image.contentHash,
 		imagePath: image.path,
 		sigma: substrate.sigma,
+		sigmaMeasured: substrate.sigmaMeasured,
+		sigmaQuantization: substrate.sigmaQuantization,
+		sigmaFlooredByQuantization: substrate.sigmaFlooredByQuantization,
 		materiality,
 	}
 
-	// The refusal (see `Unpriceable`). σ is the currency's only scale; without it there is no
-	// currency, and the alternative — a noise floor — is the free scale arm-c′ §2.3a forbids and the
-	// hand-set constant F2 catches. Measured on demo-20: four covers of twenty.
+	// The refusal (see `Unpriceable`). σ is the currency's only scale; without one there is no
+	// currency. At M2 this fired on the four demo-20 covers whose measured σ was exactly zero; since
+	// SPEC §3.1's floor those covers price at the encoding's own quantization scale, which is measured
+	// from the file, and the branch is left in place as the honest answer to a cover with no scale at
+	// all rather than removed as unreachable.
 	if (!(substrate.sigma > 0)) {
 		return {
 			selection: {
 				...base,
 				unpriceable: {
 					reason:
-						"the measured noise scale is zero: over half of this file's horizontally adjacent " +
-						"pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 " +
-						"specifies has nothing to resolve and the residual has no scale to be priced at",
+						"no positive scale: the measured noise scale is " +
+						`${substrate.sigmaMeasured} and the encoding's own quantization scale (SPEC §3.1) is ` +
+						`${substrate.sigmaQuantization}, so even the floored σ is not positive and the ` +
+						"residual has no scale to be priced at",
 					sigma: substrate.sigma,
 				},
 				prices: [],

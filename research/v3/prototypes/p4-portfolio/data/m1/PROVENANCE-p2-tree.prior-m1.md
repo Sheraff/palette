@@ -1,6 +1,6 @@
 # `p2-tree` — member snapshot provenance
 
-**Verified 2026-08-11T17:51:57.536Z. Member code is READ-ONLY (P4 SPEC §4): copied, never edited.**
+**Verified 2026-08-11T12:41:19.508Z. Member code is READ-ONLY (P4 SPEC §4): copied, never edited.**
 
 The member worktrees are live — two of them moved HEAD during M1 — so a commit hash alone does not pin a snapshot. What pins it is the per-file sha-256 of the measured import closure below, re-checked against the home worktree by `tools/verify-pin.ts`; the commit is recorded as the checkout those bytes were found in.
 
@@ -9,19 +9,19 @@ The member worktrees are live — two of them moved HEAD during M1 — so a comm
 | what | value |
 |---|---|
 | source worktree | `/Users/Flo/GitHub/palette/.worktrees/p2-tree` |
-| pinned commit (HEAD at verification) | `0ae6254260d8e170eb932bc9abc86a2a35f61ab8` |
+| pinned commit (HEAD at verification) | `21131282af7e9077ebc17f0ae7c2bc4af9577c39` |
 | branch | `proto/p2-tree` |
 | home candidate module | `prototypes/p2-tree/tos/candidate.ts` |
 | snapshot candidate module | `members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts` |
-| home `codeVersion` | `93291d0f55348ad12fd0df30d0235c48a874af084f81bc2a2dd172ad841a831b` |
-| snapshot `codeVersion` | `0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4` |
-| snapshot content is in that commit | **NO** (0 copied file(s) untracked in the home worktree, 1 with uncommitted edits) |
-| closure re-verified | **PINNED** at 2026-08-11T17:51:57.536Z (19 copied + 8 shared files re-hashed; 0 copied drifted, 0 shared drifted) |
+| home `codeVersion` | `402bf32affa42133bd3f636ab6da4aed5599141aa9a03c1fa30706d1fc0d70ba` |
+| snapshot `codeVersion` | `19e91d28fa6152df6bea151364859594a00e29fafec1ef1d81596744cab6bfc9` |
+| snapshot content is in that commit | **NO** (4 copied file(s) untracked in the home worktree, 1 with uncommitted edits) |
+| closure re-verified | **PINNED** at 2026-08-11T12:41:19.508Z (19 copied + 8 shared files re-hashed; 0 copied drifted, 0 shared drifted) |
 
 The two `codeVersion`s differ **by construction and only by construction**: `code-version.ts` hashes each file's path *relative to its own `research/v3`* into the digest, and the snapshot lives at a different relative path. The per-file sha-256s below are the checkout-independent identity, and the byte-identity gate is what actually proves the code is the same code.
 
 
-> **The commit does not contain this member.** The files below were snapshotted from the home worktree's *working tree*: 1 carry uncommitted edits (`prototypes/p2-tree/tos/constants.ts`). So no commit reproduces what this member runs, and the sha-256 fingerprint below is the only pin there is. Recorded, not worked around — resolving it is the home prototype's call.
+> **The commit does not contain this member.** The files below were snapshotted from the home worktree's *working tree*: 4 of them are untracked there (`prototypes/p2-tree/tos/gradient/constants.ts`, `prototypes/p2-tree/tos/gradient/excursion.ts`, `prototypes/p2-tree/tos/gradient/guide-stop.ts`, `prototypes/p2-tree/tos/gradient/occupancy.ts`), and 1 carry uncommitted edits (`prototypes/p2-tree/tos/candidate.ts`). So no commit reproduces what this member runs, and the sha-256 fingerprint below is the only pin there is. Recorded, not worked around — resolving it is the home prototype's call.
 
 ## Import resolution — how the snapshot runs unmodified
 
@@ -34,7 +34,7 @@ members/p2-tree/v3/prototypes/…  copied files, at their original relative path
 
 So the candidate's own `../../../src/contract/types.ts` lands on **this worktree's one contract** through the symlink, and its intra-prototype imports resolve inside the copy. Nothing under `src/` is duplicated: those files were verified byte-identical between this worktree and the member's home before copying (`sharedFileDiffs` below), and forking the contract per member is exactly what a portfolio must not do. The symlink is inside p4's owned subtree.
 
-**Note.** RE-PINNED 2026-08-11 (M3 prerequisite, PARKED.md resume step 3). The M1 snapshot (commit `21131282af`) is superseded: P2 has since committed the four previously-untracked `tos/gradient/*` files and `tos/candidate.ts`'s edits at `2da8b74b`, and its STATE.md restates the provenance pin at `1b830141` as *any commit from `78f0285` through HEAD*. Commit chain, oldest first: `78f0285` (content-final, P2's own pin floor) → `21131282af` (M1's recorded HEAD) → `2da8b74b` (the gradient closure committed) → `1b830141` (pin restated) → `0ae62542` (HEAD at this re-pin). **One member file still differs from HEAD's bytes:** `tos/constants.ts` carries an uncommitted working-tree edit — `UNREADABLE_COVERAGE_FRACTION` 0.5 → 0.25, P2's DECISIONS.md D15, retagged [UNCALIBRATED] → [MEASURED]. That is a live behavioural change to the member, and it is what the re-pin captures: the fingerprint below, not the commit, remains the pin. Byte-identity gate re-run after the re-snapshot: **PASS, 3/3 rows** (`data/m1/runs/p2-tree-gate3-{home,snapshot}.jsonl`).
+**Note.** P2's **merged** tree-of-shapes candidate: `prototypes/p2-tree/tos/candidate.ts`, candidateId `p2-tos`, publishing `MERGED_ALGORITHM_VERSION = p2-tos-0.3.0-cycle-2-merged` — the family STATE.md §1 records as carried. The frozen α-tree (`alpha/candidate.ts`) and the un-judged coverage-allocation prototype (`tos/coverage/candidate-coverage.ts`) are NOT snapshotted.
 
 ## Files copied
 
@@ -43,7 +43,7 @@ Measured, not chosen: the closure is `computeCodeVersion()`'s own transitive rel
 | copied file (path relative to the home `research/v3`) | sha-256 |
 |---|---|
 | `prototypes/p2-tree/tos/candidate.ts` | `1d15fd9ed3a9799e7a25d6a6464d7052d71d063f9a38744cb171f7fb9d3ab786` |
-| `prototypes/p2-tree/tos/constants.ts` | `b00429ee57ecc419d1134bf74e70691d22da7f4d03dfec1a17887fb61308e0b4` |
+| `prototypes/p2-tree/tos/constants.ts` | `5f891a8e1378b76b2f5d8930054df33717098a34af3378619e556a8120d370f1` |
 | `prototypes/p2-tree/tos/gradient/constants.ts` | `1120611ee0b35919d2fd314a84478f3d24d97032a1e8df5d749652a54e1087d7` |
 | `prototypes/p2-tree/tos/gradient/excursion.ts` | `0c5cf9dc64b9ad4886febb745548f67561ba52f38976c72492b65c93b8c9d846` |
 | `prototypes/p2-tree/tos/gradient/guide-stop.ts` | `e92c93fbf380bc7b392c3d40435ccb1d377459fb9a58c3aa12e6da3e5b501858` |

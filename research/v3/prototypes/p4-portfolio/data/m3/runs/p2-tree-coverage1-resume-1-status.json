@@ -1,0 +1,20 @@
+{
+	"kind": "p4-portfolio-m3-member-run",
+	"candidatePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts",
+	"setPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m3/coverage-set-1-p2-resume-1.txt",
+	"outPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m3/runs/p2-tree-coverage1-resume-1.jsonl",
+	"workers": 1,
+	"stallMs": 60000,
+	"startedAt": "2026-08-11T18:07:45.093Z",
+	"wallMs": 153218,
+	"covers": 52,
+	"rowsWritten": 52,
+	"timedOut": false,
+	"stalledOn": null,
+	"stalledAttribution": null,
+	"notReached": [],
+	"exitCode": 0,
+	"exitSignal": null,
+	"stdout": "{\"kind\":\"devloop-run-footer\",\"runId\":\"p2-tos-coverage-set-1-p2-resume-1-20260811T180745184Z\",\"finishedAt\":\"2026-08-11T18:10:18.276Z\",\"imageCount\":52,\"okCount\":52,\"failedCount\":0,\"cacheHits\":0,\"cacheMisses\":52,\"wallMs\":153089}",
+	"stderr": ""
+}

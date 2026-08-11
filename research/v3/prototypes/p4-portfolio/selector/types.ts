@@ -44,8 +44,22 @@ export type Substrate = Readonly<{
 	sums: Float64Array
 	/** Σ (L² + a² + b²) per cell. */
 	sumsOfSquares: Float64Array
-	/** The robust noise scale, measured from this file (arm-c′ §2.1). */
+	/**
+	 * The scale the currency prices at: `max(sigmaMeasured, sigmaQuantization)` (SPEC §3.1). Both
+	 * inputs are measurements of this file, so the maximum is too.
+	 */
 	sigma: number
+	/**
+	 * arm-c′ §2.1's estimator, unfloored and unadjusted — exactly what `measureNoiseScale` returned,
+	 * including the zeros. Carried so the floor is visible rather than absorbed.
+	 */
+	sigmaMeasured: number
+	/** The 8-bit sRGB quantization scale in OKLab at this image's mean colour (`[DERIVED]`). */
+	sigmaQuantization: number
+	/** True where the encoding's scale bound — i.e. the estimator resolved less than one LSB. */
+	sigmaFlooredByQuantization: boolean
+	/** The operating point the quantization scale was evaluated at. Reported, not consumed. */
+	meanRgb: readonly [number, number, number]
 	/** Per-OKLab-coordinate scales, before they are pooled into `sigma`. Reported, not consumed. */
 	sigmaPerCoordinate: readonly number[]
 }>
@@ -120,13 +134,16 @@ export type BootstrapReport = Readonly<{
 /**
  * Why a cover could not be priced at all.
  *
- * The currency divides the residual by σ², so an image whose measured σ is zero has no exchange rate
- * between residual bits and schema bits and every member's total comes out `NaN`. That is not a
- * rounding problem to be smoothed: it is the estimator saying this file's noise is below what it can
- * resolve, and the only way to make a number appear is to invent a noise floor — a free scale in the
- * loss, which arm-c′ §2.3a forbids outright (*"it has no free scale"*) and which is the hand-set
- * constant SPEC §3's F2 exists to catch. So the selector refuses the cover, says why, and the
- * refusals are counted in the bit table instead of being averaged away.
+ * The currency divides the residual by σ², so a cover with no scale has no exchange rate between
+ * residual bits and schema bits and every member's total comes out `NaN`.
+ *
+ * **At M2 this was the σ = 0 refusal, and it fired on 4 of 20 demo-20 covers.** It no longer fires
+ * for that reason: SPEC §3.1's floor, acknowledged by the main tier and implemented in
+ * `measureQuantizationScale`, gives those covers the scale the encoding itself injects, which is
+ * measured from the file rather than invented. The path stays, unwidened, because it is still the
+ * honest answer to "this cover has no scale" — a σ that came out non-positive, or a total that came
+ * out non-finite anyway, is a cover this code does not understand, and a ranking over `NaN` would
+ * silently be the sort's input order rather than a decision.
  */
 export type Unpriceable = Readonly<{ reason: string; sigma: number }>
 
@@ -134,8 +151,14 @@ export type Unpriceable = Readonly<{ reason: string; sigma: number }>
 export type Selection = Readonly<{
 	contentHash: string
 	imagePath: string
-	/** The measured noise scale. Reported on every cover, priceable or not. */
+	/** The scale the currency priced at. Reported on every cover, priceable or not. */
 	sigma: number
+	/** arm-c′ §2.1's estimator, unfloored — so a floored cover can be told from an unfloored one. */
+	sigmaMeasured: number
+	/** The encoding's own quantization scale at this image's mean colour (SPEC §3.1). */
+	sigmaQuantization: number
+	/** True where the encoding's scale bound. */
+	sigmaFlooredByQuantization: boolean
 	/** Set when the currency is undefined here; `prices` is then empty and `winner` is null. */
 	unpriceable: Unpriceable | null
 	prices: readonly MemberPrice[]

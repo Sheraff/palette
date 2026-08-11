@@ -263,6 +263,9 @@ function bitTableRow(selection: Selection): Record<string, unknown> {
 		contentHash: selection.contentHash,
 		imagePath: selection.imagePath,
 		sigma: selection.sigma,
+		sigmaMeasured: selection.sigmaMeasured,
+		sigmaQuantization: selection.sigmaQuantization,
+		sigmaFlooredByQuantization: selection.sigmaFlooredByQuantization,
 		unpriceable: selection.unpriceable,
 		immaterial: !selection.materiality.material,
 		winner: selection.winner,
@@ -353,6 +356,30 @@ async function runTable(): Promise<void> {
 			max: Math.max(...sigmas),
 			zeroCovers: sigmas.filter((value) => value === 0).length,
 		},
+		// SPEC §3.1 — what the floor did, per cover, so it can be audited rather than believed.
+		sigmaFloor: {
+			decision: "SPEC §3.1 — see DERIVED_QUANTITIES in selector/constants.ts",
+			derivedFrom: "measureQuantizationScale() in selector/substrate.ts",
+			measuredZeroCovers: selections.filter((selection) => selection.sigmaMeasured === 0).length,
+			flooredCovers: selections.filter((selection) => selection.sigmaFlooredByQuantization).length,
+			quantizationScale: {
+				min: Math.min(...selections.map((selection) => selection.sigmaQuantization)),
+				max: Math.max(...selections.map((selection) => selection.sigmaQuantization)),
+			},
+			covers: selections
+				.filter((selection) => selection.sigmaFlooredByQuantization)
+				.map((selection) => ({
+					contentHash: selection.contentHash,
+					imagePath: selection.imagePath,
+					sigmaMeasured: selection.sigmaMeasured,
+					sigmaQuantization: selection.sigmaQuantization,
+					// The four demo-20 covers M2 refused are exactly the σ_measured = 0 ones.
+					wasRefusedAtM2: selection.sigmaMeasured === 0,
+					winner: selection.winner,
+					marginBits: selection.marginBits,
+					winFraction: selection.bootstrap?.winFraction ?? null,
+				})),
+		},
 		unpriceable: {
 			count: refused.length,
 			decision: "arm-c′ §4 decision 3 — see HELD_DECISIONS in selector/constants.ts",
@@ -421,12 +448,31 @@ function renderMarkdown(report: Record<string, unknown>, selections: readonly Se
 	lines.push("")
 	const sigma = report.sigma as { min: number; mean: number; max: number; zeroCovers: number }
 	const pricedSigmas = priced.map((selection) => selection.sigma)
+	const floor = report.sigmaFloor as {
+		measuredZeroCovers: number
+		flooredCovers: number
+		quantizationScale: { min: number; max: number }
+		covers: {
+			contentHash: string
+			sigmaMeasured: number
+			sigmaQuantization: number
+			wasRefusedAtM2: boolean
+			winner: string | null
+			marginBits: number | null
+			winFraction: number | null
+		}[]
+	}
 	lines.push(
 		`Lattice resolution **C = ${report.latticeResolution}** — \`[MEASURED]\`, anchored by \`${report.anchor}\` (§3). ` +
-			"Noise scale σ is measured per file, never chosen and never floored. Over the **priced** " +
-			`covers it runs ${fixed(Math.min(...pricedSigmas), 5)} … ${fixed(Math.max(...pricedSigmas), 5)} ` +
-			`OKLab units; over all ${report.covers} it reaches exactly ${sigma.min} on ${sigma.zeroCovers} ` +
-			"of them, which is §5.",
+			"The scale σ the currency prices at is `max(σ_measured, σ_quant)` — **SPEC §3.1**, acknowledged " +
+			"by the main tier and implemented at this milestone. Both terms are measured from the file: " +
+			"σ_measured is arm-c′ §2.1's estimator, unchanged; σ_quant is the 8-bit sRGB quantization " +
+			"scale carried into OKLab at the image's mean colour, derived in `selector/substrate.ts` and " +
+			"registered in `DERIVED_QUANTITIES`. Over the priced covers the effective σ runs " +
+			`${fixed(Math.min(...pricedSigmas), 5)} … ${fixed(Math.max(...pricedSigmas), 5)} OKLab units; ` +
+			`σ_quant runs ${fixed(floor.quantizationScale.min, 5)} … ${fixed(floor.quantizationScale.max, 5)}; ` +
+			`σ_measured is exactly 0 on ${floor.measuredZeroCovers} of ${report.covers} covers and the floor ` +
+			`binds on ${floor.flooredCovers}. That is §5.`,
 	)
 	lines.push("")
 	const coverage = report.coverage as { slug: string; covers: number; runPath: string }[]
@@ -434,10 +480,11 @@ function renderMarkdown(report: Record<string, unknown>, selections: readonly Se
 		"**Member coverage — read every count below against this row, not against the cover total.** " +
 			coverage.map((entry) => `\`${entry.slug}\` **${entry.covers}**`).join(", ") +
 			` of ${report.pricedCovers} priced covers. \`p1-mdl\` published on three gate covers only ` +
-			"(its 240 s budget, `MEMBERS.md` §4 item 2) and two of those three are among the σ = 0 " +
-			`refusals in §5, so it is priced on ${coverage.find((entry) => entry.slug === "p1-mdl")?.covers ?? 0} ` +
-			"cover here. A member absent from a row shows `—`, never a substituted value, and its winner " +
-			"count is out of the covers it was priced on. One cover is not evidence about a member.",
+			"(its 240 s budget, `MEMBERS.md` §4 item 2), so it is priced on " +
+			`${coverage.find((entry) => entry.slug === "p1-mdl")?.covers ?? 0} covers here — two of them ` +
+			"only because SPEC §3.1's floor converted the σ = 0 refusals of §5. A member absent from a " +
+			"row shows `—`, never a substituted value, and its winner count is out of the covers it was " +
+			"priced on. Three covers are not evidence about a member.",
 	)
 	lines.push("")
 	const refusals = report.unpriceable as { count: number; covers: { contentHash: string }[] }
@@ -484,9 +531,15 @@ function renderMarkdown(report: Record<string, unknown>, selections: readonly Se
 	lines.push("## 2. Per cover — the selection")
 	lines.push("")
 	lines.push(
-		`| cover | ${slugs.map((slug) => `${slug} total`).join(" | ")} | winner | margin (bits) | immaterial | win fraction | resamples | block |`,
+		"**`σ floored`** marks a cover priced at the encoding's quantization scale because the estimator " +
+			"resolved less than one LSB (SPEC §3.1). **`converted`** marks the subset of those whose " +
+			"σ_measured is exactly 0 — the covers M2 refused outright and could not price at all.",
 	)
-	lines.push(`|---|${slugs.map(() => "---").join("|")}|---|---|---|---|---|---|`)
+	lines.push("")
+	lines.push(
+		`| cover | ${slugs.map((slug) => `${slug} total`).join(" | ")} | winner | margin (bits) | immaterial | win fraction | resamples | block | σ floored |`,
+	)
+	lines.push(`|---|${slugs.map(() => "---").join("|")}|---|---|---|---|---|---|---|`)
 	for (const selection of priced) {
 		const byslug = new Map(selection.prices.map((price) => [price.slug, price]))
 		const cells = slugs.map((slug) => {
@@ -500,7 +553,14 @@ function renderMarkdown(report: Record<string, unknown>, selections: readonly Se
 				`${selection.materiality.material ? "no" : "**yes**"} | ` +
 				`${bootstrap === null ? "—" : fixed(bootstrap.winFraction, 3)} | ` +
 				`${bootstrap === null ? "—" : String(bootstrap.resamples)} | ` +
-				`${bootstrap === null ? "—" : `${bootstrap.blockSide}×${bootstrap.blockSide}`} |`,
+				`${bootstrap === null ? "—" : `${bootstrap.blockSide}×${bootstrap.blockSide}`} | ` +
+				`${
+					!selection.sigmaFlooredByQuantization
+						? "no"
+						: selection.sigmaMeasured === 0
+							? "**converted**"
+							: "yes"
+				} |`,
 		)
 	}
 	lines.push("")
@@ -577,9 +637,8 @@ function renderMarkdown(report: Record<string, unknown>, selections: readonly Se
 	lines.push("")
 	lines.push("No verdict is attached to these numbers. F1 is a corpus statement and twenty covers is not a corpus.")
 	lines.push("")
-	lines.push("## 5. The covers the selector refused, and why nothing was added to price them")
+	lines.push("## 5. The σ floor — what M2 refused, and what it prices at now")
 	lines.push("")
-	const sigmaStats = report.sigma as { zeroCovers: number }
 	lines.push(
 		"σ is the currency's only scale. `L(member | image)` charges the residual at " +
 			"`M_k / (2σ² ln2)` bits, so where σ = 0 there is no exchange rate between residual bits and " +
@@ -587,38 +646,100 @@ function renderMarkdown(report: Record<string, unknown>, selections: readonly Se
 			"verbatim: the median absolute difference between horizontally adjacent pixels in OKLab, " +
 			"times the analytic consistency factor. It returns exactly zero when **more than half of a " +
 			"file's horizontally adjacent pixel pairs are byte-identical** — flat-design artwork, large " +
-			"single-fill areas, hard-posterised renders. That is not exotic on album covers.",
+			"single-fill areas, hard-posterised renders. That is not exotic on album covers, and at M2 " +
+			"it cost four of twenty covers, refused rather than priced against an invented floor.",
 	)
 	lines.push("")
 	lines.push(
-		`**Measured: σ = 0 on ${sigmaStats.zeroCovers} of ${report.covers} demo-20 covers.**`,
+		"**The estimator has not been touched.** `measureNoiseScale()` returns exactly what it returned " +
+			`at M2 — σ_measured is still exactly 0 on ${floor.measuredZeroCovers} of ${report.covers} ` +
+			"covers, and `tests/substrate.test.ts` still pins that. What changed is what the currency " +
+			"prices at: **σ_effective = max(σ_measured, σ_quant)**, SPEC §3.1, pre-registered before " +
+			"implementation and acknowledged by the main tier.",
 	)
 	lines.push("")
-	lines.push("| cover | σ | reason |")
-	lines.push("|---|---|---|")
-	for (const cover of refusals.covers as { contentHash: string; sigma: number; reason: string }[]) {
-		lines.push(`| \`${shortHash(cover.contentHash)}\` | ${cover.sigma} | ${cover.reason} |`)
+	lines.push(
+		"**σ_quant is derived, not chosen, and the derivation is the provenance.** Rounding to 8 bits " +
+			"leaves an error uniform over one quantization cell, so per sRGB channel `σ_s = 1 LSB/√12` " +
+			"(the variance of a uniform over its cell, `∫x²dx = 1/12`). Over one LSB the sRGB→OKLab map " +
+			"is linear to second order, so the OKLab perturbation is `Δ = Σ_c J_c e_c` with `J_c` the " +
+			"Jacobian column at **the image's mean 8-bit colour**, giving `Var_k = σ_s²·Σ_c J_c[k]²`. " +
+			"Pooled into one isotropic scale by the same rule `measureNoiseScale` pools its three " +
+			"coordinates (`3σ² = Σ_k σ_k²`): **σ_quant = ‖J‖_F / √36**, where 36 is " +
+			"`OKLAB_DIMENSIONS · UNIFORM_QUANTIZATION_VARIANCE_DENOMINATOR` and is never written as a " +
+			"digit. The columns `J_c` are the symmetric difference of the **contract's own** `rgbToOkLab` " +
+			"over ±1 LSB about the mean colour — the smallest step the encoding admits, and exactly the " +
+			"probe arm-c′ §4.3 anchors decision 3 on. Nothing is swept, fitted or tuned: σ_quant is a " +
+			`function of the image and takes a different value on every cover (here ` +
+			`${fixed(floor.quantizationScale.min, 6)} … ${fixed(floor.quantizationScale.max, 6)}).`,
+	)
+	lines.push("")
+	lines.push(
+		"**F2 is still armed, and it is armed at this specifically.** No constant was whitelisted: the " +
+			"floor added no registered number, only two `[STRUCTURAL]` identities (the 12 of a uniform's " +
+			"variance, the 2 of a symmetric difference's span). `tests/f2-tripwire.test.ts` now runs a " +
+			"synthetic offender that is precisely the failure shape — a hard-set `SIGMA_FLOOR = 1e-3`, " +
+			"and the same value inlined — and fails if the scanner does not catch it.",
+	)
+	lines.push("")
+	const convertedCount = floor.covers.filter((cover) => cover.wasRefusedAtM2).length
+	lines.push(
+		`**Measured on this run: the floor binds on ${floor.flooredCovers} of ${report.covers} covers, of ` +
+			`which ${convertedCount} are the covers M2 refused.**`,
+	)
+	lines.push("")
+	if (floor.flooredCovers === convertedCount) {
+		lines.push(
+			`So it binds on **none** of the ${(report.covers as number) - convertedCount} covers M2 could ` +
+				"already price: on those, σ_measured > σ_quant, `max` returns the same double, and every " +
+				"member's total, the winner, the margin and the win fraction are **bit-for-bit what M2 " +
+				`published** (checked against \`data/m2/bit-table.pre-floor.json\`: ` +
+				`${(report.covers as number) - convertedCount}/${(report.covers as number) - convertedCount} ` +
+				"rows identical). The floor is not a rescale of the corpus; it is a scale for the covers " +
+				"that had none.",
+		)
+		lines.push("")
 	}
-	lines.push("")
+	if (floor.covers.length > 0) {
+		lines.push("| cover | σ_measured | σ_quant | M2 status | winner now | margin (bits) | win fraction |")
+		lines.push("|---|---|---|---|---|---|---|")
+		for (const cover of floor.covers) {
+			lines.push(
+				`| \`${shortHash(cover.contentHash)}\` | ${fixed(cover.sigmaMeasured, 6)} | ` +
+					`${fixed(cover.sigmaQuantization, 6)} | ` +
+					`${cover.wasRefusedAtM2 ? "**REFUSED**" : "priced"} | ` +
+					`${cover.winner ?? "—"} | ${cover.marginBits === null ? "—" : fixed(cover.marginBits, 0)} | ` +
+					`${cover.winFraction === null ? "—" : fixed(cover.winFraction, 3)} |`,
+			)
+		}
+		lines.push("")
+	}
+	if (refusals.count > 0) {
+		lines.push(`**Covers still refused after the floor: ${refusals.count}.**`)
+		lines.push("")
+		lines.push("| cover | σ | reason |")
+		lines.push("|---|---|---|")
+		for (const cover of refusals.covers as { contentHash: string; sigma: number; reason: string }[]) {
+			lines.push(`| \`${shortHash(cover.contentHash)}\` | ${cover.sigma} | ${cover.reason} |`)
+		}
+		lines.push("")
+	} else {
+		lines.push(
+			"**Covers still refused after the floor: 0.** The refusal path in `selector/pipeline.ts` is " +
+				"kept — it is still the honest answer to a cover with no positive scale — but nothing in " +
+				"this run reaches it, and `tests/select.test.ts` now drives it directly rather than " +
+				"through a fixture, which is stated there rather than quietly dropped.",
+		)
+		lines.push("")
+	}
 	lines.push(
-		"**Why no noise floor was added.** A floor is the obvious repair and it is the one this " +
-			"prototype is built to refuse. arm-c′ §2.3a's second stated property of the currency is that " +
-			"*\"it has no free scale — σ comes from the image\"*; a floor is a free scale, chosen by hand, " +
-			"sitting inside the loss, and it would change which member wins on exactly the covers where " +
-			"the currency is weakest. SPEC §3's F2 says it in one line: *\"hand-set constants ARE the " +
-			"failure shape; discovering we need one is the result, not a licence to add it.\"* So the " +
-			"covers are refused, counted, and listed, and the finding is escalated instead.",
-	)
-	lines.push("")
-	lines.push(
-		"**What the finding actually is.** arm-c′ §4 decision 3 is the noise-scale estimator's *form*, " +
-			"and its stated anchor is the dither arm — *\"the right one is that for which a ±1-LSB dither " +
-			"moves σ by the amount the dither actually injects\"*. P4 has no dither arm and cannot " +
-			"author one without choosing the estimator by choosing its test. The form was therefore " +
-			"inherited unanchored, and this is the measured consequence. It is registered as " +
-			"`HELD_DECISIONS` in `selector/constants.ts` rather than left in prose, so that a later " +
-			"reader finds a declared open decision instead of a silent one. Deciding it is the " +
-			"orchestrator's, and it is the item this milestone most needs read.",
+		"**What is still open.** The floor resolves the *degeneracy*; it does not anchor arm-c′ §4 " +
+			"decision 3, which is the estimator's **form**. That anchor is the dither arm — *\"the right " +
+			"one is that for which a ±1-LSB dither moves σ by the amount the dither actually injects\"* — " +
+			"and P4 still has no dither arm and still cannot author one without choosing the estimator by " +
+			"choosing its test. Decision 3 therefore remains in `HELD_DECISIONS` in " +
+			"`selector/constants.ts`, unsettled and declared, and the floor is registered separately in " +
+			"`DERIVED_QUANTITIES`.",
 	)
 	lines.push("")
 	return `${lines.join("\n")}\n`

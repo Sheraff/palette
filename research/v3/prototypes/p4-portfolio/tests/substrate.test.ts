@@ -29,6 +29,7 @@ import { tmpdir } from "node:os"
 import { dirname, resolve } from "node:path"
 import test from "node:test"
 
+import { rgbToOkLab } from "../../../src/contract/index.ts"
 import { probit, quantileSorted } from "../../../src/stats/numeric.ts"
 import {
 	LATTICE_RESOLUTION_C,
@@ -38,8 +39,32 @@ import {
 	cellIndexOf,
 	decodeImage,
 	measureNoiseScale,
+	measureQuantizationScale,
 } from "../selector/index.ts"
 import type { DecodedImage, Substrate } from "../selector/types.ts"
+
+/**
+ * A flat synthetic image at one 8-bit colour — a `DecodedImage` built by hand rather than decoded,
+ * so the operating point can be *set* and σ_quant's dependence on it measured directly.
+ */
+function syntheticImage(red: number, green: number, blue: number): DecodedImage {
+	const width = 4
+	const height = 4
+	const pixelCount = width * height
+	const rgb = new Uint8Array(pixelCount * OKLAB_DIMENSIONS)
+	const lab = new Float64Array(pixelCount * OKLAB_DIMENSIONS)
+	const okLab = rgbToOkLab([red, green, blue])
+	for (let pixel = 0; pixel < pixelCount; pixel += 1) {
+		const at = pixel * OKLAB_DIMENSIONS
+		rgb[at] = red
+		rgb[at + 1] = green
+		rgb[at + 2] = blue
+		lab[at] = okLab[0]
+		lab[at + 1] = okLab[1]
+		lab[at + 2] = okLab[2]
+	}
+	return { path: `synthetic-${red}-${green}-${blue}`, width, height, rgb, lab, contentHash: "", format: "synthetic" }
+}
 
 const HERE = dirname(new URL(import.meta.url).pathname)
 const PROTOTYPE = resolve(HERE, "..")
@@ -62,7 +87,15 @@ function substrateBytes(substrate: Substrate): Buffer[] {
 		Buffer.from(substrate.counts.buffer.slice(0)),
 		Buffer.from(substrate.sums.buffer.slice(0)),
 		Buffer.from(substrate.sumsOfSquares.buffer.slice(0)),
-		Buffer.from(Float64Array.from([substrate.sigma, ...substrate.sigmaPerCoordinate]).buffer),
+		Buffer.from(
+			Float64Array.from([
+				substrate.sigma,
+				substrate.sigmaMeasured,
+				substrate.sigmaQuantization,
+				...substrate.meanRgb,
+				...substrate.sigmaPerCoordinate,
+			]).buffer,
+		),
 	]
 }
 
@@ -197,31 +230,132 @@ test("substrate: σ agrees with an independent naive re-derivation", async () =>
 	}
 })
 
-test("substrate: σ reaches exactly zero on real covers — the milestone's headline finding, pinned", async () => {
-	// **This test asserts a defect, on purpose.** arm-c′ §2.1's estimator — the median absolute
-	// horizontally-adjacent difference — returns exactly zero whenever more than half of a file's
-	// adjacent pixel pairs are byte-identical, and on this corpus that is common: 2 of the 3 gate
-	// covers and 4 of the 20 demo-20 covers. At σ = 0 the currency has no scale and every total is
-	// NaN, which is why `selector/pipeline.ts` refuses those covers instead of pricing them.
+test("substrate: the MEASURED σ still reaches exactly zero on real covers — the M2 finding, still pinned", async () => {
+	// **This test asserts a defect, on purpose, and SPEC §3.1's floor did not make it go away.**
+	// arm-c′ §2.1's estimator — the median absolute horizontally-adjacent difference — returns exactly
+	// zero whenever more than half of a file's adjacent pixel pairs are byte-identical, and on this
+	// corpus that is common: 2 of the 3 gate covers and 4 of the 20 demo-20 covers.
 	//
+	// The floor changes what the *currency* prices at; it does not change what the estimator measured,
+	// and `sigmaMeasured` is carried on the substrate precisely so this assertion can keep being made.
 	// It is pinned here rather than left to the run report so that the day someone changes the
 	// estimator's form — arm-c′ §4 decision 3, registered as HELD in `selector/constants.ts` because
 	// its anchor is a dither arm P4 does not have — this test fails and the change is *noticed*. A
 	// green suite that quietly started measuring a different σ is exactly how an unanchored free
 	// parameter gets settled by accident.
-	const sigmas: number[] = []
+	const measured: number[] = []
 	for (const cover of gateCovers()) {
 		const substrate = buildSubstrate(await decodeImage(cover), LATTICE_RESOLUTION_C)
-		assert.ok(Number.isFinite(substrate.sigma), `${cover}: σ is not finite`)
-		assert.ok(substrate.sigma >= 0, `${cover}: σ is negative`)
-		sigmas.push(substrate.sigma)
+		assert.ok(Number.isFinite(substrate.sigmaMeasured), `${cover}: σ_measured is not finite`)
+		assert.ok(substrate.sigmaMeasured >= 0, `${cover}: σ_measured is negative`)
+		measured.push(substrate.sigmaMeasured)
 	}
 	assert.equal(
-		sigmas.filter((sigma) => sigma === 0).length,
+		measured.filter((sigma) => sigma === 0).length,
 		2,
-		`σ = 0 on a different number of gate covers than the finding records: ${sigmas.join(", ")}`,
+		`σ = 0 on a different number of gate covers than the finding records: ${measured.join(", ")}`,
 	)
-	assert.ok(sigmas.some((sigma) => sigma > 0), "and it is not zero everywhere — the estimator does work")
+	assert.ok(measured.some((sigma) => sigma > 0), "and it is not zero everywhere — the estimator does work")
+})
+
+// ---------------------------------------------------------------------------------------------
+// SPEC §3.1 — the σ floor
+// ---------------------------------------------------------------------------------------------
+
+test("floor: σ_measured = 0 prices at σ_quant exactly, and the gate covers are converted", async () => {
+	// The two properties the brief asks for, on the covers that actually exhibit the degeneracy: the
+	// floored σ is the encoding's own scale, bit-for-bit (not "about" it — the max of {0, q} is q),
+	// and it is positive, so the cover is priceable where at M2 it was refused.
+	let converted = 0
+	for (const cover of gateCovers()) {
+		const image = await decodeImage(cover)
+		const substrate = buildSubstrate(image, LATTICE_RESOLUTION_C)
+		if (substrate.sigmaMeasured !== 0) continue
+		converted += 1
+		const quantization = measureQuantizationScale(image)
+		assert.equal(substrate.sigma, quantization.sigma, `${cover}: floored σ is not σ_quant`)
+		assert.ok(substrate.sigma > 0, `${cover}: the floor did not produce a positive scale`)
+		assert.equal(substrate.sigmaFlooredByQuantization, true, `${cover}: the floor is not recorded`)
+	}
+	assert.equal(converted, 2, "the two σ = 0 gate covers are the ones this test exists to convert")
+})
+
+test("floor: σ_measured ≫ σ_quant leaves the price untouched, bit-for-bit", async () => {
+	// The floor must be inert where the estimator resolved real noise, or it is not a floor, it is a
+	// second scale. Checked as exact equality of the *effective* σ with the measured one — no
+	// tolerance, because `Math.max` either returns the same double or it does not.
+	let inert = 0
+	for (const cover of gateCovers()) {
+		const image = await decodeImage(cover)
+		const substrate = buildSubstrate(image, LATTICE_RESOLUTION_C)
+		if (!(substrate.sigmaMeasured > substrate.sigmaQuantization)) continue
+		inert += 1
+		assert.equal(substrate.sigma, substrate.sigmaMeasured, `${cover}: the floor moved an unfloored σ`)
+		assert.equal(substrate.sigmaFlooredByQuantization, false, `${cover}: the floor is mis-recorded`)
+	}
+	assert.ok(inert > 0, "no gate cover exercises the unfloored case")
+
+	// And synthetically, at the extreme the brief names: a σ_measured many orders above σ_quant.
+	const image = await decodeImage(gateCovers()[0]!)
+	const quantization = measureQuantizationScale(image)
+	assert.equal(Math.max(quantization.sigma * 1e6, quantization.sigma), quantization.sigma * 1e6)
+})
+
+test("floor: σ_quant is a measurement of the image, not a constant in disguise", async () => {
+	// If σ_quant were the same number on every image it would be a hand-set floor with extra steps,
+	// whatever its comment claimed. It is a function of the mean colour, so it moves with the image.
+	const sigmas = new Set<number>()
+	for (const cover of gateCovers()) sigmas.add(measureQuantizationScale(await decodeImage(cover)).sigma)
+	assert.ok(sigmas.size > 1, "σ_quant took one value across every cover — that is a constant")
+
+	// And it moves the way the derivation says: OKLab's cube root magnifies one LSB near black, so a
+	// darker operating point must produce a larger σ_quant than a lighter one.
+	const at = (grey: number): number =>
+		measureQuantizationScale(syntheticImage(grey, grey, grey)).sigma
+	assert.ok(at(16) > at(128), "σ_quant did not grow toward black")
+	assert.ok(at(128) > at(240), "σ_quant did not shrink toward white")
+})
+
+test("floor: σ_quant agrees with a Monte-Carlo of the quantization error it models", async () => {
+	// P6 SPEC rule 8 — numeric code is checked against an independent derivation. Restating the same
+	// closed form here would check nothing, so this comes at it from the other side: draw the actual
+	// uniform ±½-LSB errors the model posits, push them through the contract's conversion, and pool
+	// the resulting OKLab displacement the way the currency does. If the linearisation, the /12 and
+	// the isotropic pooling are all right, the two numbers agree; if any is wrong, they do not.
+	const image = await decodeImage(gateCovers()[0]!)
+	const { mean, sigma } = measureQuantizationScale(image)
+
+	// A deterministic stream — mulberry32, seeded — so this test is reproducible.
+	let state = 0x9e3779b9
+	const random = (): number => {
+		state = (state + 0x6d2b79f5) >>> 0
+		let t = state
+		t = Math.imul(t ^ (t >>> 15), t | 1)
+		t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+	}
+
+	const centre = rgbToOkLab(mean as unknown as [number, number, number])
+	const draws = 200000
+	let totalSquared = 0
+	for (let draw = 0; draw < draws; draw += 1) {
+		const perturbed = [
+			mean[0] + (random() - 0.5),
+			mean[1] + (random() - 0.5),
+			mean[2] + (random() - 0.5),
+		] as unknown as [number, number, number]
+		const moved = rgbToOkLab(perturbed)
+		for (let coordinate = 0; coordinate < OKLAB_DIMENSIONS; coordinate += 1) {
+			const delta = moved[coordinate]! - centre[coordinate]!
+			totalSquared += delta * delta
+		}
+	}
+	// Pooled exactly as the currency pools: 3σ² = Σ_k Var_k.
+	const empirical = Math.sqrt(totalSquared / (draws * OKLAB_DIMENSIONS))
+	assert.ok(
+		Math.abs(empirical - sigma) / sigma < 0.02,
+		`σ_quant ${sigma} disagrees with the Monte-Carlo of its own model ${empirical}`,
+	)
 })
 
 test("substrate: σ does not depend on the lattice resolution", async () => {

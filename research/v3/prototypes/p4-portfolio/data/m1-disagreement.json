@@ -1,6 +1,6 @@
 {
 	"kind": "p4-portfolio-m1-disagreement",
-	"generatedAt": "2026-08-11T12:41:45.370Z",
+	"generatedAt": "2026-08-11T18:10:08.186Z",
 	"ruler": {
 		"source": "research/v3/src/adjudication/match.ts compareRole()/barFor()",
 		"regional": "sameColorBar(first, second) — the calibrated per-pair bar; headline",
@@ -45,16 +45,16 @@
 		},
 		{
 			"slug": "p2-tree",
-			"commit": "21131282af7e9077ebc17f0ae7c2bc4af9577c39",
+			"commit": "0ae6254260d8e170eb932bc9abc86a2a35f61ab8",
 			"branch": "proto/p2-tree",
 			"pinVerdict": "PINNED",
 			"committedAtHead": false,
-			"filesUntrackedInHome": 4,
+			"filesUntrackedInHome": 0,
 			"filesWithUncommittedEdits": 1,
 			"worktree": "/Users/Flo/GitHub/palette/.worktrees/p2-tree",
 			"snapshotCandidate": "members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts",
-			"homeCodeVersion": "402bf32affa42133bd3f636ab6da4aed5599141aa9a03c1fa30706d1fc0d70ba",
-			"snapshotCodeVersion": "19e91d28fa6152df6bea151364859594a00e29fafec1ef1d81596744cab6bfc9",
+			"homeCodeVersion": "93291d0f55348ad12fd0df30d0235c48a874af084f81bc2a2dd172ad841a831b",
+			"snapshotCodeVersion": "0795f6e7b02e907f4ad3aa65a131966c2c1149c8de78ee799e57f49728cf9ce4",
 			"byteIdentityGate": "PASS",
 			"gateRowsIdentical": "3/3",
 			"runs": {
@@ -71,9 +71,9 @@
 					"runPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p2-tree-gate3-snapshot.jsonl",
 					"okCount": 3,
 					"coverCount": 3,
-					"medianMs": 540.180834,
+					"medianMs": 499.75874999999996,
 					"workerCount": 3,
-					"wallMs": 1476,
+					"wallMs": 1366,
 					"failures": []
 				}
 			}

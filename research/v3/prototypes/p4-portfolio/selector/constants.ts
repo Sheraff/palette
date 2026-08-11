@@ -22,6 +22,16 @@
  *    `Var(x − y) = 2σ²` is an identity of the arithmetic and naming it in a registry would suggest
  *    it could have been something else.
  *
+ * …and two registries that hold no number at all, because what they register is not a constant:
+ *
+ *  - {@link HELD_DECISIONS} — an arm-c′ §4 free parameter whose anchor this prototype cannot run, so
+ *    it was left unsettled and escalated instead of being set to whatever made the run finish.
+ *  - {@link DERIVED_QUANTITIES} — a quantity the code **computes from the input** where a lesser
+ *    implementation would have hard-set one. Each entry names a *function*, not a constant, and its
+ *    provenance is the arithmetic that derives it. This is deliberately **not** a fourth register for
+ *    rule A: a constant still has to be anchored, bounded or structural, and the functions named here
+ *    are scanned by rule B like every other line under `selector/`, so nothing can hide in them.
+ *
  * Provenance tags are `CONVENTIONS.md`'s.
  *
  * **What the tripwire actually enforces** (`tests/f2-tripwire.test.ts`, and it is armed against a
@@ -81,6 +91,28 @@ export type HeldDecision = Readonly<{
 	consequence: string
 }>
 
+/**
+ * A quantity that is **computed from the input**, where the failure shape would have been a constant.
+ *
+ * The distinction from `ANCHORED_DECISIONS` is not cosmetic. An anchored decision is a *choice* a
+ * human made and an artifact settled; a derived quantity is not a choice at all — it is arithmetic
+ * over something the file itself carries, and it takes a different value on every image. There is
+ * nothing to tune, so there is nothing to register as a number: the entry names the function and
+ * states the derivation, and the derivation IS the provenance.
+ */
+export type DerivedQuantity = Readonly<{
+	/** The exported function that computes it. Scanned by rule B like any other selector code. */
+	implementedBy: string
+	/** Which arm-c′ §4 decision this bears on. */
+	decision: string
+	/** `CONVENTIONS.md` provenance tag. */
+	tag: string
+	/** The arithmetic, in full — what is computed, from what, in what units. */
+	derivation: string
+	/** What it changed, measured. */
+	consequence: string
+}>
+
 export const ANCHORED_DECISIONS: readonly AnchoredDecision[] = [
 	{
 		constant: "LATTICE_RESOLUTION_C",
@@ -117,13 +149,47 @@ export const HELD_DECISIONS: readonly HeldDecision[] = [
 			"be choosing the estimator by choosing its test.",
 		consequence:
 			"The form arm-c′ names — median absolute horizontally-adjacent difference in OKLab, times " +
-			"the analytic consistency factor — was implemented verbatim and NOT adjusted. Measured " +
+			"the analytic consistency factor — was implemented verbatim and NOT adjusted, and it is " +
+			"still unadjusted: `measureNoiseScale()` returns exactly what it returned at M2. Measured " +
 			"consequence on demo-20: it returns exactly zero on 4 of 20 covers (over half of their " +
-			"adjacent pixel pairs are byte-identical), and at σ = 0 the currency has no scale, so those " +
-			"covers are refused as unpriceable rather than priced against an invented noise floor. See " +
-			"data/m2/bit-table.json `unpriceable` and BITTABLE.md §5. This is a finding to escalate, " +
-			"not a defect to patch locally: a floor is a free scale in the loss, which arm-c′ §2.3a " +
-			"forbids and SPEC §3's F2 is written to catch.",
+			"adjacent pixel pairs are byte-identical). At M2 those covers were REFUSED rather than " +
+			"priced against an invented noise floor, and the refusal was escalated. **The main tier " +
+			"acknowledged SPEC §3.1 and the degeneracy is now resolved outside this decision**, by " +
+			"`measureQuantizationScale()` — see DERIVED_QUANTITIES. That resolves the *degeneracy*, not " +
+			"this decision: the estimator's form is still the one arm-c′ names, still without its " +
+			"dither-arm anchor, and it stays HELD until an arm that can anchor it exists.",
+	},
+]
+
+export const DERIVED_QUANTITIES: readonly DerivedQuantity[] = [
+	{
+		implementedBy: "measureQuantizationScale() in selector/substrate.ts",
+		decision: "arm-c′ §4 decision 3 — the σ = 0 degeneracy the estimator's form produces",
+		tag: "[DERIVED]",
+		derivation:
+			"σ_quant is the noise the 8-bit sRGB encoding itself injects, expressed in the units the " +
+			"currency prices in. Two steps, both arithmetic, neither a sweep. (1) QUANTIZATION NOISE IN " +
+			"sRGB: rounding to 8 bits leaves an error uniform over one quantization cell, so per channel " +
+			"Var = w²/12 with w = 1 LSB — the identity ∫ x² dx over [−½, ½] = 1/12 — hence σ_s = " +
+			"1/√12 LSB, independently in each of R, G, B. (2) PROPAGATION TO OKLab: the map is " +
+			"locally linear over one LSB, so the OKLab perturbation is Δ = Σ_c J_c e_c where J_c is the " +
+			"Jacobian column ∂OKLab/∂channel_c evaluated AT THE IMAGE'S MEAN 8-BIT COLOUR (the operating " +
+			"point SPEC §3.1 names), and Cov(Δ) = (1/12)·Σ_c J_c J_cᵀ. Pooled into the one isotropic " +
+			"scale the currency uses by the same rule measureNoiseScale() pools its three coordinates " +
+			"(3σ² = Σ_k Var_k): σ_quant² = (1/3)·(1/12)·‖J‖_F², i.e. σ_quant = ‖J‖_F / √36. The columns " +
+			"J_c are the symmetric difference of the CONTRACT'S OWN rgbToOkLab over ±1 LSB about the " +
+			"mean colour — the smallest step the encoding admits, which is also exactly the probe " +
+			"arm-c′ §4.3 anchors decision 3 on. It is evaluated through the contract's function rather " +
+			"than by restating Ottosson's matrices, because a second copy of the conversion would fork " +
+			"the one ruler and would itself import a dozen unregistered numeric literals into " +
+			"selector/ — the F2 shape. NOTHING HERE IS FREE: σ_quant is a function of the image's mean " +
+			"colour and of the file format, and it takes a different value on every cover.",
+		consequence:
+			"σ_effective = max(σ_measured, σ_quant), SPEC §3.1 as acknowledged by the main tier. Where " +
+			"the estimator resolves real noise the floor is inert (σ_measured ≫ σ_quant and the price " +
+			"is bit-for-bit what it was); where it returns a value below what one LSB of the encoding " +
+			"can even represent, the encoding's own scale stands in. The M2 refusals are converted: see " +
+			"data/m2/bit-table.json `sigmaFloor` and BITTABLE.md §5.",
 	},
 ]
 
@@ -233,6 +299,23 @@ export const INDEPENDENT_DIFFERENCE_VARIANCE_FACTOR = 2
  */
 export const MAD_CONSISTENCY_FACTOR =
 	1 / (Math.sqrt(INDEPENDENT_DIFFERENCE_VARIANCE_FACTOR) * probit(MAD_QUARTILE))
+
+/**
+ * [STRUCTURAL] The 12 in `Var(U(−w/2, w/2)) = w²/12`.
+ *
+ * The variance of a uniform distribution over one quantization cell, which is the integral
+ * `∫_{−1/2}^{1/2} x² dx = 1/12` and nothing else. It is the "/12" of the standard uniform-quantization
+ * noise model and could not have been another number.
+ */
+export const UNIFORM_QUANTIZATION_VARIANCE_DENOMINATOR = 12
+
+/**
+ * [STRUCTURAL] A symmetric probe about a point spans two steps: `[x − h, x + h]` is `2h` wide, so the
+ * secant `(f(x + h) − f(x − h))` is divided by two to become a per-step slope. The arithmetic of a
+ * difference quotient — the *step* `h` is not this constant and is not free either: it is one 8-bit
+ * LSB, the smallest change the encoding can express.
+ */
+export const SYMMETRIC_DIFFERENCE_SPANS = 2
 
 /** [STRUCTURAL] The median is the one-half quantile. The definition of the statistic. */
 export const MEDIAN_QUANTILE = 1 / 2

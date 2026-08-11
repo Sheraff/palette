@@ -11,10 +11,15 @@
  *    the same way on any machine), and it must *stop by measurement* — a decisive difference has to
  *    separate from ½ far below the compute cap, or the cap has silently become the rule.
  *  - **(d) the tie-break** is checked at the exact tie, which is the only place it applies.
- *  - **the refusal** — `selectOnCover` on a σ = 0 image must return an unpriceable selection with no
- *    winner, and must NOT return a ranking. That path exists because the first run of this milestone
- *    ranked `NaN`s on four real covers and reported the result as stable; a test that only covered
- *    the happy path would have passed then too.
+ *  - **the σ floor (SPEC §3.1)** — an image whose *measured* σ is exactly zero used to be refused.
+ *    It is now priced at the scale the 8-bit encoding itself injects, and the tests below pin the
+ *    conversion in both directions: the fixture still measures zero, and it now prices, at exactly
+ *    `σ_quant` and not at some other number.
+ *  - **the refusal, which survives as a guard** — a `Selection` that *is* unpriceable must not carry
+ *    a ranking. That path exists because the first run of this milestone ranked `NaN`s on four real
+ *    covers and reported the result as stable; a test that only covered the happy path would have
+ *    passed then too. It is no longer reachable through `buildSubstrate` (σ_quant is positive on any
+ *    image), so it is now driven directly, which is stated rather than quietly dropped.
  *
  * Run:
  * NODE_NO_WARNINGS=1 node --experimental-strip-types --test \
@@ -140,7 +145,7 @@ test("selector: one role past the contract's bar makes the selection material", 
 	assert.deepEqual(report.pairs[0]!.differingRoles, ["accent"], "only the role that moved")
 })
 
-test("selector: materiality is decided on the palettes alone, so a refused cover still has it", () => {
+test("selector: materiality is decided on the palettes alone, before σ is consulted at all", () => {
 	const image = flatImage()
 	const { selection } = selectOnCover(
 		image,
@@ -150,15 +155,15 @@ test("selector: materiality is decided on the palettes alone, so a refused cover
 		],
 		LATTICE_RESOLUTION_C,
 	)
-	assert.notEqual(selection.unpriceable, null)
-	assert.equal(selection.materiality.material, true, "the disagreement is still knowable")
+	assert.equal(selection.materiality.material, true, "the disagreement is knowable without a scale")
+	assert.equal(selection.materiality.pairs.length, 1)
 })
 
 // ---------------------------------------------------------------------------------------------
-// The refusal
+// SPEC §3.1 — the floor, and the refusal it converted
 // ---------------------------------------------------------------------------------------------
 
-test("selector: a σ = 0 cover is refused, not ranked", () => {
+test("selector: a σ_measured = 0 cover now prices at the encoding's own scale (SPEC §3.1)", () => {
 	const image = flatImage()
 	const members = [
 		{ slug: "a", palette: makePalette(NAVY, CREAM, RUST, MOSS) },
@@ -166,24 +171,45 @@ test("selector: a σ = 0 cover is refused, not ranked", () => {
 	]
 	const { selection, substrate } = selectOnCover(image, members, LATTICE_RESOLUTION_C)
 
-	assert.equal(substrate.sigma, 0, "the fixture no longer exercises the degenerate case")
-	assert.notEqual(selection.unpriceable, null)
-	assert.equal(selection.unpriceable!.sigma, 0)
-	assert.match(selection.unpriceable!.reason, /noise scale is zero/u)
-	assert.equal(selection.winner, null, "a refused cover must not name a winner")
-	assert.equal(selection.marginBits, null)
-	assert.equal(selection.bootstrap, null, "and must not pay for a bootstrap")
-	assert.deepEqual(selection.prices, [])
-	assert.equal(selection.sigma, 0, "σ is reported either way")
+	// The estimator is unchanged and still measures zero on this fixture — if it stopped doing that,
+	// this test would be exercising something else and should say so.
+	assert.equal(substrate.sigmaMeasured, 0, "the fixture no longer exercises the degenerate case")
+
+	// And the floor is exactly σ_quant. Not "positive", not "small": the max of {0, q} is q.
+	assert.equal(substrate.sigma, substrate.sigmaQuantization)
+	assert.ok(substrate.sigma > 0, "the floor did not produce a scale")
+	assert.equal(substrate.sigmaFlooredByQuantization, true)
+
+	assert.equal(selection.unpriceable, null, "the M2 refusal is converted, not merely softened")
+	assert.equal(selection.prices.length, 2, "both members are priced")
+	assert.notEqual(selection.winner, null)
+	assert.ok(Number.isFinite(selection.marginBits!), "the margin is a number, not NaN")
+	assert.notEqual(selection.bootstrap, null, "and a material cover pays for its bootstrap")
+	assert.equal(selection.sigma, substrate.sigma, "σ is reported as priced")
+	assert.equal(selection.sigmaMeasured, 0, "and unfloored, so the conversion stays visible")
 })
 
-test("selector: a refused cover has no ranking, so a sweep cannot count it as agreement", () => {
-	const { selection } = selectOnCover(
-		flatImage(),
-		[{ slug: "a", palette: makePalette(NAVY, CREAM, RUST, MOSS) }],
-		LATTICE_RESOLUTION_C,
-	)
-	assert.equal(rankingOf(selection), null)
+test("selector: an unpriceable selection still has no ranking, so a sweep cannot count it as agreement", () => {
+	// The guard is no longer reachable through `buildSubstrate` — σ_quant is positive on every image —
+	// so it is driven directly. Deleting the guard because nothing reaches it today is how the NaN
+	// ranking got back in the first time.
+	const unpriceable = {
+		contentHash: FIXTURE_HASH,
+		imagePath: "synthetic",
+		sigma: 0,
+		sigmaMeasured: 0,
+		sigmaQuantization: 0,
+		sigmaFlooredByQuantization: false,
+		unpriceable: { reason: "no positive scale", sigma: 0 },
+		prices: [],
+		materiality: { material: true, pairs: [] },
+		winner: null,
+		runnerUp: null,
+		marginBits: null,
+		tieBrokenBySchemaPrice: false,
+		bootstrap: null,
+	} as const
+	assert.equal(rankingOf(unpriceable), null)
 })
 
 // ---------------------------------------------------------------------------------------------
