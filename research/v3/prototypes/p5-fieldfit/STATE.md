@@ -1,5 +1,26 @@
 # P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05; updated 2026-08-11)
 
+**Delta 2026-08-11, post-cal-020 (round 4 decoded, verified, ruled — this supersedes the
+paragraph below where they differ):** best round of the campaign — **3 STRONG / 5 acceptable /
+0 below** (mean 1.625). The three-round set-rotation cover closed silent-STRONG with the
+reviewer's ask published literally; the round-2 named green-family accent confirmed; the ink
+veto's cover moved UNACCEPTABLE→acceptable with the role-sourcing half retired by name. **The
+two pre-registered questions answered:** (a) accent union — SPLIT: displacement invisible when
+the displaced colour is not identity-carrying (sunset held STRONG), rejected when it is
+(NARCOSIS crimson named unprompted); follow-up measurement proved no existing or counterfactual
+rule reaches the crimson — only spatially-accumulated identity does. (b) fg floor — the raise
+was FALSIFIED by its own sweep (a fresh reviewer-STRONG foreground sits at raw 16.93, below any
+floor that would fix the probe cover); floor stays 15, the probe's datum recorded as margin
+evidence no currently-safe rule addresses. **Consequence: all round-4 residuals converge on one
+mechanism — mark/region spatial grouping (v0.9)**: instrument built and measured (V9a: NARCOSIS
+crimson enters the identity set at rank 3, retained mass .18→.69; fg ink preference deferred a
+second time on decisive mark-level evidence), wiring pass (V9b: family union, marks in the
+accent pool, verdict-scored accent tie-break sweep) in flight at this update. Robustness
+baseline v0.8.2: 41.7% overall, dither 47% / accent 43.3% best-ever, fg 33.0% flagged. Also
+recorded: the escape machinery, a double collapse, a speck foreground, and the first 3-stop ramp
+all survived reviewer contact silently; identity coverage is the dominant open axis (4 of 5
+round-4 notes); two new unowned axes (semantic referent, set-conditioned accent).
+
 **Delta since the 08-05 freeze:** pass 16 landed — foreground is class-first (overlay ink outranks
 ground-shaped components; the item-3 cover now publishes the reviewer's verbatim round-3 ask,
 fg `#000000` / accent `#f81107`, closing the mechanism side of the three-round rotation). v0.8.2
