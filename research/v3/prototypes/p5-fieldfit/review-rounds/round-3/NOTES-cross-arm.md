@@ -62,3 +62,11 @@ composition is untouched (staging was in flight when this arrived).
    mark-support instrument would serve both coherence eligibility and ink-likeness. If any round
    ever shows a P5 floor-blocked named colour, this is the measured-viable alternative shape;
    until then our floor stands on its verified audit.
+8. **Served colour names are part of the judged surface** (cross-arm, 2026-08-11): the reviewer
+   grades partly from the colornames-oklab display names — a wrong-reading name can cost a grade
+   even on a defensible hex. P5's own record corroborates: cal-020 item 3's note leads with
+   "Sushi Rice beige is a very weak pick" — the name itself carried the objection. Staging
+   protocol gains one check from round 5 onward: eyeball the served names for every published
+   colour in render-data.json (a name that mis-describes the colour's role in the artwork is a
+   flag to record in STAGING.md, not a reason to change the hex). Awareness only; the name
+   pipeline is pinned server-side and not P5's to change.
