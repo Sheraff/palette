@@ -141,6 +141,11 @@
  *    carries nothing and is offered;
  *  - every other accepted component is offered.
  *
+ * **v0.8.2 changes what the pool's entries are ranked by, not which ones there are.** Decision 18's
+ * scale-mixing ruling orders foreground candidates class-first (`src/overlay.ts`'s class block), so
+ * this list is unchanged and so is every gate; what moves is which member of it takes the foreground
+ * when a ground-shaped region and an ink both clear the floors.
+ *
  * Two things are deliberately *not* offered. **Ink-vetoed components** (decision 15a) are not in
  * `FieldReading.components` at all — the veto leaves them in `attempts` with their pixels unclaimed,
  * which is precisely how "it stays in the pool as overlay material" is already implemented, so
@@ -213,7 +218,7 @@ import type {
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.8.1"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.8.2"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"

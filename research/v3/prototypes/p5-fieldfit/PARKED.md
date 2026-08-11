@@ -1,47 +1,47 @@
-# PARKED — reviewer-ordered park #3, 2026-08-05
+# PARKED — reviewer-ordered park #4, 2026-08-05
 
-## Correction of record, first
+## State at park
 
-The park order lists "your round-3 verdict analysis" as owed. **It is complete and committed**:
-verdicts decoded (batch `phase2-cal-013`) by my analyst, decode re-verified by me against the
-warehouse (8/8 grades+comments; five distances to 5 decimals), the record + rulings R1–R7 appended
-to `review-rounds/round-3/ROUND.md` and committed `8f63fda`; v0.7 SPEC decisions 15–18 authored
-and committed `408455f`. If something further was meant by "analysis owed", it needs naming at
-RESUME.
-
-## Current state
-
-- Committed and signed through `408455f`: round-3 verdicts + rulings; W-P11 cost pass (v0.6.1,
-  byte-identical, 2.5–3.3×, `d0fc7e2`); v0.6.0 robustness artifact (`c0c324f`, 40.8% overall).
-- Uncommitted: SPEC.md instrument note (robustness `--limit` slices trials; no-timeout warning) —
-  rides with the next commit.
-- Round-3 grades summary: returning +5 net (1.67 mean), fresh 2.40, two silent STRONGs, one
-  UNACCEPTABLE (typography-as-field).
+- **STATE.md is committed** (`b2d9021`, signed G) — the reviewer's mechanism-selection input is
+  on disk and in history, per the pre-park order.
+- All work committed and signed through `b2d9021`; owed-commit ledger CLOSED (v0.8.0+v0.8.1
+  flushed as `b3e1e94`).
+- Committed state = v0.8.1 (pool re-union) + all rulings through SPEC decision 18's
+  scale-mixing paragraph.
 
 ## Mid-flight (may complete during park; output NOT acted on)
 
-- **W-P12** (fresh worker): SPEC decisions 15+16 — ink-likeness instrument (erosion mortality ×
-  ground adjacency), field-candidacy ink veto, fg ink preference, accent visibility floor
-  (`ACCENT_VISIBILITY_COLOR_DISTANCE` vs both ends) + the items-1/5/8 admitting-rule measurement.
-  Reports to `reports/wp12.md`; my watcher may fire during the park — noted, not acted on.
+- **W-P16** (fresh worker): fg class-first ordering (v0.8.2) — overlay candidates outrank
+  ground-shaped components for the foreground slot; accent union unchanged. Reports to
+  `reports/wp16.md`. STOP-CONDITION in its brief: if the sunset STRONG (`908479200b`) cannot be
+  held byte-identical, it stops for a ruling instead of shipping. My watcher may fire during the
+  park — noted, not acted on.
 
-## Exact resume actions, in order
+## Exact resume sequence
 
-1. Read `reports/wp12.md` (stall protocol if absent: src/ mtimes, worker output mtime). Verify its
-   six named-cover validations: item-6 cover stops publishing type-blue as field; 16a8247378 +
-   908479200b fields byte-stable; item-4 fg → white-title family; item-8 fg → black type; item-7
-   white fg holds; items 1/5/8 accents clear the floor; items 2/7 hold. Weigh the admitting-rule
-   measurement and the ink-scale anchor. Rule on deviations; commit (include the SPEC instrument
-   note).
-2. Dispatch pass 13 (fresh worker): SPEC decision 17 — ramp-path excursion from the component's
-   fitted g(t), interior stops must carry new colours, spacing floor. Then pass 14: decision 18 —
-   joint four-role assignment with lexicographic set coverage.
-3. After pass 14: full robustness (600 trials, no --limit) on v0.7; compare v0.6.0's 40.8%/46.2%.
-4. Round 4: composition per rulings R7 + ROUND.md appendix — item-6 cover returns post-veto;
-   light-field class drawn from BEYOND coverage-set-1 (0/213 there; widen the pool, never relax
-   `markLightShare`); targeted item-7 confirmation question; remaining slots fresh via census.
-   Stage with a fresh worker on the round-2/3 protocol, validate, commit, REVIEW-READY.
-5. Standing: robustness stabilization (accent 46.2%); upward formula packet (4 streams: near-black
-   0.08871 third strike, twin-ratio spread 1.8–6.6, epsilon-margins, accent-visibility 8-for-8);
-   mass-floor caveat (two named colours at 5× triple-level headroom); E1 multi-start deferred;
-   escape path still unexercised.
+1. Read `reports/wp16.md` (stall protocol if absent). Verify anchors: (a) `2376a6b67d` fg
+   `#000000` / accent `#f81107` — the reviewer's verbatim round-3 ask; (b) `908479200b`
+   byte-identical (if the worker stopped for the accent-still-moves ruling, rule: the accent
+   union may not displace a silently-STRONG accent — prefer holding reviewer-validated palettes;
+   any override needs its own round evidence); (c) `28279e9184` fg `#ffffff`; (d) both other
+   STRONGs byte-identical; (e) both delta tables (vs v0.8.1 and vs v0.7.1, the last
+   reviewer-seen state). Rule on deviations, commit signed.
+2. Full 600-trial robustness on the landed version (`--out data/robustness/reports/
+   p5-fieldfit-<version>.json`, background, no --limit); compare v0.6.0's 40.8%/46.2% baseline;
+   commit artifact.
+3. Round 4 staging (fresh worker, rounds-2/3 protocol): returning — `2376a6b67d` (set-coverage +
+   class-ruling verdict), `9646be9b20` (ink veto verdict), `16a8247378` or `908479200b` only if
+   pass 16 moved them (else keep slots fresh); fresh — light-field-light-text drawn from BEYOND
+   coverage-set-1 (0/213 there; widen the pool, never relax markLightShare), one vivid
+   illustration (item-6 class), remainder by census; plus the targeted item-7 confirmation
+   question (propose as a per-item note-prompt or freetext follow-on — installer decides the
+   vehicle). Validate, commit, REVIEW-READY report per §7.
+4. Then the standing queue: robustness stabilization (margin-aware selection, accent 46.2%
+   target); v0.9 mark-level grouping (15b + coherence eligibility); upward formula packet
+   (4 strikes) whenever the main orchestrator collects.
+
+## Standing open items
+
+Unchanged from STATE.md §3–4 (the authoritative statement for the reviewer): robustness flank
+located-not-fixed; mark-level grouping unbuilt; identity granularity blocked upward; item-6
+class unanswered; light-field class unevidenced; escape path unexercised; E1 deferred.

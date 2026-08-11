@@ -29,11 +29,40 @@
  *    ranked; it does not exist. Feasibility is never traded for coverage — that is what "lexicographic"
  *    means here and it is what `tests/assignment.test.ts` pins.
  * 2. **Coverage.** The number of **distinct identity families** the four published roles cover.
- * 3. **The per-role criteria, in their current order**, as tie-breaks: the foreground's mass (decision
- *    13; decision 15b's ink gate is measured-and-deferred, so "ink-gated mass" is raw overlay mass
- *    today — see `overlay.ts`'s 15b block), then its legibility, then the accent's mass (decision 8's
- *    third ruling), then the packed integers. Every comparison ends at a packed 24-bit value, which is
- *    unique per triple, so the order is total and the answer is deterministic.
+ * 3. **The per-role criteria, in their current order**, as tie-breaks: the foreground's **class**
+ *    (v0.8.2, below), then its mass (decision 13), then its legibility, then the accent's mass
+ *    (decision 8's third ruling), then the packed integers. Every comparison ends at a packed 24-bit
+ *    value, which is unique per triple, so the order is total and the answer is deterministic.
+ *
+ * ## The foreground classes, v0.8.2 (decision 18's ruling of 2026-08-05, "scale mixing")
+ *
+ * v0.8.1's union put two masses in one column. A component's field mass runs 10³–10⁴ and an ink
+ * cluster's rejected mass runs 10²–10³, so on a mass tie-break *every* unslotted region beats *every*
+ * ink and decision 13's "the artwork's own ink, provided it registers" quietly became "the largest
+ * unslotted region" — measured on `908479200b`, where the reviewer's STRONG gold foreground fell to a
+ * near-black region (`reports/wp15.md` §2). The ruling is not a rescaling (there is no exchange rate
+ * between the two masses and inventing one is decision 12's forbidden shape); it is an **ordering**:
+ *
+ *  - **class A** — overlay clusters, plus any component the ink instrument calls ink-shaped;
+ *  - **class B** — ground-shaped unslotted components, classified by wp12's *component-level*
+ *    instrument (erosion mortality high AND ground adjacency low ⇒ ink; grounds tile, ink floats).
+ *
+ * Class A outranks class B in the **foreground** ordering, above mass. It is an ordering and not an
+ * exclusion, exactly as arm-f §2.4 requires: when no class-A candidate clears the foreground floors
+ * the shortlist is class B alone and a component takes the foreground — which is the right answer on a
+ * cover whose only ink is the region (round-3 item 6's retreat shape).
+ *
+ * **The accent ordering is untouched**: the full union, by mass, per decision 8's third ruling. The
+ * scale finding is a foreground finding — an accent is *a* colour of the artwork rather than its ink,
+ * and mass is the mechanism's own reading of salient presence for it.
+ *
+ * Where the class term sits relative to **coverage** is stated rather than assumed: the ruling
+ * redefines *the foreground ordering*, and decision 18 puts coverage above the per-role orderings, so
+ * class enters at the head of the per-role tie-breaks and coverage still outranks it. Whether that
+ * ordering is ever load-bearing is a measurement, not an argument, so `AssignmentTrace` publishes
+ * `classOverriddenByCoverage` — true exactly when the chosen foreground is class B while a feasible
+ * class-A foreground existed. If a cover ever reports it, the placement is the orchestrator's to rule
+ * on; nothing here decides it quietly.
  *
  * ## What an "identity family" is, measurably
  *
@@ -452,11 +481,21 @@ export type RoleCandidate = Readonly<{
 	 * `"component"`: a field-like component that won no field slot; published colour is its centre
 	 * snapped over its own support, salient mass is its field mass `Σ w`.
 	 *
-	 * Nothing in `compareLexicographic` or in any feasibility test reads this field. If it ever does,
-	 * the pool has stopped being a union and arm-f §2.4's "no role has an eligibility gate" has been
-	 * quietly repealed.
+	 * Nothing in `compareLexicographic` or in any feasibility test reads this field: the ordering below
+	 * reads `foregroundClass`, which is a *shape* verdict rather than a provenance label, and the two
+	 * are deliberately not the same field. If a feasibility test ever reads either, the pool has
+	 * stopped being a union and arm-f §2.4's "no role has an eligibility gate" has been quietly
+	 * repealed.
 	 */
 	source: "overlay" | "component"
+	/**
+	 * **Decision 18's foreground class (v0.8.2)**: `"A"` = ink-shaped or overlay-sourced, `"B"` =
+	 * ground-shaped component. The header's class block is the rationale; `overlay.ts` is where the
+	 * verdict is measured (wp12's component-level mortality/adjacency instrument, on the component's
+	 * own claim). Read by the **foreground** half of `comparePerRole` and by nothing else — not by any
+	 * feasibility test, and not by the accent ordering.
+	 */
+	foregroundClass: "A" | "B"
 }>
 
 /** A complete, feasible assignment of the two ink roles, with its measured coverage. */
@@ -491,6 +530,16 @@ export type AssignmentTrace = Readonly<{
 	perRoleOnly: AssignmentOption | null
 	/** `chosen` and `perRoleOnly` differ: coverage, not the per-role preference, decided this palette. */
 	coverageDecided: boolean
+	/**
+	 * **The one thing v0.8.2's class ordering cannot promise on its own** (see the header's class
+	 * block): `true` when the published foreground is class B *although* a feasible assignment with a
+	 * class-A foreground was enumerated — i.e. coverage, which outranks the class term, overrode it.
+	 *
+	 * Reported, never read. `false` on every cover means "class A always outranks class B when a
+	 * class-A candidate clears the floors" is true as measured rather than true by construction, which
+	 * is the honest form of that claim.
+	 */
+	classOverriddenByCoverage: boolean
 }>
 
 export type AssignmentInput = Readonly<{
@@ -540,12 +589,21 @@ function accentPacked(option: AssignmentOption): number {
 		: option.accent.cluster.representative
 }
 
+/** Class A sorts before class B. The whole of decision 18's v0.8.2 ruling, as one number. */
+function foregroundClassRank(option: AssignmentOption): number {
+	return option.foreground.foregroundClass === "A" ? 0 : 1
+}
+
 /**
- * The per-role tie-breaks, in the order decision 18 fixes: foreground mass, foreground legibility,
- * accent mass, then the packed integers. Negative ⇒ `first` is better.
+ * The per-role tie-breaks, in the order decision 18 fixes: foreground **class** (v0.8.2), foreground
+ * mass, foreground legibility, accent mass, then the packed integers. Negative ⇒ `first` is better.
+ *
+ * The class term is on the foreground and only on the foreground: the accent's ordering is decision
+ * 8's, over the full union, by mass. See the header's class block.
  */
 function comparePerRole(first: AssignmentOption, second: AssignmentOption): number {
 	return (
+		foregroundClassRank(first) - foregroundClassRank(second) ||
 		second.foreground.mass - first.foreground.mass ||
 		second.foreground.legibility - first.foreground.legibility ||
 		accentMass(second) - accentMass(first) ||
@@ -591,6 +649,8 @@ export function solveAssignment(input: AssignmentInput): AssignmentTrace {
 	let chosen: AssignmentOption | null = null
 	let perRoleOnly: AssignmentOption | null = null
 	let chosenShortlist: readonly RoleCandidate[] = []
+	// For `classOverriddenByCoverage`: was any feasible assignment with a class-A foreground seen?
+	let classAFeasible = false
 
 	for (const fg of foreground) {
 		const shortlist = accentFor(fg)
@@ -604,6 +664,7 @@ export function solveAssignment(input: AssignmentInput): AssignmentTrace {
 				if (twinExcluded(candidate, fg)) continue
 			}
 			feasibleCount += 1
+			if (fg.foregroundClass === "A") classAFeasible = true
 
 			const covered = new Set(fieldCoveredSet)
 			for (const rank of coverOf(fg)) covered.add(rank)
@@ -637,5 +698,7 @@ export function solveAssignment(input: AssignmentInput): AssignmentTrace {
 		coverageDecided: chosen !== null && perRoleOnly !== null &&
 			(chosen.foreground.cluster !== perRoleOnly.foreground.cluster ||
 				chosen.accent?.cluster !== perRoleOnly.accent?.cluster),
+		classOverriddenByCoverage: chosen !== null && chosen.foreground.foregroundClass === "B" &&
+			classAFeasible,
 	}
 }

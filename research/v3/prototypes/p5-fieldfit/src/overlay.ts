@@ -17,6 +17,12 @@
  *    distinct from both ends, sit outside the foreground's twin radius (decision 14, measured), and
  *    are ranked by overlay mass.
  *
+ * **v0.8.2 — the union has two classes for the foreground.** The union of v0.8.1 put field mass and
+ * rejected mass in one column and every unslotted region outranked every ink; decision 18's
+ * scale-mixing ruling orders the foreground class-first instead (class A: overlay clusters and
+ * ink-shaped components; class B: ground-shaped components), leaves the accent's full-union ranking
+ * alone, and deletes v0.8.1's `P5_COMPONENT_ROLES` measurement knob. See the class block below.
+ *
  * **v0.8.1 — the pool is a union, not the overlay.** SPEC decision 18's ruling (a) restores arm-f
  * §2.4: a field-like component that won no field slot is a first-class candidate for both ink roles,
  * beside the overlay clusters, judged by the same floors against the same published colours. See the
@@ -464,27 +470,43 @@ export const ACCENT_FG_EXCLUSION_MULTIPLE = 8
 //     unclaimed, so it is already in the pool as overlay mass and is never offered to this function —
 //     `candidate.ts` passes accepted components only.
 
-/**
- * **Which roles a component candidate competes for.** `"both"` ships; `"accent"` is a measurement.
- *
- * Decision 18(a) is implemented as written — one pool, both ink roles, salient mass = field mass — and
- * `"both"` is what every published palette uses. The knob exists because the *scale* of that salient
- * mass is a finding the implementing pass owes upward rather than settles: a region's field mass runs
- * 5 000–25 000 where an ink cluster's rejected mass runs 10²–10³, so a component out-ranks every ink
- * on any mass tie-break it enters, and decision 13's foreground rule — whose stated principle is *the
- * artwork's own ink, provided it registers* — becomes "the largest unslotted region". That is measured,
- * not asserted: `reports/wp15.md` carries both columns, including the one silent STRONG that moves.
- *
- * `P5_COMPONENT_ROLES=accent` keeps components out of the foreground shortlist only. It is not a
- * proposal and not an eligibility gate in the shipped path; it is the second column of a table, in the
- * same spirit and with the same standing as `P5_IDENTITY_BAR_MULTIPLE` (v0.8.0).
- */
-export const COMPONENT_ROLES: "both" | "accent" = (() => {
-	const raw = process.env.P5_COMPONENT_ROLES
-	if (raw === undefined || raw.trim() === "" || raw === "both") return "both"
-	if (raw === "accent") return "accent"
-	throw new RangeError(`P5_COMPONENT_ROLES must be "both" or "accent", got ${JSON.stringify(raw)}`)
-})()
+// ---------------------------------------------------------------------------------------------
+// SPEC decision 18, the scale-mixing ruling (v0.8.2) — the foreground classes
+// ---------------------------------------------------------------------------------------------
+//
+// v0.8.1 measured what one pool with two masses costs. Field mass runs 10³–10⁴ and rejected mass runs
+// 10²–10³, so a component out-ranks every ink on any mass tie-break it enters and decision 13's rule —
+// *the artwork's own ink, provided it registers* — became "the largest unslotted region": on
+// `908479200b` the reviewer's STRONG gold foreground fell to a near-black region (`reports/wp15.md`).
+// v0.8.1 shipped a measurement knob (`P5_COMPONENT_ROLES`) rather than settle it, and the ruling of
+// 2026-08-05 replaces the knob — it is **deleted here**, not defaulted — with an ordering:
+//
+//  - **class A** — every overlay cluster, plus any component the ink instrument calls ink-shaped;
+//  - **class B** — ground-shaped unslotted components.
+//
+// Class A outranks class B for the **foreground** slot (`assignment.ts`'s `comparePerRole`), above
+// mass; the accent keeps the full union by mass. Three things about the classification, each a choice:
+//
+//  1. **The instrument is wp12's, at component level, and it is already computed.** Decision 15a's
+//     conjunction — erosion mortality ≥ `COMPONENT_INK_MORTALITY` AND ground adjacency <
+//     `COMPONENT_INK_GROUND_ADJACENCY_MAX`, *grounds tile, ink floats* — is measured on a component's
+//     own claim by `fitFieldComponents` and carried on `FieldComponent.inkLike`. This module reads that
+//     verdict rather than re-deriving it, so the veto and the class can never disagree about what a
+//     component's shape is. It is the same measurement wp15 §6 named as the unmeasured third option:
+//     15b was deferred for want of a mark-level support, and a component has one.
+//  2. **An ink-shaped unslotted component would be class A**, and the branch is written even though
+//     decision 15a makes it unreachable today (the veto keeps ink-shaped components out of
+//     `FieldReading.components`, so `candidate.ts` never offers one). Hard-coding "component ⇒ class B"
+//     would encode the veto's *current* reach into a second file, and the class is a claim about shape.
+//  3. **No exclusion.** A class-B candidate is shortlisted, enumerated and published like any other; it
+//     simply loses the foreground to any class-A candidate that clears the floors. When none does, the
+//     shortlist is class B alone and a component takes the foreground — arm-f §2.4's "a low score is a
+//     loss, never an exclusion", and the difference between an ordering and the deleted knob.
+
+/** Decision 18's v0.8.2 class for one unslotted component: shape decides, provenance does not. */
+function componentForegroundClass(component: FieldComponent): "A" | "B" {
+	return component.inkLike ? "A" : "B"
+}
 
 /** What one field-like component offered to the pool did, for the sidecar. Decides nothing. */
 export type ComponentCandidateReport = Readonly<{
@@ -493,6 +515,15 @@ export type ComponentCandidateReport = Readonly<{
 	supportFraction: number
 	/** Field mass `Σ w` over the support: the salient mass this candidate competes on. */
 	supportMass: number
+	/**
+	 * Decision 18's v0.8.2 foreground class, and the two numbers behind it (wp12's component-level ink
+	 * instrument, `null` on a component that never reached the ink test). `"B"` on every component the
+	 * 15a veto lets through today — the veto is exactly the ink-shaped ones — so a row reading `"A"` is
+	 * a report that the veto's reach has changed.
+	 */
+	foregroundClass: "A" | "B"
+	erosionMortality: number | null
+	groundAdjacency: number | null
 	/** The component's own centre colour, pre-snap. */
 	centre: string
 	/** Published: the centre snapped over the component's own support (mass-maximizing, decision 4). */
@@ -703,6 +734,8 @@ export function readOverlay(
 	// second copy, not the colour.
 	const backgroundLab = rgbToOkLab(publishedEnds[0].rgb)
 	const componentSourced = new Set<OverlayCluster>()
+	/** Decision 18's v0.8.2 class, for the component half of the pool only: a cluster is class A. */
+	const componentClass = new Map<OverlayCluster, "A" | "B">()
 	const componentEntries: OverlayCluster[] = []
 	const componentReports: {
 		row: ComponentCandidateReport
@@ -734,6 +767,9 @@ export function readOverlay(
 					supersedes: [],
 					feasible: null,
 					legibility: null,
+					foregroundClass: componentForegroundClass(component),
+					erosionMortality: component.ink?.erosionMortality ?? null,
+					groundAdjacency: component.ink?.groundAdjacency ?? null,
 				},
 				cluster: null,
 			})
@@ -756,6 +792,7 @@ export function readOverlay(
 		)
 		componentEntries.push(entry)
 		componentSourced.add(entry)
+		componentClass.set(entry, componentForegroundClass(component))
 		componentReports.push({
 			row: {
 				depth: component.depth,
@@ -771,6 +808,9 @@ export function readOverlay(
 				})),
 				feasible: null,
 				legibility: null,
+				foregroundClass: componentForegroundClass(component),
+				erosionMortality: component.ink?.erosionMortality ?? null,
+				groundAdjacency: component.ink?.groundAdjacency ?? null,
 			},
 			cluster: entry,
 		})
@@ -851,11 +891,10 @@ export function readOverlay(
 	// The floor is the larger of the caller's request and the prototype's evidence-bracketed one, so
 	// raising `minTextContrast` tightens the gate and nothing can loosen it below the bracket.
 	const foregroundFloor = Math.max(textFloor, FOREGROUND_MIN_RAW_APCA)
-	const admissible = feasible.filter((cluster) =>
-		legibility.get(cluster)! >= foregroundFloor &&
-		// Measurement only; `"both"` ships. See `COMPONENT_ROLES`.
-		(COMPONENT_ROLES === "both" || !componentSourced.has(cluster))
-	)
+	// Decision 18's v0.8.2 class ordering is an ordering, so it is **not** a term in this filter: a
+	// class-B candidate is admissible exactly when it clears the floors, like anything else. The class
+	// enters below, in the order the shortlist is taken in, and again in the solve's comparator.
+	const admissible = feasible.filter((cluster) => legibility.get(cluster)! >= foregroundFloor)
 
 	if (admissible.length === 0) {
 		// Nothing publishable and legible: SPEC decision 10's escape. The escape colour itself is
@@ -887,6 +926,9 @@ export function readOverlay(
 				mass: cluster.overlayMass,
 				legibility: legibility.get(cluster) ?? 0,
 				source: componentSourced.has(cluster) ? "component" : "overlay",
+				// Decision 18's v0.8.2 class. An overlay cluster is class A by definition — it *is* what
+				// the fit rejected — and a component carries the shape verdict measured on its own claim.
+				foregroundClass: componentClass.get(cluster) ?? "A",
 			}
 			candidates.set(cluster, candidate)
 		}
@@ -898,7 +940,20 @@ export function readOverlay(
 	// refused above) — which is what v0.7.1 published on any cover with no component candidates.
 	// **v0.8.0 keeps that order and takes the top K**, because decision 18 needs the *shortlist*, not
 	// the argmax; v0.8.1 widens what the order runs over, not the order.
-	const foregroundShortlist: RoleCandidate[] = admissible
+	//
+	// **v0.8.2 re-orders it class-first, and the shortlist is where that has to happen rather than only
+	// in the comparator.** A shortlist truncated by mass is truncated *before* the class term can speak,
+	// which is the same truncation trap `AssignmentInput.accentFor` documents on the accent side: on
+	// `908479200b` two components at field mass 24 591 and 10 223 sit above the STRONG cream ink at
+	// 2 432, so an ordering applied only inside the solve would rank a shortlist the ink had already
+	// fallen out of. Sorting here and comparing there are the same order, stated twice, deliberately:
+	// the solve owns the ordering, and a shortlist that is not a prefix of it is not a shortlist.
+	const foregroundShortlist: RoleCandidate[] = [...admissible]
+		.sort((first, second) =>
+			(componentClass.get(first) === "B" ? 1 : 0) - (componentClass.get(second) === "B" ? 1 : 0) ||
+			second.overlayMass - first.overlayMass ||
+			first.representative - second.representative
+		)
 		.slice(0, ROLE_SHORTLIST_SIZE)
 		.map(candidateOf)
 

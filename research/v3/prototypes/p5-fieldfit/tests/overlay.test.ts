@@ -1156,38 +1156,41 @@ test("(18a) a component supersedes the overlay cluster of its own family, and pu
 })
 
 /**
- * **The item-3 shape**: three field-like components, two field slots, and the third claims a role that
- * v0.8.0 could not give it. Round 3's finding 3, as a synthetic with a known answer.
+ * **The item-3 shape, at the real cover's scale**: three field-like components, two field slots, and
+ * the third claims the accent while the artwork's ink keeps the foreground. Round 3's finding 3 and
+ * its verbatim ask, as a synthetic with a known answer.
  *
  * Two components carry background and surface (they are the published ends here, so they never reach
- * this function); the third is offered to the pool. Its field mass is deliberately set **below** the
- * ink cluster's rejected mass, so decision 13's mass-led foreground still goes to the ink and the
- * component takes the **accent** — the role rotation the reviewer asked for on `2376a6b67d` and the
- * one the real cover does not reproduce, because there the region's field mass outweighs every ink by
- * an order of magnitude (`reports/wp15.md`, the scale finding).
+ * this function); the third is offered to the pool with a field mass **ten times** the ink cluster's
+ * rejected mass, which is the scale `reports/wp15.md` measured on `2376a6b67d` (11 694 against 1 424)
+ * and on `908479200b` (24 591 against 2 432). Under v0.8.1's single mass column that region took the
+ * foreground; under decision 18's class ordering it is class B — a ground, not an ink — so it sorts
+ * below every cluster for the foreground slot and wins the accent on the same mass that used to win
+ * it the foreground. Both halves are asserted, because the ruling is an ordering and not an exclusion.
  */
-test("(18a) three components, two slots: the third claims the accent", () => {
+test("(18a/18-class) three components, two slots: the heavy region takes the accent, the ink keeps fg", () => {
 	const size = 24
 	const BACKGROUND: Rgb8 = [0xfa, 0xd1, 0x07]
 	const SURFACE: Rgb8 = [0xf9, 0xfb, 0xf8]
 	const REGION: Rgb8 = [0xf2, 0x00, 0x00]
 	const INK: Rgb8 = [0x00, 0x00, 0x00]
 
-	// A small region: 16 pixels of field mass against the ink's 200 of rejected mass.
-	const inside = (column: number, row: number) => inRectangle(column, row, 2, 5, 2, 5)
+	// A large region — 100 pixels of field mass against the ink's 10 of rejected mass — so that the
+	// fixture fails under any rule that ranks the two masses in one column.
+	const inside = (column: number, row: number) => inRectangle(column, row, 2, 11, 2, 11)
+	const isInk = (index: number) => index >= 24 && index < 34
 	const scene = buildScene(
 		size,
 		size,
-		(column, row, index) =>
-			inside(column, row) ? REGION : index < 200 + 24 && index >= 24 ? INK : BACKGROUND,
-		(column, row, index) =>
-			!inside(column, row) && index < 200 + 24 && index >= 24 ? 0 : 1,
+		(column, row, index) => (inside(column, row) ? REGION : isInk(index) ? INK : BACKGROUND),
+		(column, row, index) => (!inside(column, row) && isInk(index) ? 0 : 1),
 		() => rgbToOkLab(BACKGROUND),
 		0,
 	)
 	const stops = rampOf(rgbToOkLab(BACKGROUND), rgbToOkLab(SURFACE))
 	const component = flatComponent(REGION, size, size, inside)
-	assert.ok(component.supportMass < 200, "the fixture's point is that the ink outweighs the region")
+	assert.ok(component.supportMass >= 10 * 10, "the fixture's point is that the region outweighs the ink")
+	assert.equal(component.inkLike, false, "and that it is ground-shaped: class B")
 
 	const before = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
 	assert.equal(before.foreground?.representative, pack(INK))
@@ -1207,8 +1210,57 @@ test("(18a) three components, two slots: the third claims the accent", () => {
 	)
 	assert.equal(after.foreground?.representative, pack(INK))
 	assert.equal(after.accent?.representative, pack(REGION))
-	assert.equal(
-		after.assignment!.accentShortlist.find((candidate) => candidate.color.hex === colorFromRgb(REGION).hex)?.source,
-		"component",
+	// The ordering, read off the two shortlists. The region is still *in* the foreground shortlist —
+	// it is ranked, not excluded — and it is behind every class-A entry, which is the whole ruling.
+	const trace = after.assignment!
+	assert.deepEqual(
+		trace.foregroundShortlist.map((candidate) => candidate.foregroundClass),
+		["A", "B"],
 	)
+	assert.equal(trace.foregroundShortlist[0]!.color.hex, colorFromRgb(INK).hex)
+	assert.ok(trace.foregroundShortlist[0]!.mass < component.supportMass, "and it wins on class, not on mass")
+	assert.equal(trace.accentShortlist[0]!.source, "component")
+	assert.equal(trace.accentShortlist[0]!.foregroundClass, "B")
+	assert.equal(trace.accentShortlist[0]!.mass, component.supportMass)
+	assert.equal(trace.classOverriddenByCoverage, false)
+})
+
+/**
+ * **The class ordering is an ordering, not an exclusion**, on the one scene that separates the two:
+ * the same region, with the only overlay cluster on the cover pushed below decision 13's legibility
+ * floor. No class-A candidate is admissible, so the class-B region takes the foreground rather than
+ * the palette escaping — which is what `P5_COMPONENT_ROLES=accent`, the knob this ruling deleted,
+ * could not do.
+ */
+test("(18-class) with every class-A candidate below the floor, the region takes the foreground", () => {
+	const size = 24
+	const BACKGROUND: Rgb8 = [0xfa, 0xd1, 0x07]
+	const REGION: Rgb8 = [0xf2, 0x00, 0x00]
+	// A hair off the background: rejected, feasible on distinctness, and far below |raw| 15.
+	const DULL: Rgb8 = [0xf6, 0xcd, 0x0a]
+
+	const inside = (column: number, row: number) => inRectangle(column, row, 2, 11, 2, 11)
+	const isDull = (index: number) => index >= 24 && index < 34
+	const scene = buildScene(
+		size,
+		size,
+		(column, row, index) => (inside(column, row) ? REGION : isDull(index) ? DULL : BACKGROUND),
+		(column, row, index) => (!inside(column, row) && isDull(index) ? 0 : 1),
+		() => rgbToOkLab(BACKGROUND),
+		0,
+	)
+	const stops = rampOf(rgbToOkLab(BACKGROUND), rgbToOkLab(BACKGROUND))
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+		[flatComponent(REGION, size, size, inside)],
+	)
+
+	assert.equal(reading.foreground?.representative, pack(REGION))
+	assert.equal(reading.assignment!.foregroundShortlist.length, 1)
+	assert.equal(reading.assignment!.foregroundShortlist[0]!.foregroundClass, "B")
+	assert.equal(reading.assignment!.classOverriddenByCoverage, false)
 })

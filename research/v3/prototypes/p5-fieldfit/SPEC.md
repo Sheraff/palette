@@ -305,6 +305,15 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     accent red (the reviewer's verbatim ask); sunset byte-identical; `28279e9184` fg `#ffffff`
     held. Coverage remains near-inert post-union (decided 0/27) — granularity question stays
     parked with the formula packet.
+    *Rulings 2026-08-11 (wp16 stop-conditions):* (a) class placement below coverage accepted
+    (measured: one cover differs, the alternative is wp15's "worse"). (b) **The accent union
+    stands un-classed for round 4** — extending the class term would restore the sunset STRONG's
+    accent, but two union-moved accents move toward reviewer-named colours (green family, vivid
+    orange), and freezing reviewer-seen palettes is the recorded incumbent-anchoring trap. The
+    sunset returns in round 4 as the deliberate live question; a regression there extends the
+    class term to the accent with verdict provenance. (c) the `#ffffff→#fafafa` dedupe delta is
+    `sameColor`-null, accepted. `28279e9184` and `91a16672c4` are the only two covers where
+    coverage decides — noted as the set-coverage mechanism's entire live footprint.
 
 ## Verification obligations (designed overlap)
 

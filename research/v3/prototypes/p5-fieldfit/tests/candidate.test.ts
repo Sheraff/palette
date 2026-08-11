@@ -62,7 +62,7 @@ async function firstImageOfSet(): Promise<string> {
 
 test("the candidate module exports what the dev loop loads", () => {
 	assert.equal(candidateId, "p5-fieldfit")
-	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.8.1")
+	assert.equal(ALGORITHM_VERSION, "p5-fieldfit-0.8.2")
 	assert.equal(PREPROCESSING_VERSION, "sharp-0.33.5/srgb/no-resample")
 	assert.equal(typeof paletteOf, "function")
 })
@@ -312,11 +312,12 @@ test("anchor: 2376a6b67d reads bimodal and keeps its two-block palette", async (
 	// discriminator's verdict must not move under decision 17's or 18's rulings.
 	assert.equal(palette.roles.background.hex, "#fad107")
 	assert.equal(palette.roles.surface.hex, "#f9fbf8")
-	// The two ink roles **did** move in v0.8.1 (`#000000`/`#000300` → `#f81107`/`#000000`): decision
-	// 18(a)'s pool re-union let the red component reach a role. That is a role-sourcing change, not a
-	// field-reading one, and it is pinned with its trace in `tests/assignment.test.ts`'s anchor (a).
-	assert.equal(palette.roles.foreground.hex, "#f81107")
-	assert.equal(palette.roles.accent.hex, "#000000")
+	// The **accent** moved in v0.8.1 (`#000300` → the red): decision 18(a)'s pool re-union let the red
+	// component reach a role. v0.8.2's class ordering decides *which* role — the black ink keeps the
+	// foreground it held in v0.7.1 and the red takes the accent, which is round 3's verbatim ask. Both
+	// are role-sourcing changes, not field-reading ones, and the trace is in `tests/assignment.test.ts`.
+	assert.equal(palette.roles.foreground.hex, "#000000")
+	assert.equal(palette.roles.accent.hex, "#f81107")
 	assert.equal(palette.gradient, null)
 	assert.equal(diagnostics.twoBlockFallback, true)
 

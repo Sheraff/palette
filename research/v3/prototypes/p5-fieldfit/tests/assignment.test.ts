@@ -84,9 +84,18 @@ function candidateOf(
 	mass: number,
 	legibility = 50,
 	source: RoleCandidate["source"] = "overlay",
+	foregroundClass: RoleCandidate["foregroundClass"] = source === "component" ? "B" : "A",
 ): RoleCandidate {
 	const color: PaletteColor = colorFromRgb(rgb)
-	return { cluster: clusterOf(rgb, mass), color, lab: rgbToOkLab(rgb), mass, legibility, source }
+	return {
+		cluster: clusterOf(rgb, mass),
+		color,
+		lab: rgbToOkLab(rgb),
+		mass,
+		legibility,
+		source,
+		foregroundClass,
+	}
 }
 
 /** An identity set built straight from colours, bypassing agglomeration, for ordering tests. */
@@ -250,6 +259,8 @@ function bruteForce(
 	// Sort by the decision-18 tuple, written out longhand.
 	options.sort((first, second) =>
 		second.coverage - first.coverage ||
+		(first.foreground.foregroundClass === "A" ? 0 : 1) -
+			(second.foreground.foregroundClass === "A" ? 0 : 1) ||
 		second.foreground.mass - first.foreground.mass ||
 		second.foreground.legibility - first.foreground.legibility ||
 		(second.accent === null ? -1 : second.accent.mass) -
@@ -278,13 +289,21 @@ test("enumeration: the solve agrees with brute force on 200 randomized fixtures"
 			Math.floor(random() * 256),
 			Math.floor(random() * 256),
 		]
+		// Classes are randomized too, so the class term is exercised rather than constant: a fixture
+		// whose candidates are all class A cannot tell the two comparators apart.
 		const foreground = Array.from(
 			{ length: 1 + Math.floor(random() * ROLE_SHORTLIST_SIZE) },
-			() => candidateOf(colorAt(), random() * 1000, random() * 100),
+			() =>
+				random() < 0.5
+					? candidateOf(colorAt(), random() * 1000, random() * 100)
+					: candidateOf(colorAt(), random() * 10_000, random() * 100, "component"),
 		)
 		const accents = Array.from(
 			{ length: Math.floor(random() * (ROLE_SHORTLIST_SIZE + 1)) },
-			() => candidateOf(colorAt(), random() * 1000, random() * 100),
+			() =>
+				random() < 0.5
+					? candidateOf(colorAt(), random() * 1000, random() * 100)
+					: candidateOf(colorAt(), random() * 10_000, random() * 100, "component"),
 		)
 		const identity = identityOf(
 			Array.from({ length: IDENTITY_FAMILY_COUNT }, () => [colorAt(), random()] as const),
@@ -430,6 +449,88 @@ test("a heavier foreground with no accent still beats a lighter one that has one
 	assert.equal(trace.chosen?.accent, null)
 })
 
+/**
+ * **The scale-mixing ruling, as the one comparison it exists to fix.** A ground-shaped region that
+ * outweighs the ink by an order of magnitude still loses the foreground, because the class term sits
+ * above mass — and it loses it *without being excluded*: it is enumerated, it is feasible, and it
+ * takes the accent, whose ranking the ruling deliberately leaves on mass over the full union.
+ *
+ * This is `908479200b` in miniature (region 24 591 against ink 2 432) and `2376a6b67d` in miniature
+ * (11 694 against 1 424), which are the two covers the ruling names.
+ */
+test("class ordering: a class-B region outmassing the ink 10× still loses the foreground", () => {
+	const ink = candidateOf([0x00, 0x00, 0x00], 1000, 80)
+	const region = candidateOf([0xfe, 0x00, 0x00], 10_000, 60, "component")
+	assert.equal(region.foregroundClass, "B")
+	// No coverage anywhere, so nothing above the per-role tie-breaks can be doing the work.
+	const identity = identityOf([[[0x00, 0x80, 0x00], 0.4]])
+	const fieldLabs = [rgbToOkLab([0x00, 0x80, 0x00])]
+
+	for (const order of [[ink, region], [region, ink]]) {
+		const trace = solveAssignment({
+			foreground: order,
+			accentFor: sharedShortlist(order),
+			identity,
+			fieldLabs,
+			twinExcluded: NEVER_TWINS,
+		})
+		assert.equal(trace.chosen?.foreground.color.hex, "#000000", "the ink takes the foreground")
+		assert.equal(trace.chosen?.accent?.color.hex, "#fe0000", "the region takes the accent, on mass")
+		assert.equal(trace.classOverriddenByCoverage, false)
+		// The region was ranked, not filtered: it is in the enumeration and it is feasible.
+		assert.equal(trace.enumerated, 2 * 2)
+		assert.equal(trace.feasible, 4)
+	}
+})
+
+/**
+ * **The other half of "an ordering, not an exclusion".** With no class-A candidate clearing the
+ * floors — the shortlist `overlay.ts` hands over holds only the region — the class-B candidate takes
+ * the foreground, which is round-3 item 6's shape and the outcome the deleted `P5_COMPONENT_ROLES`
+ * knob could not produce.
+ */
+test("class ordering: with no class-A survivor the region takes the foreground", () => {
+	const region = candidateOf([0xfe, 0x00, 0x00], 10_000, 60, "component")
+	const trace = solveAssignment({
+		foreground: [region],
+		accentFor: () => [],
+		identity: identityOf([[[0x00, 0x80, 0x00], 0.4]]),
+		fieldLabs: [rgbToOkLab([0x00, 0x80, 0x00])],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(trace.chosen?.foreground.color.hex, "#fe0000")
+	assert.equal(trace.chosen?.foreground.foregroundClass, "B")
+	// Nothing was overridden: there was no class-A assignment to override.
+	assert.equal(trace.classOverriddenByCoverage, false)
+})
+
+/**
+ * **Where the class term sits, pinned as the behaviour it produces.** Coverage is above it (decision
+ * 18's lexicography; the ruling redefines the *foreground ordering*, and coverage outranks the
+ * per-role orderings), so a class-B foreground that reaches a family no class-A candidate reaches
+ * wins — and `classOverriddenByCoverage` is what makes that visible instead of silent. `28279e9184`
+ * is the one cover in the 27 where this fires; if the ordering is ever ruled the other way, this test
+ * is the one that has to change.
+ */
+test("class ordering: coverage still outranks the class, and says so in the trace", () => {
+	const ink = candidateOf([0x00, 0x00, 0x00], 1000, 80)
+	const region = candidateOf([0xfe, 0x00, 0x00], 10, 60, "component")
+	const identity = identityOf([[[0xfa, 0xd1, 0x07], 0.4], [[0xfe, 0x00, 0x00], 0.1]])
+
+	const trace = solveAssignment({
+		foreground: [ink, region],
+		accentFor: () => [],
+		identity,
+		fieldLabs: [rgbToOkLab([0xfa, 0xd1, 0x07])],
+		twinExcluded: NEVER_TWINS,
+	})
+	assert.equal(trace.chosen?.foreground.color.hex, "#fe0000", "the lighter class-B wins on coverage")
+	assert.equal(trace.chosen?.coverage, 2)
+	assert.equal(trace.perRoleOnly?.foreground.color.hex, "#000000", "the class term's own winner")
+	assert.equal(trace.coverageDecided, true)
+	assert.equal(trace.classOverriddenByCoverage, true)
+})
+
 test("determinism: every tie ends at the packed int", () => {
 	// Identical mass, identical legibility, identical (zero) coverage: only the packed int is left.
 	const low = candidateOf([0x00, 0x00, 0x10], 100, 40)
@@ -483,32 +584,32 @@ async function cover(shard: string, name: string): Promise<string> {
 }
 
 /**
- * **Anchor (a) — round-3 item 3, `2376a6b67d`.** v0.8.0's negative, and what ruling (a) does to it.
+ * **Anchor (a) — round-3 item 3, `2376a6b67d`.** The reviewer's verbatim ask, reached.
  *
  * v0.8.0 measured that no assignment could reach the artwork's red: it is carried by a field-like
  * **component** (support 0.138), so its rejected mass was ~34 against the black's ~1424 and it was
  * `sameColor` with its own local field — *"infeasible as an ink candidate at any K"* (`wp14.md` §2a).
  * v0.8.1's union puts the component in the pool with its **field** mass (11 694) and judges it against
- * the published colours, and the red now carries a role: the palette is yellow / white / **red** /
- * **black**, the reviewer's four-colour set, and the near-black fg-twin `#000300` is gone.
+ * the published colours, and the red carries a role: the palette is yellow / white / red / black, the
+ * reviewer's four-colour set, and the near-black fg-twin `#000300` is gone.
  *
- * **Which** role is the finding this test pins, because it is not the one round 3 asked for.** The
- * reviewer asked for the red as the *accent*; it takes the *foreground*, and the black takes the
- * accent. Both assignments are in the search space, both are feasible and both reach coverage 3; the
- * fg-mass tie-break decides between them, and the red's field mass (11 694) outweighs the black's
- * rejected mass (1 424) by 8×. That is a **scale** consequence of decision 18(a)'s "salient mass =
- * field mass", not a coverage decision (`coverageDecided` is false), and it is `reports/wp15.md`'s
- * open question. `P5_COMPONENT_ROLES=accent` re-runs the alternative, which publishes the reviewer's
- * exact ask here and moves seven covers in total, not four.
+ * **Which** role was v0.8.1's open question, and v0.8.2's class ordering answers it. Both
+ * `fg = red / accent = black` and `fg = black / accent = red` are feasible and both reach coverage 3,
+ * so coverage cannot separate them (`coverageDecided` is false); v0.8.1 broke the tie on mass and the
+ * red's field mass (11 694) outweighs the black's rejected mass (1 424) by 8×, which is the scale
+ * mixing `reports/wp15.md` reported. The class term now leads the foreground ordering: the black ink
+ * is class A, the red region is class B (its component-level ink statistics are mortality 0.671,
+ * adjacency 0.159 — it fails the mortality conjunct and is a ground), so the black takes the
+ * foreground and the red takes the accent. That is round 3's ask, word for word.
  */
-test("anchor: item 3's red claims a role, the near-black twin is gone", async () => {
+test("anchor: item 3 publishes fg black / accent red — round 3's verbatim ask", async () => {
 	const { palette, assignment, componentCandidates } = await analyzeImage(
 		await cover("00", "ab67616d00001e020000269ead63cf2376a6b67d"),
 	)
 	assert.deepEqual(
 		[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
-		["#fad107", "#f9fbf8", "#f81107", "#000000"],
-		"was #fad107/#f9fbf8/#000000/#000300 in v0.8.0",
+		["#fad107", "#f9fbf8", "#000000", "#f81107"],
+		"was #fad107/#f9fbf8/#000000/#000300 in v0.8.0 and .../#f81107/#000000 in v0.8.1",
 	)
 	assert.ok(assignment !== null)
 	const families = assignment.identity.families.map((family) =>
@@ -527,25 +628,32 @@ test("anchor: item 3's red claims a role, the near-black twin is gone", async ()
 	assert.equal(red.published, "#f81107")
 	assert.deepEqual(red.supersedes.map((entry) => entry.hex), ["#f20000", "#fe0000"])
 	assert.ok(red.supportMass > 10_000, `field mass ${red.supportMass}, was ~34 as rejected mass`)
+	// The classification, as the two numbers it is made of: a ground, not an ink (wp12's conjunction).
+	assert.equal(red.foregroundClass, "B")
+	assert.ok(red.erosionMortality! < 0.85, `mortality ${red.erosionMortality}`)
 
-	// The tie-break, stated as a measurement: the red leads the foreground shortlist on mass alone, and
-	// coverage did not decide it. A change that makes the reviewer's role split happen must move this.
-	assert.equal(assignment.foregroundShortlist[0]!.source, "component")
+	// The tie-break, stated as a measurement. The red still outweighs every ink by 8×, and still loses
+	// the foreground: the class term is above mass, so the whole shortlist is class A and the red is not
+	// in it at all. Coverage did not decide this palette — the class ordering did.
+	assert.equal(assignment.foregroundShortlist[0]!.color.hex, "#000000")
+	assert.ok(
+		assignment.foregroundShortlist.every((candidate) => candidate.foregroundClass === "A"),
+		"class A fills the shortlist; the heavier class-B region sorts below all of it",
+	)
+	assert.equal(assignment.accentShortlist[0]!.source, "component")
+	assert.ok(
+		assignment.accentShortlist[0]!.mass > 8 * assignment.foregroundShortlist[0]!.mass,
+		"11 694 of field mass against 1 424 of rejected mass — the scale finding, still true",
+	)
 	assert.equal(assignment.coverageDecided, false)
-	assert.equal(assignment.perRoleOnly?.foreground.color.hex, "#f81107")
+	assert.equal(assignment.classOverriddenByCoverage, false)
+	assert.equal(assignment.perRoleOnly?.foreground.color.hex, "#000000")
 })
 
 /**
- * **Anchor (c) — the round-2/3 silent STRONGs.** Two of three hold byte-identical. **`908479200b`
- * does not**, and it is pinned here as a regression rather than quietly re-baselined, because a
- * reviewer already blessed the palette it used to publish.
- *
- * What happens there is the same scale effect item 3's anchor names, on a cover where it is not
- * wanted: two unslotted components (a near-black at field mass 24 591 and an orange at 10 223)
- * outweigh the cream ink `#fed078` (rejected mass 2 432) by 10× and 4×, so they take both ink roles
- * and the STRONG cream is displaced. Under `P5_COMPONENT_ROLES=accent` the cream keeps the foreground
- * and only the accent moves (`#412824` → `#231f20`) — better, still not byte-identical. Neither column
- * holds this cover; the orchestrator's ruling is owed on which cost is the one to pay.
+ * **The round-2/3 silent STRONGs.** Two of three hold byte-identical. **`908479200b` does not**, and
+ * it is pinned below as a regression rather than quietly re-baselined, because a reviewer already
+ * blessed the palette it used to publish.
  */
 for (
 	const [label, shard, name, expected] of [
@@ -553,7 +661,7 @@ for (
 		["eaed77a9cb (demo-20)", "00", "ab67616d00001e02000023e98b7381eaed77a9cb", ["#222335", "#474b56", "#ffffff", "#0f0b0c"]],
 	] as const
 ) {
-	test(`anchor: ${label} is byte-identical under decision 18(a)`, async () => {
+	test(`anchor: ${label} is byte-identical under decision 18(a) and 18's class ordering`, async () => {
 		const { palette } = await analyzeImage(await cover(shard, name))
 		assert.deepEqual(
 			[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
@@ -562,28 +670,99 @@ for (
 	})
 }
 
-test("anchor: 908479200b — the STRONG that decision 18(a) moves, and by how much", async () => {
+/**
+ * **Anchor (b) — `908479200b`, the sunset STRONG. The foreground comes back; the accent does not.**
+ *
+ * v0.8.1 lost both ink roles to components (a near-black region at field mass 24 591 and an orange at
+ * 10 223, against the cream ink's rejected mass 2 432). v0.8.2's class ordering restores the
+ * foreground exactly — the cream is class A, both regions are class B (mortality 0.281 and 0.612,
+ * both under `COMPONENT_INK_MORTALITY`), so the cream leads the shortlist again and `#fed078` is
+ * published, the STRONG colour a reviewer already blessed.
+ *
+ * **The accent still moves**, `#412824` → `#231f20`, and it moves through the rule the scale-mixing
+ * ruling deliberately left alone: the accent ranks the full union by mass, and 24 591 beats 224 by
+ * two orders of magnitude. So the cover is *not* byte-identical to v0.7.1 and this test says so
+ * rather than re-baselining it: the accent half of the scale finding is unaddressed, and the ruling
+ * on whether it should be is the orchestrator's (`reports/wp16.md`).
+ */
+test("anchor: 908479200b — the STRONG's foreground is restored, its accent is not", async () => {
 	const { palette, componentCandidates, assignment } = await analyzeImage(
 		await cover("00", "ab67616d00001e02000022e7e9d11c908479200b"),
 	)
 	assert.deepEqual(
 		[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
-		["#7a545f", "#fd7b61", "#231f20", "#fd9f55"],
-		"REGRESSION: the reviewer's STRONG was #7a545f/#fd7b61/#fed078/#412824",
+		["#7a545f", "#fd7b61", "#fed078", "#231f20"],
+		"REGRESSION (accent only): the reviewer's STRONG was #7a545f/#fd7b61/#fed078/#412824",
 	)
 	// The field roles are untouched — decision 18 does not reach back into the field reading, and the
 	// half of the STRONG palette the reviewer's note was about (the coral ramp) is intact.
 	assert.equal(palette.roles.background.hex, "#7a545f")
 	assert.equal(palette.roles.surface.hex, "#fd7b61")
-	// The cause, as one number: both ink roles went to components whose field mass dwarfs the ink's.
+	// Both regions are in the pool, both are feasible, both are class B, and neither is excluded — the
+	// foreground is an ordering win, not a gate.
 	assert.equal(componentCandidates.length, 2)
 	assert.ok(componentCandidates.every((row) => row.admitted && row.feasible))
-	const cream = assignment!.foregroundShortlist.find((c) => c.color.hex === "#fed078")
-	assert.ok(cream !== undefined, "the STRONG foreground is still in the shortlist, and still legible")
+	assert.ok(componentCandidates.every((row) => row.foregroundClass === "B"))
 	assert.ok(
-		assignment!.foregroundShortlist[0]!.mass > 10 * cream.mass,
-		"it loses on mass alone, by an order of magnitude",
+		assignment!.foregroundShortlist.every((candidate) => candidate.foregroundClass === "A"),
+		"the class-B regions sort below every class-A ink, so they are not in the fg shortlist",
 	)
+	assert.equal(assignment!.foregroundShortlist[0]!.color.hex, "#fed078")
+	assert.equal(assignment!.classOverriddenByCoverage, false)
+	// And the accent's own ranking, unchanged, is what moves it: mass over the full union.
+	const accent = assignment!.accentShortlist[0]!
+	assert.equal(accent.color.hex, "#231f20")
+	assert.equal(accent.source, "component")
+	assert.ok(
+		accent.mass > 10 * assignment!.accentShortlist[1]!.mass,
+		"the region outweighs the heaviest ink accent by an order of magnitude",
+	)
+})
+
+/**
+ * **Anchor (c) — `28279e9184`. The foreground does *not* come back, and the cause is not the class
+ * ordering.** Pinned as a regression against v0.7.1's `#ffffff`, with the mechanism, because the
+ * obvious reading of the delta ("a component took the foreground") is the wrong one.
+ *
+ * The cover's white *is* a component (support 0.144, field mass 11 795), and decision 18(a)'s dedupe
+ * — choice 4, the component supersedes the overlay clusters of its own family — removed `#ffffff`
+ * (rejected mass 175) and `#f6f6f6` (62) from the pool when it was admitted. So v0.7.1's foreground
+ * is not merely out-ranked here, it is **not in the candidate pool at all**, and no ordering over the
+ * pool can publish it. What the pool offers is exactly two admissible candidates: the class-A
+ * `#eaeaea` at rejected mass 43, and the class-B component published as `#fafafa`.
+ *
+ * Between those two, **coverage decides** and it prefers the component (4 families against 2), which
+ * is the one cover in the 27 where `classOverriddenByCoverage` fires — decision 18 puts coverage
+ * above the per-role orderings, and the class term is a per-role ordering. Both facts are asserted,
+ * because they are the two the ruling on this cover needs.
+ */
+test("anchor: 28279e9184 — the white is deduped out of the pool, and coverage outranks the class", async () => {
+	const { palette, assignment, componentCandidates } = await analyzeImage(
+		await cover("00", "ab67616d00001e020000099e97d17d28279e9184"),
+	)
+	assert.deepEqual(
+		[palette.roles.background.hex, palette.roles.surface.hex, palette.roles.foreground.hex, palette.roles.accent.hex],
+		["#cccecd", "#004164", "#fafafa", "#ff00a0"],
+		"REGRESSION (foreground only): v0.7.1 published #ffffff",
+	)
+	assert.equal(componentCandidates.length, 1)
+	const white = componentCandidates[0]!
+	assert.equal(white.foregroundClass, "B")
+	assert.deepEqual(
+		white.supersedes.map((entry) => entry.hex),
+		["#ffffff", "#f6f6f6"],
+		"the dedupe, not the ordering: v0.7.1's foreground left the pool here",
+	)
+	// Two admissible candidates, one per class, and the class-B one is published.
+	assert.deepEqual(
+		assignment!.foregroundShortlist.map((candidate) => [candidate.color.hex, candidate.foregroundClass]),
+		[["#eaeaea", "A"], ["#fafafa", "B"]],
+	)
+	assert.equal(assignment!.coverageDecided, true)
+	assert.equal(assignment!.classOverriddenByCoverage, true, "the only cover in 27 where it fires")
+	assert.equal(assignment!.chosen?.coverage, 4)
+	assert.equal(assignment!.perRoleOnly?.foreground.color.hex, "#eaeaea")
+	assert.equal(assignment!.perRoleOnly?.coverage, 2)
 })
 
 /**
@@ -613,27 +792,31 @@ test("anchor: item 6 is unchanged, and its component pool is empty by the 15a ve
 })
 
 /**
- * **`91a16672c4` (round-3 item 5) — the cover that was v0.8.0's only delta, and what the union does
- * to it.** In v0.8.0 coverage decided its foreground (`#c39170` → `#d8a685`, coverage 2 → 3). In
- * v0.8.1 both ink roles go to the cover's two unslotted components, at coverage 3 again, and
- * `coverageDecided` falls back to false: the per-role mass ranking now reaches the same answer on its
- * own, because a component's field mass leads every shortlist it enters.
+ * **`91a16672c4` (round-3 item 5) — coverage is the decider again.** In v0.8.0 coverage decided its
+ * foreground (`#c39170` → `#d8a685`, coverage 2 → 3); in v0.8.1 the cover's largest unslotted
+ * component (field mass 84 141) took the slot on mass and `coverageDecided` fell to false. v0.8.2
+ * sorts that component below every ink, the two class-A creams compete alone, and coverage picks the
+ * one that reaches a third family — v0.8.0's answer, by v0.8.0's route.
  *
- * That is the honest reading of the v0.8.0 delta's disappearance — coverage did not stop mattering,
- * it stopped being the thing that broke the tie — and it is why the coverage re-measurement in
- * `reports/wp15.md` reports `coverageDecided` at 0/27 rather than treating the drop as an improvement.
+ * The accent stays with the second component (field mass 44 510 against the heaviest ink's 1 758):
+ * the accent's ranking is untouched by the class ordering, which is what this cover pins about it.
  */
-test("91a16672c4: both ink roles go to components, and coverage stops being the decider", async () => {
+test("91a16672c4: the class ordering hands the foreground back to the inks, and coverage decides it", async () => {
 	const { palette, assignment, componentCandidates } = await analyzeImage(
 		await cover("11", "ab67616d0000b27300113f74852a0091a16672c4"),
 	)
-	assert.equal(palette.roles.foreground.hex, "#d09d7e", "was #d8a685 in v0.8.0, #c39170 in v0.7.1")
-	assert.equal(palette.roles.accent.hex, "#2c3a45", "was #3b4c56")
+	assert.equal(palette.roles.foreground.hex, "#d8a685", "was #d09d7e in v0.8.1, #c39170 in v0.7.1")
+	assert.equal(palette.roles.accent.hex, "#2c3a45", "was #3b4c56 in v0.7.1")
 	assert.ok(assignment !== null)
 	assert.equal(assignment.chosen?.coverage, 3, "the same coverage v0.8.0 reached")
-	assert.equal(assignment.coverageDecided, false, "reached by the per-role ranking alone now")
+	assert.equal(assignment.coverageDecided, true, "and by the same route: coverage over mass")
+	assert.equal(assignment.perRoleOnly?.foreground.color.hex, "#c39170")
 	assert.equal(componentCandidates.length, 2)
 	assert.ok(componentCandidates.every((row) => row.admitted && row.feasible))
-	assert.equal(assignment.foregroundShortlist[0]!.source, "component")
+	assert.ok(componentCandidates.every((row) => row.foregroundClass === "B"))
+	// The heaviest candidate on the cover by 14× is class B, and it does not reach the foreground.
+	assert.ok(componentCandidates[0]!.supportMass > 80_000)
+	assert.ok(assignment.foregroundShortlist.every((candidate) => candidate.foregroundClass === "A"))
+	assert.equal(assignment.classOverriddenByCoverage, false)
 	assert.equal(assignment.accentShortlist[0]!.source, "component")
 })
