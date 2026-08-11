@@ -1,0 +1,385 @@
+{
+ "item5": {
+  "poolSize": 1041,
+  "termSurvivors": {
+   "fieldMedianL>=0.75": 182,
+   "fieldMedianC<=0.06": 699,
+   "markLightShare>=0.60": 6,
+   "fieldMedianL>=0.75 AND fieldMedianC<=0.06": 136,
+   "all three": 0
+  },
+  "maxMarkLightShareAmongLightNeutralFields": 0.5636,
+  "maxMarkLightShareInWholePool": 0.9211,
+  "selected": null,
+  "nominee": {
+   "path": "02/ab67616d00001e0200028475c3197f4510266bb9.jpg",
+   "fieldMedianL": 1,
+   "fieldMedianC": 0,
+   "markLightShare": 0.5636,
+   "markFrac": 0.0537,
+   "flatFrac": 0.7825,
+   "topBinShare": 0.8157,
+   "vividFrac": 0,
+   "splitR2": 0.0751
+  },
+  "top": [
+   {
+    "path": "02/ab67616d00001e0200028475c3197f4510266bb9.jpg",
+    "fieldMedianL": 1,
+    "fieldMedianC": 0,
+    "markLightShare": 0.5636,
+    "markFrac": 0.0537,
+    "flatFrac": 0.7825,
+    "topBinShare": 0.8157,
+    "vividFrac": 0,
+    "splitR2": 0.0751
+   },
+   {
+    "path": "03/ab67616d0000b27300034072f2e4cc997e860120.jpg",
+    "fieldMedianL": 0.7794,
+    "fieldMedianC": 0,
+    "markLightShare": 0.551,
+    "markFrac": 0.1604,
+    "flatFrac": 0.4579,
+    "topBinShare": 0.3455,
+    "vividFrac": 0,
+    "splitR2": 0.1448
+   },
+   {
+    "path": "02/ab67616d00001e020002bd87d7c92ca304d9b7c3.jpg",
+    "fieldMedianL": 0.852,
+    "fieldMedianC": 0.0176,
+    "markLightShare": 0.4863,
+    "markFrac": 0.0803,
+    "flatFrac": 0.1751,
+    "topBinShare": 0.1479,
+    "vividFrac": 0,
+    "splitR2": 0.8509
+   },
+   {
+    "path": "02/ab67616d00001e0200029107f9fb10ddc369ae92.jpg",
+    "fieldMedianL": 0.8964,
+    "fieldMedianC": 0.0287,
+    "markLightShare": 0.4828,
+    "markFrac": 0.0071,
+    "flatFrac": 0.6465,
+    "topBinShare": 0.2507,
+    "vividFrac": 0,
+    "splitR2": 0.0691
+   },
+   {
+    "path": "01/ab67616d0000b27300011339c6ab39bae7d3fbaa.jpg",
+    "fieldMedianL": 0.7533,
+    "fieldMedianC": 0.0488,
+    "markLightShare": 0.468,
+    "markFrac": 0.2781,
+    "flatFrac": 0.1459,
+    "topBinShare": 0.0881,
+    "vividFrac": 0.0525,
+    "splitR2": 0.5835
+   },
+   {
+    "path": "02/ab67616d0000b27300025856d1cbf268d0a3be38.jpg",
+    "fieldMedianL": 0.7693,
+    "fieldMedianC": 0.0054,
+    "markLightShare": 0.4555,
+    "markFrac": 0.1946,
+    "flatFrac": 0.3358,
+    "topBinShare": 0.2041,
+    "vividFrac": 0.3674,
+    "splitR2": 0.2315
+   },
+   {
+    "path": "03/ab67616d0000b2730003a9869108ac6b547688dc.jpg",
+    "fieldMedianL": 0.8777,
+    "fieldMedianC": 0.0099,
+    "markLightShare": 0.4468,
+    "markFrac": 0.2961,
+    "flatFrac": 0.3593,
+    "topBinShare": 0.4653,
+    "vividFrac": 0,
+    "splitR2": 0.1243
+   },
+   {
+    "path": "02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+    "fieldMedianL": 0.7534,
+    "fieldMedianC": 0.0219,
+    "markLightShare": 0.44,
+    "markFrac": 0.2747,
+    "flatFrac": 0.1881,
+    "topBinShare": 0.0879,
+    "vividFrac": 0,
+    "splitR2": 0.3086
+   }
+  ]
+ },
+ "item6": {
+  "poolSize": 1040,
+  "gatePool": 283,
+  "selected": {
+   "path": "03/ab67616d0000b2730003079010cf188395a0f57b.jpg",
+   "vividFrac": 0.9976,
+   "flatFrac": 0.859,
+   "topBinShare": 0.9031,
+   "distinctBins": 6,
+   "meanC": 0.1219,
+   "p90C": 0.1217,
+   "fieldMedianL": 0.589,
+   "fieldMedianC": 0.1217,
+   "detail": 0.0018
+  },
+  "runnersUp": [
+   {
+    "path": "01/ab67616d0000b27300011897ac9fe3d4b4cd95b2.jpg",
+    "vividFrac": 0.9846,
+    "flatFrac": 0.9646,
+    "topBinShare": 0.7356,
+    "distinctBins": 49,
+    "meanC": 0.161,
+    "p90C": 0.1634,
+    "fieldMedianL": 0.615,
+    "fieldMedianC": 0.1632,
+    "detail": 0.0043
+   },
+   {
+    "path": "01/ab67616d0000b27300016d1b97813202b01299c4.jpg",
+    "vividFrac": 0.9712,
+    "flatFrac": 0.789,
+    "topBinShare": 0.6699,
+    "distinctBins": 57,
+    "meanC": 0.144,
+    "p90C": 0.1509,
+    "fieldMedianL": 0.3553,
+    "fieldMedianC": 0.1445,
+    "detail": 0.0086
+   },
+   {
+    "path": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+    "vividFrac": 0.9282,
+    "flatFrac": 0.6772,
+    "topBinShare": 0.4021,
+    "distinctBins": 82,
+    "meanC": 0.1557,
+    "p90C": 0.1652,
+    "fieldMedianL": 0.7838,
+    "fieldMedianC": 0.1617,
+    "detail": 0.023
+   },
+   {
+    "path": "01/ab67616d0000b2730001bc71378830d4350193bf.jpg",
+    "vividFrac": 0.9216,
+    "flatFrac": 0.4121,
+    "topBinShare": 0.3301,
+    "distinctBins": 295,
+    "meanC": 0.2224,
+    "p90C": 0.2911,
+    "fieldMedianL": 0.4945,
+    "fieldMedianC": 0.2163,
+    "detail": 0.041
+   },
+   {
+    "path": "03/ab67616d0000b27300032a2c0a9ae19730394775.jpg",
+    "vividFrac": 0.9141,
+    "flatFrac": 0.6925,
+    "topBinShare": 0.7456,
+    "distinctBins": 206,
+    "meanC": 0.2156,
+    "p90C": 0.2371,
+    "fieldMedianL": 0.4029,
+    "fieldMedianC": 0.2371,
+    "detail": 0.02
+   },
+   {
+    "path": "01/ab67616d0000b2730001b1b8b279bafafc037795.jpg",
+    "vividFrac": 0.9087,
+    "flatFrac": 0.6085,
+    "topBinShare": 0.6367,
+    "distinctBins": 124,
+    "meanC": 0.1627,
+    "p90C": 0.1848,
+    "fieldMedianL": 0.4103,
+    "fieldMedianC": 0.1684,
+    "detail": 0.0132
+   }
+  ]
+ },
+ "item7": {
+  "poolSize": 1039,
+  "gatePool": 48,
+  "selected": {
+   "path": "01/ab67616d0000b27300012525e62c7f45baf46c90.jpg",
+   "splitR2": 0.8794,
+   "splitDeltaE": 0.5205,
+   "splitBalance": 0.375,
+   "splitAxis": "h",
+   "splitAt": 0.625,
+   "fieldBlockRange": 0.7298,
+   "fieldMedianL": 0.7906,
+   "fieldMedianC": 0.044
+  },
+  "runnersUp": [
+   {
+    "path": "02/ab67616d00001e0200020fe55990dc2670c3f5a6.jpg",
+    "splitR2": 0.8712,
+    "splitDeltaE": 0.2485,
+    "splitBalance": 0.5,
+    "splitAxis": "h",
+    "splitAt": 0.5,
+    "fieldBlockRange": 0.4341,
+    "fieldMedianL": 0.7405,
+    "fieldMedianC": 0.0752
+   },
+   {
+    "path": "01/ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+    "splitR2": 0.8513,
+    "splitDeltaE": 0.2273,
+    "splitBalance": 0.4375,
+    "splitAxis": "h",
+    "splitAt": 0.4375,
+    "fieldBlockRange": 0.4539,
+    "fieldMedianL": 0.6299,
+    "fieldMedianC": 0.0124
+   },
+   {
+    "path": "02/ab67616d00001e020002bd87d7c92ca304d9b7c3.jpg",
+    "splitR2": 0.8509,
+    "splitDeltaE": 0.3736,
+    "splitBalance": 0.4375,
+    "splitAxis": "h",
+    "splitAt": 0.5625,
+    "fieldBlockRange": 0.6197,
+    "fieldMedianL": 0.852,
+    "fieldMedianC": 0.0176
+   },
+   {
+    "path": "02/ab67616d00001e0200021d8262d1a43456c4f5ca.jpg",
+    "splitR2": 0.8032,
+    "splitDeltaE": 0.3451,
+    "splitBalance": 0.375,
+    "splitAxis": "h",
+    "splitAt": 0.375,
+    "fieldBlockRange": 0.5961,
+    "fieldMedianL": 0.4829,
+    "fieldMedianC": 0.0263
+   },
+   {
+    "path": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+    "splitR2": 0.7752,
+    "splitDeltaE": 0.5036,
+    "splitBalance": 0.25,
+    "splitAxis": "h",
+    "splitAt": 0.75,
+    "fieldBlockRange": 0.8317,
+    "fieldMedianL": 0.167,
+    "fieldMedianC": 0.0166
+   },
+   {
+    "path": "02/ab67616d0000b27300027c5d2a3149a6af227281.jpg",
+    "splitR2": 0.7634,
+    "splitDeltaE": 0.2662,
+    "splitBalance": 0.4375,
+    "splitAxis": "h",
+    "splitAt": 0.5625,
+    "fieldBlockRange": 0.499,
+    "fieldMedianL": 0.5195,
+    "fieldMedianC": 0.048
+   }
+  ]
+ },
+ "item8": {
+  "poolSize": 1038,
+  "selected": {
+   "path": "02/ab67616d00001e02000227d883fd2cc65408f632.jpg",
+   "ordinarinessScore": 0.5121,
+   "fieldMedianL": 0.394,
+   "fieldMedianC": 0.0385,
+   "flatFrac": 0.1126,
+   "detail": 0.0445,
+   "splitR2": 0.1285,
+   "vividFrac": 0.0229,
+   "topBinShare": 0.0916,
+   "markLightShare": 0.3186,
+   "textureIndex": 1.2044
+  },
+  "runnersUp": [
+   {
+    "path": "01/ab67616d00001e020001418e127493d543b718cb.jpg",
+    "ordinarinessScore": 0.5294,
+    "fieldMedianL": 0.4334,
+    "fieldMedianC": 0.0631,
+    "flatFrac": 0.0593,
+    "detail": 0.0473,
+    "splitR2": 0.1798,
+    "vividFrac": 0.0403,
+    "topBinShare": 0.0815,
+    "markLightShare": 0.4177,
+    "textureIndex": 0.8233
+   },
+   {
+    "path": "01/ab67616d00001e0200018a67764f2ef76a7ad7ba.jpg",
+    "ordinarinessScore": 0.5381,
+    "fieldMedianL": 0.3861,
+    "fieldMedianC": 0.0479,
+    "flatFrac": 0.1116,
+    "detail": 0.0522,
+    "splitR2": 0.1206,
+    "vividFrac": 0.0276,
+    "topBinShare": 0.1658,
+    "markLightShare": 0.501,
+    "textureIndex": 0.6276
+   },
+   {
+    "path": "03/ab67616d0000b2730003b54ce34934c0a01972b2.jpg",
+    "ordinarinessScore": 0.5776,
+    "fieldMedianL": 0.4518,
+    "fieldMedianC": 0.0273,
+    "flatFrac": 0.1303,
+    "detail": 0.052,
+    "splitR2": 0.1567,
+    "vividFrac": 0.1978,
+    "topBinShare": 0.2207,
+    "markLightShare": 0.4158,
+    "textureIndex": 0.5974
+   },
+   {
+    "path": "02/ab67616d00001e020002f08e52aa9421f84ff23f.jpg",
+    "ordinarinessScore": 0.5998,
+    "fieldMedianL": 0.5015,
+    "fieldMedianC": 0.039,
+    "flatFrac": 0.0601,
+    "detail": 0.0687,
+    "splitR2": 0.1486,
+    "vividFrac": 0.0811,
+    "topBinShare": 0.0991,
+    "markLightShare": 0.4481,
+    "textureIndex": 0.5388
+   },
+   {
+    "path": "03/ab67616d0000b273000371df4a2859b83ef57ed2.jpg",
+    "ordinarinessScore": 0.6008,
+    "fieldMedianL": 0.5045,
+    "fieldMedianC": 0.0233,
+    "flatFrac": 0.0965,
+    "detail": 0.0516,
+    "splitR2": 0.2137,
+    "vividFrac": 0.0005,
+    "topBinShare": 0.092,
+    "markLightShare": 0.5174,
+    "textureIndex": 0.7404
+   },
+   {
+    "path": "03/ab67616d0000b273000388434b4cfcb67c5066fc.jpg",
+    "ordinarinessScore": 0.6191,
+    "fieldMedianL": 0.3508,
+    "fieldMedianC": 0.0401,
+    "flatFrac": 0.0684,
+    "detail": 0.0541,
+    "splitR2": 0.1496,
+    "vividFrac": 0.0093,
+    "topBinShare": 0.1289,
+    "markLightShare": 0.4534,
+    "textureIndex": 0.5462
+   }
+  ]
+ }
+}

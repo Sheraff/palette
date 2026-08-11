@@ -1,0 +1,31 @@
+# p5-round4-fresh — the covers staged fresh for P5 review round 4.
+#
+# Drawn from a WIDER pool than rounds 2 and 3: a deterministic census over shards 01/, 02/ and 03/
+# taken whole (1075 files, shard order 01,02,03, ascending filename sort within each shard), because
+# round 3 §3.4 found the light-field-with-light-text class has zero members in coverage-set-1 and
+# ROUND.md row 5 requires the pool to widen rather than the rule to relax.
+#
+# Excluded before any statistic was read: data/holdout/holdout.json (by id, by every files[*].path
+# and by bestRenditionPath), all 220 artworks of data/coverage-set/coverage-set-1.json, and every
+# cover any earlier P5 round drew (demo-20, p5-round2-fresh, p5-round3-fresh) — id-shaped matches on
+# the trailing-24-hex artwork key, so a different rendition of an excluded artwork is excluded too.
+# 1041 covers censused. Rules, pools and runners-up:
+# prototypes/p5-fieldfit/review-rounds/round-4/STAGING.md §3, and the programs kept beside it
+# (select-fresh-covers.mjs, rank.mjs). No palette was consulted before selection.
+#
+# Paths resolve against the repository root. All four carry a .jpg extension (unlike round 3).
+#
+# The first THREE lines are round-4 payload items 6, 7 and 8, in that order.
+03/ab67616d0000b2730003079010cf188395a0f57b.jpg
+01/ab67616d0000b27300012525e62c7f45baf46c90.jpg
+02/ab67616d00001e02000227d883fd2cc65408f632.jpg
+# The FOURTH line is NOT a payload item. It is the item-5 NOMINEE: the light-field class returned
+# zero qualifiers again over 1041 covers, and this is the highest-scoring near-miss above the 0.50
+# markLightShare floor the staging brief set for disclosure. Slot 5 is empty pending the
+# orchestrator's ruling — see round-4/ITEM5-QUESTION.md. It is run here only so that, if the ruling
+# admits it, its palette comes verbatim from a run rather than from a later recompute.
+02/ab67616d00001e0200028475c3197f4510266bb9.jpg
+# APPENDED 2026-08-11 by W-STAGE4B, after the ROUND.md staging ruling: the fourth line above IS now
+# a payload item — round-4 item 5, admitted as the disclosed 6.1% near-miss (option 2 of
+# ITEM5-QUESTION.md §4). Its path is deliberately NOT repeated here; re-listing it would produce a
+# duplicate run row. Round 4 ships EIGHT items. See round-4/STAGING.md §9.
