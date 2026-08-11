@@ -46,7 +46,9 @@ import {
 	UNREADABLE_COVERAGE_FRACTION,
 } from "./constants.ts"
 import { ACCENT_CANDIDATE_LIMIT } from "./lanes/constants.ts"
+import { mergeCoincidentComponents, type CoincidenceCandidate } from "./roles/coincidence.ts"
 import { COMPONENT_CHAIN_AREA_AGREEMENT, TEXT_COMPONENT_LIMIT } from "./roles/constants.ts"
+import { boundaryTracingLevel, hasInteriorPixel, identityEligibilityLevel } from "./roles/eligibility.ts"
 import {
 	RAW_APCA_INDIFFERENCE,
 	areaFractionBand,
@@ -531,8 +533,17 @@ export type ParsedNode = {
 
 /** What the parse says about one text-shaped group, for the dump and for a regression test to read. */
 export type ParsedTextGroup = Readonly<{
-	/** Parsed node ids of the coherent components, ascending. */
+	/**
+	 * Every parsed node behind the coherent components, ascending — across every lane.
+	 *
+	 * **This is not the component count.** Since D12's coincidence merge (`roles/coincidence.ts`) a
+	 * component is one *physical region*, which several lanes may each have named; all of those namings
+	 * are here, because they are what says which lane carried the group (D2's evidence). Use
+	 * `componentCount` for the number `TEXT_MIN_COMPONENTS` is compared against.
+	 */
 	nodeIds: readonly number[]
+	/** How many distinct physical regions the group is made of — the count that decides text-ness. */
+	componentCount: number
 	rows: number
 	areaFraction: number
 	repr: Rgb8
@@ -585,6 +596,11 @@ export type AccentCandidate = Readonly<{
 	fieldContrast: number
 	/** D3's eligibility level: 0 leads, 1 is an incidental node that may not lead. */
 	stabilityLevel: number
+	/**
+	 * D12's eligibility level, and the one the accent order actually ranks on: 0 when a region behind
+	 * this colour has an interior pixel, 1 when every one of them traces another region's boundary.
+	 */
+	tracingLevel: number
 	/** The best (smallest) MSER growth rate among the cluster's nodes. */
 	growth: number
 }>
@@ -1046,28 +1062,118 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	const chainSet = new Set(groundChain)
 	const isMarkNode = (node: ParsedNode): boolean => node.kind === "mark" && !chainSet.has(node.id)
 
-	/** A pool node, with the lane whose tree owns its mask. 0 is L; then `extraLanes` order. */
-	type Component = Readonly<{ node: ParsedNode; laneIndex: number }>
+	/**
+	 * A pool node, with the lane whose tree owns its mask (0 is L; then `extraLanes` order) and the
+	 * parsed node ids it stands for. Before the coincidence merge `nodeIds` is the one node; after it, a
+	 * component is one **physical region** and carries every lane's naming of it as provenance.
+	 */
+	type Component = Readonly<{
+		node: ParsedNode
+		laneIndex: number
+		/**
+		 * Every parsed node id this component names, ascending — the merge's provenance, and the lane
+		 * provenance with it: the id space is laid out lane by lane (the L block first, then `extraLanes`
+		 * in order), so an id names a lane. `roles/tests/isoluminant-text.test.ts` reads exactly that.
+		 */
+		nodeIds: readonly number[]
+	}>
+	const oneNode = (node: ParsedNode, laneIndex: number): Component => ({ node, laneIndex, nodeIds: [node.id] })
 	const poolMarks: Component[] = []
-	const components: Component[] = []
-	for (const node of nodes) if (isMarkNode(node)) poolMarks.push({ node, laneIndex: 0 })
+	const rawComponents: Component[] = []
+	for (const node of nodes) if (isMarkNode(node)) poolMarks.push(oneNode(node, 0))
 	for (const index of collapseChains(
 		nodes,
 		nodes.map((node) => node.parent),
 		(index) => isMarkNode(nodes[index]),
 	)) {
-		components.push({ node: nodes[index], laneIndex: 0 })
+		rawComponents.push(oneNode(nodes[index], 0))
 	}
 	for (let laneIndex = 0; laneIndex < extraLanes.length; laneIndex += 1) {
 		const lane = laneNodes[laneIndex]
-		for (const node of lane) if (node.kind === "mark") poolMarks.push({ node, laneIndex: laneIndex + 1 })
+		for (const node of lane) if (node.kind === "mark") poolMarks.push(oneNode(node, laneIndex + 1))
 		for (const index of collapseChains(
 			lane,
 			extraLanes[laneIndex].nodes.map((node) => node.parent),
 			(index) => lane[index].kind === "mark",
 		)) {
-			components.push({ node: lane[index], laneIndex: laneIndex + 1 })
+			rawComponents.push(oneNode(lane[index], laneIndex + 1))
 		}
+	}
+
+	// The trees and Euler tours a component's mask is cut from, indexed the same way `laneIndex` is.
+	const laneTrees: ShapeTree[] = [tree, ...extraLanes.map((lane) => lane.tree)]
+	const laneTours = [tour, ...extraLanes.map((lane) => eulerTour(lane.tree, childrenOf(lane.tree)))]
+
+	/** Is pixel `pixel` inside this component's shape, in its own lane's tree? */
+	const containsPixel = (component: Component): ((pixel: number) => boolean) => {
+		const laneTree = laneTrees[component.laneIndex]
+		const laneTour = laneTours[component.laneIndex]
+		const treeNodeId = component.node.treeNodeId
+		const enter = laneTour.enter[treeNodeId]
+		const exit = laneTour.exit[treeNodeId]
+		return (pixel: number): boolean => {
+			const owner = laneTour.enter[laneTree.nodeOfPixel[pixel]]
+			return enter <= owner && owner < exit
+		}
+	}
+
+	// ---- D12: one physical mark is one component ---------------------------------------------------
+	//
+	// Chain collapse folds a tree's re-namings of one glyph **inside** one lane, along its own ancestry.
+	// It cannot see the other two lanes, which name the same blob independently, and it misses a
+	// within-lane pair whose areas agree just under `COMPONENT_CHAIN_AREA_AGREEMENT`. On round 3a item 5
+	// both happened at once: four "components" (2 L + 1 a + 1 b) were one mark, their centroids were
+	// within five pixels, and `collinearity` answers 0 for a degenerate point set — so a single blob
+	// satisfied arm-b §2.4's whole conjunction and elected an unreadable foreground.
+	//
+	// `roles/coincidence.ts` merges them: same colour under the contract's bar, centroids inside the
+	// grain's linear extent, and extent agreement — containment at `COMPONENT_CHAIN_AREA_AGREEMENT` *and*
+	// bounding boxes agreeing on every edge within the grain, which is what keeps a badge concentric with
+	// its panel two regions. **A merged component counts once** toward `TEXT_MIN_COMPONENTS`, and carries
+	// every member's node id as provenance so D2's isoluminant evidence survives it.
+	const components: Component[] = []
+	{
+		const merged = mergeCoincidentComponents(
+			rawComponents.map((component): CoincidenceCandidate => {
+				const laneTree = laneTrees[component.laneIndex]
+				const treeNodeId = component.node.treeNodeId
+				return {
+					centroidX: component.node.centroidX,
+					centroidY: component.node.centroidY,
+					minX: laneTree.nodeMinX[treeNodeId],
+					minY: laneTree.nodeMinY[treeNodeId],
+					maxX: laneTree.nodeMaxX[treeNodeId],
+					maxY: laneTree.nodeMaxY[treeNodeId],
+					areaPixels: laneTree.nodeSubtreeArea[treeNodeId],
+					repr: component.node.repr,
+					contains: containsPixel(component),
+				}
+			}),
+			image.width,
+			image.height,
+		)
+		for (const members of merged) {
+			// The carrier is the largest shape — the most complete naming of the region — then
+			// lexicographic RGB, then lane, then node id. Its area is the region's area, never a sum.
+			const carrier = members
+				.slice()
+				.sort(
+					(first, second) =>
+						rawComponents[second].node.areaFraction - rawComponents[first].node.areaFraction ||
+						packOf(rawComponents[first].node.repr) - packOf(rawComponents[second].node.repr) ||
+						rawComponents[first].laneIndex - rawComponents[second].laneIndex ||
+						rawComponents[first].node.id - rawComponents[second].node.id,
+				)[0]
+			const ordered = members.slice().sort((first, second) => rawComponents[first].node.id - rawComponents[second].node.id)
+			components.push({
+				node: rawComponents[carrier].node,
+				laneIndex: rawComponents[carrier].laneIndex,
+				nodeIds: ordered.map((index) => rawComponents[index].node.id),
+			})
+		}
+	}
+	if (rawComponents.length > components.length) {
+		notes.push(`coincident-components-merged:${rawComponents.length - components.length}`)
 	}
 	if (extraLanes.length > 0) {
 		notes.push(`lanes:${["L", ...extraLanes.map((lane) => lane.lane)].join("+")}`)
@@ -1075,9 +1181,39 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		notes.push(`components:${components.length}`)
 	}
 
-	// The trees and Euler tours a component's mask is cut from, indexed the same way `laneIndex` is.
-	const laneTrees: ShapeTree[] = [tree, ...extraLanes.map((lane) => lane.tree)]
-	const laneTours = [tour, ...extraLanes.map((lane) => eulerTour(lane.tree, childrenOf(lane.tree)))]
+	// ---- D12/D3: the identity-eligibility measurement ----------------------------------------------
+	//
+	// `roles/eligibility.ts` — a region **traces a boundary** when it has no interior pixel. One linear
+	// pass over the mask that is cut for the distance transform anyway, memoised per parsed node id so a
+	// component that is also an accent candidate is measured once.
+	const hasInteriorByNodeId = new Map<number, boolean>()
+	const maskOf = (component: Component): { mask: Uint8Array; width: number; height: number } | null => {
+		const laneTree = laneTrees[component.laneIndex]
+		const laneTour = laneTours[component.laneIndex]
+		const treeNodeId = component.node.treeNodeId
+		const minX = laneTree.nodeMinX[treeNodeId]
+		const minY = laneTree.nodeMinY[treeNodeId]
+		const boxWidth = laneTree.nodeMaxX[treeNodeId] - minX + 1
+		const boxHeight = laneTree.nodeMaxY[treeNodeId] - minY + 1
+		if (boxWidth <= 0 || boxHeight <= 0) return null
+		const mask = new Uint8Array(boxWidth * boxHeight)
+		for (let y = 0; y < boxHeight; y += 1) {
+			for (let x = 0; x < boxWidth; x += 1) {
+				const owner = laneTree.nodeOfPixel[(minY + y) * image.width + (minX + x)]
+				const inside = laneTour.enter[treeNodeId] <= laneTour.enter[owner] && laneTour.enter[owner] < laneTour.exit[treeNodeId]
+				if (inside) mask[y * boxWidth + x] = 1
+			}
+		}
+		return { mask, width: boxWidth, height: boxHeight }
+	}
+	const componentHasInterior = (component: Component): boolean => {
+		const known = hasInteriorByNodeId.get(component.node.id)
+		if (known !== undefined) return known
+		const cut = maskOf(component)
+		const answer = cut === null ? false : hasInteriorPixel(cut.mask, cut.width, cut.height)
+		hasInteriorByNodeId.set(component.node.id, answer)
+		return answer
+	}
 
 	// ---- D3: salience gates identity -------------------------------------------------------------
 	//
@@ -1201,27 +1337,20 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	// median ridge distance gives arm-b §2.4's stroke width. The mask is cut from the component's **own**
 	// lane's tree — the only per-lane step in the detector; everything after it is geometry in pixels,
 	// which is the same space in every lane.
+	//
+	// **Three readings of one mask, not three passes.** The inradius gives thinness, the median ridge
+	// distance gives the stroke width, and *"is there an interior pixel"* gives D12's identity
+	// eligibility — the last one for free, from the same `Uint8Array`, before the transform runs.
 	const componentHeight = new Map<number, number>()
 	for (let index = 0; index < markComponents.length; index += 1) {
 		const mark = markComponents[index].node
 		const laneTree = laneTrees[markComponents[index].laneIndex]
-		const laneTour = laneTours[markComponents[index].laneIndex]
 		const treeNodeId = mark.treeNodeId
-		const minX = laneTree.nodeMinX[treeNodeId]
-		const minY = laneTree.nodeMinY[treeNodeId]
-		const boxWidth = laneTree.nodeMaxX[treeNodeId] - minX + 1
-		const boxHeight = laneTree.nodeMaxY[treeNodeId] - minY + 1
-		if (boxWidth <= 0 || boxHeight <= 0) continue
-		componentHeight.set(mark.id, boxHeight)
-		const mask = new Uint8Array(boxWidth * boxHeight)
-		for (let y = 0; y < boxHeight; y += 1) {
-			for (let x = 0; x < boxWidth; x += 1) {
-				const owner = laneTree.nodeOfPixel[(minY + y) * image.width + (minX + x)]
-				const inside = laneTour.enter[treeNodeId] <= laneTour.enter[owner] && laneTour.enter[owner] < laneTour.exit[treeNodeId]
-				if (inside) mask[y * boxWidth + x] = 1
-			}
-		}
-		const distances = distanceFieldOf(mask, boxWidth, boxHeight)
+		const cut = maskOf(markComponents[index])
+		if (cut === null) continue
+		componentHeight.set(mark.id, cut.height)
+		hasInteriorByNodeId.set(mark.id, hasInteriorPixel(cut.mask, cut.width, cut.height))
+		const distances = distanceFieldOf(cut.mask, cut.width, cut.height)
 		const inradius = inradiusFromDistanceField(distances)
 		const area = laneTree.nodeSubtreeArea[treeNodeId]
 		mark.thinness = area > 0 ? inradius / Math.sqrt(area) : null
@@ -1277,6 +1406,10 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 			firstMarkId: marks[members[0]].id,
 			firstLaneIndex: markComponents[members[0]].laneIndex,
 			salient: members.some((index) => nodeIsSalient(marks[index])),
+			// **D12's eligibility level.** A cluster traces a boundary only when *every* region behind it
+			// does: one member with an interior is enough to say the colour is a region of the artwork,
+			// the same polarity `salient` uses. See `roles/eligibility.ts`.
+			tracing: boundaryTracingLevel(members.some((index) => componentHasInterior(markComponents[index]))),
 			growth: Math.min(...members.map((index) => marks[index].growth)),
 		}
 	})
@@ -1341,10 +1474,65 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	const residualOrder = Array.from({ length: residualCandidates.length }, (_unused, index) => index).sort(
 		(first, second) => residualClass[first] - residualClass[second] || residualCandidates[first] - residualCandidates[second],
 	)
-	const residualPool = residualOrder
-		.slice(0, stableCut(residualOrder, RESIDUAL_POOL_SIZE, (first, second) => residualClass[first] === residualClass[second]))
-		.map((index) => unpack(residualCandidates[index]))
+	const residualDepth = residualOrder.slice(
+		0,
+		stableCut(residualOrder, RESIDUAL_POOL_SIZE, (first, second) => residualClass[first] === residualClass[second]),
+	)
 	if (clusters.length === 0) notes.push("no-mark-clusters:residual-degradation")
+
+	// ---- D12: the residual's identity eligibility, measured on pixels ------------------------------
+	//
+	// A residual colour has no node, so its region is the contract's own **bar mask** — every pixel the
+	// regional ruler calls this colour — which is the unit `identity/pixels.ts` measures and the only one
+	// that answers the question. Round 3a item 1's `#fcfefd` is 330 exact-triple pixels scattered over a
+	// blown highlight whose bar mask is a 16,937-pixel region of inradius 57.9 px; item 2's `#fcffff` is
+	// 2,230 bar pixels in five components, **every one of inradius 1 px and boundary fraction 1.0**,
+	// tracing the outline of the photograph on the cover. The first is a region of the artwork and keeps
+	// its place; the second is the "accidental shadow" D3 refuses identity to.
+	//
+	// The cut into the pool is made **before** this and on the readability order alone: the level is an
+	// ordering and never a retention rule, so the same eight colours are in the pool either way and the
+	// assembly walk can still reach a demoted one when nothing above it clears the contract.
+	// The image's distinct colours, indexed once: the bar test is a question about *colours*, and the
+	// image repeats them heavily, so deciding it per distinct colour rather than per pixel is the whole
+	// of the cost. Measured on demo-20: 98 ms per cover for eight candidates before this indexing, 25 ms
+	// after — against a role stage that costs ~590 ms, which is the ratio to read.
+	const colorIndexOfPixel = new Int32Array(image.packed.length)
+	const residualBarMask = new Uint8Array(image.packed.length)
+	const distinctColors = Array.from(wholeImage.keys()).sort((first, second) => first - second)
+	const distinctLabs: OkLab[] = new Array(distinctColors.length)
+	const distinctColorObjects: PaletteColor[] = new Array(distinctColors.length)
+	{
+		const indexOfColor = new Map<number, number>()
+		for (let index = 0; index < distinctColors.length; index += 1) {
+			indexOfColor.set(distinctColors[index], index)
+			distinctLabs[index] = labFor(distinctColors[index])
+			distinctColorObjects[index] = colorFor(distinctColors[index])
+		}
+		for (let pixel = 0; pixel < image.packed.length; pixel += 1) {
+			colorIndexOfPixel[pixel] = indexOfColor.get(image.packed[pixel]) ?? 0
+		}
+	}
+	const barMaskHasInterior = (subject: number): boolean => {
+		const subjectLab = labFor(subject)
+		const subjectColor = colorFor(subject)
+		const inside = new Uint8Array(distinctColors.length)
+		for (let index = 0; index < distinctColors.length; index += 1) {
+			inside[index] = okLabDistance(subjectLab, distinctLabs[index]) < sameColorBar(subjectColor, distinctColorObjects[index]) ? 1 : 0
+		}
+		for (let pixel = 0; pixel < residualBarMask.length; pixel += 1) residualBarMask[pixel] = inside[colorIndexOfPixel[pixel]]
+		return hasInteriorPixel(residualBarMask, image.width, image.height)
+	}
+	const residualTracing = new Map<number, 0 | 1>()
+	for (const index of residualDepth) {
+		residualTracing.set(residualCandidates[index], boundaryTracingLevel(barMaskHasInterior(residualCandidates[index])))
+	}
+	// Reordered, not re-cut: boundary-tracing colours sort after the rest, and inside each level the
+	// readability order they were cut on is preserved.
+	const residualPool = residualDepth
+		.slice()
+		.sort((first, second) => (residualTracing.get(residualCandidates[first]) ?? 0) - (residualTracing.get(residualCandidates[second]) ?? 0))
+		.map((index) => unpack(residualCandidates[index]))
 
 	const dedupe = (colors: readonly Rgb8[]): Rgb8[] => {
 		const seenColors = new Set<number>()
@@ -1374,7 +1562,24 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		if (known === undefined || level < known) levelByColor.set(key, level)
 	}
 	for (const cluster of clusters) noteLevel(cluster.repr, cluster.salient ? 0 : 1)
-	const levelOf = (color: Rgb8): number => levelByColor.get(packOfColor(color)) ?? 0
+
+	// **D12's tracing level, as the same shape of lookup.** Same polarity as `noteLevel`: the best
+	// evidence about a colour wins, so a colour that is a real region anywhere in the image is eligible
+	// everywhere. Undefined is 0, for the reason D3's is — a rule against accidental shadows may not
+	// demote a candidate no measurement has said anything about.
+	const tracingByColor = new Map<number, 0 | 1>()
+	const noteTracing = (color: Rgb8, level: 0 | 1): void => {
+		const key = packOfColor(color)
+		const known = tracingByColor.get(key)
+		if (known === undefined || level < known) tracingByColor.set(key, level)
+	}
+	for (const cluster of clusters) noteTracing(cluster.repr, cluster.tracing)
+	for (const [packed, level] of residualTracing) noteTracing(unpack(packed), level)
+	const tracingOf = (color: Rgb8): 0 | 1 => tracingByColor.get(packOfColor(color)) ?? 0
+	/** D3's salience level alone — what `AccentCandidate.stabilityLevel` has always published. */
+	const salienceLevelOf = (color: Rgb8): 0 | 1 => (levelByColor.get(packOfColor(color)) ?? 0) as 0 | 1
+	// The two levels compose lexicographically, tracing outermost: `roles/eligibility.ts`.
+	const levelOf = (color: Rgb8): number => identityEligibilityLevel(tracingOf(color), salienceLevelOf(color))
 
 	// **Foreground.** The artwork's own text colour leads — round 1, verbatim, on the acceptance case:
 	// *"black is the artwork's text → fg should be black"*. Text groups first (arm-b §2.6: "text-shaped
@@ -1414,7 +1619,14 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 				packOfColor(first.group.repr) - packOfColor(second.group.repr) ||
 				first.group.firstNodeId - second.group.firstNodeId,
 		)
-	for (const entry of rankedTextGroups) levelByColor.set(packOfColor(entry.group.repr), 0)
+	// A text group's colour leads both eligibility levels, D3's and D12's, for the one reason: identity
+	// outranks legibility and the artwork's own text colour claims the foreground first. After the
+	// coincidence merge a group can no longer be one mark counted four times, which was the route by
+	// which round 3a item 5's single blob reached this exemption.
+	for (const entry of rankedTextGroups) {
+		levelByColor.set(packOfColor(entry.group.repr), 0)
+		tracingByColor.set(packOfColor(entry.group.repr), 0)
+	}
 	if (rankedTextGroups.length === 0) notes.push("no-text-groups:contrast-ranking-only")
 	const nonTextClusterReprs = clusters.filter((_cluster, index) => !textClusterIds.has(index)).map((cluster) => cluster.repr)
 	const foregroundPool = dedupe([
@@ -1451,7 +1663,16 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 	// published colour) and 82% of that is this comparison resolving a difference below the bar. Lane
 	// index and node id stay as the last two levels but are now unreachable unless two candidates carry
 	// the *same colour*, which is the only case in which they say anything about the artwork.
-	type AccentKeyed = Readonly<{ repr: Rgb8; firstLaneIndex: number; firstMarkId: number }>
+	//
+	// **Cycle 3 — D12's eligibility level goes in front of chroma, and D3's salience level still does
+	// not.** They are two different statements and only one of them costs D1 its acceptance case.
+	// `integration-NOTES.md` §5 records why salience cannot lead here: the coral `#d25068` is the most
+	// chromatic candidate in the pool and its cluster's growth is above the pool median, so every
+	// threshold-free salience split demotes exactly the colour D1 names. The **tracing** level does not:
+	// the coral's node has an interior, so it is level 0 and the acceptance case is unmoved
+	// (`lanes/tests/accent-acceptance.test.ts` asserts it). What the level does reach is the class W-I
+	// measured — a one-pixel filament tracing another region's edge, which may not carry identity.
+	type AccentKeyed = Readonly<{ repr: Rgb8; tracing: 0 | 1; firstLaneIndex: number; firstMarkId: number }>
 	const rankAccentOrder = <T extends AccentKeyed>(items: readonly T[]): T[] => {
 		const chromaClass = indifferenceClasses(
 			items.length,
@@ -1468,6 +1689,7 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		return Array.from({ length: items.length }, (_unused, index) => index)
 			.sort(
 				(first, second) =>
+					items[first].tracing - items[second].tracing ||
 					chromaClass[first] - chromaClass[second] ||
 					chromaFromField(items[second].repr) - chromaFromField(items[first].repr) ||
 					lightnessClass[first] - lightnessClass[second] ||
@@ -1508,12 +1730,16 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		return {
 			repr: accentComponents[largest].node.repr,
 			salient: members.some((index) => nodeIsSalient(accentComponents[index].node)),
+			// Measured on the accent's own candidates, memoised against the components already cut for the
+			// distance transform, so a node that is in both sets pays for one mask.
+			tracing: boundaryTracingLevel(members.some((index) => componentHasInterior(accentComponents[index]))),
 			firstLaneIndex: accentComponents[members[0]].laneIndex,
 			firstMarkId: accentComponents[members[0]].node.id,
 			growth: Math.min(...members.map((index) => accentComponents[index].node.growth)),
 		}
 	})
 	for (const cluster of accentClusters) noteLevel(cluster.repr, cluster.salient ? 0 : 1)
+	for (const cluster of accentClusters) noteTracing(cluster.repr, cluster.tracing)
 	if (extraLanes.length > 0 || accentComponents.length > 0) notes.push(`accent-candidates:${accentComponents.length}`)
 
 	// Three tiers, and nothing the L-only parse offered is lost: the accent's own truncated candidates
@@ -1535,7 +1761,8 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		chromaFromField: chromaFromField(cluster.repr),
 		lightnessMove: lightnessMove(cluster.repr),
 		fieldContrast: contrastOf(cluster.repr),
-		stabilityLevel: levelOf(cluster.repr),
+		stabilityLevel: salienceLevelOf(cluster.repr),
+		tracingLevel: tracingOf(cluster.repr),
 		growth: cluster.growth,
 	}))
 
@@ -1559,7 +1786,12 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		nodes: laneNodes.length > 0 ? [...nodes, ...laneNodes.flat()] : nodes,
 		roles: { background, surface, foreground, accent },
 		textGroups: rankedTextGroups.map((entry) => ({
-			nodeIds: entry.group.members.map((index) => marks[index].id).sort((first, second) => first - second),
+			// Every parsed node behind the group, across every lane — after the coincidence merge a member
+			// is one physical region that several lanes named, and D2's evidence is those namings.
+			nodeIds: entry.group.members
+				.flatMap((index) => markComponents[index].nodeIds)
+				.sort((first, second) => first - second),
+			componentCount: entry.group.members.length,
 			rows: entry.group.rows,
 			areaFraction: entry.group.areaFraction,
 			repr: entry.group.repr,

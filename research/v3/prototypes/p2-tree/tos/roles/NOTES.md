@@ -355,3 +355,207 @@ sections above name where the measurement says it does live, and why that lever 
 Reachability, endorsed-173, dump regenerated on the shipped code: **1284/1397 = 91.9% [90.4–93.2]**,
 falsifier rate 24/1397 = 1.7% — unchanged from the cycle-2 merged pool, as the lanes-only-add-nodes
 argument predicts and as a change that publishes the same palettes must.
+
+---
+
+# Cycle 3 — D12's two defects (worker L, 2026-08-11)
+
+**Input:** `DECISIONS.md` D12 (both fixes), D3 (*salience gates identity*, the principle),
+`identity/q1/report.json`, `identity/q2/report.json`, `identity/q3/report.json` (the measurements).
+**New files:** `coincidence.ts`, `eligibility.ts`, `tests/identity-eligibility.test.ts`. **Constants
+added: none.**
+
+## 1. Cross-lane dedup — `coincidence.ts`
+
+`TEXT_MIN_COMPONENTS` is a count of *distinct marks*, and the population it counted was a population of
+**namings**. Round 3a item 5's published foreground came from a group of four components measured as:
+
+| node | lane | box (px) | area (px) | centroid |
+|---|---|---|---|---|
+| 41 | L | 115,109–130,139 | 143 | 0.4078, 0.4164 |
+| 42 | L | 115,112–127,138 | 112 | 0.4048, 0.4218 |
+| 65 | a | 115,104–133,139 | 200 | 0.4131, 0.4068 |
+| 74 | b | 117,109–130,137 |  99 | 0.4115, 0.4089 |
+
+One blob. Three lanes named it, and the L lane named it twice because the two L nodes' areas agree at
+**0.783** — just under `COMPONENT_CHAIN_AREA_AGREEMENT`, so chain collapse left both. Coincident
+centroids make `collinearity` answer **0 vacuously**, so a single mark satisfied every clause of
+arm-b §2.4's conjunction and elected a foreground of raw APCA 7.7.
+
+**The merge criterion** (conjunction; transitively closed by union–find, lane-agnostic on purpose —
+`clusterByBar`'s construction and `clusterByBar`'s argument):
+
+1. **colour** — `okLabDistance(a, b) < sameColorBar(a, b)`, the contract's own regional ruler;
+2. **position** — centroid distance `< NORMALISED_LENGTH_INDIFFERENCE` (`√MIN_NODE_AREA_FRACTION`, the
+   grain's linear extent), in normalised units;
+3. **extent**, both readings required — **containment** `|A ∩ B| ≥ COMPONENT_CHAIN_AREA_AGREEMENT ·
+   min(|A|,|B|)`, measured because two lanes' trees share no ancestry, **and box agreement**, every edge
+   within `NORMALISED_LENGTH_INDIFFERENCE`.
+
+Clause 1 is what the brief demanded and it is not decoration: an isoluminant glyph exists only in the
+chromatic lanes, so its lanes' namings are the same colour and clause 1 costs that case nothing — while a
+glyph **over a scrim** sits in the same place in a genuinely different colour, and position alone would
+delete one of the two. Clause 3's box reading is what stops a **concentric nesting** (a badge in a panel
+is 100% contained and shares its centroid — the case `COMPONENT_CHAIN_AREA_AGREEMENT`'s own doc comment
+says a region rule must not swallow). On item 5 the six pairs measure containment 0.727–1.000 and box
+gaps 0.0067–0.0267 against a band of 0.02236. Four of the six pairs clear both readings (41–42, 41–65,
+41–74, 65–74); 42–65 fails the box clause at 0.0267 and 42–74 fails containment at 0.727, and the
+transitive closure joins all four namings anyway — which is the reason the relation is closed rather
+than applied pairwise.
+
+A merged component **counts once**; its area is the carrier's own area and never a sum; the carrier is
+the largest shape (then lexicographic RGB, lane, node id); every member's node id is kept as provenance
+and is what `Parse.textGroups[].nodeIds` publishes. A node id **is** the lane provenance — the parse's id
+space is laid out lane by lane — so D2's isoluminant evidence, *every node behind this group is a
+chromatic-lane node*, survives the merge unchanged. `Parse.textGroups[].componentCount` is new beside it,
+because `nodeIds.length` is no longer the count `TEXT_MIN_COMPONENTS` is compared against.
+
+## 2. Antialias ineligibility — `eligibility.ts`
+
+W-I measured the class: item 2's published `#fcffff` is five components of **inradius 1 px and boundary
+fraction 1.0** tracing the outline of the cover's photograph, and 30 of q3's 113 reachability failures
+are the same `antialias-only` class. Item 1's `#fcfefd` is the counter-case: inradius **57.9 px**,
+boundary fraction 0.116, and it must stay eligible.
+
+**The predicate is topological and adds no constant:** a region *traces a boundary* when it has **no
+interior pixel** — every pixel has a 4-neighbour outside the mask. That is exactly "inradius 1 px", and
+1 px is the **floor of the measurement's own range** rather than a value anyone chose; it is also exactly
+"boundary fraction 1.0". The two attributes D12 names are one measurement and one linear pass over a mask
+the pipeline already cuts.
+
+**Applied as ordering, never retention.** No node leaves any pool. The foreground's non-text tier
+composes it with D3's salience level as `2·tracing + salience`, tracing outermost; the accent takes the
+tracing level alone, ahead of chroma-from-field. **D3's salience level still does not rank the accent**
+(`integration-NOTES.md` §5's deviation stands, and for its own reason); the tracing level does, because
+it does not unseat D1's coral — that node has an interior, and `lanes/tests/accent-acceptance.test.ts`
+still passes unchanged. A **text group's** colour is exempt from both levels, as it already was from D3's:
+after the merge a group can no longer be one mark counted four times, which was the route by which a
+halo used to reach that exemption.
+
+Where each region comes from: a **node's** mask for a cluster (a cluster traces only when *every* member
+does — `salient`'s polarity), and the contract's own **bar mask** for a residual triple, which is
+`identity/pixels.ts`'s unit and the only one that works (item 1's white is 330 scattered exact-triple
+pixels; only the bar mask shows the 16,937-pixel region they belong to). The residual's **cut** is still
+made on the readability order alone and only the **order** inside the pool changes.
+
+## 2b. The one case with a known ground truth
+
+`roles/tests/isoluminant-text.test.ts`'s fixture is six strokes, and the merged parse used to see
+**twelve** components — each stroke named once by the `a` lane and once by the `b` lane, since an
+isoluminant glyph has no L-lane node at all. On this code the parse notes read
+`coincident-components-merged:6 · components:6`, the group carries **6 components and 12 node
+namings**, and every one of those namings is still a chromatic-lane id. Six strokes, six components,
+and D2's evidence intact: the merge is doing exactly what it says on the one cover where the answer is
+known by construction, and it is why `TEXT_MIN_COMPONENTS` is now compared against a count of regions.
+
+## 3. What moved on demo-20, and why each one moved
+
+`20 ok · 0 failed · 0 contract violations · 0 forbidden twin pairs`. Six of twenty palettes moved — **five
+of them from the merge, one from the tracing level** — and every one is a phantom group dissolving:
+
+| cover | foreground | what changed |
+|---|---|---|
+| `…0000099e` | `#cdc2d2` (5.1) → `#a08341` (34.7) | its only group was 4 namings of one mark; the old colour is itself a boundary tracer |
+| `…000023e9` | `#88878f` (31.1) → `#a1f9fd` (87.0) | leading group was 9 namings; the genuine group behind it now leads |
+| `…000018e9` | `#ff0b0a` (20.5) → `#f52733` (21.9) | same red, groups re-formed after the merge |
+| `…00000ee5` | `#a0a3aa` (38.8) → `#292017` (11.5) | leading group was 4 namings of one mark; the surviving genuine group leads, and text-colour-leads is what it costs |
+| `…0001073` | `#333037` (81.3) → `#f8dab8` (2.7) | **the one that costs readability.** The old leader was 5 namings of one mark *and* a boundary tracer; what is left is a genuine group at raw APCA 2.7 — above the contract's `EPSILON_TEXT_RAW` floor by 0.2 |
+| `…000000d8` | accent `#bdbdbd` → `#a9a9a9` | the tracing level, on the accent; no components merged on this cover |
+
+Recall and readability against the cycle-2/W-J merged baseline:
+
+| | baseline | this |
+|---|---|---|
+| covers yielding ≥1 text group | 19/20 | **18/20** |
+| foreground is the leading group's colour | 16/20 | **15/20** |
+| published fg min \|raw APCA\|: median / mean / min | 30.3 / 35.4 / 2.9 | **28.1 / 34.5 / 2.7** |
+| components merged | — | 366 over 19 of 20 covers |
+
+**The recall loss is a phantom loss** on both covers where it happened, and it is stated as a trade rather
+than as a win: the detector's precision went up and its published readability went very slightly down,
+because a phantom group's colour is often the *most contrasty* thing in a pool (it is usually a halo, and
+a halo is usually near-white or near-black against its field). `…0001073` is the cover to put in front of
+the reviewer if one is needed.
+
+## 4. Cost
+
+Sequential demo-20, one process, measured against the same baseline in the same sitting (the machine
+was shared with two other prototypes' robustness runs, so the **ratio** is the number to read and the
+absolute figures are not comparable with `integration-NOTES.md` §9's):
+
+| | ms per cover |
+|---|---|
+| baseline (W-J shipped) | 588–703 |
+| this, with the residual measurement indexed | 670 |
+
+Instrumented breakdown of the new work, per cover over demo-20: coincidence merge **1 ms**, the
+accent candidates' interior masks **9 ms**, the distinct-colour index **6 ms**, the residual bar-mask
+measurement **98 ms → 25 ms** once the labs and `PaletteColor`s of the image's distinct colours are
+built once instead of per candidate. The merge is free because clause 2 windows the scan on centroid
+`y` and the pixel intersection only runs for pairs that already agree on colour, position and box.
+
+## 5. Reachability — unchanged to the slot, as it must be
+
+`tos/dump.ts --set falsifier/out/endorsed-173.txt` regenerated on this code, falsifier re-run:
+
+| | baseline | this |
+|---|---|---|
+| endorsed colours reachable from retained nodes | 1284/1397 = 91.9% [90.4–93.2] | **1284/1397 = 91.9%** |
+| reachable from the control set | 508/1397 = 36.4% | 508/1397 = 36.4% |
+| falsifier rate (line: >25% fires) | 24/1397 = 1.7% | **24/1397 = 1.7%** — not falsified |
+| unreachable from both | 89 | 89 |
+
+Identical in every count, which is the check that the ineligibility level is **ordering and not
+retention**: nothing this cycle touches `selectStableNodes`, `stability.retained` or `Parse.nodes`, and
+a level that removed a node from the pool would have shown up here as a lost slot.
+
+## 5b. Robustness — 600 trials, `--bar-mode regional`, same harness and same sets
+
+| | baseline (W-J shipped) | this |
+|---|---|---|
+| **overall agreement** | 9.0% [7.0–11.6] (54/600) | **8.5% [6.5–11.0] (51/600)** |
+| **dither-lsb1** | 23.0% (23/100) | **20.0% (20/100)** |
+| rendition-pair | 5.0% (10/200) | 5.0% (10/200) |
+| jpeg-q92 | 12.0% (12/100) | 14.0% (14/100) |
+| jpeg-q85 | 4.0% | 3.0% |
+| jpeg-q75 | 5.0% | 4.0% |
+| role moved: bg / surface / fg / accent | 173 / 195 / 462 / 445 | 173 / 195 / **458** / **441** |
+| reviewed-vs-unseen, perturbation (healthy ≈ 1.0) | 1.095× | 1.412× |
+| errored trials | 0 | 0 |
+
+**The topline did not move, and it did not move in the direction the brief hoped for either.** Every arm
+sits inside its own confidence interval, the intervals overlap almost completely (8.5% [6.5–11.0] against
+9.0% [7.0–11.6]), and the arms move in **both** directions — q92 up two trials, dither down three, q85 and
+q75 down one each. Three trials out of six hundred is not a signal, and neither is the plausible story
+that goes with it. The one row that moves the way the hypothesis predicted is the role table: the two mark
+roles disagree on four fewer trials each (fg 462 → 458, accent 445 → 441) while the two field roles are
+byte-identical to the trial, which is what a change confined to the mark stage must look like. Shrinking
+the phantom and halo candidate sets did **not** buy agreement; the churn W-J attributed to candidate-**set**
+membership is still there and is still round-priced (D12).
+
+`reviewed-vs-unseen` at 1.412× is worth a line only to say it is two small rates (24/200 against 17/200)
+and is not read as a finding here.
+
+Cost, from the same run: **4,096 s wall / 15,266 s in candidate** against the baseline's 3,164 s / 11,726 s
+— but the machine was shared with another prototype's robustness run for the whole of it, so §4's
+sequential measurement (+~15%) is the number to trust and this one is an upper bound.
+
+## 6. What this leaves owed
+
+- **`…0001073` is round material, not a bug to tune around.** Removing that cover's phantom group left a
+  genuine text group at raw APCA **2.7** as the artwork's own text colour, and the identity-over-legibility
+  rule published it. The contract accepts it (`EPSILON_TEXT_RAW` is 2.5) and no rule in this directory may
+  raise that floor without putting a second contrast policy beside the contract's. What the reviewer has
+  never been asked is whether identity still outranks legibility *this far down* — one pairwise item on
+  this cover (the artwork's type at 2.7 against the most readable candidate) prices it.
+- **`tracingLevel` is measured per accent candidate and is not in the node dump.** It is on
+  `Parse.accentCandidates` beside `stabilityLevel`, `chromaFromField` and `fieldContrast`, which is where
+  a test reads it; `tos/dump.ts` publishes the other four and would need one line to publish this one.
+  Not taken, because `dump.ts` is outside this pass's ownership list — owed the moment a round wants the
+  eligibility level on the numbers it stages.
+- **The residual's eligibility is measured on eight colours** (`RESIDUAL_POOL_SIZE`), because that is the
+  pool. If a later change deepens the residual walk, the measurement's cost grows with it linearly and
+  the indexing in §4 is the thing to look at first.
+- **`identity/q2`'s `nodeIds`-as-member-count reading is now stale.** That report counted a group's node
+  ids as its component count, which was true before the merge and is not after; `componentCount` is the
+  field to read. The report itself is a released artefact and is left alone.
