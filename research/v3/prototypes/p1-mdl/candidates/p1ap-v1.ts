@@ -44,12 +44,13 @@ export const candidateId = "p1ap-v1"
 /**
  * `[HELD]` — arm A′'s energy at 0.2.0 (the chromatic residual) at the v1 budget.
  *
- * Stated as a literal rather than read from `ALGORITHM_VERSIONS` in `src/emit/palette.ts`, which
- * still maps `p1ap → "p1ap-0.1.0"`. As in `p1a-v1.ts`: `emit()` stamps
- * `PaletteMetadata.algorithmVersion` from that arm-keyed table, so a palette emitted through this
- * module carries `"p1ap-0.1.0"` in its metadata until the table is updated, and the run header's
- * `budgetMs` is what separates a v1 row from a v0 one. Updating `src/emit/palette.ts` is outside
- * this module's remit.
+ * Stated as a literal rather than read from `ALGORITHM_VERSIONS` in `src/emit/palette.ts`, which maps
+ * `p1ap → "p1ap-0.1.0"` and is keyed by *arm*, so it has no slot for a second operating point.
+ *
+ * **Fixed 2026-08-11**, as in `p1a-v1.ts`: `emit()` stamped `PaletteMetadata.algorithmVersion` from
+ * that arm-keyed table, so palettes emitted here carried a false `"p1ap-0.1.0"` and only the run
+ * header's `budgetMs` separated a v1 row from a v0 one. `paletteOf` now hands `emit()` this constant
+ * and the metadata says `"p1ap-0.2.0"`. Provenance only — not a colour moved.
  */
 export const ALGORITHM_VERSION = "p1ap-0.2.0"
 
@@ -57,9 +58,10 @@ export const ALGORITHM_VERSION = "p1ap-0.2.0"
  * The energy this candidate minimises, by version.
  *
  * `[HELD]` — read from `src/energy/aprime/constants.ts`, where the chromatic residual bumped it to
- * `"p1ap-energy-0.2.0"`. `p1ap.ts` restates the older string as a literal because arm A′ had no
- * version constant when it was written; this module reads the constant instead, so the repair cannot
- * ship under a version that says it did not happen.
+ * `"p1ap-energy-0.2.0"`, so the repair cannot ship under a version that says it did not happen.
+ * `p1ap.ts` used to restate the older string as a literal — written before arm A′ had a version
+ * constant — and now reads the same constant; the two arms' v0 and v1 modules therefore report one
+ * energy version because they run one energy.
  */
 export const ENERGY_VERSION = ENERGY_APRIME_VERSION
 
@@ -90,7 +92,11 @@ export const BUDGET_MS = 240000
  */
 export const paletteOf: CandidatePalette = async (imagePath: string): Promise<Palette> => {
 	const { emit } = await import("../src/search/index.ts")
-	const { palette } = await emit(imagePath, { arm: "aprime", budgetMs: BUDGET_MS })
+	const { palette } = await emit(imagePath, {
+		arm: "aprime",
+		budgetMs: BUDGET_MS,
+		algorithmVersion: ALGORITHM_VERSION,
+	})
 	return palette
 }
 

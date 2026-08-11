@@ -22,6 +22,7 @@
 import type { CandidatePalette, CandidateModule } from "../../../src/devloop/types.ts"
 import type { Palette } from "../../../src/contract/types.ts"
 import { ALGORITHM_VERSIONS } from "../src/emit/palette.ts"
+import { ENERGY_APRIME_VERSION } from "../src/energy/aprime/constants.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p1ap"
@@ -32,12 +33,18 @@ export const ALGORITHM_VERSION = ALGORITHM_VERSIONS.p1ap
 /**
  * The energy this candidate minimises, by version.
  *
- * `[HELD]` — arm A′'s energy carries no version constant of its own (unlike arm A, which has one
- * because `DESIGN.md` decision 7 already moved it once). Stated here as the identity string rather
- * than invented as a new constant somewhere else, so a warehouse row can name the energy for both
- * arms symmetrically and a future arm A′ revision has an obvious place to bump.
+ * `[HELD]` — read from `src/energy/aprime/constants.ts`, as `p1ap-v1.ts` does. **Corrected**: this
+ * was the literal `"p1ap-energy-0.1.0"`, written when arm A′'s energy had no version constant of its
+ * own. It has had one since DESIGN 11's chromatic residual bumped it to `"p1ap-energy-0.2.0"`, and
+ * this module runs *that* energy — it shares `src/energy/aprime/` with `p1ap-v1.ts` and always did.
+ * The literal was therefore a false provenance stamp, the same class of defect as the arm-keyed
+ * `algorithmVersion`. Reading the constant is what makes the two unable to drift again.
+ *
+ * The string is still published separately from `ALGORITHM_VERSION` for `DESIGN.md` decision 9's
+ * reason: the energy can move without the candidate's identity moving, and a row recording only one
+ * of the two could not tell a palette from before such a move from one after it.
  */
-export const ENERGY_VERSION = "p1ap-energy-0.1.0"
+export const ENERGY_VERSION = ENERGY_APRIME_VERSION
 
 /**
  * Produce a palette for one image.
@@ -46,7 +53,8 @@ export const ENERGY_VERSION = "p1ap-energy-0.1.0"
  */
 export const paletteOf: CandidatePalette = async (imagePath: string): Promise<Palette> => {
 	const { emit } = await import("../src/search/index.ts")
-	const { palette } = await emit(imagePath, { arm: "aprime" })
+	// Explicit `algorithmVersion`, same string `emit()` would have defaulted to — see `p1a.ts`.
+	const { palette } = await emit(imagePath, { arm: "aprime", algorithmVersion: ALGORITHM_VERSION })
 	return palette
 }
 

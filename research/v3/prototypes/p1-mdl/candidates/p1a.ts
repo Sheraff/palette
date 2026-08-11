@@ -63,7 +63,10 @@ export const ENERGY_VERSION = ENERGY_A_VERSION
  */
 export const paletteOf: CandidatePalette = async (imagePath: string): Promise<Palette> => {
 	const { emit } = await import("../src/search/index.ts")
-	const { palette } = await emit(imagePath, { arm: "a" })
+	// `algorithmVersion` is passed explicitly even though it is what `emit()` would have defaulted to:
+	// the arm-keyed table cannot tell v0 from v1, so every module now names its own stamp and the
+	// default is a fallback. Same string as before, so nothing this module emits changed.
+	const { palette } = await emit(imagePath, { arm: "a", algorithmVersion: ALGORITHM_VERSION })
 	return palette
 }
 

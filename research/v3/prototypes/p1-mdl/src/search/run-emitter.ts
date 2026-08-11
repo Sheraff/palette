@@ -34,6 +34,12 @@
  * | `--lambda <number>` | `DESIGN.md` decision 2's exchange rate. Defaults to each energy's own 1.0. |
  * | `--limit <n>` | first n images only, for a smoke run. |
  * | `--budget-ms <n>` | override the per-image allowance. A run that used it says so in the header. |
+ * | `--algorithm-version <s>` | the stamp for every palette's `metadata.algorithmVersion`. Defaults to the arm's v0 string. |
+ *
+ * `--algorithm-version` exists because `ALGORITHM_VERSIONS` is keyed by *arm*, which cannot tell two
+ * operating points of one arm apart: a run at λ=0.1 and 240 s is `p1a-0.2.0`, and without the flag
+ * every row would claim `p1a-0.1.0`. The header records the string that was used, so a reader never
+ * has to infer the operating point back out of `lambda` and `budgetMs`.
  */
 
 import { mkdirSync, writeFileSync } from "node:fs"
@@ -41,6 +47,7 @@ import { basename, join } from "node:path"
 import { DEVLOOP_SETS_DIR, PROTOTYPE_ROOT, readSetFile } from "../emit/paths.ts"
 import { ALGORITHM_VERSIONS } from "../emit/palette.ts"
 import { ENERGY_A_VERSION } from "../energy/a/constants.ts"
+import { ENERGY_APRIME_VERSION } from "../energy/aprime/constants.ts"
 import { writeHeader } from "../../../../src/provenance/header.ts"
 import { emit } from "./index.ts"
 import { SEARCH_BUDGET_MS, SEARCH_CERTIFICATE } from "./constants.ts"
@@ -48,9 +55,6 @@ import { ARM_CANDIDATE_ID, ARM_ENERGY_UNIT, type ArmName, type Diagnostics } fro
 
 /** Where a run's output goes. One directory, one file per (arm, set, date). */
 export const EMITTER_DATA_DIR = join(PROTOTYPE_ROOT, "data", "emitter")
-
-/** Arm A′'s energy has no version constant of its own; `candidates/p1ap.ts` explains why. */
-const ENERGY_APRIME_VERSION = "p1ap-energy-0.1.0"
 
 export type EmitterRow = Readonly<{
 	kind: "p1-emitter-row"
@@ -93,6 +97,15 @@ export async function runEmitter(options: {
 	lambda?: number
 	limit?: number
 	budgetMs?: number
+	/**
+	 * The stamp for `PaletteMetadata.algorithmVersion`, when this run is not v0's operating point.
+	 *
+	 * `ALGORITHM_VERSIONS` is keyed by arm and so cannot name an operating point; a run at λ=0.1 and a
+	 * 240 s budget is `p1a-0.2.0`, not `p1a-0.1.0`, and the rows have to say so. Omitted, the arm's
+	 * default applies and the run is v0. Either way the header records what was used, so a file can be
+	 * read without re-deriving it from `lambda` and `budgetMs`.
+	 */
+	algorithmVersion?: string
 	log?: (line: string) => void
 }): Promise<{ outputPath: string; rows: EmitterRow[] }> {
 	const log = options.log ?? ((line: string) => console.log(line))
@@ -107,7 +120,8 @@ export async function runEmitter(options: {
 		arm: options.arm,
 		candidateId: ARM_CANDIDATE_ID[options.arm],
 		energyUnit: ARM_ENERGY_UNIT[options.arm],
-		algorithmVersion: ALGORITHM_VERSIONS[ARM_CANDIDATE_ID[options.arm]],
+		algorithmVersion: options.algorithmVersion
+			?? ALGORITHM_VERSIONS[ARM_CANDIDATE_ID[options.arm]],
 		energyVersion: options.arm === "a" ? ENERGY_A_VERSION : ENERGY_APRIME_VERSION,
 		searchCertificate: SEARCH_CERTIFICATE,
 		lambda: options.lambda ?? null,
@@ -133,6 +147,9 @@ export async function runEmitter(options: {
 				arm: options.arm,
 				...(options.lambda === undefined ? {} : { lambda: options.lambda }),
 				...(options.budgetMs === undefined ? {} : { budgetMs: options.budgetMs }),
+				...(options.algorithmVersion === undefined
+					? {}
+					: { algorithmVersion: options.algorithmVersion }),
 			})
 			rows.push({
 				kind: "p1-emitter-row",
@@ -205,6 +222,21 @@ async function main(): Promise<void> {
 	const lambdaArg = args.get("lambda")
 	const limitArg = args.get("limit")
 	const budgetArg = args.get("budget-ms")
+	// `parseArgs` yields "true" for a flag with no value; that is a caller who meant to name a version
+	// and did not, and stamping every palette with the string "true" would be worse than defaulting.
+	const versionArg = args.get("algorithm-version")
+	if (versionArg === "true") {
+		console.error("run-emitter: --algorithm-version needs a value (e.g. --algorithm-version p1a-0.2.0)")
+		process.exitCode = 2
+		return
+	}
+	// One string cannot be true of two arms: `p1a-0.2.0` on an A′ file would be exactly the false stamp
+	// this flag exists to remove. Two arms, two runs, two versions.
+	if (versionArg !== undefined && arms.length > 1) {
+		console.error("run-emitter: --algorithm-version names one arm's stamp; run --arm a and --arm aprime separately")
+		process.exitCode = 2
+		return
+	}
 
 	for (const arm of arms) {
 		console.log(`arm ${arm} over ${setPath}`)
@@ -215,6 +247,7 @@ async function main(): Promise<void> {
 			...(lambdaArg === undefined ? {} : { lambda: Number(lambdaArg) }),
 			...(limitArg === undefined ? {} : { limit: Number(limitArg) }),
 			...(budgetArg === undefined ? {} : { budgetMs: Number(budgetArg) }),
+			...(versionArg === undefined ? {} : { algorithmVersion: versionArg }),
 		})
 		console.log(`  -> ${outputPath}`)
 	}

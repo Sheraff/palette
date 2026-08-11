@@ -59,6 +59,15 @@ export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
  * palette. The two strings exist because `DESIGN.md` runs *two* energies as one internal experiment
  * (`p1a`: nats + λ·Ω; `p1ap`: L(pixels|P) + λ·L(P)) and a warehouse row has to say which prior it
  * came out of.
+ *
+ * **This table is v0's stamp, and only v0's.** It is keyed by *arm*, not by candidate module, so it
+ * cannot distinguish two operating points of the same arm — and v1 is exactly that (`candidates/
+ * p1a-v1.ts`: λ=0.1, 240 s; `candidates/p1ap-v1.ts`: the 0.2.0 chromatic residual, 240 s). Keying a
+ * palette's provenance on the arm alone stamped v1 palettes `"…-0.1.0"`, which is a false statement
+ * about what produced them, so the table is now a **default fallback**: every candidate module passes
+ * `emit({ algorithmVersion })` explicitly, and that override is what reaches
+ * `PaletteMetadata.algorithmVersion`. The v0 modules pass these same two strings, so nothing they
+ * emit changed; the fallback exists for a direct `emit()` call that names no version (tests, probes).
  */
 export const ALGORITHM_VERSIONS = {
 	p1a: "p1a-0.1.0",

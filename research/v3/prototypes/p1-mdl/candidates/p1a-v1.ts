@@ -32,8 +32,8 @@
  *
  * `candidateId` is `"p1a-v1"`, so dev-loop rows, cache paths and the viewer never confuse a v1
  * palette with a v0 one. `ALGORITHM_VERSION` is `"p1a-0.2.0"`: the algorithm's identity moves when
- * its operating point does, even though not a line of the search changed. See the constant's note
- * for the one place that string does not yet reach.
+ * its operating point does, even though not a line of the search changed. It is handed to `emit()`,
+ * so it is also what the palette's own metadata says — see the constant's note.
  *
  * Diagnostics do not leave `paletteOf`, and `src/search/` is imported dynamically so that listing
  * the candidates loads no native decoder — both for the reasons `p1a.ts` gives at length.
@@ -49,12 +49,14 @@ export const candidateId = "p1a-v1"
 /**
  * `[HELD]` — arm A's energy at 0.2.0 (the DESIGN-9 ink-term fix) with λ at the probe's 0.1.
  *
- * Stated as a literal rather than read from `ALGORITHM_VERSIONS` in `src/emit/palette.ts`, which
- * still maps `p1a → "p1a-0.1.0"`. The consequence is worth naming rather than burying: `emit()`
- * stamps `PaletteMetadata.algorithmVersion` from *that* table, keyed by arm, so a palette emitted
- * through this module carries `"p1a-0.1.0"` in its metadata until the table is updated — the run
- * header's `lambda`/`budgetMs` fields are what currently separate a v1 row from a v0 one. Updating
- * `src/emit/palette.ts` is outside this module's remit.
+ * Stated as a literal rather than read from `ALGORITHM_VERSIONS` in `src/emit/palette.ts`, which maps
+ * `p1a → "p1a-0.1.0"` and is keyed by *arm*, so it has no slot a second operating point could occupy.
+ *
+ * **Fixed 2026-08-11.** This note previously recorded that the mismatch reached the palette: `emit()`
+ * stamped `PaletteMetadata.algorithmVersion` from that arm-keyed table, so palettes emitted here
+ * carried a false `"p1a-0.1.0"` and only the run header's `lambda`/`budgetMs` separated a v1 row from
+ * a v0 one. `emit()` now takes an `algorithmVersion` override, `paletteOf` passes this constant, and
+ * the metadata says `"p1a-0.2.0"`. Provenance only — not a colour moved.
  */
 export const ALGORITHM_VERSION = "p1a-0.2.0"
 
@@ -102,7 +104,12 @@ export const BUDGET_MS = 240000
  */
 export const paletteOf: CandidatePalette = async (imagePath: string): Promise<Palette> => {
 	const { emit } = await import("../src/search/index.ts")
-	const { palette } = await emit(imagePath, { arm: "a", lambda: LAMBDA, budgetMs: BUDGET_MS })
+	const { palette } = await emit(imagePath, {
+		arm: "a",
+		lambda: LAMBDA,
+		budgetMs: BUDGET_MS,
+		algorithmVersion: ALGORITHM_VERSION,
+	})
 	return palette
 }
 

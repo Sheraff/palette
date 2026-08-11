@@ -54,7 +54,11 @@ test("each candidate names its energy version separately from its algorithm vers
 	// a fix that will move the energy without changing the candidate's identity, and a warehouse row
 	// that recorded only `p1a-0.1.0` could not tell a palette from before that fix from one after it.
 	assert.equal(p1a.ENERGY_VERSION, "p1a-energy-0.2.0")
-	assert.equal(p1ap.ENERGY_VERSION, "p1ap-energy-0.1.0")
+	// Corrected 2026-08-11: `p1ap.ts` hardcoded `"p1ap-energy-0.1.0"` long after DESIGN 11's chromatic
+	// residual bumped the constant to 0.2.0. There is one `src/energy/aprime/` and both A′ modules run
+	// it, so a v0 module claiming 0.1.0 was a false stamp, not a second energy.
+	assert.equal(p1ap.ENERGY_VERSION, "p1ap-energy-0.2.0")
+	assert.equal(p1ap.ENERGY_VERSION, p1apV1.ENERGY_VERSION, "both A′ modules run one energy")
 	assert.notEqual(p1a.ENERGY_VERSION, p1a.ALGORITHM_VERSION)
 })
 
@@ -132,6 +136,37 @@ test("the v1 modules pass their pinned constants to emit, and A′ passes no λ"
 	assert.match(callAprime, /arm:\s*"aprime"/)
 	assert.match(callAprime, /budgetMs:\s*BUDGET_MS/)
 	assert.ok(!/lambda/.test(callAprime), `p1ap-v1 pins a λ: ${callAprime}`)
+})
+
+test("every candidate hands emit() its own algorithm version, so no palette is stamped by arm", () => {
+	// The defect this guards: `ALGORITHM_VERSIONS` in `src/emit/palette.ts` is keyed by *arm*, and
+	// `emit()` used to stamp `PaletteMetadata.algorithmVersion` from it unconditionally — so a v1
+	// palette (λ=0.1 / the chromatic residual, 240 s) went out claiming `"…-0.1.0"`, which is a false
+	// statement about what produced it. `emit()` now takes an override and each module passes its own
+	// constant. A source-level claim for the same reason the test above is one: a real emission at
+	// `BUDGET_MS` is four minutes per image.
+	//
+	// The v0 pair is included deliberately. Its string did not change, but passing it *explicitly* is
+	// what makes the arm-keyed table a fallback rather than the rule, and a later edit that dropped the
+	// argument would silently restore the defect for v0 while v1 kept working.
+	const modules = [
+		{ file: "p1a.ts", exported: p1a.ALGORITHM_VERSION, expected: "p1a-0.1.0" },
+		{ file: "p1ap.ts", exported: p1ap.ALGORITHM_VERSION, expected: "p1ap-0.1.0" },
+		{ file: "p1a-v1.ts", exported: p1aV1.ALGORITHM_VERSION, expected: "p1a-0.2.0" },
+		{ file: "p1ap-v1.ts", exported: p1apV1.ALGORITHM_VERSION, expected: "p1ap-0.2.0" },
+	]
+	for (const { file, exported, expected } of modules) {
+		const source = readFileSync(join(PROTOTYPE_ROOT, "candidates", file), "utf8")
+		const call = /emit\(imagePath,\s*\{([^}]*)\}\)/.exec(source)?.[1] ?? ""
+		assert.match(
+			call,
+			/algorithmVersion:\s*ALGORITHM_VERSION\b/,
+			`${file} does not pass its own ALGORITHM_VERSION to emit(): ${call}`,
+		)
+		// The identifier it passes is the exported constant, so the string reaching the metadata is the
+		// one this file publishes and a reader can check against the module without running an emission.
+		assert.equal(exported, expected, `${file}'s ALGORITHM_VERSION`)
+	}
 })
 
 /**

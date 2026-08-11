@@ -89,6 +89,22 @@ export class EmittedPaletteInfeasibleError extends Error {
 	override readonly name = "EmittedPaletteInfeasibleError"
 }
 
+/**
+ * What `emit()` takes: `EmitOptions` plus the one field that is a property of the *caller* rather than
+ * of the search.
+ *
+ * `algorithmVersion` is metadata provenance and nothing else — no energy, no feasibility test and no
+ * tie-break reads it, so two calls differing only in this string produce byte-identical colours. It
+ * exists because `ALGORITHM_VERSIONS` in `src/emit/palette.ts` is keyed by arm and therefore cannot
+ * tell v0's operating point from v1's; the candidate module knows which one it is, so the candidate
+ * module says so. Omitted, the arm-keyed default still applies, which is why the v0 behaviour is
+ * unchanged.
+ *
+ * Declared here rather than in `types.ts` because it is not part of the search's own vocabulary: the
+ * search never reads it.
+ */
+export type EmitCallOptions = EmitOptions & Readonly<{ algorithmVersion?: string }>
+
 function defaultLambdaFor(arm: EmitOptions["arm"]): number {
 	return arm === "a" ? DEFAULT_LAMBDA_A : DEFAULT_LAMBDA_APRIME
 }
@@ -105,7 +121,7 @@ function structuralOf(arm: EmitOptions["arm"], nuisance: Readonly<Record<string,
  * Deterministic: same file, same options, byte-identical palette. No RNG, no clock in any decision,
  * no `Map` iterated without an explicit sort.
  */
-export async function emit(imagePath: string, options: EmitOptions): Promise<EmitResult> {
+export async function emit(imagePath: string, options: EmitCallOptions): Promise<EmitResult> {
 	const startedAt = performance.now()
 	const arm = options.arm
 	const candidateId = ARM_CANDIDATE_ID[arm]
@@ -113,7 +129,13 @@ export async function emit(imagePath: string, options: EmitOptions): Promise<Emi
 
 	// --- 1. measure ------------------------------------------------------------------------------
 	const measurement: Measurement = options.measurement ?? (await measureImage(imagePath))
-	const meta = await sourceMetaOf(imagePath, ALGORITHM_VERSIONS[candidateId])
+	// The caller's version wins when it named one. Metadata only: `meta` reaches the evaluator too, but
+	// no energy, no feasibility test and no tie-break reads `algorithmVersion`, so this string cannot
+	// move a colour.
+	const meta = await sourceMetaOf(
+		imagePath,
+		options.algorithmVersion ?? ALGORITHM_VERSIONS[candidateId],
+	)
 	const measuredAt = performance.now()
 
 	// --- 2. plan ---------------------------------------------------------------------------------
