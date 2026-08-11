@@ -1,0 +1,803 @@
+{
+	"kind": "p4-portfolio-m2-c-sweep",
+	"generatedAt": "2026-08-11T17:41:59.513Z",
+	"question": "arm-c′ §4 decision 1: the smallest lattice resolution C at which the member ranking stops changing.",
+	"method": "Every member's pinned M1 palette is priced on every demo-20 cover at every rung; the per-cover ranking (cheapest total bits first) is compared with the finest rung's. Covers the selector refuses as unpriceable (σ = 0) carry no ranking and are excluded from the comparison rather than counted as agreement.",
+	"caveat": "The ladder's floor is 24, so a `stableFrom` of 24 means 'stable across every rung measured', not 'stable below 24'. What the artifact establishes is that the ranking does not move across the measured range of C.",
+	"sweep": [
+		24,
+		32,
+		48,
+		64
+	],
+	"agreement": [
+		{
+			"resolution": 24,
+			"covers": 20,
+			"unpriceable": 4,
+			"comparableCovers": 16,
+			"rankingMatchesFinest": 16,
+			"winnerMatchesFinest": 16,
+			"rankingAgreementRate": 1
+		},
+		{
+			"resolution": 32,
+			"covers": 20,
+			"unpriceable": 4,
+			"comparableCovers": 16,
+			"rankingMatchesFinest": 16,
+			"winnerMatchesFinest": 16,
+			"rankingAgreementRate": 1
+		},
+		{
+			"resolution": 48,
+			"covers": 20,
+			"unpriceable": 4,
+			"comparableCovers": 16,
+			"rankingMatchesFinest": 16,
+			"winnerMatchesFinest": 16,
+			"rankingAgreementRate": 1
+		},
+		{
+			"resolution": 64,
+			"covers": 20,
+			"unpriceable": 4,
+			"comparableCovers": 16,
+			"rankingMatchesFinest": 16,
+			"winnerMatchesFinest": 16,
+			"rankingAgreementRate": 1
+		}
+	],
+	"stableFrom": 24,
+	"chosen": 24,
+	"perResolution": {
+		"24": [
+			{
+				"contentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+				"ranking": [
+					"p1-mdl",
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p1-mdl",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "d0259994192ce907546cc5056a8e66f3dad0aedfe89684c7f6b82a4dfefa2c0e",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+				"ranking": [
+					"p2-tree",
+					"p3-fields",
+					"p5-fieldfit"
+				],
+				"winner": "p2-tree",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "8a523b76ef39409991bdc4bf42432fdecdf964fe52de468f97177fc854b14d05",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ecd13d308a8e6f45f94a997900eccbfc64cce7db0440f68197b12763d1336c8b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "0591d67237f7c5fdc8cfca69a1ecbd0635779f95a7273b43c3a8cf7884b68723",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "1efe45c09742dac3d0dbce56ddaa727429d734df445e80775425f6d4f8996c29",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ee6d583edaba219510fe30fe6a546f8a674a257b50c448a0ac04ee13f441151b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ec2a80ab99ae86b751b12db0ae4f839c42795fed27720ea45595499d04b9ee9a",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "c68fe82b1355def197a3967abc757b7610fcc7fdc265ad4c4d64a8b4babba985",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			}
+		],
+		"32": [
+			{
+				"contentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+				"ranking": [
+					"p1-mdl",
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p1-mdl",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "d0259994192ce907546cc5056a8e66f3dad0aedfe89684c7f6b82a4dfefa2c0e",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+				"ranking": [
+					"p2-tree",
+					"p3-fields",
+					"p5-fieldfit"
+				],
+				"winner": "p2-tree",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "8a523b76ef39409991bdc4bf42432fdecdf964fe52de468f97177fc854b14d05",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ecd13d308a8e6f45f94a997900eccbfc64cce7db0440f68197b12763d1336c8b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "0591d67237f7c5fdc8cfca69a1ecbd0635779f95a7273b43c3a8cf7884b68723",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "1efe45c09742dac3d0dbce56ddaa727429d734df445e80775425f6d4f8996c29",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ee6d583edaba219510fe30fe6a546f8a674a257b50c448a0ac04ee13f441151b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ec2a80ab99ae86b751b12db0ae4f839c42795fed27720ea45595499d04b9ee9a",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "c68fe82b1355def197a3967abc757b7610fcc7fdc265ad4c4d64a8b4babba985",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			}
+		],
+		"48": [
+			{
+				"contentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+				"ranking": [
+					"p1-mdl",
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p1-mdl",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "d0259994192ce907546cc5056a8e66f3dad0aedfe89684c7f6b82a4dfefa2c0e",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+				"ranking": [
+					"p2-tree",
+					"p3-fields",
+					"p5-fieldfit"
+				],
+				"winner": "p2-tree",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "8a523b76ef39409991bdc4bf42432fdecdf964fe52de468f97177fc854b14d05",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ecd13d308a8e6f45f94a997900eccbfc64cce7db0440f68197b12763d1336c8b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "0591d67237f7c5fdc8cfca69a1ecbd0635779f95a7273b43c3a8cf7884b68723",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "1efe45c09742dac3d0dbce56ddaa727429d734df445e80775425f6d4f8996c29",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ee6d583edaba219510fe30fe6a546f8a674a257b50c448a0ac04ee13f441151b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ec2a80ab99ae86b751b12db0ae4f839c42795fed27720ea45595499d04b9ee9a",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "c68fe82b1355def197a3967abc757b7610fcc7fdc265ad4c4d64a8b4babba985",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			}
+		],
+		"64": [
+			{
+				"contentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+				"ranking": [
+					"p1-mdl",
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p1-mdl",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "d0259994192ce907546cc5056a8e66f3dad0aedfe89684c7f6b82a4dfefa2c0e",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+				"ranking": [
+					"p2-tree",
+					"p3-fields",
+					"p5-fieldfit"
+				],
+				"winner": "p2-tree",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "8a523b76ef39409991bdc4bf42432fdecdf964fe52de468f97177fc854b14d05",
+				"ranking": [
+					"p3-fields",
+					"p5-fieldfit",
+					"p2-tree"
+				],
+				"winner": "p3-fields",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ecd13d308a8e6f45f94a997900eccbfc64cce7db0440f68197b12763d1336c8b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "0591d67237f7c5fdc8cfca69a1ecbd0635779f95a7273b43c3a8cf7884b68723",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "1efe45c09742dac3d0dbce56ddaa727429d734df445e80775425f6d4f8996c29",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ee6d583edaba219510fe30fe6a546f8a674a257b50c448a0ac04ee13f441151b",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "ec2a80ab99ae86b751b12db0ae4f839c42795fed27720ea45595499d04b9ee9a",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+				"ranking": null,
+				"winner": null,
+				"unpriceable": true
+			},
+			{
+				"contentHash": "c68fe82b1355def197a3967abc757b7610fcc7fdc265ad4c4d64a8b4babba985",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+				"ranking": [
+					"p5-fieldfit",
+					"p2-tree",
+					"p3-fields"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			},
+			{
+				"contentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+				"ranking": [
+					"p5-fieldfit",
+					"p3-fields",
+					"p2-tree"
+				],
+				"winner": "p5-fieldfit",
+				"unpriceable": false
+			}
+		]
+	}
+}

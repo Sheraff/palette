@@ -1,0 +1,1940 @@
+{
+	"kind": "p4-portfolio-m2-bit-table",
+	"generatedAt": "2026-08-11T17:43:24.989Z",
+	"latticeResolution": 24,
+	"anchor": "data/m2/c-sweep.json",
+	"cSweep": {
+		"sweep": [
+			24,
+			32,
+			48,
+			64
+		],
+		"stableFrom": 24,
+		"distinctRankings": 5,
+		"distinctWinners": 4,
+		"agreement": [
+			{
+				"resolution": 24,
+				"covers": 20,
+				"unpriceable": 4,
+				"comparableCovers": 16,
+				"rankingMatchesFinest": 16,
+				"winnerMatchesFinest": 16,
+				"rankingAgreementRate": 1
+			},
+			{
+				"resolution": 32,
+				"covers": 20,
+				"unpriceable": 4,
+				"comparableCovers": 16,
+				"rankingMatchesFinest": 16,
+				"winnerMatchesFinest": 16,
+				"rankingAgreementRate": 1
+			},
+			{
+				"resolution": 48,
+				"covers": 20,
+				"unpriceable": 4,
+				"comparableCovers": 16,
+				"rankingMatchesFinest": 16,
+				"winnerMatchesFinest": 16,
+				"rankingAgreementRate": 1
+			},
+			{
+				"resolution": 64,
+				"covers": 20,
+				"unpriceable": 4,
+				"comparableCovers": 16,
+				"rankingMatchesFinest": 16,
+				"winnerMatchesFinest": 16,
+				"rankingAgreementRate": 1
+			}
+		]
+	},
+	"covers": 20,
+	"pricedCovers": 16,
+	"sigma": {
+		"min": 0,
+		"mean": 0.00399033524537517,
+		"max": 0.012972179159703728,
+		"zeroCovers": 4
+	},
+	"unpriceable": {
+		"count": 4,
+		"decision": "arm-c′ §4 decision 3 — see HELD_DECISIONS in selector/constants.ts",
+		"covers": [
+			{
+				"contentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+				"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000000d8bc25fbca2eff2a4a.jpg",
+				"sigma": 0,
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at"
+			},
+			{
+				"contentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+				"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000001335fe604d859a69094.jpg",
+				"sigma": 0,
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at"
+			},
+			{
+				"contentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+				"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+				"sigma": 0,
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at"
+			},
+			{
+				"contentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+				"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+				"sigma": 0,
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at"
+			}
+		]
+	},
+	"coverage": [
+		{
+			"slug": "p1-mdl",
+			"runPath": "data/m1/runs/p1-mdl-gate3-snapshot.jsonl",
+			"covers": 1
+		},
+		{
+			"slug": "p2-tree",
+			"runPath": "data/m1/runs/p2-tree-demo20.jsonl",
+			"covers": 16
+		},
+		{
+			"slug": "p3-fields",
+			"runPath": "data/m1/runs/p3-fields-demo20.jsonl",
+			"covers": 16
+		},
+		{
+			"slug": "p5-fieldfit",
+			"runPath": "data/m1/runs/p5-fieldfit-demo20.jsonl",
+			"covers": 16
+		}
+	],
+	"winnerCounts": {
+		"p1-mdl": 1,
+		"p5-fieldfit": 12,
+		"p3-fields": 2,
+		"p2-tree": 1
+	},
+	"immaterialCovers": 0,
+	"materialCovers": 16,
+	"marginBits": {
+		"min": 6536.639552327048,
+		"max": 7801993.191892356,
+		"histogram": {
+			"0..1": 0,
+			"1..10": 0,
+			"10..100": 0,
+			"100..1000": 0,
+			"1000..10000": 2,
+			"10000..100000": 5,
+			">=100000": 9
+		}
+	},
+	"f1Read": {
+		"question": "F1 (SPEC §3): on covers where the palettes materially differ, does the bootstrap win fraction sit near one half?",
+		"scope": "demo-20 only. F1 is measured properly at M3 scale on coverage-set-1; this is the read this milestone can make, reported as a distribution with no verdict attached.",
+		"materialCovers": 16,
+		"winFractionHistogram": {
+			"0..0.4": 0,
+			"0.4..0.45": 0,
+			"0.45..0.5": 0,
+			"0.5..0.55": 0,
+			"0.55..0.6": 0,
+			"0.6..1": 2,
+			">=1": 14
+		},
+		"winFractionsExactlyOne": 14,
+		"separatedFromHalf": 16,
+		"cappedWithoutSeparation": 0
+	},
+	"rows": [
+		{
+			"contentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"sigma": 0.0007566965561839551,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p1-mdl",
+			"runnerUp": "p5-fieldfit",
+			"marginBits": 7801993.191892356,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p1-mdl",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 36078988.32363802,
+					"totalBits": 36079033.588300526,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.13952222222222221
+				},
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 58101392.20452871,
+					"totalBits": 58101451.22407872,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.010255555555555556
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 49108919.859908275,
+					"totalBits": 49108978.879458286,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.021033333333333334
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 43880981.51553038,
+					"totalBits": 43881026.78019288,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.09343333333333333
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p1-mdl",
+					"b": "p2-tree",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p1-mdl",
+					"b": "p3-fields",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p1-mdl",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000000d8bc25fbca2eff2a4a.jpg",
+			"sigma": 0,
+			"unpriceable": {
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at",
+				"sigma": 0
+			},
+			"immaterial": false,
+			"winner": null,
+			"runnerUp": null,
+			"marginBits": null,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": null,
+			"members": [],
+			"pairsDiffering": [
+				{
+					"a": "p1-mdl",
+					"b": "p2-tree",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p1-mdl",
+					"b": "p3-fields",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p1-mdl",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"sigma": 0,
+			"unpriceable": {
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at",
+				"sigma": 0
+			},
+			"immaterial": false,
+			"winner": null,
+			"runnerUp": null,
+			"marginBits": null,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": null,
+			"members": [],
+			"pairsDiffering": [
+				{
+					"a": "p1-mdl",
+					"b": "p2-tree",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p1-mdl",
+					"b": "p3-fields",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p1-mdl",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"sigma": 0.0038403006106115843,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 195683.23598764464,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 4,
+				"correlationLengthCells": 4,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 3152523.6957974876,
+					"totalBits": 3152582.7153474963,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0005222222222222222
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 3210752.353445724,
+					"totalBits": 3210811.372995733,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.1638111111111111
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 2956840.459809843,
+					"totalBits": 2956899.4793598517,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.15686666666666665
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "d0259994192ce907546cc5056a8e66f3dad0aedfe89684c7f6b82a4dfefa2c0e",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000bb3dc49110c4aab8aa7.jpg",
+			"sigma": 0.005477174226603113,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p3-fields",
+			"runnerUp": "p5-fieldfit",
+			"marginBits": 6536.639552327048,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 2,
+				"correlationLengthCells": 2,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 556009.7686387446,
+					"totalBits": 556068.7881887533,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0038444444444444446
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 458195.2893956844,
+					"totalBits": 458255.89390819374,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 4.286898181814632,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.01681111111111111
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 464731.9289480114,
+					"totalBits": 464792.5334605208,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 4.69243424173697,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.03216666666666667
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"sigma": 0.00899208067499103,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p2-tree",
+			"runnerUp": "p3-fields",
+			"marginBits": 514104.9000851069,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 457313.9000765892,
+					"totalBits": 457372.91962659784,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0010222222222222223
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 971418.800161696,
+					"totalBits": 971477.8197117047,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.007588888888888889
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 1044407.3626491043,
+					"totalBits": 1044452.6273116108,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.045677777777777775
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
+			"sigma": 0.002523779349720614,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p3-fields",
+			"marginBits": 317207.07635733904,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 8,
+				"correlationLengthCells": 8,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 2073260.6919028321,
+					"totalBits": 2073319.7114528408,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.006644444444444444
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 1753133.6204041932,
+					"totalBits": 1753194.2249167026,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 3.1415926535897887,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.007955555555555556
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 1435926.5440468541,
+					"totalBits": 1435987.1485593636,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 3.382310287159849e-16,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.02617777777777778
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "8a523b76ef39409991bdc4bf42432fdecdf964fe52de468f97177fc854b14d05",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"sigma": 0.007276950170329226,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p3-fields",
+			"runnerUp": "p5-fieldfit",
+			"marginBits": 6831.088356209017,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 104548.06751279869,
+					"totalBits": 104607.08706280735,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0056
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 79247.3531015302,
+					"totalBits": 79292.6177640367,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.03227777777777778
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 86078.44145773922,
+					"totalBits": 86123.70612024571,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.035255555555555554
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "ecd13d308a8e6f45f94a997900eccbfc64cce7db0440f68197b12763d1336c8b",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"sigma": 0.0018911633019677188,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 10441.352639409248,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 53,
+				"resamples": 53,
+				"ties": 0,
+				"wins": 34,
+				"winFraction": 0.6415094339622641,
+				"intervalLow": 0.506911415444675,
+				"intervalHigh": 0.7569804745520754,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 3240407.86941422,
+					"totalBits": 3240466.888964229,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.029755555555555556
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 3299387.341450331,
+					"totalBits": 3299447.94596284,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 1.5707963267948784,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.10536666666666666
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 74.3594000115385,
+					"publishedColors": 5,
+					"residualBits": 3229951.176924808,
+					"totalBits": 3230025.5363248195,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 1.5707963267949046,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.011522222222222222
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "0591d67237f7c5fdc8cfca69a1ecbd0635779f95a7273b43c3a8cf7884b68723",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000013cdd885595a94002abc.jpg",
+			"sigma": 0.001990082801655256,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 130583.34350107121,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 4,
+				"correlationLengthCells": 4,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 659933.457456295,
+					"totalBits": 659994.0619688045,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 0.38374970388745955,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.0006
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 46.84962500721156,
+					"publishedColors": 3,
+					"residualBits": 756972.9924688295,
+					"totalBits": 757019.8420938367,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 0.41988987407512,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.04671111111111111
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 529350.1139552238,
+					"totalBits": 529410.7184677332,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": -1.0990300079899593e-14,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.07136666666666666
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"sigma": 0.0008909926295887846,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p3-fields",
+			"marginBits": 3090824.76791694,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 55006517.595396146,
+					"totalBits": 55006578.19990866,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 4.136956267582946,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.05301111111111111
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 31.509775004326936,
+					"publishedColors": 2,
+					"residualBits": 35711502.91522653,
+					"totalBits": 35711534.42500153,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.08733333333333333
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 32620664.392422084,
+					"totalBits": 32620709.65708459,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.12212222222222222
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"surface",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"sigma": 0.01017609313964312,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p3-fields",
+			"marginBits": 72306.58541898863,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 5,
+				"correlationLengthCells": 5,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 246141.74534883143,
+					"totalBits": 246200.76489884008,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.008
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 216639.60164024675,
+					"totalBits": 216698.6211902554,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.031
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 144346.77110876027,
+					"totalBits": 144392.03577126676,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.037922222222222225
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"sigma": 0,
+			"unpriceable": {
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at",
+				"sigma": 0
+			},
+			"immaterial": false,
+			"winner": null,
+			"runnerUp": null,
+			"marginBits": null,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": null,
+			"members": [],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "1efe45c09742dac3d0dbce56ddaa727429d734df445e80775425f6d4f8996c29",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001a9be12b7116a8247378.jpg",
+			"sigma": 0.009269412721301027,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 81500.43623884508,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 5,
+				"correlationLengthCells": 5,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 232502.53538002237,
+					"totalBits": 232561.554930031,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.008377777777777777
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 536585.6765226424,
+					"totalBits": 536644.6960726511,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.032233333333333336
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 74.3594000115385,
+					"publishedColors": 5,
+					"residualBits": 150986.75929117438,
+					"totalBits": 151061.11869118593,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 1.9487151202379218,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.04031111111111111
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "ee6d583edaba219510fe30fe6a546f8a674a257b50c448a0ac04ee13f441151b",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001ecff3d9ec20cac4b472.jpg",
+			"sigma": 0.012972179159703728,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 29788.62434816663,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 8,
+				"resamples": 8,
+				"ties": 0,
+				"wins": 7,
+				"winFraction": 0.875,
+				"intervalLow": 0.5291118174965437,
+				"intervalHigh": 0.9775825085755041,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 202597.01726721617,
+					"totalBits": 202656.0368172248,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.02892222222222222
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 1156064.602757814,
+					"totalBits": 1156123.6223078228,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0246
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 172806.80795654882,
+					"totalBits": 172867.41246905818,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 2.3164977122156563,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.06046666666666667
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "ec2a80ab99ae86b751b12db0ae4f839c42795fed27720ea45595499d04b9ee9a",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000021fd811bf36e739e61bf.jpg",
+			"sigma": 0.004795544240304396,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p3-fields",
+			"marginBits": 28604.472433556337,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 2,
+				"correlationLengthCells": 2,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 210961.7210375119,
+					"totalBits": 211020.74058752053,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.001
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 74.3594000115385,
+					"publishedColors": 5,
+					"residualBits": 175489.67081177124,
+					"totalBits": 175564.03021178278,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 4.281809407030412,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.0019444444444444444
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 146898.95326571708,
+					"totalBits": 146959.55777822644,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 1.264538243188634,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.005888888888888889
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"sigma": 0,
+			"unpriceable": {
+				"reason": "the measured noise scale is zero: over half of this file's horizontally adjacent pixel pairs are byte-identical, so the median absolute difference arm-c′ §2.1 specifies has nothing to resolve and the residual has no scale to be priced at",
+				"sigma": 0
+			},
+			"immaterial": false,
+			"winner": null,
+			"runnerUp": null,
+			"marginBits": null,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": null,
+			"members": [],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "c68fe82b1355def197a3967abc757b7610fcc7fdc265ad4c4d64a8b4babba985",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000023e98b7381eaed77a9cb.jpg",
+			"sigma": 0.003953216209515996,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 178767.2332995223,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 1,
+				"correlationLengthCells": 1,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 1208883.9891583824,
+					"totalBits": 1208943.008708391,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0082
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 60.60451250937503,
+					"publishedColors": 4,
+					"residualBits": 1319702.5215744276,
+					"totalBits": 1319763.126086937,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 0.05966589482270561,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.0029666666666666665
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 74.3594000115385,
+					"publishedColors": 5,
+					"residualBits": 1030101.4160088573,
+					"totalBits": 1030175.7754088688,
+					"field": {
+						"kind": "gradient",
+						"angleRadians": 0.07218374018624149,
+						"coarseAngles": 214
+					},
+					"explainedPixelFraction": 0.01878888888888889
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"background",
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"sigma": 0.0031815710800512523,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p2-tree",
+			"marginBits": 1077970.9341993895,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 3,
+				"correlationLengthCells": 3,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 3499144.1107826824,
+					"totalBits": 3499203.130332691,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.018933333333333333
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 3615386.623883059,
+					"totalBits": 3615445.6434330675,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.020255555555555554
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 45.2646625064904,
+					"publishedColors": 3,
+					"residualBits": 2421186.931470795,
+					"totalBits": 2421232.1961333016,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.13436666666666666
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"surface",
+						"foreground"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		},
+		{
+			"contentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"sigma": 0.0018194680353325959,
+			"unpriceable": null,
+			"immaterial": false,
+			"winner": "p5-fieldfit",
+			"runnerUp": "p3-fields",
+			"marginBits": 3225347.072773235,
+			"tieBrokenBySchemaPrice": false,
+			"bootstrap": {
+				"blockSide": 4,
+				"correlationLengthCells": 4,
+				"draws": 4,
+				"resamples": 4,
+				"ties": 0,
+				"wins": 4,
+				"winFraction": 1,
+				"intervalLow": 0.5101091631424628,
+				"intervalHigh": 1,
+				"separatedFromHalf": true,
+				"capped": false
+			},
+			"members": [
+				{
+					"slug": "p2-tree",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 13836400.91906427,
+					"totalBits": 13836459.938614279,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.008177777777777779
+				},
+				{
+					"slug": "p3-fields",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 13538147.6488193,
+					"totalBits": 13538206.668369308,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.0048
+				},
+				{
+					"slug": "p5-fieldfit",
+					"schemaBits": 59.01955000865387,
+					"publishedColors": 4,
+					"residualBits": 10312800.576046064,
+					"totalBits": 10312859.595596073,
+					"field": {
+						"kind": "flat",
+						"angleRadians": null,
+						"coarseAngles": null
+					},
+					"explainedPixelFraction": 0.1471
+				}
+			],
+			"pairsDiffering": [
+				{
+					"a": "p2-tree",
+					"b": "p3-fields",
+					"differingRoles": [
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"differingRoles": [
+						"surface",
+						"foreground",
+						"accent"
+					]
+				}
+			]
+		}
+	]
+}

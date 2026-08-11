@@ -53,7 +53,17 @@ compact description of the image, and priced in bits.**
   fixed best single member (P3 as of its STATE.md), the portfolio adds risk without value.
   Measured by the round protocol in §5.
 
-## 4. Membership and runtime posture
+### 3.1 Registered decision candidate (pre-registration, 2026-08-11, not yet implemented)
+
+M2 measured that arm-c′'s σ estimator returns exactly 0 on covers where most adjacent pixel
+pairs are byte-identical (4/20 demo-20) — the likelihood degenerates and those covers are
+REFUSED, not priced. No noise floor was added (F2). The candidate resolution, registered before
+implementation: **σ_effective = max(σ_measured, the encoding's own quantization scale)** — 1 LSB
+of 8-bit sRGB converted analytically to OKLab at the relevant operating point. This is derived
+from the file format, not chosen; its anchor is arithmetic (like the consistency factor), not a
+sweep, and arm-c′'s own anchor for decision 3 (the dither arm) is exactly a ±1-LSB probe — the
+same scale. Until this is acknowledged by the main tier and implemented with its analytic
+derivation in the provenance comment, refusals stand and are excluded from all denominators.
 
 Initial set, pinned by worktree commit + fingerprint at integration time (M1):
 P3 per-pixel fields (0.4.x), P2 tree-of-shapes merged candidate, P5 field-fit v0.8.2,
