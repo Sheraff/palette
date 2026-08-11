@@ -36,6 +36,20 @@
  * band-then-cascade change at the field ends moves *toward* that discipline rather than away: e₁ and e₂
  * were this pipeline's only single-pixel reads and are now populations like every other role.
  *
+ * **0.4.2 adds no number at all.** Two evidence-driven selection refinements from round 5
+ * (`review-rounds/round-5-calibration/VERDICTS.md`) and both are expressed in quantities that already
+ * exist. The fg↔accent comparator gains a **chromatic-mark clause** — the labels do not move when the
+ * colour promoted into the foreground slot is a chromatic mark *and* the foreground candidate it would
+ * displace still clears the contract's text floor over the whole ramp (the 168 arbitration, third round
+ * running; `pipeline.ts`). The accent cascade gains a **high-chroma band** ahead of the lightness
+ * preference, so the published pixel sits in the elected lump's chromatic end rather than its dark tail
+ * (the purple's shade note; `accent.ts`). Both ask "is this pixel a chromatic mark", and both answer it
+ * with the contract's own `REGION_CHROMA_BOUNDARY` rather than with a new p3 threshold — see the
+ * `0.4.2 — inherited, not introduced` block in `constants.ts` for why, including the hand-rolled
+ * alternative that was tried first and measured to break a round-2 hard constraint. 0.4.2 also corrects
+ * two shipped docstring claims that `SUBSTRATE_2_RULING.md` measured false (`coherence.ts` claim 2 and
+ * its mirror in `field-roles.ts`); the flag-gated code they describe is unchanged and still off.
+ *
  * **0.4.1 retires a wall and adds one number.** `SOURCE_POPULATION_FLOOR` — the contract's 0.1 %
  * raw-share floor, consumed here as a selection predicate — stops deciding eligibility; the rule is now
  * a floor at the level where spread statistics stop meaning anything plus a **concentration** test

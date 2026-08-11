@@ -35,6 +35,7 @@ import {
 	ACCENT_FUNCTIONAL_DISTANCE,
 	CONTRACT_VERSION,
 	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+	REGION_CHROMA_BOUNDARY,
 	SOURCE_POPULATION_FLOOR,
 } from "../../../src/contract/constants.ts"
 import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../src/contract/color.ts"
@@ -49,6 +50,7 @@ import type {
 import { hashFileBytes } from "../../../src/devloop/code-version.ts"
 import {
 	chooseAccent,
+	chromaOf,
 	computeAccentOrdering,
 	type AccentChoice,
 	type AccentContrastPreference,
@@ -135,7 +137,7 @@ export type P3Intermediates = {
 	inkCandidates: number
 	/** How many pixels cleared the same-colour bar from both field ends (0.4.0). */
 	accentQualified: number
-	/** What the four narrowings did to the accent's top-τ band (0.4.0). `null` when the accent collapsed. */
+	/** What the five narrowings did to the accent's top-τ band (0.4.0–0.4.2). `null` when the accent collapsed. */
 	accentRefinement: AccentRefinement | null
 	accentStep: number
 	accentCollapsed: boolean
@@ -475,6 +477,59 @@ function namesRole(subjects: readonly string[], role: string): boolean {
  * and `ACCENT_REDESIGN.md`'s non-goals forbid touching foreground selection here. So the comparator is
  * left exactly as round 2 validated it, the fire rate is instrumented, and the interaction is written
  * down rather than quietly designed around. It is the first thing a round-4 note about 168 will be about.
+ *
+ * ## 0.4.2 — the round-5 arbitration, and the one clause it adds
+ *
+ * It was. Round 5 graded 168 **acceptable** with the note *"would work better with an accent in the blue
+ * tones"* — **the blue IS published, in the foreground slot, and the reviewer has now asked for it as the
+ * accent three rounds running** (`review-rounds/round-5-calibration/VERDICTS.md`, "The 168 arbitration").
+ * 039 is the same defect on a different cover: its magenta `#713372` is the accent ordering's rank-0 mark
+ * at departure 0.9997 and this comparator publishes it as the foreground.
+ *
+ * The round's fix direction, verbatim: *"the swap must weigh WHERE the chromatic mark serves identity
+ * (accent) vs where contrast is structurally owed (fg) — candidate rule: don't swap the chromatic mark
+ * INTO fg when the displaced fg candidate still clears the fg floors"*. So:
+ *
+ * > **The chromatic-mark clause.** The labels do not move when the colour that would be promoted into
+ * > the foreground slot is a **chromatic mark** — `REGION_CHROMA_BOUNDARY`, the contract's own
+ * > neutral/saturated split — *and* the foreground candidate it would displace **still clears the
+ * > contract's text floor over the whole published ramp**.
+ *
+ * **Both halves are load-bearing, and the second is what bounds it.** `EVIDENCE_2026-08-04.md` item 8 —
+ * identity outranked legibility, the reviewer demanding a white foreground on a light field — is the
+ * precedent that lets identity win here at all; it is not a licence to publish an illegible foreground,
+ * because the round-1 verdicts on items 00 and 02 pull the other way and both verdicts are real. The
+ * floor clause is where that line is drawn: the refinement can only ever *keep* a foreground the
+ * contract's own text metric already accepts. Where the foreground candidate is genuinely failing, the
+ * swap is still there, still doing what round 2 validated it for.
+ *
+ * **Why the chroma test and not the contrast test alone.** Measured over the 220-cover coverage set at
+ * 0.4.1: the comparator fires on 62 covers and the displaced foreground candidate clears the ramp text
+ * floor on **62 of 62**. A rule built on the floor clause alone would therefore have suppressed *every*
+ * swap in the corpus — **including the one round 2 validated by name**: on r2-item-1's cover the swap is
+ * what puts the artwork's black ink in the foreground slot (`#010000` at 0.3.0, `#020001` since the
+ * accent redesign moved which near-black pixel the ordering elects), and item-1's *strong* re-grade
+ * credits this comparator explicitly. Removing it there is the regression this refinement must not
+ * cause. What separates that cover from 168 and 039 is not contrast at all: there the promoted colour is
+ * **the artwork's ink, a neutral** (chroma 0.0240, `dark-neutral`), and on 168/039 it is **the artwork's
+ * chromatic mark** (0.1429 and 0.1355). That is the distinction the round's own wording names, and
+ * `colorRegion`'s chroma axis is the calibrated place this repository already draws it.
+ *
+ * **What it measured.** Coverage-220, 0.4.1 → 0.4.2: fire rate **62/220 (28.2 %) → 7/220 (3.2 %)**, with
+ * `chromaticMarkHeld` true on **50** covers and the remaining 5 lost to accents the shade band re-elected
+ * upstream. 168 publishes the blue `#2aa5e9` as accent and `#3d3936` as a contract-valid foreground; 039
+ * returns its magenta to the accent slot. Contract PASS is unmoved at 200/220 and accent collapse falls
+ * 29 → 21. **That is a large behaviour change for one clause and it is stated as one** — the comparator
+ * was a 28 % path and is now a 3 % one, so anything round 2 credited to it on a cover outside the named
+ * two is now credited to the foreground search instead, unmeasured until the next round grades it.
+ *
+ * **Reported rather than smoothed.** The clause has no opinion about the *foreground* candidate's chroma,
+ * so on a cover where both colours are saturated it does not fire and the comparator behaves as before —
+ * deliberately, because moving one chromatic colour past another loses no identity, and a two-sided rule
+ * would have been a wider change than the evidence bought. And the boundary is a boundary: `#010012`
+ * (chroma 0.0548, an all-but-black navy) counts as a mark and holds a foreground at min-ramp 2.86, which
+ * is a legible-by-the-contract-and-barely reading. Those covers are listed in the 0.4.2 report rather
+ * than tuned around.
  */
 function shouldSwapRoles(
 	image: DecodedImage,
@@ -483,17 +538,38 @@ function shouldSwapRoles(
 	background: number,
 	surface: number,
 	rampAnchorRgb: readonly Rgb8[],
-): boolean {
-	if (minRampContrast(image, accent, rampAnchorRgb) <= minRampContrast(image, foreground, rampAnchorRgb)) {
-		return false
+): SwapVerdict {
+	const foregroundMinRamp = minRampContrast(image, foreground, rampAnchorRgb)
+	if (minRampContrast(image, accent, rampAnchorRgb) <= foregroundMinRamp) {
+		return { swap: false, chromaticMarkHeld: false }
 	}
+	// **The chromatic-mark clause (0.4.2).** Read the docstring's last section before changing either
+	// half: the chroma test is what keeps round 2's validated ink swaps, and the floor test is what
+	// keeps identity from buying an illegible foreground.
+	const chromaticMarkHeld = chromaOf(image.lab, accent) >= REGION_CHROMA_BOUNDARY &&
+		foregroundMinRamp >= CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude
+	if (chromaticMarkHeld) return { swap: false, chromaticMarkHeld: true }
 	// The accent's own qualification, applied to the colour about to be labelled accent: the bar from
 	// both field ends, and 0.3.0's min-ramp floor.
-	if (!distinctPixels(image, foreground, background)) return false
-	if (!distinctPixels(image, foreground, surface)) return false
-	return minRampContrast(image, foreground, rampAnchorRgb) >=
-		CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude
+	if (!distinctPixels(image, foreground, background)) return { swap: false, chromaticMarkHeld: false }
+	if (!distinctPixels(image, foreground, surface)) return { swap: false, chromaticMarkHeld: false }
+	return {
+		swap: foregroundMinRamp >= CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude,
+		chromaticMarkHeld: false,
+	}
 }
+
+/**
+ * What the comparator decided, and whether 0.4.2's clause is what decided it.
+ *
+ * A boolean would have said the labels held; it would not have said *why*, and "the swap rate fell" is
+ * only a statement about this refinement if the covers it fell on are countable.
+ */
+type SwapVerdict = Readonly<{
+	swap: boolean
+	/** True exactly when the chromatic-mark clause is what held the labels still. */
+	chromaticMarkHeld: boolean
+}>
 
 export async function extractPalette(imagePath: string): Promise<P3Result> {
 	const image = await decodeImage(imagePath)
@@ -935,14 +1011,17 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			// The fg↔accent comparator (0.3.0). Both roles are selected and verified at this point; the
 			// only thing that can change below is which **label** each pixel carries. See
 			// `shouldSwapRoles`.
-			const swapped = accent !== null && foreground.verified && shouldSwapRoles(
-				image,
-				foreground.choice.pixel,
-				accent.choice.pixel,
-				ends.background,
-				ends.surface,
-				rampAnchorRgb,
-			)
+			const swapVerdict: SwapVerdict = accent !== null && foreground.verified
+				? shouldSwapRoles(
+					image,
+					foreground.choice.pixel,
+					accent.choice.pixel,
+					ends.background,
+					ends.surface,
+					rampAnchorRgb,
+				)
+				: { swap: false, chromaticMarkHeld: false }
+			const swapped = swapVerdict.swap
 			const publishedForeground = swapped ? (accent as { choice: AccentChoice }).choice.pixel : foreground.choice.pixel
 			const publishedAccent = accent === null
 				? null
@@ -1021,6 +1100,14 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 					// Whether the fg↔accent comparator was reachable at all: it needs an accent and a
 					// verified foreground. `applied` is a strict subset of this (185/220 at 0.4.1).
 					comparatorRan: accent !== null && foreground.verified,
+					// **0.4.2's clause, counted at its own site.** True exactly on the covers where the
+					// chromatic-mark clause held the labels still — so `applied` falling between 0.4.1 and
+					// 0.4.2 is attributable to this refinement rather than inferred from the total.
+					chromaticMarkHeld: swapVerdict.chromaticMarkHeld,
+					// The two quantities the clause reads, beside the two it always read.
+					accentChroma: accent === null ? null : chromaOf(image.lab, accent.choice.pixel),
+					chromaBoundary: REGION_CHROMA_BOUNDARY,
+					textFloor: CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude,
 					foregroundMinRamp: minRampContrast(image, foreground.choice.pixel, rampAnchorRgb),
 					accentMinRamp: accent === null
 						? null

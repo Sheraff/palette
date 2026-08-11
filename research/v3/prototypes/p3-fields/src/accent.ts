@@ -85,18 +85,69 @@
  *    published ramp are preferred — and if *none* of them clears it, the whole population is still the
  *    answer. This is the ink amendment's pattern exactly (`foreground.ts`, `refineInkWindow` clause 2)
  *    and for the same reason: identity is not traded away for a floor.
- * 4. **Lightness movement** (requirement 2). Among what is left, the pixels that move further in
+ * 4. **The high-chroma band** (0.4.2, round 5's shade nuance). See the next section.
+ * 5. **Lightness movement** (requirement 2). Among what is left, the pixels that move further in
  *    lightness than in the chroma plane — 0.3.0's tier-1 predicate, demoted from wall to preference —
  *    are preferred, and if none does, the whole population is still the answer. `perception-4`'s
- *    direction, spent as a direction.
+ *    direction, spent as a direction. **0.4.2 moves it behind the chroma band**, which is where
+ *    requirement 2's own wording puts it; the next section says what that measured.
  *
- * **A fifth narrowing was drafted at 0.4.1 and refuted by measurement** — a top-τ margin *band* between
- * 3 and 4, reading requirement 7's "margins rank" as an ordering step. It moved 138/220 coverage accents,
- * destroyed both headline marks (r2-item-4's `#421b50`, 130's `#97191a`) by letting high-margin neutrals
- * outrank the chromatic mark, and left 2–11-pixel cascade populations. Requirement 7 is discharged by
- * step 2's **filter** and the twin-collapse watch; see the amendment in `ACCENT_REDESIGN.md`.
+ * ## 0.4.2 — where *in* the lump the cascade lands
  *
- * None of the four can empty the population, so none of them can evict the accent; **collapse is reached
+ * Round 5 graded the purple mark **acceptable** and named one thing: *"the accent is darker than the
+ * real purple"* (`review-rounds/round-5-calibration/VERDICTS.md`). That is not a complaint about the
+ * ordering — the ordering elected the right lump, and the round's own decode says so ("a within-lump
+ * refinement note, not a mechanism complaint"). It is a complaint about **the cascade pixel of a lump
+ * that spans a shade range**: the cascade is an iterated *median*, so on r2-item-4's cover it landed at
+ * `#421b50` (chroma 0.0995) while the same lump's high-chroma end holds `#5b199f` (chroma 0.1937) — the
+ * purple the artwork actually shows. A median of a range is the range's middle, and the middle of a
+ * chromatic lump is its dark, desaturated tail as often as not. **0.4.2 publishes `#5d1988` there,
+ * chroma 0.1714.**
+ *
+ * So a narrowing is inserted, in the shape this codebase already sanctions for "which part of a
+ * population is the answer" — **band-then-cascade**, the same primitive pair the field ends and the ink
+ * lump use: sort what is left by OKLab chroma, take the **top-τ band**, cascade over that. The band is
+ * τ-relative, so it is not a new number; the cascade still runs over a population and still publishes an
+ * exact pixel.
+ *
+ * **Two gates, and they are what keep this from being a regression.** A τ-band of a *small* population
+ * is one pixel, and a chroma ordering inside a *neutral* population ranks the low bits of two channels.
+ * So the band fires only when it still holds `ceil(1/τ)` pixels (**gate 1**, and the reason 130's
+ * cinnamon mark, whose population is 16 pixels, is left alone) and only when **the band's own** median
+ * chroma clears the contract's `REGION_CHROMA_BOUNDARY` (**gate 2**, and the reason r2-item-1's
+ * near-black accent population is left alone). Where either gate refuses, 0.4.1's answer stands byte for
+ * byte: on coverage-220 the band fires on **103 of 220**, is refused as unrankable on 80 and as neutral
+ * on 16, and where it fires the published accent's chroma rises on **96 of 103** (mean +0.0758).
+ *
+ * **Gate 2 is on the band, not on the population, and that is a correction made by measurement** — see
+ * the comment at the site. Gating on the *population's* median chroma did not fire on the one cover the
+ * note is about, because the low half of that population is the dark tail being complained about.
+ *
+ * **The band also had to go ahead of the lightness-movement preference, and that is the larger half of
+ * the fix.** Placed after it, r2-item-4 published `#3c134d` — *darker* than what the note complained
+ * about, chroma up only 0.0995 → 0.1061 — because that preference had already deleted every vivid purple
+ * from the population before the band could rank it. The reason is arithmetic and general, not
+ * particular to that cover: `lightnessMove` is `|ΔL| − ‖Δ(a,b)‖`, so against a **neutral** field end a
+ * pixel scores positive only by being less colourful than it is lighter or darker. As the last word that
+ * is a chroma **wall** on every greyscale-field cover — requirement 2's tier wall rebuilt one layer down,
+ * which is precisely what 0.4.0 deleted. Behind the band it is what requirement 2 says it is.
+ *
+ * **Stated rather than smoothed.** This is the only one of the five narrowings that is *not* a subset
+ * filter on a predicate — it is a rank cut, and a rank cut is the shape requirement 7's refuted margin
+ * band also had. The two are not the same move (that one re-ordered the whole population by margin and
+ * let neutrals outrank the mark; this one re-orders *within a population the chromatic ordering has
+ * already elected*, on the axis the reviewer's note names) but the family is the same, and the honest
+ * statement is that its evidence is **one reviewer note**, not a round. If a later round says the accent
+ * is now too vivid for the artwork, this paragraph is what failed.
+ *
+ * **A different fifth narrowing was drafted at 0.4.1 and refuted by measurement** — a top-τ margin *band*
+ * between narrowings 3 and 4, reading requirement 7's "margins rank" as an ordering step. It moved
+ * 138/220 coverage accents, destroyed both headline marks (r2-item-4's `#421b50`, 130's `#97191a`) by
+ * letting high-margin neutrals outrank the chromatic mark, and left 2–11-pixel cascade populations.
+ * Requirement 7 is discharged by step 2's **filter** and the twin-collapse watch; see the amendment in
+ * `ACCENT_REDESIGN.md`.
+ *
+ * None of the five can empty the population, so none of them can evict the accent; **collapse is reached
  * exactly where it always was**, when the qualified set is empty or nothing in it survives verification
  * (`pipeline.ts`'s `searchAccent`), and it collapses to exactly the foreground.
  *
@@ -159,6 +210,7 @@
  * accent is the cascade pixel of an actual sub-population of the artwork.
  */
 
+import { REGION_CHROMA_BOUNDARY } from "../../../src/contract/constants.ts"
 import type { Rgb8 } from "../../../src/contract/types.ts"
 import { ACCENT_LUMP_DEPARTURE_TIE_BAND, LUMP_GAP_RATIO, TRIM_LEVEL } from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
@@ -211,8 +263,14 @@ export type AccentOrdering = Readonly<{
 	qualified: number
 }>
 
-/** OKLab chroma of one pixel — `hypot(a, b)`, a number attached to a pixel. */
-function chromaOf(lab: Float64Array, pixel: number): number {
+/**
+ * OKLab chroma of one pixel — `hypot(a, b)`, a number attached to a pixel.
+ *
+ * Exported at 0.4.2 because `pipeline.ts`'s swap comparator asks the same question of a pixel that
+ * narrowing 5 below does, and this file's own warning about `minRampContrast` applies verbatim: three
+ * spellings of one metric is how two of them end up disagreeing.
+ */
+export function chromaOf(lab: Float64Array, pixel: number): number {
 	const at = pixel * 3
 	return Math.hypot(lab[at + 1], lab[at + 2])
 }
@@ -312,7 +370,7 @@ export function computeAccentOrdering(
 	}
 }
 
-/** What the four narrowings did to one top-τ band. Counts and scalars only. */
+/** What the five narrowings did to one top-τ band. Counts and scalars only. */
 export type AccentRefinement = Readonly<{
 	/** The top-τ band's size, before any narrowing. */
 	bandSize: number
@@ -342,12 +400,27 @@ export type AccentRefinement = Readonly<{
 	/** How many of what was left move further in lightness than in chroma. */
 	lightnessMovingSize: number
 	lightnessPreferenceApplied: boolean
+	/**
+	 * The median OKLab chroma of narrowing 5's own top-τ chroma band (0.4.2). Gate 2 compares it to
+	 * `REGION_CHROMA_BOUNDARY`; recorded beside `chromaBandSize` so "the band did not fire" splits into
+	 * *unrankable band* and *neutral band* without re-deriving either.
+	 */
+	bandMedianChroma: number
+	/** True when the high-chroma band actually narrowed the population (0.4.2). */
+	chromaBandApplied: boolean
+	/** The top-τ chroma band's size, whether or not the two gates let it fire. */
+	chromaBandSize: number
 	/** How many pixels the cascade actually ran over. */
 	cascadedOver: number
 	/** The published pixel's own qualification margin — requirement 7's audit number. */
 	publishedMargin: number
 	/** The published pixel's departure product. */
 	publishedDeparture: number
+	/**
+	 * The published pixel's own OKLab chroma (0.4.2). The round-5 note was about *this* number — "the
+	 * accent is darker than the real purple" — and a shade nuance that is not countable is not a fix.
+	 */
+	publishedChroma: number
 }>
 
 export type AccentChoice = Readonly<{
@@ -357,7 +430,7 @@ export type AccentChoice = Readonly<{
 }>
 
 /**
- * Redeem one rank of the accent ordering: the top-τ band, narrowed by the four preferences, cascaded.
+ * Redeem one rank of the accent ordering: the top-τ band, narrowed by the five preferences, cascaded.
  *
  * See the module docstring for the order of the narrowings and the evidence behind each. Every one of
  * them is a subset filter that never returns the empty set, so this function returns `null` only when
@@ -458,7 +531,47 @@ export function chooseAccent(
 	// was: by step 2's lump lower-median margin **filter**, plus the twin-collapse watch. Refuted by
 	// measurement, not by taste — see the amendment in `ACCENT_REDESIGN.md`.
 
-	// 4. Lightness movement, the old tier-1 predicate as a preference. Same shape, same guarantee.
+	// 4. **The high-chroma band** (0.4.2, round-5's shade nuance). See the module docstring section
+	//    "0.4.2 — where in the lump the cascade lands". Band-then-cascade on OKLab chroma, gated twice.
+	const chromaKey = (index: number): number => chromaOf(image.lab, index)
+	const chromaBand = topWindow(sortByKey(population, chromaKey), TRIM_LEVEL, 0)
+	const bandMedianChroma = medianOfKey(chromaBand, chromaKey)
+	// Gate 1 — **the band has to be worth taking a rank of.** `topWindow` returns a single pixel from any
+	// population under 1/τ, and a single-pixel read is the single-extremum answer 0.3.0 removed everywhere
+	// else (`luminanceOrdering` step 1 and the lump guard above use the same `ceil(1/τ)`). Applying the
+	// rule to the object being *cascaded* rather than to the object being split is the stricter reading,
+	// and this is the role where strictness is owed. It is also what leaves 130's cinnamon mark alone: its
+	// population is 16 pixels.
+	//
+	// Gate 2 — **the band has to be chromatic.** Its own median chroma must sit in the contract's
+	// `*-saturated` half. Inside a neutral band the chroma ordering ranks nothing but the low bits of two
+	// 8-bit channels, and this role is the one `ATTRIBUTION.md` block 22 measures as the least stable in
+	// the pipeline; EVIDENCE item 11 is about exactly that kind of epsilon ordering. It is what leaves
+	// r2-item-1's near-black accent population alone, and the black that population publishes through the
+	// swap is a round-2 hard constraint.
+	//
+	// **The gate is on the band and not on the population, and that is a correction made by measurement.**
+	// A first draft gated on the *population's* median chroma and did not fire on the very cover the note
+	// was written about: r2-item-4's accent population is 4827 pixels whose median chroma is **0.0133**,
+	// because the qualified set on a grey field is mostly near-neutral — the low half of that population
+	// *is* the dark tail the reviewer is complaining about, so gating on it asks the defect for permission
+	// to fix itself. The band is the object that decides the published pixel; it is the object to test.
+	const chromaBandApplied = chromaBand.length >= rankable && bandMedianChroma >= REGION_CHROMA_BOUNDARY
+	const chromaBandSize = chromaBand.length
+	if (chromaBandApplied) population = Int32Array.from(chromaBand)
+
+	// 5. Lightness movement, the old tier-1 predicate as a preference. Same shape, same guarantee.
+	//
+	// **It runs after the chroma band from 0.4.2, and the move is the whole of the shade fix.** Until
+	// 0.4.2 this was the last narrowing and therefore the final word, which on a *neutral* field is a
+	// stronger claim than requirement 2 makes: `lightnessMove` is `|ΔL| − ‖Δ(a,b)‖` from the nearer end,
+	// so against a grey end every genuinely vivid pixel scores **negative** and is filtered out. Measured
+	// on r2-item-4's cover, where the field ends are `#4b4b4b` and `#7a7a7a`: the artwork's purple
+	// `#5b199f` sits 0.0094 away in L and 0.1937 away in the chroma plane, so this preference dropped it,
+	// and no downstream band could reach what this step had already removed — the reviewer's *"the accent
+	// is darker than the real purple"* is this filter, one layer up from where it was read. With the
+	// chroma band ahead of it, lightness movement does what requirement 2 says it does: it is the
+	// tie-break **inside** the chromatic mark, not the gate in front of it.
 	const movingList: number[] = []
 	for (let i = 0; i < population.length; i += 1) {
 		if (ordering.lightnessMove[population[i]] > 0) movingList.push(population[i])
@@ -482,9 +595,13 @@ export function chooseAccent(
 			contrastPreferenceApplied,
 			lightnessMovingSize: movingList.length,
 			lightnessPreferenceApplied,
+			bandMedianChroma,
+			chromaBandApplied,
+			chromaBandSize,
 			cascadedOver: population.length,
 			publishedMargin: pixel < 0 ? Number.NaN : ordering.margin[pixel],
 			publishedDeparture: pixel < 0 ? Number.NaN : ordering.departure[pixel],
+			publishedChroma: pixel < 0 ? Number.NaN : chromaOf(image.lab, pixel),
 		},
 	}
 }

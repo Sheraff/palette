@@ -37,13 +37,32 @@
  *
  * ## What the design buys, stated as claims a measurement can refute
  *
+ * **Read claim 2 with its correction attached.** The three claims below were written as refutable, one
+ * of them was refuted by its own pre-registered measurement, and the correction is inline rather than
+ * appended so that no reader meets the claim without it.
+ *
  * 1. **No binary threshold anywhere in the field's construction.** The bar appears once, as a *divisor*
  *    that puts two regions' local differences in the same units. Nothing is compared against it.
  * 2. **The field-set's size is a rank, so it cannot be resized by noise.** `ATTRIBUTION.md` measured F
  *    drifting by up to **2789.9 %** between a cover and its re-encode; F built as the top (1 − β) of a
- *    percentile field is exactly (1 − β) of the eligible pixels on every rendition of every artwork, at
- *    every resolution. The `degenerate-depth` fallback and `DEGENERATE_DEPTH_FLOOR_PX` therefore have
- *    nothing left to do on this path and are not consulted.
+ *    percentile field was claimed here to be exactly (1 − β) of the eligible pixels on every rendition
+ *    of every artwork, at every resolution, with the `degenerate-depth` fallback and
+ *    `DEGENERATE_DEPTH_FLOOR_PX` therefore having nothing left to do on this path.
+ *
+ *    **Both halves of that claim were measured and are FALSE** (`measurements/substrate/SUBSTRATE_2.md`
+ *    §5, the field-drift instrument over **539 files**, shard-verified; ruling in `SUBSTRATE_2_RULING.md`
+ *    §4). F's fraction ran **min 9.8e-6, median 0.2500, p90 0.4442, max 0.8922**, and was **not exactly
+ *    (1 − β) on 205 of the 539 files (38 %)**. The cause is in this module's own code and not in the
+ *    measurement: the strict cut `coherence > threshold` in `field-roles.ts` sits on a **tie-averaged**
+ *    percentile field, so a flat artwork puts a large block of pixels on one shared percentile value and
+ *    the cut lands far from the rank. One dither-arm file returned **F = 4 pixels of 409 600** — the
+ *    degenerate case this paragraph said could not arrive, arriving through a different door, unguarded.
+ *
+ *    Recorded rather than repaired: `SUBSTRATE_2_RULING.md` FALSIFIED the coherence-field family for P3
+ *    on `e1Q95` (0.0890 against a pre-registered ≤ 0.0542, 14.9× its own perturbation drift) and the
+ *    flags stay off, so there is nothing shipped to fix. What was owed was the correction of the claim,
+ *    and a claim that survived its own refutation in the file's docstring is how the next reader
+ *    inherits it as true.
  * 3. **Single-scale noise cannot flip membership on its own.** A ±1-LSB dither moves the radius-1 rank
  *    filter; it does not move the radius-4 one, because the perturbation is not correlated across the
  *    gap. A percentile product demotes a pixel only when *every* scale demotes it.

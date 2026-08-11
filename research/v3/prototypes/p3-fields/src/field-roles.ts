@@ -95,14 +95,26 @@ export type FieldSetRule = "beta-quantile" | "degenerate-depth" | "coherence-qua
  * that no placement of a floor on that quantity, in either units, is rendition-stable.
  *
  * `coherence` is a **percentile field** (`coherence.ts`), uniform on [0, 1] over the eligible pixels.
- * Its β quantile is β, its top (1 − β) is exactly (1 − β) of the artwork, on every rendition and at
- * every resolution — so there is no size to drift, no empty set to guard, and **no floor to place**.
- * `DEGENERATE_DEPTH_FLOOR_PX` is not consulted on this path and neither is its scale-free counterpart.
+ * This docstring used to say that its top (1 − β) is therefore exactly (1 − β) of the artwork on every
+ * rendition and at every resolution — no size to drift, no empty set to guard, **no floor to place** —
+ * and that `DEGENERATE_DEPTH_FLOOR_PX` is not consulted here.
  *
- * The strict/inclusive fallback is kept verbatim from `computeFieldSet` because it is about *ties*, not
- * about degeneracy: a poster-flat artwork can put more than (1 − β) of its pixels on one tied percentile
- * value, and strictly-greater would then return the empty set for the same arithmetic reason it does on
- * the depth field.
+ * **Measured, that is false, and the counter-example is in the paragraph below.**
+ * `measurements/substrate/SUBSTRATE_2.md` §5, over **539 files**: F's fraction runs min **9.8e-6**,
+ * median 0.2500, p90 0.4442, max **0.8922**, and is **not exactly (1 − β) on 205 of 539 files (38 %)**;
+ * one dither-arm file returns **F = 4 pixels of 409 600**. The tie fallback below is not a separate
+ * concern from degeneracy — it *is* the mechanism: the strict cut `coherence > threshold` sits on a
+ * **tie-averaged** percentile field, so a flat artwork parks a large block of pixels on one shared value
+ * and the cut lands wherever that block ends rather than at the rank. The floor is genuinely not
+ * consulted on this path, and the 4-pixel case is what that costs. Nothing is repaired here: the branch
+ * is FALSIFIED and off (`SUBSTRATE_2_RULING.md`); only the claim is corrected, per that ruling's
+ * follow-ups.
+ *
+ * The strict/inclusive fallback is kept verbatim from `computeFieldSet` because it is about *ties*: a
+ * poster-flat artwork can put more than (1 − β) of its pixels on one tied percentile value, and
+ * strictly-greater would then return the empty set for the same arithmetic reason it does on the depth
+ * field. What the measurement adds is that the same tie structure moves F's size well short of the empty
+ * set far more often than it empties it.
  */
 export function computeCoherenceFieldSet(
 	image: DecodedImage,

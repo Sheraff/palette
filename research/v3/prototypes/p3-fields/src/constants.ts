@@ -24,15 +24,22 @@
  * (the robustness plateau). 0.4.1 also **retires** the raw-share wall as this prototype's eligibility
  * rule; see `verify.ts` and `measurements/substrate/ADOPTION_RULING.md` §2.
  *
- * Three quantities are **inherited** from the contract and are used unchanged: the regional
+ * 0.4.2 adds **none at all.** Both of its selection changes — the swap comparator's chromatic-mark
+ * clause and the accent cascade's high-chroma band — are expressed in quantities that already exist:
+ * the contract's `REGION_CHROMA_BOUNDARY` (the neutral/saturated split of the reviewer's own
+ * bracketing strata) and τ. See the `0.4.2 — inherited, not introduced` block at the end of this
+ * file for why a *new* p3 threshold would have been the wrong instrument in both places.
+ *
+ * Four quantities are **inherited** from the contract and are used unchanged: the regional
  * same-colour bar (`SAME_COLOR_BAR_BY_REGION`), the population floor
- * (`SOURCE_POPULATION_FLOOR`), and the P1 excursion multiplier. They are imported at their use sites
- * rather than re-spelled here, except the excursion multiplier, which has no named constant in
- * `src/contract/` and therefore gets one below.
+ * (`SOURCE_POPULATION_FLOOR`), the region chroma boundary (`REGION_CHROMA_BOUNDARY`, 0.4.2), and the
+ * P1 excursion multiplier. They are imported at their use sites rather than re-spelled here, except
+ * the excursion multiplier, which has no named constant in `src/contract/` and therefore gets one
+ * below.
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.4.1"
+export const CANDIDATE_ID = "p3-fields-0.4.2"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -40,7 +47,7 @@ export const CANDIDATE_ID = "p3-fields-0.4.1"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.4.1"
+export const ALGORITHM_VERSION = "p3-fields-0.4.2"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -713,6 +720,40 @@ export const SPATIAL_DICTIONARY_ANGLES = [0, 45, 90, 135] as const
  * buys stability and nothing else.
  */
 export const ACCENT_LUMP_DEPARTURE_TIE_BAND = 0.1
+
+// ---------------------------------------------------------------------------------------------
+// 0.4.2 — inherited, not introduced (the round-5 swap refinement and shade nuance)
+// ---------------------------------------------------------------------------------------------
+//
+// **Neither 0.4.2 change adds a number to this file, and that is a decision rather than an
+// accident.** Both of them have to answer one question — *is this pixel a chromatic mark, or is it
+// a neutral?* — and this repository already owns a reviewer-calibrated answer to it:
+// `REGION_CHROMA_BOUNDARY = 0.05` (`src/contract/constants.ts`), the chroma axis of the four
+// bracketing strata. A colour below it is in a `*-neutral` region and above it in a `*-saturated`
+// one, and those are the strata the reviewer's 140 same-colour judgements were *generated inside*.
+//
+// [INHERITED] — used unchanged, at both 0.4.2 sites (`pipeline.ts`'s `shouldSwapRoles`,
+// `accent.ts`'s narrowing 5). Three reasons a fresh p3 threshold would have been worse:
+//
+//  1. **A new number here would be `[UNCALIBRATED]` and would decide identity.** Measured, the two
+//     sites between them move the published foreground on **63 of 220** coverage covers and the
+//     published accent on **130 of 220**. The one boundary in the repository that was drawn by a
+//     reviewer, on this exact axis, for this exact purpose, is the one that should draw it.
+//  2. **The obvious hand-rolled alternative is measured wrong.** "The accent candidate carries more
+//     chroma than the foreground candidate, by more than their same-colour bar" was tried first and
+//     **fails the round-2 hard constraint**: on r2-item-1's cover the accent search elects the black
+//     ink `#020001`, whose OKLab chroma is **0.0240** — near-black sRGB triples inflate in OKLab —
+//     against a bar of 0.0163. A bar-relative rule calls that black a chromatic mark and blocks the
+//     judge-validated swap. 0.05 classes it `dark-neutral`, which is what it is.
+//  3. **It is an absolute, scale-free property of one pixel**, like `LIGHTNESS_AXIS_MIDPOINT` — not
+//     a statistic of this corpus, so it cannot be overfitted by the covers it was checked against.
+//
+// **Anchor plan:** none of its own. If the boundary is ever re-cut, it is re-cut in the contract by
+// a bracketing round and both p3 sites follow it for free; that is the whole benefit of not
+// re-spelling it. **Stated rather than smoothed:** 0.05 sits where a very dark saturated colour
+// (`#010012`, chroma 0.0548) counts as a mark while a slightly darker one does not, and the swap
+// refinement is measurably sensitive to that on at least one coverage cover — reported in the
+// 0.4.2 report rather than tuned around.
 
 // =================================================================================================
 // The substrate experiment (W13) — one branch adopted at 0.4.1, two retained as dev-flagged vehicles
