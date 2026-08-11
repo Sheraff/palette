@@ -1,4 +1,18 @@
-# P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05; updated 2026-08-11)
+# P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05; updated 2026-08-11 ×2)
+
+**Delta, v0.9 cycle complete + round 5 staged (2026-08-11, second update):** the identity cycle
+shipped end-to-end — marks/regions in the accent pool, verdict-scored chroma-first tie-break
+(sweep 4–0), coherence-gated families at a measured three-anchor radius — delivering the NARCOSIS
+crimson (round-4's named ask), restoring the round-3 STRONG the first wiring broke, and holding
+every round-4 silent STRONG byte-identically. Round 5 is staged on it (3 verified returning + 5
+fresh incl. deliberate margin probes; the served-name check is now protocol). **The honest cost:
+v0.9.2 robustness is 39.0% overall (−2.7 vs v0.8.2)** — fg improved to 31.3%, dither gave back
+its best-ever (47→41), accent 44.3%; the marks pipeline added discrete decision surface. The
+pattern across nine versions: verdict-driven capability keeps outranking the stabilization pass,
+grades keep rising (best round: 3 STRONG / 5 acceptable / 0 below), robustness keeps hovering at
+~39–42% against P3's ~82%. **Stabilization is now this arm's single largest engineering debt and
+the first thing selection should price.** Measure-first discipline this cycle: five provisional
+rulings checked by measurement, five overturned or re-anchored before shipping.
 
 **Delta 2026-08-11, post-cal-020 (round 4 decoded, verified, ruled — this supersedes the
 paragraph below where they differ):** best round of the campaign — **3 STRONG / 5 acceptable /
