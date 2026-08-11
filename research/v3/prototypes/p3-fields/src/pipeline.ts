@@ -561,6 +561,9 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			endsStep: result.intermediates.endsStep,
 			foregroundCursor: result.intermediates.foregroundStep,
 			accentCursor: result.intermediates.accentStep,
+			// A **mirror** of `roleSwap.applied`, from the intermediates rather than the selection site,
+			// and identical to it on every record (checked over coverage-220: 62 = 62, 0 disagreements).
+			// It is not a second count and must not be added to the first.
 			roleSwapApplied: result.intermediates.roleSwapApplied,
 			fieldSetRule: result.intermediates.fieldSetRule,
 			repairs: result.intermediates.repairs,
@@ -576,16 +579,31 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		eligiblePixels: image.eligibleIndices.length,
 		contentHash,
 	})
+	// Parsed here rather than inside the record literal below so the record can name the *behaviour*
+	// separately from the flag. Unchanged in position and in effect: an unrecognised `P3_SUBSTRATE`
+	// still throws at the same point of the run, diagnostics on or off.
+	const substrate = substrateFlags()
 	record("edges", {
 		k: edgeRankInUse(),
 		edgePixels: edges === null ? null : edges.edgeCount,
 		edgeFraction: edges === null ? null : edges.edgeCount / Math.max(1, image.eligibleIndices.length),
 		seedlessDepth: depth === null ? null : depth.seedless,
+		// **The eligibility rule as behaviour, not as a flag** (W17 instrument note 1). Through 0.4.1 this
+		// record emitted the parsed `P3_SUBSTRATE` triple, whose `eligibility` member is *accepted and
+		// ignored* because the branch it names was adopted as the default — so every normal 0.4.1 record
+		// said `eligibility: false` while the coherence route was running unconditionally in `verify.ts`
+		// (`ADOPTION_RULING.md` §2). That is a false statement about behaviour, and a reader diffing a
+		// 0.4.1 chain against a W13 control chain saw the field flip and read a behaviour change into it.
+		// What is emitted now is the mode that actually ran; it is a constant string at 0.4.1 by
+		// construction, and it changes only when the rule does.
+		eligibilityMode: "coherence-unconditional",
+		// The branches that are still genuinely switchable and still decide something when named.
+		// `eligibility` is deliberately absent: it is adopted, so there is no flag state to report.
+		substrateBranches: { field: substrate.field, prevalence: substrate.prevalence },
 		// The substrate branch's own summary, in place of the edge map it replaced. `radii` is what the
 		// resolution coupling of the neighbourhood now looks like — a fraction of the artwork rather than
 		// of the sampling grid — and `scaleMeanRatio` is the raw bar-relative local difference per scale,
 		// which is the quantity that used to be thresholded.
-		substrate: substrateFlags(),
 		coherenceRadii: coherence === null ? null : coherence.radii,
 		coherenceScaleMeanRatio: coherence === null ? null : coherence.scaleMeanRatio,
 	})
@@ -953,8 +971,16 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 					// The regime test's two numbers, side by side: what the ink population's rank-0 support was,
 					// and the level the 0.2.0 margin makes it clear. A regime divergence is one of these crossing.
 					inkStep0Support: support["foreground:ink:0"] ?? null,
+					// **Live.** The regime test is the one gate still built on the raw-share constant
+					// (`foreground.ts:482`): `inkStep0Support` is compared to exactly this level.
 					inkMarginThreshold: SOURCE_POPULATION_FLOOR * (1 + INK_REGIME_SUPPORT_MARGIN),
-					sourcePopulationFloor: SOURCE_POPULATION_FLOOR,
+					// **Retired, report-only** (W17 instrument note 2). `SOURCE_POPULATION_FLOOR` stopped
+					// being the eligibility rule at 0.4.1 — `verify.ts` still computes it as
+					// `rawSharePasses` so the 0.1.0–0.4.0 attribution record stays joinable, and it decides
+					// nothing. It was emitted here as `sourcePopulationFloor`, which reads as a live
+					// threshold sitting next to a live one. The value is unchanged, so every older file
+					// still joins on it; only the name now says what it is.
+					retiredRawShareFloor: SOURCE_POPULATION_FLOOR,
 					tau: TRIM_LEVEL,
 					topTauDeciles: deciles(windowL),
 					polarityBand: polarity === null ? null : polarity.band,
@@ -979,7 +1005,22 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 					refinement: accent === null ? null : accent.choice.refinement,
 				})
 				record("roleSwap", {
+					// **The single countable truth about swaps, and its denominator is every record.**
+					// `applied` is emitted on all 220 coverage rows, accent-collapsed ones included, so the
+					// swap rate is `applied` over *all* records: 62/220 = 28.2 % at 0.4.1 (0.3.0 measured
+					// 80/220 = 36.4 %, 0.4.0 51/220 = 23.2 % — same denominator, comparable). Nothing else
+					// in the chain counts swaps; `steps.roleSwapApplied` is the same boolean, mirrored.
+					//
+					// **The denominator trap this field used to carry.** The two ramp fields below are
+					// `null` on the 29 accent-collapsed rows, so a reader who filters this block to its
+					// complete rows drops to 191 and reports 62/191 = 32.5 % — a different question, and
+					// the shape of W16b's unreproducible `swap 32.3%` (62/192; W17 could not recover it
+					// over the whole set). `comparatorRan` states the reduced population outright so it
+					// never has to be inferred from which fields are null.
 					applied: swapped,
+					// Whether the fg↔accent comparator was reachable at all: it needs an accent and a
+					// verified foreground. `applied` is a strict subset of this (185/220 at 0.4.1).
+					comparatorRan: accent !== null && foreground.verified,
 					foregroundMinRamp: minRampContrast(image, foreground.choice.pixel, rampAnchorRgb),
 					accentMinRamp: accent === null
 						? null
