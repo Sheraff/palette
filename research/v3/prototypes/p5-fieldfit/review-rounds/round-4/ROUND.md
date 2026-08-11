@@ -73,6 +73,13 @@ item 2 is a question. The mapping stays here.
 3. **Item-7 confirmation question dropped from this round** (its cover is not in the payload; no
    kit vehicle fits a mixed-kind batch). Proposed to the installer as a separate one-item
    freetext round on `a8942d6547`; their call; no machinery built.
+   *Final ruling 2026-08-11:* the installer correctly refused the freetext push (fixture shape
+   demands a served priorAnswer + rendition fields that calibration verdicts cannot source;
+   fabrication rightly rejected). The question is **dropped entirely** rather than restaged —
+   ink-shape sourcing is implemented and judged behaviorally by cal-020's own items, so a
+   dedicated round would spend the binding constraint (reviewer bandwidth) on confirmation the
+   mechanism no longer needs. If the attribution matters later, the cover returns as an ordinary
+   calibration item with its free `f`-note channel.
 4. Item 7 (NARCOSIS) is a second independent live instance of question (b) — the accent union
    ranked the dominant crimson 2nd and published the sky. Read items 2 and 7 together.
 5. Item 8 analysis probe: the foreground is a 6-mass speck (the moon) — if it draws a
