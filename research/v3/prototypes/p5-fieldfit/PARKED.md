@@ -1,47 +1,46 @@
-# PARKED — reviewer-ordered park #4, 2026-08-05
+# PARKED — reviewer-ordered park #5, 2026-08-11
 
 ## State at park
 
-- **STATE.md is committed** (`b2d9021`, signed G) — the reviewer's mechanism-selection input is
-  on disk and in history, per the pre-park order.
-- All work committed and signed through `b2d9021`; owed-commit ledger CLOSED (v0.8.0+v0.8.1
-  flushed as `b3e1e94`).
-- Committed state = v0.8.1 (pool re-union) + all rulings through SPEC decision 18's
-  scale-mixing paragraph.
+- Everything committed and signed through `790f249f`. STATE.md is current per the pre-park order
+  (cal-020 answers folded; it is the authoritative summary for mechanism selection).
+- Round 4 (`phase2-cal-020`) fully processed: decoded, warehouse-verified, ruled (ROUND.md two
+  post-release appendices), both pre-registered questions answered and their follow-up
+  measurements (W-M1) done — union split localized, fg-floor raise falsified.
+- v0.9 cycle: V9a instrument built + measured + committed (`26c174ea`); rulings on its three
+  findings are in the commit message and the V9b brief.
 
 ## Mid-flight (may complete during park; output NOT acted on)
 
-- **W-P16** (fresh worker): fg class-first ordering (v0.8.2) — overlay candidates outrank
-  ground-shaped components for the foreground slot; accent union unchanged. Reports to
-  `reports/wp16.md`. STOP-CONDITION in its brief: if the sunset STRONG (`908479200b`) cannot be
-  held byte-identical, it stops for a ruling instead of shipping. My watcher may fire during the
-  park — noted, not acted on.
+- **W-V9B** (fresh worker, v0.9.0): family union (v1∪v2), marks/regions into the accent pool,
+  the verdict-scored accent tie-break sweep (mass-first vs chroma-first, scored against every
+  graded accent verdict), scale default ruled from the published N(r) curves, two exact cost
+  optimizations. Reports to `reports/wv9b.md`. Gates in its brief: NARCOSIS accent trace (crimson
+  or loud finding), round-4 silent-STRONG byte-identity, 31-cover delta table. My watcher may
+  fire during the park — noted, not acted on.
 
 ## Exact resume sequence
 
-1. Read `reports/wp16.md` (stall protocol if absent). Verify anchors: (a) `2376a6b67d` fg
-   `#000000` / accent `#f81107` — the reviewer's verbatim round-3 ask; (b) `908479200b`
-   byte-identical (if the worker stopped for the accent-still-moves ruling, rule: the accent
-   union may not displace a silently-STRONG accent — prefer holding reviewer-validated palettes;
-   any override needs its own round evidence); (c) `28279e9184` fg `#ffffff`; (d) both other
-   STRONGs byte-identical; (e) both delta tables (vs v0.8.1 and vs v0.7.1, the last
-   reviewer-seen state). Rule on deviations, commit signed.
-2. Full 600-trial robustness on the landed version (`--out data/robustness/reports/
-   p5-fieldfit-<version>.json`, background, no --limit); compare v0.6.0's 40.8%/46.2% baseline;
-   commit artifact.
-3. Round 4 staging (fresh worker, rounds-2/3 protocol): returning — `2376a6b67d` (set-coverage +
-   class-ruling verdict), `9646be9b20` (ink veto verdict), `16a8247378` or `908479200b` only if
-   pass 16 moved them (else keep slots fresh); fresh — light-field-light-text drawn from BEYOND
-   coverage-set-1 (0/213 there; widen the pool, never relax markLightShare), one vivid
-   illustration (item-6 class), remainder by census; plus the targeted item-7 confirmation
-   question (propose as a per-item note-prompt or freetext follow-on — installer decides the
-   vehicle). Validate, commit, REVIEW-READY report per §7.
-4. Then the standing queue: robustness stabilization (margin-aware selection, accent 46.2%
-   target); v0.9 mark-level grouping (15b + coherence eligibility); upward formula packet
-   (4 strikes) whenever the main orchestrator collects.
+1. Read `reports/wv9b.md` (stall protocol if absent). Verify gates: silent STRONGs byte-identical
+   (any violation = loud conflict to weigh, not auto-ship); the sweep's agreement table (the
+   wired rule must be the measured winner); NARCOSIS trace; item-3-R4 re-diagnosis; cost at
+   3000² vs wv9a's 3.8–12.4 s. Rule on deviations; commit signed.
+2. Full 600-trial robustness on v0.9.0 (background, --out …/p5-fieldfit-0.9.0.json); compare
+   v0.8.2 (41.7% overall / fg 33.0 / accent 43.3); commit artifact. The stabilization question
+   (fg 33.0 flagged) gets read against this run.
+3. Round 5 design: returning — NARCOSIS (union verdict under the new rule), item-3-R4
+   (`9646be9b20`, identity ceiling with new families), item-8-R4 (`c65408f632`) ONLY if the
+   endpoint note needs a second instance sooner rather than later; fresh — vivid-illustration
+   class (still un-evidenced, no known census encodes it — consider a stated manual-free rule or
+   accept the gap openly), plus census wildcards. Item 5's margin datum and the type-sourcing
+   asks (round-3 items 4/8) stay open — do NOT stage them as fixed; they are not.
+4. Standing queue: robustness stabilization (fg 33.0 flag; accent post-V9b number); the upward
+   packet (4 formula strikes + warehouse cal-013 gap + pair-019 corroboration — hand to main
+   orchestrator when next collected); 15b/type-sourcing blocked on the scale question; semantic
+   referent axis unowned and stated.
 
-## Standing open items
+## Correction-of-record culture reminder for resume
 
-Unchanged from STATE.md §3–4 (the authoritative statement for the reviewer): robustness flank
-located-not-fixed; mark-level grouping unbuilt; identity granularity blocked upward; item-6
-class unanswered; light-field class unevidenced; escape path unexercised; E1 deferred.
+Every provisional ruling this cycle that was measured before shipping was overturned or
+sharpened by the measurement (fg floor, class-to-accent, plateau criterion, ink preference —
+four for four). Keep measuring first.
