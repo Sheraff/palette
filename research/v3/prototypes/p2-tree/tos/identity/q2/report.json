@@ -1,0 +1,3133 @@
+{
+	"REPORT": "# Q2 — the unreadable foregrounds on cal-014 items 5 and 6\n\nMeasured at git 16e84b75 via `tos/identity/pin.sh`; both palettes reproduce byte for byte\n(`reproduced: true` on all four roles). Mirror and walk both self-validate.\n\nThree mechanisms, tested in this order: CEILING (nothing admissible in the pool is more readable than\nwhat published — no ordering change or repair could have helped), then BYPASS (text-colour-leads put a\ntext group ahead of a strictly more readable candidate), then REPAIR-WALK (the head was refused and the\nwalk descended).\n\n## Item 5 `…f57bc46a3680` — BYPASS, and the text group is a phantom\n\nFlat lime cover, `flat` verdict, background = surface `#b7f38f` (field twin collapse). One text group:\n`#b9e0b1`, contrast 7.73, published at RANK 0 on the first attempt with zero refusals — the walk never\nhad a decision to make.\n\n- Cost of the bypass: 22 of the remaining 25 pool entries are more readable. Best admissible is\n  `#34721f` at contrast 64.93 — the text-first rule traded away 57.2 raw APCA.\n- Best LEVEL-0 alternative is `#43752e` at 63.06 (rank 1), so the loss is not an artefact of D3's\n  salience level; `#34721f` is level 1 (growth 48.7 against a pool median of 0.1227) and sits at rank 17.\n- The image ceiling at the node area floor is only 10.77 (`#90e564`): the readable greens are RARE\n  triples carried by nodes, not by the residual. Nodes reach what mass cannot — a direct D8 data point.\n\nTHE GROUP IS NOT A LINE OF TYPE. 4 members, max pairwise centroid distance 5.14 px against a median\nbounding-box height of 29 px: spread/height = 0.177, four centroids inside one glyph. Lane composition\n2 L + 1 a + 1 b. This is ONE physical mark named four times — twice in L (chain collapse is per-chain,\nnot per-object) and once in each chromatic lane (D2 runs collapse per lane, so a mark visible in three\nlanes contributes three components). `TEXT_MIN_COMPONENTS` = 4 is satisfied by duplication, and\n`collinearity()` returns 0 for a coincident point set by design (`roles/text.ts`: \"a group whose glyphs\nshare a centroid is collinear in the only sense available\"), so the coincidence PASSES the collinearity\nclause rather than failing it. D2's per-lane graft opened this route; no clause in arm-b 2.4 closes it.\n\n## Item 6 `…d5fd547eb7f3` — CEILING, set by the field and not by the pool\n\nLaminar grey ramp `#646464` -> `#fafafa`. THREE text groups, all geometrically real (24 / 13 / 5 members,\nspread-over-height 21.4 / 9.1 / 5.6, all L-lane).\n\nWalk: rank 0 `#727272` (contrast 0.84) and rank 1 `#d1d1d1` (0.94) refused by `I4.below-contrast-floor`;\nrank 2 `#515151` (8.65) accepted, 9 attempts. `#515151` IS the admissible pool maximum, and zero pool\nentries behind it are more readable — so this is the ceiling, not the walk, even though the walk did\ndescend. 8 of the top 14 pool entries are refused as twins of the near-white surface.\n\nTHE CEILING IS THE RAMP. Contrast is `minRawContrastOverRamp`, the minimum over EVERY point of a ramp\nspanning OKLab L 0.45 -> 0.98. Every candidate's lightness is matched somewhere on that line, so the\nbest achievable by any artwork triple at the area floor is 15.56 (`#3f3f3f`) and by any pixel at all\n22.92 (`#272727`). No foreground choice is readable over this field.\n\nCONSEQUENCE: the reviewer's two notes on item 6 have ONE cause. \"background should be white\" (D10\nruling 2, the polarity defect) and \"foreground is hard to read\" are both discharged by not publishing\nthis ramp, or by flipping it — against a flat `#fafafa`, the published `#515151` scores far above the\nfloor. The readability defect on item 6 belongs to the FIELD stage, not the foreground ranking.\n\n## Attribution, per item\n\n| item | attribution | evidence |\n|---|---|---|\n| 5 | BYPASS (D3 text-colour-leads) | published rank 0, provenance text-group, contrast 7.73 vs admissible pool best 64.93; 22 candidates behind it more readable; group spread/height 0.177 |\n| 6 | CEILING (field-induced) | published rank 2, provenance text-group, contrast 8.65 = admissible pool maximum; 0 more readable behind; whole-image best over the ramp 15.56 |\n",
+	"measurementGitState": "16e84b75fa1c075bea720ee216f7b7879671edcc (pinned export via tos/identity/pin.sh; the live worktree drifted mid-run — tos/pipeline.ts and tos/roles/rank.ts were edited by the roles owner)",
+	"provenance": "p2-tos-identity/q2@1",
+	"question": "why are foregrounds still unreadable on cal-014 items 5 and 6",
+	"candidate": "p2-tos-0.3.0-cycle-2-merged",
+	"generatedBy": "tos/identity/q2/run.ts",
+	"items": [
+		{
+			"item": 5,
+			"itemId": "ab67616d00001e020002653adc4ef57bc46a3680",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"reviewerNote": "unreadable foreground",
+			"publishedExpected": {
+				"background": "#b7f38f",
+				"surface": "#b7f38f",
+				"foreground": "#b9e0b1",
+				"accent": "#9ead9a"
+			},
+			"published": {
+				"background": "#b7f38f",
+				"surface": "#b7f38f",
+				"foreground": "#b9e0b1",
+				"accent": "#9ead9a"
+			},
+			"reproduced": true,
+			"parse": {
+				"width": 300,
+				"height": 300,
+				"verdict": "flat",
+				"coverage": 0.8740555555555556,
+				"gradient": false,
+				"notes": [
+					"lanes:L+a+b",
+					"pool-marks:69",
+					"components:48",
+					"salience-median-growth:0.12270642201834862",
+					"accent-candidates:69"
+				],
+				"laneNodeCounts": [
+					57,
+					11,
+					10
+				]
+			},
+			"assembly": {
+				"notes": [],
+				"attempts": 2,
+				"swapped": false
+			},
+			"walk": {
+				"provenance": "p2-tos-identity/walk@1",
+				"foregroundSteps": [
+					{
+						"rank": 0,
+						"hex": "#b9e0b1",
+						"refusal": null,
+						"violations": [],
+						"accepted": true
+					}
+				],
+				"settledForeground": "#b9e0b1",
+				"settledForegroundRank": 0,
+				"exhausted": false,
+				"twinUnavoidable": false,
+				"attempts": 1,
+				"agrees": true,
+				"disagreement": null
+			},
+			"textGroups": [
+				{
+					"rank": 0,
+					"hex": "#b9e0b1",
+					"rgb": [
+						185,
+						224,
+						177
+					],
+					"rows": 1,
+					"areaFraction": 0.006155555555555556,
+					"fieldContrast": 7.734568828958337,
+					"nodeIds": [
+						41,
+						42,
+						65,
+						74
+					]
+				}
+			],
+			"detector": {
+				"agrees": true,
+				"disagreement": null,
+				"poolMarks": 69,
+				"components": 48,
+				"limitBinds": false,
+				"clustersWithEnoughMembers": 4,
+				"topClusters": [
+					{
+						"clusterId": 1,
+						"hex": "#acd994",
+						"memberCount": 11,
+						"membersByLane": [
+							7,
+							3,
+							1
+						],
+						"areaFraction": 0.14434444444444441,
+						"rowSizes": [
+							3,
+							2,
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 3,
+							"strokeCv": 0.5702430886071422,
+							"heightCv": 0.08958283894816911,
+							"collinearity": 0.034538022056010524,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 2,
+						"hex": "#b6e8a3",
+						"memberCount": 6,
+						"membersByLane": [
+							5,
+							0,
+							1
+						],
+						"areaFraction": 0.03618888888888888,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 4,
+						"hex": "#bde2b7",
+						"memberCount": 6,
+						"membersByLane": [
+							2,
+							2,
+							2
+						],
+						"areaFraction": 0.04075555555555555,
+						"rowSizes": [
+							4,
+							2
+						],
+						"largestRow": {
+							"size": 4,
+							"strokeCv": 0.26292109620036813,
+							"heightCv": 0.10877307447365571,
+							"collinearity": 0.0075430802559649035,
+							"anyZeroStroke": false,
+							"passes": true,
+							"failed": null
+						},
+						"becameTextGroup": true
+					},
+					{
+						"clusterId": 8,
+						"hex": "#e0f3df",
+						"memberCount": 4,
+						"membersByLane": [
+							4,
+							0,
+							0
+						],
+						"areaFraction": 0.004688888888888889,
+						"rowSizes": [
+							2,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.38196601125010515,
+							"heightCv": 0.1111111111111111,
+							"collinearity": 9.978668524953615e-15,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 3,
+						"hex": "#c2f99b",
+						"memberCount": 3,
+						"membersByLane": [
+							3,
+							0,
+							0
+						],
+						"areaFraction": 0.030033333333333332,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 5,
+						"hex": "#87e559",
+						"memberCount": 3,
+						"membersByLane": [
+							3,
+							0,
+							0
+						],
+						"areaFraction": 0.018755555555555557,
+						"rowSizes": [
+							2,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.3333333333333333,
+							"heightCv": 0.08433734939759036,
+							"collinearity": 2.7142110596115225e-15,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 11,
+						"hex": "#d4f5c6",
+						"memberCount": 3,
+						"membersByLane": [
+							1,
+							1,
+							1
+						],
+						"areaFraction": 0.003088888888888889,
+						"rowSizes": [
+							3
+						],
+						"largestRow": {
+							"size": 3,
+							"strokeCv": 0.17694131901645782,
+							"heightCv": 0.0642824346533225,
+							"collinearity": 0.19354341312823253,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 0,
+						"hex": "#95ea69",
+						"memberCount": 2,
+						"membersByLane": [
+							0,
+							1,
+							1
+						],
+						"areaFraction": 0.12186666666666666,
+						"rowSizes": [
+							2
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.35924551796591847,
+							"heightCv": 0.03723404255319149,
+							"collinearity": 3.3026137740237626e-16,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 6,
+						"hex": "#669a5c",
+						"memberCount": 1,
+						"membersByLane": [
+							1,
+							0,
+							0
+						],
+						"areaFraction": 0.005544444444444445,
+						"rowSizes": [
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 7,
+						"hex": "#9cab96",
+						"memberCount": 1,
+						"membersByLane": [
+							1,
+							0,
+							0
+						],
+						"areaFraction": 0.0021777777777777776,
+						"rowSizes": [
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					}
+				],
+				"publishedGroupGeometry": [
+					{
+						"hex": "#b9e0b1",
+						"memberCount": 4,
+						"membersByLane": [
+							2,
+							1,
+							1
+						],
+						"medianHeightPx": 29,
+						"maxPairwiseCentroidPx": 5.136549566983824,
+						"spreadOverHeight": 0.17712239886151118,
+						"distinctCentroids": 4,
+						"coincident": true
+					}
+				],
+				"leadingGroupMembers": [
+					{
+						"nodeId": 74,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 91,
+						"depth": 15,
+						"areaFraction": 0.0011,
+						"ownAreaFraction": 0.0008666666666666666,
+						"strokeWidth": 2.8284271247461903,
+						"heightPx": 29,
+						"centroidX": 0.41154882154882155,
+						"centroidY": 0.4088888888888889,
+						"growth": 0.4722222222222222,
+						"hex": "#bde2b7",
+						"ownPixels": 78,
+						"ownMassShare": 0.4508670520231214,
+						"topOwnColors": [
+							{
+								"hex": "#bce1b8",
+								"count": 5,
+								"share": 0.0641025641025641
+							},
+							{
+								"hex": "#bde2b7",
+								"count": 5,
+								"share": 0.0641025641025641
+							},
+							{
+								"hex": "#badfb6",
+								"count": 4,
+								"share": 0.05128205128205128
+							},
+							{
+								"hex": "#bbe0b5",
+								"count": 4,
+								"share": 0.05128205128205128
+							},
+							{
+								"hex": "#c0e5ba",
+								"count": 4,
+								"share": 0.05128205128205128
+							}
+						]
+					},
+					{
+						"nodeId": 65,
+						"laneIndex": 1,
+						"lane": "a",
+						"level": 65,
+						"depth": 10,
+						"areaFraction": 0.0022222222222222222,
+						"ownAreaFraction": 0.0006555555555555556,
+						"strokeWidth": 6,
+						"heightPx": 36,
+						"centroidX": 0.41305000000000003,
+						"centroidY": 0.4068333333333333,
+						"growth": 3.01625,
+						"hex": "#b9e0b1",
+						"ownPixels": 59,
+						"ownMassShare": 0.34104046242774566,
+						"topOwnColors": [
+							{
+								"hex": "#b7deb2",
+								"count": 4,
+								"share": 0.06779661016949153
+							},
+							{
+								"hex": "#bae1b5",
+								"count": 3,
+								"share": 0.05084745762711865
+							},
+							{
+								"hex": "#bfe6b9",
+								"count": 3,
+								"share": 0.05084745762711865
+							},
+							{
+								"hex": "#b4daab",
+								"count": 2,
+								"share": 0.03389830508474576
+							},
+							{
+								"hex": "#b5dcad",
+								"count": 2,
+								"share": 0.03389830508474576
+							}
+						]
+					},
+					{
+						"nodeId": 42,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 222,
+						"depth": 20,
+						"areaFraction": 0.0012444444444444445,
+						"ownAreaFraction": 0.0002888888888888889,
+						"strokeWidth": 4,
+						"heightPx": 27,
+						"centroidX": 0.40476190476190477,
+						"centroidY": 0.4218154761904762,
+						"growth": 0.12053571428571429,
+						"hex": "#bce1b6",
+						"ownPixels": 26,
+						"ownMassShare": 0.15028901734104047,
+						"topOwnColors": [
+							{
+								"hex": "#bce1b8",
+								"count": 5,
+								"share": 0.19230769230769232
+							},
+							{
+								"hex": "#bbe0b5",
+								"count": 4,
+								"share": 0.15384615384615385
+							},
+							{
+								"hex": "#bce1b5",
+								"count": 3,
+								"share": 0.11538461538461539
+							},
+							{
+								"hex": "#bce1b6",
+								"count": 3,
+								"share": 0.11538461538461539
+							},
+							{
+								"hex": "#bae1b5",
+								"count": 2,
+								"share": 0.07692307692307693
+							}
+						]
+					},
+					{
+						"nodeId": 41,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 220,
+						"depth": 18,
+						"areaFraction": 0.0015888888888888888,
+						"ownAreaFraction": 0.00011111111111111112,
+						"strokeWidth": 4.47213595499958,
+						"heightPx": 31,
+						"centroidX": 0.40780885780885784,
+						"centroidY": 0.4163869463869464,
+						"growth": 0.0944055944055944,
+						"hex": "#b9deb5",
+						"ownPixels": 10,
+						"ownMassShare": 0.057803468208092484,
+						"topOwnColors": [
+							{
+								"hex": "#b7deb2",
+								"count": 3,
+								"share": 0.3
+							},
+							{
+								"hex": "#b9deb2",
+								"count": 2,
+								"share": 0.2
+							},
+							{
+								"hex": "#b9deb5",
+								"count": 2,
+								"share": 0.2
+							},
+							{
+								"hex": "#b9ddb7",
+								"count": 1,
+								"share": 0.1
+							},
+							{
+								"hex": "#bbdeb6",
+								"count": 1,
+								"share": 0.1
+							}
+						]
+					}
+				]
+			},
+			"ranking": {
+				"publishedRank": 0,
+				"publishedProvenance": "text-group",
+				"publishedContrast": 7.734568828958337,
+				"firstEligibleRank": 0,
+				"moreReadableBehindPublished": 22,
+				"poolSize": 26,
+				"poolBest": {
+					"hex": "#34721f",
+					"contrast": 64.92520152534527
+				},
+				"poolBestAdmissible": {
+					"hex": "#34721f",
+					"contrast": 64.92520152534527
+				},
+				"imageCeilingAtAreaFloor": {
+					"hex": "#90e564",
+					"contrast": 10.771574981766484,
+					"share": 0.0007555555555555555
+				},
+				"imageCeilingAnyPixel": {
+					"hex": "#0c3a00",
+					"contrast": 84.60635448413439,
+					"share": 0.000011111111111111112
+				},
+				"areaFloorPixels": 45
+			},
+			"pool": [
+				{
+					"rank": 0,
+					"hex": "#b9e0b1",
+					"rgb": [
+						185,
+						224,
+						177
+					],
+					"provenance": "text-group",
+					"fieldContrast": 7.734568828958337,
+					"exactPixels": 2,
+					"exactShare": 0.000022222222222222223,
+					"barPixels": 776,
+					"barShare": 0.008622222222222222,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0022222222222222222,
+					"refusedAsTwin": false,
+					"isPublished": true
+				},
+				{
+					"rank": 1,
+					"hex": "#43752e",
+					"rgb": [
+						67,
+						117,
+						46
+					],
+					"provenance": "cluster",
+					"fieldContrast": 63.05807095400468,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 9,
+					"barShare": 0.0001,
+					"stabilityLevel": 0,
+					"growth": 0.023809523809523808,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0007,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 2,
+					"hex": "#40802a",
+					"rgb": [
+						64,
+						128,
+						42
+					],
+					"provenance": "cluster",
+					"fieldContrast": 59.12052529439218,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 28,
+					"barShare": 0.0003111111111111111,
+					"stabilityLevel": 0,
+					"growth": 0.033783783783783786,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0012333333333333332,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 3,
+					"hex": "#669a5c",
+					"rgb": [
+						102,
+						154,
+						92
+					],
+					"provenance": "cluster",
+					"fieldContrast": 46.206389013602625,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 138,
+					"barShare": 0.0015333333333333334,
+					"stabilityLevel": 0,
+					"growth": 0.0070140280561122245,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.005544444444444445,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 4,
+					"hex": "#84987d",
+					"rgb": [
+						132,
+						152,
+						125
+					],
+					"provenance": "cluster",
+					"fieldContrast": 43.81171765835301,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 18,
+					"barShare": 0.0002,
+					"stabilityLevel": 0,
+					"growth": 0.05985915492957746,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0007888888888888889,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 5,
+					"hex": "#93a28b",
+					"rgb": [
+						147,
+						162,
+						139
+					],
+					"provenance": "cluster",
+					"fieldContrast": 38.173540103791474,
+					"exactPixels": 2,
+					"exactShare": 0.000022222222222222223,
+					"barPixels": 35,
+					"barShare": 0.00038888888888888887,
+					"stabilityLevel": 0,
+					"growth": 0.054878048780487805,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0013666666666666666,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 6,
+					"hex": "#9cab96",
+					"rgb": [
+						156,
+						171,
+						150
+					],
+					"provenance": "cluster",
+					"fieldContrast": 33.45971204151228,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 54,
+					"barShare": 0.0006,
+					"stabilityLevel": 0,
+					"growth": 0.030612244897959183,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0021777777777777776,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 7,
+					"hex": "#acd994",
+					"rgb": [
+						172,
+						217,
+						148
+					],
+					"provenance": "cluster",
+					"fieldContrast": 12.901441408507036,
+					"exactPixels": 10,
+					"exactShare": 0.00011111111111111112,
+					"barPixels": 2715,
+					"barShare": 0.030166666666666668,
+					"stabilityLevel": 0,
+					"growth": 0.041379310344827586,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.04287777777777778,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 8,
+					"hex": "#90e564",
+					"rgb": [
+						144,
+						229,
+						100
+					],
+					"provenance": "residual",
+					"fieldContrast": 10.771574981766484,
+					"exactPixels": 68,
+					"exactShare": 0.0007555555555555555,
+					"barPixels": 5500,
+					"barShare": 0.06111111111111111,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 9,
+					"hex": "#a7e091",
+					"rgb": [
+						167,
+						224,
+						145
+					],
+					"provenance": "residual",
+					"fieldContrast": 10.329743666496155,
+					"exactPixels": 67,
+					"exactShare": 0.0007444444444444445,
+					"barPixels": 3778,
+					"barShare": 0.04197777777777778,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 10,
+					"hex": "#91e665",
+					"rgb": [
+						145,
+						230,
+						101
+					],
+					"provenance": "residual",
+					"fieldContrast": 10.220259830965212,
+					"exactPixels": 78,
+					"exactShare": 0.0008666666666666666,
+					"barPixels": 5748,
+					"barShare": 0.06386666666666667,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 11,
+					"hex": "#8ce861",
+					"rgb": [
+						140,
+						232,
+						97
+					],
+					"provenance": "residual",
+					"fieldContrast": 9.69761389596419,
+					"exactPixels": 67,
+					"exactShare": 0.0007444444444444445,
+					"barPixels": 5543,
+					"barShare": 0.06158888888888889,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 12,
+					"hex": "#92e766",
+					"rgb": [
+						146,
+						231,
+						102
+					],
+					"provenance": "residual",
+					"fieldContrast": 9.667856150201064,
+					"exactPixels": 214,
+					"exactShare": 0.0023777777777777777,
+					"barPixels": 5909,
+					"barShare": 0.06565555555555555,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 13,
+					"hex": "#8de962",
+					"rgb": [
+						141,
+						233,
+						98
+					],
+					"provenance": "residual",
+					"fieldContrast": 9.146325464575686,
+					"exactPixels": 119,
+					"exactShare": 0.0013222222222222222,
+					"barPixels": 5715,
+					"barShare": 0.0635,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 14,
+					"hex": "#93e867",
+					"rgb": [
+						147,
+						232,
+						103
+					],
+					"provenance": "residual",
+					"fieldContrast": 9.114367783842185,
+					"exactPixels": 145,
+					"exactShare": 0.0016111111111111111,
+					"barPixels": 6011,
+					"barShare": 0.06678888888888888,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 15,
+					"hex": "#ace294",
+					"rgb": [
+						172,
+						226,
+						148
+					],
+					"provenance": "residual",
+					"fieldContrast": 8.910624425653776,
+					"exactPixels": 80,
+					"exactShare": 0.0008888888888888889,
+					"barPixels": 4642,
+					"barShare": 0.05157777777777778,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 16,
+					"hex": "#b6e8a3",
+					"rgb": [
+						182,
+						232,
+						163
+					],
+					"provenance": "cluster",
+					"fieldContrast": 4.890793605634671,
+					"exactPixels": 13,
+					"exactShare": 0.00014444444444444444,
+					"barPixels": 4408,
+					"barShare": 0.04897777777777778,
+					"stabilityLevel": 0,
+					"growth": 0.1111111111111111,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.026122222222222224,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 17,
+					"hex": "#34721f",
+					"rgb": [
+						52,
+						114,
+						31
+					],
+					"provenance": "cluster",
+					"fieldContrast": 64.92520152534527,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 17,
+					"barShare": 0.00018888888888888888,
+					"stabilityLevel": 1,
+					"growth": 48.71370967741935,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0006888888888888888,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 18,
+					"hex": "#3e791d",
+					"rgb": [
+						62,
+						121,
+						29
+					],
+					"provenance": "cluster",
+					"fieldContrast": 61.938561559787274,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 23,
+					"barShare": 0.0002555555555555556,
+					"stabilityLevel": 1,
+					"growth": 2.6020408163265305,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0005444444444444444,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 19,
+					"hex": "#488832",
+					"rgb": [
+						72,
+						136,
+						50
+					],
+					"provenance": "cluster",
+					"fieldContrast": 55.60475650417776,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 36,
+					"barShare": 0.0004,
+					"stabilityLevel": 1,
+					"growth": 51.93636363636364,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0006111111111111111,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 20,
+					"hex": "#80d755",
+					"rgb": [
+						128,
+						215,
+						85
+					],
+					"provenance": "cluster",
+					"fieldContrast": 18.518669598999626,
+					"exactPixels": 1,
+					"exactShare": 0.000011111111111111112,
+					"barPixels": 83,
+					"barShare": 0.0009222222222222222,
+					"stabilityLevel": 1,
+					"growth": 0.5131578947368421,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.0006333333333333333,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 21,
+					"hex": "#87e559",
+					"rgb": [
+						135,
+						229,
+						89
+					],
+					"provenance": "cluster",
+					"fieldContrast": 11.543954394461062,
+					"exactPixels": 23,
+					"exactShare": 0.0002555555555555556,
+					"barPixels": 3434,
+					"barShare": 0.038155555555555554,
+					"stabilityLevel": 1,
+					"growth": 0.39980544747081714,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.012011111111111111,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 22,
+					"hex": "#e0f3df",
+					"rgb": [
+						224,
+						243,
+						223
+					],
+					"provenance": "cluster",
+					"fieldContrast": 8.07306178760602,
+					"exactPixels": 4,
+					"exactShare": 0.000044444444444444447,
+					"barPixels": 318,
+					"barShare": 0.003533333333333333,
+					"stabilityLevel": 1,
+					"growth": 0.24754901960784315,
+					"nodeCount": 2,
+					"nodeMaxAreaFraction": 0.0018222222222222223,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 23,
+					"hex": "#95ea69",
+					"rgb": [
+						149,
+						234,
+						105
+					],
+					"provenance": "cluster",
+					"fieldContrast": 8.004152205884695,
+					"exactPixels": 625,
+					"exactShare": 0.006944444444444444,
+					"barPixels": 6074,
+					"barShare": 0.06748888888888889,
+					"stabilityLevel": 1,
+					"growth": 0.2077310155535224,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.061144444444444446,
+					"refusedAsTwin": false,
+					"isPublished": false
+				}
+			],
+			"census": {
+				"topTriples": [
+					{
+						"hex": "#b8f490",
+						"count": 3520,
+						"share": 0.03911111111111111,
+						"fieldContrast": 1.4361149639569306
+					},
+					{
+						"hex": "#b7f38f",
+						"count": 3052,
+						"share": 0.033911111111111114,
+						"fieldContrast": 0.8166451024321983
+					},
+					{
+						"hex": "#b6f28e",
+						"count": 1982,
+						"share": 0.02202222222222222,
+						"fieldContrast": 0.8543088526566515
+					},
+					{
+						"hex": "#b9f093",
+						"count": 1862,
+						"share": 0.02068888888888889,
+						"fieldContrast": 1.3808072918302752
+					},
+					{
+						"hex": "#b9f591",
+						"count": 1551,
+						"share": 0.017233333333333333,
+						"fieldContrast": 2.05697112681369
+					},
+					{
+						"hex": "#baf194",
+						"count": 1429,
+						"share": 0.01587777777777778,
+						"fieldContrast": 0.8039508790430007
+					},
+					{
+						"hex": "#baf490",
+						"count": 1117,
+						"share": 0.01241111111111111,
+						"fieldContrast": 1.6364989290255458
+					},
+					{
+						"hex": "#b9f092",
+						"count": 1036,
+						"share": 0.01151111111111111,
+						"fieldContrast": 1.4039884134414637
+					},
+					{
+						"hex": "#b2f58b",
+						"count": 998,
+						"share": 0.01108888888888889,
+						"fieldContrast": 1.233805897376788
+					},
+					{
+						"hex": "#b9f38f",
+						"count": 980,
+						"share": 0.010888888888888889,
+						"fieldContrast": 1.0163039752459764
+					},
+					{
+						"hex": "#b9f18e",
+						"count": 946,
+						"share": 0.010511111111111112,
+						"fieldContrast": 1.0352454881391187
+					},
+					{
+						"hex": "#b6f38b",
+						"count": 907,
+						"share": 0.010077777777777778,
+						"fieldContrast": 0.45707768141452315
+					}
+				],
+				"topNodeReprs": [
+					{
+						"hex": "#b5f18f",
+						"areaFraction": 1,
+						"nodeId": 0,
+						"kind": "field",
+						"barShare": 0.7086444444444444,
+						"fieldContrast": 1.3855069812537635
+					},
+					{
+						"hex": "#b8f490",
+						"areaFraction": 1,
+						"nodeId": 57,
+						"kind": "field",
+						"barShare": 0.7227444444444444,
+						"fieldContrast": 1.4361149639569306
+					},
+					{
+						"hex": "#b9f38f",
+						"areaFraction": 1,
+						"nodeId": 68,
+						"kind": "field",
+						"barShare": 0.7186555555555556,
+						"fieldContrast": 1.0163039752459764
+					},
+					{
+						"hex": "#b7f38f",
+						"areaFraction": 0.44222222222222224,
+						"nodeId": 45,
+						"kind": "field",
+						"barShare": 0.7226111111111111,
+						"fieldContrast": 0.8166451024321983
+					},
+					{
+						"hex": "#b3f68d",
+						"areaFraction": 0.2563666666666667,
+						"nodeId": 58,
+						"kind": "field",
+						"barShare": 0.7092888888888889,
+						"fieldContrast": 1.875730929340715
+					},
+					{
+						"hex": "#a7ed79",
+						"areaFraction": 0.2205777777777778,
+						"nodeId": 1,
+						"kind": "field",
+						"barShare": 0.09018888888888889,
+						"fieldContrast": 4.915511942113357
+					},
+					{
+						"hex": "#b1f48a",
+						"areaFraction": 0.21338888888888888,
+						"nodeId": 76,
+						"kind": "field",
+						"barShare": 0.7216222222222223,
+						"fieldContrast": 0.4645334456742569
+					},
+					{
+						"hex": "#95ea6b",
+						"areaFraction": 0.193,
+						"nodeId": 2,
+						"kind": "field",
+						"barShare": 0.06813333333333334,
+						"fieldContrast": 7.973048123979062
+					},
+					{
+						"hex": "#b1e39a",
+						"areaFraction": 0.1330222222222222,
+						"nodeId": 69,
+						"kind": "field",
+						"barShare": 0.06107777777777778,
+						"fieldContrast": 7.847395527373726
+					},
+					{
+						"hex": "#95ea69",
+						"areaFraction": 0.061144444444444446,
+						"nodeId": 77,
+						"kind": "mark",
+						"barShare": 0.06748888888888889,
+						"fieldContrast": 8.004152205884695
+					},
+					{
+						"hex": "#98ea6c",
+						"areaFraction": 0.06072222222222222,
+						"nodeId": 59,
+						"kind": "mark",
+						"barShare": 0.07081111111111112,
+						"fieldContrast": 7.732889990234037
+					},
+					{
+						"hex": "#acd994",
+						"areaFraction": 0.04287777777777778,
+						"nodeId": 63,
+						"kind": "mark",
+						"barShare": 0.030166666666666668,
+						"fieldContrast": 12.901441408507036
+					}
+				]
+			},
+			"publishedAttribution": {
+				"hex": "#b9e0b1",
+				"rgb": [
+					185,
+					224,
+					177
+				],
+				"exactPixels": 2,
+				"exactShare": 0.000022222222222222223,
+				"barPixels": 776,
+				"barShare": 0.008622222222222222,
+				"componentCount": 45,
+				"maxInradius": 3.1622776601683795,
+				"largestComponentShareOfMass": 0.24355670103092783,
+				"largestComponentImageShare": 0.0021,
+				"boundaryFraction": 0.6701030927835051,
+				"componentsAtOrAboveMarkInradius": 7,
+				"topComponents": [
+					{
+						"area": 189,
+						"areaFraction": 0.0021,
+						"minX": 115,
+						"minY": 105,
+						"maxX": 132,
+						"maxY": 139,
+						"inradius": 3.1622776601683795,
+						"boundaryFraction": 0.47619047619047616
+					},
+					{
+						"area": 161,
+						"areaFraction": 0.001788888888888889,
+						"minX": 123,
+						"minY": 54,
+						"maxX": 143,
+						"maxY": 99,
+						"inradius": 2.23606797749979,
+						"boundaryFraction": 0.6086956521739131
+					},
+					{
+						"area": 133,
+						"areaFraction": 0.0014777777777777777,
+						"minX": 43,
+						"minY": 238,
+						"maxX": 73,
+						"maxY": 249,
+						"inradius": 2.23606797749979,
+						"boundaryFraction": 0.7744360902255639
+					},
+					{
+						"area": 121,
+						"areaFraction": 0.0013444444444444445,
+						"minX": 81,
+						"minY": 88,
+						"maxX": 97,
+						"maxY": 125,
+						"inradius": 2.23606797749979,
+						"boundaryFraction": 0.6611570247933884
+					},
+					{
+						"area": 43,
+						"areaFraction": 0.00047777777777777776,
+						"minX": 58,
+						"minY": 151,
+						"maxX": 66,
+						"maxY": 167,
+						"inradius": 2,
+						"boundaryFraction": 0.8604651162790697
+					}
+				],
+				"outerRing": [
+					{
+						"hex": "#b5e2a1",
+						"count": 13,
+						"lightness": 0.8647773043286106
+					},
+					{
+						"hex": "#b4e1a0",
+						"count": 12,
+						"lightness": 0.8617174442182148
+					},
+					{
+						"hex": "#b3e09f",
+						"count": 10,
+						"lightness": 0.8586550869555518
+					},
+					{
+						"hex": "#bde5a6",
+						"count": 10,
+						"lightness": 0.8776361577661962
+					},
+					{
+						"hex": "#b8e5a4",
+						"count": 9,
+						"lightness": 0.8739420111286306
+					},
+					{
+						"hex": "#b6de9f",
+						"count": 8,
+						"lightness": 0.8562141582384099
+					},
+					{
+						"hex": "#b6e3a2",
+						"count": 8,
+						"lightness": 0.867834678262358
+					},
+					{
+						"hex": "#bae7a6",
+						"count": 8,
+						"lightness": 0.8800395291339429
+					}
+				],
+				"subjectLightness": 0.8664587295937586,
+				"outerRingDarkerShare": 0.554093567251462,
+				"outerRingLighterShare": 0.44590643274853803,
+				"verdict": "glyph-or-mark-ink",
+				"cuts": {
+					"filamentInradiusPx": 2,
+					"scrimMassShare": 0.5,
+					"scrimImageShare": 0.05,
+					"scrimInradiusPx": 8,
+					"markComponentInradiusPx": 2,
+					"markComponentCount": 4
+				},
+				"provenance": "p2-tos-identity/pixels@1"
+			},
+			"attribution": "bypass",
+			"attributionEvidence": {
+				"isBypass": true,
+				"isRepairWalk": false,
+				"isCeiling": false,
+				"publishedIsPoolMaximum": false,
+				"publishedIsAdmissiblePoolMaximum": false,
+				"imageOffersBetter": true
+			}
+		},
+		{
+			"item": 6,
+			"itemId": "ab67616d00001e020002fc520894d5fd547eb7f3",
+			"imagePath": "02/ab67616d00001e020002fc520894d5fd547eb7f3.jpg",
+			"reviewerNote": "background should be white / foreground is hard to read",
+			"publishedExpected": {
+				"background": "#646464",
+				"surface": "#fafafa",
+				"foreground": "#515151",
+				"accent": "#515151"
+			},
+			"published": {
+				"background": "#646464",
+				"surface": "#fafafa",
+				"foreground": "#515151",
+				"accent": "#515151"
+			},
+			"reproduced": true,
+			"parse": {
+				"width": 300,
+				"height": 300,
+				"verdict": "laminar",
+				"coverage": 0.6070777777777778,
+				"gradient": true,
+				"notes": [
+					"lanes:L+a+b",
+					"pool-marks:420",
+					"components:138",
+					"salience-median-growth:0.00787037037037037",
+					"accent-candidates:256"
+				],
+				"laneNodeCounts": [
+					445,
+					1,
+					1
+				]
+			},
+			"assembly": {
+				"notes": [
+					"accent-collapsed:no-separated-candidate"
+				],
+				"attempts": 9,
+				"swapped": false
+			},
+			"walk": {
+				"provenance": "p2-tos-identity/walk@1",
+				"foregroundSteps": [
+					{
+						"rank": 0,
+						"hex": "#727272",
+						"refusal": "contract-violation",
+						"violations": [
+							"I4.ramp-below-contrast-floor | roles.foreground (#727272) over the rendered ramp at t=0.104954 (#737272) has |raw APCA| 0.8367, below the minTextContrast floor of 2.5 — this is the minimum over the entire rendered ramp, not a stop-point check | {\"raw\":0.8367189111946612,\"floorRawMagnitude\":2.5,\"parameter\":\"minTextContrast\",\"declaredRawMagnitude\":2.5,\"epsilon\":2.5,\"colorDistance\":0.0015142457738401055,\"rampPosition\":0.10495376586914062,\"rampColor\":\"#737272\"}"
+						],
+						"accepted": false
+					},
+					{
+						"rank": 1,
+						"hex": "#d1d1d1",
+						"refusal": "contract-violation",
+						"violations": [
+							"I4.ramp-below-contrast-floor | roles.foreground (#d1d1d1) over the rendered ramp at t=0.745024 (#d2d2d1) has |raw APCA| 0.9367, below the minTextContrast floor of 2.5 — this is the minimum over the entire rendered ramp, not a stop-point check | {\"raw\":0.9367201612554924,\"floorRawMagnitude\":2.5,\"parameter\":\"minTextContrast\",\"declaredRawMagnitude\":2.5,\"epsilon\":2.5,\"colorDistance\":0.003112672314059009,\"rampPosition\":0.7450239658355713,\"rampColor\":\"#d2d2d1\"}"
+						],
+						"accepted": false
+					},
+					{
+						"rank": 2,
+						"hex": "#515151",
+						"refusal": null,
+						"violations": [],
+						"accepted": true
+					},
+					{
+						"rank": 3,
+						"hex": "#fefefe",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 4,
+						"hex": "#fdfdfd",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 5,
+						"hex": "#fcfcfc",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 8,
+						"hex": "#fbfbfb",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 10,
+						"hex": "#f8f8f8",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 11,
+						"hex": "#f9f9f9",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 12,
+						"hex": "#fafafa",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					},
+					{
+						"rank": 13,
+						"hex": "#ffffff",
+						"refusal": "twin-of-surface",
+						"violations": [],
+						"accepted": false
+					}
+				],
+				"settledForeground": "#515151",
+				"settledForegroundRank": 2,
+				"exhausted": false,
+				"twinUnavoidable": false,
+				"attempts": 3,
+				"agrees": true,
+				"disagreement": null
+			},
+			"textGroups": [
+				{
+					"rank": 0,
+					"hex": "#727272",
+					"rgb": [
+						114,
+						114,
+						114
+					],
+					"rows": 4,
+					"areaFraction": 0.0688111111111111,
+					"fieldContrast": 0.8367189111946612,
+					"nodeIds": [
+						152,
+						158,
+						162,
+						169,
+						185,
+						196,
+						198,
+						202,
+						205,
+						207,
+						217,
+						220,
+						227,
+						232,
+						238,
+						240,
+						245,
+						254,
+						255,
+						265,
+						266,
+						267,
+						268,
+						273
+					]
+				},
+				{
+					"rank": 1,
+					"hex": "#d1d1d1",
+					"rgb": [
+						209,
+						209,
+						209
+					],
+					"rows": 2,
+					"areaFraction": 0.008844444444444446,
+					"fieldContrast": 0.9367201612554924,
+					"nodeIds": [
+						324,
+						352,
+						364,
+						375,
+						380,
+						390,
+						393,
+						401,
+						424,
+						428,
+						429,
+						439,
+						441
+					]
+				},
+				{
+					"rank": 2,
+					"hex": "#515151",
+					"rgb": [
+						81,
+						81,
+						81
+					],
+					"rows": 1,
+					"areaFraction": 0.0030444444444444442,
+					"fieldContrast": 8.65312127624405,
+					"nodeIds": [
+						281,
+						284,
+						285,
+						286,
+						345
+					]
+				}
+			],
+			"detector": {
+				"agrees": true,
+				"disagreement": null,
+				"poolMarks": 420,
+				"components": 138,
+				"limitBinds": false,
+				"clustersWithEnoughMembers": 5,
+				"topClusters": [
+					{
+						"clusterId": 1,
+						"hex": "#5d5d5d",
+						"memberCount": 58,
+						"membersByLane": [
+							58,
+							0,
+							0
+						],
+						"areaFraction": 0.25433333333333336,
+						"rowSizes": [
+							8,
+							6,
+							6,
+							4,
+							3,
+							3
+						],
+						"largestRow": {
+							"size": 8,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0.0024653673986414727,
+							"anyZeroStroke": false,
+							"passes": true,
+							"failed": null
+						},
+						"becameTextGroup": true
+					},
+					{
+						"clusterId": 3,
+						"hex": "#e6e6e6",
+						"memberCount": 47,
+						"membersByLane": [
+							47,
+							0,
+							0
+						],
+						"areaFraction": 0.09305555555555554,
+						"rowSizes": [
+							8,
+							5,
+							4,
+							3,
+							3,
+							3
+						],
+						"largestRow": {
+							"size": 8,
+							"strokeCv": 0,
+							"heightCv": 0.1360672102833218,
+							"collinearity": 0.0035211030163802524,
+							"anyZeroStroke": false,
+							"passes": true,
+							"failed": null
+						},
+						"becameTextGroup": true
+					},
+					{
+						"clusterId": 6,
+						"hex": "#515151",
+						"memberCount": 14,
+						"membersByLane": [
+							14,
+							0,
+							0
+						],
+						"areaFraction": 0.00938888888888889,
+						"rowSizes": [
+							5,
+							2,
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 5,
+							"strokeCv": 0,
+							"heightCv": 0.08046575025320303,
+							"collinearity": 0.034015932477886805,
+							"anyZeroStroke": false,
+							"passes": true,
+							"failed": null
+						},
+						"becameTextGroup": true
+					},
+					{
+						"clusterId": 4,
+						"hex": "#9c9c9c",
+						"memberCount": 10,
+						"membersByLane": [
+							10,
+							0,
+							0
+						],
+						"areaFraction": 0.015533333333333335,
+						"rowSizes": [
+							2,
+							1,
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.3333333333333333,
+							"heightCv": 0.02857142857142857,
+							"collinearity": 3.465039610305518e-16,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 5,
+						"hex": "#797979",
+						"memberCount": 5,
+						"membersByLane": [
+							5,
+							0,
+							0
+						],
+						"areaFraction": 0.013411111111111111,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 0,
+						"hex": "#8c8c8c",
+						"memberCount": 2,
+						"membersByLane": [
+							2,
+							0,
+							0
+						],
+						"areaFraction": 0.0919,
+						"rowSizes": [
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 2,
+						"hex": "#ffffff",
+						"memberCount": 1,
+						"membersByLane": [
+							1,
+							0,
+							0
+						],
+						"areaFraction": 0.03,
+						"rowSizes": [
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 7,
+						"hex": "#838383",
+						"memberCount": 1,
+						"membersByLane": [
+							1,
+							0,
+							0
+						],
+						"areaFraction": 0.0009111111111111111,
+						"rowSizes": [
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					}
+				],
+				"publishedGroupGeometry": [
+					{
+						"hex": "#727272",
+						"memberCount": 24,
+						"membersByLane": [
+							24,
+							0,
+							0
+						],
+						"medianHeightPx": 10,
+						"maxPairwiseCentroidPx": 214.48380087882484,
+						"spreadOverHeight": 21.448380087882484,
+						"distinctCentroids": 22,
+						"coincident": false
+					},
+					{
+						"hex": "#d1d1d1",
+						"memberCount": 13,
+						"membersByLane": [
+							13,
+							0,
+							0
+						],
+						"medianHeightPx": 20,
+						"maxPairwiseCentroidPx": 182.8830871646465,
+						"spreadOverHeight": 9.144154358232324,
+						"distinctCentroids": 12,
+						"coincident": false
+					},
+					{
+						"hex": "#515151",
+						"memberCount": 5,
+						"membersByLane": [
+							5,
+							0,
+							0
+						],
+						"medianHeightPx": 19,
+						"maxPairwiseCentroidPx": 106.09556240858328,
+						"spreadOverHeight": 5.583976968872804,
+						"distinctCentroids": 5,
+						"coincident": false
+					}
+				],
+				"leadingGroupMembers": [
+					{
+						"nodeId": 227,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 127,
+						"depth": 124,
+						"areaFraction": 0.008888888888888889,
+						"ownAreaFraction": 0.00038888888888888887,
+						"strokeWidth": 2.8284271247461903,
+						"heightPx": 60,
+						"centroidX": 0.5818,
+						"centroidY": 0.5273458333333334,
+						"growth": 0.0184375,
+						"hex": "#636363",
+						"ownPixels": 35,
+						"ownMassShare": 0.32407407407407407,
+						"topOwnColors": [
+							{
+								"hex": "#636363",
+								"count": 18,
+								"share": 0.5142857142857142
+							},
+							{
+								"hex": "#626262",
+								"count": 17,
+								"share": 0.4857142857142857
+							}
+						]
+					},
+					{
+						"nodeId": 162,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 141,
+						"depth": 110,
+						"areaFraction": 0.023133333333333332,
+						"ownAreaFraction": 0.00022222222222222223,
+						"strokeWidth": 5.656854249492381,
+						"heightPx": 61,
+						"centroidX": 0.49428274095421076,
+						"centroidY": 0.5217467178994556,
+						"growth": 0.15814121037463977,
+						"hex": "#727272",
+						"ownPixels": 20,
+						"ownMassShare": 0.18518518518518517,
+						"topOwnColors": [
+							{
+								"hex": "#727272",
+								"count": 20,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 232,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 126,
+						"depth": 125,
+						"areaFraction": 0.005088888888888889,
+						"ownAreaFraction": 0.00012222222222222221,
+						"strokeWidth": 2.8284271247461903,
+						"heightPx": 38,
+						"centroidX": 0.3637336244541485,
+						"centroidY": 0.5043668122270742,
+						"growth": 0.025109170305676855,
+						"hex": "#616161",
+						"ownPixels": 11,
+						"ownMassShare": 0.10185185185185185,
+						"topOwnColors": [
+							{
+								"hex": "#616161",
+								"count": 11,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 207,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 132,
+						"depth": 119,
+						"areaFraction": 0.010633333333333333,
+						"ownAreaFraction": 0.0001,
+						"strokeWidth": 4,
+						"heightPx": 48,
+						"centroidX": 0.408380355276907,
+						"centroidY": 0.5195437129919889,
+						"growth": 0.014629049111807733,
+						"hex": "#686868",
+						"ownPixels": 9,
+						"ownMassShare": 0.08333333333333333,
+						"topOwnColors": [
+							{
+								"hex": "#686868",
+								"count": 9,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 158,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 141,
+						"depth": 107,
+						"areaFraction": 0.0017222222222222222,
+						"ownAreaFraction": 0.00006666666666666667,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.8280645161290322,
+						"centroidY": 0.8359784946236559,
+						"growth": 0.024193548387096774,
+						"hex": "#727272",
+						"ownPixels": 6,
+						"ownMassShare": 0.05555555555555555,
+						"topOwnColors": [
+							{
+								"hex": "#727272",
+								"count": 6,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 240,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 123,
+						"depth": 99,
+						"areaFraction": 0.0016888888888888889,
+						"ownAreaFraction": 0.000033333333333333335,
+						"strokeWidth": 2,
+						"heightPx": 7,
+						"centroidX": 0.9062280701754385,
+						"centroidY": 0.9373245614035088,
+						"growth": 0.031578947368421054,
+						"hex": "#5e5e5e",
+						"ownPixels": 3,
+						"ownMassShare": 0.027777777777777776,
+						"topOwnColors": [
+							{
+								"hex": "#5e5e5e",
+								"count": 3,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 245,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 122,
+						"depth": 80,
+						"areaFraction": 0.0006333333333333333,
+						"ownAreaFraction": 0.000033333333333333335,
+						"strokeWidth": 2,
+						"heightPx": 18,
+						"centroidX": 0.9441520467836257,
+						"centroidY": 0.8859064327485381,
+						"growth": 0.02631578947368421,
+						"hex": "#5d5d5d",
+						"ownPixels": 3,
+						"ownMassShare": 0.027777777777777776,
+						"topOwnColors": [
+							{
+								"hex": "#5d5d5d",
+								"count": 3,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 152,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 143,
+						"depth": 107,
+						"areaFraction": 0.0017333333333333333,
+						"ownAreaFraction": 0.000022222222222222223,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.9343803418803418,
+						"centroidY": 0.835448717948718,
+						"growth": 0.035897435897435895,
+						"hex": "#747474",
+						"ownPixels": 2,
+						"ownMassShare": 0.018518518518518517,
+						"topOwnColors": [
+							{
+								"hex": "#747474",
+								"count": 1,
+								"share": 0.5
+							},
+							{
+								"hex": "#757575",
+								"count": 1,
+								"share": 0.5
+							}
+						]
+					},
+					{
+						"nodeId": 238,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 124,
+						"depth": 95,
+						"areaFraction": 0.0013555555555555556,
+						"ownAreaFraction": 0.000022222222222222223,
+						"strokeWidth": 2,
+						"heightPx": 7,
+						"centroidX": 0.8208469945355191,
+						"centroidY": 0.9371584699453552,
+						"growth": 0.010245901639344262,
+						"hex": "#5f5f5f",
+						"ownPixels": 2,
+						"ownMassShare": 0.018518518518518517,
+						"topOwnColors": [
+							{
+								"hex": "#5f5f5f",
+								"count": 2,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 266,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 118,
+						"depth": 99,
+						"areaFraction": 0.0009555555555555555,
+						"ownAreaFraction": 0.000022222222222222223,
+						"strokeWidth": 2,
+						"heightPx": 7,
+						"centroidX": 0.8253100775193799,
+						"centroidY": 0.9372093023255814,
+						"growth": 0.046511627906976744,
+						"hex": "#595959",
+						"ownPixels": 2,
+						"ownMassShare": 0.018518518518518517,
+						"topOwnColors": [
+							{
+								"hex": "#595959",
+								"count": 2,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 273,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 116,
+						"depth": 104,
+						"areaFraction": 0.0007666666666666667,
+						"ownAreaFraction": 0.000022222222222222223,
+						"strokeWidth": 2,
+						"heightPx": 7,
+						"centroidX": 0.8826086956521739,
+						"centroidY": 0.937342995169082,
+						"growth": 0.014492753623188406,
+						"hex": "#575757",
+						"ownPixels": 2,
+						"ownMassShare": 0.018518518518518517,
+						"topOwnColors": [
+							{
+								"hex": "#565656",
+								"count": 1,
+								"share": 0.5
+							},
+							{
+								"hex": "#575757",
+								"count": 1,
+								"share": 0.5
+							}
+						]
+					},
+					{
+						"nodeId": 169,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 139,
+						"depth": 110,
+						"areaFraction": 0.0011333333333333334,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.9225816993464051,
+						"centroidY": 0.8352614379084968,
+						"growth": 0.1323529411764706,
+						"hex": "#707070",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#707070",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 185,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 136,
+						"depth": 90,
+						"areaFraction": 0.0005333333333333334,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 2,
+						"heightPx": 18,
+						"centroidX": 0.8491666666666666,
+						"centroidY": 0.888611111111111,
+						"growth": 0.010416666666666666,
+						"hex": "#6d6d6d",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#6d6d6d",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 196,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 134,
+						"depth": 110,
+						"areaFraction": 0.0011,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.8165656565656566,
+						"centroidY": 0.8356565656565657,
+						"growth": 0.0025252525252525255,
+						"hex": "#6a6a6a",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#6a6a6a",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 198,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 134,
+						"depth": 90,
+						"areaFraction": 0.004,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 2,
+						"heightPx": 7,
+						"centroidX": 0.8765,
+						"centroidY": 0.9368240740740741,
+						"growth": 0.008333333333333333,
+						"hex": "#6a6a6a",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#6a6a6a",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 202,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 132,
+						"depth": 91,
+						"areaFraction": 0.0005,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 2,
+						"heightPx": 19,
+						"centroidX": 0.8915555555555554,
+						"centroidY": 0.8882222222222221,
+						"growth": 0.00202020202020202,
+						"hex": "#686868",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#686868",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 205,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 132,
+						"depth": 114,
+						"areaFraction": 0.0005,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.9344444444444444,
+						"centroidY": 0.8353333333333333,
+						"growth": 0.016666666666666666,
+						"hex": "#686868",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#686868",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 217,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 129,
+						"depth": 74,
+						"areaFraction": 0.0008,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 2,
+						"heightPx": 18,
+						"centroidX": 0.9432407407407407,
+						"centroidY": 0.887361111111111,
+						"growth": 0.010416666666666666,
+						"hex": "#656565",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#656565",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 220,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 129,
+						"depth": 110,
+						"areaFraction": 0.0005,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.9607407407407408,
+						"centroidY": 0.8340740740740741,
+						"growth": 0.022222222222222223,
+						"hex": "#656565",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#656565",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 254,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 121,
+						"depth": 114,
+						"areaFraction": 0.0005444444444444444,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.9125170068027211,
+						"centroidY": 0.8357142857142857,
+						"growth": 0.003401360544217687,
+						"hex": "#5c5c5c",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#5c5c5c",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 255,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 121,
+						"depth": 89,
+						"areaFraction": 0.0005777777777777778,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 2,
+						"heightPx": 18,
+						"centroidX": 0.7964102564102564,
+						"centroidY": 0.8869871794871795,
+						"growth": 0.0038461538461538464,
+						"hex": "#5c5c5c",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#5c5c5c",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 265,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 118,
+						"depth": 104,
+						"areaFraction": 0.0006777777777777778,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 2,
+						"heightPx": 7,
+						"centroidX": 0.9326775956284152,
+						"centroidY": 0.9373224043715848,
+						"growth": 0.3237704918032787,
+						"hex": "#595959",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#595959",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 267,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 118,
+						"depth": 113,
+						"areaFraction": 0.0005333333333333334,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 10,
+						"centroidX": 0.80375,
+						"centroidY": 0.83625,
+						"growth": 0.005208333333333333,
+						"hex": "#595959",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#595959",
+								"count": 1,
+								"share": 1
+							}
+						]
+					},
+					{
+						"nodeId": 268,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 117,
+						"depth": 85,
+						"areaFraction": 0.0008111111111111111,
+						"ownAreaFraction": 0.000011111111111111112,
+						"strokeWidth": 4,
+						"heightPx": 19,
+						"centroidX": 0.9182648401826484,
+						"centroidY": 0.8870776255707763,
+						"growth": 0.00076103500761035,
+						"hex": "#585858",
+						"ownPixels": 1,
+						"ownMassShare": 0.009259259259259259,
+						"topOwnColors": [
+							{
+								"hex": "#585858",
+								"count": 1,
+								"share": 1
+							}
+						]
+					}
+				]
+			},
+			"ranking": {
+				"publishedRank": 2,
+				"publishedProvenance": "text-group",
+				"publishedContrast": 8.65312127624405,
+				"firstEligibleRank": 0,
+				"moreReadableBehindPublished": 0,
+				"poolSize": 15,
+				"poolBest": {
+					"hex": "#515151",
+					"contrast": 8.65312127624405
+				},
+				"poolBestAdmissible": {
+					"hex": "#515151",
+					"contrast": 8.65312127624405
+				},
+				"imageCeilingAtAreaFloor": {
+					"hex": "#3f3f3f",
+					"contrast": 15.561097979110134,
+					"share": 0.0005444444444444444
+				},
+				"imageCeilingAnyPixel": {
+					"hex": "#272727",
+					"contrast": 22.921314863411123,
+					"share": 0.000011111111111111112
+				},
+				"areaFloorPixels": 45
+			},
+			"pool": [
+				{
+					"rank": 0,
+					"hex": "#727272",
+					"rgb": [
+						114,
+						114,
+						114
+					],
+					"provenance": "text-group",
+					"fieldContrast": 0.8367189111946612,
+					"exactPixels": 143,
+					"exactShare": 0.0015888888888888888,
+					"barPixels": 1418,
+					"barShare": 0.015755555555555554,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 9,
+					"nodeMaxAreaFraction": 0.1319,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 1,
+					"hex": "#d1d1d1",
+					"rgb": [
+						209,
+						209,
+						209
+					],
+					"provenance": "text-group",
+					"fieldContrast": 0.9367201612554924,
+					"exactPixels": 183,
+					"exactShare": 0.002033333333333333,
+					"barPixels": 2049,
+					"barShare": 0.022766666666666668,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 3,
+					"nodeMaxAreaFraction": 0.015066666666666667,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 2,
+					"hex": "#515151",
+					"rgb": [
+						81,
+						81,
+						81
+					],
+					"provenance": "text-group",
+					"fieldContrast": 8.65312127624405,
+					"exactPixels": 376,
+					"exactShare": 0.004177777777777778,
+					"barPixels": 2512,
+					"barShare": 0.027911111111111112,
+					"stabilityLevel": 0,
+					"growth": 0.0014084507042253522,
+					"nodeCount": 3,
+					"nodeMaxAreaFraction": 0.0011,
+					"refusedAsTwin": false,
+					"isPublished": true
+				},
+				{
+					"rank": 3,
+					"hex": "#fefefe",
+					"rgb": [
+						254,
+						254,
+						254
+					],
+					"provenance": "residual",
+					"fieldContrast": 2.8032720050405397,
+					"exactPixels": 333,
+					"exactShare": 0.0037,
+					"barPixels": 12100,
+					"barShare": 0.13444444444444445,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 4,
+					"hex": "#fdfdfd",
+					"rgb": [
+						253,
+						253,
+						253
+					],
+					"provenance": "residual",
+					"fieldContrast": 2.1399610089632706,
+					"exactPixels": 72,
+					"exactShare": 0.0008,
+					"barPixels": 13867,
+					"barShare": 0.15407777777777779,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 5,
+					"hex": "#fcfcfc",
+					"rgb": [
+						252,
+						252,
+						252
+					],
+					"provenance": "residual",
+					"fieldContrast": 1.4779282121815414,
+					"exactPixels": 111,
+					"exactShare": 0.0012333333333333332,
+					"barPixels": 14639,
+					"barShare": 0.16265555555555555,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 6,
+					"hex": "#8c8c8c",
+					"rgb": [
+						140,
+						140,
+						140
+					],
+					"provenance": "cluster",
+					"fieldContrast": 1.2170322565669942,
+					"exactPixels": 127,
+					"exactShare": 0.001411111111111111,
+					"barPixels": 1149,
+					"barShare": 0.012766666666666667,
+					"stabilityLevel": 0,
+					"growth": 0.0025974025974025974,
+					"nodeCount": 2,
+					"nodeMaxAreaFraction": 0.09104444444444444,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 7,
+					"hex": "#797979",
+					"rgb": [
+						121,
+						121,
+						121
+					],
+					"provenance": "cluster",
+					"fieldContrast": 1.1743618838357683,
+					"exactPixels": 146,
+					"exactShare": 0.0016222222222222222,
+					"barPixels": 1250,
+					"barShare": 0.013888888888888888,
+					"stabilityLevel": 0,
+					"growth": 0.002364066193853428,
+					"nodeCount": 3,
+					"nodeMaxAreaFraction": 0.004877777777777778,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 8,
+					"hex": "#fbfbfb",
+					"rgb": [
+						251,
+						251,
+						251
+					],
+					"provenance": "residual",
+					"fieldContrast": 0.8171762091723347,
+					"exactPixels": 741,
+					"exactShare": 0.008233333333333334,
+					"barPixels": 15032,
+					"barShare": 0.1670222222222222,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 9,
+					"hex": "#9c9c9c",
+					"rgb": [
+						156,
+						156,
+						156
+					],
+					"provenance": "cluster",
+					"fieldContrast": 0.7988244963557477,
+					"exactPixels": 118,
+					"exactShare": 0.0013111111111111112,
+					"barPixels": 1213,
+					"barShare": 0.013477777777777778,
+					"stabilityLevel": 0,
+					"growth": 0.0018248175182481751,
+					"nodeCount": 6,
+					"nodeMaxAreaFraction": 0.3557777777777778,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				{
+					"rank": 10,
+					"hex": "#f8f8f8",
+					"rgb": [
+						248,
+						248,
+						248
+					],
+					"provenance": "residual",
+					"fieldContrast": 0.2189787709758799,
+					"exactPixels": 1767,
+					"exactShare": 0.019633333333333332,
+					"barPixels": 20096,
+					"barShare": 0.2232888888888889,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 11,
+					"hex": "#f9f9f9",
+					"rgb": [
+						249,
+						249,
+						249
+					],
+					"provenance": "residual",
+					"fieldContrast": 0.1884727059870501,
+					"exactPixels": 3763,
+					"exactShare": 0.04181111111111111,
+					"barPixels": 18178,
+					"barShare": 0.20197777777777778,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 0,
+					"nodeMaxAreaFraction": null,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 12,
+					"hex": "#fafafa",
+					"rgb": [
+						250,
+						250,
+						250
+					],
+					"provenance": "residual",
+					"fieldContrast": 0.15770761002655487,
+					"exactPixels": 4346,
+					"exactShare": 0.04828888888888889,
+					"barPixels": 17140,
+					"barShare": 0.19044444444444444,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 1,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 13,
+					"hex": "#ffffff",
+					"rgb": [
+						255,
+						255,
+						255
+					],
+					"provenance": "cluster",
+					"fieldContrast": 3.4678586213955978,
+					"exactPixels": 2734,
+					"exactShare": 0.030377777777777778,
+					"barPixels": 8337,
+					"barShare": 0.09263333333333333,
+					"stabilityLevel": 1,
+					"growth": 8.083333333333334,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.03,
+					"refusedAsTwin": true,
+					"isPublished": false
+				},
+				{
+					"rank": 14,
+					"hex": "#838383",
+					"rgb": [
+						131,
+						131,
+						131
+					],
+					"provenance": "cluster",
+					"fieldContrast": 1.2170029160958582,
+					"exactPixels": 139,
+					"exactShare": 0.0015444444444444444,
+					"barPixels": 1191,
+					"barShare": 0.013233333333333333,
+					"stabilityLevel": 1,
+					"growth": 0.01524390243902439,
+					"nodeCount": 3,
+					"nodeMaxAreaFraction": 0.1872111111111111,
+					"refusedAsTwin": false,
+					"isPublished": false
+				}
+			],
+			"census": {
+				"topTriples": [
+					{
+						"hex": "#555555",
+						"count": 9954,
+						"share": 0.1106,
+						"fieldContrast": 7.034612867838809
+					},
+					{
+						"hex": "#f0f0f0",
+						"count": 4921,
+						"share": 0.05467777777777778,
+						"fieldContrast": 0.45369204187803924
+					},
+					{
+						"hex": "#fafafa",
+						"count": 4346,
+						"share": 0.04828888888888889,
+						"fieldContrast": 0.15770761002655487
+					},
+					{
+						"hex": "#f4f4f4",
+						"count": 3772,
+						"share": 0.041911111111111114,
+						"fieldContrast": 0.33841102630190023
+					},
+					{
+						"hex": "#f9f9f9",
+						"count": 3763,
+						"share": 0.04181111111111111,
+						"fieldContrast": 0.1884727059870501
+					},
+					{
+						"hex": "#ffffff",
+						"count": 2734,
+						"share": 0.030377777777777778,
+						"fieldContrast": 3.4678586213955978
+					},
+					{
+						"hex": "#efefef",
+						"count": 2470,
+						"share": 0.027444444444444445,
+						"fieldContrast": 0.48186304037476924
+					},
+					{
+						"hex": "#f3f3f3",
+						"count": 2251,
+						"share": 0.025011111111111112,
+						"fieldContrast": 0.3676206677913878
+					},
+					{
+						"hex": "#f5f5f5",
+						"count": 2108,
+						"share": 0.023422222222222223,
+						"fieldContrast": 0.30894193193708047
+					},
+					{
+						"hex": "#f1f1f1",
+						"count": 1961,
+						"share": 0.02178888888888889,
+						"fieldContrast": 0.42526125856814057
+					},
+					{
+						"hex": "#545454",
+						"count": 1867,
+						"share": 0.020744444444444444,
+						"fieldContrast": 7.44192438098432
+					},
+					{
+						"hex": "#f8f8f8",
+						"count": 1767,
+						"share": 0.019633333333333332,
+						"fieldContrast": 0.2189787709758799
+					}
+				],
+				"topNodeReprs": [
+					{
+						"hex": "#fafafa",
+						"areaFraction": 1,
+						"nodeId": 0,
+						"kind": "field",
+						"barShare": 0.19044444444444444,
+						"fieldContrast": 0.15770761002655487
+					},
+					{
+						"hex": "#f5f5f5",
+						"areaFraction": 1,
+						"nodeId": 445,
+						"kind": "field",
+						"barShare": 0.3031333333333333,
+						"fieldContrast": 0.30894193193708047
+					},
+					{
+						"hex": "#efefef",
+						"areaFraction": 0.8324444444444444,
+						"nodeId": 1,
+						"kind": "field",
+						"barShare": 0.2534111111111111,
+						"fieldContrast": 0.48186304037476924
+					},
+					{
+						"hex": "#e7e7e7",
+						"areaFraction": 0.5907555555555556,
+						"nodeId": 2,
+						"kind": "field",
+						"barShare": 0.07642222222222222,
+						"fieldContrast": 0.6978689953072325
+					},
+					{
+						"hex": "#e3e3e3",
+						"areaFraction": 0.5784,
+						"nodeId": 3,
+						"kind": "field",
+						"barShare": 0.040711111111111115,
+						"fieldContrast": 0.7996222827362672
+					},
+					{
+						"hex": "#dadada",
+						"areaFraction": 0.5570111111111111,
+						"nodeId": 4,
+						"kind": "field",
+						"barShare": 0.02751111111111111,
+						"fieldContrast": 0.8755011209572977
+					},
+					{
+						"hex": "#d4d4d4",
+						"areaFraction": 0.546,
+						"nodeId": 5,
+						"kind": "field",
+						"barShare": 0.02398888888888889,
+						"fieldContrast": 0.9576643201246354
+					},
+					{
+						"hex": "#cdcdcd",
+						"areaFraction": 0.5162,
+						"nodeId": 6,
+						"kind": "field",
+						"barShare": 0.021933333333333332,
+						"fieldContrast": 0.9618559252922604
+					},
+					{
+						"hex": "#cacaca",
+						"areaFraction": 0.5131111111111111,
+						"nodeId": 7,
+						"kind": "field",
+						"barShare": 0.021522222222222224,
+						"fieldContrast": 0.9798623359667463
+					},
+					{
+						"hex": "#bfbfbf",
+						"areaFraction": 0.4819111111111111,
+						"nodeId": 11,
+						"kind": "field",
+						"barShare": 0.020066666666666667,
+						"fieldContrast": 0.6503812800137139
+					},
+					{
+						"hex": "#bcbcbc",
+						"areaFraction": 0.4777888888888889,
+						"nodeId": 13,
+						"kind": "field",
+						"barShare": 0.019533333333333333,
+						"fieldContrast": 1.0931638858178452
+					},
+					{
+						"hex": "#b3b3b3",
+						"areaFraction": 0.4458111111111111,
+						"nodeId": 20,
+						"kind": "field",
+						"barShare": 0.02048888888888889,
+						"fieldContrast": 0.7127077964211707
+					}
+				]
+			},
+			"publishedAttribution": {
+				"hex": "#515151",
+				"rgb": [
+					81,
+					81,
+					81
+				],
+				"exactPixels": 376,
+				"exactShare": 0.004177777777777778,
+				"barPixels": 2512,
+				"barShare": 0.027911111111111112,
+				"componentCount": 579,
+				"maxInradius": 2,
+				"largestComponentShareOfMass": 0.05931528662420382,
+				"largestComponentImageShare": 0.0016555555555555555,
+				"boundaryFraction": 0.9820859872611465,
+				"componentsAtOrAboveMarkInradius": 5,
+				"topComponents": [
+					{
+						"area": 149,
+						"areaFraction": 0.0016555555555555555,
+						"minX": 5,
+						"minY": 129,
+						"maxX": 7,
+						"maxY": 265,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 49,
+						"areaFraction": 0.0005444444444444444,
+						"minX": 21,
+						"minY": 266,
+						"maxX": 51,
+						"maxY": 267,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 42,
+						"areaFraction": 0.00046666666666666666,
+						"minX": 140,
+						"minY": 199,
+						"maxX": 146,
+						"maxY": 213,
+						"inradius": 2,
+						"boundaryFraction": 0.8809523809523809
+					},
+					{
+						"area": 42,
+						"areaFraction": 0.00046666666666666666,
+						"minX": 283,
+						"minY": 216,
+						"maxX": 287,
+						"maxY": 243,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 37,
+						"areaFraction": 0.0004111111111111111,
+						"minX": 69,
+						"minY": 266,
+						"maxX": 89,
+						"maxY": 267,
+						"inradius": 1,
+						"boundaryFraction": 1
+					}
+				],
+				"outerRing": [
+					{
+						"hex": "#545454",
+						"count": 1072,
+						"lightness": 0.44589783725460386
+					},
+					{
+						"hex": "#555555",
+						"count": 774,
+						"lightness": 0.44953319396027897
+					},
+					{
+						"hex": "#565656",
+						"count": 410,
+						"lightness": 0.4531612156377116
+					},
+					{
+						"hex": "#575757",
+						"count": 261,
+						"lightness": 0.4567819902002643
+					},
+					{
+						"hex": "#585858",
+						"count": 177,
+						"lightness": 0.4603956036486312
+					},
+					{
+						"hex": "#595959",
+						"count": 114,
+						"lightness": 0.46400214013077345
+					},
+					{
+						"hex": "#4c4c4c",
+						"count": 106,
+						"lightness": 0.4165396896793149
+					},
+					{
+						"hex": "#4e4e4e",
+						"count": 98,
+						"lightness": 0.42392648094446894
+					}
+				],
+				"subjectLightness": 0.4349468478127358,
+				"outerRingDarkerShare": 0.20633339972117107,
+				"outerRingLighterShare": 0.793666600278829,
+				"verdict": "glyph-or-mark-ink",
+				"cuts": {
+					"filamentInradiusPx": 2,
+					"scrimMassShare": 0.5,
+					"scrimImageShare": 0.05,
+					"scrimInradiusPx": 8,
+					"markComponentInradiusPx": 2,
+					"markComponentCount": 4
+				},
+				"provenance": "p2-tos-identity/pixels@1"
+			},
+			"attribution": "ceiling",
+			"attributionEvidence": {
+				"isBypass": false,
+				"isRepairWalk": false,
+				"isCeiling": true,
+				"publishedIsPoolMaximum": true,
+				"publishedIsAdmissiblePoolMaximum": true,
+				"imageOffersBetter": true
+			}
+		}
+	]
+}

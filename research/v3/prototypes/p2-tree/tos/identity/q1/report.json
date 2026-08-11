@@ -1,0 +1,3557 @@
+{
+	"provenance": "p2-tos-identity/q1@1",
+	"question": "why did the text detector publish near-whites on cal-014 items 1 and 2",
+	"candidate": "p2-tos-0.3.0-cycle-2-merged",
+	"generatedBy": "tos/identity/q1/run.ts",
+	"items": [
+		{
+			"item": 1,
+			"itemId": "ab67616d0000b27300005f98559139b7dbc802fd",
+			"imagePath": "00/ab67616d0000b27300005f98559139b7dbc802fd.jpg",
+			"publishedForegroundExpected": "#fcfefd",
+			"publishedForeground": "#fcfefd",
+			"reproduced": true,
+			"palette": {
+				"background": "#e66f6b",
+				"surface": "#a47d7e",
+				"foreground": "#fcfefd",
+				"accent": "#999fbf"
+			},
+			"parse": {
+				"width": 640,
+				"height": 632,
+				"verdict": "unreadable",
+				"coverage": 0.4858707476265823,
+				"gradient": false,
+				"notes": [
+					"fallback-field-roles:unreadable",
+					"lanes:L+a+b",
+					"pool-marks:331",
+					"components:207",
+					"salience-median-growth:0.058118081180811805",
+					"no-text-groups:contrast-ranking-only",
+					"accent-candidates:256"
+				],
+				"laneNodeCounts": [
+					262,
+					49,
+					50
+				],
+				"backgroundHex": "#e66f6b",
+				"surfaceHex": "#a47d7e"
+			},
+			"assembly": {
+				"notes": [],
+				"attempts": 2,
+				"swapped": false
+			},
+			"walk": {
+				"provenance": "p2-tos-identity/walk@1",
+				"foregroundSteps": [
+					{
+						"rank": 0,
+						"hex": "#fcfefd",
+						"refusal": null,
+						"violations": [],
+						"accepted": true
+					},
+					{
+						"rank": 45,
+						"hex": "#e86e69",
+						"refusal": "twin-of-background",
+						"violations": [],
+						"accepted": false
+					}
+				],
+				"settledForeground": "#fcfefd",
+				"settledForegroundRank": 0,
+				"exhausted": false,
+				"twinUnavoidable": false,
+				"attempts": 1,
+				"agrees": true,
+				"disagreement": null
+			},
+			"census": {
+				"topTriples": [
+					{
+						"hex": "#fdfdfd",
+						"count": 13229,
+						"share": 0.03270619066455696,
+						"fieldContrast": 63.74633615793259
+					},
+					{
+						"hex": "#cd291d",
+						"count": 1704,
+						"share": 0.004212816455696202,
+						"fieldContrast": 11.910491938990377
+					},
+					{
+						"hex": "#cd261d",
+						"count": 1572,
+						"share": 0.0038864715189873417,
+						"fieldContrast": 12.138920079735628
+					},
+					{
+						"hex": "#fcfcfc",
+						"count": 1303,
+						"share": 0.0032214200949367087,
+						"fieldContrast": 63.08430336115086
+					},
+					{
+						"hex": "#ce271e",
+						"count": 1120,
+						"share": 0.002768987341772152,
+						"fieldContrast": 11.83279575699887
+					},
+					{
+						"hex": "#d42f1c",
+						"count": 1107,
+						"share": 0.002736847310126582,
+						"fieldContrast": 9.807081463886655
+					},
+					{
+						"hex": "#d22c1c",
+						"count": 997,
+						"share": 0.0024648931962025318,
+						"fieldContrast": 10.530599727618899
+					},
+					{
+						"hex": "#d5301c",
+						"count": 916,
+						"share": 0.002264636075949367,
+						"fieldContrast": 9.485521339900279
+					},
+					{
+						"hex": "#cc251c",
+						"count": 842,
+						"share": 0.0020816851265822783,
+						"fieldContrast": 12.44252170335654
+					},
+					{
+						"hex": "#d6311d",
+						"count": 831,
+						"share": 0.0020544897151898735,
+						"fieldContrast": 9.157119021681968
+					},
+					{
+						"hex": "#d32e1b",
+						"count": 786,
+						"share": 0.0019432357594936708,
+						"fieldContrast": 10.13083571852368
+					},
+					{
+						"hex": "#d02a1c",
+						"count": 714,
+						"share": 0.001765229430379747,
+						"fieldContrast": 11.153392219831849
+					}
+				],
+				"topNodeReprs": [
+					{
+						"hex": "#e5645e",
+						"areaFraction": 1,
+						"nodeId": 0,
+						"kind": "field",
+						"barShare": 0.01050237341772152,
+						"fieldContrast": 3.6901247371053354
+					},
+					{
+						"hex": "#e0c1bc",
+						"areaFraction": 1,
+						"nodeId": 262,
+						"kind": "field",
+						"barShare": 0.06561758306962025,
+						"fieldContrast": 30.386740625565086
+					},
+					{
+						"hex": "#eacbc8",
+						"areaFraction": 1,
+						"nodeId": 311,
+						"kind": "field",
+						"barShare": 0.08019679588607595,
+						"fieldContrast": 36.428036522125595
+					},
+					{
+						"hex": "#e66f6b",
+						"areaFraction": 0.5655706091772152,
+						"nodeId": 112,
+						"kind": "field",
+						"barShare": 0.010178500791139241,
+						"fieldContrast": 1.9479010537322865
+					},
+					{
+						"hex": "#bb8f8c",
+						"areaFraction": 0.559061016613924,
+						"nodeId": 116,
+						"kind": "field",
+						"barShare": 0.012895569620253164,
+						"fieldContrast": 4.7330388006261765
+					},
+					{
+						"hex": "#bd9190",
+						"areaFraction": 0.5512213212025316,
+						"nodeId": 118,
+						"kind": "field",
+						"barShare": 0.013896855221518987,
+						"fieldContrast": 5.831981508101656
+					},
+					{
+						"hex": "#c39794",
+						"areaFraction": 0.5164903085443038,
+						"nodeId": 133,
+						"kind": "field",
+						"barShare": 0.015249208860759493,
+						"fieldContrast": 8.900812686262755
+					},
+					{
+						"hex": "#ca9d9a",
+						"areaFraction": 0.4858114121835443,
+						"nodeId": 168,
+						"kind": "field",
+						"barShare": 0.017125692246835442,
+						"fieldContrast": 12.244789963964724
+					},
+					{
+						"hex": "#cda19e",
+						"areaFraction": 0.4757688884493671,
+						"nodeId": 171,
+						"kind": "field",
+						"barShare": 0.019738924050632912,
+						"fieldContrast": 14.257790060920406
+					},
+					{
+						"hex": "#f9f8f6",
+						"areaFraction": 0.41086085838607594,
+						"nodeId": 313,
+						"kind": "field",
+						"barShare": 0.0591104628164557,
+						"fieldContrast": 60.494765569761796
+					},
+					{
+						"hex": "#d7aba0",
+						"areaFraction": 0.35861105617088607,
+						"nodeId": 184,
+						"kind": "field",
+						"barShare": 0.03855814873417721,
+						"fieldContrast": 19.49070544132813
+					},
+					{
+						"hex": "#d9afa3",
+						"areaFraction": 0.34788617484177214,
+						"nodeId": 189,
+						"kind": "field",
+						"barShare": 0.05176770174050633,
+						"fieldContrast": 21.396729521943715
+					}
+				]
+			},
+			"textGroups": [],
+			"firstTextGroupAttribution": null,
+			"detector": {
+				"agrees": true,
+				"disagreement": null,
+				"poolMarks": 331,
+				"components": 207,
+				"componentsAfterLimit": 207,
+				"limitBinds": false,
+				"cuts": {
+					"TEXT_MIN_COMPONENTS": 4,
+					"TEXT_STROKE_WIDTH_CV": 0.4,
+					"TEXT_HEIGHT_CV": 0.35,
+					"TEXT_COLLINEARITY_CUT": 0.15,
+					"TEXT_ROW_CENTROID_TOLERANCE": 0.5,
+					"TEXT_COMPONENT_LIMIT": 512
+				},
+				"clustersWithEnoughMembers": 8,
+				"topClusters": [
+					{
+						"clusterId": 1,
+						"hex": "#e2bfbd",
+						"memberCount": 77,
+						"membersByLane": [
+							38,
+							16,
+							23
+						],
+						"areaFraction": 0.707832278481013,
+						"rowSizes": [
+							6,
+							4,
+							3,
+							3,
+							2,
+							2
+						],
+						"largestRow": {
+							"size": 6,
+							"strokeCv": 0.41457809879442503,
+							"heightCv": 0.09364834980022466,
+							"collinearity": 0.011413605896835353,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "stroke-cv"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 0,
+						"hex": "#ede2e6",
+						"memberCount": 11,
+						"membersByLane": [
+							6,
+							5,
+							0
+						],
+						"areaFraction": 0.19618275316455697,
+						"rowSizes": [
+							2,
+							2,
+							2,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0,
+							"heightCv": 0.034482758620689655,
+							"collinearity": 2.5101480811662494e-14,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 10,
+						"hex": "#494651",
+						"memberCount": 5,
+						"membersByLane": [
+							5,
+							0,
+							0
+						],
+						"areaFraction": 0.03689181170886076,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 24,
+						"hex": "#3c3f4e",
+						"memberCount": 4,
+						"membersByLane": [
+							3,
+							1,
+							0
+						],
+						"areaFraction": 0.010984473892405063,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 27,
+						"hex": "#9b91ac",
+						"memberCount": 4,
+						"membersByLane": [
+							3,
+							1,
+							0
+						],
+						"areaFraction": 0.009147547468354429,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 28,
+						"hex": "#d5bec6",
+						"memberCount": 4,
+						"membersByLane": [
+							4,
+							0,
+							0
+						],
+						"areaFraction": 0.007988034018987341,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 31,
+						"hex": "#c97f76",
+						"memberCount": 4,
+						"membersByLane": [
+							2,
+							2,
+							0
+						],
+						"areaFraction": 0.0052833267405063295,
+						"rowSizes": [
+							3,
+							1
+						],
+						"largestRow": {
+							"size": 3,
+							"strokeCv": 0.408248290463863,
+							"heightCv": 0.059545834205182946,
+							"collinearity": 0.056661858051522025,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 34,
+						"hex": "#8a83a4",
+						"memberCount": 4,
+						"membersByLane": [
+							3,
+							1,
+							0
+						],
+						"areaFraction": 0.004136174841772152,
+						"rowSizes": [
+							2,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.38196601125010515,
+							"heightCv": 0.05263157894736842,
+							"collinearity": 1.3611941449364745e-16,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 7,
+						"hex": "#454350",
+						"memberCount": 3,
+						"membersByLane": [
+							2,
+							1,
+							0
+						],
+						"areaFraction": 0.05526354825949367,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 16,
+						"hex": "#383c48",
+						"memberCount": 3,
+						"membersByLane": [
+							1,
+							1,
+							1
+						],
+						"areaFraction": 0.012329410601265824,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 40,
+						"hex": "#a094a0",
+						"memberCount": 3,
+						"membersByLane": [
+							3,
+							0,
+							0
+						],
+						"areaFraction": 0.004647943037974683,
+						"rowSizes": [
+							2,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0,
+							"heightCv": 0.017543859649122806,
+							"collinearity": 7.543048668852894e-15,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 42,
+						"hex": "#5d515b",
+						"memberCount": 3,
+						"membersByLane": [
+							2,
+							0,
+							1
+						],
+						"areaFraction": 0.00303846914556962,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					}
+				],
+				"publishedGroupGeometry": [],
+				"leadingGroupMembers": []
+			},
+			"election": {
+				"publishedRank": 0,
+				"skippedAheadOfPublished": [],
+				"pool": [
+					{
+						"rank": 0,
+						"hex": "#fcfefd",
+						"rgb": [
+							252,
+							254,
+							253
+						],
+						"provenance": "residual",
+						"fieldContrast": 64.08071290168724,
+						"exactPixels": 330,
+						"exactShare": 0.0008158623417721519,
+						"barPixels": 20036,
+						"barShare": 0.04953520569620253,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": true
+					},
+					{
+						"rank": 1,
+						"hex": "#fdfdfd",
+						"rgb": [
+							253,
+							253,
+							253
+						],
+						"provenance": "residual",
+						"fieldContrast": 63.74633615793259,
+						"exactPixels": 13229,
+						"exactShare": 0.03270619066455696,
+						"barPixels": 20489,
+						"barShare": 0.0506551621835443,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.03626878955696203,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 2,
+						"hex": "#fcfcfc",
+						"rgb": [
+							252,
+							252,
+							252
+						],
+						"provenance": "cluster",
+						"fieldContrast": 63.08430336115086,
+						"exactPixels": 1303,
+						"exactShare": 0.0032214200949367087,
+						"barPixels": 21398,
+						"barShare": 0.052902492088607596,
+						"stabilityLevel": 0,
+						"growth": 0.03426381582668703,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.044101068037974686,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 3,
+						"hex": "#fbfbfd",
+						"rgb": [
+							251,
+							251,
+							253
+						],
+						"provenance": "residual",
+						"fieldContrast": 62.51934512639345,
+						"exactPixels": 232,
+						"exactShare": 0.0005735759493670886,
+						"barPixels": 22037,
+						"barShare": 0.05448229825949367,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 4,
+						"hex": "#fcfbf9",
+						"rgb": [
+							252,
+							251,
+							249
+						],
+						"provenance": "residual",
+						"fieldContrast": 62.46956884883977,
+						"exactPixels": 210,
+						"exactShare": 0.0005191851265822784,
+						"barPixels": 22164,
+						"barShare": 0.05479628164556962,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 5,
+						"hex": "#fbfbfb",
+						"rgb": [
+							251,
+							251,
+							251
+						],
+						"provenance": "residual",
+						"fieldContrast": 62.42355135814165,
+						"exactPixels": 518,
+						"exactShare": 0.0012806566455696204,
+						"barPixels": 22239,
+						"barShare": 0.054981704905063294,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 6,
+						"hex": "#fafafc",
+						"rgb": [
+							250,
+							250,
+							252
+						],
+						"provenance": "residual",
+						"fieldContrast": 61.85969211687657,
+						"exactPixels": 418,
+						"exactShare": 0.0010334256329113925,
+						"barPixels": 22842,
+						"barShare": 0.056472507911392404,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 7,
+						"hex": "#fbfaf8",
+						"rgb": [
+							251,
+							250,
+							248
+						],
+						"provenance": "residual",
+						"fieldContrast": 61.81001434775002,
+						"exactPixels": 303,
+						"exactShare": 0.0007491099683544304,
+						"barPixels": 22983,
+						"barShare": 0.056821103639240506,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 8,
+						"hex": "#ede2e6",
+						"rgb": [
+							237,
+							226,
+							230
+						],
+						"provenance": "cluster",
+						"fieldContrast": 48.02055770458985,
+						"exactPixels": 68,
+						"exactShare": 0.00016811708860759494,
+						"barPixels": 13230,
+						"barShare": 0.03270866297468354,
+						"stabilityLevel": 0,
+						"growth": 0.021799628942486084,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.09436313291139241,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 9,
+						"hex": "#3c3f4e",
+						"rgb": [
+							60,
+							63,
+							78
+						],
+						"provenance": "cluster",
+						"fieldContrast": 31.282930611492894,
+						"exactPixels": 39,
+						"exactShare": 0.00009642009493670886,
+						"barPixels": 4003,
+						"barShare": 0.009896657436708861,
+						"stabilityLevel": 0,
+						"growth": 0.01833976833976834,
+						"nodeCount": 2,
+						"nodeMaxAreaFraction": 0.0060546875,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 10,
+						"hex": "#e2bfbd",
+						"rgb": [
+							226,
+							191,
+							189
+						],
+						"provenance": "cluster",
+						"fieldContrast": 29.923006915660117,
+						"exactPixels": 34,
+						"exactShare": 0.00008405854430379747,
+						"barPixels": 25528,
+						"barShare": 0.06311313291139241,
+						"stabilityLevel": 0,
+						"growth": 0.025736045798405233,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.09350771360759494,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 11,
+						"hex": "#434659",
+						"rgb": [
+							67,
+							70,
+							89
+						],
+						"provenance": "cluster",
+						"fieldContrast": 28.52409843340025,
+						"exactPixels": 3,
+						"exactShare": 0.000007416930379746835,
+						"barPixels": 245,
+						"barShare": 0.0006057159810126582,
+						"stabilityLevel": 0,
+						"growth": 0.024107142857142858,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.000692246835443038,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 12,
+						"hex": "#d5bec6",
+						"rgb": [
+							213,
+							190,
+							198
+						],
+						"provenance": "cluster",
+						"fieldContrast": 28.011242784847028,
+						"exactPixels": 5,
+						"exactShare": 0.000012361550632911392,
+						"barPixels": 5513,
+						"barShare": 0.013629845727848101,
+						"stabilityLevel": 0,
+						"growth": 0.035145888594164454,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00404717167721519,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 13,
+						"hex": "#4b4e5f",
+						"rgb": [
+							75,
+							78,
+							95
+						],
+						"provenance": "cluster",
+						"fieldContrast": 25.4926046034123,
+						"exactPixels": 6,
+						"exactShare": 0.00001483386075949367,
+						"barPixels": 362,
+						"barShare": 0.0008949762658227848,
+						"stabilityLevel": 0,
+						"growth": 0.006226053639846743,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.004872923259493671,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 14,
+						"hex": "#59546a",
+						"rgb": [
+							89,
+							84,
+							106
+						],
+						"provenance": "cluster",
+						"fieldContrast": 22.204356116306258,
+						"exactPixels": 10,
+						"exactShare": 0.000024723101265822784,
+						"barPixels": 395,
+						"barShare": 0.0009765625,
+						"stabilityLevel": 0,
+						"growth": 0.0518421052631579,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0023486946202531645,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 15,
+						"hex": "#ccb2bb",
+						"rgb": [
+							204,
+							178,
+							187
+						],
+						"provenance": "cluster",
+						"fieldContrast": 21.56731872372583,
+						"exactPixels": 1,
+						"exactShare": 0.0000024723101265822785,
+						"barPixels": 2647,
+						"barShare": 0.006544204905063291,
+						"stabilityLevel": 0,
+						"growth": 0.05625198349730244,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.007790249208860759,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 16,
+						"hex": "#5b5a68",
+						"rgb": [
+							91,
+							90,
+							104
+						],
+						"provenance": "cluster",
+						"fieldContrast": 20.377466933330542,
+						"exactPixels": 13,
+						"exactShare": 0.00003214003164556962,
+						"barPixels": 532,
+						"barShare": 0.0013152689873417722,
+						"stabilityLevel": 0,
+						"growth": 0.007307351638618246,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.007721024525316456,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 17,
+						"hex": "#615970",
+						"rgb": [
+							97,
+							89,
+							112
+						],
+						"provenance": "cluster",
+						"fieldContrast": 19.81016090435758,
+						"exactPixels": 3,
+						"exactShare": 0.000007416930379746835,
+						"barPixels": 349,
+						"barShare": 0.0008628362341772152,
+						"stabilityLevel": 0,
+						"growth": 0.0220949263502455,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0029816060126582277,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 18,
+						"hex": "#6f5e71",
+						"rgb": [
+							111,
+							94,
+							113
+						],
+						"provenance": "cluster",
+						"fieldContrast": 16.924101849374505,
+						"exactPixels": 1,
+						"exactShare": 0.0000024723101265822785,
+						"barPixels": 250,
+						"barShare": 0.0006180775316455697,
+						"stabilityLevel": 0,
+						"growth": 0.04114490161001789,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0018962618670886075,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 19,
+						"hex": "#baaba8",
+						"rgb": [
+							186,
+							171,
+							168
+						],
+						"provenance": "cluster",
+						"fieldContrast": 15.700345010338854,
+						"exactPixels": 3,
+						"exactShare": 0.000007416930379746835,
+						"barPixels": 1139,
+						"barShare": 0.002815961234177215,
+						"stabilityLevel": 0,
+						"growth": 0.02301255230125523,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.001189181170886076,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 20,
+						"hex": "#6b637a",
+						"rgb": [
+							107,
+							99,
+							122
+						],
+						"provenance": "cluster",
+						"fieldContrast": 15.527919438838882,
+						"exactPixels": 1,
+						"exactShare": 0.0000024723101265822785,
+						"barPixels": 239,
+						"barShare": 0.0005908821202531646,
+						"stabilityLevel": 0,
+						"growth": 0.019230769230769232,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.005174545094936709,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 21,
+						"hex": "#b2aabf",
+						"rgb": [
+							178,
+							170,
+							191
+						],
+						"provenance": "cluster",
+						"fieldContrast": 15.27335666634655,
+						"exactPixels": 9,
+						"exactShare": 0.000022250791139240506,
+						"barPixels": 1309,
+						"barShare": 0.0032362539556962024,
+						"stabilityLevel": 0,
+						"growth": 0.00589622641509434,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00847507911392405,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 22,
+						"hex": "#6b6486",
+						"rgb": [
+							107,
+							100,
+							134
+						],
+						"provenance": "cluster",
+						"fieldContrast": 14.719533316785688,
+						"exactPixels": 2,
+						"exactShare": 0.000004944620253164557,
+						"barPixels": 289,
+						"barShare": 0.0007144976265822785,
+						"stabilityLevel": 0,
+						"growth": 0.0220949263502455,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0015105814873417722,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 23,
+						"hex": "#c3351d",
+						"rgb": [
+							195,
+							53,
+							29
+						],
+						"provenance": "cluster",
+						"fieldContrast": 12.945448792621308,
+						"exactPixels": 1,
+						"exactShare": 0.0000024723101265822785,
+						"barPixels": 4376,
+						"barShare": 0.010818829113924051,
+						"stabilityLevel": 0,
+						"growth": 0.005297669766235691,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.06673506724683544,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					}
+				],
+				"residualCheck": {
+					"residualAgrees": true,
+					"residualOnlyInDerived": [],
+					"residualOnlyInParse": []
+				}
+			},
+			"attribution": {
+				"hex": "#fcfefd",
+				"rgb": [
+					252,
+					254,
+					253
+				],
+				"exactPixels": 330,
+				"exactShare": 0.0008158623417721519,
+				"barPixels": 20036,
+				"barShare": 0.04953520569620253,
+				"componentCount": 62,
+				"maxInradius": 57.9396237474839,
+				"largestComponentShareOfMass": 0.8453284088640447,
+				"largestComponentImageShare": 0.04187351661392405,
+				"boundaryFraction": 0.11604112597324816,
+				"componentsAtOrAboveMarkInradius": 4,
+				"inradiusMeasuredComponents": 62,
+				"inradiusBudgetBound": false,
+				"topComponents": [
+					{
+						"area": 16937,
+						"areaFraction": 0.04187351661392405,
+						"minX": 0,
+						"minY": 0,
+						"maxX": 180,
+						"maxY": 204,
+						"inradius": 57.9396237474839,
+						"boundaryFraction": 0.06429710102143237
+					},
+					{
+						"area": 2262,
+						"areaFraction": 0.005592365506329114,
+						"minX": 87,
+						"minY": 339,
+						"maxX": 109,
+						"maxY": 631,
+						"inradius": 7,
+						"boundaryFraction": 0.3037135278514589
+					},
+					{
+						"area": 439,
+						"areaFraction": 0.0010853441455696202,
+						"minX": 35,
+						"minY": 126,
+						"maxX": 86,
+						"maxY": 200,
+						"inradius": 4,
+						"boundaryFraction": 0.41002277904328016
+					},
+					{
+						"area": 145,
+						"areaFraction": 0.0003584849683544304,
+						"minX": 136,
+						"minY": 62,
+						"maxX": 155,
+						"maxY": 109,
+						"inradius": 2.23606797749979,
+						"boundaryFraction": 0.8275862068965517
+					},
+					{
+						"area": 34,
+						"areaFraction": 0.00008405854430379747,
+						"minX": 132,
+						"minY": 108,
+						"maxX": 136,
+						"maxY": 124,
+						"inradius": 1.4142135623730951,
+						"boundaryFraction": 0.8823529411764706
+					}
+				],
+				"outerRing": [
+					{
+						"hex": "#f7f7f9",
+						"count": 265,
+						"lightness": 0.9767009006571516
+					},
+					{
+						"hex": "#f9f8f6",
+						"count": 113,
+						"lightness": 0.9793362483092611
+					},
+					{
+						"hex": "#f8f8f8",
+						"count": 94,
+						"lightness": 0.9791293496198366
+					},
+					{
+						"hex": "#f6f6f8",
+						"count": 61,
+						"lightness": 0.9737084851425487
+					},
+					{
+						"hex": "#f9f7f8",
+						"count": 60,
+						"lightness": 0.9779470532844232
+					},
+					{
+						"hex": "#fbf7f6",
+						"count": 54,
+						"lightness": 0.9789298408163918
+					},
+					{
+						"hex": "#f7f5f6",
+						"count": 50,
+						"lightness": 0.9719618606497387
+					},
+					{
+						"hex": "#f8f7f5",
+						"count": 49,
+						"lightness": 0.9763458599754722
+					}
+				],
+				"subjectLightness": 0.9952370834994642,
+				"outerRingDarkerShare": 1,
+				"outerRingLighterShare": 0,
+				"verdict": "glyph-or-mark-ink",
+				"cuts": {
+					"filamentInradiusPx": 2,
+					"scrimMassShare": 0.5,
+					"scrimImageShare": 0.05,
+					"scrimInradiusPx": 8,
+					"markComponentInradiusPx": 2,
+					"markComponentCount": 4
+				},
+				"provenance": "p2-tos-identity/pixels@1"
+			},
+			"secondChoice": {
+				"secondTextGroup": null,
+				"bestNodeBackedCandidate": {
+					"rank": 2,
+					"hex": "#fcfcfc",
+					"rgb": [
+						252,
+						252,
+						252
+					],
+					"provenance": "cluster",
+					"fieldContrast": 63.08430336115086,
+					"exactPixels": 1303,
+					"exactShare": 0.0032214200949367087,
+					"barPixels": 21398,
+					"barShare": 0.052902492088607596,
+					"stabilityLevel": 0,
+					"growth": 0.03426381582668703,
+					"nodeCount": 1,
+					"nodeMaxAreaFraction": 0.044101068037974686,
+					"twinOfBackground": false,
+					"twinOfSurface": false,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				"bestNodeBackedAttribution": {
+					"hex": "#fcfcfc",
+					"rgb": [
+						252,
+						252,
+						252
+					],
+					"exactPixels": 1303,
+					"exactShare": 0.0032214200949367087,
+					"barPixels": 21398,
+					"barShare": 0.052902492088607596,
+					"componentCount": 63,
+					"maxInradius": 58,
+					"largestComponentShareOfMass": 0.8160575754743434,
+					"largestComponentImageShare": 0.043171479430379744,
+					"boundaryFraction": 0.11370221516029536,
+					"componentsAtOrAboveMarkInradius": 5,
+					"inradiusMeasuredComponents": 63,
+					"inradiusBudgetBound": false,
+					"topComponents": [
+						{
+							"area": 17462,
+							"areaFraction": 0.043171479430379744,
+							"minX": 0,
+							"minY": 0,
+							"maxX": 182,
+							"maxY": 208,
+							"inradius": 58,
+							"boundaryFraction": 0.06144771503836903
+						},
+						{
+							"area": 2721,
+							"areaFraction": 0.00672715585443038,
+							"minX": 87,
+							"minY": 336,
+							"maxX": 110,
+							"maxY": 631,
+							"inradius": 7.615773105863909,
+							"boundaryFraction": 0.23410510841602353
+						},
+						{
+							"area": 529,
+							"areaFraction": 0.0013078520569620253,
+							"minX": 35,
+							"minY": 126,
+							"maxX": 90,
+							"maxY": 201,
+							"inradius": 4.47213595499958,
+							"boundaryFraction": 0.3629489603024575
+						},
+						{
+							"area": 462,
+							"areaFraction": 0.0011422072784810127,
+							"minX": 131,
+							"minY": 14,
+							"maxX": 179,
+							"maxY": 125,
+							"inradius": 3,
+							"boundaryFraction": 0.6904761904761905
+						},
+						{
+							"area": 72,
+							"areaFraction": 0.00017800632911392405,
+							"minX": 93,
+							"minY": 175,
+							"maxX": 99,
+							"maxY": 197,
+							"inradius": 2,
+							"boundaryFraction": 0.8611111111111112
+						}
+					],
+					"outerRing": [
+						{
+							"hex": "#f6f6f8",
+							"count": 222,
+							"lightness": 0.9737084851425487
+						},
+						{
+							"hex": "#f7f5f8",
+							"count": 93,
+							"lightness": 0.972525925158134
+						},
+						{
+							"hex": "#f5f5f7",
+							"count": 74,
+							"lightness": 0.9707137688526399
+						},
+						{
+							"hex": "#f7f5f6",
+							"count": 65,
+							"lightness": 0.9719618606497387
+						},
+						{
+							"hex": "#f8f6f7",
+							"count": 64,
+							"lightness": 0.9749556050937733
+						},
+						{
+							"hex": "#f6f4f5",
+							"count": 61,
+							"lightness": 0.9689658093366457
+						},
+						{
+							"hex": "#faf6f3",
+							"count": 59,
+							"lightness": 0.9753880795010688
+						},
+						{
+							"hex": "#f9f5f4",
+							"count": 46,
+							"lightness": 0.9729463077883397
+						}
+					],
+					"subjectLightness": 0.9910688966343141,
+					"outerRingDarkerShare": 1,
+					"outerRingLighterShare": 0,
+					"verdict": "glyph-or-mark-ink",
+					"cuts": {
+						"filamentInradiusPx": 2,
+						"scrimMassShare": 0.5,
+						"scrimImageShare": 0.05,
+						"scrimInradiusPx": 8,
+						"markComponentInradiusPx": 2,
+						"markComponentCount": 4
+					},
+					"provenance": "p2-tos-identity/pixels@1"
+				}
+			}
+		},
+		{
+			"item": 2,
+			"itemId": "ab67616d0000b27300008912d4517960ad020c7a",
+			"imagePath": "00/ab67616d0000b27300008912d4517960ad020c7a.jpg",
+			"publishedForegroundExpected": "#fcffff",
+			"publishedForeground": "#fcffff",
+			"reproduced": true,
+			"palette": {
+				"background": "#131919",
+				"surface": "#182023",
+				"foreground": "#fcffff",
+				"accent": "#492ab3"
+			},
+			"parse": {
+				"width": 640,
+				"height": 640,
+				"verdict": "partitioned",
+				"coverage": 0.6261376953125,
+				"gradient": false,
+				"notes": [
+					"lanes:L+a+b",
+					"pool-marks:306",
+					"components:166",
+					"salience-median-growth:0.049357034795764",
+					"accent-candidates:256"
+				],
+				"laneNodeCounts": [
+					227,
+					51,
+					53
+				],
+				"backgroundHex": "#131919",
+				"surfaceHex": "#182023"
+			},
+			"assembly": {
+				"notes": [],
+				"attempts": 3,
+				"swapped": false
+			},
+			"walk": {
+				"provenance": "p2-tos-identity/walk@1",
+				"foregroundSteps": [
+					{
+						"rank": 0,
+						"hex": "#1e2221",
+						"refusal": "contract-violation",
+						"violations": [
+							"I4.below-contrast-floor | roles.foreground (#1e2221) on roles.background (#131919) has |raw APCA| 2.0317, below the minTextContrast floor of 2.5 | {\"raw\":-2.0316643129313854,\"floorRawMagnitude\":2.5,\"parameter\":\"minTextContrast\",\"declaredRawMagnitude\":2.5,\"epsilon\":2.5,\"colorDistance\":0.040380542746038056}",
+							"I4.below-contrast-floor | roles.foreground (#1e2221) on roles.surface (#182023) has |raw APCA| 1.1880, below the minTextContrast floor of 2.5 | {\"raw\":-1.1880116365726292,\"floorRawMagnitude\":2.5,\"parameter\":\"minTextContrast\",\"declaredRawMagnitude\":2.5,\"epsilon\":2.5,\"colorDistance\":0.014129877296819896}"
+						],
+						"accepted": false
+					},
+					{
+						"rank": 1,
+						"hex": "#fcffff",
+						"refusal": null,
+						"violations": [],
+						"accepted": true
+					}
+				],
+				"settledForeground": "#fcffff",
+				"settledForegroundRank": 1,
+				"exhausted": false,
+				"twinUnavoidable": false,
+				"attempts": 2,
+				"agrees": true,
+				"disagreement": null
+			},
+			"census": {
+				"topTriples": [
+					{
+						"hex": "#121a1c",
+						"count": 185453,
+						"share": 0.45276611328125,
+						"fieldContrast": 0.8286692266671688
+					},
+					{
+						"hex": "#11191b",
+						"count": 39092,
+						"share": 0.095439453125,
+						"fieldContrast": 0.35938859917506716
+					},
+					{
+						"hex": "#131b1d",
+						"count": 16063,
+						"share": 0.03921630859375,
+						"fieldContrast": 0.9509088506686377
+					},
+					{
+						"hex": "#10181a",
+						"count": 11148,
+						"share": 0.027216796875,
+						"fieldContrast": 0.4905587306277802
+					},
+					{
+						"hex": "#141c1e",
+						"count": 6836,
+						"share": 0.016689453125,
+						"fieldContrast": 1.050970575026282
+					},
+					{
+						"hex": "#121a1d",
+						"count": 4516,
+						"share": 0.011025390625,
+						"fieldContrast": 0.8392977177884052
+					},
+					{
+						"hex": "#0f1719",
+						"count": 3814,
+						"share": 0.0093115234375,
+						"fieldContrast": 0.6153682763482807
+					},
+					{
+						"hex": "#151d1f",
+						"count": 3407,
+						"share": 0.00831787109375,
+						"fieldContrast": 0.8950362673234862
+					},
+					{
+						"hex": "#13181b",
+						"count": 3067,
+						"share": 0.00748779296875,
+						"fieldContrast": 0.42189390198530374
+					},
+					{
+						"hex": "#14191c",
+						"count": 3034,
+						"share": 0.0074072265625,
+						"fieldContrast": 0.7738941128271847
+					},
+					{
+						"hex": "#111b1c",
+						"count": 3020,
+						"share": 0.007373046875,
+						"fieldContrast": 0.9077196947310662
+					},
+					{
+						"hex": "#11191c",
+						"count": 2762,
+						"share": 0.0067431640625,
+						"fieldContrast": 0.3473455331027659
+					}
+				],
+				"topNodeReprs": [
+					{
+						"hex": "#131919",
+						"areaFraction": 1,
+						"nodeId": 0,
+						"kind": "field",
+						"barShare": 0.702578125,
+						"fieldContrast": 0.7263175164633603
+					},
+					{
+						"hex": "#121a1c",
+						"areaFraction": 1,
+						"nodeId": 227,
+						"kind": "field",
+						"barShare": 0.72160400390625,
+						"fieldContrast": 0.8286692266671688
+					},
+					{
+						"hex": "#1e2628",
+						"areaFraction": 0.66523193359375,
+						"nodeId": 10,
+						"kind": "field",
+						"barShare": 0.00926513671875,
+						"fieldContrast": 1.8062661228926074
+					},
+					{
+						"hex": "#474c4f",
+						"areaFraction": 0.6626953125,
+						"nodeId": 15,
+						"kind": "field",
+						"barShare": 0.00069580078125,
+						"fieldContrast": 13.161009730313712
+					},
+					{
+						"hex": "#535b5d",
+						"areaFraction": 0.6626904296875,
+						"nodeId": 16,
+						"kind": "field",
+						"barShare": 0.00044677734375,
+						"fieldContrast": 18.65111334834132
+					},
+					{
+						"hex": "#737d7e",
+						"areaFraction": 0.66015380859375,
+						"nodeId": 17,
+						"kind": "field",
+						"barShare": 0.0002783203125,
+						"fieldContrast": 33.17968815844935
+					},
+					{
+						"hex": "#889293",
+						"areaFraction": 0.66014892578125,
+						"nodeId": 18,
+						"kind": "field",
+						"barShare": 0.00201171875,
+						"fieldContrast": 43.35819300439855
+					},
+					{
+						"hex": "#94999c",
+						"areaFraction": 0.660126953125,
+						"nodeId": 19,
+						"kind": "field",
+						"barShare": 0.00262451171875,
+						"fieldContrast": 47.51638262311516
+					},
+					{
+						"hex": "#bec3c6",
+						"areaFraction": 0.6576171875,
+						"nodeId": 20,
+						"kind": "field",
+						"barShare": 0.00002197265625,
+						"fieldContrast": 70.63091593839944
+					},
+					{
+						"hex": "#dee6e8",
+						"areaFraction": 0.655087890625,
+						"nodeId": 21,
+						"kind": "field",
+						"barShare": 0.001826171875,
+						"fieldContrast": 91.44716925021197
+					},
+					{
+						"hex": "#f1f5f8",
+						"areaFraction": 0.65256103515625,
+						"nodeId": 22,
+						"kind": "field",
+						"barShare": 0.0039697265625,
+						"fieldContrast": 101.63939739688385
+					},
+					{
+						"hex": "#eaebed",
+						"areaFraction": 0.64498779296875,
+						"nodeId": 23,
+						"kind": "field",
+						"barShare": 0.0045166015625,
+						"fieldContrast": 95.54511361383987
+					}
+				]
+			},
+			"textGroups": [
+				{
+					"rank": 0,
+					"hex": "#1e2221",
+					"rgb": [
+						30,
+						34,
+						33
+					],
+					"rows": 3,
+					"areaFraction": 0.01281005859375,
+					"fieldContrast": 1.1880116365726292,
+					"nodeIds": [
+						42,
+						45,
+						47,
+						49,
+						54,
+						231,
+						279,
+						282,
+						307,
+						308,
+						311,
+						316
+					],
+					"twinOfBackground": false,
+					"twinOfSurface": false
+				}
+			],
+			"firstTextGroupAttribution": {
+				"hex": "#1e2221",
+				"rgb": [
+					30,
+					34,
+					33
+				],
+				"exactPixels": 51,
+				"exactShare": 0.00012451171875,
+				"barPixels": 3439,
+				"barShare": 0.00839599609375,
+				"componentCount": 1007,
+				"maxInradius": 4,
+				"largestComponentShareOfMass": 0.14510031986042454,
+				"largestComponentImageShare": 0.00121826171875,
+				"boundaryFraction": 0.9238150625181739,
+				"componentsAtOrAboveMarkInradius": 7,
+				"inradiusMeasuredComponents": 1007,
+				"inradiusBudgetBound": false,
+				"topComponents": [
+					{
+						"area": 499,
+						"areaFraction": 0.00121826171875,
+						"minX": 178,
+						"minY": 109,
+						"maxX": 220,
+						"maxY": 153,
+						"inradius": 4,
+						"boundaryFraction": 0.627254509018036
+					},
+					{
+						"area": 76,
+						"areaFraction": 0.000185546875,
+						"minX": 456,
+						"minY": 278,
+						"maxX": 463,
+						"maxY": 302,
+						"inradius": 2,
+						"boundaryFraction": 0.8552631578947368
+					},
+					{
+						"area": 69,
+						"areaFraction": 0.00016845703125,
+						"minX": 525,
+						"minY": 275,
+						"maxX": 540,
+						"maxY": 292,
+						"inradius": 1.4142135623730951,
+						"boundaryFraction": 0.927536231884058
+					},
+					{
+						"area": 67,
+						"areaFraction": 0.00016357421875,
+						"minX": 100,
+						"minY": 302,
+						"maxX": 111,
+						"maxY": 316,
+						"inradius": 2,
+						"boundaryFraction": 0.835820895522388
+					},
+					{
+						"area": 59,
+						"areaFraction": 0.00014404296875,
+						"minX": 364,
+						"minY": 189,
+						"maxX": 377,
+						"maxY": 200,
+						"inradius": 3,
+						"boundaryFraction": 0.711864406779661
+					}
+				],
+				"outerRing": [
+					{
+						"hex": "#192123",
+						"count": 363,
+						"lightness": 0.24075941231303843
+					},
+					{
+						"hex": "#182022",
+						"count": 304,
+						"lightness": 0.2365232747871435
+					},
+					{
+						"hex": "#171f21",
+						"count": 253,
+						"lightness": 0.23226892995693704
+					},
+					{
+						"hex": "#161e20",
+						"count": 242,
+						"lightness": 0.2279959226961217
+					},
+					{
+						"hex": "#1c2426",
+						"count": 202,
+						"lightness": 0.2533628568865533
+					},
+					{
+						"hex": "#151d1f",
+						"count": 186,
+						"lightness": 0.22370377803529998
+					},
+					{
+						"hex": "#141c1e",
+						"count": 173,
+						"lightness": 0.21939200001633624
+					},
+					{
+						"hex": "#12171a",
+						"count": 122,
+						"lightness": 0.20074093641140114
+					}
+				],
+				"subjectLightness": 0.2474645723669922,
+				"outerRingDarkerShare": 0.5961857379767828,
+				"outerRingLighterShare": 0.40381426202321724,
+				"verdict": "glyph-or-mark-ink",
+				"cuts": {
+					"filamentInradiusPx": 2,
+					"scrimMassShare": 0.5,
+					"scrimImageShare": 0.05,
+					"scrimInradiusPx": 8,
+					"markComponentInradiusPx": 2,
+					"markComponentCount": 4
+				},
+				"provenance": "p2-tos-identity/pixels@1"
+			},
+			"detector": {
+				"agrees": true,
+				"disagreement": null,
+				"poolMarks": 306,
+				"components": 166,
+				"componentsAfterLimit": 166,
+				"limitBinds": false,
+				"cuts": {
+					"TEXT_MIN_COMPONENTS": 4,
+					"TEXT_STROKE_WIDTH_CV": 0.4,
+					"TEXT_HEIGHT_CV": 0.35,
+					"TEXT_COLLINEARITY_CUT": 0.15,
+					"TEXT_ROW_CENTROID_TOLERANCE": 0.5,
+					"TEXT_COMPONENT_LIMIT": 512
+				},
+				"clustersWithEnoughMembers": 5,
+				"topClusters": [
+					{
+						"clusterId": 0,
+						"hex": "#212629",
+						"memberCount": 44,
+						"membersByLane": [
+							18,
+							9,
+							17
+						],
+						"areaFraction": 0.19437988281249996,
+						"rowSizes": [
+							4,
+							4,
+							4,
+							3,
+							3,
+							3
+						],
+						"largestRow": {
+							"size": 4,
+							"strokeCv": 0,
+							"heightCv": 0.10105373792435124,
+							"collinearity": 0.03197889110500572,
+							"anyZeroStroke": false,
+							"passes": true,
+							"failed": null
+						},
+						"becameTextGroup": true
+					},
+					{
+						"clusterId": 4,
+						"hex": "#c0403f",
+						"memberCount": 16,
+						"membersByLane": [
+							7,
+							5,
+							4
+						],
+						"areaFraction": 0.06350585937500001,
+						"rowSizes": [
+							2,
+							2,
+							2,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.28285965272742564,
+							"heightCv": 0.08387096774193549,
+							"collinearity": 1.070278747992769e-15,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 8,
+						"hex": "#492853",
+						"memberCount": 5,
+						"membersByLane": [
+							3,
+							2,
+							0
+						],
+						"areaFraction": 0.027001953125,
+						"rowSizes": [
+							3,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 3,
+							"strokeCv": 0.15558204409833098,
+							"heightCv": 0.1273475591944559,
+							"collinearity": 0.18022351313338913,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 2,
+						"hex": "#ae6133",
+						"memberCount": 4,
+						"membersByLane": [
+							2,
+							1,
+							1
+						],
+						"areaFraction": 0.042272949218749994,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 9,
+						"hex": "#cd709d",
+						"memberCount": 4,
+						"membersByLane": [
+							1,
+							1,
+							2
+						],
+						"areaFraction": 0.01541015625,
+						"rowSizes": [
+							1,
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 13,
+						"hex": "#2f3334",
+						"memberCount": 3,
+						"membersByLane": [
+							3,
+							0,
+							0
+						],
+						"areaFraction": 0.0045703125,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 24,
+						"hex": "#892f2f",
+						"memberCount": 3,
+						"membersByLane": [
+							0,
+							1,
+							2
+						],
+						"areaFraction": 0.0029663085937499997,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 36,
+						"hex": "#fbffff",
+						"memberCount": 3,
+						"membersByLane": [
+							3,
+							0,
+							0
+						],
+						"areaFraction": 0.0029638671874999997,
+						"rowSizes": [
+							1,
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 7,
+						"hex": "#312241",
+						"memberCount": 2,
+						"membersByLane": [
+							1,
+							1,
+							0
+						],
+						"areaFraction": 0.01344970703125,
+						"rowSizes": [
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 11,
+						"hex": "#a55a79",
+						"memberCount": 2,
+						"membersByLane": [
+							0,
+							2,
+							0
+						],
+						"areaFraction": 0.006743164062499999,
+						"rowSizes": [
+							2
+						],
+						"largestRow": {
+							"size": 2,
+							"strokeCv": 0.015154995058715605,
+							"heightCv": 0.03529411764705882,
+							"collinearity": 2.738468916657872e-18,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 15,
+						"hex": "#772a60",
+						"memberCount": 2,
+						"membersByLane": [
+							0,
+							2,
+							0
+						],
+						"areaFraction": 0.003466796875,
+						"rowSizes": [
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					},
+					{
+						"clusterId": 20,
+						"hex": "#581f52",
+						"memberCount": 2,
+						"membersByLane": [
+							1,
+							1,
+							0
+						],
+						"areaFraction": 0.0031274414062499997,
+						"rowSizes": [
+							1,
+							1
+						],
+						"largestRow": {
+							"size": 1,
+							"strokeCv": 0,
+							"heightCv": 0,
+							"collinearity": 0,
+							"anyZeroStroke": false,
+							"passes": false,
+							"failed": "count"
+						},
+						"becameTextGroup": false
+					}
+				],
+				"publishedGroupGeometry": [
+					{
+						"hex": "#1e2221",
+						"memberCount": 12,
+						"membersByLane": [
+							5,
+							1,
+							6
+						],
+						"medianHeightPx": 22,
+						"maxPairwiseCentroidPx": 402.825841493956,
+						"spreadOverHeight": 18.310265522452543,
+						"distinctCentroids": 12,
+						"coincident": false
+					}
+				],
+				"leadingGroupMembers": [
+					{
+						"nodeId": 308,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 80,
+						"depth": 4,
+						"areaFraction": 0.00228271484375,
+						"ownAreaFraction": 0.00179931640625,
+						"strokeWidth": 4,
+						"heightPx": 44,
+						"centroidX": 0.31694017379679146,
+						"centroidY": 0.20909759358288768,
+						"growth": 218.5374331550802,
+						"hex": "#222625",
+						"ownPixels": 737,
+						"ownMassShare": 0.3303451367099955,
+						"topOwnColors": [
+							{
+								"hex": "#242625",
+								"count": 66,
+								"share": 0.08955223880597014
+							},
+							{
+								"hex": "#232524",
+								"count": 53,
+								"share": 0.07191316146540028
+							},
+							{
+								"hex": "#252726",
+								"count": 47,
+								"share": 0.06377204884667571
+							},
+							{
+								"hex": "#202423",
+								"count": 37,
+								"share": 0.050203527815468114
+							},
+							{
+								"hex": "#1d2120",
+								"count": 32,
+								"share": 0.04341926729986431
+							}
+						]
+					},
+					{
+						"nodeId": 311,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 80,
+						"depth": 4,
+						"areaFraction": 0.00203125,
+						"ownAreaFraction": 0.0013671875,
+						"strokeWidth": 4,
+						"heightPx": 44,
+						"centroidX": 0.6625882662259615,
+						"centroidY": 0.23299091045673076,
+						"growth": 245.65384615384616,
+						"hex": "#151e1d",
+						"ownPixels": 560,
+						"ownMassShare": 0.2510085163603765,
+						"topOwnColors": [
+							{
+								"hex": "#131c1b",
+								"count": 33,
+								"share": 0.05892857142857143
+							},
+							{
+								"hex": "#141d1c",
+								"count": 33,
+								"share": 0.05892857142857143
+							},
+							{
+								"hex": "#151e1d",
+								"count": 30,
+								"share": 0.05357142857142857
+							},
+							{
+								"hex": "#161f1e",
+								"count": 29,
+								"share": 0.05178571428571429
+							},
+							{
+								"hex": "#17201f",
+								"count": 21,
+								"share": 0.0375
+							}
+						]
+					},
+					{
+						"nodeId": 307,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 80,
+						"depth": 4,
+						"areaFraction": 0.00071533203125,
+						"ownAreaFraction": 0.000625,
+						"strokeWidth": 4,
+						"heightPx": 34,
+						"centroidX": 0.6082231228668942,
+						"centroidY": 0.19979735494880546,
+						"growth": 698.4761092150171,
+						"hex": "#131c1b",
+						"ownPixels": 256,
+						"ownMassShare": 0.11474675033617213,
+						"topOwnColors": [
+							{
+								"hex": "#141d1c",
+								"count": 26,
+								"share": 0.1015625
+							},
+							{
+								"hex": "#1a201e",
+								"count": 24,
+								"share": 0.09375
+							},
+							{
+								"hex": "#131c1b",
+								"count": 22,
+								"share": 0.0859375
+							},
+							{
+								"hex": "#121b1a",
+								"count": 17,
+								"share": 0.06640625
+							},
+							{
+								"hex": "#111a19",
+								"count": 16,
+								"share": 0.0625
+							}
+						]
+					},
+					{
+						"nodeId": 316,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 80,
+						"depth": 4,
+						"areaFraction": 0.000830078125,
+						"ownAreaFraction": 0.0005712890625,
+						"strokeWidth": 2,
+						"heightPx": 25,
+						"centroidX": 0.32594669117647057,
+						"centroidY": 0.35328125,
+						"growth": 601.8529411764706,
+						"hex": "#131c1b",
+						"ownPixels": 234,
+						"ownMassShare": 0.10488570147915732,
+						"topOwnColors": [
+							{
+								"hex": "#111a19",
+								"count": 20,
+								"share": 0.08547008547008547
+							},
+							{
+								"hex": "#131c1b",
+								"count": 14,
+								"share": 0.05982905982905983
+							},
+							{
+								"hex": "#121b1a",
+								"count": 10,
+								"share": 0.042735042735042736
+							},
+							{
+								"hex": "#141d1c",
+								"count": 10,
+								"share": 0.042735042735042736
+							},
+							{
+								"hex": "#151e1d",
+								"count": 10,
+								"share": 0.042735042735042736
+							}
+						]
+					},
+					{
+						"nodeId": 231,
+						"laneIndex": 1,
+						"lane": "a",
+						"level": 79,
+						"depth": 2,
+						"areaFraction": 0.0005859375,
+						"ownAreaFraction": 0.00048095703125,
+						"strokeWidth": 4.47213595499958,
+						"heightPx": 22,
+						"centroidX": 0.27566406250000003,
+						"centroidY": 0.3560416666666667,
+						"growth": 852.8333333333334,
+						"hex": "#14191c",
+						"ownPixels": 197,
+						"ownMassShare": 0.08830121021963246,
+						"topOwnColors": [
+							{
+								"hex": "#14191c",
+								"count": 35,
+								"share": 0.17766497461928935
+							},
+							{
+								"hex": "#13181b",
+								"count": 25,
+								"share": 0.12690355329949238
+							},
+							{
+								"hex": "#12171a",
+								"count": 23,
+								"share": 0.116751269035533
+							},
+							{
+								"hex": "#151a1d",
+								"count": 18,
+								"share": 0.09137055837563451
+							},
+							{
+								"hex": "#161b1e",
+								"count": 14,
+								"share": 0.07106598984771574
+							}
+						]
+					},
+					{
+						"nodeId": 42,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 63,
+						"depth": 189,
+						"areaFraction": 0.002529296875,
+						"ownAreaFraction": 0.00026123046875,
+						"strokeWidth": 4,
+						"heightPx": 40,
+						"centroidX": 0.3124954753861004,
+						"centroidY": 0.2029560810810811,
+						"growth": 0.17833011583011582,
+						"hex": "#1e2221",
+						"ownPixels": 107,
+						"ownMassShare": 0.04796055580457194,
+						"topOwnColors": [
+							{
+								"hex": "#1e2221",
+								"count": 29,
+								"share": 0.27102803738317754
+							},
+							{
+								"hex": "#1c2222",
+								"count": 22,
+								"share": 0.205607476635514
+							},
+							{
+								"hex": "#1c2220",
+								"count": 17,
+								"share": 0.1588785046728972
+							},
+							{
+								"hex": "#1e2223",
+								"count": 16,
+								"share": 0.14953271028037382
+							},
+							{
+								"hex": "#1d2225",
+								"count": 9,
+								"share": 0.08411214953271028
+							}
+						]
+					},
+					{
+						"nodeId": 279,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 76,
+						"depth": 4,
+						"areaFraction": 0.00050537109375,
+						"ownAreaFraction": 0.0001953125,
+						"strokeWidth": 2,
+						"heightPx": 22,
+						"centroidX": 0.3628094806763285,
+						"centroidY": 0.3605600845410628,
+						"growth": 988.8719806763285,
+						"hex": "#171e24",
+						"ownPixels": 80,
+						"ownMassShare": 0.03585835948005379,
+						"topOwnColors": [
+							{
+								"hex": "#161d23",
+								"count": 11,
+								"share": 0.1375
+							},
+							{
+								"hex": "#151c22",
+								"count": 10,
+								"share": 0.125
+							},
+							{
+								"hex": "#171e24",
+								"count": 10,
+								"share": 0.125
+							},
+							{
+								"hex": "#181f25",
+								"count": 10,
+								"share": 0.125
+							},
+							{
+								"hex": "#161f26",
+								"count": 4,
+								"share": 0.05
+							}
+						]
+					},
+					{
+						"nodeId": 282,
+						"laneIndex": 2,
+						"lane": "b",
+						"level": 75,
+						"depth": 5,
+						"areaFraction": 0.0005419921875,
+						"ownAreaFraction": 0.00006103515625,
+						"strokeWidth": 2.8284271247461903,
+						"heightPx": 19,
+						"centroidX": 0.4138372747747748,
+						"centroidY": 0.3664625563063063,
+						"growth": 304.5394144144144,
+						"hex": "#181b24",
+						"ownPixels": 25,
+						"ownMassShare": 0.011205737337516808,
+						"topOwnColors": [
+							{
+								"hex": "#161922",
+								"count": 2,
+								"share": 0.08
+							},
+							{
+								"hex": "#181c25",
+								"count": 2,
+								"share": 0.08
+							},
+							{
+								"hex": "#191c25",
+								"count": 2,
+								"share": 0.08
+							},
+							{
+								"hex": "#131c25",
+								"count": 1,
+								"share": 0.04
+							},
+							{
+								"hex": "#171a23",
+								"count": 1,
+								"share": 0.04
+							}
+						]
+					},
+					{
+						"nodeId": 47,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 65,
+						"depth": 190,
+						"areaFraction": 0.00090576171875,
+						"ownAreaFraction": 0.0000244140625,
+						"strokeWidth": 4,
+						"heightPx": 15,
+						"centroidX": 0.4377190026954178,
+						"centroidY": 0.773403807277628,
+						"growth": 0.006738544474393531,
+						"hex": "#1c2426",
+						"ownPixels": 10,
+						"ownMassShare": 0.0044822949350067235,
+						"topOwnColors": [
+							{
+								"hex": "#1c2426",
+								"count": 5,
+								"share": 0.5
+							},
+							{
+								"hex": "#1b2526",
+								"count": 3,
+								"share": 0.3
+							},
+							{
+								"hex": "#1b2429",
+								"count": 1,
+								"share": 0.1
+							},
+							{
+								"hex": "#1f2427",
+								"count": 1,
+								"share": 0.1
+							}
+						]
+					},
+					{
+						"nodeId": 45,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 64,
+						"depth": 190,
+						"areaFraction": 0.000654296875,
+						"ownAreaFraction": 0.00002197265625,
+						"strokeWidth": 4,
+						"heightPx": 15,
+						"centroidX": 0.5168143656716417,
+						"centroidY": 0.7736298973880598,
+						"growth": 0.027052238805970148,
+						"hex": "#1e2326",
+						"ownPixels": 9,
+						"ownMassShare": 0.004034065441506051,
+						"topOwnColors": [
+							{
+								"hex": "#1b2325",
+								"count": 3,
+								"share": 0.3333333333333333
+							},
+							{
+								"hex": "#1e2225",
+								"count": 2,
+								"share": 0.2222222222222222
+							},
+							{
+								"hex": "#1e2326",
+								"count": 2,
+								"share": 0.2222222222222222
+							},
+							{
+								"hex": "#1b2326",
+								"count": 1,
+								"share": 0.1111111111111111
+							},
+							{
+								"hex": "#1e2327",
+								"count": 1,
+								"share": 0.1111111111111111
+							}
+						]
+					},
+					{
+						"nodeId": 49,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 66,
+						"depth": 192,
+						"areaFraction": 0.00072265625,
+						"ownAreaFraction": 0.00002197265625,
+						"strokeWidth": 4.47213595499958,
+						"heightPx": 15,
+						"centroidX": 0.5773279138513513,
+						"centroidY": 0.7739442567567567,
+						"growth": 0.0464527027027027,
+						"hex": "#202427",
+						"ownPixels": 9,
+						"ownMassShare": 0.004034065441506051,
+						"topOwnColors": [
+							{
+								"hex": "#202528",
+								"count": 4,
+								"share": 0.4444444444444444
+							},
+							{
+								"hex": "#202427",
+								"count": 2,
+								"share": 0.2222222222222222
+							},
+							{
+								"hex": "#242424",
+								"count": 2,
+								"share": 0.2222222222222222
+							},
+							{
+								"hex": "#1f2428",
+								"count": 1,
+								"share": 0.1111111111111111
+							}
+						]
+					},
+					{
+						"nodeId": 54,
+						"laneIndex": 0,
+						"lane": "L",
+						"level": 68,
+						"depth": 194,
+						"areaFraction": 0.00050537109375,
+						"ownAreaFraction": 0.00001708984375,
+						"strokeWidth": 4.47213595499958,
+						"heightPx": 15,
+						"centroidX": 0.5705389492753623,
+						"centroidY": 0.7738602053140097,
+						"growth": 0.12560386473429952,
+						"hex": "#222629",
+						"ownPixels": 7,
+						"ownMassShare": 0.0031376064545047063,
+						"topOwnColors": [
+							{
+								"hex": "#212629",
+								"count": 2,
+								"share": 0.2857142857142857
+							},
+							{
+								"hex": "#222629",
+								"count": 2,
+								"share": 0.2857142857142857
+							},
+							{
+								"hex": "#21262a",
+								"count": 1,
+								"share": 0.14285714285714285
+							},
+							{
+								"hex": "#242529",
+								"count": 1,
+								"share": 0.14285714285714285
+							},
+							{
+								"hex": "#26252a",
+								"count": 1,
+								"share": 0.14285714285714285
+							}
+						]
+					}
+				]
+			},
+			"election": {
+				"publishedRank": 1,
+				"skippedAheadOfPublished": [
+					{
+						"rank": 0,
+						"hex": "#1e2221",
+						"provenance": "text-group",
+						"refusedAsTwin": false
+					}
+				],
+				"pool": [
+					{
+						"rank": 0,
+						"hex": "#1e2221",
+						"rgb": [
+							30,
+							34,
+							33
+						],
+						"provenance": "text-group",
+						"fieldContrast": 1.1880116365726292,
+						"exactPixels": 51,
+						"exactShare": 0.00012451171875,
+						"barPixels": 3439,
+						"barShare": 0.00839599609375,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 2,
+						"nodeMaxAreaFraction": 0.002529296875,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 1,
+						"hex": "#fcffff",
+						"rgb": [
+							252,
+							255,
+							255
+						],
+						"provenance": "residual",
+						"fieldContrast": 108.21277227557641,
+						"exactPixels": 263,
+						"exactShare": 0.00064208984375,
+						"barPixels": 2230,
+						"barShare": 0.0054443359375,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": true
+					},
+					{
+						"rank": 2,
+						"hex": "#fafeff",
+						"rgb": [
+							250,
+							254,
+							255
+						],
+						"provenance": "residual",
+						"fieldContrast": 107.45834125970582,
+						"exactPixels": 339,
+						"exactShare": 0.00082763671875,
+						"barPixels": 2465,
+						"barShare": 0.00601806640625,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 3,
+						"hex": "#cba69d",
+						"rgb": [
+							203,
+							166,
+							157
+						],
+						"provenance": "cluster",
+						"fieldContrast": 59.30780530105145,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 68,
+						"barShare": 0.000166015625,
+						"stabilityLevel": 0,
+						"growth": 0.03903654485049834,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00073486328125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 4,
+						"hex": "#c99692",
+						"rgb": [
+							201,
+							150,
+							146
+						],
+						"provenance": "cluster",
+						"fieldContrast": 52.95047728165265,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 68,
+						"barShare": 0.000166015625,
+						"stabilityLevel": 0,
+						"growth": 0.002566735112936345,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00118896484375,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 5,
+						"hex": "#b19c6f",
+						"rgb": [
+							177,
+							156,
+							111
+						],
+						"provenance": "cluster",
+						"fieldContrast": 50.68850101447603,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 38,
+						"barShare": 0.0000927734375,
+						"stabilityLevel": 0,
+						"growth": 0.03770491803278689,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00074462890625,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 6,
+						"hex": "#cf8f5f",
+						"rgb": [
+							207,
+							143,
+							95
+						],
+						"provenance": "cluster",
+						"fieldContrast": 50.23823019531082,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 92,
+						"barShare": 0.000224609375,
+						"stabilityLevel": 0,
+						"growth": 0.027912621359223302,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0005029296875,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 7,
+						"hex": "#969a9d",
+						"rgb": [
+							150,
+							154,
+							157
+						],
+						"provenance": "residual",
+						"fieldContrast": 48.1407825377224,
+						"exactPixels": 206,
+						"exactShare": 0.0005029296875,
+						"barPixels": 1072,
+						"barShare": 0.0026171875,
+						"stabilityLevel": null,
+						"growth": null,
+						"nodeCount": 0,
+						"nodeMaxAreaFraction": null,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 8,
+						"hex": "#b3808f",
+						"rgb": [
+							179,
+							128,
+							143
+						],
+						"provenance": "cluster",
+						"fieldContrast": 42.3878985235752,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 51,
+						"barShare": 0.00012451171875,
+						"stabilityLevel": 0,
+						"growth": 0.023876404494382022,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.000869140625,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 9,
+						"hex": "#bb8151",
+						"rgb": [
+							187,
+							129,
+							81
+						],
+						"provenance": "cluster",
+						"fieldContrast": 42.295839546021234,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 68,
+						"barShare": 0.000166015625,
+						"stabilityLevel": 0,
+						"growth": 0.008333333333333333,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00052734375,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 10,
+						"hex": "#6c87bc",
+						"rgb": [
+							108,
+							135,
+							188
+						],
+						"provenance": "cluster",
+						"fieldContrast": 38.86833717500648,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 18,
+						"barShare": 0.0000439453125,
+						"stabilityLevel": 0,
+						"growth": 0.025735294117647058,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.002158203125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 11,
+						"hex": "#c36982",
+						"rgb": [
+							195,
+							105,
+							130
+						],
+						"provenance": "cluster",
+						"fieldContrast": 38.08957134932081,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 140,
+						"barShare": 0.000341796875,
+						"stabilityLevel": 0,
+						"growth": 0.008997429305912597,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00094970703125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 12,
+						"hex": "#c96571",
+						"rgb": [
+							201,
+							101,
+							113
+						],
+						"provenance": "cluster",
+						"fieldContrast": 37.67580762435712,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 90,
+						"barShare": 0.0002197265625,
+						"stabilityLevel": 0,
+						"growth": 0.008997429305912597,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.007236328125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 13,
+						"hex": "#b2685d",
+						"rgb": [
+							178,
+							104,
+							93
+						],
+						"provenance": "cluster",
+						"fieldContrast": 33.90409815886212,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 213,
+						"barShare": 0.00052001953125,
+						"stabilityLevel": 0,
+						"growth": 0.030654515327257662,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00294677734375,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 14,
+						"hex": "#c54872",
+						"rgb": [
+							197,
+							72,
+							114
+						],
+						"provenance": "cluster",
+						"fieldContrast": 31.135023820763948,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 74,
+						"barShare": 0.0001806640625,
+						"stabilityLevel": 0,
+						"growth": 0.039755351681957186,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00079833984375,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 15,
+						"hex": "#ae6133",
+						"rgb": [
+							174,
+							97,
+							51
+						],
+						"provenance": "cluster",
+						"fieldContrast": 30.776742267100843,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 97,
+						"barShare": 0.00023681640625,
+						"stabilityLevel": 0,
+						"growth": 0.0257847533632287,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.030830078125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 16,
+						"hex": "#c0403f",
+						"rgb": [
+							192,
+							64,
+							63
+						],
+						"provenance": "cluster",
+						"fieldContrast": 27.733938678819875,
+						"exactPixels": 2,
+						"exactShare": 0.0000048828125,
+						"barPixels": 534,
+						"barShare": 0.0013037109375,
+						"stabilityLevel": 0,
+						"growth": 0.026639608297899756,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.01894775390625,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 17,
+						"hex": "#bb3e66",
+						"rgb": [
+							187,
+							62,
+							102
+						],
+						"provenance": "cluster",
+						"fieldContrast": 27.276530415300492,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 112,
+						"barShare": 0.0002734375,
+						"stabilityLevel": 0,
+						"growth": 0.03780487804878049,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00050048828125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 18,
+						"hex": "#985469",
+						"rgb": [
+							152,
+							84,
+							105
+						],
+						"provenance": "cluster",
+						"fieldContrast": 25.220404597527047,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 66,
+						"barShare": 0.0001611328125,
+						"stabilityLevel": 0,
+						"growth": 0.03365384615384615,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0005078125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 19,
+						"hex": "#a53e75",
+						"rgb": [
+							165,
+							62,
+							117
+						],
+						"provenance": "cluster",
+						"fieldContrast": 23.637656955631133,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 51,
+						"barShare": 0.00012451171875,
+						"stabilityLevel": 0,
+						"growth": 0.025609756097560974,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0010009765625,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 20,
+						"hex": "#2c62bc",
+						"rgb": [
+							44,
+							98,
+							188
+						],
+						"provenance": "cluster",
+						"fieldContrast": 23.631551811749453,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 5,
+						"barShare": 0.00001220703125,
+						"stabilityLevel": 0,
+						"growth": 0.010700389105058366,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00062744140625,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 21,
+						"hex": "#964959",
+						"rgb": [
+							150,
+							73,
+							89
+						],
+						"provenance": "cluster",
+						"fieldContrast": 22.12027882919116,
+						"exactPixels": 2,
+						"exactShare": 0.0000048828125,
+						"barPixels": 73,
+						"barShare": 0.00017822265625,
+						"stabilityLevel": 0,
+						"growth": 0.022813688212927757,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00133544921875,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 22,
+						"hex": "#a8393f",
+						"rgb": [
+							168,
+							57,
+							63
+						],
+						"provenance": "cluster",
+						"fieldContrast": 22.025303549561798,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 109,
+						"barShare": 0.00026611328125,
+						"stabilityLevel": 0,
+						"growth": 0.040145985401459854,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.0006689453125,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					},
+					{
+						"rank": 23,
+						"hex": "#844e4c",
+						"rgb": [
+							132,
+							78,
+							76
+						],
+						"provenance": "cluster",
+						"fieldContrast": 20.146133032119742,
+						"exactPixels": 1,
+						"exactShare": 0.00000244140625,
+						"barPixels": 47,
+						"barShare": 0.00011474609375,
+						"stabilityLevel": 0,
+						"growth": 0.026497695852534562,
+						"nodeCount": 1,
+						"nodeMaxAreaFraction": 0.00052978515625,
+						"twinOfBackground": false,
+						"twinOfSurface": false,
+						"refusedAsTwin": false,
+						"isPublished": false
+					}
+				],
+				"residualCheck": {
+					"residualAgrees": true,
+					"residualOnlyInDerived": [],
+					"residualOnlyInParse": []
+				}
+			},
+			"attribution": {
+				"hex": "#fcffff",
+				"rgb": [
+					252,
+					255,
+					255
+				],
+				"exactPixels": 263,
+				"exactShare": 0.00064208984375,
+				"barPixels": 2230,
+				"barShare": 0.0054443359375,
+				"componentCount": 5,
+				"maxInradius": 1,
+				"largestComponentShareOfMass": 0.442152466367713,
+				"largestComponentImageShare": 0.0024072265625,
+				"boundaryFraction": 1,
+				"componentsAtOrAboveMarkInradius": 0,
+				"inradiusMeasuredComponents": 5,
+				"inradiusBudgetBound": false,
+				"topComponents": [
+					{
+						"area": 986,
+						"areaFraction": 0.0024072265625,
+						"minX": 62,
+						"minY": 62,
+						"maxX": 577,
+						"maxY": 530,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 688,
+						"areaFraction": 0.0016796875,
+						"minX": 577,
+						"minY": 65,
+						"maxX": 578,
+						"maxY": 578,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 507,
+						"areaFraction": 0.00123779296875,
+						"minX": 69,
+						"minY": 578,
+						"maxX": 575,
+						"maxY": 578,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 47,
+						"areaFraction": 0.00011474609375,
+						"minX": 62,
+						"minY": 533,
+						"maxX": 64,
+						"maxY": 578,
+						"inradius": 1,
+						"boundaryFraction": 1
+					},
+					{
+						"area": 2,
+						"areaFraction": 0.0000048828125,
+						"minX": 66,
+						"minY": 578,
+						"maxX": 67,
+						"maxY": 578,
+						"inradius": 1,
+						"boundaryFraction": 1
+					}
+				],
+				"outerRing": [
+					{
+						"hex": "#d0d4d7",
+						"count": 173,
+						"lightness": 0.8677114489953345
+					},
+					{
+						"hex": "#f1f5f8",
+						"count": 126,
+						"lightness": 0.9679737661396103
+					},
+					{
+						"hex": "#d2d6d9",
+						"count": 122,
+						"lightness": 0.8738678115147749
+					},
+					{
+						"hex": "#e6eaed",
+						"count": 110,
+						"lightness": 0.9348544247128504
+					},
+					{
+						"hex": "#ebeff2",
+						"count": 110,
+						"lightness": 0.9499444141490413
+					},
+					{
+						"hex": "#edf1f2",
+						"count": 110,
+						"lightness": 0.9553926637453181
+					},
+					{
+						"hex": "#e6eaeb",
+						"count": 102,
+						"lightness": 0.9342800226835407
+					},
+					{
+						"hex": "#edf1f4",
+						"count": 95,
+						"lightness": 0.95596362453701
+					}
+				],
+				"subjectLightness": 0.9977410798829539,
+				"outerRingDarkerShare": 1,
+				"outerRingLighterShare": 0,
+				"verdict": "antialias-or-halo",
+				"cuts": {
+					"filamentInradiusPx": 2,
+					"scrimMassShare": 0.5,
+					"scrimImageShare": 0.05,
+					"scrimInradiusPx": 8,
+					"markComponentInradiusPx": 2,
+					"markComponentCount": 4
+				},
+				"provenance": "p2-tos-identity/pixels@1"
+			},
+			"secondChoice": {
+				"secondTextGroup": null,
+				"bestNodeBackedCandidate": {
+					"rank": 0,
+					"hex": "#1e2221",
+					"rgb": [
+						30,
+						34,
+						33
+					],
+					"provenance": "text-group",
+					"fieldContrast": 1.1880116365726292,
+					"exactPixels": 51,
+					"exactShare": 0.00012451171875,
+					"barPixels": 3439,
+					"barShare": 0.00839599609375,
+					"stabilityLevel": null,
+					"growth": null,
+					"nodeCount": 2,
+					"nodeMaxAreaFraction": 0.002529296875,
+					"twinOfBackground": false,
+					"twinOfSurface": false,
+					"refusedAsTwin": false,
+					"isPublished": false
+				},
+				"bestNodeBackedAttribution": {
+					"hex": "#1e2221",
+					"rgb": [
+						30,
+						34,
+						33
+					],
+					"exactPixels": 51,
+					"exactShare": 0.00012451171875,
+					"barPixels": 3439,
+					"barShare": 0.00839599609375,
+					"componentCount": 1007,
+					"maxInradius": 4,
+					"largestComponentShareOfMass": 0.14510031986042454,
+					"largestComponentImageShare": 0.00121826171875,
+					"boundaryFraction": 0.9238150625181739,
+					"componentsAtOrAboveMarkInradius": 7,
+					"inradiusMeasuredComponents": 1007,
+					"inradiusBudgetBound": false,
+					"topComponents": [
+						{
+							"area": 499,
+							"areaFraction": 0.00121826171875,
+							"minX": 178,
+							"minY": 109,
+							"maxX": 220,
+							"maxY": 153,
+							"inradius": 4,
+							"boundaryFraction": 0.627254509018036
+						},
+						{
+							"area": 76,
+							"areaFraction": 0.000185546875,
+							"minX": 456,
+							"minY": 278,
+							"maxX": 463,
+							"maxY": 302,
+							"inradius": 2,
+							"boundaryFraction": 0.8552631578947368
+						},
+						{
+							"area": 69,
+							"areaFraction": 0.00016845703125,
+							"minX": 525,
+							"minY": 275,
+							"maxX": 540,
+							"maxY": 292,
+							"inradius": 1.4142135623730951,
+							"boundaryFraction": 0.927536231884058
+						},
+						{
+							"area": 67,
+							"areaFraction": 0.00016357421875,
+							"minX": 100,
+							"minY": 302,
+							"maxX": 111,
+							"maxY": 316,
+							"inradius": 2,
+							"boundaryFraction": 0.835820895522388
+						},
+						{
+							"area": 59,
+							"areaFraction": 0.00014404296875,
+							"minX": 364,
+							"minY": 189,
+							"maxX": 377,
+							"maxY": 200,
+							"inradius": 3,
+							"boundaryFraction": 0.711864406779661
+						}
+					],
+					"outerRing": [
+						{
+							"hex": "#192123",
+							"count": 363,
+							"lightness": 0.24075941231303843
+						},
+						{
+							"hex": "#182022",
+							"count": 304,
+							"lightness": 0.2365232747871435
+						},
+						{
+							"hex": "#171f21",
+							"count": 253,
+							"lightness": 0.23226892995693704
+						},
+						{
+							"hex": "#161e20",
+							"count": 242,
+							"lightness": 0.2279959226961217
+						},
+						{
+							"hex": "#1c2426",
+							"count": 202,
+							"lightness": 0.2533628568865533
+						},
+						{
+							"hex": "#151d1f",
+							"count": 186,
+							"lightness": 0.22370377803529998
+						},
+						{
+							"hex": "#141c1e",
+							"count": 173,
+							"lightness": 0.21939200001633624
+						},
+						{
+							"hex": "#12171a",
+							"count": 122,
+							"lightness": 0.20074093641140114
+						}
+					],
+					"subjectLightness": 0.2474645723669922,
+					"outerRingDarkerShare": 0.5961857379767828,
+					"outerRingLighterShare": 0.40381426202321724,
+					"verdict": "glyph-or-mark-ink",
+					"cuts": {
+						"filamentInradiusPx": 2,
+						"scrimMassShare": 0.5,
+						"scrimImageShare": 0.05,
+						"scrimInradiusPx": 8,
+						"markComponentInradiusPx": 2,
+						"markComponentCount": 4
+					},
+					"provenance": "p2-tos-identity/pixels@1"
+				}
+			}
+		}
+	]
+}
