@@ -1,0 +1,89 @@
+header  run-coverage-220-0.4.2.jsonl  candidateId=p3-fields-0.4.2  codeVersion=a5f17f31abd94a32…  set=coverage-set-1-220  setHash=9cf1eec630b7cc9e…  n=220
+header  run-demo-20-0.4.2.jsonl  candidateId=p3-fields-0.4.2  codeVersion=a5f17f31abd94a32…  set=demo-20  setHash=72272a5edd6e7d82…  n=20
+prior rounds 1–5: 31 distinct covers shown
+contract: 200 pass / 20 fail of 220
+accent collapsed: 21
+diag chains matched: 220/220
+
+== the named covers ==
+168 (blue → accent?)
+  ab67616d0000b2730011a326091e7dd7df58b175  idx=168  bg=#0b0800 sf=#26211d fg=#3d3936 ac=#2aa5e9  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1429 fgMinRamp=6.66 acMinRamp=49.60  edgeFrac=0.4946
+039 (magenta)
+  d76d845e33b98c986bb8b1297e49487b  idx=39  bg=#0c0e0d sf=#101c36 fg=#16294a ac=#803a82  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1355 fgMinRamp=3.07 acMinRamp=17.80  edgeFrac=0.3278
+r2-item-4 (purple shade)
+  ab67616d0000b2730005d8403971249d1ef0786b  idx=90  bg=#4b4b4b sf=#7a7a7a fg=#f7fef6 ac=#5d1988  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1714 fgMinRamp=75.89 acMinRamp=4.45  edgeFrac=0.5370
+  [not in coverage-set-1-220 — taken from the demo-20 run]
+cover 19 (white vs yellow)
+  ab67616d00001e020000269ead63cf2376a6b67d  idx=19  bg=#fdd001 sf=#fe0000 fg=#010101 ac=#f3f300  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2034 fgMinRamp=42.40 acMinRamp=15.37  edgeFrac=0.4923
+r2-item-8 (worst min-ramp)
+  ab67616d0000b2730011e7b5c1023c70f7a3d767  idx=170  bg=#170a02 sf=#374d0d fg=#2a1e06 ac=#cdaf19  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1511 fgMinRamp=2.67 acMinRamp=50.82  edgeFrac=0.3128
+
+== the conflict cohort: chromatic mark HELD as accent, foreground below min-ramp 5.0 ==
+chromaticMarkHeld total = 50; of those below min-ramp 5.0 = 20
+  2.67  ab67616d0000b2730011e7b5c1023c70f7a3d767  fg=#2a1e06 ac=#cdaf19  chroma=0.1511  contract=pass  seen=YES  grad=none
+  2.71  cc35f7f97c2c503a2812639457eae265  fg=#edf8f0 ac=#477ba0  chroma=0.0802  contract=FAIL  seen=no  grad=2-stop
+  2.75  ab67616d0000b27300009f60aeb150a5db45b47b  fg=#5d1c24 ac=#2c978d  chroma=0.0955  contract=pass  seen=no  grad=none
+  2.86  ab67616d0000b273000df513b5836ea38782585e  fg=#010012 ac=#f99a0c  chroma=0.1680  contract=pass  seen=no  grad=none
+  2.91  ab67616d0000b27300008912d4517960ad020c7a  fg=#252726 ac=#d84c2b  chroma=0.1818  contract=pass  seen=no  grad=none
+  3.06  ab67616d0000b2730003ea1037f2515b8b874e6d  fg=#c2dbf1 ac=#02329e  chroma=0.1804  contract=pass  seen=no  grad=3-stop
+  3.07  d76d845e33b98c986bb8b1297e49487b  fg=#16294a ac=#803a82  chroma=0.1355  contract=pass  seen=YES  grad=2-stop
+  3.27  ab67616d00001e020010ac96d501c4170f39c4f0  fg=#ebebf5 ac=#0000e6  chroma=0.2897  contract=pass  seen=no  grad=none
+  3.39  ab67616d00001e020002653adc4ef57bc46a3680  fg=#aaee7d ac=#75e044  chroma=0.2145  contract=pass  seen=no  grad=none
+  3.60  ab67616d0000b273001277381ed0875b96ccb734  fg=#010822 ac=#f2a26f  chroma=0.1162  contract=pass  seen=no  grad=3-stop
+  3.68  e42b43dde3674446fb0db1203ad63def  fg=#4a1821 ac=#bc4761  chroma=0.1515  contract=pass  seen=no  grad=2-stop
+  3.78  ab67616d0000b2730005230fae1822525e5a5ff6  fg=#d8dbe0 ac=#f52523  chroma=0.2375  contract=pass  seen=no  grad=2-stop
+  4.04  ab67616d0000b273000131a334d00155369bb7b9  fg=#222631 ac=#f52920  chroma=0.2358  contract=pass  seen=no  grad=none
+  4.29  ab67616d0000b273000fe1a62d8cc2643cb2cca1  fg=#b1e0ea ac=#e27685  chroma=0.1344  contract=pass  seen=no  grad=none
+  4.29  ab67616d0000b2730014556f56653665e7eea652  fg=#363231 ac=#f40814  chroma=0.2469  contract=pass  seen=no  grad=2-stop
+  4.38  ab67616d00001e02000b09dc3945856aa26d231b  fg=#2f2f2f ac=#95e9d9  chroma=0.0851  contract=FAIL  seen=no  grad=2-stop
+  4.65  ab67616d00001e02000ad40f7a92f3abf74f4683  fg=#c8c9c4 ac=#844f30  chroma=0.0844  contract=pass  seen=no  grad=none
+  4.83  862ae92add8a96848aa277840ebccc8b  fg=#f4f2f3 ac=#9f6943  chroma=0.0873  contract=pass  seen=no  grad=none
+  4.93  4e6dee3a672e62f84d6fab9d90a2af26  fg=#dad9de ac=#ae3e10  chroma=0.1556  contract=pass  seen=no  grad=none
+  4.94  ab67616d0000b27300137c811595edad61c67781  fg=#dde0d7 ac=#c29693  chroma=0.0534  contract=pass  seen=no  grad=2-stop
+
+== swap fire rate ==
+comparator ran on 220; applied on 7
+
+== fresh pool: unseen in rounds 1–5, contract-passing, accent published, comparator held or not fired ==
+164 candidates
+top 10 by edge fraction (the round-5 fresh rule):
+  ab67616d0000b273000d54cb2f5226d1dbcb62b9  idx=138  bg=#efebdf sf=#e3dfd3 fg=#7e090f ac=#cf0d28  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2146 fgMinRamp=77.15 acMinRamp=59.53  edgeFrac=0.9760
+  ab67616d0000b2730000cb591a0d52d8b88692d9  idx=202  bg=#0c101c sf=#eff3fc fg=#9a9da2 ac=#871d05  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1446 fgMinRamp=48.16 acMinRamp=13.92  edgeFrac=0.9586
+  ab67616d0000b273000146db0ad7d43bebdb3152  idx=63  bg=#feffff sf=#faede5 fg=#050505 ac=#970b16  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1686 fgMinRamp=99.37 acMinRamp=81.50  edgeFrac=0.9451
+  d6ff23ac29d736da4a6385d7d13c801c  idx=38  bg=#fdfdf5 sf=#e3d8d6 fg=#222224 ac=#4d4445  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0124 fgMinRamp=84.04 acMinRamp=73.00  edgeFrac=0.9390
+  ab67616d0000b273000a83b7c6800384e7844947  idx=117  bg=#0c1b32 sf=#545aee fg=#c8f9f5 ac=#6e67f5  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2059 fgMinRamp=72.83 acMinRamp=7.72  edgeFrac=0.9364
+  ab67616d0000b27300018a1a84604edc97ce428f  idx=66  bg=#121214 sf=#d8cbbb fg=#edeae1 ac=#8a804b  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.0736 fgMinRamp=19.35 acMinRamp=36.62  edgeFrac=0.9280
+  ab67616d0000b2730006465a4f831bc200cd919c  idx=93  bg=#f4eacf sf=#3d282f fg=#82824e ac=#aa6d51  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.0881 fgMinRamp=32.39 acMinRamp=30.99  edgeFrac=0.9084
+  ab67616d0000b273000ac18459a4179115743af2  idx=118  bg=#f4f9fd sf=#676f36 fg=#051012 ac=#ff54d6  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2442 fgMinRamp=29.52 acMinRamp=25.93  edgeFrac=0.9080
+  ab67616d0000b27300096a633744f98a17e8f81f  idx=112  bg=#110f10 sf=#191516 fg=#dea41c ac=#f7be27  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1618 fgMinRamp=60.34 acMinRamp=74.43  edgeFrac=0.9063
+  ab67616d0000b2730000e6ca22755038ff7a09b8  idx=56  bg=#f9e278 sf=#d26115 fg=#242424 ac=#fe9b00  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1725 fgMinRamp=37.97 acMinRamp=26.68  edgeFrac=0.9000
+
+== the conflict shortlist, in full ==
+  ab67616d0000b2730011e7b5c1023c70f7a3d767  idx=170  bg=#170a02 sf=#374d0d fg=#2a1e06 ac=#cdaf19  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1511 fgMinRamp=2.67 acMinRamp=50.82  edgeFrac=0.3128
+    gradient=null
+  ab67616d00001e020010ac96d501c4170f39c4f0  idx=163  bg=#ffffff sf=#ffeded fg=#ebebf5 ac=#0000e6  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.2897 fgMinRamp=3.27 acMinRamp=83.54  edgeFrac=0.5339
+    gradient=null
+  ab67616d00001e02000ad40f7a92f3abf74f4683  idx=120  bg=#c3c3c3 sf=#c3c3c3 fg=#c8c9c4 ac=#844f30  grad=none  sfCol=true acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.0844 fgMinRamp=4.65 acMinRamp=50.95  edgeFrac=0.3482
+    gradient=null
+
+== upper-band conflict alternatives, in full ==
+  ab67616d0000b273000131a334d00155369bb7b9  idx=61  bg=#000000 sf=#000000 fg=#222631 ac=#f52920  grad=none  sfCol=true acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.2358 fgMinRamp=4.04 acMinRamp=38.95  edgeFrac=0.5249  path=01/ab67616d0000b273000131a334d00155369bb7b9.jpg
+  ab67616d0000b273000fe1a62d8cc2643cb2cca1  idx=154  bg=#eddbd9 sf=#676360 fg=#b1e0ea ac=#e27685  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1344 fgMinRamp=4.29 acMinRamp=26.23  edgeFrac=0.3427  path=0f/ab67616d0000b273000fe1a62d8cc2643cb2cca1
+  ab67616d0000b2730014556f56653665e7eea652  idx=195  bg=#101211 sf=#202427 fg=#363231 ac=#f40814  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.2469 fgMinRamp=4.29 acMinRamp=34.86  edgeFrac=0.4661  path=14/ab67616d0000b2730014556f56653665e7eea652
+  862ae92add8a96848aa277840ebccc8b  idx=25  bg=#e9ecf3 sf=#6b5e3b fg=#f4f2f3 ac=#9f6943  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.0873 fgMinRamp=4.83 acMinRamp=11.60  edgeFrac=0.6084  path=music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg
+  4e6dee3a672e62f84d6fab9d90a2af26  idx=16  bg=#e2e1e6 sf=#493421 fg=#dad9de ac=#ae3e10  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.1556 fgMinRamp=4.93 acMinRamp=18.01  edgeFrac=0.6056  path=music-artworks/4/e/6/4e6dee3a672e62f84d6fab9d90a2af26.jpeg
+  ab67616d0000b27300137c811595edad61c67781  idx=187  bg=#d8d9d4 sf=#cececc fg=#dde0d7 ac=#c29693  grad=2-stop  sfCol=false acCol=false  contract=pass  swapApplied=false held=true accentChroma=0.0534 fgMinRamp=4.94 acMinRamp=24.93  edgeFrac=0.3509  path=13/ab67616d0000b27300137c811595edad61c67781
+
+== fresh candidate paths ==
+  ab67616d0000b273000d54cb2f5226d1dbcb62b9  idx=138  bg=#efebdf sf=#e3dfd3 fg=#7e090f ac=#cf0d28  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.2146 fgMinRamp=77.15 acMinRamp=59.53  edgeFrac=0.9760  path=0d/ab67616d0000b273000d54cb2f5226d1dbcb62b9
+  ab67616d0000b2730000cb591a0d52d8b88692d9  idx=202  bg=#0c101c sf=#eff3fc fg=#9a9da2 ac=#871d05  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1446 fgMinRamp=48.16 acMinRamp=13.92  edgeFrac=0.9586  path=00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg
+  ab67616d0000b273000146db0ad7d43bebdb3152  idx=63  bg=#feffff sf=#faede5 fg=#050505 ac=#970b16  grad=none  sfCol=false acCol=false  contract=pass  swapApplied=false held=false accentChroma=0.1686 fgMinRamp=99.37 acMinRamp=81.50  edgeFrac=0.9451  path=01/ab67616d0000b273000146db0ad7d43bebdb3152.jpg
+
+== selected item paths ==
+  ab67616d0000b2730011a326091e7dd7df58b175  11/ab67616d0000b2730011a326091e7dd7df58b175
+  d76d845e33b98c986bb8b1297e49487b  music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg
+  ab67616d0000b2730005d8403971249d1ef0786b  05/ab67616d0000b2730005d8403971249d1ef0786b
+  [not in coverage-set-1-220 — taken from the demo-20 run]
+  ab67616d00001e020000269ead63cf2376a6b67d  00/ab67616d00001e020000269ead63cf2376a6b67d.jpg
+  ab67616d0000b2730011e7b5c1023c70f7a3d767  11/ab67616d0000b2730011e7b5c1023c70f7a3d767
+  ab67616d00001e020010ac96d501c4170f39c4f0  10/ab67616d00001e020010ac96d501c4170f39c4f0

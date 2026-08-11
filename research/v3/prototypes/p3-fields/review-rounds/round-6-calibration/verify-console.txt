@@ -1,0 +1,13 @@
+determinism  PASS  coverage: 220/220 rows compared against the --no-cache P3_DIAG re-run  divergences=0
+determinism  PASS  demo: 20/20 rows compared against the --no-cache P3_DIAG re-run  divergences=0
+blinding     PASS  27 forbidden strings checked
+ab67616d00001e020010ac96d501c4170f39c4f0  PASS  path=yes  exact-pixel=yes (4/4)  gradient-endpoints=n/a  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+ab67616d0000b2730011a326091e7dd7df58b175  PASS  path=yes  exact-pixel=yes (6/6)  gradient-endpoints=yes  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+4e6dee3a672e62f84d6fab9d90a2af26  PASS  path=yes  exact-pixel=yes (4/4)  gradient-endpoints=n/a  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+ab67616d0000b2730005d8403971249d1ef0786b  PASS  path=yes  exact-pixel=yes (6/6)  gradient-endpoints=yes  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+ab67616d0000b2730000cb591a0d52d8b88692d9  PASS  path=yes  exact-pixel=yes (4/4)  gradient-endpoints=n/a  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+d76d845e33b98c986bb8b1297e49487b  PASS  path=yes  exact-pixel=yes (6/6)  gradient-endpoints=yes  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+ab67616d0000b2730011e7b5c1023c70f7a3d767  PASS  path=yes  exact-pixel=yes (4/4)  gradient-endpoints=n/a  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+ab67616d00001e020000269ead63cf2376a6b67d  PASS  path=yes  exact-pixel=yes (4/4)  gradient-endpoints=n/a  collapse=yes  sidecar=yes  contract=pass  verbatim=yes  provenance=yes  stem-id=yes
+
+8 items · ALL PASS
