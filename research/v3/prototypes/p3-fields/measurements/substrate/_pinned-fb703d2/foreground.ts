@@ -144,9 +144,9 @@
  * interpolants.
  */
 
-import { apcaRaw } from "../../../src/contract/color.ts"
-import { SOURCE_POPULATION_FLOOR } from "../../../src/contract/constants.ts"
-import type { Rgb8 } from "../../../src/contract/types.ts"
+import { apcaRaw } from "../../../../../src/contract/color.ts"
+import { SOURCE_POPULATION_FLOOR } from "../../../../../src/contract/constants.ts"
+import type { Rgb8 } from "../../../../../src/contract/types.ts"
 import {
 	FOREGROUND_POLARITY_TIE_BAND,
 	INK_ANNULUS_MIN_RADIUS_PX,
@@ -168,24 +168,6 @@ import {
 	splitAtLargestDecileGap,
 	topWindow,
 } from "./primitives.ts"
-
-/**
- * What the substrate branch has to hand `computeInkField` in place of a distance-transform depth.
- *
- * The ink band is defined by two things the coherence field cannot supply by itself: a **floor** below
- * which a pixel is boundary rather than mark, and a **length** for the annulus radius.
- *
- * - `bandFloor` — on the shipped path this is 0 and means *not an edge pixel*, a statement only a binary
- *   edge map can make. Its continuous analogue is the mirror of the field cut: the least-coherent
- *   (1 − β) of the artwork is the boundary population, the most-coherent (1 − β) is F, and the band
- *   between them is where a mark on a ground lives. That reuses β and introduces **no new constant** —
- *   but it is a wider band than the shipped one, which on a busy cover is most of the artwork, and the
- *   ink field is the pipeline's only super-linear term. The cost is measured, not assumed.
- * - `radiusField` — `INK_ANNULUS_RATIO · depth · longEdge` is a length times a ratio; applied to a
- *   percentile it would be meaningless (a rank of 0.5 would ask for a radius of half the image). The
- *   coherence field's `scaleDepth` is the length-valued companion built for exactly this consumer.
- */
-export type InkSubstrate = Readonly<{ bandFloor: number; radiusField: Float64Array }>
 
 export type InkField = Readonly<{
 	/** Pixels that are a coherent mark on a coherent ground, ascending by index. */
@@ -212,32 +194,22 @@ export function computeInkField(
 	image: DecodedImage,
 	depth: Float64Array,
 	fieldThreshold: number,
-	substrate: InkSubstrate | null = null,
 ): InkField {
 	const { width, height, lab, bar, rgb, eligible, eligibleIndices, longEdge } = image
 	const candidates: number[] = []
 	const scores: number[] = []
 	const ring = new Int32Array(INK_ANNULUS_SAMPLES)
 	let bandSize = 0
-	// The shipped path: the band's floor is *strictly positive depth*, i.e. "not itself an edge pixel",
-	// and the annulus radius is that same depth. On the substrate path there is no edge map to be
-	// excluded from and the field carries no length, so both come in from the caller. See `InkSubstrate`.
-	const bandFloor = substrate === null ? 0 : substrate.bandFloor
-	const radiusField = substrate === null ? null : substrate.radiusField
 
 	for (let i = 0; i < eligibleIndices.length; i += 1) {
 		const index = eligibleIndices[i]
 		const d = depth[index]
-		if (d <= bandFloor || d >= fieldThreshold) continue
+		if (d <= 0 || d >= fieldThreshold) continue
 		bandSize += 1
 
 		const y = Math.floor(index / width)
 		const x = index - y * width
-		const length = radiusField === null ? d : radiusField[index]
-		const radius = Math.max(
-			INK_ANNULUS_MIN_RADIUS_PX,
-			Math.round(INK_ANNULUS_RATIO * length * longEdge),
-		)
+		const radius = Math.max(INK_ANNULUS_MIN_RADIUS_PX, Math.round(INK_ANNULUS_RATIO * d * longEdge))
 
 		let found = 0
 		for (let sample = 0; sample < INK_ANNULUS_SAMPLES; sample += 1) {
@@ -498,7 +470,6 @@ export function luminanceOrdering(
 	image: DecodedImage,
 	depth: Float64Array,
 	rampAnchors: readonly number[],
-	deepFloor = 0,
 ): ForegroundOrdering | null {
 	// The anchors are pixels of the artwork, deduplicated: a collapsed field publishes the same pixel as
 	// both ends, and a duplicated anchor would count twice in nothing but wasted work.
@@ -512,7 +483,7 @@ export function luminanceOrdering(
 	const deep: number[] = []
 	for (let i = 0; i < image.eligibleIndices.length; i += 1) {
 		const index = image.eligibleIndices[i]
-		if (depth[index] > deepFloor) deep.push(index)
+		if (depth[index] > 0) deep.push(index)
 	}
 	// A pathological image whose every pixel is an edge has no depth anywhere; the whole eligible set is
 	// then the honest population, because "restricted to pixels with non-trivial depth" cannot restrict.

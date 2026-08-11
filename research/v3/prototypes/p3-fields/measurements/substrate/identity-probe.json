@@ -1,0 +1,1682 @@
+[
+  {
+    "cover": "r2-item-4",
+    "setting": "0.4.0",
+    "background": "#4b4b4b",
+    "surface": "#7a7a7a",
+    "foreground": "#f7fef6",
+    "accent": "#292929",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 101643,
+    "prevalenceBackground": 13295,
+    "prevalenceSurface": 6259,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00025146484375,
+        "spreadX": 0.138671875,
+        "spreadY": 0.037109375,
+        "fill": 0.04886582653817643,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.04849365234375,
+        "spreadX": 0.4140625,
+        "spreadY": 0.07421875,
+        "fill": 1.5779940417080436,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.04239013671875,
+        "spreadX": 0.66015625,
+        "spreadY": 0.4453125,
+        "fill": 0.14419599294093222,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.04239013671875,
+        "spreadX": 0.66015625,
+        "spreadY": 0.4453125,
+        "fill": 0.14419599294093222,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.06717529296875,
+        "spreadX": 0.75,
+        "spreadY": 0.638671875,
+        "fill": 0.14023955147808356,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.056376953125,
+        "spreadX": 0.75390625,
+        "spreadY": 0.73828125,
+        "fill": 0.10128903144447185,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0075341796875,
+        "spreadX": 0.19921875,
+        "spreadY": 0.515625,
+        "fill": 0.07334521687462864,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-4",
+    "setting": "field",
+    "background": "#4a4a4a",
+    "surface": "#848484",
+    "foreground": "#f3f3f3",
+    "accent": "#323232",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102388,
+    "prevalenceBackground": 10750,
+    "prevalenceSurface": 4529,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00004638671875,
+        "spreadX": 0.2578125,
+        "spreadY": 0.03125,
+        "fill": 0.005757575757575757,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.04849365234375,
+        "spreadX": 0.4140625,
+        "spreadY": 0.07421875,
+        "fill": 1.5779940417080436,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.04239013671875,
+        "spreadX": 0.66015625,
+        "spreadY": 0.4453125,
+        "fill": 0.14419599294093222,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.051083984375,
+        "spreadX": 0.828125,
+        "spreadY": 0.82421875,
+        "fill": 0.07484217115264241,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.06818603515625,
+        "spreadX": 0.751953125,
+        "spreadY": 0.6015625,
+        "fill": 0.15073840445269018,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.00629638671875,
+        "spreadX": 0.1953125,
+        "spreadY": 0.501953125,
+        "fill": 0.06422412451361867,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-4",
+    "setting": "elig",
+    "background": "#4b4b4b",
+    "surface": "#7a7a7a",
+    "foreground": "#f7fef6",
+    "accent": "#421b50",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 101643,
+    "prevalenceBackground": 13295,
+    "prevalenceSurface": 6259,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00025146484375,
+        "spreadX": 0.138671875,
+        "spreadY": 0.037109375,
+        "fill": 0.04886582653817643,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-4",
+    "setting": "all",
+    "background": "#4a4a4a",
+    "surface": "#848484",
+    "foreground": "#f3f3f3",
+    "accent": "#381e41",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102388,
+    "prevalenceBackground": 10085.052351202181,
+    "prevalenceSurface": 4037.150141968119,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00004638671875,
+        "spreadX": 0.2578125,
+        "spreadY": 0.03125,
+        "fill": 0.005757575757575757,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "208",
+    "setting": "0.4.0",
+    "background": "#b7b29e",
+    "surface": "#75828b",
+    "foreground": "#2f242c",
+    "accent": "#58332a",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 102298,
+    "prevalenceBackground": 6310,
+    "prevalenceSurface": 5191,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0000244140625,
+        "spreadX": 0.01953125,
+        "spreadY": 0.173828125,
+        "fill": 0.0071910112359550565,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.00930419921875,
+        "spreadX": 0.28515625,
+        "spreadY": 0.20703125,
+        "fill": 0.15760144740242957,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.01021728515625,
+        "spreadX": 0.19921875,
+        "spreadY": 0.1796875,
+        "fill": 0.2854219948849105,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "208",
+    "setting": "field",
+    "background": "#797985",
+    "surface": "#b4b3a1",
+    "foreground": "#3c1c21",
+    "accent": "#75342e",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 7433,
+    "prevalenceSurface": 4796,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00138916015625,
+        "spreadX": 0.056640625,
+        "spreadY": 0.11328125,
+        "fill": 0.21650416171224734,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "208",
+    "setting": "elig",
+    "background": "#b7b29e",
+    "surface": "#75828b",
+    "foreground": "#2f242c",
+    "accent": "#672129",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 102298,
+    "prevalenceBackground": 6310,
+    "prevalenceSurface": 5191,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0000244140625,
+        "spreadX": 0.01953125,
+        "spreadY": 0.173828125,
+        "fill": 0.0071910112359550565,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "208",
+    "setting": "all",
+    "background": "#797985",
+    "surface": "#b4b3a1",
+    "foreground": "#3c1c21",
+    "accent": "#75342e",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 6590.092910382991,
+    "prevalenceSurface": 4220.436774747987,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00138916015625,
+        "spreadX": 0.056640625,
+        "spreadY": 0.11328125,
+        "fill": 0.21650416171224734,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "130",
+    "setting": "0.4.0",
+    "background": "#deb355",
+    "surface": "#fcdf99",
+    "foreground": "#1f0302",
+    "accent": "#9f461c",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 22344,
+    "prevalenceBackground": 3061,
+    "prevalenceSurface": 3125,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0006,
+        "spreadX": 0.134765625,
+        "spreadY": 0.072265625,
+        "fill": 0.061608460634547585,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.0039,
+        "spreadX": 0.109375,
+        "spreadY": 0.107421875,
+        "fill": 0.3319355844155844,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "130",
+    "setting": "field",
+    "background": "#dfb455",
+    "surface": "#fcdf99",
+    "foreground": "#0f0e0c",
+    "accent": "#9c4915",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 22499,
+    "prevalenceBackground": 4275,
+    "prevalenceSurface": 3679,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0006,
+        "spreadX": 0.134765625,
+        "spreadY": 0.072265625,
+        "fill": 0.061608460634547585,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.005866666666666667,
+        "spreadX": 0.09375,
+        "spreadY": 0.10546875,
+        "fill": 0.5933300411522634,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "130",
+    "setting": "elig",
+    "background": "#deb355",
+    "surface": "#fcdf99",
+    "foreground": "#1f0302",
+    "accent": "#97191a",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 22344,
+    "prevalenceBackground": 3061,
+    "prevalenceSurface": 3125,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0006,
+        "spreadX": 0.134765625,
+        "spreadY": 0.072265625,
+        "fill": 0.061608460634547585,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "130",
+    "setting": "all",
+    "background": "#dfb455",
+    "surface": "#fcdf99",
+    "foreground": "#0f0e0c",
+    "accent": "#97191a",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 22499,
+    "prevalenceBackground": 3630.4977833087028,
+    "prevalenceSurface": 3297.930843676024,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0006,
+        "spreadX": 0.134765625,
+        "spreadY": 0.072265625,
+        "fill": 0.061608460634547585,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "188",
+    "setting": "0.4.0",
+    "background": "#e1f8ee",
+    "surface": "#094f59",
+    "foreground": "#ebaf8d",
+    "accent": "#0a5366",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 101802,
+    "prevalenceBackground": 5095,
+    "prevalenceSurface": 4520,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00064208984375,
+        "spreadX": 0.419921875,
+        "spreadY": 0.09765625,
+        "fill": 0.01565767441860465,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.01257080078125,
+        "spreadX": 0.087890625,
+        "spreadY": 0.158203125,
+        "fill": 0.904076817558299,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.0176904296875,
+        "spreadX": 0.123046875,
+        "spreadY": 0.67578125,
+        "fill": 0.21274612349756858,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.0004833984375,
+        "spreadX": 0.4609375,
+        "spreadY": 0.169921875,
+        "fill": 0.0061718293395675045,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.00513671875,
+        "spreadX": 0.513671875,
+        "spreadY": 0.1640625,
+        "fill": 0.06095238095238095,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.0009375,
+        "spreadX": 0.501953125,
+        "spreadY": 0.66796875,
+        "fill": 0.0027960952966072767,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.01474853515625,
+        "spreadX": 0.3828125,
+        "spreadY": 0.169921875,
+        "fill": 0.22673234811165843,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "188",
+    "setting": "field",
+    "background": "#e1fefa",
+    "surface": "#0a4d5e",
+    "foreground": "#e5af95",
+    "accent": "#12596b",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 11013,
+    "prevalenceSurface": 3124,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00053466796875,
+        "spreadX": 0.4140625,
+        "spreadY": 0.087890625,
+        "fill": 0.014691823899371069,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.00110595703125,
+        "spreadX": 0.517578125,
+        "spreadY": 0.490234375,
+        "fill": 0.004358716079079907,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.01419921875,
+        "spreadX": 0.138671875,
+        "spreadY": 0.666015625,
+        "fill": 0.1537416876626327,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.004384765625,
+        "spreadX": 0.306640625,
+        "spreadY": 0.193359375,
+        "fill": 0.07395226146818504,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.00913330078125,
+        "spreadX": 0.541015625,
+        "spreadY": 0.17578125,
+        "fill": 0.09603850782190132,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.00644775390625,
+        "spreadX": 0.509765625,
+        "spreadY": 0.19140625,
+        "fill": 0.06608178903745406,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0137646484375,
+        "spreadX": 0.51171875,
+        "spreadY": 0.166015625,
+        "fill": 0.16202604400538842,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "188",
+    "setting": "elig",
+    "background": "#e1f8ee",
+    "surface": "#094f59",
+    "foreground": "#d6997c",
+    "accent": "#0a5b6c",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 101802,
+    "prevalenceBackground": 5095,
+    "prevalenceSurface": 4520,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00064208984375,
+        "spreadX": 0.419921875,
+        "spreadY": 0.09765625,
+        "fill": 0.01565767441860465,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.01257080078125,
+        "spreadX": 0.087890625,
+        "spreadY": 0.158203125,
+        "fill": 0.904076817558299,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.0176904296875,
+        "spreadX": 0.123046875,
+        "spreadY": 0.67578125,
+        "fill": 0.21274612349756858,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.0004833984375,
+        "spreadX": 0.4609375,
+        "spreadY": 0.169921875,
+        "fill": 0.0061718293395675045,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.00513671875,
+        "spreadX": 0.513671875,
+        "spreadY": 0.1640625,
+        "fill": 0.06095238095238095,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.0009375,
+        "spreadX": 0.501953125,
+        "spreadY": 0.66796875,
+        "fill": 0.0027960952966072767,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.01474853515625,
+        "spreadX": 0.3828125,
+        "spreadY": 0.169921875,
+        "fill": 0.22673234811165843,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "188",
+    "setting": "all",
+    "background": "#e1fefa",
+    "surface": "#0a4d5e",
+    "foreground": "#0c6873",
+    "accent": "#0c6873",
+    "accentCollapsed": true,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 10496.899245359473,
+    "prevalenceSurface": 2637.791305642824,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00053466796875,
+        "spreadX": 0.4140625,
+        "spreadY": 0.087890625,
+        "fill": 0.014691823899371069,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.00110595703125,
+        "spreadX": 0.517578125,
+        "spreadY": 0.490234375,
+        "fill": 0.004358716079079907,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.01419921875,
+        "spreadX": 0.138671875,
+        "spreadY": 0.666015625,
+        "fill": 0.1537416876626327,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.004384765625,
+        "spreadX": 0.306640625,
+        "spreadY": 0.193359375,
+        "fill": 0.07395226146818504,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.00913330078125,
+        "spreadX": 0.541015625,
+        "spreadY": 0.17578125,
+        "fill": 0.09603850782190132,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.00644775390625,
+        "spreadX": 0.509765625,
+        "spreadY": 0.19140625,
+        "fill": 0.06608178903745406,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0137646484375,
+        "spreadX": 0.51171875,
+        "spreadY": 0.166015625,
+        "fill": 0.16202604400538842,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "039",
+    "setting": "0.4.0",
+    "background": "#0c0e0d",
+    "surface": "#101c36",
+    "foreground": "#713372",
+    "accent": "#16294a",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 94758,
+    "prevalenceBackground": 35938,
+    "prevalenceSurface": 2980,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0019265306122448979,
+        "spreadX": 0.2421875,
+        "spreadY": 0.009765625,
+        "fill": 0.8145620013166557,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "039",
+    "setting": "field",
+    "background": "#0c0e0d",
+    "surface": "#0f2344",
+    "foreground": "#6e3071",
+    "accent": "#152a57",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 122498,
+    "prevalenceBackground": 44518,
+    "prevalenceSurface": 9451,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0016979591836734694,
+        "spreadX": 0.23046875,
+        "spreadY": 0.01171875,
+        "fill": 0.628686175487144,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "039",
+    "setting": "elig",
+    "background": "#0c0e0d",
+    "surface": "#101c36",
+    "foreground": "#713372",
+    "accent": "#16294a",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 94758,
+    "prevalenceBackground": 35938,
+    "prevalenceSurface": 2980,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0019265306122448979,
+        "spreadX": 0.2421875,
+        "spreadY": 0.009765625,
+        "fill": 0.8145620013166557,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "039",
+    "setting": "all",
+    "background": "#0c0e0d",
+    "surface": "#0f2344",
+    "foreground": "#6e3071",
+    "accent": "#152a57",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 122498,
+    "prevalenceBackground": 38667.60252674021,
+    "prevalenceSurface": 7932.997913261037,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0016979591836734694,
+        "spreadX": 0.23046875,
+        "spreadY": 0.01171875,
+        "fill": 0.628686175487144,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "168",
+    "setting": "0.4.0",
+    "background": "#0b0800",
+    "surface": "#26211d",
+    "foreground": "#278aa9",
+    "accent": "#3d3936",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 99668,
+    "prevalenceBackground": 4328,
+    "prevalenceSurface": 4110,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0008642578125,
+        "spreadX": 0.06640625,
+        "spreadY": 0.193359375,
+        "fill": 0.06730837789661319,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.00283935546875,
+        "spreadX": 0.123046875,
+        "spreadY": 0.28125,
+        "fill": 0.08204585537918872,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "168",
+    "setting": "field",
+    "background": "#090601",
+    "surface": "#25201c",
+    "foreground": "#5b8498",
+    "accent": "#322d29",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102394,
+    "prevalenceBackground": 4238,
+    "prevalenceSurface": 4249,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.000625,
+        "spreadX": 0.076171875,
+        "spreadY": 0.12890625,
+        "fill": 0.06365190365190365,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.00223388671875,
+        "spreadX": 0.140625,
+        "spreadY": 0.36328125,
+        "fill": 0.04372759856630824,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "168",
+    "setting": "elig",
+    "background": "#0b0800",
+    "surface": "#26211d",
+    "foreground": "#2aa5e9",
+    "accent": "#3d3936",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 99668,
+    "prevalenceBackground": 4328,
+    "prevalenceSurface": 4110,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0008642578125,
+        "spreadX": 0.06640625,
+        "spreadY": 0.193359375,
+        "fill": 0.06730837789661319,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "168",
+    "setting": "all",
+    "background": "#090601",
+    "surface": "#25201c",
+    "foreground": "#2ba4ed",
+    "accent": "#322d29",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102394,
+    "prevalenceBackground": 3759.412067656458,
+    "prevalenceSurface": 3677.505200208006,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.000625,
+        "spreadX": 0.076171875,
+        "spreadY": 0.12890625,
+        "fill": 0.06365190365190365,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-2",
+    "setting": "0.4.0",
+    "background": "#fdc99a",
+    "surface": "#e55032",
+    "foreground": "#f0a17a",
+    "accent": "#ee7886",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 62131,
+    "prevalenceBackground": 1621,
+    "prevalenceSurface": 1315,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.004352,
+        "spreadX": 0.04296875,
+        "spreadY": 0.02734375,
+        "fill": 3.7040606753246754,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-2",
+    "setting": "field",
+    "background": "#fcc7b9",
+    "surface": "#cc5034",
+    "foreground": "#f99971",
+    "accent": "#f99971",
+    "accentCollapsed": true,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 62500,
+    "prevalenceBackground": 7080,
+    "prevalenceSurface": 1998,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.004716,
+        "spreadX": 0.787109375,
+        "spreadY": 0.3125,
+        "fill": 0.019172938957816375,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.021764,
+        "spreadX": 0.25390625,
+        "spreadY": 0.267578125,
+        "fill": 0.3203426174059517,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.056324,
+        "spreadX": 0.630859375,
+        "spreadY": 0.548828125,
+        "fill": 0.16267640620076462,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.066848,
+        "spreadX": 0.609375,
+        "spreadY": 0.564453125,
+        "fill": 0.19434613290746164,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.06608,
+        "spreadX": 0.60546875,
+        "spreadY": 0.595703125,
+        "fill": 0.18320968291909043,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.032084,
+        "spreadX": 0.3046875,
+        "spreadY": 0.27734375,
+        "fill": 0.37967804694835683,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0342,
+        "spreadX": 0.3125,
+        "spreadY": 0.298828125,
+        "fill": 0.36623058823529414,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-2",
+    "setting": "elig",
+    "background": "#fdc99a",
+    "surface": "#e55032",
+    "foreground": "#f0a17a",
+    "accent": "#ee7886",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 62131,
+    "prevalenceBackground": 1621,
+    "prevalenceSurface": 1315,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.004352,
+        "spreadX": 0.04296875,
+        "spreadY": 0.02734375,
+        "fill": 3.7040606753246754,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-2",
+    "setting": "all",
+    "background": "#fcc7b9",
+    "surface": "#cc5034",
+    "foreground": "#f99971",
+    "accent": "#f99971",
+    "accentCollapsed": true,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 62500,
+    "prevalenceBackground": 6416.527704110868,
+    "prevalenceSurface": 1705.3846095384386,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.004716,
+        "spreadX": 0.787109375,
+        "spreadY": 0.3125,
+        "fill": 0.019172938957816375,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.021764,
+        "spreadX": 0.25390625,
+        "spreadY": 0.267578125,
+        "fill": 0.3203426174059517,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.056324,
+        "spreadX": 0.630859375,
+        "spreadY": 0.548828125,
+        "fill": 0.16267640620076462,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.066848,
+        "spreadX": 0.609375,
+        "spreadY": 0.564453125,
+        "fill": 0.19434613290746164,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.06608,
+        "spreadX": 0.60546875,
+        "spreadY": 0.595703125,
+        "fill": 0.18320968291909043,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.032084,
+        "spreadX": 0.3046875,
+        "spreadY": 0.27734375,
+        "fill": 0.37967804694835683,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0342,
+        "spreadX": 0.3125,
+        "spreadY": 0.298828125,
+        "fill": 0.36623058823529414,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "114",
+    "setting": "0.4.0",
+    "background": "#e0e2df",
+    "surface": "#b0332f",
+    "foreground": "#802022",
+    "accent": "#ecf2ee",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 87227,
+    "prevalenceBackground": 3349,
+    "prevalenceSurface": 2328,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0025830078125,
+        "spreadX": 0.203125,
+        "spreadY": 0.4140625,
+        "fill": 0.030711175616835996,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.01072265625,
+        "spreadX": 0.494140625,
+        "spreadY": 0.197265625,
+        "fill": 0.11000195671741088,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.01157470703125,
+        "spreadX": 0.484375,
+        "spreadY": 0.21484375,
+        "fill": 0.1112258064516129,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.0045556640625,
+        "spreadX": 0.296875,
+        "spreadY": 0.18359375,
+        "fill": 0.08358342665173572,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.0044970703125,
+        "spreadX": 0.310546875,
+        "spreadY": 0.177734375,
+        "fill": 0.08147625958946715,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.0065478515625,
+        "spreadX": 0.130859375,
+        "spreadY": 0.681640625,
+        "fill": 0.07340717615361587,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0604833984375,
+        "spreadX": 0.09765625,
+        "spreadY": 0.205078125,
+        "fill": 3.0200685714285713,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "114",
+    "setting": "field",
+    "background": "#dee0df",
+    "surface": "#ad2d2a",
+    "foreground": "#953833",
+    "accent": "#953833",
+    "accentCollapsed": true,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 2860,
+    "prevalenceSurface": 2021,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.04001953125,
+        "spreadX": 0.265625,
+        "spreadY": 0.28125,
+        "fill": 0.5356862745098039,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.01126708984375,
+        "spreadX": 0.4921875,
+        "spreadY": 0.201171875,
+        "fill": 0.11379257204499922,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.009765625,
+        "spreadX": 0.42578125,
+        "spreadY": 0.234375,
+        "fill": 0.09785932721712538,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.0079736328125,
+        "spreadX": 0.423828125,
+        "spreadY": 0.224609375,
+        "fill": 0.08376036866359446,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.0678515625,
+        "spreadX": 0.158203125,
+        "spreadY": 0.25390625,
+        "fill": 1.6891623931623934,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.08226318359375,
+        "spreadX": 0.298828125,
+        "spreadY": 0.154296875,
+        "fill": 1.7841317117564324,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.007607421875,
+        "spreadX": 0.146484375,
+        "spreadY": 0.224609375,
+        "fill": 0.23121623188405796,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "114",
+    "setting": "elig",
+    "background": "#e0e2df",
+    "surface": "#b0332f",
+    "foreground": "#802022",
+    "accent": "#ecf2ee",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 87227,
+    "prevalenceBackground": 3349,
+    "prevalenceSurface": 2328,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0025830078125,
+        "spreadX": 0.203125,
+        "spreadY": 0.4140625,
+        "fill": 0.030711175616835996,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.01072265625,
+        "spreadX": 0.494140625,
+        "spreadY": 0.197265625,
+        "fill": 0.11000195671741088,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.01157470703125,
+        "spreadX": 0.484375,
+        "spreadY": 0.21484375,
+        "fill": 0.1112258064516129,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.0045556640625,
+        "spreadX": 0.296875,
+        "spreadY": 0.18359375,
+        "fill": 0.08358342665173572,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.0044970703125,
+        "spreadX": 0.310546875,
+        "spreadY": 0.177734375,
+        "fill": 0.08147625958946715,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.0065478515625,
+        "spreadX": 0.130859375,
+        "spreadY": 0.681640625,
+        "fill": 0.07340717615361587,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.0604833984375,
+        "spreadX": 0.09765625,
+        "spreadY": 0.205078125,
+        "fill": 3.0200685714285713,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "114",
+    "setting": "all",
+    "background": "#dee0df",
+    "surface": "#ad2d2a",
+    "foreground": "#953833",
+    "accent": "#953833",
+    "accentCollapsed": true,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 2681.50405396498,
+    "prevalenceSurface": 1646.1022487847863,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.04001953125,
+        "spreadX": 0.265625,
+        "spreadY": 0.28125,
+        "fill": 0.5356862745098039,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.01126708984375,
+        "spreadX": 0.4921875,
+        "spreadY": 0.201171875,
+        "fill": 0.11379257204499922,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:2",
+        "support": 0.009765625,
+        "spreadX": 0.42578125,
+        "spreadY": 0.234375,
+        "fill": 0.09785932721712538,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:3",
+        "support": 0.0079736328125,
+        "spreadX": 0.423828125,
+        "spreadY": 0.224609375,
+        "fill": 0.08376036866359446,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:4",
+        "support": 0.0678515625,
+        "spreadX": 0.158203125,
+        "spreadY": 0.25390625,
+        "fill": 1.6891623931623934,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:5",
+        "support": 0.08226318359375,
+        "spreadX": 0.298828125,
+        "spreadY": 0.154296875,
+        "fill": 1.7841317117564324,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:6",
+        "support": 0.007607421875,
+        "spreadX": 0.146484375,
+        "spreadY": 0.224609375,
+        "fill": 0.23121623188405796,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-8",
+    "setting": "0.4.0",
+    "background": "#170a02",
+    "surface": "#374d0d",
+    "foreground": "#8d8310",
+    "accent": "#2a1e06",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 101731,
+    "prevalenceBackground": 3446,
+    "prevalenceSurface": 2090,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0027197265625,
+        "spreadX": 0.30859375,
+        "spreadY": 0.421875,
+        "fill": 0.020890764181903422,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-8",
+    "setting": "field",
+    "background": "#0c0902",
+    "surface": "#2c450b",
+    "foreground": "#f6f6f6",
+    "accent": "#4d6511",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 3883,
+    "prevalenceSurface": 1087,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00010498046875,
+        "spreadX": 0.02734375,
+        "spreadY": 0.0546875,
+        "fill": 0.07020408163265306,
+        "rawSharePasses": false,
+        "coherencePasses": false,
+        "spreadPasses": true
+      },
+      {
+        "key": "accent:1",
+        "support": 0.00270751953125,
+        "spreadX": 0.033203125,
+        "spreadY": 0.046875,
+        "fill": 1.7396078431372548,
+        "rawSharePasses": true,
+        "coherencePasses": false,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-8",
+    "setting": "elig",
+    "background": "#170a02",
+    "surface": "#374d0d",
+    "foreground": "#8d8310",
+    "accent": "#2a1e06",
+    "accentCollapsed": false,
+    "fieldRule": "beta-quantile",
+    "fieldSetSize": 101731,
+    "prevalenceBackground": 3446,
+    "prevalenceSurface": 2090,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.0027197265625,
+        "spreadX": 0.30859375,
+        "spreadY": 0.421875,
+        "fill": 0.020890764181903422,
+        "rawSharePasses": true,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  },
+  {
+    "cover": "r2-item-8",
+    "setting": "all",
+    "background": "#0c0902",
+    "surface": "#2c450b",
+    "foreground": "#f6f6f6",
+    "accent": "#791f04",
+    "accentCollapsed": false,
+    "fieldRule": "coherence-quantile",
+    "fieldSetSize": 102400,
+    "prevalenceBackground": 3409.805746596065,
+    "prevalenceSurface": 913.8049043088471,
+    "accentVerdicts": [
+      {
+        "key": "accent:0",
+        "support": 0.00010498046875,
+        "spreadX": 0.02734375,
+        "spreadY": 0.0546875,
+        "fill": 0.07020408163265306,
+        "rawSharePasses": false,
+        "coherencePasses": true,
+        "spreadPasses": true
+      }
+    ]
+  }
+]

@@ -36,17 +36,17 @@ import {
 	CONTRACT_VERSION,
 	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 	SOURCE_POPULATION_FLOOR,
-} from "../../../src/contract/constants.ts"
-import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../src/contract/color.ts"
-import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
+} from "../../../../../src/contract/constants.ts"
+import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../../../src/contract/color.ts"
+import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../../../src/contract/invariants.ts"
 import type {
 	GradientStop,
 	NonSourceColorEscape,
 	Palette,
 	PaletteColor,
 	Rgb8,
-} from "../../../src/contract/types.ts"
-import { hashFileBytes } from "../../../src/devloop/code-version.ts"
+} from "../../../../../src/contract/types.ts"
+import { hashFileBytes } from "../../../../../src/devloop/code-version.ts"
 import {
 	chooseAccent,
 	computeAccentOrdering,
@@ -70,19 +70,11 @@ import {
 	MAX_RANK_STEPS,
 	MIN_GUIDE_STOP_SPACING,
 	PREPROCESSING_VERSION,
-	substrateFlags,
 	TRIM_LEVEL,
 } from "./constants.ts"
 import { deciles, diagnosticsEnabled, writeDiagnostics } from "./diagnostics.ts"
 import { decodeImage, pixelRgb, type DecodedImage } from "./decode.ts"
-import { computeCoherenceField, type CoherenceField } from "./coherence.ts"
-import {
-	chooseFieldEnds,
-	computeCoherenceFieldSet,
-	computeFieldSet,
-	type FieldEnds,
-	type FieldSetRule,
-} from "./field-roles.ts"
+import { chooseFieldEnds, computeFieldSet, type FieldEnds, type FieldSetRule } from "./field-roles.ts"
 import { computeDepthField, computeEdgeField } from "./fields.ts"
 import {
 	chooseForeground,
@@ -99,7 +91,7 @@ import {
 } from "./foreground.ts"
 import { insertGuideStops, parameteriseField, type GradientParameterisation } from "./gradient.ts"
 import { cascadePixel, labDistance } from "./primitives.ts"
-import { verifyColor, type SupportVerdict } from "./verify.ts"
+import { verifyColor } from "./verify.ts"
 
 /**
  * What the run recorded about how it got its answer. §8's exposable intermediates in their numeric
@@ -143,15 +135,6 @@ export type P3Intermediates = {
 	roleSwapApplied: boolean
 	escaped: boolean
 	support: Record<string, number>
-	/**
-	 * The **whole** verdict of every verification the run performed, keyed as `support` is.
-	 *
-	 * `support` and `spread` are the two numbers 0.1.0 needed; the substrate experiment needs the
-	 * concentration statistic and which of the two eligibility routes passed, and a caller that had to
-	 * re-run `verifyColor` to read them would be measuring a different pixel than the one that was
-	 * refused. Diagnostics only — nothing in the pipeline reads this back.
-	 */
-	verdicts: Record<string, SupportVerdict>
 	spread: Record<string, number>
 	repairs: number
 }
@@ -275,7 +258,6 @@ function searchForeground(
 	inkPreference: InkContrastPreference,
 	support: Record<string, number>,
 	spread: Record<string, number>,
-	verdicts: Record<string, SupportVerdict>,
 ): { choice: ForegroundChoice; cursor: number; verified: boolean } | null {
 	const backgroundRgb = pixelRgb(image, background)
 	const surfaceRgb = pixelRgb(image, surface)
@@ -298,7 +280,6 @@ function searchForeground(
 
 			const verdict = verifyColor(image, choice.pixel)
 			support[`foreground:${choice.regime}:${step}`] = verdict.support
-			verdicts[`foreground:${choice.regime}:${step}`] = verdict
 			spread[`foreground:${choice.regime}:${step}`] = verdict.spread
 			if (!verdict.passes) continue
 			// The regime's **stability margin** (0.2.0). §2.5's regime test is "does the ink population
@@ -368,7 +349,6 @@ function searchAccent(
 	preference: AccentContrastPreference,
 	support: Record<string, number>,
 	spread: Record<string, number>,
-	verdicts: Record<string, SupportVerdict>,
 ): { choice: AccentChoice; cursor: number } | null {
 	const backgroundRgb = pixelRgb(image, background)
 	const surfaceRgb = pixelRgb(image, surface)
@@ -384,7 +364,6 @@ function searchAccent(
 
 		const verdict = verifyColor(image, choice.pixel)
 		support[`accent:${step}`] = verdict.support
-		verdicts[`accent:${step}`] = verdict
 		spread[`accent:${step}`] = verdict.spread
 		// The salience guard's second half (`ACCENT_REDESIGN.md` requirement 4): support and spatial
 		// spread, the existing machinery, applied to the lump's own cascade pixel. A colour living in one
@@ -498,40 +477,9 @@ function shouldSwapRoles(
 export async function extractPalette(imagePath: string): Promise<P3Result> {
 	const image = await decodeImage(imagePath)
 	const contentHash = await hashFileBytes(imagePath)
-
-	// ---------------------------------------------------------------------------------------
-	// The substrate switch (W13, dev-only, default OFF). With `P3_SUBSTRATE` unset `flags` is all
-	// false, `coherence` is null, and every line below is the 0.4.0 path unchanged — checked
-	// byte-for-byte over demo-20 rather than asserted.
-	//
-	// `field` on: the binary edge map and its distance transform are **not computed at all**, and the
-	// depth-like ordering every consumer reads is the coherence percentile. `prevalence` on without
-	// `field` still needs the coherence field, because coherence mass is what it weighs by — so the
-	// field is built whenever either branch asks for it, and only `field` redirects F.
-	// ---------------------------------------------------------------------------------------
-	const flags = substrateFlags()
-	const coherence: CoherenceField | null = flags.field || flags.prevalence
-		? computeCoherenceField(image)
-		: null
-	const edges = flags.field ? null : computeEdgeField(image)
-	const depth = edges === null ? null : computeDepthField(image, edges)
-	// The one scalar field the rest of the pipeline reads as "depth": the distance transform on the
-	// shipped path, the coherence percentile on the substrate path. Both are per-pixel scalars where
-	// larger means *further inside a region of unchanging colour*; that is the whole contract between
-	// this line and its four consumers (F, the ink band, the ink annulus radius, the luminance floor).
-	const depthOrdering: Float64Array = flags.field && coherence !== null
-		? coherence.coherence
-		: (depth as { depth: Float64Array }).depth
-	const field = flags.field && coherence !== null
-		? computeCoherenceFieldSet(image, coherence.coherence)
-		: computeFieldSet(image, depth as NonNullable<typeof depth>)
-	// The mirror of the field cut. On the substrate path the least-coherent (1 − β) of the artwork is
-	// the boundary population — the continuous analogue of "is an edge pixel" — so it is the floor of
-	// the ink band and of the luminance ordering's own depth restriction. Reuses β; no new constant.
-	const boundaryFloor = flags.field ? 1 - FIELD_DEPTH_QUANTILE : 0
-	const inkSubstrate = flags.field && coherence !== null
-		? { bandFloor: boundaryFloor, radiusField: coherence.scaleDepth }
-		: null
+	const edges = computeEdgeField(image)
+	const depth = computeDepthField(image, edges)
+	const field = computeFieldSet(image, depth)
 
 	// ---------------------------------------------------------------------------------------
 	// The dev-only decision-chain record (`P3_DIAG`). Nothing below reads it back; every value in it
@@ -578,16 +526,9 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 	})
 	record("edges", {
 		k: edgeRankInUse(),
-		edgePixels: edges === null ? null : edges.edgeCount,
-		edgeFraction: edges === null ? null : edges.edgeCount / Math.max(1, image.eligibleIndices.length),
-		seedlessDepth: depth === null ? null : depth.seedless,
-		// The substrate branch's own summary, in place of the edge map it replaced. `radii` is what the
-		// resolution coupling of the neighbourhood now looks like — a fraction of the artwork rather than
-		// of the sampling grid — and `scaleMeanRatio` is the raw bar-relative local difference per scale,
-		// which is the quantity that used to be thresholded.
-		substrate: substrateFlags(),
-		coherenceRadii: coherence === null ? null : coherence.radii,
-		coherenceScaleMeanRatio: coherence === null ? null : coherence.scaleMeanRatio,
+		edgePixels: edges.edgeCount,
+		edgeFraction: edges.edgeCount / Math.max(1, image.eligibleIndices.length),
+		seedlessDepth: depth.seedless,
 	})
 	record("fieldSet", {
 		beta: FIELD_DEPTH_QUANTILE,
@@ -597,7 +538,6 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		// 0.3.0's membership rule, as a label: a divergence in *which rule ran* is a countable stage,
 		// where a divergence in the field-set size alone was only ever a continuous quantity.
 		rule: field.rule,
-		boundaryFloor,
 		degenerateDepthFloorPx: DEGENERATE_DEPTH_FLOOR_PX,
 		// W11b: the floor is an *absolute pixel* rule and a rendition pair differs in resolution, so the
 		// two quantities the rule is a comparison between travel with the record: the β-quantile depth
@@ -609,13 +549,12 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 	})
 
 	const support: Record<string, number> = {}
-	const verdicts: Record<string, SupportVerdict> = {}
 	const spread: Record<string, number> = {}
 	const intermediates: P3Intermediates = {
 		width: image.width,
 		height: image.height,
 		eligiblePixels: image.eligibleIndices.length,
-		edgePixels: edges === null ? 0 : edges.edgeCount,
+		edgePixels: edges.edgeCount,
 		fieldSetSize: field.indices.length,
 		fieldDepthThreshold: field.threshold,
 		fieldSetRule: field.rule,
@@ -641,7 +580,6 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		roleSwapApplied: false,
 		escaped: false,
 		support,
-		verdicts,
 		spread,
 		repairs: 0,
 	}
@@ -704,23 +642,16 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 	let lastPalette: Palette | null = null
 
 	for (let endsStep = 0; endsStep <= MAX_RANK_STEPS; endsStep += 1) {
-		const ends: FieldEnds = chooseFieldEnds(
-			image,
-			field.indices,
-			endsStep,
-			flags.prevalence && coherence !== null ? coherence.coherence : null,
-		)
+		const ends: FieldEnds = chooseFieldEnds(image, field.indices, endsStep)
 		intermediates.endsStep = endsStep
 		intermediates.fieldCollapsed = ends.collapsed
 		intermediates.prevalence = ends.prevalence
 
 		const backgroundVerdict = verifyColor(image, ends.background)
 		support[`background:${endsStep}`] = backgroundVerdict.support
-		verdicts[`background:${endsStep}`] = backgroundVerdict
 		spread[`background:${endsStep}`] = backgroundVerdict.spread
 		const surfaceVerdict = ends.collapsed ? backgroundVerdict : verifyColor(image, ends.surface)
 		support[`surface:${endsStep}`] = surfaceVerdict.support
-		verdicts[`surface:${endsStep}`] = surfaceVerdict
 		spread[`surface:${endsStep}`] = surfaceVerdict.spread
 
 		const endsVerified = backgroundVerdict.passes && surfaceVerdict.passes &&
@@ -812,7 +743,7 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		})
 
 		if (ink === inkPlaceholder) {
-			ink = computeInkField(image, depthOrdering, field.threshold, inkSubstrate)
+			ink = computeInkField(image, depth.depth, field.threshold)
 			intermediates.inkBandSize = ink.bandSize
 			intermediates.inkCandidates = ink.candidates.length
 		}
@@ -851,7 +782,7 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		const orderings: ForegroundOrdering[] = []
 		const ranked = inkOrdering(ink)
 		if (ranked !== null) orderings.push(ranked)
-		const luminance = luminanceOrdering(image, depthOrdering, rampAnchors, boundaryFloor)
+		const luminance = luminanceOrdering(image, depth.depth, rampAnchors)
 		if (luminance !== null) orderings.push(luminance)
 		const accentOrdering = computeAccentOrdering(image, ends.background, ends.surface)
 		intermediates.accentQualified = accentOrdering.qualified
@@ -890,7 +821,6 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 				inkPreference,
 				support,
 				spread,
-				verdicts,
 			)
 			if (foreground === null) break
 			intermediates.foregroundRegime = foreground.choice.regime
@@ -908,7 +838,6 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 				accentPreference,
 				support,
 				spread,
-				verdicts,
 			)
 			intermediates.accentRefinement = accent === null ? null : accent.choice.refinement
 			intermediates.accentStep = accent === null ? 0 : accent.cursor

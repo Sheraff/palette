@@ -1,0 +1,31 @@
+candidate: p3-fields-0.4.0  (research/v3/prototypes/p3-fields/src/candidate.ts)
+bar mode:  regional
+
+overall                  8.0% [5.0–12.6]  (16/200)
+
+by pair type
+  rendition-pair           8.0% [5.0–12.6]  (16/200)
+  jpeg-q92                 — no comparisons (0 errored)
+  jpeg-q85                 — no comparisons (0 errored)
+  jpeg-q75                 — no comparisons (0 errored)
+  dither-lsb1              — no comparisons (0 errored)
+
+reviewed vs unseen  (v2-3: 1.61x, healthy ~1.0)  [labels: live-warehouse, 0 relabelled since the draw]
+  perturbation     n/a  UNDERPOWERED
+    perturbation|reviewed    — no comparisons (0 errored)
+    perturbation|unseen      — no comparisons (0 errored)
+  rendition-pair   1.267x  UNDERPOWERED
+    rendition-pair|reviewed  10.0% [1.8–40.4]  (1/10)
+    rendition-pair|unseen    7.9% [4.8–12.6]  (15/190)
+
+role instability (share of comparisons where the role moved)
+  background   37.5%  (75/200)
+  surface      58.0%  (116/200)
+  foreground   78.0%  (156/200)
+  accent       76.0%  (152/200)
+
+disagreeing trials: 184
+errored trials:     0
+timing: 200 trials, 1065.1s wall, 6164.0s in candidate
+
+report: research/v3/prototypes/p3-fields/measurements/substrate/robustness-pairs-0.4.0-control.json

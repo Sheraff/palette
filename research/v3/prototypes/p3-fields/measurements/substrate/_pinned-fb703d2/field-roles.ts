@@ -84,51 +84,7 @@ import {
 } from "./primitives.ts"
 
 /** Which rule decided F's membership. Recorded so a divergence in the rule is countable. */
-export type FieldSetRule = "beta-quantile" | "degenerate-depth" | "coherence-quantile"
-
-/**
- * **F as the top (1 − β) of the coherence field** — the substrate branch (W13, `P3_SUBSTRATE=field`).
- *
- * The whole reason the degenerate case exists on the shipped path is that the β cut is a cut on a
- * quantity whose *distribution* is manufactured by the edge map: `ATTRIBUTION.md` measured F's size
- * drifting by up to 2789.9 % between a cover and its re-encode, and `PAIRS_ATTRIBUTION.md` §5 measured
- * that no placement of a floor on that quantity, in either units, is rendition-stable.
- *
- * `coherence` is a **percentile field** (`coherence.ts`), uniform on [0, 1] over the eligible pixels.
- * Its β quantile is β, its top (1 − β) is exactly (1 − β) of the artwork, on every rendition and at
- * every resolution — so there is no size to drift, no empty set to guard, and **no floor to place**.
- * `DEGENERATE_DEPTH_FLOOR_PX` is not consulted on this path and neither is its scale-free counterpart.
- *
- * The strict/inclusive fallback is kept verbatim from `computeFieldSet` because it is about *ties*, not
- * about degeneracy: a poster-flat artwork can put more than (1 − β) of its pixels on one tied percentile
- * value, and strictly-greater would then return the empty set for the same arithmetic reason it does on
- * the depth field.
- */
-export function computeCoherenceFieldSet(
-	image: DecodedImage,
-	coherence: Float64Array,
-): Readonly<{ indices: Int32Array; threshold: number; rule: FieldSetRule }> {
-	const eligible = image.eligibleIndices
-	const sorted = sortByKey(eligible, (index) => coherence[index])
-	const threshold = coherence[sorted[quantileIndex(sorted.length, FIELD_DEPTH_QUANTILE)]]
-
-	const strict: number[] = []
-	for (let i = 0; i < eligible.length; i += 1) {
-		if (coherence[eligible[i]] > threshold) strict.push(eligible[i])
-	}
-	if (strict.length > 0) {
-		return { indices: Int32Array.from(strict), threshold, rule: "coherence-quantile" }
-	}
-	const inclusive: number[] = []
-	for (let i = 0; i < eligible.length; i += 1) {
-		if (coherence[eligible[i]] >= threshold) inclusive.push(eligible[i])
-	}
-	return {
-		indices: Int32Array.from(inclusive.length > 0 ? inclusive : Array.from(eligible)),
-		threshold,
-		rule: "coherence-quantile",
-	}
-}
+export type FieldSetRule = "beta-quantile" | "degenerate-depth"
 
 /**
  * The **field set F**: the eligible pixels whose depth exceeds the β quantile of depth — except on
@@ -317,34 +273,14 @@ export type FieldEnds = Readonly<{
 	nearBand: EndBandRecord | null
 }>
 
-/**
- * How much of F reads as this end's colour.
- *
- * `weight` is `null` on the shipped path and the answer is a **raw bar count** — the quantity
- * cover-114 refuted. `measurements/substrate/` records the diagnosis: a flat white shirt occupying
- * 6.06 % of F beat the textured red field at 1.45 % *whose median is the field colour*, and the
- * reviewer's verdict was "the background of this artwork is not white, it is red". A count over a
- * bar is a measure of **flatness**, because a textured region scatters its own pixels outside its own
- * median's bar while a flat one does not, and flatness is not the question "which end is the ground".
- *
- * With `P3_SUBSTRATE=prevalence` the weight is the coherence percentile and the answer is **coherence
- * mass within F**: every member still has to clear the same bar, but it contributes how deep inside a
- * homogeneous region it sits rather than one vote. A count is the special case `weight ≡ 1`, so the
- * two branches are one statistic read with two weightings — no new comparison, no new constant.
- */
-function prevalenceOf(
-	image: DecodedImage,
-	fieldSet: Int32Array,
-	end: number,
-	weight: Float64Array | null,
-): number {
+function prevalenceOf(image: DecodedImage, fieldSet: Int32Array, end: number): number {
 	const { lab, bar } = image
 	const barOfEnd = bar[end]
 	let count = 0
 	for (let i = 0; i < fieldSet.length; i += 1) {
 		const index = fieldSet[i]
 		const pairBar = barOfEnd > bar[index] ? barOfEnd : bar[index]
-		if (labDistance(lab, index, end) < pairBar) count += weight === null ? 1 : weight[index]
+		if (labDistance(lab, index, end) < pairBar) count += 1
 	}
 	return count
 }
@@ -357,12 +293,7 @@ function prevalenceOf(
  * the band's far edge; the band's *width* is fixed at τ·`ENDS_BAND_TAU_MULTIPLE`, so a stepped end is
  * still the cascade pixel of a population of the same size.
  */
-export function chooseFieldEnds(
-	image: DecodedImage,
-	fieldSet: Int32Array,
-	step: number,
-	prevalenceWeight: Float64Array | null = null,
-): FieldEnds {
+export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step: number): FieldEnds {
 	const { lab, bar, rgb } = image
 	const n = fieldSet.length
 
@@ -464,8 +395,8 @@ export function chooseFieldEnds(
 	// backgrounds are the album-artwork norm the corpus is drawn from, and — the reason that survives if
 	// that norm does not — it agrees with the foreground's own tie convention in `foreground.ts`, so the
 	// two stated conventions cannot pull a palette in opposite directions.
-	const farPrevalence = prevalenceOf(image, fieldSet, farEnd, prevalenceWeight)
-	const nearPrevalence = prevalenceOf(image, fieldSet, nearEnd, prevalenceWeight)
+	const farPrevalence = prevalenceOf(image, fieldSet, farEnd)
+	const nearPrevalence = prevalenceOf(image, fieldSet, nearEnd)
 	const larger = Math.max(farPrevalence, nearPrevalence)
 	const relativeGap = larger === 0 ? 0 : Math.abs(farPrevalence - nearPrevalence) / larger
 	let farIsBackground: boolean
