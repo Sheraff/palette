@@ -211,6 +211,21 @@ deliberately NOT touched (contract floors are the reviewer's; if v1 dies there a
 data, not a repair prompt). Keep-or-kill on the round's verdicts; the falsification record stands
 either way.
 
+**VERDICT (2026-08-11, round phase2-pair-019, declared by this orchestrator per the scope's own
+terms): KILL — the pre-registered condition fired.** Five beyond-scope demand instances across
+the answered items; the dominant class is ROLE ASSIGNMENT ("the Zen grey is not a foreground or
+accent color... it must be either background or surface"; "neither candidate chose a dark
+background (the Umbra color could work)") — a notion this mechanism does not price and is
+provably indifferent to (F/A and field↔ink swap deltas 0). The reviewer certified the extraction
+and rejected the roles. Split finding, recorded: the λ repair WORKED (arm a: 4/7 improved, P1's
+first TWO STRONG grades, 7/7 preference — 2 explicit); the chromatic residual (the repair under
+test) stayed zero-strong and its target complaint class grew (5/7 items vs 2/8 in v0). The inks
+watch-class did NOT fire (zero readability complaints — the v0 falsifier result did not repeat).
+One item vetoed at artwork level; the reviewer authored an endorsed-sample palette on item 5
+(#feffff/#70ba25/#020202/#fb0000, built on arm a's extraction) — preserved in the analysis as
+reviewer-provided ground truth. The falsification record now carries: v0 (currency mispricing,
+twice-proven) + v1 (role assignment inexpressible). This closes the granted iteration.
+
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
 - `src/measure/` — decode (sharp 0.33.5, dims from header, refuse transparency loudly),

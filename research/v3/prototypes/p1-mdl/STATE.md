@@ -1,4 +1,15 @@
-# P1 — where we're at (pre-pause state, 2026-08-05)
+# P1 — where we're at (updated 2026-08-11: KILLED per pre-registered condition)
+
+**FINAL: the v1 keep-or-kill round (phase2-pair-019) fired the kill condition** — the dominant
+verdict class demands role-assignment pricing this mechanism cannot express (swap-indifference
+is structural). Split finding: λ-repaired arm a earned P1's first two STRONG grades and 7/7
+preference; the chromatic residual stayed zero-strong with its target complaint class grown. The
+v0 inks falsifier did NOT repeat (zero readability complaints in v1). Reviewer authored an
+endorsed-sample on item 5 — preserved as ground truth. Sections below are the pre-round state;
+§5's graft list is the living value. Full verdict record: DESIGN.md §V1; ANALYSIS.md in
+review-rounds/v1-keep-or-kill/.
+
+# (pre-pause state, 2026-08-05)
 
 ## 1. Mechanism
 
