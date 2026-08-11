@@ -1,0 +1,61 @@
+{
+	"slug": "p5-fieldfit",
+	"worktree": "/Users/Flo/GitHub/palette/.worktrees/p5-fieldfit",
+	"homeCandidate": "/Users/Flo/GitHub/palette/.worktrees/p5-fieldfit/research/v3/prototypes/p5-fieldfit/candidate.ts",
+	"snapshotCandidate": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/members/p5-fieldfit/v3/prototypes/p5-fieldfit/candidate.ts",
+	"homeCodeVersion": "737d1f11667bf8518233591dea9e6c738ee3639bd8a1b5274f65acb5379d3b76",
+	"snapshotCodeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d",
+	"closureFileCount": 18,
+	"ownFileCount": 9,
+	"sharedFileCount": 9,
+	"sharedFileDiffs": [],
+	"shared": [
+		"src/contract/challengers.ts",
+		"src/contract/color.ts",
+		"src/contract/constants.ts",
+		"src/contract/invariants.ts",
+		"src/contract/perception-model-spaces.ts",
+		"src/contract/ramp.ts",
+		"src/contract/types.ts",
+		"src/devloop/code-version.ts",
+		"src/devloop/types.ts"
+	],
+	"copied": [
+		{
+			"path": "prototypes/p5-fieldfit/candidate.ts",
+			"sha256": "a86f5bcd8562d1f97bbf1736fc97d024a9f2f1f0f042745d4bb74b4af7cbcbf5"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/assignment.ts",
+			"sha256": "a9cb7986ae9658eb8a41b450f1da50ba0ee28cd9303fd41095089dac6ecd9dd7"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/components.ts",
+			"sha256": "37fd250b5f04d36d5b87a25dd9d809f59fac5dee01a943bab07d2c2765a79afd"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/decode.ts",
+			"sha256": "677842750ddd444ce14ca69d6146eaf0a40a475858a4fc2a96e12b96bae1ebd9"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/fieldfit.ts",
+			"sha256": "697892f2d9259c4b6a37c3f28c06a881eb61e59cc798ca473c1f6a2ed494ec65"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/overlay.ts",
+			"sha256": "3399e3acedf2ea50b960ad593879dcd94652c9fae5214ac476210ce6c7f5c140"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/ramp.ts",
+			"sha256": "844576d9954141888af17de2991527a76cce9d8770f212148e898d212e8f0be0"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/snap.ts",
+			"sha256": "79b8fd2bea61e971221b5ea46090c5a8d6142d95a28cbca481baebad60e4ca94"
+		},
+		{
+			"path": "prototypes/p5-fieldfit/src/types.ts",
+			"sha256": "d3c63524154e44a9821611dfec9e95183185a0f83dfa362c0e8459304d5ee03f"
+		}
+	]
+}

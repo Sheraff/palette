@@ -1,0 +1,1186 @@
+/**
+ * The selection cascade, the verify-and-step loop, and the escape (arm-d §2.3–§2.7).
+ *
+ * ## The order, and why stepping is expensive on purpose
+ *
+ * Roles are chosen in dependency order — the two field ends, then the gradient, then the foreground,
+ * then the accent — and **a stepped role re-runs everything downstream of it**. That is the contract's
+ * "any repair re-validates the entire palette" implemented as control flow: a relocated defect is
+ * impossible rather than hoped against. It is also why the step caps are small; a role that has walked
+ * far down its own ordering is answering a different question from the one it was asked.
+ *
+ * ## A colour is never adjusted
+ *
+ * Every repair in this file does one of two things: it **steps a rank** (moves to the next quantile in
+ * the same ordering and redeems that rank against a pixel), or it **drops a guide stop**. Nothing here
+ * nudges a channel, blends toward a target, or picks a nearby colour. There is no code path by which a
+ * published colour is anything other than a pixel index redeemed through `pixelRgb`.
+ *
+ * ## Contrast floors are verification predicates, not selection constants
+ *
+ * At their defaults the output is what the unparameterised algorithm produced, and raising a floor can
+ * only step the rank on artworks that actually fail it. Zero collateral by construction, not by testing
+ * (arm-d §2.7). The floors are read from the palette's own resolved contrast block, so the predicate and
+ * the invariant are the same number by construction.
+ *
+ * ## The escape
+ *
+ * Reached only when the whole image lies within the same-colour bar of itself: one colour, no second
+ * end, no ink, no accent. All four of the contract's conditions are checked on the way rather than
+ * asserted after — the colour is one of the two literals, the role is `foreground`, the partner is
+ * collapsed onto it, and the colour is verified absent from the artwork by scanning for its exact triple.
+ */
+
+import {
+	ACCENT_FUNCTIONAL_DISTANCE,
+	CONTRACT_VERSION,
+	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+	REGION_CHROMA_BOUNDARY,
+	SOURCE_POPULATION_FLOOR,
+} from "../../../src/contract/constants.ts"
+import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../src/contract/color.ts"
+import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
+import type {
+	GradientStop,
+	NonSourceColorEscape,
+	Palette,
+	PaletteColor,
+	Rgb8,
+} from "../../../src/contract/types.ts"
+import { hashFileBytes } from "../../../src/devloop/code-version.ts"
+import {
+	chooseAccent,
+	chromaOf,
+	computeAccentOrdering,
+	type AccentChoice,
+	type AccentContrastPreference,
+	type AccentOrdering,
+	type AccentRefinement,
+} from "./accent.ts"
+import {
+	ALGORITHM_VERSION,
+	BACKGROUND_PREVALENCE_TIE_BAND,
+	DEGENERATE_DEPTH_FLOOR_PX,
+	depthFloorModeInUse,
+	edgeRankInUse,
+	ENDS_BAND_TAU_MULTIPLE,
+	FIELD_DEPTH_QUANTILE,
+	FOREGROUND_POLARITY_TIE_BAND,
+	FOURTH_STOP_PROVEN_UTILITY,
+	GRADIENT_RANK_CORRELATION,
+	INK_REGIME_SUPPORT_MARGIN,
+	MAX_RANK_STEPS,
+	MIN_GUIDE_STOP_SPACING,
+	PREPROCESSING_VERSION,
+	substrateFlags,
+	TRIM_LEVEL,
+} from "./constants.ts"
+import { deciles, diagnosticsEnabled, writeDiagnostics } from "./diagnostics.ts"
+import { decodeImage, pixelRgb, type DecodedImage } from "./decode.ts"
+import { computeCoherenceField, type CoherenceField } from "./coherence.ts"
+import {
+	chooseFieldEnds,
+	computeCoherenceFieldSet,
+	computeFieldSet,
+	type FieldEnds,
+	type FieldSetRule,
+} from "./field-roles.ts"
+import { computeDepthField, computeEdgeField } from "./fields.ts"
+import {
+	chooseForeground,
+	clearsInkRegimeMargin,
+	computeInkField,
+	inkOrdering,
+	luminanceOrdering,
+	minRampContrast,
+	type ForegroundChoice,
+	type ForegroundOrdering,
+	type ForegroundPolarity,
+	type InkContrastPreference,
+	type InkRefinement,
+} from "./foreground.ts"
+import { insertGuideStops, parameteriseField, type GradientParameterisation } from "./gradient.ts"
+import { cascadePixel, labDistance } from "./primitives.ts"
+import { verifyColor, type SupportVerdict } from "./verify.ts"
+
+/**
+ * What the run recorded about how it got its answer. §8's exposable intermediates in their numeric
+ * form — the full-resolution maps are all still in memory at the point this is built, and a viewer that
+ * wants them can call the field modules directly.
+ */
+export type P3Intermediates = {
+	width: number
+	height: number
+	eligiblePixels: number
+	edgePixels: number
+	fieldSetSize: number
+	fieldDepthThreshold: number
+	/** Which membership rule produced F — `degenerate-depth` is 0.3.0's stated no-plateau case. */
+	fieldSetRule: FieldSetRule
+	endsStep: number
+	fieldCollapsed: boolean
+	prevalence: readonly [number, number]
+	bestSpatialCorrelation: number
+	gradientPublished: boolean
+	guideStops: number
+	maxExcursion: number
+	excursionBar: number
+	foregroundRegime: "ink" | "luminance" | "escape"
+	/** Which contrast polarity the luminance regime took, and which cascade step decided it (0.2.0). */
+	foregroundPolarity: ForegroundPolarity | null
+	/** How many pixels of the published field ramp the foreground ordering minimised against (0.2.0). */
+	rampAnchors: number
+	foregroundStep: number
+	/** What the ink regime's lump clause and contrast preference did to the window (0.3.0). */
+	inkRefinement: InkRefinement | null
+	inkBandSize: number
+	inkCandidates: number
+	/** How many pixels cleared the same-colour bar from both field ends (0.4.0). */
+	accentQualified: number
+	/** What the five narrowings did to the accent's top-τ band (0.4.0–0.4.2). `null` when the accent collapsed. */
+	accentRefinement: AccentRefinement | null
+	accentStep: number
+	accentCollapsed: boolean
+	/** True when the fg↔accent comparator swapped the two role labels (0.3.0, round-1 item-19). */
+	roleSwapApplied: boolean
+	escaped: boolean
+	support: Record<string, number>
+	/**
+	 * The **whole** verdict of every verification the run performed, keyed as `support` is.
+	 *
+	 * `support` and `spread` are the two numbers 0.1.0 needed; the substrate experiment needs the
+	 * concentration statistic and which of the two eligibility routes passed, and a caller that had to
+	 * re-run `verifyColor` to read them would be measuring a different pixel than the one that was
+	 * refused. Diagnostics only — nothing in the pipeline reads this back.
+	 */
+	verdicts: Record<string, SupportVerdict>
+	spread: Record<string, number>
+	repairs: number
+}
+
+export type P3Result = Readonly<{ palette: Palette; intermediates: P3Intermediates }>
+
+/** The pair's bar, exactly as `sameColorBar` defines it, for two pixels of the same image. */
+function barBetween(image: DecodedImage, first: number, second: number): number {
+	return sameColorBar(colorFromRgb(pixelRgb(image, first)), colorFromRgb(pixelRgb(image, second)))
+}
+
+function distinctPixels(image: DecodedImage, first: number, second: number): boolean {
+	return labDistance(image.lab, first, second) >= barBetween(image, first, second)
+}
+
+/** Does the artwork contain this exact triple anywhere among its eligible pixels? */
+function containsExactly(image: DecodedImage, rgb: Rgb8): boolean {
+	for (let i = 0; i < image.eligibleIndices.length; i += 1) {
+		const at = image.eligibleIndices[i] * 3
+		if (image.rgb[at] === rgb[0] && image.rgb[at + 1] === rgb[1] && image.rgb[at + 2] === rgb[2]) return true
+	}
+	return false
+}
+
+/** Is the whole image one colour by the contract's own ruler? The escape's precondition. */
+function wholeImageIsOneColor(image: DecodedImage, centre: number): boolean {
+	for (let i = 0; i < image.eligibleIndices.length; i += 1) {
+		const index = image.eligibleIndices[i]
+		const pairBar = image.bar[index] > image.bar[centre] ? image.bar[index] : image.bar[centre]
+		if (labDistance(image.lab, index, centre) >= pairBar) return false
+	}
+	return true
+}
+
+const CONTRAST_FLOORS = resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS)
+
+/**
+ * How many positions the foreground's and the accent's search sequences hold: two regimes (or two
+ * tiers) × the ranks each may step to.
+ *
+ * [INHERITED] — derived from `MAX_RANK_STEPS`, not an independent constant. The `2` is the number of
+ * regimes (or tiers) each role has and the `+ 1` counts rank 0, so both literals are the shape of the
+ * search space the cap already defines; the repair loop is bounded by it so that a role can reach the
+ * last rank it is allowed to reach rather than stopping half way through its own second regime.
+ */
+const SEARCH_CURSOR_LIMIT = 2 * (MAX_RANK_STEPS + 1)
+
+function assemblePalette(
+	imagePath: string,
+	image: DecodedImage,
+	contentHash: string,
+	parts: {
+		background: number
+		surface: number | null
+		foreground: number
+		accent: number | null
+		stops: readonly { pixel: number; position: number }[] | null
+		geometry: GradientParameterisation["geometry"]
+		escape: NonSourceColorEscape | null
+		escapeColor: PaletteColor | null
+	},
+): Palette {
+	const background = colorFromRgb(pixelRgb(image, parts.background))
+	const surface = parts.surface === null ? background : colorFromRgb(pixelRgb(image, parts.surface))
+	const foreground = parts.escapeColor ?? colorFromRgb(pixelRgb(image, parts.foreground))
+	const accent = parts.accent === null ? foreground : colorFromRgb(pixelRgb(image, parts.accent))
+
+	const surfaceCollapsed = surface.hex === background.hex
+	const accentCollapsed = accent.hex === foreground.hex
+
+	let gradient: Palette["gradient"] = null
+	if (parts.stops !== null && !surfaceCollapsed) {
+		const stops: GradientStop[] = parts.stops.map((stop, index) => ({
+			// The ends are the field roles themselves, per the endpoint ruling — taken from the published
+			// role colours rather than re-derived, so "exactly" is structural.
+			color: index === 0 ? background : index === parts.stops!.length - 1 ? surface : colorFromRgb(pixelRgb(image, stop.pixel)),
+			position: stop.position,
+		}))
+		gradient = {
+			stops: stops as unknown as [GradientStop, GradientStop, ...GradientStop[]],
+			...(parts.geometry === undefined ? {} : { geometry: parts.geometry }),
+		}
+	}
+
+	return {
+		contractVersion: CONTRACT_VERSION,
+		roles: { background, surface, foreground, accent },
+		gradient,
+		collapse: { surfaceCollapsed, accentCollapsed },
+		...(parts.escape === null ? {} : { escape: parts.escape }),
+		contrast: CONTRAST_FLOORS,
+		metadata: {
+			algorithmVersion: ALGORITHM_VERSION,
+			preprocessingVersion: PREPROCESSING_VERSION,
+			inputContentHash: contentHash,
+			sourceRendition: {
+				path: imagePath,
+				width: image.width,
+				height: image.height,
+				format: image.format,
+			},
+			// Equal to the rendition's size, because §1 forbids resampling.
+			processedSize: { width: image.width, height: image.height },
+		},
+	}
+}
+
+/**
+ * The foreground search: first regime, then second, stepping the rank inside each.
+ *
+ * The predicates are §2.7's — bar support, spatial spread, distinctness from both field ends, and the
+ * text contrast floor against both. The ramp floor is not checked here because the ramp is not yet
+ * assembled; the full-palette validation below catches it and steps this search again.
+ */
+function searchForeground(
+	image: DecodedImage,
+	orderings: readonly ForegroundOrdering[],
+	background: number,
+	surface: number,
+	fromCursor: number,
+	inkPreference: InkContrastPreference,
+	support: Record<string, number>,
+	spread: Record<string, number>,
+	verdicts: Record<string, SupportVerdict>,
+): { choice: ForegroundChoice; cursor: number; verified: boolean } | null {
+	const backgroundRgb = pixelRgb(image, background)
+	const surfaceRgb = pixelRgb(image, surface)
+	const floor = CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude
+
+	// Regimes in order: ink first, exhausted, then luminance. §2.5's regime test is "does the ink
+	// population survive verification", so the second regime is reached only when the first has failed at
+	// every rank it was allowed to step to — not interleaved with it.
+	//
+	// `cursor` numbers the whole search space (regime, step) as one sequence, so "step the rank" means
+	// exactly one position in it. Carrying a per-regime step instead would have let a step taken in the
+	// ink regime silently skip the luminance regime's early ranks, which is a different repair from the
+	// one §2.7 describes.
+	for (const [regimeIndex, ordering] of orderings.entries()) {
+		for (let step = 0; step <= MAX_RANK_STEPS; step += 1) {
+			const cursor = regimeIndex * (MAX_RANK_STEPS + 1) + step
+			if (cursor < fromCursor) continue
+			const choice = chooseForeground(image, ordering, step, inkPreference)
+			if (choice === null || choice.pixel < 0) continue
+
+			const verdict = verifyColor(image, choice.pixel)
+			support[`foreground:${choice.regime}:${step}`] = verdict.support
+			verdicts[`foreground:${choice.regime}:${step}`] = verdict
+			spread[`foreground:${choice.regime}:${step}`] = verdict.spread
+			if (!verdict.passes) continue
+			// The regime's **stability margin** (0.2.0). §2.5's regime test is "does the ink population
+			// survive verification", and at 0.1.0 that boundary was ≥ 1 pixel wide: a ±1-LSB dither could
+			// push the ink population across the source-support floor and swap the foreground into an
+			// entirely different ordering. The ink regime is now taken only when it clears the floor by
+			// `INK_REGIME_SUPPORT_MARGIN`; below that the luminance regime is the honest answer, and the
+			// search reaches it exactly as it does for an empty ink population. The margin gates the ink
+			// regime alone — see `clearsInkRegimeMargin` for why the asymmetry is what makes this a guard
+			// rather than a second flippable threshold.
+			if (choice.regime === "ink" && !clearsInkRegimeMargin(verdict.support)) continue
+			if (!distinctPixels(image, choice.pixel, background)) continue
+			if (!distinctPixels(image, choice.pixel, surface)) continue
+
+			const rgb = pixelRgb(image, choice.pixel)
+			if (Math.abs(apcaRaw(rgb, backgroundRgb)) < floor) continue
+			if (Math.abs(apcaRaw(rgb, surfaceRgb)) < floor) continue
+
+			return { choice, cursor, verified: true }
+		}
+	}
+
+	// Nothing in the remaining search space verified. Publish the **un-stepped** rank — the answer the
+	// algorithm would have given with no verification pass at all — rather than whichever late rank the
+	// scan happened to stop on. An exhausted search is a failure to repair, and a failure to repair should
+	// not also silently move the colour: the row is then a clean statement that rank 0 is what this
+	// paradigm says and that the contract disagrees with it.
+	for (const [regimeIndex, ordering] of orderings.entries()) {
+		const choice = chooseForeground(image, ordering, 0, inkPreference)
+		if (choice !== null && choice.pixel >= 0) {
+			return { choice, cursor: regimeIndex * (MAX_RANK_STEPS + 1), verified: false }
+		}
+	}
+	return null
+}
+
+/**
+ * The accent search: one ordering, stepping the rank down it, then collapse.
+ *
+ * `null` means the qualified population was empty or nothing in it survived verification — which §2.6
+ * says is the accent collapsing to exactly the foreground, arrived at as an empty population rather than
+ * asserted. **Collapse semantics are unchanged at 0.4.0**; what changed is the ordering above it, and
+ * the deletion of the tier wall means there is now one cursor rather than two.
+ *
+ * ## 0.4.0 — the min-ramp floor is a preference again, and this function stopped eliminating on it
+ *
+ * 0.3.0 made the accent's min-ramp |raw APCA| a **feasibility predicate** here: a candidate below the
+ * floor stepped the rank. `ACCENT_REDESIGN.md` requirement 3 moves it back to a **preference inside the
+ * ordering** (`accent.ts`, narrowing 3), on the ink amendment's pattern and for the ink amendment's
+ * reason — identity outranks legibility when the artwork has no legible version of the colour it is
+ * about. The evidence for the move is that the floor's own motivating cover was re-graded **strong** at
+ * round 2 with the pre-registered "accent complaint repeats" expectation **refuted** at min-ramp 7.55
+ * (`review-rounds/round-2-calibration/VERDICTS.md`): the floor was not carrying the verdict.
+ *
+ * **Stated rather than smoothed:** this is the one place 0.4.0 removes a guard rather than adding one,
+ * and if a round-4 note reads *"the accent is hard to see"* on a cover where the ordering had a legible
+ * alternative, this paragraph is what failed. What remains here is the **contract's** own clause —
+ * invariant 4's accent test with its functional-distance escape — which was never a preference.
+ */
+function searchAccent(
+	image: DecodedImage,
+	ordering: AccentOrdering,
+	background: number,
+	surface: number,
+	foreground: number,
+	fromCursor: number,
+	preference: AccentContrastPreference,
+	support: Record<string, number>,
+	spread: Record<string, number>,
+	verdicts: Record<string, SupportVerdict>,
+): { choice: AccentChoice; cursor: number } | null {
+	const backgroundRgb = pixelRgb(image, background)
+	const surfaceRgb = pixelRgb(image, surface)
+	const floor = CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude
+
+	// One cursor over the ordering's ranks, for the reason given in `searchForeground`. There is one
+	// ordering at 0.4.0, so the cursor *is* the step.
+	for (let step = 0; step <= MAX_RANK_STEPS; step += 1) {
+		const cursor = step
+		if (cursor < fromCursor) continue
+		const choice = chooseAccent(image, ordering, step, preference)
+		if (choice === null || choice.pixel < 0) continue
+
+		const verdict = verifyColor(image, choice.pixel)
+		support[`accent:${step}`] = verdict.support
+		verdicts[`accent:${step}`] = verdict
+		spread[`accent:${step}`] = verdict.spread
+		// The salience guard's second half (`ACCENT_REDESIGN.md` requirement 4): support and spatial
+		// spread, the existing machinery, applied to the lump's own cascade pixel. A colour living in one
+		// tight blob fails `SPATIAL_SPREAD_FLOOR` here and the rank steps.
+		if (!verdict.passes) continue
+
+		// Invariant 3's elevated cell: the accent must be plainly a different colour from the
+		// foreground, or collapse onto it exactly. The separation distance is the contract's, used
+		// here as a verification predicate and never to choose anything.
+		const separation = Math.max(
+			barBetween(image, choice.pixel, foreground),
+			FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+		)
+		if (labDistance(image.lab, choice.pixel, foreground) < separation) continue
+
+		// Invariant 4's accent clause, with its one escape: a pair violates only when |raw APCA| is
+		// below the floor *and* the two colours are closer than the functional distance.
+		const rgb = pixelRgb(image, choice.pixel)
+		const failsBackground = Math.abs(apcaRaw(rgb, backgroundRgb)) < floor &&
+			labDistance(image.lab, choice.pixel, background) < ACCENT_FUNCTIONAL_DISTANCE
+		const failsSurface = Math.abs(apcaRaw(rgb, surfaceRgb)) < floor &&
+			labDistance(image.lab, choice.pixel, surface) < ACCENT_FUNCTIONAL_DISTANCE
+		if (failsBackground || failsSurface) continue
+
+		return { choice, cursor }
+	}
+	return null
+}
+
+/** Which role a violation names, for the repair loop. */
+function namesRole(subjects: readonly string[], role: string): boolean {
+	return subjects.some((subject) => subject === `roles.${role}`)
+}
+
+/**
+ * **The fg↔accent role comparator** (0.3.0; round-1 item-19).
+ *
+ * The reviewer's verdict on item-19 was not that a colour was wrong — *both* published colours were
+ * right. It was that they were **assigned to the wrong roles**: the foreground should have been the
+ * black and the accent the white, with background and surface ratified as they stood. That is ordering
+ * evidence, and it is the campaign's black-text→black-foreground identity evidence arriving from a
+ * second direction (`VERDICTS.md` §2).
+ *
+ * So after both roles are selected *and verified*, one scalar comparison is made: if the accent's
+ * **min-ramp |raw APCA|** strictly exceeds the foreground's, and the foreground would itself qualify as
+ * an accent — clearing the same-colour bar from **both** field ends, which is `computeAccentTiers`'s own
+ * entry condition — the two **labels** swap. No pixel moves, nothing is re-selected, nothing is created;
+ * `assemblePalette` recomputes the collapse flags from the swapped hexes, so a swap that collapses a
+ * role says so.
+ *
+ * Why min-ramp |APCA| is the right scalar and not, say, OKLab distance: it is the quantity both
+ * complaints are about (invariant 4 minimises it over the rendered ramp) and the quantity the
+ * foreground's own 0.2.0 ordering already ranks by, so the comparator and the ordering cannot disagree
+ * about which of two colours is the better foreground.
+ *
+ * **One clause added to the brief, named rather than folded in.** The verdict's own wording is *"each
+ * clears the other's qualification"*, and the accent's qualification is the same-colour bar from both
+ * field ends. This function also requires the promoted colour to clear the accent's min-ramp floor.
+ *
+ * **0.4.0 restates what that clause now is.** At 0.3.0 it mirrored a feasibility floor in `searchAccent`;
+ * at 0.4.0 the min-ramp floor is a *preference* inside the accent ordering, so the clause has no
+ * counterpart to mirror. It is kept, and it is kept as what it now is: a **conservative guard on a label
+ * move**. A swap is optional — the palette is valid either way — so requiring the promoted colour to be
+ * one the accent slot can carry legibly costs nothing that the evidence asks for, and dropping it would
+ * widen a comparator whose fire rate is already the thing being measured.
+ *
+ * **Reported rather than smoothed.** The swapped accent is no longer the output of the accent ordering,
+ * so `accentRefinement` describes the *pre-swap* candidate and `roleSwapApplied` says the labels moved.
+ * The colour promoted into the accent slot carries none of the accent ordering's properties — it is not
+ * the chromatic departure the ordering elected, it is the worse-contrasting of two colours the comparator
+ * has just ordered, and on the demo set it is systematically the lower-|APCA| one *by construction*. The
+ * comparator's strictness (`>`, never `≥`) keeps it from firing on a tie.
+ *
+ * ## The 0.4.0 interaction, named and left standing
+ *
+ * The accent redesign changed what this comparator is comparing, and the consequence is measurable on
+ * cover 168 — the very cover whose reviewer asked for *"the accent … within the blue family instead of …
+ * the same color family as the background and surface"*. At 0.4.0 the accent ordering elects `#278aa9`,
+ * a vivid blue, exactly as asked. The foreground search elects `#3d3936`, a brown at min-ramp **6.66**
+ * against a dark brown field. This comparator then reads 39.95 > 6.66, swaps the labels, and publishes
+ * the blue as the **foreground** and the brown as the **accent** — so the reviewer's complaint stands
+ * even though the ordering answered it.
+ *
+ * **That is not obviously the wrong call and it is not this iteration's to make.** Without the swap the
+ * palette carries a near-invisible foreground, and foreground readability is the campaign's dominant
+ * graded-down failure (`EVIDENCE_2026-08-04.md` item 1). With it, identity loses. The real defect is one
+ * layer up — the foreground search elected an unreadable ink and the comparator is papering over it —
+ * and `ACCENT_REDESIGN.md`'s non-goals forbid touching foreground selection here. So the comparator is
+ * left exactly as round 2 validated it, the fire rate is instrumented, and the interaction is written
+ * down rather than quietly designed around. It is the first thing a round-4 note about 168 will be about.
+ *
+ * ## 0.4.2 — the round-5 arbitration, and the one clause it adds
+ *
+ * It was. Round 5 graded 168 **acceptable** with the note *"would work better with an accent in the blue
+ * tones"* — **the blue IS published, in the foreground slot, and the reviewer has now asked for it as the
+ * accent three rounds running** (`review-rounds/round-5-calibration/VERDICTS.md`, "The 168 arbitration").
+ * 039 is the same defect on a different cover: its magenta `#713372` is the accent ordering's rank-0 mark
+ * at departure 0.9997 and this comparator publishes it as the foreground.
+ *
+ * The round's fix direction, verbatim: *"the swap must weigh WHERE the chromatic mark serves identity
+ * (accent) vs where contrast is structurally owed (fg) — candidate rule: don't swap the chromatic mark
+ * INTO fg when the displaced fg candidate still clears the fg floors"*. So:
+ *
+ * > **The chromatic-mark clause.** The labels do not move when the colour that would be promoted into
+ * > the foreground slot is a **chromatic mark** — `REGION_CHROMA_BOUNDARY`, the contract's own
+ * > neutral/saturated split — *and* the foreground candidate it would displace **still clears the
+ * > contract's text floor over the whole published ramp**.
+ *
+ * **Both halves are load-bearing, and the second is what bounds it.** `EVIDENCE_2026-08-04.md` item 8 —
+ * identity outranked legibility, the reviewer demanding a white foreground on a light field — is the
+ * precedent that lets identity win here at all; it is not a licence to publish an illegible foreground,
+ * because the round-1 verdicts on items 00 and 02 pull the other way and both verdicts are real. The
+ * floor clause is where that line is drawn: the refinement can only ever *keep* a foreground the
+ * contract's own text metric already accepts. Where the foreground candidate is genuinely failing, the
+ * swap is still there, still doing what round 2 validated it for.
+ *
+ * **Why the chroma test and not the contrast test alone.** Measured over the 220-cover coverage set at
+ * 0.4.1: the comparator fires on 62 covers and the displaced foreground candidate clears the ramp text
+ * floor on **62 of 62**. A rule built on the floor clause alone would therefore have suppressed *every*
+ * swap in the corpus — **including the one round 2 validated by name**: on r2-item-1's cover the swap is
+ * what puts the artwork's black ink in the foreground slot (`#010000` at 0.3.0, `#020001` since the
+ * accent redesign moved which near-black pixel the ordering elects), and item-1's *strong* re-grade
+ * credits this comparator explicitly. Removing it there is the regression this refinement must not
+ * cause. What separates that cover from 168 and 039 is not contrast at all: there the promoted colour is
+ * **the artwork's ink, a neutral** (chroma 0.0240, `dark-neutral`), and on 168/039 it is **the artwork's
+ * chromatic mark** (0.1429 and 0.1355). That is the distinction the round's own wording names, and
+ * `colorRegion`'s chroma axis is the calibrated place this repository already draws it.
+ *
+ * **What it measured.** Coverage-220, 0.4.1 → 0.4.2: fire rate **62/220 (28.2 %) → 7/220 (3.2 %)**, with
+ * `chromaticMarkHeld` true on **50** covers and the remaining 5 lost to accents the shade band re-elected
+ * upstream. 168 publishes the blue `#2aa5e9` as accent and `#3d3936` as a contract-valid foreground; 039
+ * returns its magenta to the accent slot. Contract PASS is unmoved at 200/220 and accent collapse falls
+ * 29 → 21. **That is a large behaviour change for one clause and it is stated as one** — the comparator
+ * was a 28 % path and is now a 3 % one, so anything round 2 credited to it on a cover outside the named
+ * two is now credited to the foreground search instead, unmeasured until the next round grades it.
+ *
+ * **Reported rather than smoothed.** The clause has no opinion about the *foreground* candidate's chroma,
+ * so on a cover where both colours are saturated it does not fire and the comparator behaves as before —
+ * deliberately, because moving one chromatic colour past another loses no identity, and a two-sided rule
+ * would have been a wider change than the evidence bought. And the boundary is a boundary: `#010012`
+ * (chroma 0.0548, an all-but-black navy) counts as a mark and holds a foreground at min-ramp 2.86, which
+ * is a legible-by-the-contract-and-barely reading. Those covers are listed in the 0.4.2 report rather
+ * than tuned around.
+ */
+function shouldSwapRoles(
+	image: DecodedImage,
+	foreground: number,
+	accent: number,
+	background: number,
+	surface: number,
+	rampAnchorRgb: readonly Rgb8[],
+): SwapVerdict {
+	const foregroundMinRamp = minRampContrast(image, foreground, rampAnchorRgb)
+	if (minRampContrast(image, accent, rampAnchorRgb) <= foregroundMinRamp) {
+		return { swap: false, chromaticMarkHeld: false }
+	}
+	// **The chromatic-mark clause (0.4.2).** Read the docstring's last section before changing either
+	// half: the chroma test is what keeps round 2's validated ink swaps, and the floor test is what
+	// keeps identity from buying an illegible foreground.
+	const chromaticMarkHeld = chromaOf(image.lab, accent) >= REGION_CHROMA_BOUNDARY &&
+		foregroundMinRamp >= CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude
+	if (chromaticMarkHeld) return { swap: false, chromaticMarkHeld: true }
+	// The accent's own qualification, applied to the colour about to be labelled accent: the bar from
+	// both field ends, and 0.3.0's min-ramp floor.
+	if (!distinctPixels(image, foreground, background)) return { swap: false, chromaticMarkHeld: false }
+	if (!distinctPixels(image, foreground, surface)) return { swap: false, chromaticMarkHeld: false }
+	return {
+		swap: foregroundMinRamp >= CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude,
+		chromaticMarkHeld: false,
+	}
+}
+
+/**
+ * What the comparator decided, and whether 0.4.2's clause is what decided it.
+ *
+ * A boolean would have said the labels held; it would not have said *why*, and "the swap rate fell" is
+ * only a statement about this refinement if the covers it fell on are countable.
+ */
+type SwapVerdict = Readonly<{
+	swap: boolean
+	/** True exactly when the chromatic-mark clause is what held the labels still. */
+	chromaticMarkHeld: boolean
+}>
+
+export async function extractPalette(imagePath: string): Promise<P3Result> {
+	const image = await decodeImage(imagePath)
+	const contentHash = await hashFileBytes(imagePath)
+
+	// ---------------------------------------------------------------------------------------
+	// The substrate switch (W13, dev-only, default OFF). With `P3_SUBSTRATE` unset `flags` is all
+	// false, `coherence` is null, and every line below is the 0.4.0 path unchanged — checked
+	// byte-for-byte over demo-20 rather than asserted.
+	//
+	// `field` on: the binary edge map and its distance transform are **not computed at all**, and the
+	// depth-like ordering every consumer reads is the coherence percentile. `prevalence` on without
+	// `field` still needs the coherence field, because coherence mass is what it weighs by — so the
+	// field is built whenever either branch asks for it, and only `field` redirects F.
+	// ---------------------------------------------------------------------------------------
+	const flags = substrateFlags()
+	const coherence: CoherenceField | null = flags.field || flags.prevalence
+		? computeCoherenceField(image)
+		: null
+	const edges = flags.field ? null : computeEdgeField(image)
+	const depth = edges === null ? null : computeDepthField(image, edges)
+	// The one scalar field the rest of the pipeline reads as "depth": the distance transform on the
+	// shipped path, the coherence percentile on the substrate path. Both are per-pixel scalars where
+	// larger means *further inside a region of unchanging colour*; that is the whole contract between
+	// this line and its four consumers (F, the ink band, the ink annulus radius, the luminance floor).
+	const depthOrdering: Float64Array = flags.field && coherence !== null
+		? coherence.coherence
+		: (depth as { depth: Float64Array }).depth
+	const field = flags.field && coherence !== null
+		? computeCoherenceFieldSet(image, coherence.coherence)
+		: computeFieldSet(image, depth as NonNullable<typeof depth>)
+	// The mirror of the field cut. On the substrate path the least-coherent (1 − β) of the artwork is
+	// the boundary population — the continuous analogue of "is an edge pixel" — so it is the floor of
+	// the ink band and of the luminance ordering's own depth restriction. Reuses β; no new constant.
+	const boundaryFloor = flags.field ? 1 - FIELD_DEPTH_QUANTILE : 0
+	const inkSubstrate = flags.field && coherence !== null
+		? { bandFloor: boundaryFloor, radiusField: coherence.scaleDepth }
+		: null
+
+	// ---------------------------------------------------------------------------------------
+	// The dev-only decision-chain record (`P3_DIAG`). Nothing below reads it back; every value in it
+	// is a scalar or the index of a pixel the pipeline has already chosen, and with the variable unset
+	// the only cost is one boolean test per stage. See `diagnostics.ts`.
+	// ---------------------------------------------------------------------------------------
+	const DIAG = diagnosticsEnabled()
+	const chain: Record<string, unknown> = {}
+	const lOf = (pixel: number): number | null => (pixel >= 0 ? image.lab[pixel * 3] : null)
+	const hexOf = (pixel: number): string | null =>
+		pixel >= 0 ? colorFromRgb(pixelRgb(image, pixel)).hex : null
+	const record = (stage: string, value: unknown): void => {
+		if (DIAG) chain[stage] = value
+	}
+	const finish = async (result: P3Result): Promise<P3Result> => {
+		if (!DIAG) return result
+		chain.published = {
+			background: result.palette.roles.background.hex,
+			surface: result.palette.roles.surface.hex,
+			foreground: result.palette.roles.foreground.hex,
+			accent: result.palette.roles.accent.hex,
+			gradientStops: result.palette.gradient === null ? 0 : result.palette.gradient.stops.length,
+			surfaceCollapsed: result.palette.collapse.surfaceCollapsed,
+			accentCollapsed: result.palette.collapse.accentCollapsed,
+		}
+		chain.steps = {
+			endsStep: result.intermediates.endsStep,
+			foregroundCursor: result.intermediates.foregroundStep,
+			accentCursor: result.intermediates.accentStep,
+			// A **mirror** of `roleSwap.applied`, from the intermediates rather than the selection site,
+			// and identical to it on every record (checked over coverage-220: 62 = 62, 0 disagreements).
+			// It is not a second count and must not be added to the first.
+			roleSwapApplied: result.intermediates.roleSwapApplied,
+			fieldSetRule: result.intermediates.fieldSetRule,
+			repairs: result.intermediates.repairs,
+			escaped: result.intermediates.escaped,
+		}
+		await writeDiagnostics(imagePath, chain)
+		return result
+	}
+
+	record("decode", {
+		width: image.width,
+		height: image.height,
+		eligiblePixels: image.eligibleIndices.length,
+		contentHash,
+	})
+	// Parsed here rather than inside the record literal below so the record can name the *behaviour*
+	// separately from the flag. Unchanged in position and in effect: an unrecognised `P3_SUBSTRATE`
+	// still throws at the same point of the run, diagnostics on or off.
+	const substrate = substrateFlags()
+	record("edges", {
+		k: edgeRankInUse(),
+		edgePixels: edges === null ? null : edges.edgeCount,
+		edgeFraction: edges === null ? null : edges.edgeCount / Math.max(1, image.eligibleIndices.length),
+		seedlessDepth: depth === null ? null : depth.seedless,
+		// **The eligibility rule as behaviour, not as a flag** (W17 instrument note 1). Through 0.4.1 this
+		// record emitted the parsed `P3_SUBSTRATE` triple, whose `eligibility` member is *accepted and
+		// ignored* because the branch it names was adopted as the default — so every normal 0.4.1 record
+		// said `eligibility: false` while the coherence route was running unconditionally in `verify.ts`
+		// (`ADOPTION_RULING.md` §2). That is a false statement about behaviour, and a reader diffing a
+		// 0.4.1 chain against a W13 control chain saw the field flip and read a behaviour change into it.
+		// What is emitted now is the mode that actually ran; it is a constant string at 0.4.1 by
+		// construction, and it changes only when the rule does.
+		eligibilityMode: "coherence-unconditional",
+		// The branches that are still genuinely switchable and still decide something when named.
+		// `eligibility` is deliberately absent: it is adopted, so there is no flag state to report.
+		substrateBranches: { field: substrate.field, prevalence: substrate.prevalence },
+		// The substrate branch's own summary, in place of the edge map it replaced. `radii` is what the
+		// resolution coupling of the neighbourhood now looks like — a fraction of the artwork rather than
+		// of the sampling grid — and `scaleMeanRatio` is the raw bar-relative local difference per scale,
+		// which is the quantity that used to be thresholded.
+		coherenceRadii: coherence === null ? null : coherence.radii,
+		coherenceScaleMeanRatio: coherence === null ? null : coherence.scaleMeanRatio,
+	})
+	record("fieldSet", {
+		beta: FIELD_DEPTH_QUANTILE,
+		size: field.indices.length,
+		depthThreshold: field.threshold,
+		sizeFraction: field.indices.length / Math.max(1, image.eligibleIndices.length),
+		// 0.3.0's membership rule, as a label: a divergence in *which rule ran* is a countable stage,
+		// where a divergence in the field-set size alone was only ever a continuous quantity.
+		rule: field.rule,
+		boundaryFloor,
+		degenerateDepthFloorPx: DEGENERATE_DEPTH_FLOOR_PX,
+		// W11b: the floor is an *absolute pixel* rule and a rendition pair differs in resolution, so the
+		// two quantities the rule is a comparison between travel with the record: the β-quantile depth
+		// read back in the transform's own pixels, and the long edge it was divided by. A divergence in
+		// `rule` between two renditions is then attributable to one of them without re-deriving anything.
+		longEdge: image.longEdge,
+		depthThresholdPx: field.threshold * image.longEdge,
+		depthFloorMode: depthFloorModeInUse(),
+	})
+
+	const support: Record<string, number> = {}
+	const verdicts: Record<string, SupportVerdict> = {}
+	const spread: Record<string, number> = {}
+	const intermediates: P3Intermediates = {
+		width: image.width,
+		height: image.height,
+		eligiblePixels: image.eligibleIndices.length,
+		edgePixels: edges === null ? 0 : edges.edgeCount,
+		fieldSetSize: field.indices.length,
+		fieldDepthThreshold: field.threshold,
+		fieldSetRule: field.rule,
+		endsStep: 0,
+		fieldCollapsed: false,
+		prevalence: [0, 0],
+		bestSpatialCorrelation: 0,
+		gradientPublished: false,
+		guideStops: 0,
+		maxExcursion: 0,
+		excursionBar: 0,
+		foregroundRegime: "luminance",
+		foregroundPolarity: null,
+		rampAnchors: 0,
+		foregroundStep: 0,
+		inkRefinement: null,
+		inkBandSize: 0,
+		inkCandidates: 0,
+		accentQualified: 0,
+		accentRefinement: null,
+		accentStep: 0,
+		accentCollapsed: false,
+		roleSwapApplied: false,
+		escaped: false,
+		support,
+		verdicts,
+		spread,
+		repairs: 0,
+	}
+
+	// ---------------------------------------------------------------------------------------
+	// The escape (§2.7), checked before anything is selected.
+	// ---------------------------------------------------------------------------------------
+	const imageCascade = cascadePixel(
+		image.eligibleIndices,
+		image.eligibleIndices.length,
+		image.lab,
+		image.rgb,
+	)
+	if (wholeImageIsOneColor(image, imageCascade)) {
+		const backgroundRgb = pixelRgb(image, imageCascade)
+		// [INHERITED] — the contract's escape names *white or black* literally, and 255/0 are what those
+		// two words are in 8-bit sRGB. Not an operating point: no third colour is admissible here.
+		const white: Rgb8 = [255, 255, 255]
+		const black: Rgb8 = [0, 0, 0]
+		const options: { color: PaletteColor; rgb: Rgb8 }[] = []
+		if (!containsExactly(image, white)) options.push({ color: colorFromHex("#ffffff"), rgb: white })
+		if (!containsExactly(image, black)) options.push({ color: colorFromHex("#000000"), rgb: black })
+		options.sort((left, right) =>
+			Math.abs(apcaRaw(right.rgb, backgroundRgb)) - Math.abs(apcaRaw(left.rgb, backgroundRgb))
+		)
+
+		intermediates.escaped = options.length > 0
+		intermediates.fieldCollapsed = true
+		intermediates.accentCollapsed = true
+		intermediates.foregroundRegime = "escape"
+
+		record("escape", { taken: true, cascadePixel: imageCascade, cascadeL: lOf(imageCascade), options: options.length })
+
+		if (options.length > 0) {
+			const chosen = options[0]
+			return await finish({
+				palette: assemblePalette(imagePath, image, contentHash, {
+					background: imageCascade,
+					surface: null,
+					foreground: imageCascade,
+					accent: null,
+					stops: null,
+					geometry: undefined,
+					escape: { role: "foreground", color: chosen.color.hex },
+					escapeColor: chosen.color,
+				}),
+				intermediates,
+			})
+		}
+		// Both literals occur in an image that is one colour — arithmetically unreachable, since white and
+		// black are far outside any regional bar of each other. Falling through publishes the honest
+		// one-colour palette and lets the contract report what is wrong with it.
+	}
+
+	// ---------------------------------------------------------------------------------------
+	// The selection cascade, with §2.7's verify-and-step loop.
+	// ---------------------------------------------------------------------------------------
+	const inkPlaceholder = { candidates: new Int32Array(0), scores: new Float64Array(0), bandSize: 0 }
+	let ink = inkPlaceholder
+	let lastPalette: Palette | null = null
+
+	for (let endsStep = 0; endsStep <= MAX_RANK_STEPS; endsStep += 1) {
+		const ends: FieldEnds = chooseFieldEnds(
+			image,
+			field.indices,
+			endsStep,
+			flags.prevalence && coherence !== null ? coherence.coherence : null,
+		)
+		intermediates.endsStep = endsStep
+		intermediates.fieldCollapsed = ends.collapsed
+		intermediates.prevalence = ends.prevalence
+
+		const backgroundVerdict = verifyColor(image, ends.background)
+		support[`background:${endsStep}`] = backgroundVerdict.support
+		verdicts[`background:${endsStep}`] = backgroundVerdict
+		spread[`background:${endsStep}`] = backgroundVerdict.spread
+		const surfaceVerdict = ends.collapsed ? backgroundVerdict : verifyColor(image, ends.surface)
+		support[`surface:${endsStep}`] = surfaceVerdict.support
+		verdicts[`surface:${endsStep}`] = surfaceVerdict
+		spread[`surface:${endsStep}`] = surfaceVerdict.spread
+
+		const endsVerified = backgroundVerdict.passes && surfaceVerdict.passes &&
+			(ends.collapsed || distinctPixels(image, ends.background, ends.surface))
+
+		record("ends", {
+			endsStep,
+			median: ends.median,
+			medianL: lOf(ends.median),
+			// The cascade pixel of F, as a colour: `e1` is the rank-(1−τ) pixel of distance *from this*, so
+			// a divergence at `e1-colour` splits into "the field median moved" and "the rank moved under a
+			// fixed median", and only the second is a statement about the rank.
+			medianHex: hexOf(ends.median),
+			e1DistanceFromMedian: labDistance(image.lab, ends.median, ends.farEnd),
+			e1: ends.farEnd,
+			e1L: lOf(ends.farEnd),
+			e1Hex: hexOf(ends.farEnd),
+			e2: ends.nearEnd,
+			e2L: lOf(ends.nearEnd),
+			e2Hex: hexOf(ends.nearEnd),
+			// 0.3.0's band-then-cascade record. `e1-colour` was 68 of 122 first divergences as a single
+			// rank read; these are the numbers that say whether the band, the lump split, or the mass
+			// tie-break moved when it moves now.
+			bandTauMultiple: ENDS_BAND_TAU_MULTIPLE,
+			e1Band: ends.farBand,
+			e2Band: ends.nearBand,
+			collapsed: ends.collapsed,
+			endsVerified,
+			backgroundSupport: backgroundVerdict.support,
+			surfaceSupport: surfaceVerdict.support,
+		})
+		record("prevalence", {
+			far: ends.farPrevalence,
+			near: ends.nearPrevalence,
+			relativeGap: ends.prevalenceRelativeGap,
+			tieBand: BACKGROUND_PREVALENCE_TIE_BAND,
+			tieBandFired: ends.prevalenceTieBandFired,
+			farIsBackground: ends.farIsBackground,
+			order: ends.farIsBackground ? "far-is-background" : "near-is-background",
+			background: ends.background,
+			backgroundL: lOf(ends.background),
+			backgroundHex: hexOf(ends.background),
+			surface: ends.surface,
+			surfaceL: lOf(ends.surface),
+			surfaceHex: hexOf(ends.surface),
+		})
+
+		if (!endsVerified && endsStep < MAX_RANK_STEPS) continue
+
+		// The gradient. Computed before the text roles because the ramp is a field fact, and because the
+		// contract's ramp floors are checked against it at validation time.
+		const parameterisation = parameteriseField(image, field.indices, ends)
+		intermediates.bestSpatialCorrelation = parameterisation.bestCorrelation
+		let stops: { pixel: number; position: number }[] | null = null
+		let excursion: ReturnType<typeof insertGuideStops> | null = null
+		if (!ends.collapsed && parameterisation.isGradient) {
+			excursion = insertGuideStops(image, field.indices, parameterisation.t, ends.background, ends.surface)
+			intermediates.maxExcursion = excursion.maxExcursion
+			intermediates.excursionBar = excursion.excursionBar
+			stops = [
+				{ pixel: ends.background, position: 0 },
+				...excursion.guideStops.map((stop) => ({ pixel: stop.pixel, position: stop.position })),
+				{ pixel: ends.surface, position: 1 },
+			]
+		}
+
+		record("gradient", {
+			isGradient: parameterisation.isGradient,
+			bestSpearmanRho: parameterisation.bestCorrelation,
+			rhoStar: GRADIENT_RANK_CORRELATION,
+			geometry: parameterisation.geometry === undefined ? null : parameterisation.geometry.kind,
+			geometryDetail: parameterisation.geometry ?? null,
+			stops: stops === null ? 0 : stops.length,
+			maxExcursion: intermediates.maxExcursion,
+			excursionBar: intermediates.excursionBar,
+			// 0.4.0's guide-stop canon, as numbers rather than as a claim: the spacing bar, the gate, why
+			// insertion stopped, what each admitted stop reduced, and what each refusal clause cost.
+			minStopSpacing: MIN_GUIDE_STOP_SPACING,
+			fourthStopProvenUtility: FOURTH_STOP_PROVEN_UTILITY,
+			stopBudget: excursion === null ? null : excursion.stopBudget,
+			halt: excursion === null ? null : excursion.halt,
+			refusals: excursion === null ? null : excursion.refusals,
+			justifications: excursion === null ? null : excursion.justifications,
+			stopPositions: stops === null ? null : stops.map((stop) => stop.position),
+			stopSpacings: stops === null
+				? null
+				: stops.slice(1).map((stop, index) => stop.position - stops[index].position),
+			stopHexes: stops === null ? null : stops.map((stop) => hexOf(stop.pixel)),
+		})
+
+		if (ink === inkPlaceholder) {
+			ink = computeInkField(image, depthOrdering, field.threshold, inkSubstrate)
+			intermediates.inkBandSize = ink.bandSize
+			intermediates.inkCandidates = ink.candidates.length
+		}
+
+		// The foreground's two orderings and the accent's one depend on the field ends, so they are built
+		// once per ends step and redeemed at as many ranks as the repair loop asks for.
+		// The **published field ramp** as pixel indices, in ramp order: the two field roles and whatever
+		// guide stops the excursion machinery inserted between them. This is what the foreground ordering
+		// minimises |raw APCA| against at 0.2.0, and it is why the ordering is built here rather than
+		// earlier — the ramp is a field fact that has to exist before the text roles can be ranked
+		// against it. A collapsed field publishes one pixel and the ramp is that one pixel.
+		//
+		// `stops` is used before the stop-vs-text-role filter below, deliberately: dropping a stop can
+		// only *remove* an anchor, and removing an anchor can only raise the minimum. Ranking against the
+		// unfiltered ramp is therefore the conservative direction, and it keeps the ordering independent
+		// of the foreground it is being used to choose.
+		const rampAnchors = ends.collapsed
+			? [ends.background]
+			: stops !== null
+			? stops.map((stop) => stop.pixel)
+			: [ends.background, ends.surface]
+		intermediates.rampAnchors = rampAnchors.length
+		// The ramp as triples, resolved once: the ink preference (0.3.0), the accent's min-ramp preference
+		// (0.4.0) and the fg↔accent comparator (0.3.0) all consume the same anchors, and resolving them
+		// three times is three chances for them to be three different ramps.
+		const rampAnchorRgb: Rgb8[] = rampAnchors.map((anchor) => pixelRgb(image, anchor))
+		const inkPreference: InkContrastPreference = {
+			anchorRgb: rampAnchorRgb,
+			floor: CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude,
+		}
+		const accentPreference: AccentContrastPreference = {
+			anchorRgb: rampAnchorRgb,
+			floor: CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude,
+		}
+
+		const orderings: ForegroundOrdering[] = []
+		const ranked = inkOrdering(ink)
+		if (ranked !== null) orderings.push(ranked)
+		const luminance = luminanceOrdering(image, depthOrdering, rampAnchors, boundaryFloor)
+		if (luminance !== null) orderings.push(luminance)
+		const accentOrdering = computeAccentOrdering(image, ends.background, ends.surface)
+		intermediates.accentQualified = accentOrdering.qualified
+
+		record("ink", {
+			bandSize: ink.bandSize,
+			candidates: ink.candidates.length,
+			inkOrderingExists: ranked !== null,
+			luminanceOrderingExists: luminance !== null,
+			rampAnchors: rampAnchors.length,
+			rampAnchorL: rampAnchors.map(lOf),
+			marginFactor: 1 + INK_REGIME_SUPPORT_MARGIN,
+		})
+		record("accentOrdering", {
+			qualified: accentOrdering.qualified,
+			eligible: image.eligibleIndices.length,
+			// The top of the ordering, as colours, so a divergence in "which chromatic mark won" is
+			// readable without re-deriving the percentile product.
+			topDeparture: Array.from(accentOrdering.sorted.slice(-5)).reverse().map((pixel) => ({
+				hex: hexOf(pixel),
+				departure: accentOrdering.departure[pixel],
+				margin: accentOrdering.margin[pixel],
+			})),
+		})
+
+		let foregroundFrom = 0
+		let accentFrom = 0
+
+		for (let repair = 0; repair < SEARCH_CURSOR_LIMIT; repair += 1) {
+			const foreground = searchForeground(
+				image,
+				orderings,
+				ends.background,
+				ends.surface,
+				foregroundFrom,
+				inkPreference,
+				support,
+				spread,
+				verdicts,
+			)
+			if (foreground === null) break
+			intermediates.foregroundRegime = foreground.choice.regime
+			intermediates.foregroundPolarity = foreground.choice.polarity
+			intermediates.foregroundStep = foreground.cursor
+			intermediates.inkRefinement = foreground.choice.inkRefinement
+
+			const accent = searchAccent(
+				image,
+				accentOrdering,
+				ends.background,
+				ends.surface,
+				foreground.choice.pixel,
+				accentFrom,
+				accentPreference,
+				support,
+				spread,
+				verdicts,
+			)
+			intermediates.accentRefinement = accent === null ? null : accent.choice.refinement
+			intermediates.accentStep = accent === null ? 0 : accent.cursor
+			intermediates.accentCollapsed = accent === null
+
+			// The fg↔accent comparator (0.3.0). Both roles are selected and verified at this point; the
+			// only thing that can change below is which **label** each pixel carries. See
+			// `shouldSwapRoles`.
+			const swapVerdict: SwapVerdict = accent !== null && foreground.verified
+				? shouldSwapRoles(
+					image,
+					foreground.choice.pixel,
+					accent.choice.pixel,
+					ends.background,
+					ends.surface,
+					rampAnchorRgb,
+				)
+				: { swap: false, chromaticMarkHeld: false }
+			const swapped = swapVerdict.swap
+			const publishedForeground = swapped ? (accent as { choice: AccentChoice }).choice.pixel : foreground.choice.pixel
+			const publishedAccent = accent === null
+				? null
+				: (swapped ? foreground.choice.pixel : accent.choice.pixel)
+			intermediates.roleSwapApplied = swapped
+
+			if (DIAG) {
+				const polarity = foreground.choice.polarity
+				const windowL: number[] = []
+				for (let i = 0; i < foreground.choice.window.length; i += 1) {
+					windowL.push(image.lab[foreground.choice.window[i] * 3])
+				}
+				record("foreground", {
+					regime: foreground.choice.regime,
+					cursor: foreground.cursor,
+					stepWithinRegime: foreground.cursor % (MAX_RANK_STEPS + 1),
+					verified: foreground.verified,
+					pixel: foreground.choice.pixel,
+					L: lOf(foreground.choice.pixel),
+					hex: hexOf(foreground.choice.pixel),
+					populationSize: foreground.choice.populationSize,
+					// 0.3.0's ink clauses: which L-lump was taken, whether the contrast preference narrowed it,
+					// and which lump the cascade ran over. `null` outside the ink regime.
+					inkRefinement: foreground.choice.inkRefinement,
+					supportAtChoice: support[`foreground:${foreground.choice.regime}:${foreground.cursor % (MAX_RANK_STEPS + 1)}`] ?? null,
+					// The regime test's two numbers, side by side: what the ink population's rank-0 support was,
+					// and the level the 0.2.0 margin makes it clear. A regime divergence is one of these crossing.
+					inkStep0Support: support["foreground:ink:0"] ?? null,
+					// **Live.** The regime test is the one gate still built on the raw-share constant
+					// (`foreground.ts:482`): `inkStep0Support` is compared to exactly this level.
+					inkMarginThreshold: SOURCE_POPULATION_FLOOR * (1 + INK_REGIME_SUPPORT_MARGIN),
+					// **Retired, report-only** (W17 instrument note 2). `SOURCE_POPULATION_FLOOR` stopped
+					// being the eligibility rule at 0.4.1 — `verify.ts` still computes it as
+					// `rawSharePasses` so the 0.1.0–0.4.0 attribution record stays joinable, and it decides
+					// nothing. It was emitted here as `sourcePopulationFloor`, which reads as a live
+					// threshold sitting next to a live one. The value is unchanged, so every older file
+					// still joins on it; only the name now says what it is.
+					retiredRawShareFloor: SOURCE_POPULATION_FLOOR,
+					tau: TRIM_LEVEL,
+					topTauDeciles: deciles(windowL),
+					polarityBand: polarity === null ? null : polarity.band,
+					polarityDecidedBy: polarity === null ? null : polarity.decidedBy,
+					polarityTrimmed: polarity === null ? null : polarity.trimmed,
+					polarityBandSizes: polarity === null ? null : polarity.bandSizes,
+					polarityTieBand: FOREGROUND_POLARITY_TIE_BAND,
+					darkestAnchorL: polarity === null ? null : polarity.darkestAnchorL,
+					lightestAnchorL: polarity === null ? null : polarity.lightestAnchorL,
+				})
+				record("accent", {
+					collapsed: accent === null,
+					cursor: accent === null ? null : accent.cursor,
+					pixel: accent === null ? null : accent.choice.pixel,
+					L: accent === null ? null : lOf(accent.choice.pixel),
+					hex: accent === null ? null : hexOf(accent.choice.pixel),
+					populationSize: accent === null ? null : accent.choice.populationSize,
+					// 0.4.0's four narrowings: which lump, what the headroom clause cut at, and whether the
+					// two preferences moved the population. A divergence in the published accent splits into
+					// "the ordering moved" and "a narrowing moved" only if both are recorded.
+					qualified: accentOrdering.qualified,
+					refinement: accent === null ? null : accent.choice.refinement,
+				})
+				record("roleSwap", {
+					// **The single countable truth about swaps, and its denominator is every record.**
+					// `applied` is emitted on all 220 coverage rows, accent-collapsed ones included, so the
+					// swap rate is `applied` over *all* records: 62/220 = 28.2 % at 0.4.1 (0.3.0 measured
+					// 80/220 = 36.4 %, 0.4.0 51/220 = 23.2 % — same denominator, comparable). Nothing else
+					// in the chain counts swaps; `steps.roleSwapApplied` is the same boolean, mirrored.
+					//
+					// **The denominator trap this field used to carry.** The two ramp fields below are
+					// `null` on the 29 accent-collapsed rows, so a reader who filters this block to its
+					// complete rows drops to 191 and reports 62/191 = 32.5 % — a different question, and
+					// the shape of W16b's unreproducible `swap 32.3%` (62/192; W17 could not recover it
+					// over the whole set). `comparatorRan` states the reduced population outright so it
+					// never has to be inferred from which fields are null.
+					applied: swapped,
+					// Whether the fg↔accent comparator was reachable at all: it needs an accent and a
+					// verified foreground. `applied` is a strict subset of this (185/220 at 0.4.1).
+					comparatorRan: accent !== null && foreground.verified,
+					// **0.4.2's clause, counted at its own site.** True exactly on the covers where the
+					// chromatic-mark clause held the labels still — so `applied` falling between 0.4.1 and
+					// 0.4.2 is attributable to this refinement rather than inferred from the total.
+					chromaticMarkHeld: swapVerdict.chromaticMarkHeld,
+					// The two quantities the clause reads, beside the two it always read.
+					accentChroma: accent === null ? null : chromaOf(image.lab, accent.choice.pixel),
+					chromaBoundary: REGION_CHROMA_BOUNDARY,
+					textFloor: CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude,
+					foregroundMinRamp: minRampContrast(image, foreground.choice.pixel, rampAnchorRgb),
+					accentMinRamp: accent === null
+						? null
+						: minRampContrast(image, accent.choice.pixel, rampAnchorRgb),
+					publishedForegroundHex: hexOf(publishedForeground),
+					publishedAccentHex: publishedAccent === null ? null : hexOf(publishedAccent),
+				})
+			}
+
+			// Guide stops must also be distinct from the text roles — invariant 3 judges stop-against-role
+			// pairs for everything except the two field ends. A stop that is not is dropped, never moved.
+			// The published pixels, after the comparator: a swap moves labels, so the stop filter and the
+			// assembly both read the published assignment rather than the search's.
+			const publishedStops = stops === null ? null : stops.filter((stop, index) => {
+				if (index === 0 || index === stops!.length - 1) return true
+				if (!distinctPixels(image, stop.pixel, publishedForeground)) return false
+				if (publishedAccent !== null && !distinctPixels(image, stop.pixel, publishedAccent)) return false
+				return true
+			})
+
+			const palette = assemblePalette(imagePath, image, contentHash, {
+				background: ends.background,
+				surface: ends.collapsed ? null : ends.surface,
+				foreground: publishedForeground,
+				accent: publishedAccent,
+				stops: publishedStops,
+				geometry: parameterisation.geometry,
+				escape: null,
+				escapeColor: null,
+			})
+			lastPalette = palette
+			intermediates.gradientPublished = palette.gradient !== null
+			intermediates.guideStops = palette.gradient === null ? 0 : palette.gradient.stops.length - 2
+			intermediates.repairs = repair
+
+			const result = validatePalette(palette)
+			record("validation", { valid: result.valid, violations: result.violations.map((v) => v.subjects.join("+")) })
+			if (result.valid) return await finish({ palette, intermediates })
+
+			// Step whichever role the contract named, and re-run everything downstream of it.
+			//
+			// The contract names *published* roles, and after a comparator swap the published foreground
+			// is the accent search's pixel. So the names are mapped back through the swap before a cursor
+			// moves: stepping the foreground search when the contract complained about a colour the accent
+			// search chose would repair the wrong ordering and leave the named defect exactly where it is.
+			const rawSubjects = result.violations.flatMap((violation) => violation.subjects)
+			const subjects = !swapped ? rawSubjects : rawSubjects.map((subject) =>
+				subject === "roles.foreground"
+					? "roles.accent"
+					: subject === "roles.accent"
+					? "roles.foreground"
+					: subject
+			)
+			if (namesRole(subjects, "accent") && accent !== null && accentFrom < SEARCH_CURSOR_LIMIT) {
+				accentFrom = accent.cursor + 1
+				continue
+			}
+			if (namesRole(subjects, "foreground") && foreground.verified && foregroundFrom < SEARCH_CURSOR_LIMIT) {
+				foregroundFrom = foreground.cursor + 1
+				accentFrom = 0
+				continue
+			}
+			break
+		}
+
+		// Nothing downstream could be repaired at any rank: the defect is in the field ends, so the outer
+		// loop steps them and everything downstream re-runs.
+	}
+
+	if (lastPalette === null) {
+		throw new Error(`p3-fields produced no palette for ${imagePath}; the field set yielded no ends`)
+	}
+	// Every rank has been stepped and the contract is still unhappy. The palette is published anyway and
+	// scores as failing: a failure is a row, never an omission.
+	return await finish({ palette: lastPalette, intermediates })
+}

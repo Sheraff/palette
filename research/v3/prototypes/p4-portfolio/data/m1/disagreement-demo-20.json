@@ -1,0 +1,2127 @@
+{
+	"kind": "p4-portfolio-m1-disagreement",
+	"generatedAt": "2026-08-11T12:37:33.736Z",
+	"ruler": {
+		"source": "research/v3/src/adjudication/match.ts compareRole()/barFor()",
+		"regional": "sameColorBar(first, second) — the calibrated per-pair bar; headline",
+		"pooled": "POOLED_SAME_COLOR_BAR — the cross-run comparable scalar; secondary, not the gate's bar",
+		"newConstantsIntroduced": 0
+	},
+	"members": [
+		{
+			"slug": "p3-fields",
+			"runPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p3-fields-demo20-w1.jsonl",
+			"candidateId": "p3-fields-0.4.2",
+			"codeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+			"okCount": 20,
+			"coverCount": 20
+		},
+		{
+			"slug": "p2-tree",
+			"runPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p2-tree-demo20-w1.jsonl",
+			"candidateId": "p2-tos",
+			"codeVersion": "19e91d28fa6152df6bea151364859594a00e29fafec1ef1d81596744cab6bfc9",
+			"okCount": 20,
+			"coverCount": 20
+		},
+		{
+			"slug": "p5-fieldfit",
+			"runPath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p5-fieldfit-demo20-w1.jsonl",
+			"candidateId": "p5-fieldfit",
+			"codeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d",
+			"okCount": 20,
+			"coverCount": 20
+		}
+	],
+	"coverCount": 20,
+	"coversAllMembersPublished": 20,
+	"allFourAgree": {
+		"regional": {
+			"count": 0,
+			"rate": 0
+		},
+		"pooled": {
+			"count": 0,
+			"rate": 0
+		}
+	},
+	"pairs": [
+		{
+			"a": "p3-fields",
+			"b": "p2-tree",
+			"coversShared": 20,
+			"coversMissing": 0,
+			"byBar": {
+				"regional": {
+					"materialDisagreementCount": 20,
+					"materialDisagreementRate": 1,
+					"perRoleCount": {
+						"background": 13,
+						"surface": 13,
+						"foreground": 18,
+						"accent": 19
+					},
+					"perRoleRate": {
+						"background": 0.65,
+						"surface": 0.65,
+						"foreground": 0.9,
+						"accent": 0.95
+					}
+				},
+				"pooled": {
+					"materialDisagreementCount": 20,
+					"materialDisagreementRate": 1,
+					"perRoleCount": {
+						"background": 13,
+						"surface": 12,
+						"foreground": 18,
+						"accent": 19
+					},
+					"perRoleRate": {
+						"background": 0.65,
+						"surface": 0.6,
+						"foreground": 0.9,
+						"accent": 0.95
+					}
+				}
+			}
+		},
+		{
+			"a": "p3-fields",
+			"b": "p5-fieldfit",
+			"coversShared": 20,
+			"coversMissing": 0,
+			"byBar": {
+				"regional": {
+					"materialDisagreementCount": 20,
+					"materialDisagreementRate": 1,
+					"perRoleCount": {
+						"background": 9,
+						"surface": 14,
+						"foreground": 14,
+						"accent": 20
+					},
+					"perRoleRate": {
+						"background": 0.45,
+						"surface": 0.7,
+						"foreground": 0.7,
+						"accent": 1
+					}
+				},
+				"pooled": {
+					"materialDisagreementCount": 20,
+					"materialDisagreementRate": 1,
+					"perRoleCount": {
+						"background": 9,
+						"surface": 14,
+						"foreground": 14,
+						"accent": 20
+					},
+					"perRoleRate": {
+						"background": 0.45,
+						"surface": 0.7,
+						"foreground": 0.7,
+						"accent": 1
+					}
+				}
+			}
+		},
+		{
+			"a": "p2-tree",
+			"b": "p5-fieldfit",
+			"coversShared": 20,
+			"coversMissing": 0,
+			"byBar": {
+				"regional": {
+					"materialDisagreementCount": 20,
+					"materialDisagreementRate": 1,
+					"perRoleCount": {
+						"background": 11,
+						"surface": 17,
+						"foreground": 20,
+						"accent": 20
+					},
+					"perRoleRate": {
+						"background": 0.55,
+						"surface": 0.85,
+						"foreground": 1,
+						"accent": 1
+					}
+				},
+				"pooled": {
+					"materialDisagreementCount": 20,
+					"materialDisagreementRate": 1,
+					"perRoleCount": {
+						"background": 11,
+						"surface": 17,
+						"foreground": 20,
+						"accent": 20
+					},
+					"perRoleRate": {
+						"background": 0.55,
+						"surface": 0.85,
+						"foreground": 1,
+						"accent": 1
+					}
+				}
+			}
+		}
+	],
+	"perCover": [
+		{
+			"inputContentHash": "84df2f9a21d09bd78dfa31bab4252034fc20df5c9c33b76170ee36afad1eb825",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.3775999641253831,
+							"surface": 0.07134162504028024,
+							"foreground": 0.48070898923431454,
+							"accent": 0.27586655664405796
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.3775999641253831,
+							"surface": 0.07134162504028024,
+							"foreground": 0.48070898923431454,
+							"accent": 0.27586655664405796
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.003030490800508581,
+							"surface": 0.3587080176904028,
+							"foreground": 0.17952748469754246,
+							"accent": 0.22795559674401122
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.003030490800508581,
+							"surface": 0.3587080176904028,
+							"foreground": 0.17952748469754246,
+							"accent": 0.22795559674401122
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.37999545680740715,
+							"surface": 0.41560153697149066,
+							"foreground": 0.3470949703556462,
+							"accent": 0.055577129638294906
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.37999545680740715,
+							"surface": 0.41560153697149066,
+							"foreground": 0.3470949703556462,
+							"accent": 0.055577129638294906
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "62a708dccad48634bad184c9e564a843c3a466455ba6dcbfefd1545afc0be2ff",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000000d8bc25fbca2eff2a4a.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0,
+							"foreground": 0.5964894569254804,
+							"accent": 0.2651914154625424
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0,
+							"foreground": 0.5964894569254804,
+							"accent": 0.2651914154625424
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0,
+							"foreground": 0.9999999934735468,
+							"accent": 0.35659077775106585
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0,
+							"foreground": 0.9999999934735468,
+							"accent": 0.35659077775106585
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0,
+							"foreground": 0.4035105365480665,
+							"accent": 0.09139936228852347
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0,
+							"foreground": 0.4035105365480665,
+							"accent": 0.09139936228852347
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "0762004ae062e313abe02554371baa1a4f0156d3c4681be38a39276e22c0b823",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.006099965039064963,
+							"foreground": 0.06545630970530587,
+							"accent": 0.6294309554877079
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.006099965039064963,
+							"foreground": 0.06545630970530587,
+							"accent": 0.6294309554877079
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.06908561366141697,
+							"foreground": 0.02207473904940747,
+							"accent": 0.09184701543990331
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.06908561366141697,
+							"foreground": 0.02207473904940747,
+							"accent": 0.09184701543990331
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.0751816112934832,
+							"foreground": 0.07836441559062504,
+							"accent": 0.5375858555164911
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.0751816112934832,
+							"foreground": 0.07836441559062504,
+							"accent": 0.5375858555164911
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "f674af42edfa39e9eeee3baabf43b95ec50b976ccfb15eb09668a98ede2f2e22",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e020000099e97d17d28279e9184.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.006185829473602027,
+							"surface": 0.014957211265988148,
+							"foreground": 0.23157157900026626,
+							"accent": 0.5189879109812903
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.006185829473602027,
+							"surface": 0.014957211265988148,
+							"foreground": 0.23157157900026626,
+							"accent": 0.5189879109812903
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.008448271633049094,
+							"surface": 0.029919825920059154,
+							"foreground": 0.14919840048754252,
+							"accent": 0.5458599592006868
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.008448271633049094,
+							"surface": 0.029919825920059154,
+							"foreground": 0.14919840048754252,
+							"accent": 0.5458599592006868
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0031798215287343785,
+							"surface": 0.04341632389072045,
+							"foreground": 0.3732365397906873,
+							"accent": 0.06694031336184213
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0031798215287343785,
+							"surface": 0.04341632389072045,
+							"foreground": 0.3732365397906873,
+							"accent": 0.06694031336184213
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "d0259994192ce907546cc5056a8e66f3dad0aedfe89684c7f6b82a4dfefa2c0e",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000bb3dc49110c4aab8aa7.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.027213243639797508,
+							"surface": 0.008951263481118415,
+							"foreground": 0.035784733801795775,
+							"accent": 0.06421855027598529
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.027213243639797508,
+							"surface": 0.008951263481118415,
+							"foreground": 0.035784733801795775,
+							"accent": 0.06421855027598529
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.02118289045882195,
+							"surface": 0.02091813042943992,
+							"foreground": 0.00910342846208032,
+							"accent": 0.3226183648723267
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.02118289045882195,
+							"surface": 0.02091813042943992,
+							"foreground": 0.00910342846208032,
+							"accent": 0.3226183648723267
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0060303531809755605,
+							"surface": 0.011966866948321506,
+							"foreground": 0.026681305339715456,
+							"accent": 0.3827862446115251
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0060303531809755605,
+							"surface": 0.011966866948321506,
+							"foreground": 0.026681305339715456,
+							"accent": 0.3827862446115251
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "b4f15789ef28d4efaef4d57668d88c261616058e7b19a1ebb468cd0166ccd004",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.22881949351009906,
+							"surface": 0.37129518216293067,
+							"foreground": 0.23378775731554619,
+							"accent": 0.4991866518440044
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.22881949351009906,
+							"surface": 0.37129518216293067,
+							"foreground": 0.23378775731554619,
+							"accent": 0.4991866518440044
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.3320200699410112,
+							"surface": 0.6754657895369152,
+							"foreground": 0.35360358451719337,
+							"accent": 0.339630174773523
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.3320200699410112,
+							"surface": 0.6754657895369152,
+							"foreground": 0.35360358451719337,
+							"accent": 0.339630174773523
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.38329818366859286,
+							"surface": 0.32352260217055995,
+							"foreground": 0.4317410158130553,
+							"accent": 0.6384931377219867
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.38329818366859286,
+							"surface": 0.32352260217055995,
+							"foreground": 0.4317410158130553,
+							"accent": 0.6384931377219867
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "20867116bc43fd68a11f0abf3d67b4a8324c8c5676b53ce784887c1c4f68e2ca",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.06173442276610468,
+							"surface": 0.008811657135764987,
+							"foreground": 0.5830100751765308,
+							"accent": 0.22890625076166787
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.06173442276610468,
+							"surface": 0.008811657135764987,
+							"foreground": 0.5830100751765308,
+							"accent": 0.22890625076166787
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0690362430220686,
+							"surface": 0.14693256921792827,
+							"foreground": 0.6063071778609954,
+							"accent": 0.41663069249830276
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0690362430220686,
+							"surface": 0.14693256921792827,
+							"foreground": 0.6063071778609954,
+							"accent": 0.41663069249830276
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.007309998376788397,
+							"surface": 0.1397172648863196,
+							"foreground": 0.02445007743154826,
+							"accent": 0.21057627360433642
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.007309998376788397,
+							"surface": 0.1397172648863196,
+							"foreground": 0.02445007743154826,
+							"accent": 0.21057627360433642
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "8a523b76ef39409991bdc4bf42432fdecdf964fe52de468f97177fc854b14d05",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.049444777064911516,
+							"surface": 0.00899243282582563,
+							"foreground": 0.23579124047013478,
+							"accent": 0.033204198815868814
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.049444777064911516,
+							"surface": 0.00899243282582563,
+							"foreground": 0.23579124047013478,
+							"accent": 0.033204198815868814
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"accent"
+						],
+						"distances": {
+							"background": 0.012041601815471545,
+							"surface": 0.014999045910641617,
+							"foreground": 0.007415625091988959,
+							"accent": 0.30345697525800885
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"accent"
+						],
+						"distances": {
+							"background": 0.012041601815471545,
+							"surface": 0.014999045910641617,
+							"foreground": 0.007415625091988959,
+							"accent": 0.30345697525800885
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.060520423850364685,
+							"surface": 0.006006613084815986,
+							"foreground": 0.23852962608857875,
+							"accent": 0.3121313443477608
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.060520423850364685,
+							"surface": 0.006006613084815986,
+							"foreground": 0.23852962608857875,
+							"accent": 0.3121313443477608
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "ecd13d308a8e6f45f94a997900eccbfc64cce7db0440f68197b12763d1336c8b",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0553993131766601,
+							"surface": 0.05244813833083857,
+							"foreground": 0.07097352714417736,
+							"accent": 0.11712349826113586
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0553993131766601,
+							"surface": 0.05244813833083857,
+							"foreground": 0.07097352714417736,
+							"accent": 0.11712349826113586
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.007332285539105507,
+							"surface": 0.004929137676068859,
+							"foreground": 0.16385075713890954,
+							"accent": 0.4021248194077696
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.007332285539105507,
+							"surface": 0.004929137676068859,
+							"foreground": 0.16385075713890954,
+							"accent": 0.4021248194077696
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.049309345861442956,
+							"surface": 0.047761776904983136,
+							"foreground": 0.10534157339139398,
+							"accent": 0.5169258802145668
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.049309345861442956,
+							"surface": 0.047761776904983136,
+							"foreground": 0.10534157339139398,
+							"accent": 0.5169258802145668
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "0591d67237f7c5fdc8cfca69a1ecbd0635779f95a7273b43c3a8cf7884b68723",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000013cdd885595a94002abc.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.02619050694067228,
+							"surface": 0.050015659512738654,
+							"foreground": 0.22403272273951663,
+							"accent": 0.08454946574294654
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.02619050694067228,
+							"surface": 0.050015659512738654,
+							"foreground": 0.22403272273951663,
+							"accent": 0.08454946574294654
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0908584426924191,
+							"surface": 0.007463316790046179,
+							"foreground": 0.2080840183455388,
+							"accent": 0.2773741890195356
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0908584426924191,
+							"surface": 0.007463316790046179,
+							"foreground": 0.2080840183455388,
+							"accent": 0.2773741890195356
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.06513139632903066,
+							"surface": 0.05407731804250069,
+							"foreground": 0.42721103836129654,
+							"accent": 0.19611375119990662
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.06513139632903066,
+							"surface": 0.05407731804250069,
+							"foreground": 0.42721103836129654,
+							"accent": 0.19611375119990662
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0029908453950209806,
+							"surface": 0.6752370137001151,
+							"foreground": 0.006889404084599958,
+							"accent": 0.11646679732927673
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0029908453950209806,
+							"surface": 0.6752370137001151,
+							"foreground": 0.006889404084599958,
+							"accent": 0.11646679732927673
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"accent"
+						],
+						"distances": {
+							"background": 0.007801947977821251,
+							"surface": 0.007801947977821251,
+							"foreground": 0.010815108507087704,
+							"accent": 0.3222965084325775
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"accent"
+						],
+						"distances": {
+							"background": 0.007801947977821251,
+							"surface": 0.007801947977821251,
+							"foreground": 0.010815108507087704,
+							"accent": 0.3222965084325775
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.005418377720576701,
+							"surface": 0.6819788436091867,
+							"foreground": 0.015520599974335875,
+							"accent": 0.4386656147103136
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.005418377720576701,
+							"surface": 0.6819788436091867,
+							"foreground": 0.015520599974335875,
+							"accent": 0.4386656147103136
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "1270194db5544135728237f81666967e11af6cf5328a499578926df2aa050fd8",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001456cbd4881a798808bf.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.031812870721819396,
+							"surface": 0.11078434894864529,
+							"foreground": 0.24130161084639587,
+							"accent": 0.10817237057323006
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.031812870721819396,
+							"surface": 0.11078434894864529,
+							"foreground": 0.24130161084639587,
+							"accent": 0.10817237057323006
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.09159616376071533,
+							"surface": 0.017659585384650813,
+							"foreground": 0.009137384928762902,
+							"accent": 0.4584586567269374
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.09159616376071533,
+							"surface": 0.017659585384650813,
+							"foreground": 0.009137384928762902,
+							"accent": 0.4584586567269374
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.062324440930257866,
+							"surface": 0.09330508233006923,
+							"foreground": 0.23232697969590965,
+							"accent": 0.561616569246783
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.062324440930257866,
+							"surface": 0.09330508233006923,
+							"foreground": 0.23232697969590965,
+							"accent": 0.561616569246783
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.014576673657999698,
+							"surface": 0.3247538717546151,
+							"foreground": 0.43651078884771055,
+							"accent": 0.1454802267414342
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.014576673657999698,
+							"surface": 0.3247538717546151,
+							"foreground": 0.43651078884771055,
+							"accent": 0.1454802267414342
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0149421421164546,
+							"surface": 0.0149421421164546,
+							"foreground": 0.33139817127727916,
+							"accent": 0.6788737519637943
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0149421421164546,
+							"surface": 0.0149421421164546,
+							"foreground": 0.33139817127727916,
+							"accent": 0.6788737519637943
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.006904231022371443,
+							"surface": 0.3104949325759493,
+							"foreground": 0.355034439743937,
+							"accent": 0.5333974683836501
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.006904231022371443,
+							"surface": 0.3104949325759493,
+							"foreground": 0.355034439743937,
+							"accent": 0.5333974683836501
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "1efe45c09742dac3d0dbce56ddaa727429d734df445e80775425f6d4f8996c29",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001a9be12b7116a8247378.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.3803130885793835,
+							"surface": 0.06627044248389274,
+							"foreground": 0.37853575717431176,
+							"accent": 0.2528322445900429
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.3803130885793835,
+							"surface": 0.06627044248389274,
+							"foreground": 0.37853575717431176,
+							"accent": 0.2528322445900429
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.35964720795323785,
+							"surface": 0.12956429103887446,
+							"foreground": 0.01072351156507658,
+							"accent": 0.18197416728887145
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.35964720795323785,
+							"surface": 0.12956429103887446,
+							"foreground": 0.01072351156507658,
+							"accent": 0.18197416728887145
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.02145483766533548,
+							"surface": 0.09061182123952985,
+							"foreground": 0.3721189388196524,
+							"accent": 0.18281063668935196
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.02145483766533548,
+							"surface": 0.09061182123952985,
+							"foreground": 0.3721189388196524,
+							"accent": 0.18281063668935196
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "ee6d583edaba219510fe30fe6a546f8a674a257b50c448a0ac04ee13f441151b",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e0200001ecff3d9ec20cac4b472.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.7577328089585894,
+							"surface": 0.18239937244708998,
+							"foreground": 0,
+							"accent": 0.2555099205796077
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.7577328089585894,
+							"surface": 0.18239937244708998,
+							"foreground": 0,
+							"accent": 0.2555099205796077
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.8474480696001448,
+							"surface": 0.12835044665663167,
+							"foreground": 0.3072506674546863,
+							"accent": 0.21512880666868087
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.8474480696001448,
+							"surface": 0.12835044665663167,
+							"foreground": 0.3072506674546863,
+							"accent": 0.21512880666868087
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0897152606415555,
+							"surface": 0.054048925790458315,
+							"foreground": 0.3072506674546863,
+							"accent": 0.04038111391092683
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0897152606415555,
+							"surface": 0.054048925790458315,
+							"foreground": 0.3072506674546863,
+							"accent": 0.04038111391092683
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "ec2a80ab99ae86b751b12db0ae4f839c42795fed27720ea45595499d04b9ee9a",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000021fd811bf36e739e61bf.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.054024575295483324,
+							"surface": 0.029847337252737107,
+							"foreground": 0.15579932464429438,
+							"accent": 0.3142165241895101
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.054024575295483324,
+							"surface": 0.029847337252737107,
+							"foreground": 0.15579932464429438,
+							"accent": 0.3142165241895101
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.11504745608411915,
+							"surface": 0.1146504732107619,
+							"foreground": 0.5835437241322539,
+							"accent": 0.3858092909652738
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.11504745608411915,
+							"surface": 0.1146504732107619,
+							"foreground": 0.5835437241322539,
+							"accent": 0.3858092909652738
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.06194751755984571,
+							"surface": 0.08509418698960051,
+							"foreground": 0.43164462499750983,
+							"accent": 0.14544307512156263
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.06194751755984571,
+							"surface": 0.08509418698960051,
+							"foreground": 0.43164462499750983,
+							"accent": 0.14544307512156263
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "e41a4f064e92ecbb128816414bb5dbd26613e664b34bff04fc73dda83dbd46d0",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.28994375288917607,
+							"surface": 0.3641980414954189,
+							"foreground": 0.35164235726809673,
+							"accent": 0.0768582925390292
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.28994375288917607,
+							"surface": 0.3641980414954189,
+							"foreground": 0.35164235726809673,
+							"accent": 0.0768582925390292
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.25552162794910555,
+							"surface": 0.15680049809040755,
+							"foreground": 0.009496077814348542,
+							"accent": 0.5242332092598598
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"accent"
+						],
+						"distances": {
+							"background": 0.25552162794910555,
+							"surface": 0.15680049809040755,
+							"foreground": 0.009496077814348542,
+							"accent": 0.5242332092598598
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.035519202753059406,
+							"surface": 0.2549213459008662,
+							"foreground": 0.35991135546478253,
+							"accent": 0.5741330196704861
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.035519202753059406,
+							"surface": 0.2549213459008662,
+							"foreground": 0.35991135546478253,
+							"accent": 0.5741330196704861
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "c68fe82b1355def197a3967abc757b7610fcc7fdc265ad4c4d64a8b4babba985",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000023e98b7381eaed77a9cb.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.07287229363225516,
+							"surface": 0.01266005220317376,
+							"foreground": 0.10003298198558302,
+							"accent": 0.45762966508169034
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.07287229363225516,
+							"surface": 0.01266005220317376,
+							"foreground": 0.10003298198558302,
+							"accent": 0.45762966508169034
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.00857704825852048,
+							"surface": 0.045980685377539667,
+							"foreground": 0.11876716364183668,
+							"accent": 0.8077637551884581
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.00857704825852048,
+							"surface": 0.045980685377539667,
+							"foreground": 0.11876716364183668,
+							"accent": 0.8077637551884581
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0713411322133123,
+							"surface": 0.037533360435476115,
+							"foreground": 0.11118523422101702,
+							"accent": 0.5341454589751425
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"background",
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.0713411322133123,
+							"surface": 0.037533360435476115,
+							"foreground": 0.11118523422101702,
+							"accent": 0.5341454589751425
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "68cb4bd977f0f28010ed633d7a11e6c17fc034994efe8aeebd47a5c7e64a02bd",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.14784651458635747,
+							"foreground": 0.28261235735545026,
+							"accent": 0.00716240470841608
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.14784651458635747,
+							"foreground": 0.28261235735545026,
+							"accent": 0.00716240470841608
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.3328899818384992,
+							"foreground": 0.3223164054448258,
+							"accent": 0.36953163116039406
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.3328899818384992,
+							"foreground": 0.3223164054448258,
+							"accent": 0.36953163116039406
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.19350414838751567,
+							"foreground": 0.04011940858704823,
+							"accent": 0.3667314775557823
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.19350414838751567,
+							"foreground": 0.04011940858704823,
+							"accent": 0.3667314775557823
+						}
+					}
+				}
+			]
+		},
+		{
+			"inputContentHash": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+			"imagePath": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"failed": [],
+			"pairs": [
+				{
+					"a": "p3-fields",
+					"b": "p2-tree",
+					"regional": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.005251958509239217,
+							"foreground": 0.918621366084617,
+							"accent": 0.8589278052534802
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0,
+							"surface": 0.005251958509239217,
+							"foreground": 0.918621366084617,
+							"accent": 0.8589278052534802
+						}
+					}
+				},
+				{
+					"a": "p3-fields",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.004791795027532213,
+							"surface": 0.44271332714705036,
+							"foreground": 0.06720461525885707,
+							"accent": 0.4307199343819098
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.004791795027532213,
+							"surface": 0.44271332714705036,
+							"foreground": 0.06720461525885707,
+							"accent": 0.4307199343819098
+						}
+					}
+				},
+				{
+					"a": "p2-tree",
+					"b": "p5-fieldfit",
+					"regional": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.004791795027532213,
+							"surface": 0.43779446007367345,
+							"foreground": 0.985794650813959,
+							"accent": 0.5672801891893885
+						}
+					},
+					"pooled": {
+						"differingRoles": [
+							"surface",
+							"foreground",
+							"accent"
+						],
+						"distances": {
+							"background": 0.004791795027532213,
+							"surface": 0.43779446007367345,
+							"foreground": 0.985794650813959,
+							"accent": 0.5672801891893885
+						}
+					}
+				}
+			]
+		}
+	]
+}

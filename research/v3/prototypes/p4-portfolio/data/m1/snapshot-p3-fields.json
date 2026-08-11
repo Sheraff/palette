@@ -1,0 +1,76 @@
+{
+	"slug": "p3-fields",
+	"worktree": "/Users/Flo/GitHub/palette/.worktrees/p3-fields",
+	"homeCandidate": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/prototypes/p3-fields/src/candidate.ts",
+	"snapshotCandidate": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/members/p3-fields/v3/prototypes/p3-fields/src/candidate.ts",
+	"homeCodeVersion": "a5f17f31abd94a3240f2cf1042ca183f3926a4d853976ed0dcb38e2c2332748a",
+	"snapshotCodeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15",
+	"closureFileCount": 21,
+	"ownFileCount": 13,
+	"sharedFileCount": 8,
+	"sharedFileDiffs": [],
+	"shared": [
+		"src/contract/challengers.ts",
+		"src/contract/color.ts",
+		"src/contract/constants.ts",
+		"src/contract/invariants.ts",
+		"src/contract/ramp.ts",
+		"src/contract/types.ts",
+		"src/devloop/code-version.ts",
+		"src/devloop/types.ts"
+	],
+	"copied": [
+		{
+			"path": "prototypes/p3-fields/src/accent.ts",
+			"sha256": "d4b23062d73998e07226e15b2b3ed95621ba5125e2643b5d7c8fabc7639d862f"
+		},
+		{
+			"path": "prototypes/p3-fields/src/candidate.ts",
+			"sha256": "530b736d4b950f2cbf96ca94055773fa91f832a000c06c4adab7f7d5ebbb1213"
+		},
+		{
+			"path": "prototypes/p3-fields/src/coherence.ts",
+			"sha256": "ac5a271e78443a77a26d04c08d1448051a4b8abbd493ca5ef3bfc13012b9757d"
+		},
+		{
+			"path": "prototypes/p3-fields/src/constants.ts",
+			"sha256": "6d2be84c9f5ba77ce3c77daa8f6051f30cd0b8dcb21ab7d4b4f115766a98f86f"
+		},
+		{
+			"path": "prototypes/p3-fields/src/decode.ts",
+			"sha256": "bf034012429cd59dab652d118cb58daa32e852e07da5a904a7258ea66a0d62b0"
+		},
+		{
+			"path": "prototypes/p3-fields/src/diagnostics.ts",
+			"sha256": "b4bcd727b5182c4962fa773b9b62b30b4a2f0f2cc7d15e4cae4c018691c93bcf"
+		},
+		{
+			"path": "prototypes/p3-fields/src/field-roles.ts",
+			"sha256": "8a5c5c038d83d960a92281e8b09bdc2e6c9151626dd6f7bac356d0d9e436e7c7"
+		},
+		{
+			"path": "prototypes/p3-fields/src/fields.ts",
+			"sha256": "31df28db5093f9ce2ac069fb62dba8c871f6fbb5c7d1ecbb5e51a146e3406b51"
+		},
+		{
+			"path": "prototypes/p3-fields/src/foreground.ts",
+			"sha256": "61baa9fc28fabdd673803757d4843680e60eb9f073adf2a0ce4c591501779ff9"
+		},
+		{
+			"path": "prototypes/p3-fields/src/gradient.ts",
+			"sha256": "8487a32e9661e85eb1ddd1b09f92e72a059c80437f6d5e0507fdac5498a0c949"
+		},
+		{
+			"path": "prototypes/p3-fields/src/pipeline.ts",
+			"sha256": "4f70d3f674020a281792073ab9e5d9b1bc675d82b6f4b7c7f5a657cfd6e10535"
+		},
+		{
+			"path": "prototypes/p3-fields/src/primitives.ts",
+			"sha256": "c2e324798dbe26b9d543ca9e5b271a19f41c8279b5097cb126b782ad1d2dc998"
+		},
+		{
+			"path": "prototypes/p3-fields/src/verify.ts",
+			"sha256": "32d4cac272d8dd5f88eda36041fd7e41ccdc6a0333100a58ae0d6211541a50a6"
+		}
+	]
+}

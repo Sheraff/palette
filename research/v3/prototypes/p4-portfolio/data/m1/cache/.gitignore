@@ -1,0 +1,12 @@
+# The cache root every M1 run is pointed at (`tools/run-member.ts`). Derived data, never committed.
+#
+# Two reasons it exists at all, given that every M1 run passes `--no-cache`. First, `run.ts` needs a
+# cache root even with the cache off — it just writes under `<root>/disabled/<pid>` — and the root it
+# would otherwise use is the *home worktree's* `data/devloop-cache/` when running a member's original,
+# which would be a write into a worktree P4 must only read. Second, the same redirection keeps p4's
+# own runs out of `research/v3/data/devloop/`, which P4 does not own either.
+#
+# Self-ignoring, following `research/v3/data/devloop-cache/.gitignore`'s own note on why the rule
+# lives in the directory rather than in a shared `.gitignore` another workstream may have in flight.
+*
+!.gitignore

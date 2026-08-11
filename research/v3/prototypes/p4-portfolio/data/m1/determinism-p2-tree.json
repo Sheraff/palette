@@ -1,0 +1,23 @@
+{
+	"a": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p2-tree-demo20.jsonl",
+		"candidateId": "p2-tos",
+		"codeVersion": "19e91d28fa6152df6bea151364859594a00e29fafec1ef1d81596744cab6bfc9"
+	},
+	"b": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p2-tree-demo20-w1.jsonl",
+		"candidateId": "p2-tos",
+		"codeVersion": "19e91d28fa6152df6bea151364859594a00e29fafec1ef1d81596744cab6bfc9"
+	},
+	"rowsCompared": 20,
+	"identicalRows": 20,
+	"strictIdenticalRows": 20,
+	"gate": "PASS",
+	"problems": [],
+	"timing": {
+		"aOk": 20,
+		"bOk": 20,
+		"aMedianComputeMs": 1191.1109580000002,
+		"bMedianComputeMs": 668.7007500000004
+	}
+}

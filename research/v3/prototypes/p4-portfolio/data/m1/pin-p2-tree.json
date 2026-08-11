@@ -1,0 +1,23 @@
+{
+	"kind": "p4-portfolio-m1-pin",
+	"slug": "p2-tree",
+	"worktree": "/Users/Flo/GitHub/palette/.worktrees/p2-tree",
+	"branch": "proto/p2-tree",
+	"headAtVerification": "21131282af7e9077ebc17f0ae7c2bc4af9577c39",
+	"verifiedAt": "2026-08-11T12:41:19.508Z",
+	"copiedFileCount": 19,
+	"sharedFileCount": 8,
+	"copiedDrift": [],
+	"sharedDrift": [],
+	"notInHead": [
+		"prototypes/p2-tree/tos/gradient/constants.ts",
+		"prototypes/p2-tree/tos/gradient/excursion.ts",
+		"prototypes/p2-tree/tos/gradient/guide-stop.ts",
+		"prototypes/p2-tree/tos/gradient/occupancy.ts"
+	],
+	"differsFromHead": [
+		"prototypes/p2-tree/tos/candidate.ts"
+	],
+	"committedAtHead": false,
+	"verdict": "PINNED"
+}

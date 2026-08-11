@@ -1,0 +1,23 @@
+{
+	"a": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p5-fieldfit-demo20.jsonl",
+		"candidateId": "p5-fieldfit",
+		"codeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d"
+	},
+	"b": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p5-fieldfit-demo20-w1.jsonl",
+		"candidateId": "p5-fieldfit",
+		"codeVersion": "e03844f6758c31439564ee0f3a8730c98c679eb9ea273a8c7b671ea8b112f43d"
+	},
+	"rowsCompared": 20,
+	"identicalRows": 20,
+	"strictIdenticalRows": 20,
+	"gate": "PASS",
+	"problems": [],
+	"timing": {
+		"aOk": 20,
+		"bOk": 20,
+		"aMedianComputeMs": 529.6532709999999,
+		"bMedianComputeMs": 121.49614599999992
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"a": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p1-mdl-gate3-home.jsonl",
+		"candidateId": "p1a-v1",
+		"codeVersion": "0c54a621a1c775e76db4cc303038efb561b65100e2ec7e7d8e66de6a43a5f7b2"
+	},
+	"b": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p1-mdl-gate3-snapshot.jsonl",
+		"candidateId": "p1a-v1",
+		"codeVersion": "a66ee452d38ff97485f593a7d2e756bba5b05c3ef4d4556836accb191ee72362"
+	},
+	"rowsCompared": 3,
+	"identicalRows": 3,
+	"strictIdenticalRows": 0,
+	"gate": "PASS",
+	"problems": [],
+	"timing": {
+		"aOk": 3,
+		"bOk": 3,
+		"aMedianComputeMs": 293371.29479200003,
+		"bMedianComputeMs": 227585.33325
+	}
+}

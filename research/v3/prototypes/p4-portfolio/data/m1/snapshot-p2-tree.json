@@ -1,0 +1,100 @@
+{
+	"slug": "p2-tree",
+	"worktree": "/Users/Flo/GitHub/palette/.worktrees/p2-tree",
+	"homeCandidate": "/Users/Flo/GitHub/palette/.worktrees/p2-tree/research/v3/prototypes/p2-tree/tos/candidate.ts",
+	"snapshotCandidate": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/members/p2-tree/v3/prototypes/p2-tree/tos/candidate.ts",
+	"homeCodeVersion": "402bf32affa42133bd3f636ab6da4aed5599141aa9a03c1fa30706d1fc0d70ba",
+	"snapshotCodeVersion": "19e91d28fa6152df6bea151364859594a00e29fafec1ef1d81596744cab6bfc9",
+	"closureFileCount": 27,
+	"ownFileCount": 19,
+	"sharedFileCount": 8,
+	"sharedFileDiffs": [],
+	"shared": [
+		"src/contract/challengers.ts",
+		"src/contract/color.ts",
+		"src/contract/constants.ts",
+		"src/contract/invariants.ts",
+		"src/contract/ramp.ts",
+		"src/contract/types.ts",
+		"src/devloop/code-version.ts",
+		"src/devloop/types.ts"
+	],
+	"copied": [
+		{
+			"path": "prototypes/p2-tree/tos/candidate.ts",
+			"sha256": "1d15fd9ed3a9799e7a25d6a6464d7052d71d063f9a38744cb171f7fb9d3ab786"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/constants.ts",
+			"sha256": "5f891a8e1378b76b2f5d8930054df33717098a34af3378619e556a8120d370f1"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/gradient/constants.ts",
+			"sha256": "1120611ee0b35919d2fd314a84478f3d24d97032a1e8df5d749652a54e1087d7"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/gradient/excursion.ts",
+			"sha256": "0c5cf9dc64b9ad4886febb745548f67561ba52f38976c72492b65c93b8c9d846"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/gradient/guide-stop.ts",
+			"sha256": "e92c93fbf380bc7b392c3d40435ccb1d377459fb9a58c3aa12e6da3e5b501858"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/gradient/occupancy.ts",
+			"sha256": "73a2a49bf9ef2f72dc37d424195dbaa3d08cde6d0fabaea460b2b7b1b79b8b6b"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/lanes/channels.ts",
+			"sha256": "0326544c20bd6f500a9140457ff678f09350eb1b92802bf17e6b760cb87e3017"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/lanes/constants.ts",
+			"sha256": "dda24e1232c74619e1a526c84258827851eadf85b102cb92ae1db21c68bae173"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/lanes/nodes.ts",
+			"sha256": "40e8414260e38e8895b317e3976ed60a52b8b952b9312233bbe76535ef046ca7"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/lanes/pool.ts",
+			"sha256": "084ba6526646b7e33e6548e9a58675e706c66c53c78d9d24b4014f002e24f0d0"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/pipeline.ts",
+			"sha256": "991e964c3065f6a2d92d535f45b00e0f99bc7a2c6fa2bd02f9f26ed8b5d6f980"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/assemble.ts",
+			"sha256": "c48d121fc2d495eca89bd6a7d3f12d677c625c82dda2bbcf532ebfc6f650bd5d"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/coincidence.ts",
+			"sha256": "a5ee42113d71ca21ba54a1d43f752e8541b8960b38aa8bf14f0c23d00568fc97"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/constants.ts",
+			"sha256": "7371aadd0e190344ebf2dc347e89d662e2205f845f0307fed86ea805657986ba"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/eligibility.ts",
+			"sha256": "13d45ce0b423339feae5e18a936ac89529bcbb12372d8283a9fbdddfb10ca02b"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/indifference.ts",
+			"sha256": "b6bfc7d5f29fa86812d10a63bbd0e28658e3eec76663eb18a214a84784f6d288"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/rank.ts",
+			"sha256": "690daf43cf99c333b46c6ca375d7e490bfcdd2c252c6d435fd5c3f3b4178e281"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/roles/text.ts",
+			"sha256": "1048f64a63fd4a51ae960f3fe97ab4b00ca57ee7909487d3ca337c3eb06937dd"
+		},
+		{
+			"path": "prototypes/p2-tree/tos/tree.ts",
+			"sha256": "89285c26b37c62adc898e3b9c6a41cbba71c9f2b1d0fa851add0556e7e0260ed"
+		}
+	]
+}

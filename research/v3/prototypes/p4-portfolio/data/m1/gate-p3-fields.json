@@ -1,0 +1,23 @@
+{
+	"a": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p3-fields-gate3-home.jsonl",
+		"candidateId": "p3-fields-0.4.2",
+		"codeVersion": "a5f17f31abd94a3240f2cf1042ca183f3926a4d853976ed0dcb38e2c2332748a"
+	},
+	"b": {
+		"path": "/Users/Flo/GitHub/palette/.worktrees/p4-portfolio/research/v3/prototypes/p4-portfolio/data/m1/runs/p3-fields-gate3-snapshot.jsonl",
+		"candidateId": "p3-fields-0.4.2",
+		"codeVersion": "d30999e96bad9e20ca00c5b36e5f04e3efeadb9ae08f082c6437ae7da03a4d15"
+	},
+	"rowsCompared": 3,
+	"identicalRows": 3,
+	"strictIdenticalRows": 0,
+	"gate": "PASS",
+	"problems": [],
+	"timing": {
+		"aOk": 3,
+		"bOk": 3,
+		"aMedianComputeMs": 272.108125,
+		"bMedianComputeMs": 259.53787500000004
+	}
+}
