@@ -1,0 +1,760 @@
+{
+	"batchId": "phase2-pair-023",
+	"round": "m4-selector-vs-best",
+	"released": true,
+	"releasedAt": "2026-08-11T19:16:17.317Z",
+	"pushedAt": "2026-08-11T18:42:56.843Z",
+	"blindingSalt_serverRecord": "2ea99c982cdf058d463dcfbac79b0828c8f52f5923d9751ed1349eb7c4778a33",
+	"itemsSortedByMarginAscending": [
+		{
+			"coverStem": "ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+			"electedMember": "p2-tree",
+			"electedSideLetter": "A",
+			"p3SideLetter": "B",
+			"gradeElected": "unacceptable",
+			"gradeP3": "weak",
+			"preferenceRaw": "b",
+			"preferenceSource": "prefilled",
+			"preferenceDecoded": "p3",
+			"score": -1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "side A: no green-to-brown in this artwork\nside B: pink is the color of the face of a person in this picture, it doesn't really fit as a background\nboth: the main text is white in this artwork, it might be good to have the foreground be white",
+			"commentSideAttribution": {
+				"side A": "elected",
+				"side B": "p3",
+				"both": "both sides"
+			},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 1,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 971.5274451085133,
+				"band": "narrow (<10\u2074)",
+				"winFraction": 0.21428571428571427,
+				"resamples": 14,
+				"electionFlippedByFix": true,
+				"cheapestTotal": "p5-fieldfit",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": false
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Shamrock Green",
+					"surface": "Rosy Taupe",
+					"foreground": "Jade",
+					"accent": "Primrose"
+				},
+				"p3": {
+					"background": "Brume",
+					"surface": "Amazon",
+					"foreground": "Mana Tree",
+					"accent": "Luigi"
+				},
+				"electedGradientStops": [
+					"Shamrock Green",
+					"Rosy Taupe"
+				],
+				"p3GradientStops": null
+			},
+			"verification": {
+				"m1_letter": "A",
+				"m2_letter": "A",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "A",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 971.5274451085133
+			}
+		},
+		{
+			"coverStem": "ab67616d00001e020006bd0cd831e3e78a7dda49",
+			"electedMember": "p5-fieldfit",
+			"electedSideLetter": "B",
+			"p3SideLetter": "A",
+			"gradeElected": "strong",
+			"gradeP3": "strong",
+			"preferenceRaw": "b",
+			"preferenceSource": "explicit",
+			"preferenceDecoded": "elected",
+			"score": 1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "",
+			"commentSideAttribution": {},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 1,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 8052.922914689625,
+				"band": "narrow (<10\u2074)",
+				"winFraction": 1,
+				"resamples": 4,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p5-fieldfit",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": false
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Kelp",
+					"surface": "Field Drab",
+					"foreground": "Ice",
+					"accent": "Walnut"
+				},
+				"p3": {
+					"background": "Walnut",
+					"surface": "Caveman",
+					"foreground": "Lost in Time",
+					"accent": "Spring Roll"
+				},
+				"electedGradientStops": [
+					"Kelp",
+					"Field Drab"
+				],
+				"p3GradientStops": [
+					"Walnut",
+					"Caveman"
+				]
+			},
+			"verification": {
+				"m1_letter": "B",
+				"m2_letter": "B",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "B",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 8052.922914689625
+			}
+		},
+		{
+			"coverStem": "ab67616d0000b273000def1df4b5be93d1073d33",
+			"electedMember": "p5-fieldfit",
+			"electedSideLetter": "A",
+			"p3SideLetter": "B",
+			"gradeElected": "acceptable",
+			"gradeP3": "weak",
+			"preferenceRaw": "a",
+			"preferenceSource": "prefilled",
+			"preferenceDecoded": "elected",
+			"score": 1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "",
+			"commentSideAttribution": {},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 2,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 12172.504839323694,
+				"band": "mid (10\u2074\u201310\u2075)",
+				"winFraction": 0.875,
+				"resamples": 8,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p5-fieldfit",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": true,
+					"best": false
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Iron Grey",
+					"surface": "Tuna",
+					"foreground": "Obsidian",
+					"accent": "Lead"
+				},
+				"p3": {
+					"background": "Hickory",
+					"surface": "Umbra",
+					"foreground": "Starlight",
+					"accent": "Rustling Leaves"
+				},
+				"electedGradientStops": [
+					"Iron Grey",
+					"Tuna"
+				],
+				"p3GradientStops": null
+			},
+			"verification": {
+				"m1_letter": "A",
+				"m2_letter": "A",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "A",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 12172.504839323694
+			}
+		},
+		{
+			"coverStem": "ab67616d0000b2730008e0e708edbad8a3783eee",
+			"electedMember": "p2-tree",
+			"electedSideLetter": "B",
+			"p3SideLetter": "A",
+			"gradeElected": "unacceptable",
+			"gradeP3": "weak",
+			"preferenceRaw": "a",
+			"preferenceSource": "prefilled",
+			"preferenceDecoded": "p3",
+			"score": -1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "side A: orange is a poor pick for an accent, its presence in the artwork looks accidental, when there are strong yellows and greens\nside B: there are no blue-to-brown gradients in this artwork",
+			"commentSideAttribution": {
+				"side A": "p3",
+				"side B": "elected"
+			},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 9,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 98724.04123736522,
+				"band": "mid (10\u2074\u201310\u2075)",
+				"winFraction": 1,
+				"resamples": 4,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p2-tree",
+				"differingRolesVsBest": [
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": true,
+					"best": false
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Lake Blue",
+					"surface": "Cocoa",
+					"foreground": "Bay",
+					"accent": "Taxi Yellow"
+				},
+				"p3": {
+					"background": "Blue Blood",
+					"surface": "Rain Check",
+					"foreground": "Mole",
+					"accent": "Paprika"
+				},
+				"electedGradientStops": [
+					"Lake Blue",
+					"Cocoa"
+				],
+				"p3GradientStops": [
+					"Blue Blood",
+					"Rain Check"
+				]
+			},
+			"verification": {
+				"m1_letter": "B",
+				"m2_letter": "B",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "B",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 98724.04123736522
+			}
+		},
+		{
+			"coverStem": "ab67616d0000b2730014c3a0501a86757a275520",
+			"electedMember": "p5-fieldfit",
+			"electedSideLetter": "A",
+			"p3SideLetter": "B",
+			"gradeElected": "acceptable",
+			"gradeP3": "unacceptable",
+			"preferenceRaw": "a",
+			"preferenceSource": "prefilled",
+			"preferenceDecoded": "elected",
+			"score": 1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "",
+			"commentSideAttribution": {},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 1,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 116916.93261586304,
+				"band": "large (10\u2075\u201310\u2076)",
+				"winFraction": 1,
+				"resamples": 4,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p5-fieldfit",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": true,
+					"best": false
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Rum",
+					"surface": "Pebble",
+					"foreground": "Taxi Yellow",
+					"accent": "Frost"
+				},
+				"p3": {
+					"background": "Dandelion",
+					"surface": "Garnet",
+					"foreground": "A Frond in Need",
+					"accent": "Marsala"
+				},
+				"electedGradientStops": [
+					"Rum",
+					"Pebble"
+				],
+				"p3GradientStops": null
+			},
+			"verification": {
+				"m1_letter": "A",
+				"m2_letter": "A",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "A",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 116916.93261586304
+			}
+		},
+		{
+			"coverStem": "ab67616d0000b27300103b70ede16610224c5ca4",
+			"electedMember": "p2-tree",
+			"electedSideLetter": "A",
+			"p3SideLetter": "B",
+			"gradeElected": "strong",
+			"gradeP3": "strong",
+			"preferenceRaw": "b",
+			"preferenceSource": "explicit",
+			"preferenceDecoded": "p3",
+			"score": -1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "",
+			"commentSideAttribution": {},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 1,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 493698.8900947729,
+				"band": "large (10\u2075\u201310\u2076)",
+				"winFraction": 1,
+				"resamples": 4,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p2-tree",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": true
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Powder Cornflower",
+					"surface": "Storm's Coming",
+					"foreground": "Oil",
+					"accent": "Khaki"
+				},
+				"p3": {
+					"background": "Bare Mintimum",
+					"surface": "Adrift on the Nile",
+					"foreground": "Lamplighter",
+					"accent": "Duckweed"
+				},
+				"electedGradientStops": [
+					"Powder Cornflower",
+					"Storm's Coming"
+				],
+				"p3GradientStops": [
+					"Bare Mintimum",
+					"Adrift on the Nile"
+				]
+			},
+			"verification": {
+				"m1_letter": "A",
+				"m2_letter": "A",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "A",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 493698.8900947729
+			}
+		},
+		{
+			"coverStem": "ab67616d0000b27300133fe10d39cafd71ab8a6b",
+			"electedMember": "p5-fieldfit",
+			"electedSideLetter": "B",
+			"p3SideLetter": "A",
+			"gradeElected": "weak",
+			"gradeP3": "strong",
+			"preferenceRaw": "a",
+			"preferenceSource": "prefilled",
+			"preferenceDecoded": "p3",
+			"score": -1,
+			"veto": null,
+			"endorsements": [],
+			"comment": "",
+			"commentSideAttribution": {},
+			"commentServedNameMentions": [],
+			"commentForeignColourNames": [],
+			"endorsementDecode": [],
+			"revision": 1,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 1712029.6797889248,
+				"band": "huge (\u226510\u2076)",
+				"winFraction": 0.6458333333333334,
+				"resamples": 48,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p5-fieldfit",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": false
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Pitch Black",
+					"surface": "Pitch Black",
+					"foreground": "Sesame",
+					"accent": "Snow"
+				},
+				"p3": {
+					"background": "Soot",
+					"surface": "Pitch Black",
+					"foreground": "Greige",
+					"accent": "Orange You Glad"
+				},
+				"electedGradientStops": null,
+				"p3GradientStops": null
+			},
+			"verification": {
+				"m1_letter": "B",
+				"m2_letter": "B",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "B",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 1712029.6797889248
+			}
+		},
+		{
+			"coverStem": "ab67616d0000b27300046beb8271bf285a15a23d",
+			"electedMember": "p2-tree",
+			"electedSideLetter": "A",
+			"p3SideLetter": "B",
+			"gradeElected": "weak",
+			"gradeP3": "acceptable",
+			"preferenceRaw": "b",
+			"preferenceSource": "prefilled",
+			"preferenceDecoded": "p3",
+			"score": -1,
+			"veto": null,
+			"endorsements": [
+				{
+					"palette": {
+						"background": "#d4c4b7",
+						"surface": "#d1a298",
+						"foreground": "#f1e998",
+						"accent": "#151c60",
+						"gradient": {
+							"stops": [
+								{
+									"color": "#d4c4b7",
+									"position": 0
+								},
+								{
+									"color": "#d1a298",
+									"position": 1
+								}
+							]
+						},
+						"surfaceCollapsed": false,
+						"accentCollapsed": false
+					},
+					"comment": "",
+					"retracted": false
+				}
+			],
+			"comment": "side A: there is no beige to dark gradient in that artwork\nside B: black foreground doesn't really match this artwork, a better foreground might be Lemon Curd or other yellow tones",
+			"commentSideAttribution": {
+				"side A": "elected",
+				"side B": "p3"
+			},
+			"commentServedNameMentions": [
+				"Beige"
+			],
+			"commentForeignColourNames": [
+				"Lemon Curd"
+			],
+			"endorsementDecode": [
+				{
+					"nearestSide": "p3",
+					"rolesMatching": 3,
+					"rolesChanged": {
+						"foreground": {
+							"served": "#0d0d31",
+							"endorsed": "#f1e998"
+						}
+					}
+				}
+			],
+			"revision": 6,
+			"amendmentCount": 0,
+			"retracted": false,
+			"confound": false,
+			"confoundNote": "",
+			"margin": {
+				"bits": 6283763.604664575,
+				"band": "huge (\u226510\u2076)",
+				"winFraction": 1,
+				"resamples": 4,
+				"electionFlippedByFix": false,
+				"cheapestTotal": "p2-tree",
+				"differingRolesVsBest": [
+					"background",
+					"surface",
+					"foreground",
+					"accent"
+				],
+				"figureGroundClass": {
+					"elected": false,
+					"best": true
+				}
+			},
+			"servedNames": {
+				"elected": {
+					"background": "Marzipan",
+					"surface": "Starling",
+					"foreground": "Sour",
+					"accent": "Lemon Posset"
+				},
+				"p3": {
+					"background": "Beige",
+					"surface": "Sheaf",
+					"foreground": "Oblivion",
+					"accent": "Fly-by-Night"
+				},
+				"electedGradientStops": [
+					"Marzipan",
+					"Starling"
+				],
+				"p3GradientStops": [
+					"Beige",
+					"Sheaf"
+				]
+			},
+			"verification": {
+				"m1_letter": "A",
+				"m2_letter": "A",
+				"m2_variantIds_match_mapping": true,
+				"m2_order_parity_matches_mapping": true,
+				"m2_variantId_position_in_pushed": true,
+				"m3_content_letter": "A",
+				"agree": true
+			},
+			"selectionCrossCheck": {
+				"selection_elected_matches_mapping": true,
+				"selection_marginBits": 6283763.604664575
+			}
+		}
+	],
+	"verificationSummary": {
+		"itemsAgreeingAllThreeMethods": 8,
+		"itemsTotal": 8,
+		"allVariantIdsRecomputed": true,
+		"allOrderParitiesRecomputed": true,
+		"allVariantIdPushedPositionsMatch": true,
+		"disagreements": []
+	},
+	"aggregates": {
+		"preferenceCounts": {
+			"elected": 3,
+			"p3": 5,
+			"none": 0
+		},
+		"gradeDistributions": {
+			"elected": {
+				"strong": 2,
+				"acceptable": 2,
+				"weak": 2,
+				"unacceptable": 2
+			},
+			"p3": {
+				"strong": 3,
+				"acceptable": 1,
+				"weak": 3,
+				"unacceptable": 1
+			}
+		},
+		"netScore": -2,
+		"netNarrowHalf": 0,
+		"netWideHalf": -2,
+		"halfDelta_abs": 2,
+		"kendallTauB_marginRank_vs_score": -0.3415650255319866,
+		"vetoCount": 0,
+		"endorsementCount": 1,
+		"preferenceSourceCounts": {
+			"explicit": 2,
+			"prefilled": 6
+		},
+		"prefilledPreferencesTrackingHigherGrade": 6,
+		"gradeTiesWithExplicitPreference": [
+			{
+				"cover": "ab67616d00001e020006bd0cd831e3e78a7dda49",
+				"grade": "strong",
+				"preference": "elected"
+			},
+			{
+				"cover": "ab67616d0000b27300103b70ede16610224c5ca4",
+				"grade": "strong",
+				"preference": "p3"
+			}
+		],
+		"secondary_decisivenessSplit": {
+			"winFraction_1.000": {
+				"n": 5,
+				"net": -1
+			},
+			"winFraction_below_1": {
+				"n": 3,
+				"net": -1,
+				"fractions": [
+					0.21428571428571427,
+					0.875,
+					0.6458333333333334
+				]
+			}
+		}
+	},
+	"branches": {
+		"a": {
+			"criterion": "(a) The selector's sides preferred on a majority -> F3 survives; the selector earns its existence.",
+			"numbers": {
+				"electedPreferences": 3,
+				"strictMajorityOf8": 5
+			},
+			"fires": false
+		},
+		"b": {
+			"criterion": "(b) P3's sides preferred on a majority -> F3 FIRES.",
+			"numbers": {
+				"p3Preferences": 5,
+				"strictMajorityOf8": 5
+			},
+			"fires": true
+		},
+		"c": {
+			"criterion": "(c) Mixed -> the per-cover read against margin size, and the rule is fixed now.",
+			"numbers": {
+				"netNarrow": 0,
+				"netWide": -2,
+				"delta": 2,
+				"threshold": 4,
+				"wideHalfPositive": false,
+				"marginSizeDependenceDeclared": false,
+				"kendallTauB": -0.3415650255319866
+			},
+			"fires": false,
+			"subOutcome": null
+		}
+	}
+}

@@ -1,8 +1,13 @@
 # P4 — where we're at
 
-**Updated 2026-08-11 at the reviewer's pre-pause order. Milestone state: M1 complete and
-committed (`c010d71e`); M2 (selector substrate + currency) in flight with worker W2 —
-uncollected, treat its claims as nonexistent until verified.**
+**FINAL, 2026-08-18: MECHANISM-FALSIFIED — F3 fired on batch phase2-pair-023 (branch (b) by its
+own pre-registered criterion; `RULING.md` is the authority). F1 ruled non-firing, F2 never
+tripped: the selector failed honestly, with nothing tuned toward the reviewer. What is
+falsified: description-length palette pricing as a selection authority — the currency
+discriminates decisively and confidently elects what the judge does not prefer (no margin
+dependence, τ-b −0.342). The prior-art pattern — the selector is where portfolios die — is
+confirmed a fifth time, now for a non-fitted zero-hand-constant currency. Salvage inventory in
+RULING.md §Salvage. The section below is the pre-round state, retained as the record.**
 
 ## 1. Mechanism
 
