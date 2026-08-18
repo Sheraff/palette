@@ -559,3 +559,101 @@ sequential measurement (+~15%) is the number to trust and this one is an upper b
 - **`identity/q2`'s `nodeIds`-as-member-count reading is now stale.** That report counted a group's node
   ids as its component count, which was true before the merge and is not after; `componentCount` is the
   field to read. The report itself is a released artefact and is left alone.
+
+---
+
+# Cycle 5 — D18.1's two cluster-member levers, adopted with a measured bound (worker P, 2026-08-18)
+
+**Input:** `DECISIONS.md` D18.1 (the mandate), `review-rounds/round-5-pricing/OUTCOME.md` items 1–2 (the
+verdicts), W-J's *"the lever this cycle found and did not pull"* above (the measurement). **New export:**
+`indifference.ts`'s `extremalMember`. **Constants added: none.**
+
+## 1. What the round released, restated exactly
+
+W-J's figures, re-derived from the section above rather than from anyone's recall: the chroma-extremal
+**accent** member moves the accent on **42 of 100** dither covers against 50, and carries that arm's
+agreement **23% → 24%**. (The `447` in the adoption brief is a different measurement — the 600-trial
+role-moved count of the cycle-2 baseline; W-J's shipped build read 445. Nothing measured a churn of 42
+per 600.) The costs W-J recorded and withheld the lever for: `#d25068` → `#ee5567` on `…35b967964d`,
+`#161415` → `#282425` on `…d859a69094`, and the L-only pool lifted to the merged pool's chroma. The
+**contrast-extremal foreground** member loses `#070506` on `…d859a69094`.
+
+Round 5 priced two of those and the reviewer preferred neither side (item 1 weak/weak, item 2
+**strong/strong**), so D18.1 releases both levers. Both are now installed:
+
+| pool | site | quantity | ruler |
+|---|---|---|---|
+| accent | `pipeline.ts`'s `accentClusters` | chroma from the field | `sameColorBar` for the pair |
+| foreground | `findTextGroups`'s `memberRule` | `minFieldContrast` over the rendered field | `RAW_APCA_INDIFFERENCE` |
+
+The **shared** `clusters` representative — the accent's second tier *and* the foreground's non-text tier
+— keeps the area rule, because one repr cannot be extremal on two pools' different quantities. Splitting
+it into two is a design with its own measurement and is **owed**, not silently taken.
+
+## 2. The deviation, and the measurement that forced it
+
+The brief asked for the unbounded extremum: publish the member in the **best** class. Implemented and
+measured first, and it does not do what the round priced. `clusterByBar` closes the same-colour relation
+**transitively**, so an extremal member can be many bars from the colour published today:
+
+| cover | role | unbounded result | distance, in bars of the pair |
+|---|---|---|---|
+| `…d859a69094` | foreground | `#070506` → `#050304` | 1.77 — **the priced substitution** |
+| `…35b967964d` | accent | `#d25068` → `#dc565f` (chroma-indifferent from `#ee5567`) | 1.28 — **the priced substitution** |
+| `…35b967964d` | foreground | `#edbab9` → `#c65d61` | **10.4** — priced by nobody |
+
+The third one is the whole finding. It takes the foreground/accent separation budget with it, and the
+published accent collapses `#d25068` → `#f6b3bc`, **chroma 0.085 against the coral's 0.169** — round 1's
+*"accent wrongly collapsed — vivid red-orange missed"*, reintroduced on the cover that named it, against
+the one accent hex in this campaign with a direct reviewer endorsement (D9). Unbounded demo-20:
+**17 of 20 palettes move** (foreground 15, accent 11), including `#a1f9fd` → `#f4fcfe` and `#88744f` →
+`#4d2818`. Two assertions of `lanes/tests/accent-acceptance.test.ts` fail on it: the published accent is
+no longer the top of the accent ranking, and it no longer out-chromas the foreground.
+
+**The bound, and why it is the round's own object.** Both *priced* substitutions are **intra-class**:
+`#070506` and `#050304` differ by **0.03** of raw APCA against a band of 1.98, and `#d25068` sits inside
+the chroma class its cluster's leader opens. So `extremalMember` publishes the settled member of the
+class the **incumbent** — the area-largest member, the colour published today — already occupies. Area
+stops deciding *which colour*; the tie-break decides, and the tie-break is the colour itself
+(lexicographic RGB, then node id), which is the churn the lever was aimed at. What the bound gives up is
+the part of W-J's measurement that came from crossing classes; **the dither arm is unmeasured here** (the
+robustness harness is the orchestrator's to run after this lands) and the honest statement is that the
+42/100 figure was measured on the unbounded rule and does not transfer unexamined.
+
+## 3. What came true, and what did not
+
+| W-J's prediction | this build |
+|---|---|
+| foreground `#070506` → `#050304` | **true**, and it is round-5 item 2's own trade |
+| accent `#161415` → `#282425` on the same cover | **`#181818`** — same cluster, settled by the ruler and not by the exact extremum |
+| accent `#d25068` → `#ee5567` | **did not fire.** `#ee5567` is not a member of `#d25068`'s cluster; the unbounded rule reaches it by re-ordering *between* clusters, which the bound does not do. `#d25068` still publishes |
+| L-only pool lifted to the merged pool's chroma (D2's evidence on that cover) | **true of the unbounded rule** — L-only best 0.17062 against merged 0.16929, i.e. the merged pool no longer strictly wins. **Not true of this build**: `lanes/tests/accent-acceptance.test.ts` passes unchanged, including `accentChroma > lOnlyBest` |
+
+`roles/tests/isoluminant-text.test.ts` **passes and still discriminates**: the L-only parse still finds
+no text group on the isoluminant fixture and the merged parse still finds exactly one whose every node
+id is a chromatic-lane id. The member rule changes which member of a group publishes and cannot change
+whether the group exists, so D2's evidence is untouched by construction as well as in fact.
+
+## 4. Demo-20, this build
+
+`20 ok · 0 failed · 0 contract violations · 0 forbidden twin pairs`, role-swap check still a no-op.
+**14 of 20 palettes move** — foreground on 11, accent on 6 — against `out/demo-20-cycle5-before.run.jsonl`.
+Both acceptance covers are in it, and the rest are near-identical inks of one mark: `#7f7f7f`-class
+substitutions, `#9c9c9c` → `#9a9a9a`, `#62a2ac` → `#58a2ad`. Two are larger and are re-orderings rather
+than substitutions (`…a621256ce593`'s accent `#d9dd16` → `#f95427`, `…3a949021f65e`'s foreground
+`#f8dab8` → `#e6e5d0` — the latter moves off the triple round-5 item 5 called unacceptable).
+
+## 5. What this leaves owed
+
+- **One test fails and it is not in this pass's ownership.** `coverage/tests/acceptance.test.ts:64`
+  asserts the published foreground of `…35b967964d` is chromatic; the substitution `#edbab9` → `#e4bdb6`
+  is **0.72 of the pair's bar** — exactly the sub-bar kind the round released — but it crosses the
+  contract's own region boundary (chroma 0.0591 → 0.0461, `light-saturated` → `light-neutral`). The
+  coverage prototype is uninstalled (D18.2) and its owner has the one-line call: assert the *family*, or
+  re-pin. Suite is **117/118**.
+- **The house tie-break has no colorimetric direction.** Inside an indifference class the settled order
+  is lexicographic RGB, which is stable and meaningless, so a class settled by it drifts toward the
+  low-RGB member. That is how `#e4bdb6` won above. It is the right tie-break for *stability* and it is
+  worth a round item to ask whether a class should settle on chroma or on lightness instead.
+- **The unbounded variant is a run away, not a rewrite.** `extremalMember`'s `incumbent` argument is the
+  whole of the bound; `out/demo-20-cycle5-mandated.run.jsonl` is its demo-20 for comparison.

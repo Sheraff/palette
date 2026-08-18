@@ -189,6 +189,64 @@ export function indifferenceClasses(
 }
 
 /**
+ * **Which member of a cluster publishes** — `DECISIONS.md` **D18.1**, the round-5 stability levers.
+ *
+ * Round-5 items 1–2 priced substituting one member of a published cluster for another (`#d25068` for
+ * `#ee5567` on the accent, weak/weak; `#070506` for `#050304` on the foreground, **strong/strong**) and
+ * the reviewer expressed **no preference** on either. That releases the rule that makes the choice,
+ * which was **area** — the churniest order in the parse (`stability/q1-dither/REPORT.md`) — and lets a
+ * pool publish the member that is extremal on **its own ranking quantity**: chroma from the field for
+ * the accent, minimum |raw APCA| over the rendered field for the foreground.
+ *
+ * **The extremum is taken against the ruler and not exactly.** A cluster's members can differ on the
+ * quantity by less than the band for it, and an exact `argmax` over a difference the instrument cannot
+ * resolve is the defect `indifferenceClasses` exists to remove. So: form the classes, and settle inside
+ * a class on the house tie-break — lexicographic RGB first, then the node id.
+ *
+ * **And it is bounded by the incumbent's own class, which is a deviation, measured and stated.** The
+ * unbounded form — always publish the *best* class — is what W-J measured in cycle 3 and what the
+ * adoption brief asked for. Re-measured here it walks the cluster's **transitive chain**: `clusterByBar`
+ * closes the same-colour relation, so "one colour under the bar" is a property of the cluster and not of
+ * every pair inside it, and the best class can sit ten bars from the colour that is published today. On
+ * `…35b967964d` the unbounded foreground rule moves the published triple `#edbab9` → `#c65d61`
+ * (**10.4×** the pair's bar), which takes the separation budget and collapses the accent from the
+ * reviewer-endorsed coral `#d25068` to `#f6b3bc` at chroma 0.085 — round 1's *"vivid red-orange missed"*,
+ * reintroduced. Seventeen of demo-20's twenty palettes move under it.
+ *
+ * The **priced** substitutions are both *intra-class*: `#070506` → `#050304` differ by 0.03 of raw APCA
+ * against a band of 1.98, and `#d25068` sits inside the chroma class its cluster's leader opens. So the
+ * bound admits exactly what round 5 graded and refuses what it did not: the published member is the
+ * settled member of the class the **incumbent** (the area-largest member, the colour published today)
+ * already occupies. Area no longer decides *which colour* — the tie-break does, and it is the colour
+ * itself — which is the churn the lever was aimed at. The unbounded variant's numbers are in
+ * `roles/NOTES.md`; whether to widen to it is a round question, not a worker's.
+ *
+ * `count` members addressed by index; `valueOf` reads the quantity, larger is better; `bandOf` is the
+ * band for the pair; `tieBreak` is the settled order among indifferent members (it is also the seed
+ * order the classes are formed with, so the result does not depend on the caller's array order);
+ * `incumbent` is the index of the member the area rule publishes.
+ *
+ * Returns the winning index, or `-1` for an empty set.
+ */
+export function extremalMember(
+	count: number,
+	valueOf: (index: number) => number,
+	bandOf: (leader: number, candidate: number) => number,
+	tieBreak: (first: number, second: number) => number,
+	incumbent: number,
+): number {
+	if (count <= 0) return -1
+	const classes = indifferenceClasses(count, valueOf, bandOf, tieBreak)
+	const target = incumbent >= 0 && incumbent < count ? classes[incumbent] : 0
+	let best = -1
+	for (let index = 0; index < count; index += 1) {
+		if (classes[index] !== target) continue
+		if (best === -1 || tieBreak(index, best) < 0) best = index
+	}
+	return best
+}
+
+/**
  * **A truncation that cannot flip membership on a sub-band change.**
  *
  * `order` is the already-ranked index sequence; `limit` is the cost guard's count; `sameClass` says

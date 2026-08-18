@@ -41,6 +41,7 @@
  */
 
 import type { Rgb8 } from "../../../../src/contract/types.ts"
+import { areaFractionBand, extremalMember } from "./indifference.ts"
 import {
 	STROKE_WIDTH_RIDGE_FACTOR,
 	TEXT_COLLINEARITY_CUT,
@@ -84,11 +85,32 @@ export type TextGroup = Readonly<{
 	rows: number
 	/** Summed shape area of the coherent members, as a fraction of the image. */
 	areaFraction: number
-	/** The largest coherent member's representative — the colour the group publishes. */
+	/** The published member's representative — the colour the group publishes. See `memberRule`. */
 	repr: Rgb8
 	/** The smallest parsed node id among the coherent members. The group's deterministic identity. */
 	firstNodeId: number
 }>
+
+/**
+ * **Which member of a group publishes its colour** — a quantity and the ruler for it, together.
+ *
+ * The two are one object because they are one statement: an extremum is only meaningful beside the
+ * band below which the quantity is not measured (`indifference.ts`). `valueOf` is larger-is-better.
+ */
+export type MemberRule = Readonly<{
+	valueOf: (component: TextComponent) => number
+	bandOf: (leader: TextComponent, candidate: TextComponent) => number
+}>
+
+/**
+ * The rule this function has always used: the largest coherent member, area compared against the
+ * relative area band. Kept as the default so the corpus-free tests state the detector's own behaviour;
+ * `pipeline.ts` passes readability (D18.1).
+ */
+export const AREA_MEMBER_RULE: MemberRule = {
+	valueOf: (component) => component.areaFraction,
+	bandOf: (leader, candidate) => areaFractionBand(leader.areaFraction, candidate.areaFraction),
+}
 
 /**
  * The **lower** median of a sample.
@@ -258,15 +280,18 @@ export function isCoherentRow(components: readonly TextComponent[], members: rea
  * title are one designer decision, and splitting them would make the same colour compete with itself
  * for the same role.
  *
- * **Which member publishes** is `memberScore`, largest first, tie-broken on lexicographic RGB. It
- * defaults to area, which is what this function has always used. The parameter exists because every
- * member of a group is inside one same-colour cluster, so the choice among them is a **sub-bar** choice
- * by construction and the rule that makes it decides the published triple — and area is the churniest
- * statistic in the parse (`stability/q1-dither/REPORT.md`). Cycle 3 measured the obvious alternative
- * (readability against the rendered field, the quantity the foreground is ranked on) and **the
- * acceptance cases refused it**: `…d859a69094` stopped publishing the artwork's own `#070506`. The
- * default therefore stands and the hook is here so the next attempt is a one-line experiment rather
- * than a rewrite. See `roles/NOTES.md`.
+ * **Which member publishes** is `memberRule` — the extremum on its quantity, taken **against that
+ * quantity's ruler** (`extremalMember`), then the house tie-break: lexicographic RGB, then node id.
+ * Every member of a group is inside one same-colour cluster, so the choice among them is a **sub-bar**
+ * choice by construction and the rule that makes it decides the published triple.
+ *
+ * **Cycle 5 — the caller now passes readability, and that is `DECISIONS.md` D18.1.** The default is
+ * still area, which is what this function has always used and what the corpus-free tests exercise.
+ * Cycle 3 measured the readability variant and withheld it because it moved `…d859a69094` off the
+ * artwork's own `#070506`; round-5 item 2 priced exactly that substitution (`#070506` against
+ * `#050304`, **strong on both sides, no preference**) and the reviewer's indifference releases it. Area
+ * is the churniest statistic in the parse (`stability/q1-dither/REPORT.md`) and readability is the
+ * quantity the foreground is actually ranked on. See `roles/NOTES.md`.
  *
  * Groups come back ordered by summed coherent area descending — arm-b §2.6's *"text-shaped groups
  * first by total area fraction"* — with the smallest parsed node id as the tie-break. The caller
@@ -274,7 +299,7 @@ export function isCoherentRow(components: readonly TextComponent[], members: rea
  */
 export function findTextGroups(
 	components: readonly TextComponent[],
-	memberScore: (component: TextComponent) => number = (component) => component.areaFraction,
+	memberRule: MemberRule = AREA_MEMBER_RULE,
 ): TextGroup[] {
 	const byCluster = new Map<number, number[]>()
 	for (let index = 0; index < components.length; index += 1) {
@@ -316,23 +341,37 @@ export function findTextGroups(
 
 		const kept = coherent.flat().sort((first, second) => first - second)
 		let areaFraction = 0
-		let largest = kept[0]
 		let firstNodeId = components[kept[0]].nodeId
 		for (const index of kept) {
 			areaFraction += components[index].areaFraction
-			const better = memberScore(components[index])
-			const incumbent = memberScore(components[largest])
-			if (better > incumbent || (better === incumbent && packedRgb(components[index].repr) < packedRgb(components[largest].repr))) {
-				largest = index
-			}
 			if (components[index].nodeId < firstNodeId) firstNodeId = components[index].nodeId
 		}
+		// The published member: the extremum on the rule's quantity, against the rule's ruler, settled on
+		// lexicographic RGB and then the node id. `extremalMember` addresses members by position in `kept`.
+		const byArea = (first: number, second: number): number =>
+			components[kept[second]].areaFraction - components[kept[first]].areaFraction ||
+			packedRgb(components[kept[first]].repr) - packedRgb(components[kept[second]].repr) ||
+			components[kept[first]].nodeId - components[kept[second]].nodeId
+		let incumbent = 0
+		for (let position = 1; position < kept.length; position += 1) if (byArea(position, incumbent) < 0) incumbent = position
+		const publishes =
+			kept[
+				extremalMember(
+					kept.length,
+					(position) => memberRule.valueOf(components[kept[position]]),
+					(leader, candidate) => memberRule.bandOf(components[kept[leader]], components[kept[candidate]]),
+					(first, second) =>
+						packedRgb(components[kept[first]].repr) - packedRgb(components[kept[second]].repr) ||
+						components[kept[first]].nodeId - components[kept[second]].nodeId,
+					incumbent,
+				)
+			]
 		groups.push({
 			clusterId,
 			members: kept,
 			rows: coherent.length,
 			areaFraction,
-			repr: components[largest].repr,
+			repr: components[publishes].repr,
 			firstNodeId,
 		})
 	}

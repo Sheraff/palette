@@ -53,6 +53,7 @@ import {
 	RAW_APCA_INDIFFERENCE,
 	areaFractionBand,
 	colorQuantityBand,
+	extremalMember,
 	indifferenceClasses,
 	ramPolarityAIsBackground,
 	stableCut,
@@ -1385,16 +1386,14 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		const thinness = thicknesses.length > 0 ? thicknesses.reduce((sum, value) => sum + value, 0) / thicknesses.length : 1
 		const geometryOfCluster = collinearityResidual(members.map((index) => [marks[index].centroidX, marks[index].centroidY] as const))
 		const collinearity = geometryOfCluster.length > 0 ? geometryOfCluster.residual / geometryOfCluster.length : 1
-		// **Which member publishes — measured, and left alone.** The accent's clusters now publish their
-		// most *chromatic* member instead of their largest (below), because area churns and chroma is what
-		// the accent is ranked on. The symmetric move here — publish the most *readable* member, since
-		// readability is what the foreground is ranked on — was implemented and **refused by both
-		// acceptance cases**: on `…35b967964d` the published accent fell to `#f6b3bc` (chroma 0.085, from
-		// the coral's 0.169) because the foreground moved and took the separation budget with it, and on
-		// `…d859a69094` the artwork's own `#070506` stopped leading the foreground. A cluster is one colour
-		// by the bar but its members are *not* all within a bar of each other — the relation is a transitive
-		// closure — so an extremal choice on a contrast axis can walk to the far end of a chain. The area
-		// rule stays until a round prices the alternative. Recorded in `roles/NOTES.md`.
+		// **Which member publishes — area, and deliberately still area here.** D18.1 moved the two pools
+		// whose ranking quantity is named: the accent's own clusters publish their chroma-extremal member
+		// (below) and a text group publishes its readability-extremal one (`findTextGroups`). This
+		// representative is **shared** between two consumers with two different quantities — it is the
+		// accent's second tier *and* the foreground's non-text tier — so a single extremal rule here would
+		// have to pick one role's quantity and impose it on the other's pool. Splitting it into two reprs
+		// is a real design and it needs its own measurement; until then the shared repr keeps the rule it
+		// has always had, and the deferral is recorded in `roles/NOTES.md` rather than left implicit.
 		const largest = members.slice().sort((first, second) => marks[second].areaFraction - marks[first].areaFraction || first - second)[0]
 		return {
 			members,
@@ -1437,7 +1436,23 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 		areaFraction: mark.areaFraction,
 		repr: mark.repr,
 	}))
-	const textGroups: TextGroup[] = findTextGroups(textComponents)
+	// **D18.1, the foreground's lever: a group publishes its most readable member, not its largest.**
+	// Round-5 item 2 priced the substitution this makes on the acceptance cover (`#070506` against
+	// `#050304`, **strong on both sides, no preference**), so the choice inside a text cluster is the
+	// reviewer's to release and they released it. The quantity is `minFieldContrast` over the rendered
+	// field — the one the foreground is ranked on, memoised per triple in `contrastOf` — and the ruler
+	// for it is `RAW_APCA_INDIFFERENCE`, the magnitude raw APCA returns for two identical colours. Every
+	// letter of one title is inside that band of every other, so what the rule really removes is *area*
+	// deciding which letter's exact triple is published.
+	//
+	// **It stays inside the winning cluster, and inside that cluster it stays inside the incumbent's own
+	// indifference class** (`roles/indifference.ts`). The rule chooses among the members of one group and
+	// never between groups: text-colour-leads is untouched, and the group order above is still area then
+	// readability. What moves is which of the artwork's own near-identical inks is the published triple.
+	const textGroups: TextGroup[] = findTextGroups(textComponents, {
+		valueOf: (component) => contrastOf(component.repr),
+		bandOf: () => RAW_APCA_INDIFFERENCE,
+	})
 	const textClusterIds = new Set(textGroups.map((group) => group.clusterId))
 
 	// ---- the ordered pools the roles are drawn from ----------------------------------------------
@@ -1701,34 +1716,43 @@ export function parseTree(image: DecodedImage, tree: ShapeTree, extraLanes: read
 			.map((index) => items[index])
 	}
 
-	// **Which member of a cluster publishes — the cycle-3 experiment, measured and NOT taken.**
+	// **Which member of a cluster publishes — the cycle-3 lever, now ADOPTED (D18.1).**
 	//
-	// Every choice inside a cluster is a sub-bar choice by construction, so the rule that makes it decides
-	// the published triple, and it is currently *area* — which `stability/q1-dither/REPORT.md` measures as
-	// one of the churniest orders in the parse. Publishing the most **chromatic** member instead — the
-	// accent's own ranking quantity, an existing attribute, no constant — is the single largest stability
-	// lever this cycle found: on the dither arm it moves the accent on **42 of 100** covers against 50, and
-	// carries the arm's agreement from 23% to 24%. It is refused anyway, on quality:
+	// The choice inside a cluster decides the published triple, and it used to be *area* — which
+	// `stability/q1-dither/REPORT.md` measures as one of the churniest orders in the parse. It is now
+	// **chroma from the field**, the accent's own ranking quantity: an existing attribute, no constant,
+	// and a quantity computed from the colour rather than from a mask whose extent turns over under a
+	// dither. Round-5 item 1 priced the substitution this makes on `…35b967964d` (`#d25068` against
+	// `#ee5567`, weak on both sides, **no preference**), so the choice is the reviewer's to release and
+	// D18.1 releases it.
 	//
-	//  - on `…35b967964d` it publishes `#ee5567` in place of `#d25068`, and `#d25068` is the one accent hex
-	//    in this campaign with a direct reviewer endorsement — D9, verbatim, *"the correct shade of red
-	//    (Strawberry Moon)"*. Agreement is not quality (`src/robustness/check.ts`'s own header) and one
-	//    point of it does not buy the named shade;
-	//  - on `…d859a69094` it moves the published accent `#161415` → `#282425`, breaking that cover's pinned
-	//    context;
-	//  - it also makes the **L-only** pool reach the same 0.18996 chroma as the merged pool on the coral
-	//    cover, which would dissolve the recall evidence D2's lanes rest on.
-	//
-	// The trade is a round item, not a worker's call. Recorded in `roles/NOTES.md` with the numbers.
+	// The extremum is taken **against the ruler** and is **bounded by the incumbent's own class** —
+	// `roles/indifference.ts` carries the derivation and the measurement that produced the bound. On this
+	// cover the bound leaves the endorsed coral `#d25068` published (the cluster that reaches `#ee5567` is
+	// a different one, and it now publishes the settled member of its incumbent's class); the unbounded
+	// form, which is what W-J measured at dither-arm accent churn 42/100 against 50, is recorded with its
+	// costs in `roles/NOTES.md`.
 	const accentClusters = clusterByBar(accentComponents.map((component) => component.node.repr)).map((members) => {
-		const largest = members
-			.slice()
-			.sort(
+		const byArea = (first: number, second: number): number =>
+			accentComponents[members[second]].node.areaFraction - accentComponents[members[first]].node.areaFraction ||
+			packOfColor(accentComponents[members[first]].node.repr) - packOfColor(accentComponents[members[second]].node.repr) ||
+			accentComponents[members[first]].node.id - accentComponents[members[second]].node.id
+		let incumbent = 0
+		for (let position = 1; position < members.length; position += 1) if (byArea(position, incumbent) < 0) incumbent = position
+		const publishes = members[
+			extremalMember(
+				members.length,
+				(position) => chromaFromField(accentComponents[members[position]].node.repr),
+				(leader, candidate) =>
+					colorQuantityBand(accentComponents[members[leader]].node.repr, accentComponents[members[candidate]].node.repr),
 				(first, second) =>
-					accentComponents[second].node.areaFraction - accentComponents[first].node.areaFraction || first - second,
-			)[0]
+					packOfColor(accentComponents[members[first]].node.repr) - packOfColor(accentComponents[members[second]].node.repr) ||
+					accentComponents[members[first]].node.id - accentComponents[members[second]].node.id,
+				incumbent,
+			)
+		]
 		return {
-			repr: accentComponents[largest].node.repr,
+			repr: accentComponents[publishes].node.repr,
 			salient: members.some((index) => nodeIsSalient(accentComponents[index].node)),
 			// Measured on the accent's own candidates, memoised against the components already cut for the
 			// distance transform, so a node that is in both sets pays for one mask.
