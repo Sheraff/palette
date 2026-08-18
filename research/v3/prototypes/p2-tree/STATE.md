@@ -35,18 +35,25 @@ shapes — merged candidate `p2-tos-0.3.0-cycle-2-merged`, **provenance pin: any
   (cross-lane dedup, `78f0285`); one genuine readability ceiling (ramp field — real limit);
   one mechanism limit (photo covers with no structure; arm-b predicted it). Post-fix
   quality is unmeasured by the judge — next quality round carries it.
-- **Palette-level robustness unsolved: agreement 8.5% overall, 20.0% dither** (pre-registered
-  dither falsifiers fired, both families; deltas from fixes are within CIs, claimed as
-  no-signal). Cause located: candidate-set churn at role assignment; ruler-indifference
-  landed (matched-swap class closed); the two remaining levers each trade a
-  reviewer-endorsed colour and are staged in round-5 for pricing, not taken unilaterally.
+- **Palette-level robustness unsolved — and the freed levers did not pay.** Close run over
+  the settled tree (gate 0.25 + class-bounded member rules): overall agreement 9.0%
+  [7.0–11.6], dither 15.0% [9.3–23.3] (trajectory 12.0 → 14.7 → 9.0 → 8.5 → 9.0 overall;
+  dither 34 → 33 → 23 → 20 → 15). Round-5 freed the cluster-member levers and they were
+  adopted (D18/D20, class-bounded per the priced scope), but the measured variant gains were
+  from UNBOUNDED rules, and the opened gate simultaneously moved more covers into
+  churn-prone structural judging — net effect flat-to-worse, stated plainly. The dither
+  falsifier remains fired. Remaining known lever space: D19's overlay ordering, margin-aware
+  preference (D7), and design work on assignment-set stability; no cheap fix is left.
   Direction caveat: topline = agreement; cross-arm comparisons must direction-check.
-- **Gradients:** 69% of published ramps phantom vs legacy; laminarity unsettleable by
-  measurement (0/77 Holm) and both stricter cuts rejected by the reviewer (sided with
-  legacy ramps, D13). The binding constant was measured (W-M sweep): coverage gate ruled
-  0.5→**0.25** by pick-one-and-state (D15 — false-unreadable 64.6%→4.2%, ramp recall
-  11.8%→47%, explicitly NOT an agreement improvement), application pending worker N's
-  fan-in. Guide-stop machinery (D6's owed excursion census) is worker N's in-flight task.
+- **Gradients:** the gate is APPLIED (0.25, [MEASURED], D15 — false-unreadable 64.6%→4.2%,
+  ramp recall 11.8%→47%, explicitly NOT an agreement improvement; all 8 demo-20 verdict
+  flips matched W-M's predictions exactly). Guide-stop machinery landed (worker N): the
+  owed-stop census is ZERO on demo-20 + fresh-40 (vs C7's 42% legacy-midpoint figure) —
+  current ramps are short and on-artwork; insertion path proven on synthetics with monotone
+  + spacing preconditions. Laminarity agreement remains at the majority baseline (0/77 and
+  0/13 Holm across two studies) — phantom-rate improvement now rides the gate change,
+  validated only by future rounds; the reviewer's first missed-gradient datum (round-5
+  item 5) is queued into this work.
 - **One accent slot cannot carry two colour families** (pair-015): coverage-allocation
   prototype built (zero new constants, produces the reviewer-described structure on the
   named cover); its adverse cases are round-5 items 3–4.
@@ -56,14 +63,15 @@ shapes — merged candidate `p2-tos-0.3.0-cycle-2-merged`, **provenance pin: any
 | question | state | cost to answer |
 |---|---|---|
 | I4 floor wrong, or colour pick? | **ANSWERED** (pair-018, D14): floor stands, pick fixed | 0 — spent |
-| coverage gate | **ANSWERED** (W-M sweep + D15): 0.25, applied at W-N fan-in | 0 — spent; validation rides future rounds |
-| cluster-member publication (dither lever) | round-5 items 1–2, with installer | 2 items |
-| coverage adverse cases | round-5 items 3–4, with installer | 2 items |
-| low-contrast text cover (W-L owed) | round-5 item 5, with installer | 1 item |
-| salience eligibility cut | T2-funded, queued behind round-5 | 1 item + dev-days |
+| coverage gate | **ANSWERED + APPLIED** (D15, `041fc4b4`) | 0 — spent; validation rides future rounds |
+| cluster-member levers | **ANSWERED + ADOPTED** (round-5, D18/D20, class-bounded) — did not move the dither topline; see §3 | 0 — spent |
+| coverage allocation integration | **UNDECIDED by the judge** (round-5 J-0b: 0/2, both no-preference); prototype stays separate | future round under D17 |
+| identity-vs-legibility floor | **OPENED** by round-5 I5-V: identity loses at \|APCA\| 2.7; floor owed between 2.5 and 2.7 | measure-then-calibrate; 1 item if measurement refuses |
+| salience eligibility cut | T2-funded, unstaged | 1 item + dev-days |
+| overlay (label-logo) ordering | D19, evidence-backed, unimplemented | dev-days; validation rides rounds |
 | ramp polarity ("background should be white") | no constant-free mechanism found (projection decides 4.4×) | design work, then 1 item |
-| guide-stop/excursion machinery | worker N in flight (census + insertion + preconditions) | dev-days, no reviewer time |
 | item-4 (cal-014) note-less unacceptable | evidence gap, queued for a noted re-ask | 1 item |
+| assignment-set stability (the dither residue) | cheap and priced levers exhausted; design problem | the mechanism's hardest open item |
 
 ## 5. Components graftable to other arms
 
@@ -78,19 +86,22 @@ exactly one row fires) · D7 margin reporting.
 ## 6. Honest promise assessment
 
 The candidate-generation half of this mechanism is validated by the judge and by
-measurement: the tree finds what the reviewer endorses, the structural orders carry his
-stated principles without invented constants, and every located failure has resolved into a
-specific cause — two of them closed by fixes the reviewer's own later words converged with
-(the putty foreground; ramp recall). The unsolved half is election stability: palettes move
-under perturbations that should not matter, the cheap fixes are exhausted with honestly-null
-toplines, and the remaining levers are with the reviewer in round-5 because each trades an
-endorsed colour. Gradient truth is now unblocked (gate ruled, machinery landing) but its
-agreement ceiling is real and low until the reviewer's labels say otherwise. If the
-bake-off weighs faithful, judge-agreeing colour selection with located, priced risks, P2 is
-promising; if it weighs robustness-today, P2 is behind its own quality story and says so.
+measurement: the tree finds what the reviewer endorses (91.9% reachability, falsifier 1.7%
+re-confirmed at close), the structural orders carry his stated principles without invented
+constants, and every located failure has resolved into a specific cause — several closed by
+fixes the reviewer's own later words converged with (the putty foreground; ramp recall; the
+two-family Strawberry Moon structure). The unsolved half is election stability, and the
+close run removes any remaining optimism about cheap fixes: the reviewer-freed levers were
+adopted and the dither topline did not move (15–20% agreement band; falsifier still fired) —
+what remains is genuine design work on assignment-set stability plus two evidence-backed
+orderings (overlays, margins) with no measured stability upside yet. Gradient truth is
+unblocked (gate applied, guide-stop machinery landed, owed-stop census zero) but laminarity
+agreement still sits at baseline pending reviewer labels. If the bake-off weighs faithful,
+judge-agreeing colour selection with located, priced risks, P2 is promising; if it weighs
+robustness-today, P2 is behind its own quality story and says so — more plainly now than in
+the previous revision of this paragraph.
 
-*(In-flight footnote — refreshed at every dispatch/fan-in: worker N (excursion machinery,
-D6) owns tos/candidate.ts + tos/gradient/ uncommitted mid-flight; everything else committed
-through `9060fb3`. Rounds: round-5 staged (`95f85e6`) with installer; all released rounds
-(pair-002, cal-014, pair-015, field-gradient-labels-1, pair-018) analyzed, verified, ruled —
-D9/D10/D13/D14. Ledger empty.)*
+*(In-flight footnote — refreshed at every dispatch/fan-in: NOTHING in flight; tree clean
+and committed through the close. All six staged rounds released, analyzed, verified, ruled
+(D9/D10/D13/D14/D18); DECISIONS D1–D20 bind; ledger empty. Close measurements: robustness
+600 trials + endorsed reachability, detached-run pattern, sentinel-verified.)*
