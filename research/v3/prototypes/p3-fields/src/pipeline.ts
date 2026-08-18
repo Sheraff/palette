@@ -551,6 +551,67 @@ function namesRole(subjects: readonly string[], role: string): boolean {
  * (chroma 0.0548, an all-but-black navy) counts as a mark and holds a foreground at min-ramp 2.86, which
  * is a legible-by-the-contract-and-barely reading. Those covers are listed in the 0.4.2 report rather
  * than tuned around.
+ *
+ * ## 0.4.5 — the displaced colour must re-qualify for the slot it lands in
+ *
+ * The floor clause returns the swap; until 0.4.5 the **displaced** foreground candidate then landed in
+ * the accent slot automatically, because the slot took whatever the comparator handed it. Three
+ * occurrences of that one defect are on record:
+ *
+ * - **r2-item-8** (round 2) — the first sighting of the demotion pattern, a weak neutral auto-landed as
+ *   accent by a label move rather than elected by the accent ordering.
+ * - **round-6 row-2's cover `4e6dee3a…`, re-staged as round-7 row-4** — FLAT at unacceptable across two
+ *   rounds, the reviewer's complaint being that the accent is *"almost indistinguishable from the
+ *   background"*. The published accent `#dad9de` sits **1.50×** the pair bar from the background
+ *   `#e2e1e6` (round 7 reports the same class at 5.42× on its own instrument) — cleared, and read by the
+ *   eye as one colour either way.
+ * - **`EVIDENCE_2026-08-04.md` item 11** — the cross-arm datum: pairs clearing `sameColorBar` by
+ *   1e-4–3e-3 were called indistinguishable 6 times out of 6. *Bars qualify, margins rank; never publish
+ *   at the bar's edge when the ordering offers headroom.*
+ *
+ * Bar-clearing alone is therefore **measured** insufficient for this slot, and the swap-return path was
+ * the one place left in the pipeline where nothing but the bar was asked.
+ *
+ * > **The re-qualification clause.** On swap-return the displaced colour enters the accent slot only if
+ * > it clears the same-colour bar from **both** field ends *with headroom*: its own qualification margin
+ * > at or above the **lump's own median margin** — the exact level `chooseAccent`'s narrowing 2 cut the
+ * > elected accent's population at. Failing that, the accent **collapses onto the foreground** through
+ * > the machinery §2.6 already sanctions: `publishedAccent` is `null`, `assemblePalette` publishes the
+ * > foreground's own hex in both slots, and `collapse.accentCollapsed` follows from the hex equality
+ * > rather than being asserted.
+ *
+ * **No new constant, deliberately.** The level is an order statistic of this artwork's own accent lump —
+ * `AccentRefinement.medianMargin`, already computed and already reported on every run — so the clause
+ * inherits requirement 7's margin machinery instead of declaring a second bar beside the contract's. It
+ * asks of the colour that *replaces* the elected accent exactly the headroom the elected accent had to
+ * clear, which is why it needs no level of its own.
+ *
+ * **What it measured, including the part that is uncomfortable.** Coverage-220, 0.4.4 → 0.4.5: the
+ * comparator's swap-returns are **22** and **21 of them collapse**, one re-qualifies (`a707cfc0…`,
+ * displaced margin 0.1924 against a lump median of 0.1819). Published accent collapse therefore rises
+ * **23 → 42 of 220**, contract PASS **200 → 201**, gradients unmoved at 86, surface collapse unmoved at
+ * 24; demo-20 is 3 collapses, scorecard flat at 19/1; both robustness slices are unmoved to the decimal
+ * (perturb-150 20.0 %, pairs-60 18.3 %, all-four-role flips 12 and 14, unchanged). **A ratio of 21:1 is
+ * not a repair of a rare defect, it is a statement that the displaced colour is almost never an accent**
+ * — which is what the accent ordering has been saying since 0.4.0 (the displaced colour is the
+ * *worse-contrasting of two* by construction, and on the swap path the artwork's chromatic mark has just
+ * left for the foreground slot, so what remains is usually the ink or a near-field neutral). The clause
+ * makes that explicit instead of publishing it as a fourth colour. It also costs two named covers a
+ * published colour: round-7 row-1's `#0e0011` (a near-black beside a black foreground, the twin-risk item
+ * the reviewer graded *acceptable with no same-colour note* — the watch was passive there and this clause
+ * is not) and demo-02's grey `#c5c5c5` (r2-item-1's cover; **the black ink `#020001` stays in the
+ * foreground**, so round 2's hard constraint is intact). Four covers additionally settle at a *different*
+ * palette rather than a collapsed one, because a valid palette is now reached earlier in the repair
+ * loop: `0b09dc…` was invalid at 0.4.4's exhausted endsStep 6 and is valid at endsStep 0 (the PASS gain),
+ * while `101f18…` trades a pink accent for an earlier ends step. All of it is one round's worth of
+ * reviewer-gradable consequence and none of it is a number that can be tuned.
+ *
+ * **What it does not touch, stated because the containment is the point.** The two bar tests below keep
+ * their existing failure mode (`swap: false`, the 0.3.0 conservative guard on a label move) rather than
+ * routing to collapse: those covers are ones where the swap never fired, so folding them in would have
+ * *widened* the swap path while repairing a defect that only exists on the covers where it already
+ * fires. The margin half is the new half, and collapse is its failure mode alone. A round that grades a
+ * collapsed accent on a swap-return cover as worse than the twin it replaced is what would re-open this.
  */
 function shouldSwapRoles(
 	image: DecodedImage,
@@ -559,10 +620,12 @@ function shouldSwapRoles(
 	background: number,
 	surface: number,
 	rampAnchorRgb: readonly Rgb8[],
+	ordering: AccentOrdering,
+	headroomMargin: number,
 ): SwapVerdict {
 	const foregroundMinRamp = minRampContrast(image, foreground, rampAnchorRgb)
 	if (minRampContrast(image, accent, rampAnchorRgb) <= foregroundMinRamp) {
-		return { swap: false, chromaticMarkHeld: false }
+		return { swap: false, chromaticMarkHeld: false, displacedRequalified: false }
 	}
 	// **The chromatic-mark clause (0.4.2), with 0.4.3's floor.** Read the docstring's last two sections
 	// before changing any of the three tests: the chroma test is what keeps round 2's validated ink
@@ -571,14 +634,27 @@ function shouldSwapRoles(
 	const chromaticMarkHeld = chromaOf(image.lab, accent) >= REGION_CHROMA_BOUNDARY &&
 		foregroundMinRamp >= CONTRAST_FLOORS.minTextContrast.effectiveRawMagnitude &&
 		foregroundMinRamp >= MIN_RAMP_HOLD_FLOOR
-	if (chromaticMarkHeld) return { swap: false, chromaticMarkHeld: true }
+	if (chromaticMarkHeld) return { swap: false, chromaticMarkHeld: true, displacedRequalified: false }
 	// The accent's own qualification, applied to the colour about to be labelled accent: the bar from
 	// both field ends, and 0.3.0's min-ramp floor.
-	if (!distinctPixels(image, foreground, background)) return { swap: false, chromaticMarkHeld: false }
-	if (!distinctPixels(image, foreground, surface)) return { swap: false, chromaticMarkHeld: false }
+	if (!distinctPixels(image, foreground, background)) {
+		return { swap: false, chromaticMarkHeld: false, displacedRequalified: false }
+	}
+	if (!distinctPixels(image, foreground, surface)) {
+		return { swap: false, chromaticMarkHeld: false, displacedRequalified: false }
+	}
+	// **0.4.5's re-qualification, the margin half** (see the docstring's last section, and read it before
+	// changing this line). The two tests above are the *bar*: qualification. This is the *rank*.
+	// `ordering.margin` is `min over ends (distance − pair bar)`, non-NaN exactly when both bars are
+	// cleared — which the two lines above have just established — and `headroomMargin` is the elected
+	// accent's own lump median, the level `chooseAccent`'s narrowing 2 cut its population at. So the
+	// displaced colour is asked for the headroom the accent it replaces was asked for, and no new number
+	// enters the file. `Number.isFinite` guards the array, it is not a second rule.
+	const displacedMargin = ordering.margin[foreground]
 	return {
 		swap: foregroundMinRamp >= CONTRAST_FLOORS.minAccentContrast.effectiveRawMagnitude,
 		chromaticMarkHeld: false,
+		displacedRequalified: Number.isFinite(displacedMargin) && displacedMargin >= headroomMargin,
 	}
 }
 
@@ -592,6 +668,12 @@ type SwapVerdict = Readonly<{
 	swap: boolean
 	/** True exactly when the chromatic-mark clause is what held the labels still. */
 	chromaticMarkHeld: boolean
+	/**
+	 * True when the **displaced** colour re-qualified for the accent slot (0.4.5): both bars cleared, and
+	 * its own margin at or above the elected accent's lump median. Meaningful only where `swap` is true —
+	 * on every non-swapping verdict nothing is displaced and this is `false` by vacuity, never by test.
+	 */
+	displacedRequalified: boolean
 }>
 
 export async function extractPalette(imagePath: string): Promise<P3Result> {
@@ -1044,7 +1126,6 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			)
 			intermediates.accentRefinement = accent === null ? null : accent.choice.refinement
 			intermediates.accentStep = accent === null ? 0 : accent.cursor
-			intermediates.accentCollapsed = accent === null
 
 			// The fg↔accent comparator (0.3.0). Both roles are selected and verified at this point; the
 			// only thing that can change below is which **label** each pixel carries. See
@@ -1057,14 +1138,25 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 					ends.background,
 					ends.surface,
 					rampAnchorRgb,
+					accentOrdering,
+					accent.choice.refinement.medianMargin,
 				)
-				: { swap: false, chromaticMarkHeld: false }
+				: { swap: false, chromaticMarkHeld: false, displacedRequalified: false }
 			const swapped = swapVerdict.swap
 			const publishedForeground = swapped ? (accent as { choice: AccentChoice }).choice.pixel : foreground.choice.pixel
+			// **0.4.5.** On a swap-return the displaced colour takes the accent slot only if it re-qualified
+			// for it; otherwise the accent collapses onto the published foreground — the same `null` the
+			// empty-population path has always used, so the collapse is §2.6's and not a second one.
 			const publishedAccent = accent === null
 				? null
-				: (swapped ? foreground.choice.pixel : accent.choice.pixel)
+				: swapped
+				? (swapVerdict.displacedRequalified ? foreground.choice.pixel : null)
+				: accent.choice.pixel
 			intermediates.roleSwapApplied = swapped
+			// Set from what is *published* rather than from what the search returned: at 0.4.5 an accent can
+			// collapse after a successful search, and a flag that said otherwise would misattribute the
+			// collapse count between the two paths.
+			intermediates.accentCollapsed = publishedAccent === null
 
 			if (DIAG) {
 				const polarity = foreground.choice.polarity
@@ -1142,6 +1234,15 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 					// chromatic-mark clause held the labels still — so `applied` falling between 0.4.1 and
 					// 0.4.2 is attributable to this refinement rather than inferred from the total.
 					chromaticMarkHeld: swapVerdict.chromaticMarkHeld,
+					// **0.4.5's clause, counted at its own site**, on the same denominator as `applied`: how
+					// many swap-returns handed the accent slot to a re-qualified colour and how many collapsed
+					// it. `null` off the swap path, where nothing is displaced and the question is not asked —
+					// so a reader can never add a vacuous `false` into either count. The two margins the test
+					// is a comparison between travel with the verdict, because a fire rate without them is not
+					// attributable to a level that is an order statistic of each artwork's own population.
+					displacedRequalified: swapped ? swapVerdict.displacedRequalified : null,
+					displacedMargin: swapped ? accentOrdering.margin[foreground.choice.pixel] : null,
+					accentHeadroomMargin: accent === null ? null : accent.choice.refinement.medianMargin,
 					// The two quantities the clause reads, beside the two it always read.
 					accentChroma: accent === null ? null : chromaOf(image.lab, accent.choice.pixel),
 					chromaBoundary: REGION_CHROMA_BOUNDARY,

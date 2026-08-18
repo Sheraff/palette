@@ -39,7 +39,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.4.4"
+export const CANDIDATE_ID = "p3-fields-0.4.5"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -47,7 +47,7 @@ export const CANDIDATE_ID = "p3-fields-0.4.4"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.4.4"
+export const ALGORITHM_VERSION = "p3-fields-0.4.5"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -821,6 +821,31 @@ export const MIN_RAMP_HOLD_FLOOR = 5.0
 // `accent.ts` for both refutations and their cover-level cost. If a later round grades a neutral
 // accent wrong on a cover the branch fired on, or names a chromatic mark on one, clause 2 is the
 // clause to re-measure: it is the one with a corpus fire rate (3/220) rather than a structural bar.
+
+// ---------------------------------------------------------------------------------------------
+// 0.4.5 — inherited, not introduced (the swap-return re-qualification)
+// ---------------------------------------------------------------------------------------------
+//
+// **0.4.5 adds no number to this file either.** The one change — on swap-return the displaced colour
+// re-qualifies for the accent slot or the accent collapses (`pipeline.ts`, `shouldSwapRoles`) — is
+// expressed in two quantities that already exist and already decide something: the contract's regional
+// same-colour bar, through `AccentOrdering.margin` (`min over ends (distance − pair bar)`), and
+// `AccentRefinement.medianMargin`, the **lump's own median margin** that `chooseAccent`'s narrowing 2
+// already cuts the elected accent's population at. The level is therefore an order statistic of each
+// artwork's own accent lump, not a constant: it moves with the artwork, there is nothing here to sweep,
+// and the clause asks of the replacement exactly what was asked of the colour it replaces.
+//
+// **Why no constant was declared, given the evidence asked for a margin.** `EVIDENCE_2026-08-04.md`
+// item 11 says bars qualify and margins rank; the naive reading is a multiple-of-bar threshold, which
+// would have been a fifth [UNCALIBRATED] number sitting beside the contract's bar and contradicting it
+// on every cover where the two disagree. The lump median is the same principle with the repository's
+// own machinery and no free parameter — the shape requirement 7's refuted margin *band* also had, used
+// here as the filter it survived as rather than as the ordering it did not.
+//
+// **What would re-open it.** A round grading a swap-return collapse worse than the twin it replaced, or
+// a cover where the displaced colour is visibly a good accent and the lump median refused it. Both are
+// cover-level observations against a level with no dial, so the answer would be a different *shape*,
+// not a different value.
 
 // =================================================================================================
 // The substrate experiment (W13) — one branch adopted at 0.4.1, two retained as dev-flagged vehicles
