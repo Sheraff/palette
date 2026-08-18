@@ -42,14 +42,63 @@ P1/P4/P6's ANALYSIS / RULING / REOPENING files.
 5. **Population/mass floors block endorsed colours** (see eligibility row above); presence mass
    is evidence about *which role* a colour fills, never an eligibility cost (P6 inheritance note).
 
-## The reframing worth taking seriously
+## The reframing — corrected after reviewer pushback
 
-The reviewer's 168 ground truth defines a **two-family palette structure**: a ground family (two
-related field colours, gradient-capable) and a figure family (two related figure colours), with
-family separation BETWEEN pairs and family sharing WITHIN pairs correct. Every prototype started
-from four independent roles; the evidence suggests the natural decomposition is the two families.
-P5's field pair already implements the ground half; P2's text-led election and P3's paired-accent
-machinery gesture at the figure half.
+An earlier edition of this file over-generalized the reviewer's 168 ground truth into a
+universal "two-family palette structure". The evidence does not support the universal form:
+cover-19's reviewer-named ideal is yellow/red field + black/white figure (bg and surface in
+DIFFERENT families), and the reviewer's own endorsed palette from pair-019 spans four families
+(white/green/black/red). What the evidence does support, across all three cases:
+
+**The palette's family structure should mirror the artwork's.** 168's artwork is literally two
+colour families (grey swirl ground, blue swirl figure) → its ideal palette is two families with
+within-pair sharing. Cover-19's artwork presents four distinct colours → its ideal palette is
+four families. The prototypes' shared assumption — four independent roles each optimised for
+role-generic properties — misses this: relationships BETWEEN the palette's colours are judged
+against relationships between the artwork's colour populations, not against fixed cross-role
+rules. (The one fixed relationship that held everywhere: fg/accent must remain mutually
+distinguishable, and bg/surface likewise, at margins the eye credits.)
+
+## What we are very sure of — and what we are not
+
+High-confidence learnings (multiple independent evidence sources, reviewer-confirmed — safe to
+hand the next architect as observations, each with warehouse provenance):
+
+1. **The reviewer is consistent and measurable.** One direct test-retest (byte-identical palette,
+   identical silent strong two rounds apart); prescriptions stable across rounds once read
+   correctly (the one apparent contradiction dissolved into consistency when ground truth
+   arrived); conditional verdicts are conditional (misreading one cost an arm a regression).
+2. **Identity/salience beats mass, with semantic limits.** Small concentrated marks (title text,
+   2% stickers) are wanted; equally-small label logos are refused; colours "present only as
+   accidental shadows" are ineligible. Pixel statistics alone cannot fully express this — every
+   arm that tried hit the same wall (the fleet's one confirmed shared inexpressible).
+3. **Margins are graded, bars get sat on.** Bracket measured: ~1.5× the same-colour bar reads
+   distinct silently; ~5.4× can still read "almost indistinguishable" in unlucky directions;
+   1e-4 over the bar reads identical. Corollary with four independent strikes: the bar itself is
+   mis-calibrated near black.
+4. **The legibility floor is real AND identity wins within it.** The reviewer's own demonstration
+   verdict: the floor stands, the pick was the defect. Among floor-clearing candidates, the
+   artwork's true ink/type colour is what the reviewer wants in the foreground seat.
+5. **Role assignment is judged separately from extraction** — colours certified, seats rejected,
+   across three arms; one mechanism died on its structural indifference to it.
+6. **Gradient errors run both directions and stop misuse is priced.** False gradients and missed
+   gradients both drew complaints; 2-stop ramps won every preference; tight spacing (~3%) reads
+   as banding; guide stops are for excursion reduction only (canon confirmed by verdicts).
+7. **Scalar objectives fail as judges** (two falsifications, one family, margin-independence
+   measured) and **selectors fail** (fifth confirmation) — see constraints above.
+8. **The dev-set trap is fast.** Overfitting to reviewed covers emerged within ~3 rounds and was
+   confirmed by three independent instruments (harness ratio, judge grades on fresh covers, the
+   fresh-failure streak). Fresh-cover draws each round are load-bearing, not hygiene.
+9. **Served colour names are judged surface.** The reviewer graded partly by display names at
+   least twice (naming kept colours, rejecting one partly by its name).
+10. **The legacy warehouse contradicts itself at configuration level** (27/128 paired
+    comparisons are exact ties filed under different tiers) — its W/L counts are directional
+    evidence only, as policy already said and measurement confirmed.
+
+Explicitly NOT settled (do not pass as fact): any specific constant or threshold (the honesty
+scanner exists for this); the dither-instability pricing (fired falsifiers in two arms, but the
+reviewer never graded it directly); the universal palette-family form (see above); whether the
+two deferred design cycles (ink-score redesign, salience-led candidacy) actually pay.
 
 ## The spec that isn't code
 
