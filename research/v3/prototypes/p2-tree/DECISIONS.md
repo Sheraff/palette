@@ -304,6 +304,29 @@ refinement the trade is only right when the second family is a FIGURE family not
 carried by fg). Integration change deferred until round-5 verdicts land; recorded now so
 the decode reads the items under the refined principle.
 
+## D18 — round-5 verdicts ruled: stability levers free; allocation undecided (2026-08-18)
+
+Verified decode in round-5-pricing/OUTCOME.md. Rulings per the pre-declared rows:
+
+1. **ADOPT the cluster-member stability levers** (I1-N, I2-N — the reviewer's no-preference
+   at both-weak and both-STRONG makes within-family member substitution free): worker P
+   implements chroma-extremal accent member publication and contrast-extremal foreground
+   member publication via W-J's memberScore hook, expecting the measured dither improvement
+   (accent churn 447→~42/600-scale in J's variant measurement); W-J's two recorded caveats
+   (coral→#ee5567; #070506→#050304) are now reviewer-sanctioned as non-events. Full
+   verification including robustness (sequenced after the gate-025 stream to avoid report
+   collisions) and reachability.
+2. **Coverage allocation stays uninstalled** (J-0b: undecided, 0/2, both no-preference);
+   the D17 analyst flags are its design inputs when it returns (figure-vs-ground pairs).
+3. **I5-V:** identity does not outrank legibility at |APCA| 2.7 — the text-colour-leads
+   rule needs a measured floor between 2.5 (contract ε, affirmed by D14) and 2.7 (refused
+   here); measure-then-calibrate, nothing ships without a round or a derivation.
+4. **Missed-gradient datum** ("should be a gradient", item 5's cover) routed to gradient
+   work under the open gate; check whether gate-0.25 already flips that cover's verdict.
+5. Item 1's coverage note (missing dark green/grey; "Mothy" fg unseen) filed as D17
+   allocator evidence + fg colour-recall datum. Item 4 filed as fg-readability evidence
+   orthogonal to its priced trade (analyst's rationale-mismatch flag recorded).
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
