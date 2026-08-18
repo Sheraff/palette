@@ -47,3 +47,55 @@ covers verified against `measurements/v9d-delta.json` expectations (item 1 `#8d2
 
 As rounds 1–4. No version labels, no diagnostics, no returning/fresh framing. The mapping stays
 here.
+
+---
+
+# APPENDED POST-RELEASE — verdicts (`phase2-cal-026`) and rulings, 2026-08-18
+
+**Decode verified by the P5 orchestrator against the warehouse before the analyst reported (8/8
+grades + complete comments match; payload identity confirmed against staging).**
+**5 STRONG / 1 acceptable / 2 weak / 0 unacceptable** — ties round 4's mean (1.625) with two more
+STRONGs. Full verdict table and analysis in the round-5 analyst report (orchestration transcript);
+grades: 1 strong(silent) · 2 strong(silent) · 3 weak · 4 strong(silent) · 5 acceptable(silent) ·
+6 strong(note) · 7 weak · 8 strong(silent).
+
+## Correction of record, first — the orchestrator's premise error on item 3
+
+Row 3 justified the chromatic accent as "responsive-in-direction to R4's note". R4's sentence was
+a **conditional**: *"Black accent could work if all other color picks are very chromatic"* — the
+black was conditionally accepted; the objection was the beige FIELD ("the face of the character").
+v0.9 changed the accepted role and left the objected one, and the cover regressed acceptable→weak
+with the face-as-field note recurring almost verbatim plus the new accent rejected as unfounded
+("not an accent in the artwork"). The plan also wrote no branch for regression — under-specified
+its own worst case. Both errors are mine; recorded, not smoothed. (The "Sushi Rice" ×2 name
+confound is live on the drop's magnitude per STAGING §6.1's pre-registered rule; the role
+objection survives the confound.)
+
+## Rulings
+
+- **R1 — the accent line CLOSES** (item 1: named ask delivered, silent STRONG, +1; survives the
+  "Caponata" name flag). No further accent-criterion work without new evidence.
+- **R2 — the coherence gate is validated as a test-retest datum** (item 2: byte-identical
+  palette, identical STRONG silence two rounds apart, despite the served-name defect present both
+  times — the confound could only have caused a false positive and none occurred).
+- **R3 — the semantic axis fires a fortiori and stays record-not-build**: item 3 is three rounds
+  and three palettes into an objection the mechanism cannot express (face-as-field), now
+  fleet-wide (cross-arm note 10). Top open question for mechanism selection, stated in STATE.md.
+- **R4 — SALIENCE-BEATS-MASS is the round's largest unplanned finding** (three independent
+  items: the 2%-sticker palette STRONG; smallness-named-as-virtue; a mass-1505 teal rejected for
+  a mass-306 yellow the reviewer named). Combined with the identity split ("never publish a
+  colour the viewer cannot locate" — unfounded-published → weak; merely-missing → soft or
+  silent), this SPECIFIES the next mechanism cycle: candidate provenance/salience outranks raw
+  mass. Recorded as the proposed v0.10 direction — not built unprompted while the campaign
+  converges on selection.
+- **R5 — margins bracket, upward**: P5's 1.504× silent-STRONG pair is the upper bracket against
+  the other arm's 1e-4–3e-3 failures; the margins axis is a threshold between the two bodies of
+  evidence, not a contradiction. Prior 6's P5 form is retired; caveats W falsified / U unfired /
+  S resolved-affirmative / X fired-as-predicted (a surface that never renders in the field is now
+  a live design question, one instance).
+- **R6 — pair-degeneracy, not proximity** (figure/ground note 9 with grades behind it): every
+  degenerate pair drew a note on exactly that pair, suppressed only when the artwork is truly
+  one-field; both close-but-distinct pairs were silent. arm-f's architecture validated again.
+- **R7 — the illustration class is formally un-censusable** (third miss, third direction) and
+  goes up as a known hole in the draw protocol; item 4's grade is salience evidence, never a
+  class datum.

@@ -1,4 +1,26 @@
-# P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05; updated 2026-08-11 ×2)
+# P5 field-fit — where we're at (reviewer-ordered state doc, 2026-08-05; updated through 2026-08-18)
+
+**Delta, round 5 decoded (`phase2-cal-026`) — the arm's current summary for selection:**
+**5 STRONG / 1 acceptable / 2 weak**, tying the best mean (1.625) with two more STRONGs. Closed
+this round: the **accent line** (three rounds of provenance, the round-4 named ask delivered and
+graded up in silence) and the **coherence gate** (byte-identical palette, identical STRONG
+silence two rounds apart — the arm's one test-retest datum on the reviewer, stable). Validated
+again: figure/ground pair semantics (the reviewer objects to pair *degeneracy*, never proximity —
+both narrowest-ever pairs were silent STRONGs, retiring the margins prior in P5's form and
+supplying the upper bracket, 1.504×, against another arm's 1e-4–3e-3 lower bracket). **The
+round's largest finding was unplanned: salience beats mass** — a palette drawn from a 2%-area
+sticker graded STRONG; smallness was named as a virtue; a mass-1505 pick was rejected for a
+mass-306 one the reviewer named — and the identity axis sharpened to "never publish a colour the
+viewer cannot locate" (unfounded-published → weak; merely-missing → soft or silent). Together
+these SPECIFY the next cycle (v0.10: provenance/salience-led candidacy over raw mass) — proposed,
+not built, while selection converges. **The honest negatives:** item 3 regressed
+acceptable→weak partly through the orchestrator's own misreading of a conditional in the round-4
+note (corrected on the record in round-5 ROUND.md) — and that cover is now three rounds into a
+**semantic objection (face-as-field) this arm structurally cannot express**, now confirmed
+fleet-wide as an honest-limit candidate for pixel machinery; it is this arm's top open question
+for selection. The illustration class is formally un-censusable (three misses, three directions
+— a known hole in the draw protocol). Robustness stands at v0.9.2's 39.0% overall with
+stabilization still the largest unpriced engineering debt.
 
 **Delta, v0.9 cycle complete + round 5 staged (2026-08-11, second update):** the identity cycle
 shipped end-to-end — marks/regions in the accent pool, verdict-scored chroma-first tie-break
