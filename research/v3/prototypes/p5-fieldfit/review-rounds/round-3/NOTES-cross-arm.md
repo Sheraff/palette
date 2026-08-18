@@ -80,3 +80,13 @@ composition is untouched (staging was in flight when this arrived).
    evidenced twins were ratios 1.8–6.6, a deliberate two-shade pair sits far beyond); (c) any
    future family-aware accent term must be figure/ground-scoped, never blanket
    different-family-than-fg. Evidence for the v0.9+ identity cycle's family semantics.
+10. **Spatial extent is semantic, fleet-wide** (cross-arm final decode, 2026-08-18): colours
+    genuinely present but negligible on canvas are rejected by WHAT the mark is — title-text
+    small marks accepted, label-logo small marks refused. This is P5's unowned semantic-referent
+    axis (round-4 "face of the character", round-5 pending) appearing in another arm — the
+    reviewer's eligibility distinguishes depicted meaning, which no pixel statistic in any arm
+    expresses. Recorded fleet-wide as an **honest-limit candidate for pixel machinery**; P5's
+    stance stays record-not-build, and the convergence (multiple arms, same wall) belongs in
+    STATE.md's mechanism-selection input. Also noted: another arm's overfitting-to-reviewed-covers
+    signal is three instruments deep — P5's counter remains census-drawn majority-fresh rounds
+    (5 of 8 fresh in rounds 3 and 4; 5 of 8 in round 5) and the round-5 diversity-rule draw.
