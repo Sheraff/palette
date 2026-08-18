@@ -87,6 +87,17 @@ substrate family (no candidate; full design cycle), or judging the mechanism on
 quality/identity as-is. Read P3 as: quality-strong,
 robustness-plateaued-with-located-cause-and-refuted-first-fix.
 
+## Post-record containment (0.4.5, `dbf38077` — FIXED-UNVERIFIED-BY-JUDGE, per ruling)
+
+Round-7's one re-opened defect (swap-return landing the displaced neutral as a near-twin
+accent; three occurrences: r2-item-8, round-7 row-4, EVIDENCE 11) is closed by containment:
+the displaced colour re-qualifies against the elected-accent's own margin level or collapses
+via existing machinery. Measured: 22 swap-returns → 1 re-qualified / 21 collapsed
+(accentCollapsed 23→42); the round-7 defect cover collapses flag-true; every judge-validated
+outcome intact; PASS 200→201; robustness slices identical. Recorded tension: one collapsed
+near-twin had been reviewer-acceptable — the collapse rate may over-correct; unverified by the
+judge until a future round prices it, if the selection outcome warrants one.
+
 ## Round-7 outcome (phase2-cal-025, decoded — completes P3's judged record)
 
 2S/2A/1W/2U. **Three of four repairs judge-validated:** 168 weak→STRONG with an empty note —
