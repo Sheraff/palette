@@ -327,6 +327,24 @@ Verified decode in round-5-pricing/OUTCOME.md. Rulings per the pre-declared rows
    allocator evidence + fg colour-recall datum. Item 4 filed as fg-readability evidence
    orthogonal to its priced trade (analyst's rationale-mismatch flag recorded).
 
+## D19 — spatial-extent complaint class; margins datum strengthens (2026-08-18, cross-arm)
+
+1. **Small marks are semantically distinguished by the reviewer:** label-logo colours are
+   rejected even as exact pixels ("only present in the very small label logo") while
+   title-text small marks are accepted. P2 cannot read semantics but CAN read the structure
+   that separates the two: arm-b §2.4's cycle-1-cut **overlay class** (small, corner-
+   anchored, colour-linked to nothing else, axis-aligned) is revived as an eligibility
+   ORDERING for identity roles — overlays sort last, never excluded (candidacy walls made
+   the reviewer's own corrections unpublishable; ordering, not a wall). Refines D8: the
+   concentration-beats-population principle keeps its title-text half; the corner-anchored
+   isolated exception is the semantically-rejected half. Implementation queued behind W-P's
+   landing (same roles/ ownership); acceptance material: any corner-anchored logo cover in
+   the current sets.
+2. **Margins (D7) strongest datum:** a pair at 5.42× the same-colour bar still read "almost
+   indistinguishable" — the bar is not a perceptual-distinctness ruler at palette scale.
+   No constant invented; weights the margin-aware next-candidate preference (D7) and warns
+   every future round-stager that bar-multiples do not certify visual distinctness.
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
