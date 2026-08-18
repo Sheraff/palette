@@ -87,6 +87,23 @@ substrate family (no candidate; full design cycle), or judging the mechanism on
 quality/identity as-is. Read P3 as: quality-strong,
 robustness-plateaued-with-located-cause-and-refuted-first-fix.
 
+## Round-7 outcome (phase2-cal-025, decoded — completes P3's judged record)
+
+2S/2A/1W/2U. **Three of four repairs judge-validated:** 168 weak→STRONG with an empty note —
+the paired-family arc closes fully validated, the 1.09×-bar blues drew no complaint; row-0
+unacc→STRONG (black fg); cover-19 unacc→acceptable (the four-name set validated; the
+accent/surface assignment among those names contested — ordering unvalidated). The deferral
+priced exactly as pre-registered: the white-fg prescription restated at weak, with the
+reviewer supplying the re-composition. **One narrow re-opening:** row-4 flat at unacceptable —
+the swap-return lands the displaced neutral as a near-twin accent (indistinguishable at 5.42×
+the bar; twin count now 3, the strongest margins-vs-bars datum). A contained, triple-evidenced
+fix is designed (displaced colour must re-qualify as accent or collapse); DISPATCH HELD for
+the selection-scope call. **Fresh-cover watch HARDENED** (third failure in four releases), and
+it surfaced a new class: SPATIAL EXTENT — label-logo colours genuinely present but negligible
+on canvas are rejected, the semantic flip side of coherence eligibility (title-text marks
+accepted, logo marks refused); recorded as an honest-limit candidate for pixel machinery
+(EVIDENCE 14).
+
 ## Round-6 outcome (decoded and APPLIED, 2026-08-05)
 
 Legibility won the arbitration unanimously (4/4 conflict covers unacceptable, three prescribing
