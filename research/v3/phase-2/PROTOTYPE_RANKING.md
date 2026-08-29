@@ -7,6 +7,15 @@ health, trajectory. **Each arm's `STATE.md` at its prototype root is the primary
 mechanism-selection document; this file is the cross-arm summary.** The mechanism selection is
 the reviewer's, from here.
 
+**Erratum 2026-08-29.** Two adversarial Phase 3 reviews (`research/v3/phase-3/reviews/`) found
+factual errors in this file that the campaign has been repeating. They are corrected in place
+below, marked `[Erratum 2026-08-29]`, with the superseded wording struck rather than deleted.
+**Before quoting any robustness percentage from this file, read `GRAFT_INVENTORY.md` §Conventions**
+— P3's figures are disagreement, P5's and P2's are agreement, and P2's dither figure is a move
+rate; the directions are not interchangeable and no two downstream documents agreed on them. The
+same section carries the warehouse corpus arithmetic (206 `phase2-*` autosave rows ⇒ 61 distinct
+verdicts / 82 palettes).
+
 ## 1. P3 — per-pixel scalar fields and ranks
 
 **Complete: seven rounds, judged record closed at the documented honest local optimum — the only
@@ -17,7 +26,8 @@ artwork pixel) held across 24 workers and ~4.5k pipeline lines. Final round: the
 cover-19's four named colours likewise validated. Every complaint class fixed-and-revalidated,
 refuted by measurement, or explicitly deferred (the ink-score redesign — white type on
 photographs — awaits selection). Robustness honestly plateaued (~16% pooled disagreement, 8.5%
-pairs) with the cause located (edge/depth substrate) and the first designed fix falsified by its
+pairs — **[Erratum 2026-08-29: direction, since downstream documents inverted it — 16% is
+DISagreement, i.e. ~84% agreement; see `GRAFT_INVENTORY.md` §Conventions]**) with the cause located (edge/depth substrate) and the first designed fix falsified by its
 own pre-registered gates; fresh-cover overfit signal confirmed by three independent instruments.
 One post-record containment (swap-return re-qualification) landed in-bounds, labeled
 fixed-unverified-by-judge. In P4's blinded disagreement round the reviewer preferred P3 over the
@@ -26,8 +36,13 @@ selector 5/8 — the quality lead is judge-proven, not inferred.
 ## 2. P2 — hierarchical region decomposition (tree of shapes)
 
 **Cycle 4 closed; at rest.** The instrument-strongest arm: endorsed reachability 91.9% / 1.7%
-falsifier rate reconfirmed exactly at close with 100% coverage; guide-stop census zero owed
-stops on demo-20 + fresh-40 (legacy figure: 42%); the coverage gate landed with 8/8 predicted
+falsifier rate reconfirmed exactly at close with 100% coverage; ~~guide-stop census zero owed
+stops on demo-20 + fresh-40 (legacy figure: 42%)~~ **[Erratum 2026-08-29: the census is n=7, not
+n=60. In `tos/gradient/out/*.census.jsonl` the `owed` key appears on only 4 of 20 demo-20 rows and
+3 of 40 fresh-40 rows — the other 53 carry `gradient: null` (no ramp, so the question never
+arises); all seven read `"owed": false`. Honest form: zero owed stops on the 7 of 60 covers that
+produced a ramp, against a 42% legacy figure measured on a different base. The guide-stop canon is
+not settled by this census]**; the coverage gate landed with 8/8 predicted
 verdict flips confirmed; margins audited clean; the floor-demonstration round resolved the I4
 contract question with the reviewer's own verdict (the floor stands, the pick was the defect,
 fixed structurally). The honest close headline: **the reviewer-freed stability levers did not
@@ -45,7 +60,7 @@ the accent line closed with the reviewer's named crimson graded silently strong,
 coherence gate's byte-identical palette drawing identical silent strongs two rounds apart — the
 campaign's only direct reviewer test-retest measurement (stable). Nine verdict-driven versions;
 demonstrated the margins upper bracket (1.504× pairs silent). Standing debts stated plainly:
-robustness stabilization is the largest unpriced item (39.0% overall disagreement at v0.9.2),
+robustness stabilization is the largest unpriced item (~~39.0% overall disagreement at v0.9.2~~ **[Erratum 2026-08-29: direction inverted. 39.0% is overall palette AGREEMENT at v0.9.2 — i.e. ~61% disagreement, `p5-fieldfit/STATE.md:22,31`. Confirmed by arithmetic: accent instability alone is 46.2% (`:102`), and a four-role palette cannot agree more often than its worst role. Falsifiers aimed at "no better than P5's 39%" as a disagreement bar clear it trivially and are unusable]**),
 and a semantic axis (face-as-field, three rounds confirmed) is structurally inexpressible.
 v0.10 (salience-led candidacy, specified by the round's salience-beats-mass verdicts) is
 recorded but deliberately unbuilt pending selection.
