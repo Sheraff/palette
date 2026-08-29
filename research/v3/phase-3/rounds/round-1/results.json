@@ -1,0 +1,610 @@
+{
+  "round": "phase-3/round-1",
+  "generatedAt": "2026-08-29T17:16:53.092Z",
+  "arms": {
+    "A": {
+      "batchId": "cal-027",
+      "variantId": "a-field-first-0.2.0",
+      "prototype": "a-field-first",
+      "releasedAt": "2026-08-29T16:53:51.177Z",
+      "staged": ".worktrees/a-field-first/research/v3/prototypes/a-field-first/review-rounds/round-1/items.json"
+    },
+    "B": {
+      "batchId": "cal-028",
+      "variantId": "b-tree-first-0.1.0-m1",
+      "prototype": "b-tree-first",
+      "releasedAt": "2026-08-29T17:12:26.316Z",
+      "staged": ".worktrees/b-tree-first/research/v3/prototypes/b-tree-first/review-rounds/round-1/items.json"
+    }
+  },
+  "evidenceGap": {
+    "reviewerFreeTextPresent": false,
+    "verdictsWithComment": 0,
+    "verdictsTotal": 16,
+    "noteRecords": 0,
+    "vetoRecords": 0,
+    "endorsedSampleRecords": 0,
+    "amendmentRecords": 0,
+    "batchCompleteNotes": [
+      "",
+      ""
+    ],
+    "confoundFlagged": 0,
+    "retracted": 0,
+    "detail": "All 16 verdicts carry comment:\"\". No note/veto/endorsed-sample/amendment records exist for either batch. Failure classes and cross-arm remarks are therefore not derivable; face-as-background probe outcomes are undetermined."
+  },
+  "covers": [
+    {
+      "n": 1,
+      "itemId": "ab67616d0000b27300094a786a28459646be9b20",
+      "shortId": "ab67…be9b20",
+      "role": "probe:face-as-background",
+      "dimensions": "640x640",
+      "path": "09/ab67616d0000b27300094a786a28459646be9b20",
+      "A": {
+        "verdictId": "v-mtembkpi-9fac254e",
+        "ts": "2026-08-29T16:51:55.926Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#8d8cc8",
+          "surface": "#8d8cc8",
+          "foreground": "#00bcfa",
+          "accent": "#7f7ca7",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "9722ef43e4c92ebf62540f85c58cd0b3355cf0a970ba9c7adeaf3dda177d4135",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten08ku-8f64e75b",
+        "ts": "2026-08-29T17:11:06.606Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#fce8cf",
+          "surface": "#fce8cf",
+          "foreground": "#000000",
+          "accent": "#000400",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "05335c3884ae60a0666c3f7e8732d61290a3ef88a361c91502961951c017b86e",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 2,
+      "itemId": "ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+      "shortId": "ab67…bed1b2",
+      "role": "probe:face-as-background",
+      "dimensions": "300x300",
+      "path": "0f/ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+      "A": {
+        "verdictId": "v-mtembyyb-caa979f9",
+        "ts": "2026-08-29T16:52:14.387Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#05933d",
+          "surface": "#0e7a46",
+          "foreground": "#9f8382",
+          "accent": "#065d3b",
+          "gradient": {
+            "stops": [
+              {
+                "color": "#05933d",
+                "position": 0
+              },
+              {
+                "color": "#0e7a46",
+                "position": 1
+              }
+            ]
+          },
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "c6ba5a2554884f92a0b03e7c9b76e12914b7324be1e07037cbe7b52b831ddbcb",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten0km2-1188d281",
+        "ts": "2026-08-29T17:11:22.202Z",
+        "grade": "acceptable",
+        "palette": {
+          "background": "#01913a",
+          "surface": "#01913a",
+          "foreground": "#080000",
+          "accent": "#71ceb3",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "78f4afe23ea35d2cb0c92a27487904c1f8b7d81c27fe893abb617d45a47c5f42",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 3,
+      "itemId": "ddd8a0e7961edcf8e95b771ae0d9b8c5",
+      "shortId": "ddd8…d9b8c5",
+      "role": "probe:false-gradient",
+      "dimensions": "1280x1280",
+      "path": "music-artworks/d/d/d/ddd8a0e7961edcf8e95b771ae0d9b8c5.jpg",
+      "A": {
+        "verdictId": "v-mtemcgk9-aba38d1c",
+        "ts": "2026-08-29T16:52:37.209Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#fdfad9",
+          "surface": "#f3bbd4",
+          "foreground": "#494949",
+          "accent": "#734838",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "caccd1562fe491115c1f9eb47723725f32f1268dc7ffc2691976d47ff7ed347c",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten0rs4-658b394b",
+        "ts": "2026-08-29T17:11:31.492Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#fefcd6",
+          "surface": "#f5bad6",
+          "foreground": "#000204",
+          "accent": "#000000",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "6c351bc4fee12e7d9c5e72611934a07b96d57bb4e75b3e7e23f9082c92912969",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 4,
+      "itemId": "ab67616d00001e0200001073a73e3a949021f65e",
+      "shortId": "ab67…21f65e",
+      "role": "probe:missed-gradient",
+      "dimensions": "300x300",
+      "path": "00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+      "A": {
+        "verdictId": "v-mtemcpdc-5ed9843f",
+        "ts": "2026-08-29T16:52:48.624Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#ffe7e2",
+          "surface": "#f2d2d3",
+          "foreground": "#a99da1",
+          "accent": "#282627",
+          "gradient": {
+            "stops": [
+              {
+                "color": "#ffe7e2",
+                "position": 0
+              },
+              {
+                "color": "#f1d8c4",
+                "position": 0.792891
+              },
+              {
+                "color": "#f2d2d3",
+                "position": 1
+              }
+            ]
+          },
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "78985a75690f89902e31e0f3c76914160151ea08dadfee3ac81df5d878fcf7c3",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten12my-563a5170",
+        "ts": "2026-08-29T17:11:45.562Z",
+        "grade": "acceptable",
+        "palette": {
+          "background": "#fce4e2",
+          "surface": "#eecccd",
+          "foreground": "#1e1a19",
+          "accent": "#000005",
+          "gradient": {
+            "stops": [
+              {
+                "color": "#fce4e2",
+                "position": 0
+              },
+              {
+                "color": "#eecccd",
+                "position": 1
+              }
+            ]
+          },
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "bc03fa30a573a662ac4f7970a32f2279a94885e729ce62507cbfdb95f92c93d6",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 5,
+      "itemId": "ab67616d00001e02000bb7843b5e4572ce89fe0c",
+      "shortId": "ab67…89fe0c",
+      "role": "fresh",
+      "dimensions": "300x300",
+      "path": "0b/ab67616d00001e02000bb7843b5e4572ce89fe0c",
+      "A": {
+        "verdictId": "v-mtemd1rv-8a3e98ff",
+        "ts": "2026-08-29T16:53:04.699Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#e0dcdd",
+          "surface": "#c4bec2",
+          "foreground": "#aea4a5",
+          "accent": "#624d52",
+          "gradient": {
+            "stops": [
+              {
+                "color": "#e0dcdd",
+                "position": 0
+              },
+              {
+                "color": "#c4bec2",
+                "position": 1
+              }
+            ]
+          },
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "37e04a1d944f1f90591953be0333fc3ed3d579d3b5ec0945ba60848c60f47a85",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten18m8-fdf7b0fd",
+        "ts": "2026-08-29T17:11:53.312Z",
+        "grade": "acceptable",
+        "palette": {
+          "background": "#d3cdcf",
+          "surface": "#d3cdcf",
+          "foreground": "#381f25",
+          "accent": "#4b343a",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "b64411d825d9e7401b38ce38ebad1faf8cb994d92ef293dbaeae52d5ab03b8f9",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 6,
+      "itemId": "ab67616d00001e020010fe367a0d2ff504efb995",
+      "shortId": "ab67…efb995",
+      "role": "fresh",
+      "dimensions": "300x300",
+      "path": "10/ab67616d00001e020010fe367a0d2ff504efb995",
+      "A": {
+        "verdictId": "v-mtemdcaj-ee8035e8",
+        "ts": "2026-08-29T16:53:18.331Z",
+        "grade": "acceptable",
+        "palette": {
+          "background": "#040605",
+          "surface": "#040605",
+          "foreground": "#8e8e8e",
+          "accent": "#afafaf",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "9f8aab78b40b848a48ba18693a1f90915008c58505fe14cfa18d48a6ecbcfc58",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten1jv6-777ced8f",
+        "ts": "2026-08-29T17:12:07.890Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#050505",
+          "surface": "#050505",
+          "foreground": "#3f3f3f",
+          "accent": "#626262",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "34f7234852e50d30c0ebf2095db240a40abe3e819297a6919a0f8ed259a8a9e0",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 7,
+      "itemId": "ab67616d0000b273000131a334d00155369bb7b9",
+      "shortId": "ab67…9bb7b9",
+      "role": "fresh",
+      "dimensions": "640x640",
+      "path": "01/ab67616d0000b273000131a334d00155369bb7b9.jpg",
+      "A": {
+        "verdictId": "v-mtemdgjf-44a1cc0f",
+        "ts": "2026-08-29T16:53:23.835Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#000000",
+          "surface": "#14100d",
+          "foreground": "#77543e",
+          "accent": "#77543e",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": true
+        },
+        "paletteHash": "ac6fb36ed9aaae1c502aa9075d321ab4118f53c959d6a15e460891894f619593",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten1pxy-30dd5bf0",
+        "ts": "2026-08-29T17:12:15.766Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#c18c48",
+          "surface": "#c18c48",
+          "foreground": "#010000",
+          "accent": "#546167",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "191240e1b7e4e56492cc5823848b2063ef11ada2ea1f637f2e54f7b6c6f9257e",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    },
+    {
+      "n": 8,
+      "itemId": "ab67616d0000b27300096a633744f98a17e8f81f",
+      "shortId": "ab67…e8f81f",
+      "role": "fresh",
+      "dimensions": "640x640",
+      "path": "09/ab67616d0000b27300096a633744f98a17e8f81f",
+      "A": {
+        "verdictId": "v-mtemdxok-74e3eada",
+        "ts": "2026-08-29T16:53:46.052Z",
+        "grade": "acceptable",
+        "palette": {
+          "background": "#121214",
+          "surface": "#121214",
+          "foreground": "#9d4d82",
+          "accent": "#8a74bc",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "f9fedf120057e6363a3667ef9ec7eb0b11ce3d4fa99430c70cc6835b54eb458a",
+        "comment": "",
+        "note": null
+      },
+      "B": {
+        "verdictId": "v-mten1t1y-7871daa2",
+        "ts": "2026-08-29T17:12:19.798Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#131112",
+          "surface": "#161417",
+          "foreground": "#fffeff",
+          "accent": "#2a302c",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "1c29aceaa22fe1d4d4f075bb63c47174191ec440d53ae9b20830cba9d27dbbfb",
+        "comment": "",
+        "note": null
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on record"
+      }
+    }
+  ],
+  "tallies": {
+    "A": {
+      "strong": 0,
+      "acceptable": 2,
+      "weak": 4,
+      "unacceptable": 2,
+      "vetoes": 0,
+      "endorsedSamples": 0,
+      "confound": 0
+    },
+    "B": {
+      "strong": 0,
+      "acceptable": 3,
+      "weak": 2,
+      "unacceptable": 3,
+      "vetoes": 0,
+      "endorsedSamples": 0,
+      "confound": 0
+    }
+  },
+  "gradeAgreement": {
+    "same": [
+      1,
+      3,
+      7
+    ],
+    "bHigher": [
+      2,
+      4,
+      5
+    ],
+    "aHigher": [
+      6,
+      8
+    ]
+  },
+  "probes": [
+    {
+      "n": 1,
+      "itemId": "ab67616d0000b27300094a786a28459646be9b20",
+      "class": "face-as-background",
+      "phase2Batch": "phase2-cal-026",
+      "phase2VerdictId": "v-msp1who6-06e3dd29",
+      "A": {
+        "fixed": "undetermined",
+        "grade": "unacceptable",
+        "mechanicalCheck": "surface still collapsed into background (#8d8cc8) — collapse half of the complaint not fixed"
+      },
+      "B": {
+        "fixed": "undetermined",
+        "grade": "unacceptable",
+        "mechanicalCheck": "surface still collapsed into background (#fce8cf) — collapse half of the complaint not fixed"
+      }
+    },
+    {
+      "n": 2,
+      "itemId": "ab67616d00001e02000f9ddb5dfe0c2590bed1b2",
+      "class": "face-as-background",
+      "phase2Batch": "phase2-pair-023",
+      "phase2VerdictId": "v-msp1ib2f-de9a78d4",
+      "A": {
+        "fixed": "undetermined",
+        "grade": "weak",
+        "mechanicalCheck": "foreground #9f8382 is not the white foreground the note suggested"
+      },
+      "B": {
+        "fixed": "partly",
+        "grade": "acceptable",
+        "mechanicalCheck": "background #01913a is green not pink; foreground #080000 is not white"
+      }
+    },
+    {
+      "n": 3,
+      "itemId": "ddd8a0e7961edcf8e95b771ae0d9b8c5",
+      "class": "false-gradient",
+      "phase2Batch": "phase2-cal-017",
+      "phase2VerdictId": "v-msocpkt1-ae64ab30",
+      "A": {
+        "fixed": "yes",
+        "grade": "weak",
+        "mechanicalCheck": "gradient null — no false gradient emitted"
+      },
+      "B": {
+        "fixed": "yes",
+        "grade": "weak",
+        "mechanicalCheck": "gradient null — no false gradient emitted"
+      }
+    },
+    {
+      "n": 4,
+      "itemId": "ab67616d00001e0200001073a73e3a949021f65e",
+      "class": "missed-gradient",
+      "phase2Batch": "phase2-pair-024",
+      "phase2VerdictId": "v-msp1nbzo-85f5ee1a",
+      "A": {
+        "fixed": "yes",
+        "grade": "weak",
+        "mechanicalCheck": "3-stop gradient emitted"
+      },
+      "B": {
+        "fixed": "yes",
+        "grade": "acceptable",
+        "mechanicalCheck": "2-stop gradient emitted; foreground #1e1a19 near-black"
+      }
+    }
+  ],
+  "crossArmRemarks": {
+    "reviewer": [],
+    "note": "no batch note, no per-item comment, no standalone note record for either batch"
+  },
+  "pacing": {
+    "cal-027": {
+      "spanSeconds": 110.126,
+      "gapsSeconds": [
+        18.461,
+        22.822,
+        11.415,
+        16.075,
+        13.632,
+        5.504,
+        22.217
+      ]
+    },
+    "cal-028": {
+      "spanSeconds": 73.192,
+      "gapsSeconds": [
+        15.596,
+        9.29,
+        14.07,
+        7.75,
+        14.578,
+        7.876,
+        4.032
+      ]
+    }
+  },
+  "mechanicalCounts": {
+    "A": {
+      "surfaceCollapsed": 3,
+      "accentCollapsed": 1,
+      "gradientEmitted": 3
+    },
+    "B": {
+      "surfaceCollapsed": 5,
+      "accentCollapsed": 0,
+      "gradientEmitted": 1
+    }
+  }
+}
