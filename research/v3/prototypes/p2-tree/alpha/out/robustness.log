@@ -1,0 +1,31 @@
+candidate: p2-alpha  (research/v3/prototypes/p2-tree/alpha/candidate.ts)
+bar mode:  regional
+
+overall                  79.2% [59.5–90.8]  (19/24, 26 errored)
+
+by pair type
+  rendition-pair           79.2% [59.5–90.8]  (19/24, 26 errored)
+  jpeg-q92                 — no comparisons (0 errored)
+  jpeg-q85                 — no comparisons (0 errored)
+  jpeg-q75                 — no comparisons (0 errored)
+  dither-lsb1              — no comparisons (0 errored)
+
+reviewed vs unseen  (v2-3: 1.61x, healthy ~1.0)  [labels: live-warehouse, 0 relabelled since the draw]
+  perturbation     n/a  UNDERPOWERED
+    perturbation|reviewed    — no comparisons (0 errored)
+    perturbation|unseen      — no comparisons (0 errored)
+  rendition-pair   n/a  UNDERPOWERED
+    rendition-pair|reviewed  — no comparisons (1 errored)
+    rendition-pair|unseen    79.2% [59.5–90.8]  (19/24, 25 errored)
+
+role instability (share of comparisons where the role moved)
+  background   0.0%  (0/24)
+  surface      0.0%  (0/24)
+  foreground   4.2%  (1/24)
+  accent       20.8%  (5/24)
+
+disagreeing trials: 5
+errored trials:     26
+timing: 50 trials, 7.8s wall, 28.4s in candidate
+
+report: research/v3/data/robustness/reports/p2-alpha.json

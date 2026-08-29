@@ -1,0 +1,3547 @@
+{
+	"variant": "accent-member",
+	"pinCommit": "734c3f564f16ce9cf829fb420ddbf220fa1103cf",
+	"covers": {
+		"ab67616d00001e0200000f92552b0935b967964d": {
+			"imagePath": "00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"palette": {
+				"background": "#dfe0d0",
+				"surface": "#f3f3f3",
+				"foreground": "#edbab9",
+				"accent": "#ee5567",
+				"gradient": null,
+				"surfaceCollapsed": false,
+				"accentCollapsed": false
+			},
+			"contractViolations": [],
+			"notes": [
+				"fallback-field-roles:textured",
+				"coincident-components-merged:58",
+				"lanes:L+a+b",
+				"pool-marks:963",
+				"components:367",
+				"salience-median-growth:0.01485148514851485",
+				"accent-cut-extended:257",
+				"accent-candidates:257"
+			],
+			"swapped": false,
+			"verdict": "textured",
+			"foregroundPool": [
+				{
+					"hex": "#edbab9",
+					"fieldContrast": 14.175511854294626,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#bec494",
+					"fieldContrast": 17.806746733639926,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#f1f1f1",
+					"fieldContrast": 1.3233611410898631,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#b9545c",
+					"fieldContrast": 55.70506010661976,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#b78d91",
+					"fieldContrast": 39.05080194404173,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#be8782",
+					"fieldContrast": 40.43596254889987,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#b4aeba",
+					"fieldContrast": 26.268071634216444,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f6b3bc",
+					"fieldContrast": 15.147418546516466,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f8f8f8",
+					"fieldContrast": 3.6326664863285396,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f8f8fa",
+					"fieldContrast": 3.7279058995672605,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f9f9f9",
+					"fieldContrast": 4.289560384233744,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fafafa",
+					"fieldContrast": 4.947742953654711,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fbfbfb",
+					"fieldContrast": 5.60721155280049,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f5f5f3",
+					"fieldContrast": 1.5760874380392518,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f5f5f5",
+					"fieldContrast": 1.6697434819604968,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f5f5f7",
+					"fieldContrast": 1.7644251344401747,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f6f5fa",
+					"fieldContrast": 2.047267113187933,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f6f6f4",
+					"fieldContrast": 2.2289108697388182,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f6f6f6",
+					"fieldContrast": 2.3227553528460696,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f6f6f8",
+					"fieldContrast": 2.417623307816027,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f7f7f5",
+					"fieldContrast": 2.883031391629013,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f7f7f7",
+					"fieldContrast": 2.9770639178207126,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f7f7f9",
+					"fieldContrast": 3.0721177922717997,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f8f8f6",
+					"fieldContrast": 3.5384463107055284,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fadadd",
+					"fieldContrast": 2.695990567571929,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6a723f",
+					"fieldContrast": 59.080192182998545,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a9a7b2",
+					"fieldContrast": 30.47227940761333,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#b8b4a9",
+					"fieldContrast": 24.17363318972206,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#8c9266",
+					"fieldContrast": 43.76377549653527,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#9ca36d",
+					"fieldContrast": 35.5711109100161,
+					"provenance": "pool"
+				}
+			],
+			"accentPool": [
+				"#ee5567",
+				"#d25068",
+				"#b9545c",
+				"#f6b3bc",
+				"#be8782",
+				"#b78d91",
+				"#6a723f",
+				"#fadadd",
+				"#f2d2d3",
+				"#b4aeba",
+				"#a9a7b2",
+				"#dddce1",
+				"#d0d6b2",
+				"#b8b4a9",
+				"#9ca36d",
+				"#8c9266",
+				"#f8f8f8",
+				"#f8f8fa",
+				"#f9f9f9",
+				"#fafafa",
+				"#fbfbfb",
+				"#f5f5f3",
+				"#f5f5f5",
+				"#f5f5f7"
+			],
+			"accentCandidates": [
+				{
+					"hex": "#ee5567",
+					"chromaFromField": 0.18995717803932852,
+					"lightnessMove": 0.24282178932076037,
+					"fieldContrast": 44.52631803863869,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0013333333333333333
+				},
+				{
+					"hex": "#d25068",
+					"chromaFromField": 0.16848012527407363,
+					"lightnessMove": 0.29174044082650397,
+					"fieldContrast": 51.29929679521133,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.05588235294117647
+				},
+				{
+					"hex": "#b9545c",
+					"chromaFromField": 0.13342872384086663,
+					"lightnessMove": 0.3269236176988326,
+					"fieldContrast": 55.70506010661976,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.011764705882352941
+				},
+				{
+					"hex": "#b9545c",
+					"chromaFromField": 0.13342872384086663,
+					"lightnessMove": 0.3269236176988326,
+					"fieldContrast": 55.70506010661976,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.011764705882352941
+				},
+				{
+					"hex": "#f6b3bc",
+					"chromaFromField": 0.08510351457100375,
+					"lightnessMove": 0.07012574608860433,
+					"fieldContrast": 15.147418546516466,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.011111111111111112
+				},
+				{
+					"hex": "#be8782",
+					"chromaFromField": 0.06992515867433041,
+					"lightnessMove": 0.22520655499878506,
+					"fieldContrast": 40.43596254889987,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.010638297872340425
+				},
+				{
+					"hex": "#b78d91",
+					"chromaFromField": 0.058186269091918624,
+					"lightnessMove": 0.21728279768397685,
+					"fieldContrast": 39.05080194404173,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0028011204481792717
+				},
+				{
+					"hex": "#6a723f",
+					"chromaFromField": 0.05211803377787435,
+					"lightnessMove": 0.36895349048717985,
+					"fieldContrast": 59.080192182998545,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.6467391304347826
+				},
+				{
+					"hex": "#fadadd",
+					"chromaFromField": 0.04427558969739485,
+					"lightnessMove": 0.014162317712797856,
+					"fieldContrast": 2.695990567571929,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.003676470588235294
+				},
+				{
+					"hex": "#f2d2d3",
+					"chromaFromField": 0.043085752311529835,
+					"lightnessMove": 0.01073286463087253,
+					"fieldContrast": 3.350781930039374,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0007002801120448179
+				},
+				{
+					"hex": "#b4aeba",
+					"chromaFromField": 0.039088062100750824,
+					"lightnessMove": 0.14209400073766276,
+					"fieldContrast": 26.268071634216444,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.013333333333333334
+				},
+				{
+					"hex": "#a9a7b2",
+					"chromaFromField": 0.03723359260578935,
+					"lightnessMove": 0.1681060030582051,
+					"fieldContrast": 30.47227940761333,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.03333333333333333
+				},
+				{
+					"hex": "#dddce1",
+					"chromaFromField": 0.02825724009270595,
+					"lightnessMove": 0.004837384278122525,
+					"fieldContrast": 1.5317393315676424,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.004310344827586207
+				},
+				{
+					"hex": "#d0d6b2",
+					"chromaFromField": 0.02735592049074717,
+					"lightnessMove": 0.03950422780896934,
+					"fieldContrast": 7.378608760240966,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.005434782608695652
+				},
+				{
+					"hex": "#b8b4a9",
+					"chromaFromField": 0.00828993524442935,
+					"lightnessMove": 0.13148167248811715,
+					"fieldContrast": 24.17363318972206,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.03125
+				},
+				{
+					"hex": "#9ca36d",
+					"chromaFromField": 0.0530017783282557,
+					"lightnessMove": 0.20513887016726207,
+					"fieldContrast": 35.5711109100161,
+					"stabilityLevel": 1,
+					"tracingLevel": 1,
+					"growth": 3.386986301369863
+				},
+				{
+					"hex": "#8c9266",
+					"chromaFromField": 0.04096878236483684,
+					"lightnessMove": 0.2579385109990455,
+					"fieldContrast": 43.76377549653527,
+					"stabilityLevel": 1,
+					"tracingLevel": 1,
+					"growth": 8.46830985915493
+				}
+			],
+			"textGroups": [
+				{
+					"hex": "#edbab9",
+					"componentCount": 72,
+					"areaFraction": 0.12916666666666654,
+					"fieldContrast": 14.175511854294626
+				},
+				{
+					"hex": "#bec494",
+					"componentCount": 14,
+					"areaFraction": 0.013344444444444445,
+					"fieldContrast": 17.806746733639926
+				},
+				{
+					"hex": "#f1f1f1",
+					"componentCount": 10,
+					"areaFraction": 0.011355555555555556,
+					"fieldContrast": 1.3233611410898631
+				}
+			]
+		},
+		"ab67616d00001e02000001335fe604d859a69094": {
+			"imagePath": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"palette": {
+				"background": "#ffffff",
+				"surface": "#e0e0e0",
+				"foreground": "#070506",
+				"accent": "#282425",
+				"gradient": {
+					"stops": [
+						{
+							"color": "#ffffff",
+							"position": 0
+						},
+						{
+							"color": "#e0e0e0",
+							"position": 1
+						}
+					]
+				},
+				"surfaceCollapsed": false,
+				"accentCollapsed": false
+			},
+			"contractViolations": [],
+			"notes": [
+				"ramp-polarity:projection",
+				"coincident-components-merged:1",
+				"lanes:L+a+b",
+				"pool-marks:527",
+				"components:109",
+				"salience-median-growth:0.001287001287001287",
+				"accent-cut-extended:257",
+				"accent-candidates:257"
+			],
+			"swapped": false,
+			"verdict": "laminar",
+			"foregroundPool": [
+				{
+					"hex": "#070506",
+					"fieldContrast": 90.46617114546785,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#030102",
+					"fieldContrast": 90.51159987868736,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#060203",
+					"fieldContrast": 90.49872971225679,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0a0a0a",
+					"fieldContrast": 90.3197515806412,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#121212",
+					"fieldContrast": 89.74234382007211,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#161415",
+					"fieldContrast": 89.47272514472068,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1a1819",
+					"fieldContrast": 88.96069732209982,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1b1b1b",
+					"fieldContrast": 88.59187897730044,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#252525",
+					"fieldContrast": 86.73702406820166,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#393939",
+					"fieldContrast": 81.09180782230456,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7c7c7c",
+					"fieldContrast": 53.25750450891259,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#adadad",
+					"fieldContrast": 28.72317210029614,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#c3c3c3",
+					"fieldContrast": 16.792650526803804,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#c9c9c9",
+					"fieldContrast": 13.449436485240673,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#d7d7d7",
+					"fieldContrast": 5.506149049949928,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f7f7f7",
+					"fieldContrast": 0.21021231856210784,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#020001",
+					"fieldContrast": 90.51385656048257,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#030000",
+					"fieldContrast": 90.51246113805911,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#030303",
+					"fieldContrast": 90.50382502534629,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#040001",
+					"fieldContrast": 90.51008335106589,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#050102",
+					"fieldContrast": 90.50598321022622,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3c3c3c",
+					"fieldContrast": 80.02455441406028,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#404040",
+					"fieldContrast": 78.57081482405002,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#434343",
+					"fieldContrast": 77.45822974843645,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4d4b4c",
+					"fieldContrast": 74.20566651278504,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6f6f6f",
+					"fieldContrast": 59.23486901099439,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#9a9a9a",
+					"fieldContrast": 38.588584917834915,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#e2e2e2",
+					"fieldContrast": 0.4033370181218334,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ececec",
+					"fieldContrast": 0.3154719599897482,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#000000",
+					"fieldContrast": 90.51479554909079,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#010000",
+					"fieldContrast": 90.51462838382247,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#010101",
+					"fieldContrast": 90.51400955934157,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#020202",
+					"fieldContrast": 90.51064795512856,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#040203",
+					"fieldContrast": 90.50638387332585,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#040404",
+					"fieldContrast": 90.49292898079484,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#050304",
+					"fieldContrast": 90.49742751646667,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#050505",
+					"fieldContrast": 90.47747565717901,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#060405",
+					"fieldContrast": 90.48417254107991,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#060606",
+					"fieldContrast": 90.45706358882745,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#070304",
+					"fieldContrast": 90.48757144981462,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#070707",
+					"fieldContrast": 90.43135317977642,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#080405",
+					"fieldContrast": 90.4719730832663,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#080607",
+					"fieldContrast": 90.44304992406668,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#080808",
+					"fieldContrast": 90.40005522377324,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#090708",
+					"fieldContrast": 90.41449264192,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0a0809",
+					"fieldContrast": 90.38023049707962,
+					"provenance": "pool"
+				}
+			],
+			"accentPool": [
+				"#040001",
+				"#030000",
+				"#020001",
+				"#050102",
+				"#060203",
+				"#030102",
+				"#282425",
+				"#373334",
+				"#4d4b4c",
+				"#030303",
+				"#070506",
+				"#161415",
+				"#1a1819",
+				"#0a0a0a",
+				"#121212",
+				"#1b1b1b",
+				"#252525",
+				"#393939",
+				"#3c3c3c",
+				"#404040",
+				"#434343",
+				"#6f6f6f",
+				"#7c7c7c",
+				"#9a9a9a"
+			],
+			"accentCandidates": [
+				{
+					"hex": "#040001",
+					"chromaFromField": 0.02804519932025716,
+					"lightnessMove": 0.9308683391948447,
+					"fieldContrast": 90.51008335106589,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.7368421052631579
+				},
+				{
+					"hex": "#030000",
+					"chromaFromField": 0.02497614971875827,
+					"lightnessMove": 0.9391349001283956,
+					"fieldContrast": 90.51246113805911,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.3
+				},
+				{
+					"hex": "#020001",
+					"chromaFromField": 0.0240377049993024,
+					"lightnessMove": 0.9435276379449576,
+					"fieldContrast": 90.51385656048257,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.05660377358490566
+				},
+				{
+					"hex": "#050102",
+					"chromaFromField": 0.019074833895832834,
+					"lightnessMove": 0.913958593995124,
+					"fieldContrast": 90.50598321022622,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.6338028169014085
+				},
+				{
+					"hex": "#060203",
+					"chromaFromField": 0.014989169844157005,
+					"lightnessMove": 0.9019822115526748,
+					"fieldContrast": 90.49872971225679,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.00007680491551459293
+				},
+				{
+					"hex": "#030102",
+					"chromaFromField": 0.013155637712384103,
+					"lightnessMove": 0.9214165695325743,
+					"fieldContrast": 90.51159987868736,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.04435483870967742
+				},
+				{
+					"hex": "#282425",
+					"chromaFromField": 0.00624278208483246,
+					"lightnessMove": 0.7348963207307639,
+					"fieldContrast": 86.7428154258844,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.000059059768485707536
+				},
+				{
+					"hex": "#373334",
+					"chromaFromField": 0.005913906534201365,
+					"lightnessMove": 0.6744051214887752,
+					"fieldContrast": 82.83875076981377,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0001719986240110079
+				},
+				{
+					"hex": "#4d4b4c",
+					"chromaFromField": 0.003095963227529194,
+					"lightnessMove": 0.5849108360214123,
+					"fieldContrast": 74.20566651278504,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0001366120218579235
+				},
+				{
+					"hex": "#030303",
+					"chromaFromField": 3.366118266723916e-8,
+					"lightnessMove": 0.9030741659937849,
+					"fieldContrast": 90.50382502534629,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.39655172413793105
+				},
+				{
+					"hex": "#040001",
+					"chromaFromField": 0.02804519932025716,
+					"lightnessMove": 0.9308683391948447,
+					"fieldContrast": 90.51008335106589,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.7368421052631579
+				},
+				{
+					"hex": "#030000",
+					"chromaFromField": 0.02497614971875827,
+					"lightnessMove": 0.9391349001283956,
+					"fieldContrast": 90.51246113805911,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.3
+				},
+				{
+					"hex": "#020001",
+					"chromaFromField": 0.0240377049993024,
+					"lightnessMove": 0.9435276379449576,
+					"fieldContrast": 90.51385656048257,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.05660377358490566
+				},
+				{
+					"hex": "#050102",
+					"chromaFromField": 0.019074833895832834,
+					"lightnessMove": 0.913958593995124,
+					"fieldContrast": 90.50598321022622,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.6338028169014085
+				},
+				{
+					"hex": "#030102",
+					"chromaFromField": 0.013155637712384103,
+					"lightnessMove": 0.9214165695325743,
+					"fieldContrast": 90.51159987868736,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.04435483870967742
+				},
+				{
+					"hex": "#070506",
+					"chromaFromField": 0.00585673940849189,
+					"lightnessMove": 0.880646987640011,
+					"fieldContrast": 90.46617114546785,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.00007680491551459293
+				},
+				{
+					"hex": "#161415",
+					"chromaFromField": 0.0037567863790488277,
+					"lightnessMove": 0.805977742018936,
+					"fieldContrast": 89.47272514472068,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0006127450980392157
+				},
+				{
+					"hex": "#1a1819",
+					"chromaFromField": 0.003673640791292543,
+					"lightnessMove": 0.7882600455655238,
+					"fieldContrast": 88.96069732209982,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0002185792349726776
+				},
+				{
+					"hex": "#4d4b4c",
+					"chromaFromField": 0.003095963227529194,
+					"lightnessMove": 0.5849108360214123,
+					"fieldContrast": 74.20566651278504,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0017953321364452424
+				},
+				{
+					"hex": "#030303",
+					"chromaFromField": 3.366118266723916e-8,
+					"lightnessMove": 0.9030741659937849,
+					"fieldContrast": 90.50382502534629,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.39655172413793105
+				},
+				{
+					"hex": "#0a0a0a",
+					"chromaFromField": 3.1877169935682965e-8,
+					"lightnessMove": 0.8552120390296185,
+					"fieldContrast": 90.3197515806412,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.00024703557312252963
+				},
+				{
+					"hex": "#121212",
+					"chromaFromField": 3.048253552758511e-8,
+					"lightnessMove": 0.8177962918266917,
+					"fieldContrast": 89.74234382007211,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0003109452736318408
+				},
+				{
+					"hex": "#1b1b1b",
+					"chromaFromField": 2.89943697575652e-8,
+					"lightnessMove": 0.7778712515481285,
+					"fieldContrast": 88.59187897730044,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0007716049382716049
+				},
+				{
+					"hex": "#252525",
+					"chromaFromField": 2.741578143821151e-8,
+					"lightnessMove": 0.7355203225735993,
+					"fieldContrast": 86.73702406820166,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0011792452830188679
+				}
+			],
+			"textGroups": [
+				{
+					"hex": "#070506",
+					"componentCount": 13,
+					"areaFraction": 0.04165555555555554,
+					"fieldContrast": 90.46617114546785
+				},
+				{
+					"hex": "#030102",
+					"componentCount": 5,
+					"areaFraction": 0.0114,
+					"fieldContrast": 90.51159987868736
+				}
+			]
+		},
+		"ab67616d00001e0200001a9be12b7116a8247378": {
+			"imagePath": "00/ab67616d00001e0200001a9be12b7116a8247378.jpg",
+			"palette": {
+				"background": "#434554",
+				"surface": "#3a394b",
+				"foreground": "#8e6a52",
+				"accent": "#922500",
+				"gradient": null,
+				"surfaceCollapsed": false,
+				"accentCollapsed": false
+			},
+			"contractViolations": [],
+			"notes": [
+				"fallback-field-roles:unreadable",
+				"coincident-components-merged:36",
+				"lanes:L+a+b",
+				"pool-marks:1188",
+				"components:671",
+				"salience-median-growth:0.053738317757009345",
+				"accent-candidates:256"
+			],
+			"swapped": false,
+			"verdict": "unreadable",
+			"foregroundPool": [
+				{
+					"hex": "#8e6a52",
+					"fieldContrast": 19.15534555103681,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#daccb2",
+					"fieldContrast": 67.51446809500452,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#c8bfa0",
+					"fieldContrast": 59.0358327302422,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#d0baa2",
+					"fieldContrast": 58.14798199575589,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#c0ab90",
+					"fieldContrast": 49.48149524930901,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a3a3ad",
+					"fieldContrast": 43.861842344945444,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#bba381",
+					"fieldContrast": 45.331689363015684,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#9d9da5",
+					"fieldContrast": 40.594235329462435,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#bb9787",
+					"fieldContrast": 41.13926097972338,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#be9569",
+					"fieldContrast": 40.08987421758056,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#908e99",
+					"fieldContrast": 33.222974694921255,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ae8478",
+					"fieldContrast": 32.43638010919369,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#758497",
+					"fieldContrast": 26.98761219709107,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#907f6f",
+					"fieldContrast": 26.65184664086842,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6b7c8e",
+					"fieldContrast": 23.010908654781336,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7d7f6a",
+					"fieldContrast": 24.449522532865885,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#8c7a64",
+					"fieldContrast": 24.250411216347832,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#747788",
+					"fieldContrast": 21.893664758652882,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a56452",
+					"fieldContrast": 20.796956307274467,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#676b6c",
+					"fieldContrast": 15.866330952721233,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#676e7e",
+					"fieldContrast": 17.446197462996956,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6e6e6e",
+					"fieldContrast": 17.511711273130963,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6e6f5d",
+					"fieldContrast": 17.34491724881318,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#716b75",
+					"fieldContrast": 17.101229136889604,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#716d54",
+					"fieldContrast": 16.784431731591216,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#826651",
+					"fieldContrast": 16.46592126044052,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#836759",
+					"fieldContrast": 17.057096066631065,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#59687d",
+					"fieldContrast": 14.40771669369701,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#686874",
+					"fieldContrast": 15.300018239092939,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#706464",
+					"fieldContrast": 14.35033749681088,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#786459",
+					"fieldContrast": 14.906581514775269,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#79663b",
+					"fieldContrast": 15.02858784551587,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#8c5b0f",
+					"fieldContrast": 14.03184871675521,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#9a5633",
+					"fieldContrast": 15.119940741830002,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5c6175",
+					"fieldContrast": 12.204810615707494,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#635f5c",
+					"fieldContrast": 11.389270132837662,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#646152",
+					"fieldContrast": 11.81183682568835,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6c6038",
+					"fieldContrast": 11.810700542025442,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7d5726",
+					"fieldContrast": 11.084158498502736,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#8c5443",
+					"fieldContrast": 12.758816340816187,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#000201",
+					"fieldContrast": 10.597655081311178,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#000304",
+					"fieldContrast": 10.591252349170546,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#030e2a",
+					"fieldContrast": 9.86854524867492,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#051c22",
+					"fieldContrast": 8.837639071325901,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#061019",
+					"fieldContrast": 10.04296656202428,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#061b1c",
+					"fieldContrast": 9.035067943083755,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#07070f",
+					"fieldContrast": 10.485972189564265,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#080403",
+					"fieldContrast": 10.559753230984539,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#081619",
+					"fieldContrast": 9.575091548635111,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0a0905",
+					"fieldContrast": 10.447810222946567,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0b0f2c",
+					"fieldContrast": 9.722626093877045,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0b1a2f",
+					"fieldContrast": 8.76439539232057,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0c172b",
+					"fieldContrast": 9.148080472278924,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0d0900",
+					"fieldContrast": 10.414397182028427,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#111423",
+					"fieldContrast": 9.492127039796584,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#140105",
+					"fieldContrast": 10.378886353446932,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#141720",
+					"fieldContrast": 9.219480932637275,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#160f09",
+					"fieldContrast": 9.962624199794742,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#161614",
+					"fieldContrast": 9.397914918505258,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#475f61",
+					"fieldContrast": 9.403545612651598,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5f5b40",
+					"fieldContrast": 9.21472426749403,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6c592f",
+					"fieldContrast": 9.697517052508134,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#8d452d",
+					"fieldContrast": 9.333670644324586,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#151f20",
+					"fieldContrast": 8.295188732822126,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#191b27",
+					"fieldContrast": 8.56165921666695,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1e1e26",
+					"fieldContrast": 8.062897442448804,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1f232f",
+					"fieldContrast": 7.179132829301828,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1f2535",
+					"fieldContrast": 6.7398411775069835,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#24241c",
+					"fieldContrast": 7.136620188299653,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#331304",
+					"fieldContrast": 8.183397381393005,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#370e12",
+					"fieldContrast": 8.080520507200518,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#455971",
+					"fieldContrast": 8.074758324270745,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#545268",
+					"fieldContrast": 6.838082832929102,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#62522e",
+					"fieldContrast": 6.72609253534346,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#894339",
+					"fieldContrast": 8.474088717652265,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#30231a",
+					"fieldContrast": 6.645538989572233,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#362545",
+					"fieldContrast": 5.035961999812398,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#362b19",
+					"fieldContrast": 4.984813434828077,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3a2011",
+					"fieldContrast": 6.361717907769812,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4d545e",
+					"fieldContrast": 6.487297863640134,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#634c3c",
+					"fieldContrast": 5.488975650576672,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#69493e",
+					"fieldContrast": 5.470235885410256,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6f4b27",
+					"fieldContrast": 6.339328140989626,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#922500",
+					"fieldContrast": 5.366931198214079,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#272f42",
+					"fieldContrast": 4.317053632495372,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#29344a",
+					"fieldContrast": 2.8833406501740986,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2e2f44",
+					"fieldContrast": 3.8984919178286135,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2e313a",
+					"fieldContrast": 3.7933831016917106,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#372d12",
+					"fieldContrast": 4.599016322170566,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#412f17",
+					"fieldContrast": 3.3677603981239375,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#442918",
+					"fieldContrast": 4.147504635016489,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#474956",
+					"fieldContrast": 2.8416346507528547,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#552109",
+					"fieldContrast": 3.379571639973908,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#57463e",
+					"fieldContrast": 2.8238365186108587,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6a4121",
+					"fieldContrast": 3.3979238142551216,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#711f23",
+					"fieldContrast": 2.793345022758463,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7f311d",
+					"fieldContrast": 3.539975683187628,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#29384f",
+					"fieldContrast": 1.6879236512981548,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3a394b",
+					"fieldContrast": 1.2873889863318686,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3a3d4e",
+					"fieldContrast": 2.2998772389718116,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3e3d29",
+					"fieldContrast": 1.7133743641641348,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#403e41",
+					"fieldContrast": 2.5685410111866798,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#413527",
+					"fieldContrast": 1.8498763251129176,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#443923",
+					"fieldContrast": 0.6626396847135734,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#584525",
+					"fieldContrast": 2.3000513901524053,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5e4131",
+					"fieldContrast": 2.1586688981062556,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6d302d",
+					"fieldContrast": 1.3374758208363435,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#70311f",
+					"fieldContrast": 0.8690434962197019,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#711500",
+					"fieldContrast": 1.9267868905190568,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#dcdac5",
+					"fieldContrast": 74.55728190345953,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#baae9e",
+					"fieldContrast": 50.3145434405379,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#aa9a8b",
+					"fieldContrast": 40.07754767398396,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a9939f",
+					"fieldContrast": 38.1556869932496,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#968180",
+					"fieldContrast": 28.545889101257394,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#777c99",
+					"fieldContrast": 24.535968053473944,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6b7672",
+					"fieldContrast": 19.96495698671496,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#627186",
+					"fieldContrast": 18.313657797727192,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#697184",
+					"fieldContrast": 18.808002243301484,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#727153",
+					"fieldContrast": 18.140764153074326,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7e6f72",
+					"fieldContrast": 19.57784479874103,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#826b7b",
+					"fieldContrast": 19.12910696118251,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7d6563",
+					"fieldContrast": 16.029724960043453,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#9a5c4d",
+					"fieldContrast": 16.96880948560211,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#646371",
+					"fieldContrast": 13.33025560421942,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#805d49",
+					"fieldContrast": 13.536300285942682,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6a5b58",
+					"fieldContrast": 10.818617408973731,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6b5f69",
+					"fieldContrast": 12.554800860477267,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6f5f62",
+					"fieldContrast": 12.744056367667584,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#725b4d",
+					"fieldContrast": 11.409234550799145,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7d5a3e",
+					"fieldContrast": 12.161094440760817,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#81574b",
+					"fieldContrast": 12.132418775974276,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#87522a",
+					"fieldContrast": 11.228055879578333,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#000000",
+					"fieldContrast": 10.600678174335664,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#000004",
+					"fieldContrast": 10.59909792462834,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#020403",
+					"fieldContrast": 10.583362921014716,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0a0b10",
+					"fieldContrast": 10.341396039456434,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0a1020",
+					"fieldContrast": 9.918855699802055,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0c1407",
+					"fieldContrast": 9.821748905752269,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0d161f",
+					"fieldContrast": 9.45025494272677,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0f0f11",
+					"fieldContrast": 10.081770026432407,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#100d14",
+					"fieldContrast": 10.143734926437533,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#12121c",
+					"fieldContrast": 9.727980671057013,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#141819",
+					"fieldContrast": 9.212420421821834,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#180b05",
+					"fieldContrast": 10.093242225855615,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1b1209",
+					"fieldContrast": 9.614916662972417,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1e1915",
+					"fieldContrast": 8.840685894744185,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#211612",
+					"fieldContrast": 9.018193998698571,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#230c00",
+					"fieldContrast": 9.59484271406617,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#241208",
+					"fieldContrast": 9.220158752446174,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#27150b",
+					"fieldContrast": 8.830428128397463,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4e5d72",
+					"fieldContrast": 9.860033867585738,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4f5c6c",
+					"fieldContrast": 9.406705752735313,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#575966",
+					"fieldContrast": 8.935378776804036,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#595d66",
+					"fieldContrast": 10.246412020125243,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5f5a61",
+					"fieldContrast": 9.739687722126442,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#695669",
+					"fieldContrast": 9.88582588961723,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#69574d",
+					"fieldContrast": 9.340617831984845,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#765745",
+					"fieldContrast": 10.632866055263921,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#79501a",
+					"fieldContrast": 8.71934477503465,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#834c45",
+					"fieldContrast": 9.660749049467178,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#141a30",
+					"fieldContrast": 8.600963398513237,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#151d32",
+					"fieldContrast": 8.191943206832468,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#152036",
+					"fieldContrast": 7.709235487041025,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#171e26",
+					"fieldContrast": 8.280907773177521,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#201d16",
+					"fieldContrast": 8.309391705990365,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#211a10",
+					"fieldContrast": 8.646127830905444,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#211b1b",
+					"fieldContrast": 8.448768712899458,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#21262a",
+					"fieldContrast": 6.750897735985485,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#29210c",
+					"fieldContrast": 7.425873902248839,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2c1a0e",
+					"fieldContrast": 8.069424599279559,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#57575f",
+					"fieldContrast": 8.140130852173609,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5e5158",
+					"fieldContrast": 6.925961861396404,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#68511d",
+					"fieldContrast": 6.945063790079092,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2c2a35",
+					"fieldContrast": 5.3482960636464405,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2d2a3b",
+					"fieldContrast": 5.138389466356698,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2d2b1e",
+					"fieldContrast": 5.513296680399078,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3c2918",
+					"fieldContrast": 4.868095309365575,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3d2519",
+					"fieldContrast": 5.389805959514143,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3e2312",
+					"fieldContrast": 5.6280214446362,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#40506a",
+					"fieldContrast": 4.9639959379472,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#525055",
+					"fieldContrast": 5.502938303177942,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5a4d3a",
+					"fieldContrast": 4.792650278544372,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#78413c",
+					"fieldContrast": 5.616961282836798,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7a4420",
+					"fieldContrast": 6.163358508652377,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2c4058",
+					"fieldContrast": 2.6274931953867777,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3d2f2f",
+					"fieldContrast": 3.401631344346233,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3d4d5d",
+					"fieldContrast": 3.478338777166438,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#423d54",
+					"fieldContrast": 2.742240857349774,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#444e4d",
+					"fieldContrast": 3.687996891046393,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#474d59",
+					"fieldContrast": 3.9845677378335553,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4d4a51",
+					"fieldContrast": 3.4051737067931165,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#534a43",
+					"fieldContrast": 3.5525470373850174,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#55363e",
+					"fieldContrast": 2.6835626478059487,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6b4343",
+					"fieldContrast": 4.457202324235768,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#22345a",
+					"fieldContrast": 2.465243149577974,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#383a51",
+					"fieldContrast": 1.5874476716428383,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3b4248",
+					"fieldContrast": 2.3949536068808173,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3f4555",
+					"fieldContrast": 0.8696609783956774,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#433032",
+					"fieldContrast": 2.5700912517925523,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#453736",
+					"fieldContrast": 0.7129889324032436,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#463933",
+					"fieldContrast": 1.5978357628313355,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#463c3b",
+					"fieldContrast": 2.4331098047336366,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#47333f",
+					"fieldContrast": 1.1806267364707226,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#47474f",
+					"fieldContrast": 2.1146913915697705,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4a403f",
+					"fieldContrast": 1.9622856652644116,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4d4020",
+					"fieldContrast": 2.206468353852053,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#50353c",
+					"fieldContrast": 1.91132495538951,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#503f37",
+					"fieldContrast": 1.8099776662139317,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#51351f",
+					"fieldContrast": 1.5463894138911265,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#542e17",
+					"fieldContrast": 1.3878764639249066,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5a4043",
+					"fieldContrast": 1.8508909089175667,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5b3920",
+					"fieldContrast": 2.303027224079487,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#603f3a",
+					"fieldContrast": 2.1020933606226246,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#683c3b",
+					"fieldContrast": 2.4707604559072767,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#851f06",
+					"fieldContrast": 2.491305985572741,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#010000",
+					"fieldContrast": 10.600511009067334,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#181c05",
+					"fieldContrast": 8.780188587027176,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#111b24",
+					"fieldContrast": 8.802826155373388,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#192032",
+					"fieldContrast": 7.715431980394759,
+					"provenance": "pool"
+				}
+			],
+			"accentPool": [
+				"#922500",
+				"#c18d20",
+				"#ae7202",
+				"#711500",
+				"#905219",
+				"#711f23",
+				"#9a4e37",
+				"#9a5633",
+				"#601907",
+				"#8d452d",
+				"#874721",
+				"#825418",
+				"#9f524a",
+				"#782e2d",
+				"#793626",
+				"#dcb37b",
+				"#79501a",
+				"#7d4522",
+				"#642f07",
+				"#70311f",
+				"#661f27",
+				"#57190a",
+				"#8d493c",
+				"#6e441a"
+			],
+			"accentCandidates": [
+				{
+					"hex": "#922500",
+					"chromaFromField": 0.1630851349375615,
+					"lightnessMove": 0.04288686692739202,
+					"fieldContrast": 5.366931198214079,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.009259259259259259
+				},
+				{
+					"hex": "#c18d20",
+					"chromaFromField": 0.1552884893432498,
+					"lightnessMove": 0.28248205669379994,
+					"fieldContrast": 36.891441011680094,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.25
+				},
+				{
+					"hex": "#ae7202",
+					"chromaFromField": 0.1508223943706705,
+					"lightnessMove": 0.20630222118837033,
+					"fieldContrast": 25.40737583951527,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0035714285714285713
+				},
+				{
+					"hex": "#711500",
+					"chromaFromField": 0.14163152016604427,
+					"lightnessMove": 0.03627356618481059,
+					"fieldContrast": 1.9267868905190568,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.03571428571428571
+				},
+				{
+					"hex": "#905219",
+					"chromaFromField": 0.12731747098733576,
+					"lightnessMove": 0.10721819433285124,
+					"fieldContrast": 12.436883659779365,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.0625
+				},
+				{
+					"hex": "#711f23",
+					"chromaFromField": 0.12302843908863052,
+					"lightnessMove": 0.021837988701311373,
+					"fieldContrast": 2.793345022758463,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.01293103448275862
+				},
+				{
+					"hex": "#9a4e37",
+					"chromaFromField": 0.1218400836850682,
+					"lightnessMove": 0.11799532018058917,
+					"fieldContrast": 13.383231953822259,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.00625
+				},
+				{
+					"hex": "#9a5633",
+					"chromaFromField": 0.11976003420953793,
+					"lightnessMove": 0.13119907756590438,
+					"fieldContrast": 15.119940741830002,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.010714285714285714
+				},
+				{
+					"hex": "#601907",
+					"chromaFromField": 0.11927955502855415,
+					"lightnessMove": 0.0651369988948986,
+					"fieldContrast": 2.5438327841217983,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.014925373134328358
+				},
+				{
+					"hex": "#8d452d",
+					"chromaFromField": 0.11924381702217762,
+					"lightnessMove": 0.08213073806780874,
+					"fieldContrast": 9.333670644324586,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0033783783783783786
+				},
+				{
+					"hex": "#874721",
+					"chromaFromField": 0.11889480358474637,
+					"lightnessMove": 0.07508760320381658,
+					"fieldContrast": 8.698353047739865,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.07291666666666667
+				},
+				{
+					"hex": "#825418",
+					"chromaFromField": 0.11735190025389056,
+					"lightnessMove": 0.09200082430692491,
+					"fieldContrast": 10.895624312549852,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.013333333333333334
+				},
+				{
+					"hex": "#9f524a",
+					"chromaFromField": 0.11409735236309246,
+					"lightnessMove": 0.1353857358462352,
+					"fieldContrast": 15.366972806302904,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.024615384615384615
+				},
+				{
+					"hex": "#782e2d",
+					"chromaFromField": 0.11333430880412673,
+					"lightnessMove": 0.012412985727606851,
+					"fieldContrast": 2.16536817571989,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.02531645569620253
+				},
+				{
+					"hex": "#793626",
+					"chromaFromField": 0.11117761431789518,
+					"lightnessMove": 0.02517599472988058,
+					"fieldContrast": 3.4466407229634393,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.027777777777777776
+				},
+				{
+					"hex": "#dcb37b",
+					"chromaFromField": 0.11048366608342616,
+					"lightnessMove": 0.39617508861237954,
+					"fieldContrast": 56.04834321427117,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0018878101402373248
+				},
+				{
+					"hex": "#79501a",
+					"chromaFromField": 0.11015115562121638,
+					"lightnessMove": 0.07224877587932221,
+					"fieldContrast": 8.71934477503465,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.15123456790123457
+				},
+				{
+					"hex": "#7d4522",
+					"chromaFromField": 0.10940022587785075,
+					"lightnessMove": 0.056985287650818284,
+					"fieldContrast": 6.8142676440179875,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.05397727272727273
+				},
+				{
+					"hex": "#642f07",
+					"chromaFromField": 0.1091001149651968,
+					"lightnessMove": 0.024166580806458504,
+					"fieldContrast": 2.675762380360597,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.008802816901408451
+				},
+				{
+					"hex": "#70311f",
+					"chromaFromField": 0.10842317413681012,
+					"lightnessMove": 0.0013254649691106235,
+					"fieldContrast": 0.8690434962197019,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.022727272727272728
+				},
+				{
+					"hex": "#661f27",
+					"chromaFromField": 0.10831523481915234,
+					"lightnessMove": 0.041238517945527076,
+					"fieldContrast": 0.7281295918352024,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.03225806451612903
+				},
+				{
+					"hex": "#57190a",
+					"chromaFromField": 0.10827811487060383,
+					"lightnessMove": 0.0822542505800204,
+					"fieldContrast": 3.9042865365076804,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.06884057971014493
+				},
+				{
+					"hex": "#8d493c",
+					"chromaFromField": 0.10753091981784656,
+					"lightnessMove": 0.0914977271011187,
+					"fieldContrast": 10.340252619674581,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.020161290322580645
+				},
+				{
+					"hex": "#6e441a",
+					"chromaFromField": 0.10201368392547333,
+					"lightnessMove": 0.03292773649199343,
+					"fieldContrast": 4.507972146912582,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.0630787037037037
+				}
+			],
+			"textGroups": [
+				{
+					"hex": "#8e6a52",
+					"componentCount": 19,
+					"areaFraction": 0.02266666666666666,
+					"fieldContrast": 19.15534555103681
+				},
+				{
+					"hex": "#daccb2",
+					"componentCount": 9,
+					"areaFraction": 0.010355555555555555,
+					"fieldContrast": 67.51446809500452
+				}
+			]
+		},
+		"ab67616d00001e02000022e7e9d11c908479200b": {
+			"imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+			"palette": {
+				"background": "#8b5964",
+				"surface": "#8c4936",
+				"foreground": "#8f5e59",
+				"accent": "#fea64c",
+				"gradient": null,
+				"surfaceCollapsed": false,
+				"accentCollapsed": false
+			},
+			"contractViolations": [],
+			"notes": [
+				"fallback-field-roles:unreadable",
+				"coincident-components-merged:15",
+				"lanes:L+a+b",
+				"pool-marks:162",
+				"components:92",
+				"salience-median-growth:0.04296875",
+				"accent-candidates:162"
+			],
+			"swapped": false,
+			"verdict": "unreadable",
+			"foregroundPool": [
+				{
+					"hex": "#8f5e59",
+					"fieldContrast": 3.401845698312478,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#b88769",
+					"fieldContrast": 21.740174901270674,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#dd756a",
+					"fieldContrast": 22.757375452134422,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#fecd6e",
+					"fieldContrast": 58.91313506565158,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fed078",
+					"fieldContrast": 60.34776346018571,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ffcd74",
+					"fieldContrast": 59.18863308025237,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdbf6c",
+					"fieldContrast": 53.065165020746896,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdc274",
+					"fieldContrast": 54.39615589116055,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#febf6f",
+					"fieldContrast": 53.292502852395984,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fec073",
+					"fieldContrast": 53.75978604888775,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fec170",
+					"fieldContrast": 54.096331999965166,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fec375",
+					"fieldContrast": 54.98358719548061,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ffbe6e",
+					"fieldContrast": 53.05818286577324,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ffc070",
+					"fieldContrast": 53.87597453195263,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#feae57",
+					"fieldContrast": 46.500975517975256,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2a1228",
+					"fieldContrast": 21.87099291033491,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2c1410",
+					"fieldContrast": 21.89628395936161,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4a281f",
+					"fieldContrast": 16.934613367719752,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#b07d7a",
+					"fieldContrast": 17.839793972739283,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#403927",
+					"fieldContrast": 14.284598662341274,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#572e3c",
+					"fieldContrast": 13.706312892342126,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#94705a",
+					"fieldContrast": 9.146579440833538,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ffbd6f",
+					"fieldContrast": 52.68866676253232,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ff944c",
+					"fieldContrast": 37.77852738777176,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#141807",
+					"fieldContrast": 22.633334940262717,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#142213",
+					"fieldContrast": 21.34547179501937,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#251821",
+					"fieldContrast": 21.803042387298724,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1b2816",
+					"fieldContrast": 20.194656208204957,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3a3619",
+					"fieldContrast": 15.703693756167137,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#653a34",
+					"fieldContrast": 9.690022685489241,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7a5461",
+					"fieldContrast": 2.7270113878664173,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#815179",
+					"fieldContrast": 3.324717794024131,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#825c53",
+					"fieldContrast": 1.6224184413307954,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#854c6d",
+					"fieldContrast": 2.7285913194376064,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#85515d",
+					"fieldContrast": 3.332938015725607,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#885252",
+					"fieldContrast": 3.386826710214071,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#954f36",
+					"fieldContrast": 2.602591707172651,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#845d5e",
+					"fieldContrast": 0.804131546499898,
+					"provenance": "pool"
+				}
+			],
+			"accentPool": [
+				"#fea64c",
+				"#fec66f",
+				"#ff944c",
+				"#242e09",
+				"#1b2816",
+				"#142213",
+				"#e06b62",
+				"#141807",
+				"#3a3619",
+				"#bc9164",
+				"#403927",
+				"#cc715f",
+				"#954f36",
+				"#38241b",
+				"#815179",
+				"#251821",
+				"#2a1228",
+				"#65392c",
+				"#2c1410",
+				"#4a281f",
+				"#854c6d",
+				"#825c53",
+				"#82564d",
+				"#74555d"
+			],
+			"accentCandidates": [
+				{
+					"hex": "#fea64c",
+					"chromaFromField": 0.12468788436197437,
+					"lightnessMove": 0.2746032535750953,
+					"fieldContrast": 43.52157889968867,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.03054932735426009
+				},
+				{
+					"hex": "#fec66f",
+					"chromaFromField": 0.11990434895341814,
+					"lightnessMove": 0.3370950491977157,
+					"fieldContrast": 56.07086883860468,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.17039159503342885
+				},
+				{
+					"hex": "#ff944c",
+					"chromaFromField": 0.11921036257844246,
+					"lightnessMove": 0.2452054340199522,
+					"fieldContrast": 37.77852738777176,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0274833748960931
+				},
+				{
+					"hex": "#242e09",
+					"chromaFromField": 0.10795304149618377,
+					"lightnessMove": 0.2396456405992191,
+					"fieldContrast": 18.83480676056551,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.006369426751592357
+				},
+				{
+					"hex": "#1b2816",
+					"chromaFromField": 0.09628553232002093,
+					"lightnessMove": 0.2632601832775065,
+					"fieldContrast": 20.194656208204957,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.052083333333333336
+				},
+				{
+					"hex": "#142213",
+					"chromaFromField": 0.09551913247413096,
+					"lightnessMove": 0.2882458708764387,
+					"fieldContrast": 21.34547179501937,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.16729323308270677
+				},
+				{
+					"hex": "#e06b62",
+					"chromaFromField": 0.08828328135711633,
+					"lightnessMove": 0.14318402625651427,
+					"fieldContrast": 20.65846358289317,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0022522522522522522
+				},
+				{
+					"hex": "#141807",
+					"chromaFromField": 0.08570997519721948,
+					"lightnessMove": 0.32277115707321735,
+					"fieldContrast": 22.633334940262717,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.696875
+				},
+				{
+					"hex": "#3a3619",
+					"chromaFromField": 0.08535120082236711,
+					"lightnessMove": 0.19287454129024573,
+					"fieldContrast": 15.703693756167137,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.42924528301886794
+				},
+				{
+					"hex": "#bc9164",
+					"chromaFromField": 0.07640514143498163,
+					"lightnessMove": 0.1646913661893744,
+					"fieldContrast": 25.567857981969677,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0026954177897574125
+				},
+				{
+					"hex": "#403927",
+					"chromaFromField": 0.07113210581589338,
+					"lightnessMove": 0.17570575192321075,
+					"fieldContrast": 14.284598662341274,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.003105590062111801
+				},
+				{
+					"hex": "#cc715f",
+					"chromaFromField": 0.06602105929961005,
+					"lightnessMove": 0.12456864683425573,
+					"fieldContrast": 18.30798541530288,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.005208333333333333
+				},
+				{
+					"hex": "#954f36",
+					"chromaFromField": 0.059819455599420514,
+					"lightnessMove": 0.015485273960073154,
+					"fieldContrast": 2.602591707172651,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 1.5408536585365853
+				},
+				{
+					"hex": "#38241b",
+					"chromaFromField": 0.04644561838336868,
+					"lightnessMove": 0.2397462731620782,
+					"fieldContrast": 19.239343889329376,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.01818181818181818
+				},
+				{
+					"hex": "#815179",
+					"chromaFromField": 0.045929023235742945,
+					"lightnessMove": 0.019293754259590012,
+					"fieldContrast": 3.324717794024131,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 478.47340425531917
+				},
+				{
+					"hex": "#251821",
+					"chromaFromField": 0.04570094494580141,
+					"lightnessMove": 0.2928180139456085,
+					"fieldContrast": 21.803042387298724,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.13764044943820225
+				},
+				{
+					"hex": "#2a1228",
+					"chromaFromField": 0.0387461658834536,
+					"lightnessMove": 0.294613688461982,
+					"fieldContrast": 21.87099291033491,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.02127659574468085
+				},
+				{
+					"hex": "#65392c",
+					"chromaFromField": 0.0368740429616938,
+					"lightnessMove": 0.12670135380438613,
+					"fieldContrast": 10.027580977882462,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.052752293577981654
+				},
+				{
+					"hex": "#2c1410",
+					"chromaFromField": 0.035316833442920505,
+					"lightnessMove": 0.297201157125167,
+					"fieldContrast": 21.89628395936161,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.017361111111111112
+				},
+				{
+					"hex": "#4a281f",
+					"chromaFromField": 0.034375308142767125,
+					"lightnessMove": 0.20344215735623006,
+					"fieldContrast": 16.934613367719752,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0070921985815602835
+				},
+				{
+					"hex": "#854c6d",
+					"chromaFromField": 0.03431742153847946,
+					"lightnessMove": 0.027920285891146646,
+					"fieldContrast": 2.7285913194376064,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.22544642857142858
+				},
+				{
+					"hex": "#825c53",
+					"chromaFromField": 0.03286696790975625,
+					"lightnessMove": 0.009931613500151926,
+					"fieldContrast": 1.6224184413307954,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.3360655737704918
+				},
+				{
+					"hex": "#82564d",
+					"chromaFromField": 0.03032731459541613,
+					"lightnessMove": 0.023395557452199234,
+					"fieldContrast": 3.352429398467996,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.4117647058823529
+				},
+				{
+					"hex": "#74555d",
+					"chromaFromField": 0.024983322748429362,
+					"lightnessMove": 0.037645773584930486,
+					"fieldContrast": 2.134013156367311,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 148.92039800995025
+				}
+			],
+			"textGroups": [
+				{
+					"hex": "#8f5e59",
+					"componentCount": 17,
+					"areaFraction": 0.021844444444444444,
+					"fieldContrast": 3.401845698312478
+				},
+				{
+					"hex": "#b88769",
+					"componentCount": 5,
+					"areaFraction": 0.003744444444444444,
+					"fieldContrast": 21.740174901270674
+				},
+				{
+					"hex": "#dd756a",
+					"componentCount": 5,
+					"areaFraction": 0.003344444444444444,
+					"fieldContrast": 22.757375452134422
+				}
+			]
+		},
+		"ab67616d00001e0200001073a73e3a949021f65e": {
+			"imagePath": "00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+			"palette": {
+				"background": "#f6d4d5",
+				"surface": "#fce4e0",
+				"foreground": "#f8dab8",
+				"accent": "#7ed7bb",
+				"gradient": null,
+				"surfaceCollapsed": false,
+				"accentCollapsed": false
+			},
+			"contractViolations": [],
+			"notes": [
+				"coincident-components-merged:6",
+				"lanes:L+a+b",
+				"pool-marks:532",
+				"components:239",
+				"salience-median-growth:0.013919213973799126",
+				"accent-cut-extended:258",
+				"accent-candidates:258"
+			],
+			"swapped": false,
+			"verdict": "partitioned",
+			"foregroundPool": [
+				{
+					"hex": "#f8dab8",
+					"fieldContrast": 2.7188491702226747,
+					"provenance": "text-group"
+				},
+				{
+					"hex": "#16151a",
+					"fieldContrast": 87.00587993490993,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#192533",
+					"fieldContrast": 84.55416510355768,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1f2630",
+					"fieldContrast": 84.28252672931211,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2c2628",
+					"fieldContrast": 83.84320339066097,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2e2c31",
+					"fieldContrast": 82.55366890051452,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2d3037",
+					"fieldContrast": 81.70867323711056,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#342e30",
+					"fieldContrast": 81.83132352949835,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#353638",
+					"fieldContrast": 79.8248743015557,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#40373c",
+					"fieldContrast": 78.5995188883775,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3a3d4e",
+					"fieldContrast": 77.02128477934113,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3e3b44",
+					"fieldContrast": 77.56035161402967,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3e3c3d",
+					"fieldContrast": 77.50773544421115,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3f3e46",
+					"fieldContrast": 76.66175613801985,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#444549",
+					"fieldContrast": 74.33713510044099,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#484c58",
+					"fieldContrast": 71.62000928049527,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4e494f",
+					"fieldContrast": 72.2424750645332,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#595762",
+					"fieldContrast": 66.72583322424369,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#63585e",
+					"fieldContrast": 65.62357495453229,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7a737a",
+					"fieldContrast": 54.14657158433888,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#85828b",
+					"fieldContrast": 47.45196998392962,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#908589",
+					"fieldContrast": 45.32565483060059,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#959094",
+					"fieldContrast": 40.58945948398629,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a3939d",
+					"fieldContrast": 37.60426872918427,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#aca1a9",
+					"fieldContrast": 31.108356890904137,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#c49f85",
+					"fieldContrast": 29.921549466651733,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#adacb1",
+					"fieldContrast": 26.610468115357026,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#bcb098",
+					"fieldContrast": 24.20469755709657,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#87c3bb",
+					"fieldContrast": 20.560586705966298,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#c1b5b7",
+					"fieldContrast": 20.604031169367612,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#bbbfa6",
+					"fieldContrast": 18.03862544693306,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#d6bab9",
+					"fieldContrast": 15.911534819112779,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7ed7bb",
+					"fieldContrast": 12.502501886496246,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#90dec6",
+					"fieldContrast": 7.7449618281198385,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fcf0f0",
+					"fieldContrast": 6.752437081926091,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fcf1ef",
+					"fieldContrast": 7.1645749856225684,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fcf2e9",
+					"fieldContrast": 7.354853091119494,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf0e8",
+					"fieldContrast": 6.537669471369015,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf0ea",
+					"fieldContrast": 6.6263165716503005,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf1f1",
+					"fieldContrast": 7.402167234243502,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf3ea",
+					"fieldContrast": 8.005787145899914,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf3f1",
+					"fieldContrast": 8.321591115949749,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf3f2",
+					"fieldContrast": 8.367724695483485,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdf4eb",
+					"fieldContrast": 8.512733859959225,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fef1e9",
+					"fieldContrast": 7.186877227874175,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fef1eb",
+					"fieldContrast": 7.275723296788297,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fff0e9",
+					"fieldContrast": 6.876367700360843,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fff2ea",
+					"fieldContrast": 7.837390221689826,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a1e0d5",
+					"fieldContrast": 4.937659336842883,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#dfdde0",
+					"fieldContrast": 2.0369149061366225,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#070705",
+					"fieldContrast": 88.09960140873535,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#080b14",
+					"fieldContrast": 87.9071092209153,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#0f121b",
+					"fieldContrast": 87.375190201184,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#121a25",
+					"fieldContrast": 86.45639004154398,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#13161f",
+					"fieldContrast": 86.92678749575798,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#161825",
+					"fieldContrast": 86.57211446779792,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#171d29",
+					"fieldContrast": 85.92680316947975,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1a1b2f",
+					"fieldContrast": 85.94046796462109,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1f253b",
+					"fieldContrast": 84.15470115163983,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#252837",
+					"fieldContrast": 83.55605208186428,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#262c3a",
+					"fieldContrast": 82.74159830731185,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2b323c",
+					"fieldContrast": 81.26956078867137,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#2c3544",
+					"fieldContrast": 80.28101257044655,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#333037",
+					"fieldContrast": 81.34949310381387,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#3b454f",
+					"fieldContrast": 74.79772173738746,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#42424c",
+					"fieldContrast": 75.20047780891196,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#454754",
+					"fieldContrast": 73.36599256240504,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#404b43",
+					"fieldContrast": 73.11541369936998,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4a4a42",
+					"fieldContrast": 72.66414171674705,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#4f515e",
+					"fieldContrast": 69.44363539157847,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#575d4f",
+					"fieldContrast": 65.66236751547308,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#59585d",
+					"fieldContrast": 66.60046092228302,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#5e5558",
+					"fieldContrast": 67.15781165405677,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#635d67",
+					"fieldContrast": 63.874333505492174,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#6c688b",
+					"fieldContrast": 58.281158400652025,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#906c4a",
+					"fieldContrast": 54.977680254641136,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#9d94b1",
+					"fieldContrast": 37.11734527865537,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a2999c",
+					"fieldContrast": 35.64765113316696,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#b2a6bc",
+					"fieldContrast": 27.794215498564835,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#bcabbd",
+					"fieldContrast": 24.708525365440195,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ccac95",
+					"fieldContrast": 23.693142638792143,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#cdb47e",
+					"fieldContrast": 21.191936720084787,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#b0c6b9",
+					"fieldContrast": 15.737721920746425,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#e1bf92",
+					"fieldContrast": 13.72584735006474,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#96d7ad",
+					"fieldContrast": 11.288515059292902,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#cfc6c9",
+					"fieldContrast": 11.57493918551379,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#d4c6b9",
+					"fieldContrast": 11.554843023583256,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ddcdcd",
+					"fieldContrast": 6.856506727755719,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#dfcebe",
+					"fieldContrast": 6.764828426730525,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#ebced2",
+					"fieldContrast": 4.365985155173645,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#fdeee9",
+					"fieldContrast": 5.6692512866142675,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#f9e0e3",
+					"fieldContrast": 2.1472568203026157,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#1b161d",
+					"fieldContrast": 86.73039698263635,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#536152",
+					"fieldContrast": 64.64995357611515,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#607473",
+					"fieldContrast": 56.41081783987425,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#807c7b",
+					"fieldContrast": 50.549261098149735,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#7d9289",
+					"fieldContrast": 42.6323383845364,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a1b3a5",
+					"fieldContrast": 25.64497997379871,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#a3bcb8",
+					"fieldContrast": 21.147320376916465,
+					"provenance": "pool"
+				},
+				{
+					"hex": "#e7f4d6",
+					"fieldContrast": 4.597828153419151,
+					"provenance": "pool"
+				}
+			],
+			"accentPool": [
+				"#7ed7bb",
+				"#96d7ad",
+				"#87c3bb",
+				"#4f4e78",
+				"#56547c",
+				"#cdb47e",
+				"#6c6a91",
+				"#b0c6b9",
+				"#fbeec1",
+				"#1f253b",
+				"#2a3046",
+				"#192533",
+				"#e1bf92",
+				"#7c7597",
+				"#1b1d32",
+				"#3d3f56",
+				"#2c3544",
+				"#303948",
+				"#9187a9",
+				"#222c38",
+				"#bbbfa6",
+				"#333449",
+				"#121a25",
+				"#454c5c"
+			],
+			"accentCandidates": [
+				{
+					"hex": "#7ed7bb",
+					"chromaFromField": 0.13119170564859198,
+					"lightnessMove": 0.083449258634261,
+					"fieldContrast": 12.502501886496246,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.00205761316872428
+				},
+				{
+					"hex": "#96d7ad",
+					"chromaFromField": 0.12033172693700164,
+					"lightnessMove": 0.07474580535061881,
+					"fieldContrast": 11.288515059292902,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.014285714285714285
+				},
+				{
+					"hex": "#87c3bb",
+					"chromaFromField": 0.10059334599918368,
+					"lightnessMove": 0.12479820218752868,
+					"fieldContrast": 20.560586705966298,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.011111111111111112
+				},
+				{
+					"hex": "#4f4e78",
+					"chromaFromField": 0.07915290474837458,
+					"lightnessMove": 0.4553341848826754,
+					"fieldContrast": 69.17242156631313,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.018883415435139574
+				},
+				{
+					"hex": "#56547c",
+					"chromaFromField": 0.07478334761795843,
+					"lightnessMove": 0.43399136075665107,
+					"fieldContrast": 66.76414556166517,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.019454545454545454
+				},
+				{
+					"hex": "#cdb47e",
+					"chromaFromField": 0.0729068196420349,
+					"lightnessMove": 0.11991320175805986,
+					"fieldContrast": 21.191936720084787,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.3487654320987654
+				},
+				{
+					"hex": "#6c6a91",
+					"chromaFromField": 0.07109700928117448,
+					"lightnessMove": 0.3573625648077955,
+					"fieldContrast": 57.39270193153381,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.015420363329108577
+				},
+				{
+					"hex": "#b0c6b9",
+					"chromaFromField": 0.06478437636408343,
+					"lightnessMove": 0.09249871508260821,
+					"fieldContrast": 15.737721920746425,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.024553571428571428
+				},
+				{
+					"hex": "#fbeec1",
+					"chromaFromField": 0.06389532272513576,
+					"lightnessMove": 0.04961348449755909,
+					"fieldContrast": 3.7926318540570083,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.0321285140562249
+				},
+				{
+					"hex": "#1f253b",
+					"chromaFromField": 0.06323931952180793,
+					"lightnessMove": 0.6289286466241113,
+					"fieldContrast": 84.15470115163983,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.04414893617021277
+				},
+				{
+					"hex": "#2a3046",
+					"chromaFromField": 0.06179395286636786,
+					"lightnessMove": 0.5849516671093218,
+					"fieldContrast": 81.42369003729736,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.020047169811320754
+				},
+				{
+					"hex": "#192533",
+					"chromaFromField": 0.06116226889154924,
+					"lightnessMove": 0.6385064756427159,
+					"fieldContrast": 84.55416510355768,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.008
+				},
+				{
+					"hex": "#e1bf92",
+					"chromaFromField": 0.06047119133037214,
+					"lightnessMove": 0.07544829210433579,
+					"fieldContrast": 13.72584735006474,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.058823529411764705
+				},
+				{
+					"hex": "#7c7597",
+					"chromaFromField": 0.0599413181437079,
+					"lightnessMove": 0.31757958929902586,
+					"fieldContrast": 52.13422437543181,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.012323336780420545
+				},
+				{
+					"hex": "#1b1d32",
+					"chromaFromField": 0.058717334619393484,
+					"lightnessMove": 0.658934517723867,
+					"fieldContrast": 85.60908608049395,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.04423076923076923
+				},
+				{
+					"hex": "#3d3f56",
+					"chromaFromField": 0.05731789033687004,
+					"lightnessMove": 0.5230958467141543,
+					"fieldContrast": 75.99357420090662,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.01348435814455232
+				},
+				{
+					"hex": "#2c3544",
+					"chromaFromField": 0.05726238327553806,
+					"lightnessMove": 0.5715442452388192,
+					"fieldContrast": 80.28101257044655,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 0.14423076923076922
+				},
+				{
+					"hex": "#303948",
+					"chromaFromField": 0.056982320409857484,
+					"lightnessMove": 0.5560031797276681,
+					"fieldContrast": 78.9046867833391,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0017921146953405018
+				},
+				{
+					"hex": "#9187a9",
+					"chromaFromField": 0.05687217615336278,
+					"lightnessMove": 0.254644403938734,
+					"fieldContrast": 43.240069317016896,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.011223591549295775
+				},
+				{
+					"hex": "#222c38",
+					"chromaFromField": 0.05660915465935689,
+					"lightnessMove": 0.6095366059330976,
+					"fieldContrast": 82.95850739784065,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.0025
+				},
+				{
+					"hex": "#bbbfa6",
+					"chromaFromField": 0.05521304259526007,
+					"lightnessMove": 0.10402913408611447,
+					"fieldContrast": 18.03862544693306,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.006779661016949152
+				},
+				{
+					"hex": "#333449",
+					"chromaFromField": 0.054782625769396666,
+					"lightnessMove": 0.5653327408535809,
+					"fieldContrast": 79.9014051471433,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.013790664780763792
+				},
+				{
+					"hex": "#121a25",
+					"chromaFromField": 0.054773229912049304,
+					"lightnessMove": 0.6832747472540592,
+					"fieldContrast": 86.45639004154398,
+					"stabilityLevel": 1,
+					"tracingLevel": 0,
+					"growth": 30.059782608695652
+				},
+				{
+					"hex": "#454c5c",
+					"chromaFromField": 0.05444071506403632,
+					"lightnessMove": 0.48217057701376986,
+					"fieldContrast": 71.70165239397241,
+					"stabilityLevel": 0,
+					"tracingLevel": 0,
+					"growth": 0.002094972067039106
+				}
+			],
+			"textGroups": [
+				{
+					"hex": "#f8dab8",
+					"componentCount": 5,
+					"areaFraction": 0.003511111111111111,
+					"fieldContrast": 2.7188491702226747
+				}
+			]
+		}
+	}
+}

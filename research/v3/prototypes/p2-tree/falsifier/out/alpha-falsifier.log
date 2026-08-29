@@ -1,0 +1,16 @@
+# p2-reachability-falsifier
+dump files: 1 | lines: 173
+endorsement corpus: 351 entries over 173 artworks
+images judged: 173 | colour slots: 1397 | skipped: 0
+
+!! [UNCALIBRATED] area floor 0.002 used for at least one image: the dump declared no floor, so the control set is NOT at the pipeline's own floor. See constants.ts.
+## p2-alpha
+   scope: 1397 endorsed colour slots | 351 endorsement entries | 173 artworks (of the pre-registered 1397 slots / 173 artworks)
+   reachable from retained nodes: 802/1397 = 57.4% (95% CI 54.8%-60.0%) | n=1397 | Wilson score interval at 95%
+   reachable from control set:    508/1397 = 36.4% (95% CI 33.9%-38.9%) | n=1397 | Wilson score interval at 95%
+   FALSIFIER RATE (unreachable from nodes, reachable from control): 90/1397 = 6.4% (95% CI 5.3%-7.9%) | n=1397 | Wilson score interval at 95%
+   clustered by artwork:          0.0644 (95% percentile CI 0.0449-0.0859 over 173 artworks) | n=173 | cluster percentile bootstrap, resampling whole artworks, 2000 resamples, seed 20260804 | CAVEAT: the interval rests on the number of artworks, not on the number of observations inside them
+   CEILING: the pre-registered rate cannot exceed the control-reachable rate (508/1397). Supplementary, NOT pre-registered — among control-reachable colours only: 90/508 = 17.7% (95% CI 14.6%-21.3%) | n=508 | Wilson score interval at 95%
+   unreachable from both (control's own ceiling, not the paradigm's): 505
+   CAVEAT: 21 image(s) had no triple clearing the area floor
+   p2-alpha: NOT FALSIFIED — 90/1397 = 6.4% of endorsed role colours are unreachable from the retained-node representatives while remaining reachable from the control at the same area floor; the pre-registered line is >25%. Coverage: 100.0% of the 1,397 pre-registered slots. Report line, not a gate — the reviewer judges.

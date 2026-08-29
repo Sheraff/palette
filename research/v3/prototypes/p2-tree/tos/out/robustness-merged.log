@@ -1,0 +1,31 @@
+candidate: p2-tos  (research/v3/prototypes/p2-tree/tos/candidate.ts)
+bar mode:  regional
+
+overall                  9.0% [7.0–11.6]  (54/600)
+
+by pair type
+  rendition-pair           5.5% [3.1–9.6]  (11/200)
+  jpeg-q92                 11.0% [6.3–18.6]  (11/100)
+  jpeg-q85                 5.0% [2.2–11.2]  (5/100)
+  jpeg-q75                 4.0% [1.6–9.8]  (4/100)
+  dither-lsb1              23.0% [15.8–32.2]  (23/100)
+
+reviewed vs unseen  (v2-3: 1.61x, healthy ~1.0)  [labels: live-warehouse, 0 relabelled since the draw]
+  perturbation     0.955x
+    perturbation|reviewed    10.5% [7.0–15.5]  (21/200)
+    perturbation|unseen      11.0% [7.4–16.1]  (22/200)
+  rendition-pair   0.000x  UNDERPOWERED
+    rendition-pair|reviewed  0.0% [0.0–27.8]  (0/10)
+    rendition-pair|unseen    5.8% [3.3–10.1]  (11/190)
+
+role instability (share of comparisons where the role moved)
+  background   28.8%  (173/600)
+  surface      32.5%  (195/600)
+  foreground   77.0%  (462/600)
+  accent       74.5%  (447/600)
+
+disagreeing trials: 546
+errored trials:     0
+timing: 600 trials, 3164.1s wall, 11725.9s in candidate
+
+report: research/v3/data/robustness/reports/p2-tos.json
