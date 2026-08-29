@@ -1,0 +1,776 @@
+{
+  "round": "phase-3/round-2",
+  "generatedAt": "2026-08-29T21:05:00.000Z",
+  "method": "node --experimental-strip-types src/warehouse/cli.ts query --batch cal-029,cal-030 (20 records: 18 verdicts + 2 batch-complete; cal-029 carries 3 verdicts on cover 8, the last superseding the first two). Palettes cross-checked against each arm staged review-rounds/round-2/items.json and found bit-identical on all 16 items.",
+  "arms": {
+    "A": {
+      "batchId": "cal-029",
+      "variantId": "a-field-first-0.4.1",
+      "prototype": "a-field-first",
+      "gitCommit": "b2f349ab",
+      "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+      "mode": "absolute",
+      "author": "human:flo",
+      "staged": ".worktrees/a-field-first/research/v3/prototypes/a-field-first/review-rounds/round-2/items.json",
+      "verdictRecords": 10,
+      "itemsReleased": 8,
+      "batchCompleteId": "bc-mteu4hgc-b458feba",
+      "batchCompleteTs": "2026-08-29T20:30:22.044Z",
+      "batchCompleteNote": "",
+      "round1": {
+        "batchId": "cal-027",
+        "variantId": "a-field-first-0.2.0",
+        "gitCommit": "dd2c3ab7"
+      }
+    },
+    "B": {
+      "batchId": "cal-030",
+      "variantId": "b-tree-first-0.1.0-m1",
+      "prototype": "b-tree-first",
+      "gitCommit": "ca6f84a3",
+      "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+      "mode": "absolute",
+      "author": "human:flo",
+      "staged": ".worktrees/b-tree-first/research/v3/prototypes/b-tree-first/review-rounds/round-2/items.json",
+      "verdictRecords": 8,
+      "itemsReleased": 8,
+      "batchCompleteId": "bc-mteu5k3c-87c9a25c",
+      "batchCompleteTs": "2026-08-29T20:31:12.120Z",
+      "batchCompleteNote": "",
+      "round1": {
+        "batchId": "cal-028",
+        "variantId": "b-tree-first-0.1.0-m1",
+        "gitCommit": "bc5ce47e"
+      }
+    }
+  },
+  "evidence": {
+    "verdictsTotal": 16,
+    "verdictsWithComment": 1,
+    "commentTexts": [
+      {
+        "cover": 8,
+        "arm": "A",
+        "text": "accent should be the same color as foreground. There are only 3 colors on that artwork (Lemon, Serenade, Black Forest)"
+      }
+    ],
+    "noteRecords": 0,
+    "vetoRecords": 0,
+    "endorsedSampleRecords": 0,
+    "amendmentRecords": 0,
+    "batchCompleteNotes": [
+      "",
+      ""
+    ],
+    "confoundFlagged": 0,
+    "retracted": 0
+  },
+  "failureClassVocabulary": {
+    "source": "research/v3/phase-3/PROPOSAL_BRIEF.md §4 (round 1 derived no classes of its own — it had no reviewer text)",
+    "classes": [
+      "wrong field colour (e.g. a face taken as background)",
+      "false gradient",
+      "missed gradient",
+      "unreadable foreground",
+      "colour only present in a label logo",
+      "a strong artwork colour missing from the palette",
+      "right colours in the wrong roles",
+      "two near-identical shades where the artwork has one"
+    ]
+  },
+  "covers": [
+    {
+      "n": 1,
+      "itemId": "ab67616d0000b27300094a786a28459646be9b20",
+      "shortId": "ab67…be9b20",
+      "role": "returning:probe:face-as-background",
+      "dimensions": "640x640",
+      "path": "09/ab67616d0000b27300094a786a28459646be9b20",
+      "round1CoverNumber": 1,
+      "A": {
+        "verdictId": "v-mteu2fro-937e0aea",
+        "ts": "2026-08-29T20:28:46.548Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#8d8cc8",
+          "surface": "#8d8cc8",
+          "foreground": "#00bcfa",
+          "accent": "#7f7ca7",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "9722ef43e4c92ebf62540f85c58cd0b3355cf0a970ba9c7adeaf3dda177d4135",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [],
+        "round1": {
+          "batchId": "cal-027",
+          "variantId": "a-field-first-0.2.0",
+          "grade": "unacceptable",
+          "palette": {
+            "background": "#8d8cc8",
+            "surface": "#8d8cc8",
+            "foreground": "#00bcfa",
+            "accent": "#7f7ca7",
+            "gradient": null,
+            "surfaceCollapsed": true,
+            "accentCollapsed": false
+          },
+          "paletteHash": "9722ef43e4c92ebf62540f85c58cd0b3355cf0a970ba9c7adeaf3dda177d4135",
+          "comment": "",
+          "gradeDelta": "unchanged",
+          "paletteBitIdenticalToRound1": true
+        }
+      },
+      "B": {
+        "verdictId": "v-mteu4qc5-d54f4387",
+        "ts": "2026-08-29T20:30:33.557Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#00bdfd",
+          "surface": "#00bdfd",
+          "foreground": "#000000",
+          "accent": "#000400",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "6c41b231d922dca1e1a722e11dd37d9d946331c33a24503ea972ad85de41f66e",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [],
+        "round1": {
+          "batchId": "cal-028",
+          "variantId": "b-tree-first-0.1.0-m1",
+          "grade": "unacceptable",
+          "palette": {
+            "background": "#fce8cf",
+            "surface": "#fce8cf",
+            "foreground": "#000000",
+            "accent": "#000400",
+            "gradient": null,
+            "surfaceCollapsed": true,
+            "accentCollapsed": false
+          },
+          "paletteHash": "05335c3884ae60a0666c3f7e8732d61290a3ef88a361c91502961951c017b86e",
+          "comment": "",
+          "gradeDelta": "unchanged",
+          "paletteBitIdenticalToRound1": false
+        }
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 2,
+      "itemId": "ab67616d0000b273000131a334d00155369bb7b9",
+      "shortId": "ab67…9bb7b9",
+      "role": "returning:fresh-in-round-1",
+      "dimensions": "640x640",
+      "path": "01/ab67616d0000b273000131a334d00155369bb7b9.jpg",
+      "round1CoverNumber": 7,
+      "A": {
+        "verdictId": "v-mteu2ncf-79cefa57",
+        "ts": "2026-08-29T20:28:56.367Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#000000",
+          "surface": "#14100d",
+          "foreground": "#77543e",
+          "accent": "#77543e",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": true
+        },
+        "paletteHash": "ac6fb36ed9aaae1c502aa9075d321ab4118f53c959d6a15e460891894f619593",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [],
+        "round1": {
+          "batchId": "cal-027",
+          "variantId": "a-field-first-0.2.0",
+          "grade": "unacceptable",
+          "palette": {
+            "background": "#000000",
+            "surface": "#14100d",
+            "foreground": "#77543e",
+            "accent": "#77543e",
+            "gradient": null,
+            "surfaceCollapsed": false,
+            "accentCollapsed": true
+          },
+          "paletteHash": "ac6fb36ed9aaae1c502aa9075d321ab4118f53c959d6a15e460891894f619593",
+          "comment": "",
+          "gradeDelta": "unchanged",
+          "paletteBitIdenticalToRound1": true
+        }
+      },
+      "B": {
+        "verdictId": "v-mteu4tj1-2b4d63ad",
+        "ts": "2026-08-29T20:30:37.693Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#000000",
+          "surface": "#000000",
+          "foreground": "#4c5051",
+          "accent": "#e2dbc9",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "75aee58263431377ce6ca59c0f753bae39e6e66d9b250ee34296d83f358ed4ff",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [],
+        "round1": {
+          "batchId": "cal-028",
+          "variantId": "b-tree-first-0.1.0-m1",
+          "grade": "unacceptable",
+          "palette": {
+            "background": "#c18c48",
+            "surface": "#c18c48",
+            "foreground": "#010000",
+            "accent": "#546167",
+            "gradient": null,
+            "surfaceCollapsed": true,
+            "accentCollapsed": false
+          },
+          "paletteHash": "191240e1b7e4e56492cc5823848b2063ef11ada2ea1f637f2e54f7b6c6f9257e",
+          "comment": "",
+          "gradeDelta": "unchanged",
+          "paletteBitIdenticalToRound1": false
+        }
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 3,
+      "itemId": "ddd8a0e7961edcf8e95b771ae0d9b8c5",
+      "shortId": "ddd8…d9b8c5",
+      "role": "returning:probe:false-gradient",
+      "dimensions": "1280x1280",
+      "path": "music-artworks/d/d/d/ddd8a0e7961edcf8e95b771ae0d9b8c5.jpg",
+      "round1CoverNumber": 3,
+      "A": {
+        "verdictId": "v-mteu2v5n-b0712e52",
+        "ts": "2026-08-29T20:29:06.491Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#fdfad9",
+          "surface": "#f3bbd4",
+          "foreground": "#494949",
+          "accent": "#734838",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "caccd1562fe491115c1f9eb47723725f32f1268dc7ffc2691976d47ff7ed347c",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [],
+        "round1": {
+          "batchId": "cal-027",
+          "variantId": "a-field-first-0.2.0",
+          "grade": "weak",
+          "palette": {
+            "background": "#fdfad9",
+            "surface": "#f3bbd4",
+            "foreground": "#494949",
+            "accent": "#734838",
+            "gradient": null,
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "paletteHash": "caccd1562fe491115c1f9eb47723725f32f1268dc7ffc2691976d47ff7ed347c",
+          "comment": "",
+          "gradeDelta": "unchanged",
+          "paletteBitIdenticalToRound1": true
+        }
+      },
+      "B": {
+        "verdictId": "v-mteu4yje-bcd178d4",
+        "ts": "2026-08-29T20:30:44.186Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#fefcd6",
+          "surface": "#f5bad6",
+          "foreground": "#010200",
+          "accent": "#000000",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "2b6c2f4137fb55f92ebb84ae5fbe01188199812d81798277717d3b8f746c6b0e",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [],
+        "round1": {
+          "batchId": "cal-028",
+          "variantId": "b-tree-first-0.1.0-m1",
+          "grade": "weak",
+          "palette": {
+            "background": "#fefcd6",
+            "surface": "#f5bad6",
+            "foreground": "#000204",
+            "accent": "#000000",
+            "gradient": null,
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "paletteHash": "6c351bc4fee12e7d9c5e72611934a07b96d57bb4e75b3e7e23f9082c92912969",
+          "comment": "",
+          "gradeDelta": "unchanged",
+          "paletteBitIdenticalToRound1": false
+        }
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 4,
+      "itemId": "ab67616d00001e020012f9db24c5203787b17bb1",
+      "shortId": "ab67…b17bb1",
+      "role": "fresh",
+      "dimensions": "300x300",
+      "path": "12/ab67616d00001e020012f9db24c5203787b17bb1",
+      "A": {
+        "verdictId": "v-mteu2y6x-483d9da6",
+        "ts": "2026-08-29T20:29:10.425Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#373c35",
+          "surface": "#394038",
+          "foreground": "#9a866d",
+          "accent": "#3a5544",
+          "gradient": {
+            "stops": [
+              {
+                "color": "#373c35",
+                "position": 0
+              },
+              {
+                "color": "#394038",
+                "position": 1
+              }
+            ]
+          },
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "9937a3d6c609de95b0d7cdb47b778d1f7b18dd46b5be48c109930b16a2d8f938",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "B": {
+        "verdictId": "v-mteu50so-e57cdcb5",
+        "ts": "2026-08-29T20:30:47.112Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#373c35",
+          "surface": "#373c35",
+          "foreground": "#7e887d",
+          "accent": "#434a43",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "030bbcf2b5934a631541f67f68f44e2caa2f2f414e97cfa6dc25dd79d485c25b",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 5,
+      "itemId": "ab67616d00001e02000485aa752a4671880731ca",
+      "shortId": "ab67…0731ca",
+      "role": "fresh",
+      "dimensions": "300x300",
+      "path": "04/ab67616d00001e02000485aa752a4671880731ca",
+      "A": {
+        "verdictId": "v-mteu36z7-0f4f32e8",
+        "ts": "2026-08-29T20:29:21.811Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#896d55",
+          "surface": "#736660",
+          "foreground": "#fafbf6",
+          "accent": "#ab7e5d",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "a3126c4c723c3bd580c7636f99e447efa9aff4b8d1a64e1bb8ab2edb8f7d63d0",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "B": {
+        "verdictId": "v-mteu530p-f47ccc4a",
+        "ts": "2026-08-29T20:30:49.993Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#ac8b6a",
+          "surface": "#ac8b6a",
+          "foreground": "#11110f",
+          "accent": "#29261f",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "b2e1a2878dfee6bf283ea2eaa09071dad9424f754efe5b65f94e0d3fb0c251a3",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 6,
+      "itemId": "ab67616d0000b273000c550197e477cd44a5744f",
+      "shortId": "ab67…a5744f",
+      "role": "fresh",
+      "dimensions": "640x640",
+      "path": "0c/ab67616d0000b273000c550197e477cd44a5744f",
+      "A": {
+        "verdictId": "v-mteu3g3q-ebe6083b",
+        "ts": "2026-08-29T20:29:33.638Z",
+        "grade": "weak",
+        "palette": {
+          "background": "#272729",
+          "surface": "#2a2a2c",
+          "foreground": "#dddddd",
+          "accent": "#9f9f9f",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "5b2d7627de9cf1ddb3c15bcc9c50b2f199b8830f3f2ae1ee8e78434401644032",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "B": {
+        "verdictId": "v-mteu557o-f57b8d19",
+        "ts": "2026-08-29T20:30:52.836Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#050505",
+          "surface": "#050505",
+          "foreground": "#222224",
+          "accent": "#636365",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "b8062b833246ffbd82ba96e9a6e0bd5cddf3da8cc53064ef20809165bd140e9a",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 7,
+      "itemId": "ab67616d0000b273000fe1a62d8cc2643cb2cca1",
+      "shortId": "ab67…b2cca1",
+      "role": "fresh",
+      "dimensions": "640x640",
+      "path": "0f/ab67616d0000b273000fe1a62d8cc2643cb2cca1",
+      "A": {
+        "verdictId": "v-mteu3j3f-8fd457c0",
+        "ts": "2026-08-29T20:29:37.515Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#6d5950",
+          "surface": "#6d5950",
+          "foreground": "#9a6b63",
+          "accent": "#9a6b63",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": true
+        },
+        "paletteHash": "c51dd389263e6880c8d0e5832873f1529e5941d0ad606a486e8780a57cf6098e",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "B": {
+        "verdictId": "v-mteu57t2-4bb63bd5",
+        "ts": "2026-08-29T20:30:56.198Z",
+        "grade": "unacceptable",
+        "palette": {
+          "background": "#690d12",
+          "surface": "#690d12",
+          "foreground": "#180002",
+          "accent": "#d8cac7",
+          "gradient": null,
+          "surfaceCollapsed": true,
+          "accentCollapsed": false
+        },
+        "paletteHash": "f50b2139fe6680dbca2a579d4d49d15b536ad0e108128314d569797b88d515cf",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "failureClass": {
+        "A": null,
+        "B": null,
+        "reason": "no reviewer note on this item"
+      }
+    },
+    {
+      "n": 8,
+      "itemId": "21bebfd319e1d7a27648b317a5c09139",
+      "shortId": "21be…c09139",
+      "role": "fresh",
+      "dimensions": "1500x1500",
+      "path": "music-artworks/2/1/b/21bebfd319e1d7a27648b317a5c09139.png",
+      "A": {
+        "verdictId": "v-mteu4bzp-7ba00f35",
+        "ts": "2026-08-29T20:30:14.965Z",
+        "grade": "acceptable",
+        "palette": {
+          "background": "#f9ec2c",
+          "surface": "#ee5f94",
+          "foreground": "#191b03",
+          "accent": "#403e05",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": false
+        },
+        "paletteHash": "5020ff42b040e50bc5b4fbdd60c42a844f43d89546a90b5553e7446071256fa1",
+        "comment": "accent should be the same color as foreground. There are only 3 colors on that artwork (Lemon, Serenade, Black Forest)",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": [
+          {
+            "verdictId": "v-mteu3qfo-cbc54fbf",
+            "ts": "2026-08-29T20:29:47.028Z",
+            "grade": "acceptable",
+            "comment": ""
+          },
+          {
+            "verdictId": "v-mteu44lu-ab78d221",
+            "ts": "2026-08-29T20:30:05.394Z",
+            "grade": "acceptable",
+            "comment": "accent should be the same color as foreground. There are only 3 colors on that artwork"
+          }
+        ]
+      },
+      "B": {
+        "verdictId": "v-mteu5d2f-859a40ba",
+        "ts": "2026-08-29T20:31:03.015Z",
+        "grade": "strong",
+        "palette": {
+          "background": "#f6e928",
+          "surface": "#ed6094",
+          "foreground": "#050500",
+          "accent": "#050500",
+          "gradient": null,
+          "surfaceCollapsed": false,
+          "accentCollapsed": true
+        },
+        "paletteHash": "50dc43fb5b1477b9039e454bf78cb5736fea171443d9865056085df5fbc2f780",
+        "comment": "",
+        "confoundFlagged": false,
+        "stagedPaletteBitIdentical": true,
+        "supersededVerdicts": []
+      },
+      "failureClass": {
+        "A": {
+          "class": "two near-identical shades where the artwork has one",
+          "evidence": "reviewer comment on verdict v-mteu4bzp-7ba00f35, verbatim: \"accent should be the same color as foreground. There are only 3 colors on that artwork (Lemon, Serenade, Black Forest)\"",
+          "mechanicalCorrelate": "accent #403e05 and foreground #191b03 are two distinct dark shades; accentCollapsed=false"
+        },
+        "B": null,
+        "reason": "A: reviewer note present. B: no reviewer note on this item."
+      }
+    }
+  ],
+  "tallies": {
+    "A": {
+      "strong": 0,
+      "acceptable": 1,
+      "weak": 3,
+      "unacceptable": 4,
+      "vetoes": 0,
+      "endorsedSamples": 0,
+      "confoundFlagged": 0,
+      "supersededVerdicts": 2
+    },
+    "B": {
+      "strong": 1,
+      "acceptable": 0,
+      "weak": 1,
+      "unacceptable": 6,
+      "vetoes": 0,
+      "endorsedSamples": 0,
+      "confoundFlagged": 0,
+      "supersededVerdicts": 0
+    }
+  },
+  "returningCovers": [
+    {
+      "n": 1,
+      "shortId": "ab67…be9b20",
+      "round1CoverNumber": 1,
+      "A": {
+        "round1": "unacceptable",
+        "round2": "unacceptable",
+        "delta": "unchanged",
+        "paletteBitIdenticalToRound1": true
+      },
+      "B": {
+        "round1": "unacceptable",
+        "round2": "unacceptable",
+        "delta": "unchanged",
+        "paletteBitIdenticalToRound1": false
+      }
+    },
+    {
+      "n": 2,
+      "shortId": "ab67…9bb7b9",
+      "round1CoverNumber": 7,
+      "A": {
+        "round1": "unacceptable",
+        "round2": "unacceptable",
+        "delta": "unchanged",
+        "paletteBitIdenticalToRound1": true
+      },
+      "B": {
+        "round1": "unacceptable",
+        "round2": "unacceptable",
+        "delta": "unchanged",
+        "paletteBitIdenticalToRound1": false
+      }
+    },
+    {
+      "n": 3,
+      "shortId": "ddd8…d9b8c5",
+      "round1CoverNumber": 3,
+      "A": {
+        "round1": "weak",
+        "round2": "weak",
+        "delta": "unchanged",
+        "paletteBitIdenticalToRound1": true
+      },
+      "B": {
+        "round1": "weak",
+        "round2": "weak",
+        "delta": "unchanged",
+        "paletteBitIdenticalToRound1": false
+      }
+    }
+  ],
+  "crossArmRemarks": {
+    "reviewerStatements": [],
+    "detail": "No batch-complete note, no free-standing note record, no veto, no endorsed sample and no amendment record exists for cal-029 or cal-030. Both batch-complete notes are \"\". The only reviewer free text in the round is the per-item comment on cover 8, Arm A, which is about that one item."
+  },
+  "trajectory": {
+    "A": [
+      "Round 1 (cal-027, a-field-first-0.2.0): strong 0, acceptable 2, weak 4, unacceptable 2. Round 2 (cal-029, a-field-first-0.4.1): strong 0, acceptable 1, weak 3, unacceptable 4.",
+      "On the three covers common to both rounds the grade is unchanged in all three (unacceptable, unacceptable, weak); the other five covers differ between rounds, so the tallies are over different cover sets."
+    ],
+    "B": [
+      "Round 1 (cal-028, b-tree-first-0.1.0-m1): strong 0, acceptable 3, weak 2, unacceptable 3. Round 2 (cal-030, b-tree-first-0.1.0-m1): strong 1, acceptable 0, weak 1, unacceptable 6.",
+      "On the three covers common to both rounds the grade is unchanged in all three (unacceptable, unacceptable, weak); the other five covers differ between rounds, so the tallies are over different cover sets."
+    ]
+  },
+  "mechanicalPaletteFacts": {
+    "note": "Properties of the returned palettes. NOT reviewer-attributed; none of these is a failure class.",
+    "perCover": [
+      {
+        "n": 1,
+        "A": "surface = background; no gradient",
+        "B": "surface = background; no gradient"
+      },
+      {
+        "n": 2,
+        "A": "accent = foreground; no gradient",
+        "B": "surface = background; no gradient"
+      },
+      {
+        "n": 3,
+        "A": "no gradient",
+        "B": "no gradient"
+      },
+      {
+        "n": 4,
+        "A": "gradient, 2 stops",
+        "B": "surface = background; no gradient"
+      },
+      {
+        "n": 5,
+        "A": "no gradient",
+        "B": "surface = background; no gradient"
+      },
+      {
+        "n": 6,
+        "A": "no gradient",
+        "B": "surface = background; no gradient"
+      },
+      {
+        "n": 7,
+        "A": "surface = background; accent = foreground; no gradient",
+        "B": "surface = background; no gradient"
+      },
+      {
+        "n": 8,
+        "A": "no gradient",
+        "B": "accent = foreground; no gradient"
+      }
+    ],
+    "counts": {
+      "A": {
+        "surfaceCollapsed": 2,
+        "accentCollapsed": 2,
+        "gradientEmitted": 1
+      },
+      "B": {
+        "surfaceCollapsed": 6,
+        "accentCollapsed": 1,
+        "gradientEmitted": 0
+      }
+    }
+  }
+}
