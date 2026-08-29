@@ -38,9 +38,11 @@ Main orchestrator → **you** → Opus workers.
 ## 3. Commit rules
 
 Signed commits, explicit pathspec, always — never bare `git commit`. Commit only paths under
-`research/v3/prototypes/<slug>/` plus your worktree-local data. If signing is blocked, stop and
-report; never commit unsigned. Commit `STATE.md` whenever it changes — uncommitted policy is
-invisible policy.
+`research/v3/prototypes/<slug>/` plus your worktree-local data. **If signing is blocked (vault
+locked), do not stop: keep working on the next milestone, queue the commit, retry later, and
+mention it in your next report** (reviewer ruling 2026-08-29). Never commit unsigned. A round
+install does need a clean signed fingerprint, so a locked vault delays the install, not the work.
+Commit `STATE.md` whenever it changes — uncommitted policy is invisible policy.
 
 ## 4. Hard constraints (canonical: `PHASE_1_AUTHOR_BRIEF.md` §3.1, `PHASE_0_DECISIONS.md` §2/§4)
 
