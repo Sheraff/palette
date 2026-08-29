@@ -1,0 +1,313 @@
+{
+  "what": "Standing perturbation-cover sample for the v3 robustness harness: covers re-encoded and dithered below the visible threshold. [W13 SUBSET: filtered to the 16 covers on which the P6 candidate terminates within 20s on the unperturbed original; 84 of the first 40 screened covers did not, and 60 were never screened. Selection is by candidate runtime, not at random.]",
+  "writtenAt": "2026-08-04T07:57:30.172Z",
+  "generatedBy": "research/v3/src/robustness/build-perturbation-set.ts",
+  "setId": "perturbation-set-1-p6-terminating-subset",
+  "seed": 12648430,
+  "seedHex": "0xc0ffee",
+  "criterion": {
+    "holdoutExcluded": true,
+    "reviewednessDefinition": "an artwork is `reviewed` when the warehouse holds at least one live (non-retracted, non-superseded) oracle-label whose artwork.rendition.artworkId is this artwork, for any question kind — including SAM mask grades, which are not palette grades but do mean the reviewer has seen the artwork",
+    "reviewedQuota": 50,
+    "unseenQuota": 50
+  },
+  "sources": {
+    "holdout": {
+      "path": "research/v3/data/holdout/holdout.json",
+      "sha256": "b9d0c9c54dd0de27a2ba238b8a92707ca21cc3a2812b02a40b32390ee3a65c5c"
+    },
+    "censusHoldoutOverlay": {
+      "path": "research/v3/data/embeddings/near-dup-census.holdout-v2.json",
+      "sha256": "013edf121d27abc4a30c22167c50bd9d99af6a88063fb1ad7811a27cb3e65d87",
+      "note": "quarantined_artwork_ids only"
+    },
+    "warehouse": {
+      "path": "research/v3/data/warehouse/warehouse.jsonl",
+      "sha256": "11d2042a48ccc7257267b8dc0e67955a0bd524ef7cb1ce8fd79d369c5ade9681"
+    },
+    "transparencySurvey": {
+      "path": "research/v3/data/source-surveys/pixel_results.json",
+      "sha256": "1866a4d3c17bab09e787595cb2f3a4f54c4099f28a910e12ce2663e6da04629e"
+    }
+  },
+  "counts": {
+    "shardedArtworks": 6906,
+    "musicArtworks": 4088,
+    "eligibleArtworks": 9250,
+    "reviewedPool": 113,
+    "unseenPool": 9137,
+    "droppedNonSquare": 984,
+    "droppedThumbnailOnly": 15,
+    "droppedRealTransparency": 320,
+    "droppedHeldOut": 425,
+    "drawn": 100,
+    "drawnReviewed": 50,
+    "drawnUnseen": 50,
+    "arms": 4,
+    "trials": 400
+  },
+  "strata": [
+    {
+      "stratum": "reviewed|401-640",
+      "population": 78,
+      "drawn": 34,
+      "exhaustive": false
+    },
+    {
+      "stratum": "reviewed|641-1024",
+      "population": 2,
+      "drawn": 0,
+      "exhaustive": false
+    },
+    {
+      "stratum": "reviewed|<=400",
+      "population": 33,
+      "drawn": 14,
+      "exhaustive": false
+    },
+    {
+      "stratum": "unseen|401-640",
+      "population": 5619,
+      "drawn": 30,
+      "exhaustive": false
+    },
+    {
+      "stratum": "unseen|641-1024",
+      "population": 949,
+      "drawn": 5,
+      "exhaustive": false
+    },
+    {
+      "stratum": "unseen|<=400",
+      "population": 2413,
+      "drawn": 13,
+      "exhaustive": false
+    },
+    {
+      "stratum": "unseen|>1024",
+      "population": 156,
+      "drawn": 0,
+      "exhaustive": false
+    }
+  ],
+  "arms": [
+    {
+      "name": "jpeg-q92",
+      "kind": "reencode",
+      "description": "JPEG re-encode at quality 92, chroma 4:4:4, same size — the v2-3 anchor arm (72.8% agreement).",
+      "baseline": "original"
+    },
+    {
+      "name": "jpeg-q85",
+      "kind": "reencode",
+      "description": "JPEG re-encode at quality 85, chroma 4:4:4, same size.",
+      "baseline": "original"
+    },
+    {
+      "name": "jpeg-q75",
+      "kind": "reencode",
+      "description": "JPEG re-encode at quality 75, chroma 4:4:4, same size.",
+      "baseline": "original"
+    },
+    {
+      "name": "dither-lsb1",
+      "kind": "dither",
+      "description": "±1 LSB checkerboard on the blue channel only, both sides written as lossless PNG — v2-3's smallest possible pixel perturbation (0 of 114 palettes survived it).",
+      "baseline": "lossless"
+    }
+  ],
+  "covers": [
+    {
+      "artworkId": "00002947b898e4bd572ac4aa",
+      "collection": "sharded",
+      "path": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+      "sha256": "0d149b97cfa25534d33918f39e3e5bbbaadabac8f3d5d8a7e456ebc695751fa3",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 113938,
+      "tier": "401-640",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "000050c638f9c59f77f3057b",
+      "collection": "sharded",
+      "path": "00/ab67616d00001e02000050c638f9c59f77f3057b.jpg",
+      "sha256": "5cf156ab8e8ede2060ee933592353fd2134b4efeffdaf6424eca8cc6e790f5a8",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 19801,
+      "tier": "<=400",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "00009a5acf9fb19544298ce4",
+      "collection": "sharded",
+      "path": "00/ab67616d00001e0200009a5acf9fb19544298ce4.jpg",
+      "sha256": "ad5bc620f24b472ca0cb27a38978009ed324ab4fe733c906a295adf2abc6f6a5",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 24339,
+      "tier": "<=400",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "0000e692a330542f8ed14132",
+      "collection": "sharded",
+      "path": "00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+      "sha256": "4c926a8c067fc5f03b1b2bdfb7701b6e0fa93d814e4d948917ae1365f5346e6f",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 30568,
+      "tier": "<=400",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "0001c404b8a04a8789db8dab",
+      "collection": "sharded",
+      "path": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+      "sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 90209,
+      "tier": "401-640",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "000241edffbc59ed2fe08dd3",
+      "collection": "sharded",
+      "path": "02/ab67616d0000b273000241edffbc59ed2fe08dd3.jpg",
+      "sha256": "df58faaf07d8b84f17b27c899ab42f3c09d105473d2276cb2963bcf22f0f0069",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 84647,
+      "tier": "401-640",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "0002875c482df56c656a8605",
+      "collection": "sharded",
+      "path": "02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+      "sha256": "f1acbebe48f75407e1e32b0851e6e0588627941a18d81d3e18fa85359b9d5a47",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 78370,
+      "tier": "401-640",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "0002d9c78b43ee73dd572586",
+      "collection": "sharded",
+      "path": "02/ab67616d00001e020002d9c78b43ee73dd572586.jpg",
+      "sha256": "4690101dedc9644c9f0a63af124c760caa93b019c88a433eefb11cb60390aed1",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 25077,
+      "tier": "<=400",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "0003e50500c5d762da89643a",
+      "collection": "sharded",
+      "path": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+      "sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 25829,
+      "tier": "<=400",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "00043614a29a0bc16a6cb9e1",
+      "collection": "sharded",
+      "path": "04/ab67616d0000b27300043614a29a0bc16a6cb9e1",
+      "sha256": "b8b17a042cd9f9a0b9f09851080fb6ab636815ff25885f6cf2cf3a1301cf4027",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 85401,
+      "tier": "401-640",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "000442caec7ec8cb724bf265",
+      "collection": "sharded",
+      "path": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+      "sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 202205,
+      "tier": "401-640",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "000535cf7b987bd9309aad76",
+      "collection": "sharded",
+      "path": "05/ab67616d0000b273000535cf7b987bd9309aad76",
+      "sha256": "7c7402acff8682f7ad04e8f456b225a5cb02b835f6c3176d2316514a82bb677f",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 73796,
+      "tier": "401-640",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "0005597105ba1e2d38f62cfc",
+      "collection": "sharded",
+      "path": "05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+      "sha256": "fbd59ef749935555ccbca1184067d480aebc224d1557c46c51286d2559312bae",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 115024,
+      "tier": "401-640",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "00060491ade88c8893373d9f",
+      "collection": "sharded",
+      "path": "06/ab67616d00001e0200060491ade88c8893373d9f",
+      "sha256": "9ae81cd12e4bd2a4fc8b92f169647174f67cb4c2f4d1d45244fed0d6b3f83ccd",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 40177,
+      "tier": "<=400",
+      "reviewedness": "reviewed"
+    },
+    {
+      "artworkId": "0006b216e59acf2101a3a108",
+      "collection": "sharded",
+      "path": "06/ab67616d0000b2730006b216e59acf2101a3a108",
+      "sha256": "8ab91f323caee0bffb266bf112490d21c1f7a77b37892ab69e7a2d5dce63f019",
+      "width": 640,
+      "height": 640,
+      "format": "jpeg",
+      "bytes": 78947,
+      "tier": "401-640",
+      "reviewedness": "unseen"
+    },
+    {
+      "artworkId": "0007bcee5dd53c80d8eb53c4",
+      "collection": "sharded",
+      "path": "07/ab67616d00001e020007bcee5dd53c80d8eb53c4",
+      "sha256": "fd2d953301c7f20d7530ab3309cad2a7053a97c2f056ffc441707fd28a8b285b",
+      "width": 300,
+      "height": 300,
+      "format": "jpeg",
+      "bytes": 14384,
+      "tier": "<=400",
+      "reviewedness": "unseen"
+    }
+  ]
+}
