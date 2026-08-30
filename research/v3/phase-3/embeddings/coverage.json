@@ -1,0 +1,778 @@
+{
+ "generatedBy": "research/v3/phase-3/embeddings/tools/coverage.py (rendered to COVERAGE.md by tools/render_coverage.py); cluster labels from tools/clusters.json, produced by tools/recluster.ts",
+ "what": "Cluster coverage of what the reviewer has actually judged in Phase 2 and Phase 3, against the 36 coverage-set clusters, plus a proposed 8-cover draw that fills the largest category holes.",
+ "clustering": {
+  "k": 36,
+  "seedHex": "0xc0efface",
+  "arm": "dinov2-vitl14",
+  "source": "reproduced from research/v3/src/coverage-set/build-coverage-set.ts (same code path, same inputs)",
+  "verification": "cluster sizes and all 218 in-universe coverage-set-1 cluster labels reproduce exactly; 44 iterations, converged",
+  "universeArtworks": 9232
+ },
+ "reviewSources": {
+  "phase3Batches": [
+   "cal-027",
+   "cal-028",
+   "cal-029",
+   "cal-030"
+  ],
+  "phase3DistinctCovers": 13,
+  "phase2BatchPrefix": "phase2-",
+  "phase2DistinctCovers": 49,
+  "otherBatchesNote": "every other warehouse batch (SAM mask quality, perception-4, accent-*, residual-purity, pointing-*, oracle-*, bracketing, dropped-colors, cascade-ground-truth, bcde-*, demo-*, endorsement-recheck). Counted in a separate column because those rounds asked different questions of a cover; they are not palette verdicts.",
+  "otherDistinctCoversMappedToClusters": 142,
+  "otherDistinctCoversNotMappable": 67,
+  "notMappableNote": "legacy images/ covers and synthetic probe ids (smq-*, pt1-*, resid*-*, pg1-*) that are not corpus artworks and therefore have no cluster. SAM overlay and residual-sheet records ARE resolved, through rendition.artworkId, to the corpus artwork they show."
+ },
+ "clusters": [
+  {
+   "cluster": 0,
+   "universeArtworks": 256,
+   "corpusSharePct": 2.77,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 1,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 1,
+   "universeArtworks": 162,
+   "corpusSharePct": 1.75,
+   "phase2Covers": 1,
+   "phase3Covers": 0,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 2,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00103b70ede16610224c5ca4"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 2,
+   "universeArtworks": 298,
+   "corpusSharePct": 3.23,
+   "phase2Covers": 2,
+   "phase3Covers": 0,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 7,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00028475c3197f4510266bb9",
+    "sharded:00115cade5b18898a33dac6a"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 3,
+   "universeArtworks": 36,
+   "corpusSharePct": 0.39,
+   "phase2Covers": 1,
+   "phase3Covers": 0,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 1,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:0014c3a0501a86757a275520"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 4,
+   "universeArtworks": 139,
+   "corpusSharePct": 1.51,
+   "phase2Covers": 0,
+   "phase3Covers": 1,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 3,
+   "categoryHole": false,
+   "phase2Ids": [],
+   "phase3Ids": [
+    "sharded:0012f9db24c5203787b17bb1"
+   ]
+  },
+  {
+   "cluster": 5,
+   "universeArtworks": 230,
+   "corpusSharePct": 2.49,
+   "phase2Covers": 2,
+   "phase3Covers": 0,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 2,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:0001418e127493d543b718cb",
+    "sharded:0011e7b5c1023c70f7a3d767"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 6,
+   "universeArtworks": 317,
+   "corpusSharePct": 3.43,
+   "phase2Covers": 2,
+   "phase3Covers": 0,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 8,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00008912d4517960ad020c7a",
+    "sharded:00046beb8271bf285a15a23d"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 7,
+   "universeArtworks": 247,
+   "corpusSharePct": 2.68,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 4,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 8,
+   "universeArtworks": 342,
+   "corpusSharePct": 3.7,
+   "phase2Covers": 1,
+   "phase3Covers": 2,
+   "phase2Plus3": 3,
+   "otherBatchCovers": 6,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:000f9ddb5dfe0c2590bed1b2"
+   ],
+   "phase3Ids": [
+    "sharded:000f9ddb5dfe0c2590bed1b2",
+    "sharded:000fe1a62d8cc2643cb2cca1"
+   ]
+  },
+  {
+   "cluster": 9,
+   "universeArtworks": 300,
+   "corpusSharePct": 3.25,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 5,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 10,
+   "universeArtworks": 263,
+   "corpusSharePct": 2.85,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 2,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 11,
+   "universeArtworks": 113,
+   "corpusSharePct": 1.22,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 4,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 12,
+   "universeArtworks": 249,
+   "corpusSharePct": 2.7,
+   "phase2Covers": 1,
+   "phase3Covers": 0,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 2,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:0006bd0cd831e3e78a7dda49"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 13,
+   "universeArtworks": 170,
+   "corpusSharePct": 1.84,
+   "phase2Covers": 1,
+   "phase3Covers": 1,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 4,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00133fe10d39cafd71ab8a6b"
+   ],
+   "phase3Ids": [
+    "sharded:0010fe367a0d2ff504efb995"
+   ]
+  },
+  {
+   "cluster": 14,
+   "universeArtworks": 357,
+   "corpusSharePct": 3.87,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 4,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 15,
+   "universeArtworks": 352,
+   "corpusSharePct": 3.81,
+   "phase2Covers": 5,
+   "phase3Covers": 1,
+   "phase2Plus3": 6,
+   "otherBatchCovers": 9,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00001073a73e3a949021f65e",
+    "sharded:00001456cbd4881a798808bf",
+    "sharded:0000269ead63cf2376a6b67d",
+    "sharded:000146db0ad7d43bebdb3152",
+    "sharded:0003079010cf188395a0f57b"
+   ],
+   "phase3Ids": [
+    "sharded:00001073a73e3a949021f65e"
+   ]
+  },
+  {
+   "cluster": 16,
+   "universeArtworks": 389,
+   "corpusSharePct": 4.21,
+   "phase2Covers": 4,
+   "phase3Covers": 0,
+   "phase2Plus3": 4,
+   "otherBatchCovers": 3,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:0000099e97d17d28279e9184",
+    "sharded:0005d8403971249d1ef0786b",
+    "sharded:0008e0e708edbad8a3783eee",
+    "sharded:000def1df4b5be93d1073d33"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 17,
+   "universeArtworks": 238,
+   "corpusSharePct": 2.58,
+   "phase2Covers": 2,
+   "phase3Covers": 1,
+   "phase2Plus3": 3,
+   "otherBatchCovers": 2,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00094a786a28459646be9b20",
+    "sharded:0010ac96d501c4170f39c4f0"
+   ],
+   "phase3Ids": [
+    "sharded:00094a786a28459646be9b20"
+   ]
+  },
+  {
+   "cluster": 18,
+   "universeArtworks": 477,
+   "corpusSharePct": 5.17,
+   "phase2Covers": 1,
+   "phase3Covers": 1,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 8,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00036816370505937e5e017c"
+   ],
+   "phase3Ids": [
+    "sharded:000bb7843b5e4572ce89fe0c"
+   ]
+  },
+  {
+   "cluster": 19,
+   "universeArtworks": 231,
+   "corpusSharePct": 2.5,
+   "phase2Covers": 3,
+   "phase3Covers": 0,
+   "phase2Plus3": 3,
+   "otherBatchCovers": 8,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00001a9be12b7116a8247378",
+    "sharded:00012525e62c7f45baf46c90",
+    "sharded:00062339a473711468f14643"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 20,
+   "universeArtworks": 296,
+   "corpusSharePct": 3.21,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 4,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 21,
+   "universeArtworks": 336,
+   "corpusSharePct": 3.64,
+   "phase2Covers": 2,
+   "phase3Covers": 1,
+   "phase2Plus3": 3,
+   "otherBatchCovers": 4,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00035026aa41f4f25760ac35",
+    "sharded:0010403dcc48ac67e0a1b97f"
+   ],
+   "phase3Ids": [
+    "sharded:000131a334d00155369bb7b9"
+   ]
+  },
+  {
+   "cluster": 22,
+   "universeArtworks": 54,
+   "corpusSharePct": 0.58,
+   "phase2Covers": 1,
+   "phase3Covers": 0,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 0,
+   "categoryHole": false,
+   "phase2Ids": [
+    "music_artworks:4e6dee3a672e62f84d6fab9d90a2af26"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 23,
+   "universeArtworks": 293,
+   "corpusSharePct": 3.17,
+   "phase2Covers": 1,
+   "phase3Covers": 1,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 4,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00014778c5ef2a0dea2461a4"
+   ],
+   "phase3Ids": [
+    "sharded:000c550197e477cd44a5744f"
+   ]
+  },
+  {
+   "cluster": 24,
+   "universeArtworks": 305,
+   "corpusSharePct": 3.3,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 2,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 25,
+   "universeArtworks": 247,
+   "corpusSharePct": 2.68,
+   "phase2Covers": 1,
+   "phase3Covers": 0,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 4,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:000025b4e66a00806cb6dd7d"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 26,
+   "universeArtworks": 289,
+   "corpusSharePct": 3.13,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 4,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 27,
+   "universeArtworks": 139,
+   "corpusSharePct": 1.51,
+   "phase2Covers": 2,
+   "phase3Covers": 0,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 4,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00000ee5a62175fc8d58e0af",
+    "sharded:00000f92552b0935b967964d"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 28,
+   "universeArtworks": 225,
+   "corpusSharePct": 2.44,
+   "phase2Covers": 4,
+   "phase3Covers": 0,
+   "phase2Plus3": 4,
+   "otherBatchCovers": 4,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00007e976f2fb1819d1ec7e0cc2869f39d397ba3",
+    "sharded:0000cb591a0d52d8b88692d9",
+    "sharded:000c4ff9e01aba5eae6cbec4",
+    "sharded:0011a326091e7dd7df58b175"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 29,
+   "universeArtworks": 278,
+   "corpusSharePct": 3.01,
+   "phase2Covers": 1,
+   "phase3Covers": 1,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 5,
+   "categoryHole": false,
+   "phase2Ids": [
+    "music_artworks:d76d845e33b98c986bb8b1297e49487b"
+   ],
+   "phase3Ids": [
+    "sharded:00096a633744f98a17e8f81f"
+   ]
+  },
+  {
+   "cluster": 30,
+   "universeArtworks": 73,
+   "corpusSharePct": 0.79,
+   "phase2Covers": 3,
+   "phase3Covers": 0,
+   "phase2Plus3": 3,
+   "otherBatchCovers": 1,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:000022e7e9d11c908479200b",
+    "sharded:00020fe55990dc2670c3f5a6",
+    "sharded:000227d883fd2cc65408f632"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 31,
+   "universeArtworks": 112,
+   "corpusSharePct": 1.21,
+   "phase2Covers": 0,
+   "phase3Covers": 0,
+   "phase2Plus3": 0,
+   "otherBatchCovers": 1,
+   "categoryHole": true,
+   "phase2Ids": [],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 32,
+   "universeArtworks": 225,
+   "corpusSharePct": 2.44,
+   "phase2Covers": 2,
+   "phase3Covers": 0,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 5,
+   "categoryHole": false,
+   "phase2Ids": [
+    "music_artworks:05687107a2a9019ee68c3b7f70ff47b6",
+    "sharded:0003748f0b2cb5347f9c0779"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 33,
+   "universeArtworks": 246,
+   "corpusSharePct": 2.66,
+   "phase2Covers": 1,
+   "phase3Covers": 1,
+   "phase2Plus3": 2,
+   "otherBatchCovers": 2,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00000bbc3367a621256ce593"
+   ],
+   "phase3Ids": [
+    "sharded:000485aa752a4671880731ca"
+   ]
+  },
+  {
+   "cluster": 34,
+   "universeArtworks": 595,
+   "corpusSharePct": 6.44,
+   "phase2Covers": 1,
+   "phase3Covers": 0,
+   "phase2Plus3": 1,
+   "otherBatchCovers": 7,
+   "categoryHole": false,
+   "phase2Ids": [
+    "sharded:00125577fb06a6a8942d6547"
+   ],
+   "phase3Ids": []
+  },
+  {
+   "cluster": 35,
+   "universeArtworks": 353,
+   "corpusSharePct": 3.82,
+   "phase2Covers": 4,
+   "phase3Covers": 2,
+   "phase2Plus3": 6,
+   "otherBatchCovers": 6,
+   "categoryHole": false,
+   "phase2Ids": [
+    "music_artworks:ddd8a0e7961edcf8e95b771ae0d9b8c5",
+    "sharded:000001335fe604d859a69094",
+    "sharded:000018e9b0ec8fc5ac790164",
+    "sharded:00011897ac9fe3d4b4cd95b2"
+   ],
+   "phase3Ids": [
+    "music_artworks:21bebfd319e1d7a27648b317a5c09139",
+    "music_artworks:ddd8a0e7961edcf8e95b771ae0d9b8c5"
+   ]
+  }
+ ],
+ "holes": {
+  "definition": "a cluster with zero covers judged in Phase 2 or Phase 3",
+  "count": 10,
+  "clusters": [
+   14,
+   24,
+   9,
+   20,
+   26,
+   10,
+   0,
+   7,
+   11,
+   31
+  ],
+  "corpusSharePct": 27.49,
+  "noteOnOtherBatches": "with every other warehouse batch counted too, no cluster is empty \u2014 the holes are holes in PALETTE judgement, not in all reviewer contact"
+ },
+ "proposedDraw": {
+  "n": 8,
+  "seedHex": "0x7c11e3",
+  "seedDecimal": 8131043,
+  "method": "the 8 slots are allocated across the 10 hole clusters in proportion to corpus share (largest remainder), which lands exactly one cover in each of the 8 largest holes; clusters 11 and 31 (1.22% and 1.21%) get none. Within a cluster: candidates sorted by artworkId ascending, Fisher-Yates shuffled from one mulberry32(0x7c11e3) stream consumed in fixed stratum order (descending corpus share), then walked taking the first candidate passing every filter. The Python mulberry32 used here was verified against round-2 COVERS.md by reproducing its published first six draws for 0x5a7e21 exactly.",
+  "candidateOrder": [
+   "coverage-set-1 core members of the cluster",
+   "then eval-142 / shard-15 members of the cluster"
+  ],
+  "filters": [
+   "never reviewed: neither the artwork id, the file stem nor the basename appears anywhere in warehouse.jsonl (raw substring, plus every 24-40 hex token in it)",
+   "not held out and not quarantined",
+   "no near-duplicate component sibling that is reviewed, held out or quarantined",
+   "file present on disk; WxH re-read from the image header, not from a record"
+  ],
+  "allocation": {
+   "0": 1,
+   "7": 1,
+   "9": 1,
+   "10": 1,
+   "11": 0,
+   "14": 1,
+   "20": 1,
+   "24": 1,
+   "26": 1,
+   "31": 0
+  },
+  "strataOrder": [
+   14,
+   24,
+   9,
+   20,
+   26,
+   10,
+   0,
+   7
+  ],
+  "covers": [
+   {
+    "slot": 1,
+    "cluster": 14,
+    "clusterCorpusSharePct": 3.87,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "sharded:00082f847e951b800ff04133",
+    "collection": "sharded",
+    "artworkId": "00082f847e951b800ff04133",
+    "id": "ab67616d0000b27300082f847e951b800ff04133",
+    "path": "08/ab67616d0000b27300082f847e951b800ff04133",
+    "widthFromHeader": 640,
+    "heightFromHeader": 640,
+    "wxh": "640x640",
+    "widthRecorded": 640,
+    "heightRecorded": 640,
+    "headerMatchesRecorded": true,
+    "tier": "401-640",
+    "nearDupComponentId": "sharded:00082f847e951b800ff04133",
+    "nearDupComponentSize": 1
+   },
+   {
+    "slot": 2,
+    "cluster": 24,
+    "clusterCorpusSharePct": 3.3,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "music_artworks:a707cfc0f073afb18bdbc6bda8b7786c",
+    "collection": "music_artworks",
+    "artworkId": "a707cfc0f073afb18bdbc6bda8b7786c",
+    "id": "a707cfc0f073afb18bdbc6bda8b7786c",
+    "path": "music-artworks/a/7/0/a707cfc0f073afb18bdbc6bda8b7786c.jpeg",
+    "widthFromHeader": 700,
+    "heightFromHeader": 700,
+    "wxh": "700x700",
+    "widthRecorded": 700,
+    "heightRecorded": 700,
+    "headerMatchesRecorded": true,
+    "tier": "641-1024",
+    "nearDupComponentId": "music_artworks:0014a010841f9afda040ae0a5eeaaacc",
+    "nearDupComponentSize": 3
+   },
+   {
+    "slot": 3,
+    "cluster": 9,
+    "clusterCorpusSharePct": 3.25,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "sharded:000ea4559c7271bdcd9b56cb",
+    "collection": "sharded",
+    "artworkId": "000ea4559c7271bdcd9b56cb",
+    "id": "ab67616d00001e02000ea4559c7271bdcd9b56cb",
+    "path": "0e/ab67616d00001e02000ea4559c7271bdcd9b56cb",
+    "widthFromHeader": 300,
+    "heightFromHeader": 300,
+    "wxh": "300x300",
+    "widthRecorded": 300,
+    "heightRecorded": 300,
+    "headerMatchesRecorded": true,
+    "tier": "<=400",
+    "nearDupComponentId": "sharded:000ea4559c7271bdcd9b56cb",
+    "nearDupComponentSize": 1
+   },
+   {
+    "slot": 4,
+    "cluster": 20,
+    "clusterCorpusSharePct": 3.21,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "music_artworks:9ed9c1e7370812333c0f7ad2d7fb8090",
+    "collection": "music_artworks",
+    "artworkId": "9ed9c1e7370812333c0f7ad2d7fb8090",
+    "id": "9ed9c1e7370812333c0f7ad2d7fb8090",
+    "path": "music-artworks/9/e/d/9ed9c1e7370812333c0f7ad2d7fb8090.jpg",
+    "widthFromHeader": 640,
+    "heightFromHeader": 640,
+    "wxh": "640x640",
+    "widthRecorded": 640,
+    "heightRecorded": 640,
+    "headerMatchesRecorded": true,
+    "tier": "401-640",
+    "nearDupComponentId": "music_artworks:9ed9c1e7370812333c0f7ad2d7fb8090",
+    "nearDupComponentSize": 1
+   },
+   {
+    "slot": 5,
+    "cluster": 26,
+    "clusterCorpusSharePct": 3.13,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "sharded:00011a71dc82a914663aa5ce",
+    "collection": "sharded",
+    "artworkId": "00011a71dc82a914663aa5ce",
+    "id": "ab67616d00001e0200011a71dc82a914663aa5ce",
+    "path": "01/ab67616d00001e0200011a71dc82a914663aa5ce.jpg",
+    "widthFromHeader": 300,
+    "heightFromHeader": 300,
+    "wxh": "300x300",
+    "widthRecorded": 300,
+    "heightRecorded": 300,
+    "headerMatchesRecorded": true,
+    "tier": "<=400",
+    "nearDupComponentId": "sharded:00011a71dc82a914663aa5ce",
+    "nearDupComponentSize": 1
+   },
+   {
+    "slot": 6,
+    "cluster": 10,
+    "clusterCorpusSharePct": 2.85,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "sharded:001010e764d0001eeb2e59f0",
+    "collection": "sharded",
+    "artworkId": "001010e764d0001eeb2e59f0",
+    "id": "ab67616d0000b273001010e764d0001eeb2e59f0",
+    "path": "10/ab67616d0000b273001010e764d0001eeb2e59f0",
+    "widthFromHeader": 640,
+    "heightFromHeader": 640,
+    "wxh": "640x640",
+    "widthRecorded": 640,
+    "heightRecorded": 640,
+    "headerMatchesRecorded": true,
+    "tier": "401-640",
+    "nearDupComponentId": "sharded:001010e764d0001eeb2e59f0",
+    "nearDupComponentSize": 1
+   },
+   {
+    "slot": 7,
+    "cluster": 0,
+    "clusterCorpusSharePct": 2.77,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "music_artworks:4378237c16d1002f395ab654ccdd7012",
+    "collection": "music_artworks",
+    "artworkId": "4378237c16d1002f395ab654ccdd7012",
+    "id": "4378237c16d1002f395ab654ccdd7012",
+    "path": "music-artworks/4/3/7/4378237c16d1002f395ab654ccdd7012.jpg",
+    "widthFromHeader": 500,
+    "heightFromHeader": 500,
+    "wxh": "500x500",
+    "widthRecorded": 500,
+    "heightRecorded": 500,
+    "headerMatchesRecorded": true,
+    "tier": "401-640",
+    "nearDupComponentId": "music_artworks:4378237c16d1002f395ab654ccdd7012",
+    "nearDupComponentSize": 1
+   },
+   {
+    "slot": 8,
+    "cluster": 7,
+    "clusterCorpusSharePct": 2.68,
+    "drawnFrom": "coverage-set-1 core",
+    "key": "sharded:000eae9e88edccb2daddd528",
+    "collection": "sharded",
+    "artworkId": "000eae9e88edccb2daddd528",
+    "id": "ab67616d0000b273000eae9e88edccb2daddd528",
+    "path": "0e/ab67616d0000b273000eae9e88edccb2daddd528",
+    "widthFromHeader": 640,
+    "heightFromHeader": 640,
+    "wxh": "640x640",
+    "widthRecorded": 640,
+    "heightRecorded": 640,
+    "headerMatchesRecorded": true,
+    "tier": "401-640",
+    "nearDupComponentId": "sharded:000eae9e88edccb2daddd528",
+    "nearDupComponentSize": 1
+   }
+  ],
+  "rejectionsDuringWalk": []
+ }
+}
