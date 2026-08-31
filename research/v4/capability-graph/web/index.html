@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Palette Product Capability Map</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-mark" aria-hidden="true">V4 / CG</div>
+    <div class="masthead-title">
+      <p class="eyebrow">Product focus / typed incidence registry</p>
+      <h1>Palette Product Capability Map</h1>
+    </div>
+    <div class="snapshot" id="snapshot">Loading generated snapshot...</div>
+    <a class="source-link" href="/MECHANISMS.html#L1" target="_blank" rel="noreferrer">Census source</a>
+  </header>
+
+  <main class="instrument" id="instrument">
+    <aside class="controls" aria-label="Graph controls">
+      <section class="control-section projection-section">
+        <div class="section-heading"><span>Product canvas</span></div>
+        <div id="modeControls">
+          <div class="mode-grid primary-mode-grid">
+            <button class="mode-button product-mode active" type="button" data-mode="product" aria-pressed="true">Product map</button>
+          </div>
+          <p class="control-note" id="modeNote" aria-live="polite">Loading generated product-focus projection...</p>
+
+          <details class="secondary-controls" id="secondaryControls">
+            <summary>Research details</summary>
+            <div class="secondary-drawer">
+              <div class="drawer-section research-views">
+                <div class="section-heading"><span>Projection depth</span></div>
+                <button class="mode-button full-registry-button" type="button" data-mode="full" aria-pressed="false">Full registry</button>
+                <label class="switch-row" id="allProductContractsControl">
+                  <input id="showAllProductContracts" type="checkbox">
+                  <span>Show all product contracts</span>
+                </label>
+                <label class="overlay-control switch-row" id="overlayControl">
+                  <input id="productOverlay" type="checkbox">
+                  <span>Evaluation, governance &amp; research custody overlay</span>
+                </label>
+              </div>
+
+              <div class="drawer-section search-section">
+                <div class="section-heading">
+                  <span>Locate registry entries</span>
+                  <output id="searchCount">0 matches</output>
+                </div>
+                <form id="searchForm" role="search">
+                  <label class="search-field">
+                    <span class="visually-hidden">Search graph nodes</span>
+                    <input id="searchInput" type="search" autocomplete="off" placeholder="ID, title, description" spellcheck="false">
+                    <kbd>Enter</kbd>
+                  </label>
+                  <label class="switch-row">
+                    <input id="searchContext" type="checkbox">
+                    <span>Matches + one-hop context</span>
+                  </label>
+                </form>
+              </div>
+
+              <div class="drawer-section secondary-projections">
+                <div class="section-heading"><span>Registry research projections</span></div>
+                <div class="mode-grid secondary-mode-grid">
+                  <button class="mode-button" type="button" data-mode="frontiers" aria-pressed="false">Candidate closure</button>
+                  <button class="mode-button" type="button" data-mode="orphans" aria-pressed="false">Full-registry orphans</button>
+                  <button class="mode-button" type="button" data-mode="diagnostics" aria-pressed="false">Diagnostics / dev</button>
+                  <button class="mode-button" type="button" data-mode="runtime" aria-pressed="false">Has permitted variant</button>
+                </div>
+              </div>
+
+              <div class="drawer-section filters">
+                <div class="section-heading"><span>Coordinate filters</span><button id="clearFilters" class="text-button" type="button">Clear</button></div>
+                <label class="field-label" for="capabilityFilter">Taxonomy membership</label>
+                <select id="capabilityFilter"><option value="">All memberships</option></select>
+
+                <fieldset>
+                  <legend>Data plane</legend>
+                  <div class="check-row" id="planeFilters"></div>
+                </fieldset>
+
+                <label class="field-label" for="categoryFilter">Artifact category</label>
+                <select id="categoryFilter"><option value="">All categories</option></select>
+
+                <label class="field-label" for="orphanFilter">Orphan class</label>
+                <select id="orphanFilter">
+                  <option value="">All classifications</option>
+                  <option value="required-gap">Required input unavailable</option>
+                  <option value="configuration-gap">Configuration input unavailable</option>
+                  <option value="unavailable-alternative-group">Unavailable alternative group</option>
+                  <option value="optional-absence">Optional absent input</option>
+                  <option value="unused-alternative">Unused alternative</option>
+                  <option value="expected-external-root">Expected external root</option>
+                  <option value="unresolved-external-root">Unresolved external root</option>
+                  <option value="product-goal-gap">Product goal gap</option>
+                  <option value="internal-unused">Internal unused output</option>
+                  <option value="intentional-terminal">Intentional terminal</option>
+                  <option value="expected-external-handoff">Expected external handoff</option>
+                  <option value="unresolved-terminal">Unresolved terminal</option>
+                  <option value="product-goal-terminal">Product goal terminal</option>
+                </select>
+              </div>
+
+              <div class="drawer-section navigator-section">
+                <div class="section-heading"><span>Visible-node navigator</span><output id="navigatorCount">0</output></div>
+                <label class="visually-hidden" for="visibleNodeNavigator">Select any currently visible artifact or mechanism</label>
+                <select id="visibleNodeNavigator" class="node-navigator" size="7" role="listbox" aria-label="Currently visible artifacts and mechanisms"></select>
+                <p class="control-note">Choose a row to select and center it without canvas hit testing.</p>
+              </div>
+
+              <div class="drawer-section map-key">
+                <div class="section-heading"><span>Registry map key</span></div>
+                <div class="legend-grid">
+                  <span class="legend-swatch artifact"></span><span>Artifact contract</span>
+                  <span class="legend-swatch mechanism"></span><span>Mechanism hyperedge</span>
+                  <span class="legend-swatch overlay"></span><span>Evaluation / governance / custody overlay</span>
+                  <span class="legend-line input"></span><span>Input: artifact -&gt; mechanism</span>
+                  <span class="legend-line output"></span><span>Output: mechanism -&gt; artifact</span>
+                  <span class="legend-swatch anchor"></span><span>Fixed product anchor</span>
+                  <span class="legend-swatch orphan-goal"></span><span>Confirmed product materializer gap</span>
+                  <span class="legend-swatch orphan-required"></span><span>Full-registry unavailable input</span>
+                  <span class="legend-swatch orphan-unused"></span><span>Full-registry unused output</span>
+                  <span class="legend-swatch closure-reached"></span><span>Candidate-reached mechanism</span>
+                  <span class="legend-swatch closure-frontier"></span><span>Unreached frontier mechanism</span>
+                  <span class="legend-swatch runtime-context"></span><span>Non-runtime registry context</span>
+                </div>
+                <div class="plane-key">
+                  <span><i class="plane-runtime"></i>runtime</span>
+                  <span><i class="plane-development"></i>development</span>
+                  <span><i class="plane-governance"></i>governance</span>
+                </div>
+              </div>
+
+              <section class="drawer-section counts" id="generatedCounts" aria-live="polite">Loading analysis...</section>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="control-section product-connectivity" id="productConnectivity" aria-labelledby="productConnectivityHeading">
+        <div class="section-heading">
+          <span id="productConnectivityHeading">Product connectivity</span>
+        </div>
+        <button class="confirmed-materializer" id="materializerContract" type="button">
+          <span>Confirmed structural gap</span>
+          <strong>Loading exact product materializer status...</strong>
+        </button>
+        <div class="connectivity-counts" aria-label="Open contract counts">
+          <span><b id="openInputCount">0</b> input</span>
+          <span><b id="openAlternativeCount">0</b> alternative</span>
+          <span><b id="openOutputCount">0</b> output</span>
+        </div>
+        <p class="connectivity-note">Candidate connectivity observations, not a backlog or trial gate.</p>
+        <details class="open-contracts" id="openContracts">
+          <summary><span>Open contracts</span><b id="openContractCount">0</b></summary>
+          <p>Exact candidate connectivity observations only. They prescribe no work, order, or prerequisite.</p>
+          <div class="contract-groups" id="openContractGroups"></div>
+        </details>
+      </section>
+    </aside>
+
+    <section class="map-shell" aria-label="Interactive palette product capability map">
+      <div class="map-toolbar">
+        <div class="view-actions">
+          <button id="zoomOutButton" type="button" aria-label="Zoom out">-</button>
+          <button id="zoomInButton" type="button" aria-label="Zoom in">+</button>
+          <button id="fitButton" type="button">Fit all</button>
+          <button id="resetButton" type="button">Reset map</button>
+        </div>
+        <div class="visible-count" id="visibleCount" role="status" aria-live="polite">Preparing projection...</div>
+        <div class="zoom-readout" id="zoomReadout">100%</div>
+      </div>
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="graphCanvas" tabindex="0" role="img" aria-label="Typed palette product capability incidence map. Product focus is a viewing classification, not a selected pipeline. Drag or use one finger to pan; wheel, pinch, plus, or minus to zoom; arrow keys pan; Home or F fits visible nodes; Enter centers the selected node; Escape clears selection. Use the Research details visible-node navigator for screen-reader exploration."></canvas>
+        <div class="axis-caption"><span>source-bound observation</span><b>semantic commitment <small>Classification, not sequence</small></b><span>exact product contract</span></div>
+        <canvas id="minimap" width="220" height="126" role="img" aria-label="Graph overview"></canvas>
+        <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+        <div class="loading" id="loading">
+          <span></span>
+          Reading canonical graph
+        </div>
+      </div>
+      <footer class="map-warning">
+        Runtime/focus classification does not mean selected, integrated, product-ready, source-validated, or proven compatible. Lines are typed candidate incidences.
+      </footer>
+    </section>
+
+    <aside class="inspector" id="inspector" aria-live="polite" aria-label="Selected contract inspector"></aside>
+  </main>
+
+  <div id="liveStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

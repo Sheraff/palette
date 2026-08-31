@@ -1,0 +1,1558 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.02-raster-color-publication.v1",
+  "title": "Raster, color, and publication custody",
+  "description": "Typed artifact contracts and mechanism ports for every mechanism in Section 2 of the v4 mechanism census.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.source.encoded-opaque-image.v1",
+      "productFocus": "product-flow",
+      "label": "Supplied encoded opaque image",
+      "description": "The exact supplied encoded image file whose declared content has no genuine transparency.",
+      "category": "encoded-source",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Defined from the encoded opaque file input at research/v4/MECHANISMS.md:89."
+      ],
+      "provenanceNotes": [
+        "The file bytes are externally supplied and remain the hashable source of truth."
+      ]
+    },
+    {
+      "id": "artifact.source.encoded-image.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Supplied encoded image",
+      "description": "An exact supplied encoded image file accepted by the historical working-copy loader, including files whose decode may expose alpha.",
+      "category": "encoded-source",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Defined from the encoded source input at research/v4/MECHANISMS.md:108-110."
+      ],
+      "provenanceNotes": [
+        "This source contract does not imply that a resampled decode preserves native evidence."
+      ]
+    },
+    {
+      "id": "artifact.configuration.native-opaque-decode.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Native opaque decode configuration",
+      "description": "Pinned EXIF orientation, decoder, preprocessing, color-management, native-size, channel, and pixel-bound settings for opaque decode.",
+      "category": "configuration",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the behavior-affecting decode policy in research/v4/MECHANISMS.md:87-93 a first-class input."
+      ],
+      "provenanceNotes": [
+        "The configuration identity must distinguish decoder upgrades and preprocessing changes."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.custody.native-decode-provenance.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Native decode provenance",
+      "description": "Dimensions, decoder and preprocessing identity, source content hash, and encoded byte count for one native opaque decode.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Carries the metadata enumerated by research/v4/MECHANISMS.md:89-90."
+      ],
+      "provenanceNotes": [
+        "The record is specific to one supplied file and one identified decode configuration."
+      ]
+    },
+    {
+      "id": "artifact.configuration.fixed-working-copy.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Fixed working-copy configuration",
+      "description": "Declared orientation, alpha flattening, sRGB conversion, max-edge-224, and Lanczos3 settings for the historical region-graph loader.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes every setting listed at research/v4/MECHANISMS.md:108-110 explicit."
+      ],
+      "provenanceNotes": [
+        "Kernel, edge bound, orientation, color conversion, and matte behavior are consequential configuration identity."
+      ]
+    },
+    {
+      "id": "artifact.raster.working-srgb8-max-edge-224-lanczos3.v1",
+      "productFocus": "product-flow",
+      "label": "Max-edge-224 Lanczos3 sRGB8 working raster",
+      "description": "A three-channel opaque sRGB8 discovery raster resized with the historical max-edge-224 Lanczos3 policy and distinct from native source truth.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The historical region-graph and SLIC path used this exact max-edge-224 Lanczos3 working raster; current runtime use remains prohibited by the native/no-resampling policy."
+      ],
+      "provenanceNotes": [
+        "Carries source identity, working dimensions, kernel, orientation, color conversion, and flattening policy; it must never be substituted for the native raster type."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-srgb8-alpha.v1",
+      "productFocus": "product-flow",
+      "label": "Native alpha-bearing sRGB8 raster",
+      "description": "A native-dimension 8-bit sRGB raster with a genuine alpha channel whose transparency semantics remain intact.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This is the alpha-bearing raster input required by research/v4/MECHANISMS.md:129-130."
+      ],
+      "provenanceNotes": [
+        "Section 2 defines no producer that decodes an encoded file into this alpha-preserving contract."
+      ]
+    },
+    {
+      "id": "artifact.configuration.transparency-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Transparency policy configuration",
+      "description": "A declared refusal-or-flatten policy, including matte color when flattening is selected and a stable policy identity.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Represents the declared policy input and conditional matte at research/v4/MECHANISMS.md:129-130."
+      ],
+      "provenanceNotes": [
+        "The policy identity must accompany either refusal or flattening so the content decision is not silent."
+      ]
+    },
+    {
+      "id": "artifact.decision.transparency-refusal.v1",
+      "productFocus": "product-flow",
+      "label": "Declared transparency refusal",
+      "description": "A policy-identified refusal result for a genuinely transparent raster.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Terminates processing of an alpha-bearing input under the declared refusal policy.",
+      "sourceNotes": [
+        "Represents the permitted declared-refusal outcome in research/v4/MECHANISMS.md:121-134."
+      ],
+      "provenanceNotes": [
+        "The result retains the transparency policy identity and does not claim an opaque raster was produced."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-srgb8-matte-flattened.v1",
+      "productFocus": "product-flow",
+      "label": "Native matte-flattened sRGB8 raster",
+      "description": "A native-dimension opaque sRGB8 raster derived from alpha compositing and explicitly bound to its matte color and policy identity.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the historical matte-flattened output at research/v4/MECHANISMS.md:121-134."
+      ],
+      "provenanceNotes": [
+        "The matte becomes image evidence; this contract is distinct from both native opaque source truth and alpha-bearing input."
+      ]
+    },
+    {
+      "id": "artifact.configuration.oklab-conversion.v1",
+      "productFocus": "inspector-metadata",
+      "label": "OKLab conversion configuration",
+      "description": "A versioned sRGB-to-OKLab conversion contract covering numerical precision and gamut behavior.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the precision and gamut-clipping version requirement at research/v4/MECHANISMS.md:146-147 explicit."
+      ],
+      "provenanceNotes": [
+        "Conversion outputs must retain this configuration identity for deterministic comparison."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-oklab-float.v1",
+      "productFocus": "product-flow",
+      "label": "Native OKLab pixel raster",
+      "description": "One floating OKLab triple for every native source pixel in unchanged pixel order and cardinality.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Produced by color.oklab-working-space from the native opaque raster and required by family quantization, robust native fitting, and continuous surround mechanisms."
+      ],
+      "provenanceNotes": [
+        "Must retain the native raster identity and one-to-one pixel correspondence; it is not a working-raster conversion."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-oklab-matte-flattened.v1",
+      "productFocus": "product-flow",
+      "label": "Native-lattice matte-flattened OKLab pixel raster",
+      "description": "One floating OKLab triple for every pixel of a native-dimension matte-flattened raster, retaining the matte and policy identity.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This branch preserves native lattice order but is not native opaque source evidence because the matte has altered pixel values."
+      ],
+      "provenanceNotes": [
+        "Retains the alpha source, matte color, transparency policy, conversion identity, dimensions, and one-to-one pixel order."
+      ]
+    },
+    {
+      "id": "artifact.raster.working-oklab-declared.v1",
+      "productFocus": "product-flow",
+      "label": "Declared discovery-raster OKLab samples",
+      "description": "OKLab samples on an explicitly declared non-native discovery lattice.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Produced by color.oklab-working-space only for an explicitly declared non-native discovery lattice and admitted as a distinct robust-fit alternative."
+      ],
+      "provenanceNotes": [
+        "Must bind its source raster, lattice, sampling, and color-conversion identities and cannot claim native-pixel cardinality."
+      ]
+    },
+    {
+      "id": "artifact.color.oklab-triple.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Individual OKLab color triple",
+      "description": "One floating-point OKLab color value with declared conversion and source or hypothesis provenance; it is not an ordered pixel plane.",
+      "category": "color",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Individual color comparisons require explicit values; the ordered per-pixel conversion is represented by raster-plane artifact types instead."
+      ],
+      "provenanceNotes": [
+        "A standalone color must retain its own source or hypothesis identity and cannot imply native pixel-plane cardinality."
+      ]
+    },
+    {
+      "id": "artifact.measurement.oklab-region-classification.v1",
+      "productFocus": "full-analysis-only",
+      "label": "OKLab identity region classification",
+      "description": "The declared dark-or-light and neutral-or-saturated region classification used to select an identity tolerance.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the region-classification input at research/v4/MECHANISMS.md:159-160."
+      ],
+      "provenanceNotes": [
+        "Hard region boundaries and the classification rule are consequential provenance."
+      ]
+    },
+    {
+      "id": "artifact.configuration.same-color-ruler.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Same-color ruler configuration",
+      "description": "Criterion-specific regional identity thresholds and a stable ruler identity for same-color judgments.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the calibrated regional threshold values in research/v4/MECHANISMS.md:157-162 first-class."
+      ],
+      "provenanceNotes": [
+        "The ruler is identity-specific and must not be silently reused for role functionality or source support."
+      ]
+    },
+    {
+      "id": "artifact.decision.same-color-judgment.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Same-color judgment",
+      "description": "A same-or-different identity decision paired with the applied regional threshold identity.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the judgment and threshold identity output at research/v4/MECHANISMS.md:159-160."
+      ],
+      "provenanceNotes": [
+        "The result identifies both the region classification and the exact ruler configuration used."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.source-supported-color.v1",
+      "productFocus": "product-flow",
+      "label": "Source-supported color hypothesis",
+      "description": "A color hypothesis with registered observed-source support and lineage sufficient to seek an exact native witness.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the source-supported color hypothesis input at research/v4/MECHANISMS.md:173-174."
+      ],
+      "provenanceNotes": [
+        "Source support alone does not assert belonging, representativeness, or role correctness."
+      ]
+    },
+    {
+      "id": "artifact.configuration.exact-native-pixel-publication.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Exact native-pixel publication configuration",
+      "description": "The declared ordinary-role and stop publication policy requiring literal native source pixels and preserving alias provenance.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the ordinary exact-pixel rule in research/v4/MECHANISMS.md:166-180 an explicit policy input."
+      ],
+      "provenanceNotes": [
+        "Policy identity distinguishes literal publication from centroid, interpolation, or generated-average output."
+      ]
+    },
+    {
+      "id": "artifact.custody.exact-native-pixel-witness.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Exact native-pixel witness",
+      "description": "A literal RGB triple with native pixel index and coordinates, source hash, lineage, and alias-specific mask or provenance where applicable.",
+      "category": "custody",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the exact publication record specified at research/v4/MECHANISMS.md:166-180."
+      ],
+      "provenanceNotes": [
+        "Exact existence is mechanical custody only and does not prove semantic quality or role fitness."
+      ]
+    },
+    {
+      "id": "artifact.treatment.complete-role-tuple.v1",
+      "productFocus": "product-flow",
+      "label": "Complete role tuple",
+      "description": "A complete background, surface, foreground, and accent color tuple before explicit collapse legality and final contract metadata are attached.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the treatment input at research/v4/MECHANISMS.md:190 and complete role tuple at :221."
+      ],
+      "provenanceNotes": [
+        "Completeness of the tuple does not imply source-connectedness, explicit collapse, legality, or product quality."
+      ]
+    },
+    {
+      "id": "artifact.custody.source-registry.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Source registry",
+      "description": "A registry of observed evidence and registered paths for fields, role directions, families, representatives, and published colors.",
+      "category": "custody",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the per-image source-registry input at research/v4/MECHANISMS.md:188-191; the census names no separate producer, so this remains an internal runtime gap."
+      ],
+      "provenanceNotes": [
+        "Registry membership records historical observed paths and may include abstractions weaker than exact-pixel custody."
+      ]
+    },
+    {
+      "id": "artifact.configuration.source-connected-lineage.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Source-connected lineage configuration",
+      "description": "The historical descriptor coverage and eligibility rules used to evaluate source-connected treatment custody.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the registered-path eligibility rule in research/v4/MECHANISMS.md:182-195 explicit."
+      ],
+      "provenanceNotes": [
+        "The configuration is historical and must not be mistaken for the current ordinary exact-pixel contract."
+      ]
+    },
+    {
+      "id": "artifact.custody.source-connected-lineage-record.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Source-connected lineage record",
+      "description": "Per-descriptor source-connection booleans and an eligible-or-ineligible historical lineage result for one treatment.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the historical lineage output at research/v4/MECHANISMS.md:190-195."
+      ],
+      "provenanceNotes": [
+        "Eligibility under this record is weaker than an exact native-pixel witness and does not prove quality."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.complete-infeasible-source-domain.v1",
+      "productFocus": "product-flow",
+      "label": "Complete infeasible source domain",
+      "description": "A complete source-supported treatment domain for which no legal two-color treatment remains under the declared search boundary.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the complete infeasible source domain input at research/v4/MECHANISMS.md:205-206."
+      ],
+      "provenanceNotes": [
+        "Completeness and infeasibility are scoped claims; they cannot establish the semantic phrase genuinely no other way."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.exact-black-white-emergency.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Exact black-or-white emergency diagnosis",
+      "description": "An exact diagnosis carrying generated-color absence, supported-pair counts, contrast evidence, and the diagnosed emergency placement.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the exact emergency diagnosis input at research/v4/MECHANISMS.md:205-206."
+      ],
+      "provenanceNotes": [
+        "The diagnosis retains the evidence needed to validate the structural emergency shadow."
+      ]
+    },
+    {
+      "id": "artifact.configuration.black-white-escape.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Black-or-white escape configuration",
+      "description": "The declared emergency policy restricting generation to exactly one absent pure black or white role and requiring its partner to collapse.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the exact emergency form in research/v4/MECHANISMS.md:197-211 a first-class policy input."
+      ],
+      "provenanceNotes": [
+        "The policy identity is required to distinguish this narrow escape from eager generated-color fallback."
+      ]
+    },
+    {
+      "id": "artifact.treatment.black-white-emergency-escape.v1",
+      "productFocus": "product-flow",
+      "label": "Declared black-or-white emergency escape treatment",
+      "description": "A complete declared emergency treatment containing exactly one absent pure black or white color in background or foreground, its collapsed partner, pair counts, and contrast evidence.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.exact-product-contract",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the escape-treatment branch at research/v4/MECHANISMS.md:197-211."
+      ],
+      "provenanceNotes": [
+        "This emergency contract remains distinct from ordinary exact-native publication and from a generic collapse result."
+      ]
+    },
+    {
+      "id": "artifact.decision.black-white-escape-abstention.v1",
+      "productFocus": "product-flow",
+      "label": "Black-or-white escape abstention",
+      "description": "An explicit no-escape result retaining the supported-pair counts and contrast evidence considered by emergency arbitration.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Records explicit abstention instead of manufacturing an emergency treatment.",
+      "sourceNotes": [
+        "Represents the abstention branch at research/v4/MECHANISMS.md:205-206."
+      ],
+      "provenanceNotes": [
+        "Abstention retains the exact diagnosis and policy identity that prevented escape publication."
+      ]
+    },
+    {
+      "id": "artifact.configuration.explicit-collapse.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Explicit collapse configuration",
+      "description": "The exact equality, flag-consistency, role-cardinality, and collapsed-surface gradient legality rules for role collapse.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the explicit flag and legality contract at research/v4/MECHANISMS.md:213-225 a first-class input."
+      ],
+      "provenanceNotes": [
+        "The rules distinguish deliberate equality from an accidental duplicate hex value."
+      ]
+    },
+    {
+      "id": "artifact.decision.explicit-role-collapse.v1",
+      "productFocus": "product-flow",
+      "label": "Explicit role-collapse result",
+      "description": "Exact surface-to-background and accent-to-foreground collapse flags, resulting role cardinality, and a legality result for one complete role tuple.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.exact-product-contract",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the collapse flags, cardinality, and legality output at research/v4/MECHANISMS.md:221-224."
+      ],
+      "provenanceNotes": [
+        "This contract is distinct from the emergency escape form and records invalid unflagged equality explicitly."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "raster.native-opaque-decode",
+      "focusClass": "product-transformation",
+      "title": "Native opaque raster custody",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `raster.native-opaque-decode` - Native opaque raster custody",
+        "headingLine": 82
+      },
+      "capabilityIds": [
+        "capability.native-source-custody",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.native-source-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `live` policy and tested decode path; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "encoded-file",
+          "label": "Encoded opaque file",
+          "artifactTypeId": "artifact.source.encoded-opaque-image.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The supplied bytes must satisfy the opaque-file input contract; genuine transparency belongs to the separate transparency-policy mechanism."
+          ]
+        },
+        {
+          "id": "decode-config",
+          "label": "Pinned native decode configuration",
+          "artifactTypeId": "artifact.configuration.native-opaque-decode.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes orientation, decoder and preprocessing identity, color-management interpretation, channel contract, native-size rule, and pixel bound."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "native-raster",
+          "label": "Native opaque raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The output is bounded by the declared pixel limit and contains exactly three opaque sRGB8 channels at native dimensions."
+          ],
+          "notes": [
+            "No resampling occurs; this is the source-of-truth raster rather than a discovery copy."
+          ]
+        },
+        {
+          "id": "decode-provenance",
+          "label": "Decode provenance",
+          "artifactTypeId": "artifact.custody.native-decode-provenance.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The record is complete for the emitted raster and supplied encoded file."
+          ],
+          "notes": [
+            "Carries dimensions, decode and preprocessing identity, content hash, and encoded byte count."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "raster.fixed-working-copy",
+      "focusClass": "historical-comparator",
+      "title": "Bounded discovery raster",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `raster.fixed-working-copy` - Bounded discovery raster",
+        "headingLine": 98
+      },
+      "capabilityIds": [
+        "capability.native-source-custody",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.native-source-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded cost utility and `inconclusive` for discovery fidelity; implementation state `live` in the historical region-graph loader; evidence scope `mechanical` and `perturbation`; runtime admissibility `prohibited` by the unsuperseded native/no-resampling policy.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "perturbation"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "encoded-source",
+          "label": "Encoded source",
+          "artifactTypeId": "artifact.source.encoded-image.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The region-graph loader decodes this source itself; the root extractor's already-decoded input is not this mechanism output."
+          ]
+        },
+        {
+          "id": "working-copy-config",
+          "label": "Working-copy configuration",
+          "artifactTypeId": "artifact.configuration.fixed-working-copy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Orientation, flattening, sRGB conversion, max-edge-224, and Lanczos3 are explicit and consequential."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "working-raster",
+          "label": "Resampled region-graph working raster",
+          "artifactTypeId": "artifact.raster.working-srgb8-max-edge-224-lanczos3.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The output is a bounded three-channel raster even when interpolation has erased or invented evidence."
+          ],
+          "notes": [
+            "Native snapping of a later color cannot restore topology, typography, candidates, or ownership lost here."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "raster.transparency-policy",
+      "focusClass": "product-transformation",
+      "title": "Transparency refusal or matte flattening",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `raster.transparency-policy` - Transparency refusal or matte flattening",
+        "headingLine": 121
+      },
+      "capabilityIds": [
+        "capability.native-source-custody",
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.native-source-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive` for domain policy; implementation state `historical` flattening and `live` refusal policy; evidence scope `mechanical`; runtime admissibility `prohibited` for silent flattening and `permitted` for declared refusal.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical",
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited",
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "outputGroups": [
+        {
+          "id": "transparency-outcome",
+          "portIds": [
+            "refusal",
+            "matte-raster"
+          ],
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "A declared policy invocation returns exactly one refusal or one matte-flattened raster, never both and never neither."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "alpha-raster",
+          "label": "Alpha-bearing raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-alpha.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "This fragment has no alpha-preserving decode producer, so the artifact contract is an unresolved external root."
+          ]
+        },
+        {
+          "id": "transparency-policy",
+          "label": "Declared transparency policy",
+          "artifactTypeId": "artifact.configuration.transparency-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Exactly one refusal-or-flatten policy is declared; flattening includes the matte color."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "refusal",
+          "label": "Declared refusal",
+          "artifactTypeId": "artifact.decision.transparency-refusal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for the refusal branch and absent for declared matte flattening."
+          ],
+          "terminalPurpose": "Records the declared policy refusal without manufacturing opaque image evidence.",
+          "notes": [
+            "Refusal excludes the alpha-bearing source from further product processing under this policy."
+          ]
+        },
+        {
+          "id": "matte-raster",
+          "label": "Matte-flattened opaque raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-matte-flattened.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for the flattening branch and absent for refusal; the matte and policy identity are bound into the value."
+          ],
+          "notes": [
+            "Flattening destroys alpha semantics and may manufacture the dominant field."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "color.oklab-working-space",
+      "focusClass": "product-transformation",
+      "title": "sRGB to OKLab evidence conversion",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `color.oklab-working-space` - sRGB to OKLab evidence conversion",
+        "headingLine": 136
+      },
+      "capabilityIds": [
+        "capability.native-source-custody",
+        "capability.pixel-and-color-measurement",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.native-source-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for deterministic conversion and `inconclusive` as a complete perceptual model; implementation state `live` and tested; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "source-raster",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Choose one native opaque, native-lattice matte-derived, or declared resampled sRGB8 raster without collapsing their custody domains."
+          ]
+        }
+      ],
+      "outputGroups": [
+        {
+          "id": "converted-plane",
+          "portIds": [
+            "native-oklab",
+            "matte-oklab",
+            "working-oklab"
+          ],
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Exactly one ordered plane variant is emitted, matching the selected raster-custody branch."
+          ]
+        }
+      ],
+      "conditionalConstraints": [
+        {
+          "id": "native-branch",
+          "if": [
+            {
+              "subject": {
+                "direction": "input",
+                "portId": "native-raster",
+                "valuePath": ""
+              },
+              "comparator": "present"
+            }
+          ],
+          "then": [
+            {
+              "subject": {
+                "direction": "output",
+                "portId": "native-oklab",
+                "valuePath": ""
+              },
+              "comparator": "present"
+            }
+          ],
+          "notes": [
+            "Only the native opaque input can emit the native source-pixel OKLab plane."
+          ]
+        },
+        {
+          "id": "matte-branch",
+          "if": [
+            {
+              "subject": {
+                "direction": "input",
+                "portId": "matte-raster",
+                "valuePath": ""
+              },
+              "comparator": "present"
+            }
+          ],
+          "then": [
+            {
+              "subject": {
+                "direction": "output",
+                "portId": "matte-oklab",
+                "valuePath": ""
+              },
+              "comparator": "present"
+            }
+          ],
+          "notes": [
+            "Matte-derived pixels remain type-distinct even though their lattice is native-sized."
+          ]
+        },
+        {
+          "id": "working-branch",
+          "if": [
+            {
+              "subject": {
+                "direction": "input",
+                "portId": "working-raster",
+                "valuePath": ""
+              },
+              "comparator": "present"
+            }
+          ],
+          "then": [
+            {
+              "subject": {
+                "direction": "output",
+                "portId": "working-oklab",
+                "valuePath": ""
+              },
+              "comparator": "present"
+            }
+          ],
+          "notes": [
+            "A resampled working raster emits only a working-lattice OKLab plane and never native evidence."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "native-raster",
+          "label": "Native opaque raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "source-raster",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "The normative source-raster alternative preserves once-decoded opaque native custody."
+          ]
+        },
+        {
+          "id": "matte-raster",
+          "label": "Declared matte-flattened raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-matte-flattened.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "source-raster",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "This historical alternative remains explicitly matte-bound and is not native opaque source truth."
+          ]
+        },
+        {
+          "id": "working-raster",
+          "label": "Max-edge-224 Lanczos3 working raster",
+          "artifactTypeId": "artifact.raster.working-srgb8-max-edge-224-lanczos3.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "source-raster",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "This historical discovery alternative is resampled and can never emit a native-lattice source-evidence type."
+          ]
+        },
+        {
+          "id": "conversion-config",
+          "label": "OKLab conversion configuration",
+          "artifactTypeId": "artifact.configuration.oklab-conversion.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Numerical precision and gamut behavior are versioned rather than hidden implementation choices."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "native-oklab",
+          "label": "Ordered native-source OKLab pixel plane",
+          "artifactTypeId": "artifact.raster.native-oklab-float.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for native opaque input; contains exactly one finite float triple per native source pixel in unchanged order."
+          ],
+          "notes": [
+            "The source RGB raster remains intact and all native consumers share this aggregate ordered-plane contract."
+          ]
+        },
+        {
+          "id": "matte-oklab",
+          "label": "Ordered matte-derived OKLab pixel plane",
+          "artifactTypeId": "artifact.raster.native-oklab-matte-flattened.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for native-lattice matte-flattened input; pixel order and count are retained but values are matte-derived."
+          ],
+          "notes": [
+            "This branch cannot satisfy consumers that require native opaque source-pixel evidence."
+          ]
+        },
+        {
+          "id": "working-oklab",
+          "label": "Ordered working-lattice OKLab pixel plane",
+          "artifactTypeId": "artifact.raster.working-oklab-declared.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for the max-edge-224 Lanczos3 working raster and preserves that resampled lattice's order and cardinality."
+          ],
+          "notes": [
+            "Interpolation provenance remains explicit; this output is not native source evidence."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "color.same-color-ruler",
+      "focusClass": "evaluation-probe",
+      "title": "Region-dependent identity tolerance",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `color.same-color-ruler` - Region-dependent identity tolerance",
+        "headingLine": 151
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for the regional ruler and `falsified` for the pooled scalar formulation; implementation state `instrument` and tested; evidence scope `isolated-semantic`; runtime admissibility `permitted` as a declared measurement.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "first-color",
+          "label": "First OKLab color",
+          "artifactTypeId": "artifact.color.oklab-triple.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The first color is compared for identity only, not accent functionality or source support."
+          ]
+        },
+        {
+          "id": "second-color",
+          "label": "Second OKLab color",
+          "artifactTypeId": "artifact.color.oklab-triple.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The second color uses the same declared OKLab value contract as the first."
+          ]
+        },
+        {
+          "id": "region",
+          "label": "Color-region classification",
+          "artifactTypeId": "artifact.measurement.oklab-region-classification.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The dark-or-light and neutral-or-saturated classification selects the applicable regional ruler."
+          ]
+        },
+        {
+          "id": "ruler-config",
+          "label": "Same-color ruler configuration",
+          "artifactTypeId": "artifact.configuration.same-color-ruler.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The applied threshold and ruler identity are declared and criterion-specific."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "judgment",
+          "label": "Same-or-different judgment",
+          "artifactTypeId": "artifact.decision.same-color-judgment.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The value is exactly one same-or-different decision with no ambiguous third state under valid inputs."
+          ],
+          "notes": [
+            "The output records the threshold identity so hard regional cliffs remain inspectable."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "publication.exact-native-pixel",
+      "focusClass": "product-admission",
+      "title": "Exact-pixel publication",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `publication.exact-native-pixel` - Exact-pixel publication",
+        "headingLine": 166
+      },
+      "capabilityIds": [
+        "capability.native-source-custody",
+        "capability.exact-ui-treatment-contract",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.native-source-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `live` policy and validator; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "color-hypothesis",
+          "label": "Source-supported color hypothesis",
+          "artifactTypeId": "artifact.hypothesis.source-supported-color.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The hypothesis must carry registered support sufficient to resolve one literal native pixel."
+          ]
+        },
+        {
+          "id": "publication-config",
+          "label": "Exact-pixel publication configuration",
+          "artifactTypeId": "artifact.configuration.exact-native-pixel-publication.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The ordinary-role and stop policy excludes publication of centroids, interpolations, and generated averages."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "native-witness",
+          "label": "Exact native-pixel witness",
+          "artifactTypeId": "artifact.custody.exact-native-pixel-witness.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The result always identifies one exact RGB value, native index and coordinates, source hash, and lineage for a valid input hypothesis."
+          ],
+          "notes": [
+            "Aliases may share RGB while retaining distinct masks or provenance; witness existence alone does not prove semantic fitness."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "publication.source-connected-lineage",
+      "focusClass": "historical-comparator",
+      "title": "Historical source-connected custody",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `publication.source-connected-lineage` - Historical source-connected custody",
+        "headingLine": 182
+      },
+      "capabilityIds": [
+        "capability.native-source-custody",
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.native-source-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for historical lineage checks; implementation state `historical`; evidence scope `mechanical`; runtime admissibility `permitted` only as weaker historical custody, not as the current publication contract.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "treatment",
+          "label": "Complete role treatment",
+          "artifactTypeId": "artifact.treatment.complete-role-tuple.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The treatment may contain historical abstractions or emergency paths and is not assumed to satisfy current exact-pixel publication."
+          ]
+        },
+        {
+          "id": "source-registry",
+          "label": "Source registry",
+          "artifactTypeId": "artifact.custody.source-registry.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The registry supplies observed paths for every descriptor class checked by the historical rule."
+          ]
+        },
+        {
+          "id": "lineage-config",
+          "label": "Source-connected lineage configuration",
+          "artifactTypeId": "artifact.configuration.source-connected-lineage.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Coverage and eligibility semantics are explicit historical policy rather than the current exact-native contract."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "lineage-record",
+          "label": "Source-connected lineage record",
+          "artifactTypeId": "artifact.custody.source-connected-lineage-record.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The result is explicitly eligible or ineligible and retains one boolean for each checked descriptor."
+          ],
+          "notes": [
+            "Passing historical lineage does not prove exact-native publication or treatment quality."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "publication.black-white-escape",
+      "focusClass": "product-transformation",
+      "title": "Declared one-color emergency escape",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `publication.black-white-escape` - Declared one-color emergency escape",
+        "headingLine": 197
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.exact-ui-treatment-contract",
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for structural legality and `inconclusive` for semantic necessity; implementation state `live` policy and validator; evidence scope `mechanical`; runtime admissibility `permitted` only for the declared emergency form.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "outputGroups": [
+        {
+          "id": "escape-outcome",
+          "portIds": [
+            "escape-treatment",
+            "abstention"
+          ],
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "The complete diagnosis yields exactly one declared emergency treatment or one explicit abstention."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "infeasible-domain",
+          "label": "Complete infeasible source domain",
+          "artifactTypeId": "artifact.candidate-set.complete-infeasible-source-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The domain must be complete under its declared boundary and contain no source-supported legal two-color treatment."
+          ]
+        },
+        {
+          "id": "emergency-diagnosis",
+          "label": "Exact emergency diagnosis",
+          "artifactTypeId": "artifact.diagnostic.exact-black-white-emergency.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The diagnosis includes generated-color absence, supported-pair counts, contrast evidence, and placement."
+          ]
+        },
+        {
+          "id": "escape-config",
+          "label": "Emergency escape configuration",
+          "artifactTypeId": "artifact.configuration.black-white-escape.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Exactly one absent pure black or white may be introduced only in background or foreground with its partner collapsed."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "escape-treatment",
+          "label": "Declared emergency escape treatment",
+          "artifactTypeId": "artifact.treatment.black-white-emergency-escape.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only when the exact diagnosis and policy license the declared emergency form; otherwise absent."
+          ],
+          "notes": [
+            "The value includes supported-pair counts and contrast evidence but cannot prove semantic necessity."
+          ]
+        },
+        {
+          "id": "abstention",
+          "label": "Escape abstention",
+          "artifactTypeId": "artifact.decision.black-white-escape-abstention.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present when no escape treatment is emitted; mutually exclusive with the escape-treatment output."
+          ],
+          "terminalPurpose": "Records a deliberate no-treatment outcome instead of eager emergency generation.",
+          "notes": [
+            "The value retains the diagnosis evidence and the reason emergency publication was withheld."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "publication.explicit-collapse",
+      "focusClass": "product-transformation",
+      "title": "Exact role collapse",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `publication.explicit-collapse` - Exact role collapse",
+        "headingLine": 213
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.exact-ui-treatment-contract",
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for contract representation and `inconclusive` for semantic election; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "role-tuple",
+          "label": "Complete role tuple",
+          "artifactTypeId": "artifact.treatment.complete-role-tuple.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "All four role values are present before collapse flags and legality are derived."
+          ]
+        },
+        {
+          "id": "collapse-config",
+          "label": "Explicit collapse configuration",
+          "artifactTypeId": "artifact.configuration.explicit-collapse.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The configuration defines flag consistency, allowed role equalities, resulting cardinality, and gradient legality."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "collapse-result",
+          "label": "Explicit role-collapse result",
+          "artifactTypeId": "artifact.decision.explicit-role-collapse.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The legality state is valid or invalid; unflagged equal colors are invalid rather than silently collapsed."
+          ],
+          "notes": [
+            "The result includes exact collapse flags and role cardinality, and a collapsed surface forbids a non-degenerate gradient."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "This fragment asserts typed candidate compatibility only; it adds no graph bindings, architecture, runtime pipeline, dependency order, or build order.",
+    "Native opaque, resampled, alpha-bearing, matte-flattened, exact-native witness, source-connected lineage, emergency escape, and explicit collapse contracts remain distinct artifact types.",
+    "All supplied encoded source and configuration artifacts are expected external roots; the alpha-bearing decoded raster is unresolved external because Section 2 supplies no alpha-preserving decode producer."
+  ]
+}

@@ -1,0 +1,2867 @@
+{
+  "$schema": "https://palette.local/research/v4/capability-graph/schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.07-validation-review.v1",
+  "title": "Section 7 validators, robustness, review, and provenance",
+  "description": "Complete artifact typings for the 17 mechanisms in MECHANISMS.md Section 7, preserving validation, development diagnostics, review custody, known-good projections, and privileged upper bounds as distinct contracts.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.encoded-source.exact-input-bytes.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Exact input bytes",
+      "description": "Byte-exact supplied input used for replay, cache identity, and custody without filename or corpus lookup semantics.",
+      "category": "encoded-source",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.2, 7.9, and 7.15 require exact source or input bytes."
+      ],
+      "provenanceNotes": [
+        "Content identity is byte-derived; paths and prefix IDs are not identity substitutes."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.product.ui-palette.v3",
+      "productFocus": "product-flow",
+      "label": "Exact v3 UI Palette product contract",
+      "description": "The published v3 Palette contract with complete four-role treatment, collapse state, optional rendered field, exact-pixel rules, and required contract metadata.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.exact-product-contract",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "product-goal",
+      "sourceNotes": [
+        "MECHANISMS.md 7.1 accepts one complete treatment for structural validation."
+      ],
+      "provenanceNotes": [
+        "This product-goal artifact is intentionally input-only in this fragment; Section 7 does not produce a palette."
+      ]
+    },
+    {
+      "id": "artifact.custody.source-identity-envelope.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Exact source identity envelope",
+      "description": "Harness-side source path, content hash, rendition, dimensions, and custody mapping needed for review or provenance operations.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "STRATEGY.md 4, 5, and 7 require exact source and rendition custody."
+      ],
+      "provenanceNotes": [
+        "The envelope is available only to custody or review harness operations, never as a mechanism identity shortcut."
+      ]
+    },
+    {
+      "id": "artifact.configuration.renderer-identity.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Pinned renderer identity",
+      "description": "Renderer implementation, version, configuration, and rendition contract used by validation or blinded review.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.1, 7.12, and 7.13 require a resolved or pinned renderer."
+      ],
+      "provenanceNotes": [
+        "Renderer changes create a new configuration identity."
+      ]
+    },
+    {
+      "id": "artifact.measurement.native-color-occupancy.v1",
+      "productFocus": "product-flow",
+      "label": "Native color occupancy",
+      "description": "Source-bound occupancy witnesses for colors in the native raster.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.1 requires native occupancy for source-color checks."
+      ],
+      "provenanceNotes": [
+        "Measurements retain native-raster and color-space identity."
+      ]
+    },
+    {
+      "id": "artifact.configuration.resolved-contract-constants.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Resolved contract constants",
+      "description": "Frozen exact-pixel, contrast, gradient, collapse, and escape constants for one contract revision.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.1 requires resolved contract constants."
+      ],
+      "provenanceNotes": [
+        "The contract revision and every behavior-affecting value are explicit."
+      ]
+    },
+    {
+      "id": "artifact.report.contract-invariant-scorecard.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Contract invariant scorecard",
+      "description": "Pass/fail structural scorecard with named invariant violations and exact witnesses; it carries no aesthetic or semantic quality judgment.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Mechanical contract gate result, explicitly separate from human product-quality review.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.1 defines pass/fail and named violations, not quality authority."
+      ],
+      "provenanceNotes": [
+        "Each finding binds the treatment, constants, occupancy, and renderer identities."
+      ]
+    },
+    {
+      "id": "artifact.configuration.replay-computation-controls.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Replay computation controls",
+      "description": "Fixed code, configuration, preprocessing, decoder, environment, execution-order, and repeat-count declarations for one replay scope.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.2 scopes replay to the exact controls exercised."
+      ],
+      "provenanceNotes": [
+        "Uncontrolled decoders, schedules, float environments, relabeling, and iteration orders remain named exclusions."
+      ]
+    },
+    {
+      "id": "artifact.report.deterministic-replay.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Deterministic replay report",
+      "description": "Exact equality, first-divergence, and stop-the-line replay result under one frozen control envelope.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Determinism diagnostic; equality does not establish correctness or quality.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.2 defines same-byte repeat and order-invariance reporting."
+      ],
+      "provenanceNotes": [
+        "The report binds input bytes and the complete exercised control envelope."
+      ]
+    },
+    {
+      "id": "artifact.control.perturbation-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Controlled perturbation policy",
+      "description": "Declared re-encode, plus-or-minus-one-LSB dither, rendition-pair, stratification, and agreement classification policy.",
+      "category": "control",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.3 names controlled re-encodes, dithers, and rendition pairs."
+      ],
+      "provenanceNotes": [
+        "Every non-native transform, seed, and information change is declared."
+      ]
+    },
+    {
+      "id": "artifact.raster.controlled-rendition-pair.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Controlled rendition pair",
+      "description": "Two exact renditions of one source with accounted information and transform differences.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.3 permits controlled rendition-pair comparisons."
+      ],
+      "provenanceNotes": [
+        "Both byte identities, decoders, dimensions, and known transform differences are retained."
+      ]
+    },
+    {
+      "id": "artifact.report.perturbation-robustness.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Perturbation robustness report",
+      "description": "Per-role and treatment movement, changed-destination classes, and stratified exact or same-color agreement without aesthetic interpretation.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Development robustness diagnostic with agreement, disagreement, and move rates kept distinct.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.3 defines the robustness output classes."
+      ],
+      "provenanceNotes": [
+        "Results bind each transformed input to its unperturbed source and policy."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.frozen-corpus-run.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Frozen corpus run",
+      "description": "Immutable development run over a declared corpus, code identity, and configuration for sensitivity analysis.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.4 requires a frozen corpus or run."
+      ],
+      "provenanceNotes": [
+        "Run membership, source hashes, code, and configuration are fixed before outcomes are compared."
+      ]
+    },
+    {
+      "id": "artifact.configuration.parameter-registry.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Typed parameter registry",
+      "description": "Behavior-affecting parameters, caps, orderings, ties, units, valid domains, ownership, and provenance declarations.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.4 requires a parameter registry with type-aware valid values."
+      ],
+      "provenanceNotes": [
+        "Duplicated sites and covarying units remain visible rather than silently normalized."
+      ]
+    },
+    {
+      "id": "artifact.control.parameter-perturbation-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Parameter perturbation policy",
+      "description": "Frozen valid-value sweep, covariance, ordering, tie, cap, and reporting rules for sensitivity measurement.",
+      "category": "control",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.4 requires type-aware perturbation of every tunable behavior site."
+      ],
+      "provenanceNotes": [
+        "Invalid one-at-a-time sweeps and omitted correlated changes are explicitly ruled out or recorded."
+      ]
+    },
+    {
+      "id": "artifact.report.parameter-sensitivity.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Parameter sensitivity report",
+      "description": "Mover counts, role destinations, sensitivity curves, inert sites, cliffs, correlated changes, displacement, and provenance gaps.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Sensitivity diagnostic that does not decide which changed destination is better.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.4 defines the parameter and cap sensitivity census."
+      ],
+      "provenanceNotes": [
+        "Each result identifies the exact registry site, perturbation, run, and affected outputs."
+      ]
+    },
+    {
+      "id": "artifact.provenance.configured-source-roots.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Configured source roots",
+      "description": "Explicit repository-relative TypeScript and Python source roots presented to the numeric provenance scanner.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.6 requires configured TypeScript and Python roots."
+      ],
+      "provenanceNotes": [
+        "Skipped, excluded, and self-scan roots remain explicit."
+      ]
+    },
+    {
+      "id": "artifact.configuration.numeric-provenance-scan.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Numeric provenance scan configuration",
+      "description": "Language rules, named exclusions, nearby provenance tags, decision index, and deterministic report policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.6 defines exclusions, provenance tags, and a decision index."
+      ],
+      "provenanceNotes": [
+        "Configuration identifies the scanner revision and conservative classification rules."
+      ]
+    },
+    {
+      "id": "artifact.report.numeric-literal-provenance-scan.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Numeric literal provenance scan report",
+      "description": "Stable lower-bound findings, exclusions, tunable status, provenance classes, language fidelity, backlog, skipped files, limitations, and body hash.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "MECHANISMS.md 7.6 defines a deterministic lower-bound scanner report."
+      ],
+      "provenanceNotes": [
+        "The report includes scanner identity and source-root coverage; it does not claim complete behavior-site coverage."
+      ]
+    },
+    {
+      "id": "artifact.configuration.exported-behavior-surfaces.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Exported behavior surfaces",
+      "description": "Exported constants, configuration, policy declarations, enums, and generated configuration visible for reconciliation.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.5 requires exported configuration and declared policy surfaces."
+      ],
+      "provenanceNotes": [
+        "Generated and dependency-default surfaces identify their source and revision."
+      ]
+    },
+    {
+      "id": "artifact.provenance.behavior-surface-inventory.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Behavior surface inventory",
+      "description": "Independent inventory of branches, prompts, ties, ordering, seeds, conversions, decoders, corpus rules, caps, deduplication, and fallbacks.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.5 requires cross-surface behavior-site reconciliation beyond numeric literals."
+      ],
+      "provenanceNotes": [
+        "Coverage and explicitly uninspected surfaces are part of the inventory contract."
+      ]
+    },
+    {
+      "id": "artifact.provenance.author-parameter-declarations.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Author parameter declarations",
+      "description": "Named owner, unit, rationale, provenance, and intended policy declarations for behavior-affecting sites.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.5 includes author declarations in reconciliation."
+      ],
+      "provenanceNotes": [
+        "Declarations are evidence inputs, not authorization or proof that values are good."
+      ]
+    },
+    {
+      "id": "artifact.report.parameter-provenance-reconciliation.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Parameter provenance reconciliation",
+      "description": "Deterministic declared-only, code-only, anonymous, duplicated, or provenance-mismatched census with owners, units, gaps, and uncovered surfaces.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Independent behavior-site census; it neither chooses values nor grants authority.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.5 defines the full reconciliation output."
+      ],
+      "provenanceNotes": [
+        "Every input inventory revision and coverage limit is bound to the report."
+      ]
+    },
+    {
+      "id": "artifact.measurement.typed-observation-set.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Typed observation set",
+      "description": "Observations carrying declared unit, pairing, population, and design identity for an applicable statistical calculation.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.7 requires typed observations and design declarations."
+      ],
+      "provenanceNotes": [
+        "Types preserve declarations but do not prove that the declarations are true."
+      ]
+    },
+    {
+      "id": "artifact.configuration.statistical-design-declaration.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Statistical design declaration",
+      "description": "Method, minimum sample, correction, pairing, population, units, preregistration, and refusal conditions.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.7 requires design declarations and minimum-condition checks."
+      ],
+      "provenanceNotes": [
+        "Method and correction identities are frozen before result interpretation."
+      ]
+    },
+    {
+      "id": "artifact.statistic.provenance-carrying-inference.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Provenance-carrying statistical result",
+      "description": "Numeric result carrying method, sample size, corrections, assumptions, and caveats.",
+      "category": "statistic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Applicable typed inference result; it does not convert a proxy into product evidence.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.7 defines the successful typed statistical result."
+      ],
+      "provenanceNotes": [
+        "The result is emitted only when declared assumptions and minimum conditions are representable as satisfied."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.typed-statistical-refusal.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Typed statistical refusal",
+      "description": "Distinct no-number outcome naming failed assumptions, insufficient sample conditions, and applicable caveats.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Explicit statistical refusal with no numeric field.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.7 requires misuse to be unrepresentable as a numeric result."
+      ],
+      "provenanceNotes": [
+        "The refusal retains method and design identities without a numeric payload."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.sealed-natural-candidate-run.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Sealed natural candidate run",
+      "description": "Naturally produced candidate outputs joined by exact source identity and sealed before any protected review-custody join.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.8 and 7.10 require candidate or paired runs."
+      ],
+      "provenanceNotes": [
+        "No review field, target, expected output, or custody mapping is present in the sealed run."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.sealed-baseline-run.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Sealed baseline run",
+      "description": "Baseline outputs joined by exact source identity and sealed independently of protected review records.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.8 permits an optional baseline and 7.10 requires baseline outputs."
+      ],
+      "provenanceNotes": [
+        "The baseline is immutable and contains no review-derived encoding."
+      ]
+    },
+    {
+      "id": "artifact.configuration.same-color-rule.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Same-color comparison rule",
+      "description": "Frozen exact or declared same-color equivalence and comparison tolerances for adjudication.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.8 requires a same-color rule."
+      ],
+      "provenanceNotes": [
+        "Rule revision is reported with every destination classification."
+      ]
+    },
+    {
+      "id": "artifact.report.standing-evidence-adjudication.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Standing evidence adjudication report",
+      "description": "Per-item win, loss, or no-signal destinations, contradictions, era strata, reachability, movers, and explicit non-gating status without a score.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Non-gating prior-verdict destination diagnostic; it is not current quality evidence.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.8 requires exact destinations and gating set to none."
+      ],
+      "provenanceNotes": [
+        "Candidate output is sealed before the harness joins dated protected evidence."
+      ]
+    },
+    {
+      "id": "artifact.report.blast-radius-adjudication.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Blast-radius adjudication report",
+      "description": "Mover set, endorsement or known-worse destinations, unknowns, asymmetry, and census coverage with no aggregate winner.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Changed-destination accounting diagnostic; movement alone is not harm or improvement.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.10 defines changed-destination accounting."
+      ],
+      "provenanceNotes": [
+        "Paired outputs are sealed before protected records are joined by the evaluation harness."
+      ]
+    },
+    {
+      "id": "artifact.review.unresolved-mover-review-sample.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Unresolved mover review sample",
+      "description": "Preregistered unresolved changed-output sample handed to a separate human review process without an aggregate winner label.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "intentionalTerminalPurpose": "External human-review handoff for unresolved changed destinations.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.10 includes an unresolved review sample."
+      ],
+      "provenanceNotes": [
+        "Sampling policy, exposure, duplicate component, source hashes, and omitted movers are recorded."
+      ]
+    },
+    {
+      "id": "artifact.review.protected-warehouse-jsonl.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Protected append-only review warehouse",
+      "description": "File-ordered autosave snapshots with full verdict, comment, exposure, batch, item, and supersession custody.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.11 and STRATEGY.md 7 require append-only protected review custody."
+      ],
+      "provenanceNotes": [
+        "This protected store is harness-only and cannot enter natural, known-good consumer, cache, fitter, or runtime inputs."
+      ]
+    },
+    {
+      "id": "artifact.review.protected-latest-verdict-store.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Protected latest-verdict store",
+      "description": "Deduplicated latest verdicts by batch and item, retaining comments, endorsements, vetoes, exposures, and superseded history in protected custody.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "MECHANISMS.md 7.11 defines latest-verdict deduplication by batch and item."
+      ],
+      "provenanceNotes": [
+        "Only harness-side scoring and adjudication may read this store after candidate outputs are sealed."
+      ]
+    },
+    {
+      "id": "artifact.configuration.candidate-entry-point.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Candidate entry-point declaration",
+      "description": "Repository-local candidate entry point and resolution policy for dependency-closure measurement.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.9 requires a candidate entry point."
+      ],
+      "provenanceNotes": [
+        "The resolution policy and repository boundary are versioned."
+      ]
+    },
+    {
+      "id": "artifact.provenance.repository-local-source-closure.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Repository-local source closure",
+      "description": "Recursively resolved repository-local TypeScript import closure with exact file identities.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.9 requires recursive repository-local import closure."
+      ],
+      "provenanceNotes": [
+        "Unresolved, dynamic, generated, and external dependencies remain explicit limitations."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.content-addressed-cache-values.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Content-addressed development cache values",
+      "description": "Cached values keyed by exact input bytes and measured computation identity for stale-safe development reuse.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.9 includes cached values as development-loop inputs."
+      ],
+      "provenanceNotes": [
+        "Cache keys contain no review, source-identity shortcut, or expected-output field."
+      ]
+    },
+    {
+      "id": "artifact.provenance.development-run-manifest.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Development run manifest",
+      "description": "Complete immutable run membership, source byte identities, code closure, configuration, outputs, and failure states.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.9 compares two complete run manifests."
+      ],
+      "provenanceNotes": [
+        "Path joins retain a separately visible source-byte change flag."
+      ]
+    },
+    {
+      "id": "artifact.report.content-addressed-development-loop.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Content-addressed development-loop report",
+      "description": "Source-closure hash, stale-safe cache hits or misses, and deterministic changed, missing, failing, working, per-role, gradient, and collapse records.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Development cache and run-diff diagnostic; it orders attention but does not decide improvement.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.9 defines dependency-closed cache and run-diff outputs."
+      ],
+      "provenanceNotes": [
+        "The report binds entry point, measured closure, bytes, cache identity, and both manifests."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.immutable-mechanism-output.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Immutable mechanism-native output",
+      "description": "A mechanism output in its native semantic form with alternatives, uncertainty, abstention, and exact source witnesses.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.12 requires immutable source and mechanism artifacts."
+      ],
+      "provenanceNotes": [
+        "Mechanism, artifact schema, source bytes, and native witness identities are frozen before review."
+      ]
+    },
+    {
+      "id": "artifact.configuration.semantic-review-question.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Semantic review question contract",
+      "description": "Frozen semantic question, answer vocabulary, acceptance scope, ambiguity, no-answer, free-text, interpretation, and stop rules.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.12 and STRATEGY.md 5 require a frozen question contract."
+      ],
+      "provenanceNotes": [
+        "Question wording and answer affordances receive content identity before responses open."
+      ]
+    },
+    {
+      "id": "artifact.control.review-presentation.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Review presentation control",
+      "description": "Blinding claim, independent identifiability audit, ordered presentation, exposure tracking, and side or item randomization controls.",
+      "category": "control",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "STRATEGY.md 5 and 7 require audited presentation, blinding, and exposure controls."
+      ],
+      "provenanceNotes": [
+        "Every visible or inferable identity channel and randomization rule is recorded."
+      ]
+    },
+    {
+      "id": "artifact.review.protected-semantic-review-store.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Protected semantic-review store",
+      "description": "Append-only question-scoped acceptance, rejection, ambiguity, no-answer, free text, presentation identity, exposure, alternatives, and supersession custody.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Human semantic-review endpoint for the frozen mechanism question; it is not complete-treatment quality.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.12 and STRATEGY.md 5-7 define scoped semantic review custody."
+      ],
+      "provenanceNotes": [
+        "The protected store never enters a diagnostic consumer; only an independent minimal projection step may read it."
+      ]
+    },
+    {
+      "id": "artifact.rendering.complete-ui-treatment.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Rendered complete UI treatment",
+      "description": "Pinned-rendition joint rendering of the complete treatment, suitable for absolute or blinded pairwise product review.",
+      "category": "rendering",
+      "plane": "development",
+      "axisPositionId": "commitment.exact-product-contract",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.13 requires one or two rendered complete treatments."
+      ],
+      "provenanceNotes": [
+        "Treatment, source, renderer, rendition, and pixel output identities are frozen."
+      ]
+    },
+    {
+      "id": "artifact.control.complete-treatment-side-randomization.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Complete-treatment side randomization",
+      "description": "Frozen side assignment, concealment, absolute or pairwise mode, and reviewer separation controls.",
+      "category": "control",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.13 requires side randomization for pairwise review."
+      ],
+      "provenanceNotes": [
+        "The seed, assignment algorithm, and identifiability audit are recorded before review."
+      ]
+    },
+    {
+      "id": "artifact.review.protected-complete-treatment-quality.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Protected complete-treatment quality review",
+      "description": "Append-only absolute grades or pairwise preferences, comments, ambiguity, optional endorsed samples, exact rendition, and exposure custody.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Human product-quality endpoint for complete rendered treatments; it is separate from contract validity and semantic review.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.13 defines the complete-treatment human endpoint."
+      ],
+      "provenanceNotes": [
+        "This protected quality record cannot enter cold inference or be treated as unique ground truth."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.natural-producer-output.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Sealed natural producer output",
+      "description": "Naturally generated upstream semantic value, including uncertainty, abstention, invalidity, or out-of-domain state, sealed without any protected review field.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "STRATEGY.md 6.2 requires natural and known-good conditions to remain distinct."
+      ],
+      "provenanceNotes": [
+        "This natural output has no producer in this fragment and contains no reviewed target, custody mapping, or answer-equivalent encoding."
+      ]
+    },
+    {
+      "id": "artifact.configuration.declared-consumer-input-contract.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Declared consumer input contract",
+      "description": "Exact semantic value, uncertainty, abstention, coordinate, unit, source-witness, null, and out-of-domain fields accepted by one diagnostic consumer.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.14 and STRATEGY.md 6.1 require a declared consumer input contract."
+      ],
+      "provenanceNotes": [
+        "The contract excludes review identity, verdict, chronology, sibling cardinality, and downstream-answer fields."
+      ]
+    },
+    {
+      "id": "artifact.configuration.known-good-projection-schema.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Known-good projection schema",
+      "description": "Versioned minimal projection schema and target-sufficiency or metadata-channel audit rules for one declared consumer.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "STRATEGY.md 6.1 requires a content-hashed minimal schema and independent leakage audit."
+      ],
+      "provenanceNotes": [
+        "Any answer-recoverable standard projection fails rather than being relabeled."
+      ]
+    },
+    {
+      "id": "artifact.control.accepted-alternative-sampling.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Accepted-alternative sampling rule",
+      "description": "Frozen non-outcome-selected all-alternatives, risk-stratified, or budget-limited sampling and condition-matrix policy.",
+      "category": "control",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.14 and STRATEGY.md 6.2 require accepted-alternative sampling without best-outcome selection."
+      ],
+      "provenanceNotes": [
+        "Omitted cells, spread, worst cases, and every tested alternative remain reportable."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.known-good-minimal-projection.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Known-good minimal projection",
+      "description": "Content-hashed consumer-facing semantic value with only required uncertainty, abstention, coordinates, units, and source witnesses.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.14 defines the leak-audited minimal known-good projection as a declared consumer-facing handoff."
+      ],
+      "provenanceNotes": [
+        "It excludes the reviewed artifact, all custody fields, identifiers, verdicts, corrections, chronology, sibling metadata, and answer equivalents."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.sealed-known-good-consumer-result.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Sealed known-good consumer result",
+      "description": "Consumer output produced from one accepted minimal projection and sealed before the harness rejoins protected custody.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Conditional consumer diagnostic; it does not establish natural handoff, generalization, runtime competence, or product quality.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.14 requires consumer output to be sealed before custody join."
+      ],
+      "provenanceNotes": [
+        "The consumer can address the projection hash but cannot access its protected-store mapping."
+      ]
+    },
+    {
+      "id": "artifact.report.known-good-firewall-audit.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Known-good firewall audit",
+      "description": "Target-sufficiency, removable-metadata deletion, nonsemantic permutation, regenerated-ID, alternative-reordering, and trivial-decoder audit result.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Leakage audit for a standard known-good projection and sealed consumer result.",
+      "sourceNotes": [
+        "STRATEGY.md 6.1 defines the required metadata-channel audit."
+      ],
+      "provenanceNotes": [
+        "A changed output or trivially recoverable answer records study failure."
+      ]
+    },
+    {
+      "id": "artifact.report.natural-known-good-gap.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Natural versus known-good gap report",
+      "description": "Per-alternative conditional results, perturbation and null cells, spread, worst cases, disagreements, and natural-known-good gap without a product-quality claim.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Condition-matrix localization diagnostic separating conditional competence from natural handoff and complete-treatment quality.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.14 and STRATEGY.md 6.2 define the natural-known-good comparison."
+      ],
+      "provenanceNotes": [
+        "Natural output, protected custody, projection, and sealed consumer outputs retain distinct identities."
+      ]
+    },
+    {
+      "id": "artifact.custody.source-and-artifact-graph.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Source and artifact custody graph",
+      "description": "Typed parent graph carrying source bytes, dimensions, decoder, code, configuration, coordinates, typed-array encoding, renderer, and failed derivation identities.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.15 requires source and artifact graph custody."
+      ],
+      "provenanceNotes": [
+        "All parent edges identify full content hashes rather than filename or prefix aliases."
+      ]
+    },
+    {
+      "id": "artifact.provenance.content-addressed-manifest.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Content-addressed artifact manifest",
+      "description": "Canonical artifact identities, parent hashes, Merkle roots, reconstruction instructions, and custody certificates.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.15 defines canonical identities, manifests, and certificates."
+      ],
+      "provenanceNotes": [
+        "Hashes establish identity and stale-evidence detection, not truth."
+      ]
+    },
+    {
+      "id": "artifact.report.independent-artifact-reconstruction.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Independent artifact reconstruction report",
+      "description": "Independent replay result naming exact matches, first divergence, stale parents, mixed evidence, and reconstruction limitations.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Independent custody and reconstruction diagnostic.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.15 requires independent reconstruction results."
+      ],
+      "provenanceNotes": [
+        "The verifier identity and all observed content hashes are retained."
+      ]
+    },
+    {
+      "id": "artifact.custody.failed-attempt-ledger.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Failed artifact-attempt ledger",
+      "description": "Append-only content-addressed preservation of invalid, incomplete, stale, or reconstruction-failed attempts.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Governance record preserving failed attempts rather than overwriting them.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.15 requires failed-attempt preservation."
+      ],
+      "provenanceNotes": [
+        "Supersession adds records and never mutates prior attempt identity."
+      ]
+    },
+    {
+      "id": "artifact.configuration.synthetic-fixture-generation.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Synthetic fixture generation contract",
+      "description": "Exact uniform, split, checker, frame, thin-line, ramp, speck, seeded-noise, identity, scale, reflection, and rotation declarations.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.16 enumerates exact fixtures and metamorphic transforms."
+      ],
+      "provenanceNotes": [
+        "Dimensions, colors, coordinates, seeds, transform order, and expected predicates are frozen."
+      ]
+    },
+    {
+      "id": "artifact.raster.synthetic-exact-fixture-bundle.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Synthetic exact fixture bundle",
+      "description": "Generated exact fixture and transformed-raster bytes with recomputed fields, expected predicates, coordinates, and deterministic hashes.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.16 defines exact fixture and transform outputs."
+      ],
+      "provenanceNotes": [
+        "Synthetic identity is explicit and never represented as a natural source observation."
+      ]
+    },
+    {
+      "id": "artifact.report.synthetic-control-verification.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Synthetic control verification report",
+      "description": "Exact byte, structural predicate, transformed-field, coordinate, and deterministic-hash verification result.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Mechanical synthetic-control diagnostic; passing cannot select a scale, segmentation, role, or palette.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.16 limits support to declared synthetic behavior."
+      ],
+      "provenanceNotes": [
+        "Every check binds the fixture contract, generator identity, and output hash."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.privileged-answer-bearing-projection.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Privileged answer-bearing projection",
+      "description": "Minimum declared answer-equivalent semantic value for one separately identified upper-bound consumer, excluding every raw review and custody field.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.17 and STRATEGY.md 6.1 define the distinct answer-bearing-upper-bound class."
+      ],
+      "provenanceNotes": [
+        "This privileged external root is not a known-good projection and cannot be derived by relabeling a failed standard projection."
+      ]
+    },
+    {
+      "id": "artifact.configuration.answer-bearing-upper-bound-declaration.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Answer-bearing upper-bound declaration",
+      "description": "Dedicated consumer, experiment, supplied-answer semantics, minimum-content, comparison, labeling, and prohibited-claim declaration.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "MECHANISMS.md 7.17 requires dedicated identities and an exact declaration of supplied semantics."
+      ],
+      "provenanceNotes": [
+        "The declaration bars fitting, natural-handoff, generalization, runtime, quality, and advancement reuse."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.privileged-answer-bearing-result.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Privileged answer-bearing diagnostic result",
+      "description": "Separately labeled output from the dedicated upper-bound consumer, never mixed with ordinary consumer results.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Privileged non-generalizing upper-bound diagnostic.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.17 requires a separately labeled privileged result."
+      ],
+      "provenanceNotes": [
+        "The result binds the projection and declaration hashes and remains barred from natural-mechanism fitting."
+      ]
+    },
+    {
+      "id": "artifact.report.privileged-upper-bound-comparison.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Privileged upper-bound comparison record",
+      "description": "Exact comparison record naming supplied answer-equivalent semantics and preserving separation from natural and known-good results.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Privileged comparison diagnostic with no runtime, product-quality, generalization, or advancement authority.",
+      "sourceNotes": [
+        "MECHANISMS.md 7.17 requires an exact comparison record."
+      ],
+      "provenanceNotes": [
+        "No verdict, grade, comment, preference, correction, exposure, source identity, or custody metadata enters the consumer."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "validation.contract-invariants",
+      "focusClass": "product-admission",
+      "title": "Complete-treatment structural validation",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.contract-invariants` - Complete-treatment structural validation",
+        "headingLine": 1604
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `live` and tested; evidence scope `mechanical`; runtime admissibility `permitted` as a gate, not quality authority.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "treatment",
+          "label": "Complete exact-contract treatment",
+          "artifactTypeId": "artifact.product.ui-palette.v3",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Product-goal input supplied for validation; this mechanism does not produce or select it."
+          ]
+        },
+        {
+          "id": "occupancy",
+          "label": "Native occupancy witnesses",
+          "artifactTypeId": "artifact.measurement.native-color-occupancy.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Used only for source-color and witness invariants."
+          ]
+        },
+        {
+          "id": "constants",
+          "label": "Resolved contract constants",
+          "artifactTypeId": "artifact.configuration.resolved-contract-constants.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Exact contract revision and all thresholds are explicit."
+          ]
+        },
+        {
+          "id": "renderer",
+          "label": "Renderer identity",
+          "artifactTypeId": "artifact.configuration.renderer-identity.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins rendered-field validation semantics."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "scorecard",
+          "label": "Contract invariant scorecard",
+          "artifactTypeId": "artifact.report.contract-invariant-scorecard.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always records pass or fail plus every named violation and witness."
+          ],
+          "terminalPurpose": "Mechanical contract gate, not a quality score.",
+          "notes": [
+            "Population eligibility and deferred spatial spread are not silently added as gates."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.deterministic-replay",
+      "focusClass": "evaluation-probe",
+      "title": "Same-byte repeat and order invariance",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.deterministic-replay` - Same-byte repeat and order invariance",
+        "headingLine": 1619
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for cited deterministic fixtures; implementation state `instrument` with configuration-scoped tests; evidence scope `mechanical`; runtime admissibility `permitted` as a gate.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "bytes",
+          "label": "Repeated exact input bytes",
+          "artifactTypeId": "artifact.encoded-source.exact-input-bytes.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Every execution receives identical bytes."
+          ]
+        },
+        {
+          "id": "controls",
+          "label": "Frozen replay controls",
+          "artifactTypeId": "artifact.configuration.replay-computation-controls.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Scopes code, configuration, preprocessing, decoder, environment, order, and repeats actually exercised."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "replay",
+          "label": "Deterministic replay report",
+          "artifactTypeId": "artifact.report.deterministic-replay.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records equality, first divergence, or stop-the-line failure."
+          ],
+          "terminalPurpose": "Configuration-scoped replay diagnostic.",
+          "notes": [
+            "Byte equality does not imply correctness."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.perturbation-harness",
+      "focusClass": "evaluation-probe",
+      "title": "Re-encode, dither, and rendition robustness",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.perturbation-harness` - Re-encode, dither, and rendition robustness",
+        "headingLine": 1639
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as measurement and `inconclusive` for product robustness; implementation state `instrument`; evidence scope `perturbation`; runtime admissibility `prohibited` because it creates non-native perturbations for development comparison.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "perturbation"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "source",
+          "label": "Native source raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The unperturbed native raster remains the reference condition."
+          ]
+        },
+        {
+          "id": "policy",
+          "label": "Perturbation policy",
+          "artifactTypeId": "artifact.control.perturbation-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "control",
+          "notes": [
+            "Declares re-encode, dither, rendition, seed, strata, and agreement semantics."
+          ]
+        },
+        {
+          "id": "renditions",
+          "label": "Controlled rendition pairs",
+          "artifactTypeId": "artifact.raster.controlled-rendition-pair.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "Optional exact pairs retain accounted information differences."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "robustness",
+          "label": "Perturbation robustness report",
+          "artifactTypeId": "artifact.report.perturbation-robustness.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Reports exact agreement, same-color agreement, role permutation, informed change, chaotic change, disagreement, and move rate separately."
+          ],
+          "terminalPurpose": "Development-only robustness diagnostic.",
+          "notes": [
+            "No movement class is interpreted as aesthetic quality."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.parameter-and-cap-sensitivity",
+      "focusClass": "evaluation-probe",
+      "title": "Mechanism perturbation census",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.parameter-and-cap-sensitivity` - Mechanism perturbation census",
+        "headingLine": 1655
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a diagnostic; implementation state `instrument`; evidence scope `perturbation`; runtime admissibility `prohibited` because frozen runs and parameter sweeps are development inputs.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "perturbation"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "run",
+          "label": "Frozen corpus run",
+          "artifactTypeId": "artifact.diagnostic.frozen-corpus-run.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Defines the unperturbed comparison population and outputs."
+          ]
+        },
+        {
+          "id": "registry",
+          "label": "Typed parameter registry",
+          "artifactTypeId": "artifact.configuration.parameter-registry.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes every tunable parameter, cap, order, and tie site claimed in scope."
+          ]
+        },
+        {
+          "id": "policy",
+          "label": "Parameter perturbation policy",
+          "artifactTypeId": "artifact.control.parameter-perturbation-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "control",
+          "notes": [
+            "Uses type-valid values and declares covarying-unit handling."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "sensitivity",
+          "label": "Parameter sensitivity report",
+          "artifactTypeId": "artifact.report.parameter-sensitivity.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Retains inert sites, mover counts, cliffs, correlated changes, displacement, destinations, curves, and gaps."
+          ],
+          "terminalPurpose": "Development sensitivity diagnostic.",
+          "notes": [
+            "Sensitivity never decides which destination is better."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.parameter-provenance-census",
+      "focusClass": "configuration-governance",
+      "title": "Independent behavior-site reconciliation",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.parameter-provenance-census` - Independent behavior-site reconciliation",
+        "headingLine": 1669
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` for complete cross-surface coverage; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` as a build/review transformation rather than product computation.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "numeric",
+          "label": "Numeric scan report",
+          "artifactTypeId": "artifact.report.numeric-literal-provenance-scan.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "A lower-bound numeric scan is one input, never the complete census."
+          ]
+        },
+        {
+          "id": "exports",
+          "label": "Exported behavior surfaces",
+          "artifactTypeId": "artifact.configuration.exported-behavior-surfaces.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes exported constants, configuration, enums, and declared policy."
+          ]
+        },
+        {
+          "id": "sites",
+          "label": "Independent behavior surface inventory",
+          "artifactTypeId": "artifact.provenance.behavior-surface-inventory.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Covers structural choices omitted by literal scanning."
+          ]
+        },
+        {
+          "id": "declarations",
+          "label": "Author declarations",
+          "artifactTypeId": "artifact.provenance.author-parameter-declarations.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "Declarations retain owners, units, rationale, and provenance."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "reconciliation",
+          "label": "Parameter provenance reconciliation",
+          "artifactTypeId": "artifact.report.parameter-provenance-reconciliation.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always names declared-only, code-only, anonymous, duplicated, mismatched, and explicitly uncovered surfaces."
+          ],
+          "terminalPurpose": "Independent behavior-site census.",
+          "notes": [
+            "The report neither establishes good values nor authorizes choices."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.numeric-literal-provenance-scanner",
+      "focusClass": "configuration-governance",
+      "title": "TypeScript AST and Python lexer scan",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.numeric-literal-provenance-scanner` - TypeScript AST and Python lexer scan",
+        "headingLine": 1691
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for scanner behavior and `unmeasured` as a quality intervention; implementation state `instrument` and tested; evidence scope `mechanical`; runtime admissibility `prohibited` as a build/test instrument rather than product computation.",
+        "scientificInterpretations": [
+          "supported",
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "roots",
+          "label": "Configured source roots",
+          "artifactTypeId": "artifact.provenance.configured-source-roots.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "Includes declared TypeScript, Python, and scanner self-scan roots."
+          ]
+        },
+        {
+          "id": "scan",
+          "label": "Numeric scan configuration",
+          "artifactTypeId": "artifact.configuration.numeric-provenance-scan.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins parser or lexer behavior, exclusions, tags, decision index, and stable body rules."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "report",
+          "label": "Numeric provenance scan report",
+          "artifactTypeId": "artifact.report.numeric-literal-provenance-scan.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Reports findings, exclusions, backlog, skipped files, limitations, lower-bound counts, and a timestamp-independent body hash."
+          ],
+          "notes": [
+            "Conservative lexical and AST coverage is explicit rather than presented as complete parameter authority."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.typed-statistical-refusal",
+      "focusClass": "evaluation-probe",
+      "title": "Provenance-carrying inference and unrepresentable misuse",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.typed-statistical-refusal` - Provenance-carrying inference and unrepresentable misuse",
+        "headingLine": 1716
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument` and `tested`; evidence scope `mechanical`; runtime admissibility `permitted` for applicable cold calculations.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "outputGroups": [
+        {
+          "id": "inference-outcome",
+          "portIds": [
+            "statistic",
+            "refusal"
+          ],
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "One invocation emits either an applicable numeric result or a no-number refusal, never both and never neither."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "observations",
+          "label": "Typed observations",
+          "artifactTypeId": "artifact.measurement.typed-observation-set.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Carries declared units, pairing, population, and sample identity."
+          ]
+        },
+        {
+          "id": "design",
+          "label": "Statistical design declaration",
+          "artifactTypeId": "artifact.configuration.statistical-design-declaration.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins method, sample minimum, correction, assumptions, and refusal conditions."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "statistic",
+          "label": "Typed statistical result",
+          "artifactTypeId": "artifact.statistic.provenance-carrying-inference.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only when declared assumptions and minimum sample conditions pass; carries method, sample size, corrections, and caveats."
+          ],
+          "terminalPurpose": "Applicable typed inference result.",
+          "notes": [
+            "Mutually exclusive with refusal for one invocation."
+          ]
+        },
+        {
+          "id": "refusal",
+          "label": "No-number statistical refusal",
+          "artifactTypeId": "artifact.diagnostic.typed-statistical-refusal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present when assumptions or sample conditions fail and contains no numeric field."
+          ],
+          "terminalPurpose": "Explicit typed refusal.",
+          "notes": [
+            "Mutually exclusive with a numeric result for one invocation."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.standing-evidence-adjudication",
+      "focusClass": "review-custody",
+      "title": "Non-gating prior-verdict destination report",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.standing-evidence-adjudication` - Non-gating prior-verdict destination report",
+        "headingLine": 1731
+      },
+      "capabilityIds": [
+        "capability.review-and-evidence-custody",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.review-and-evidence-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument` and `tested`; evidence scope `downstream-utility`; runtime admissibility `prohibited` because prior reviewed verdicts are effective inputs.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "downstream-utility"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "candidate",
+          "label": "Sealed candidate run",
+          "artifactTypeId": "artifact.diagnostic.sealed-natural-candidate-run.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Sealed before any protected review join."
+          ]
+        },
+        {
+          "id": "standing",
+          "label": "Protected standing evidence",
+          "artifactTypeId": "artifact.review.protected-latest-verdict-store.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "review",
+          "notes": [
+            "Harness-side dated endorsements, acceptable baselines, and known-bad records remain inaccessible to candidate execution."
+          ]
+        },
+        {
+          "id": "same-color",
+          "label": "Same-color rule",
+          "artifactTypeId": "artifact.configuration.same-color-rule.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins exact destination equivalence semantics."
+          ]
+        },
+        {
+          "id": "baseline",
+          "label": "Optional sealed baseline",
+          "artifactTypeId": "artifact.diagnostic.sealed-baseline-run.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Compared only after independent sealing."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "adjudication",
+          "label": "Standing evidence adjudication report",
+          "artifactTypeId": "artifact.report.standing-evidence-adjudication.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always carries gating none and permits no-signal or contradictory outcomes."
+          ],
+          "terminalPurpose": "Non-gating harness-side adjudication report.",
+          "notes": [
+            "No score is produced and old endorsement matches are not current quality."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.content-addressed-development-loop",
+      "focusClass": "configuration-governance",
+      "title": "Dependency-closed cache and run diff",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.content-addressed-development-loop` - Dependency-closed cache and run diff",
+        "headingLine": 1748
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument`; evidence scope `mechanical`; runtime admissibility `prohibited` as development cache/diff tooling.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "entry",
+          "label": "Candidate entry point",
+          "artifactTypeId": "artifact.configuration.candidate-entry-point.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Defines the recursive repository-local resolution root."
+          ]
+        },
+        {
+          "id": "closure",
+          "label": "Resolved source closure",
+          "artifactTypeId": "artifact.provenance.repository-local-source-closure.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Measured closure limitations remain explicit."
+          ]
+        },
+        {
+          "id": "bytes",
+          "label": "Exact run input bytes",
+          "artifactTypeId": "artifact.encoded-source.exact-input-bytes.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Cache identity uses byte content, not path identity."
+          ]
+        },
+        {
+          "id": "cache",
+          "label": "Existing cache values",
+          "artifactTypeId": "artifact.diagnostic.content-addressed-cache-values.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "Only values matching complete measured computation identity are eligible hits."
+          ]
+        },
+        {
+          "id": "manifests",
+          "label": "Two complete run manifests",
+          "artifactTypeId": "artifact.provenance.development-run-manifest.v1",
+          "requirement": "required",
+          "cardinality": "exactly-two",
+          "inputClass": "external-observation",
+          "notes": [
+            "Exactly two complete manifests are compared by source identity."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "devloop",
+          "label": "Cache and run-diff report",
+          "artifactTypeId": "artifact.report.content-addressed-development-loop.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Includes closure hash, hit or miss states, changed, missing, failing, newly working, role, gradient, and collapse records."
+          ],
+          "terminalPurpose": "Development-loop diagnostic.",
+          "notes": [
+            "Diffs order attention and never decide improvement."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.blast-radius-adjudication",
+      "focusClass": "review-custody",
+      "title": "Changed-destination accounting",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.blast-radius-adjudication` - Changed-destination accounting",
+        "headingLine": 1766
+      },
+      "capabilityIds": [
+        "capability.review-and-evidence-custody",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.review-and-evidence-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for evaluation custody; implementation state `instrument`; evidence scope `downstream-utility`; runtime admissibility `prohibited` because review records and paired runs are effective inputs.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "downstream-utility"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "baseline",
+          "label": "Sealed baseline outputs",
+          "artifactTypeId": "artifact.diagnostic.sealed-baseline-run.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Sealed before protected review access."
+          ]
+        },
+        {
+          "id": "candidate",
+          "label": "Sealed candidate outputs",
+          "artifactTypeId": "artifact.diagnostic.sealed-natural-candidate-run.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Sealed before protected review access."
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Protected latest review records",
+          "artifactTypeId": "artifact.review.protected-latest-verdict-store.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "review",
+          "notes": [
+            "Used only by harness-side destination accounting after both runs are sealed."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "blast-radius",
+          "label": "Blast-radius adjudication report",
+          "artifactTypeId": "artifact.report.blast-radius-adjudication.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Classifies every mover as endorsement match, known-worse match, or unknown and emits no aggregate winner."
+          ],
+          "terminalPurpose": "Changed-destination accounting report.",
+          "notes": [
+            "Moving away from an accepted palette is not automatically harm."
+          ]
+        },
+        {
+          "id": "review-sample",
+          "label": "Unresolved human-review sample",
+          "artifactTypeId": "artifact.review.unresolved-mover-review-sample.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when no preregistered unresolved sample is required; otherwise contains only the declared sample and custody envelope."
+          ],
+          "terminalPurpose": "External human-review handoff.",
+          "notes": [
+            "Sampling and exposure are recorded before review outcomes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.warehouse-latest-verdict",
+      "focusClass": "review-custody",
+      "title": "Append-only review deduplication",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.warehouse-latest-verdict` - Append-only review deduplication",
+        "headingLine": 1781
+      },
+      "capabilityIds": [
+        "capability.review-and-evidence-custody"
+      ],
+      "primaryCapabilityId": "capability.review-and-evidence-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument`; evidence scope `mechanical`; runtime admissibility `prohibited` because warehouse review data are an effective input.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "warehouse",
+          "label": "Protected warehouse JSONL",
+          "artifactTypeId": "artifact.review.protected-warehouse-jsonl.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "review",
+          "notes": [
+            "File order and every autosave or superseded record are retained in protected custody."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "latest",
+          "label": "Protected latest-verdict store",
+          "artifactTypeId": "artifact.review.protected-latest-verdict-store.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Keeps the last verdict for each batch-id and item-id pair while retaining supersession, comments, endorsements, vetoes, and exposure counts."
+          ],
+          "notes": [
+            "Rows are never counted as independent judgments."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.scoped-semantic-review",
+      "focusClass": "review-custody",
+      "title": "Purpose-built mechanism review",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.scoped-semantic-review` - Purpose-built mechanism review",
+        "headingLine": 1796
+      },
+      "capabilityIds": [
+        "capability.review-and-evidence-custody"
+      ],
+      "primaryCapabilityId": "capability.review-and-evidence-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a research method; implementation state `instrument`; evidence scope `isolated-semantic`; runtime admissibility `prohibited` because human review artifacts are effective inputs; semantic outcomes remain per mechanism.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "source",
+          "label": "Immutable native source",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Displayed only under the frozen semantic question and presentation."
+          ]
+        },
+        {
+          "id": "artifact",
+          "label": "Immutable mechanism-native artifact",
+          "artifactTypeId": "artifact.hypothesis.immutable-mechanism-output.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Includes source witnesses, alternatives, ambiguity, and abstention in native semantic form."
+          ]
+        },
+        {
+          "id": "question",
+          "label": "Semantic question contract",
+          "artifactTypeId": "artifact.configuration.semantic-review-question.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Freezes purpose, wording, vocabulary, interpretation, and stop rule."
+          ]
+        },
+        {
+          "id": "renderer",
+          "label": "Pinned renderer identity",
+          "artifactTypeId": "artifact.configuration.renderer-identity.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins visualization and renderer behavior."
+          ]
+        },
+        {
+          "id": "presentation",
+          "label": "Audited review presentation",
+          "artifactTypeId": "artifact.control.review-presentation.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "control",
+          "notes": [
+            "Records blinding scope, identifiability audit, order, and exposure."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "semantic-review",
+          "label": "Protected semantic-review store",
+          "artifactTypeId": "artifact.review.protected-semantic-review-store.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Preserves acceptance, rejection, ambiguity, no-answer, free text, presentation identity, exposure, alternatives, and supersession."
+          ],
+          "terminalPurpose": "Human semantic-review endpoint.",
+          "notes": [
+            "Semantic acceptance is not complete-treatment quality."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.complete-treatment-review",
+      "focusClass": "review-custody",
+      "title": "Human product endpoint",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.complete-treatment-review` - Human product endpoint",
+        "headingLine": 1812
+      },
+      "capabilityIds": [
+        "capability.review-and-evidence-custody"
+      ],
+      "primaryCapabilityId": "capability.review-and-evidence-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as the product-quality instrument; implementation state `instrument`; evidence scope `complete-treatment`; runtime admissibility `prohibited` because human judgments cannot enter cold inference.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "treatments",
+          "label": "One or two rendered complete treatments",
+          "artifactTypeId": "artifact.rendering.complete-ui-treatment.v1",
+          "requirement": "required",
+          "cardinality": "one-to-two",
+          "inputClass": "natural",
+          "notes": [
+            "Exactly one supports absolute review; exactly two supports pairwise review."
+          ]
+        },
+        {
+          "id": "renderer",
+          "label": "Pinned renderer identity",
+          "artifactTypeId": "artifact.configuration.renderer-identity.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Binds review to the exact rendition and rendering contract."
+          ]
+        },
+        {
+          "id": "sides",
+          "label": "Side randomization controls",
+          "artifactTypeId": "artifact.control.complete-treatment-side-randomization.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "control",
+          "notes": [
+            "Pins absolute or pairwise mode, side assignment, and concealment audit."
+          ]
+        },
+        {
+          "id": "custody",
+          "label": "Harness-side source identity",
+          "artifactTypeId": "artifact.custody.source-identity-envelope.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Used only to bind the human record after rendering, never by treatment generation."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "quality-review",
+          "label": "Protected complete-treatment quality review",
+          "artifactTypeId": "artifact.review.protected-complete-treatment-quality.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Preserves grades or preferences, comments, ambiguity, optional endorsements, rendition, and exposure without asserting unique ground truth."
+          ],
+          "terminalPurpose": "Human product-quality endpoint.",
+          "notes": [
+            "This quality record is type-distinct from the mechanical contract scorecard and semantic review."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.known-good-substitution",
+      "focusClass": "research-only-oracle",
+      "title": "Reviewed artifact as conditional input",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.known-good-substitution` - Reviewed artifact as conditional input",
+        "headingLine": 1829
+      },
+      "capabilityIds": [
+        "capability.review-and-evidence-custody",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.review-and-evidence-custody",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` generally; implementation state `unbuilt` as a generic transformation; evidence scope `conditional-known-good`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "conditional-known-good"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "protected-review",
+          "label": "Protected reviewed artifact custody",
+          "artifactTypeId": "artifact.review.protected-semantic-review-store.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "review",
+          "notes": [
+            "Readable only by the independent projection and harness operation, never by the declared consumer."
+          ]
+        },
+        {
+          "id": "custody-envelope",
+          "label": "Harness-held source and review custody envelope",
+          "artifactTypeId": "artifact.custody.source-identity-envelope.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Binds source and reviewed-artifact custody outside the consumer; the consumer receives neither this envelope nor its projection mapping."
+          ]
+        },
+        {
+          "id": "consumer-contract",
+          "label": "Declared consumer input contract",
+          "artifactTypeId": "artifact.configuration.declared-consumer-input-contract.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares the minimum semantic value, uncertainty, coordinates, units, witnesses, null, and failure states."
+          ]
+        },
+        {
+          "id": "projection-schema",
+          "label": "Known-good projection schema",
+          "artifactTypeId": "artifact.configuration.known-good-projection-schema.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Excludes all forbidden review, identity, chronology, sibling, custody, and answer-equivalent fields."
+          ]
+        },
+        {
+          "id": "sampling",
+          "label": "Accepted-alternative sampling rule",
+          "artifactTypeId": "artifact.control.accepted-alternative-sampling.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "control",
+          "notes": [
+            "Cannot select whichever accepted alternative makes the consumer look best."
+          ]
+        },
+        {
+          "id": "natural-output",
+          "label": "Optional sealed natural producer output",
+          "artifactTypeId": "artifact.hypothesis.natural-producer-output.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Remains type-distinct from review custody and known-good projection for the natural condition matrix."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "projection",
+          "label": "Known-good minimal projections",
+          "artifactTypeId": "artifact.hypothesis.known-good-minimal-projection.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Preserves every tested accepted alternative, uncertainty, abstention, null, and no-answer state allowed by the declared contract."
+          ],
+          "notes": [
+            "Consumer-facing values carry no protected-store mapping or answer-equivalent field."
+          ]
+        },
+        {
+          "id": "sealed-result",
+          "label": "Sealed known-good consumer results",
+          "artifactTypeId": "artifact.diagnostic.sealed-known-good-consumer-result.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One sealed result per tested projection or declared perturbed or null condition, before custody is rejoined."
+          ],
+          "terminalPurpose": "Conditional known-good consumer diagnostic.",
+          "notes": [
+            "Results cannot establish natural handoff, generalization, runtime competence, or product quality."
+          ]
+        },
+        {
+          "id": "firewall-audit",
+          "label": "Projection firewall audit",
+          "artifactTypeId": "artifact.report.known-good-firewall-audit.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Pass or study-failing leakage result, including trivial-decoder and metadata-channel tests."
+          ],
+          "terminalPurpose": "Known-good projection leakage audit.",
+          "notes": [
+            "A failed standard projection is not relabeled as known-good."
+          ]
+        },
+        {
+          "id": "gap",
+          "label": "Natural versus known-good gap",
+          "artifactTypeId": "artifact.report.natural-known-good-gap.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Reports applicable natural, accepted, perturbed, null, and out-of-domain cells plus spread and worst cases; omitted cells are explicit."
+          ],
+          "terminalPurpose": "Conditional-failure localization report.",
+          "notes": [
+            "Known-good success remains conditional and separate from complete-treatment quality."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.artifact-hash-custody",
+      "focusClass": "configuration-governance",
+      "title": "Content-addressed provenance and independent replay",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.artifact-hash-custody` - Content-addressed provenance and independent replay",
+        "headingLine": 1849
+      },
+      "capabilityIds": [
+        "capability.configuration-control-and-governance",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.configuration-control-and-governance",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument` and tested; evidence scope `mechanical`; runtime admissibility `unresolved` for a cold subset without external parent artifacts.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "bytes",
+          "label": "Exact source bytes",
+          "artifactTypeId": "artifact.encoded-source.exact-input-bytes.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Supplies byte identity for every source root represented in the graph."
+          ]
+        },
+        {
+          "id": "custody",
+          "label": "Source identity envelope",
+          "artifactTypeId": "artifact.custody.source-identity-envelope.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "Carries exact paths, dimensions, decoder, and rendition custody without prefix aliases."
+          ]
+        },
+        {
+          "id": "graph",
+          "label": "Source and artifact graph",
+          "artifactTypeId": "artifact.custody.source-and-artifact-graph.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Includes parent artifacts, code, configuration, coordinates, typed arrays, and failed attempts."
+          ]
+        },
+        {
+          "id": "renderer",
+          "label": "Renderer identity",
+          "artifactTypeId": "artifact.configuration.renderer-identity.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins renderer identity in canonical hashes and reconstruction."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "manifest",
+          "label": "Content-addressed manifest and certificates",
+          "artifactTypeId": "artifact.provenance.content-addressed-manifest.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains canonical identities, Merkle roots, parent links, certificates, and regeneration instructions."
+          ],
+          "notes": [
+            "Hashes establish identity, not truth."
+          ]
+        },
+        {
+          "id": "reconstruction",
+          "label": "Independent reconstruction result",
+          "artifactTypeId": "artifact.report.independent-artifact-reconstruction.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records exact reconstruction, first divergence, stale or mixed evidence, and limitations."
+          ],
+          "terminalPurpose": "Independent custody verification.",
+          "notes": [
+            "Verifier identity is independent and content-addressed."
+          ]
+        },
+        {
+          "id": "failures",
+          "label": "Failed-attempt preservation",
+          "artifactTypeId": "artifact.custody.failed-attempt-ledger.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Absent when no attempt failed; otherwise append-only invalid, stale, incomplete, or divergent attempt records."
+          ],
+          "terminalPurpose": "Governance preservation of failed attempts.",
+          "notes": [
+            "Later success never overwrites a failed record."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.synthetic-controls",
+      "focusClass": "evaluation-probe",
+      "title": "Exact fixtures and metamorphic transforms",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.synthetic-controls` - Exact fixtures and metamorphic transforms",
+        "headingLine": 1866
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument` and tested; evidence scope `mechanical`; runtime admissibility `prohibited` as synthetic test tooling.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "fixtures",
+          "label": "Synthetic fixture generation contract",
+          "artifactTypeId": "artifact.configuration.synthetic-fixture-generation.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins exact fixtures, transforms, coordinates, seeds, expected predicates, and hashes."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "bundle",
+          "label": "Synthetic exact fixture bundle",
+          "artifactTypeId": "artifact.raster.synthetic-exact-fixture-bundle.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Emits exact fixture and transformed bytes, recomputed fields, predicates, coordinates, and deterministic hashes."
+          ],
+          "notes": [
+            "Synthetic outputs are explicitly labeled and never treated as natural observations."
+          ]
+        },
+        {
+          "id": "verification",
+          "label": "Synthetic control verification",
+          "artifactTypeId": "artifact.report.synthetic-control-verification.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Reports exact pass or named mismatch for bytes, predicates, fields, coordinates, and hashes."
+          ],
+          "terminalPurpose": "Mechanical synthetic-control diagnostic.",
+          "notes": [
+            "Passing cannot select a scale, segmentation, role, or palette."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation.answer-bearing-upper-bound",
+      "focusClass": "research-only-oracle",
+      "title": "Privileged answer-bearing diagnostic",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `validation.answer-bearing-upper-bound` - Privileged answer-bearing diagnostic",
+        "headingLine": 1879
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` as a general ceiling instrument; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "privileged-projection",
+          "label": "Minimum answer-bearing projection",
+          "artifactTypeId": "artifact.hypothesis.privileged-answer-bearing-projection.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "answer-bearing-upper-bound",
+          "notes": [
+            "Distinct from natural output and known-good projection; excludes raw review, identity, exposure, and custody fields."
+          ]
+        },
+        {
+          "id": "declaration",
+          "label": "Dedicated upper-bound declaration",
+          "artifactTypeId": "artifact.configuration.answer-bearing-upper-bound-declaration.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins dedicated consumer, experiment, exact supplied semantics, minimum content, comparison, and prohibited claims."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "privileged-result",
+          "label": "Privileged diagnostic result",
+          "artifactTypeId": "artifact.diagnostic.privileged-answer-bearing-result.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always separately labeled privileged and non-generalizing; invalid or refusal states remain explicit."
+          ],
+          "terminalPurpose": "Privileged answer-bearing upper-bound diagnostic.",
+          "notes": [
+            "Cannot be mixed with ordinary results or used to fit a natural producer or consumer."
+          ]
+        },
+        {
+          "id": "comparison",
+          "label": "Exact privileged comparison record",
+          "artifactTypeId": "artifact.report.privileged-upper-bound-comparison.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Names exact supplied answer-equivalent semantics and keeps natural, known-good, and privileged result classes separate."
+          ],
+          "terminalPurpose": "Privileged comparison report.",
+          "notes": [
+            "Carries no natural-handoff, generalization, runtime, product-quality, or advancement authority."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "This fragment declares candidate semantic compatibility only; it contains no architecture, dependency, selected producer, tested binding, runtime pipeline, or build order.",
+    "The exact UI treatment contract remains an unproduced product-goal input to structural validation; no Section 7 mechanism is represented as a palette producer.",
+    "Mechanical contract scorecards and protected complete-treatment quality records are distinct artifact types and cannot substitute for one another.",
+    "Sealed natural producer output, protected review stores, known-good minimal projections, and privileged answer-bearing projections are distinct types with distinct input classes and custody rules.",
+    "Protected review fields are available only to explicit harness-side review, projection, warehouse, scoring, custody, and adjudication operations after ordinary outputs are sealed; they never enter cold inference, ordinary mechanism execution, fitting, fallback, configuration, or caches."
+  ]
+}

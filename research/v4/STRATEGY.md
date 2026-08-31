@@ -1,9 +1,9 @@
 # Palette Research v4: Strategy
 
-**Status:** v4 research strategy revised from independent audits as of 2026-08-30. This document
-defines how v4 investigates the problem. It does not choose an algorithm, select components,
-construct a graph, prescribe a capability ladder, set a build order, or duplicate the mechanism
-census.
+**Status:** v4 research strategy revised after independent audits and Flo's standing trial ruling as
+of 2026-08-31. This document defines how v4 investigates the problem. It does not choose an
+algorithm, select components, construct a graph, prescribe a capability ladder, set a build order, or
+duplicate the mechanism census.
 
 `PROJECT.md` defines the inherited product problem, output contract, evidence, corpus custody, and
 negative results. In particular, v4 inherits no solution architecture and is not an implementation
@@ -63,11 +63,12 @@ The terms below prevent research objects from quietly becoming architecture deci
 A **mechanism** is a falsifiable causal claim embodied as a transformation or decision rule. A
 compact census entry may describe its inputs, outputs, assumptions, expected consequences, and
 possible conditions that would defeat its interpretation without yet defining typed artifact
-contracts. Before implementation or evaluation, a richer experiment record declares the exact
-transformation, formal falsifiers, and information effects. The preferred unit is the smallest
-operation whose effect can be isolated honestly. If several operations cannot be separated without
-changing the claim, the record identifies a compound mechanism rather than inventing false
-atomicity.
+contracts. An exploratory implementation needs only the standing gate in Section 3.1. Before work
+becomes substantial or is intended to produce scientific evidence, use protected review data, test a
+composition, or support release, a richer experiment record declares the exact transformation,
+formal falsifiers, and information effects. The preferred unit is the smallest operation whose
+effect can be isolated honestly. If several operations cannot be separated without changing the
+claim, the record identifies a compound mechanism rather than inventing false atomicity.
 
 A mechanism is not a component. One mechanism may later be implemented across several components,
 and one component may later host several mechanisms.
@@ -80,9 +81,11 @@ evidence.
 
 ### 2.2 Artifact
 
-An **artifact** is a possible immutable, typed, inspectable data product produced or consumed during
-research. Its type describes semantics, units, cardinality, provenance, uncertainty, and null
-behavior, not a future class hierarchy or public API. An artifact may be development-only, may have
+An **artifact** is a possible typed, inspectable data product produced or consumed during research.
+Its type describes semantics, units, cardinality, provenance, uncertainty, and null behavior, not a
+future class hierarchy or public API. An artifact frozen as evidence, protected review material, a
+composition handoff, or a release input is immutable within that use. Exploratory and transient
+values need not become immutable registered artifacts. An artifact may be development-only, may have
 multiple producers, may be consumed by several independent studies, or may never become a runtime
 boundary.
 
@@ -100,8 +103,8 @@ ambiguity, no-answer, and null states remain in custody rather than being collap
 The full reviewed artifact is never the consumer input. Diagnostic consumers receive a separately
 materialized minimal projection under Section 6.
 
-A reviewed artifact may be used as known-good diagnostic input under the firewall in Section 6. It
-does not become runtime evidence, and a result obtained from it is not an end-to-end result.
+A reviewed artifact may be used as known-good diagnostic input only under Sections 6 and 7. It does
+not become runtime evidence, and a result obtained from it is not an end-to-end result.
 
 ### 2.4 Component
 
@@ -166,9 +169,48 @@ the evidence warrants it.
 The research modes in Section 11 are non-sequential authorization classes, not stages. Any study may
 seek pre-execution authorization as soon as its own prerequisites pass and may begin once that
 authorization is granted. No mechanism is required to traverse every mode, and no mode establishes
-runtime order. Studies may overlap, branch, fan out, converge, bypass one another, cycle through
-versioned experiments, pause, or remain incomparable as long as custody and write ownership remain
-explicit.
+runtime order. Work in those modes may overlap, branch, fan out, converge, bypass other work, cycle
+through versioned experiments, pause, or remain incomparable as long as custody and write ownership
+remain explicit.
+
+### 3.1 Consequence boundaries and minimum standing gate
+
+Custody, diagnostics, review infrastructure, and governance support research; they are not the
+research itself. They must remain proportionate and secondary, must not dominate the capability map,
+and must not block a cheap bounded trial. Safeguard depth follows claim depth and the consequences of
+the work.
+
+The following are consequence boundaries, not statuses, phases, research modes, or a mandatory
+ladder. Work uses the boundary appropriate to its intended consequence and may start at any boundary
+whose requirements and applicable Flo authorization are satisfied. No mechanism must traverse all
+four:
+
+- **Exploration:** only the four-item standing gate below applies. Inputs are ordinary development,
+  synthetic, or already exposed inputs, without protected review data or review-derived fields. The
+  run makes no generalization claim.
+- **Evidence-bearing evaluation:** the exact revision, configuration, population, judgment method,
+  statistic, falsifier, and stop rule are frozen, with custody and independent verification
+  proportionate to the claim and exposure.
+- **Composition:** exact constituent revisions and handoffs are frozen, and interaction,
+  displacement, and blast radius are inspected at the scale of the proposed consequence.
+- **Release:** cold runtime and product contracts pass; resources, robustness, and failure behavior
+  are audited; genuinely fresh complete treatments are reviewed; full custody is present; and Flo
+  authorizes the release or product claim.
+
+Flo's standing policy permits a mechanism to be tried at the exploration boundary when all four of
+these conditions hold:
+
+1. Experiment-local typed input and output semantics state the relevant cardinality, units, and null
+   behavior. Graph-wide registration and a universal schema are not required.
+2. Inspectability-level determinism holds in the declared trial environment, with randomness fixed or
+   exposed. Cross-platform replay is not required.
+3. The cheapest purpose-built visualization exposes the claimed effect and obvious failures.
+4. The trial states one scoped question and one falsifier.
+
+Exploration is not scientific evidence, integration authority, or release authority. A poorly
+custodied exploratory run is simply non-evidence, not a scientific result. It may motivate a later
+study, but it cannot be upgraded retroactively; the claim must be rerun at the applicable
+non-exploratory consequence boundary.
 
 ## 4. Minimal artifact discipline
 
@@ -176,8 +218,10 @@ V4 should define an artifact only when independent inspection, reproducibility, 
 substitution justifies one. No common serialization format or universal API is required at the
 strategy stage.
 
-When an artifact is persisted, its contract should carry the minimum information necessary for its
-claim:
+When an artifact is persisted for substantial implementation, evidence-bearing evaluation, protected
+review, composition, or release, its contract should carry the minimum information necessary for its
+claim. An exploratory trial may keep only experiment-local values and semantics required by Section
+3.1; persistence alone does not require graph registration or the full contract below.
 
 - artifact type and schema revision;
 - exact source path and content hash where source-bound;
@@ -206,13 +250,14 @@ nearly constant and useless (`research/v3/oracle/premise/CD_RESULT.md:133-139`).
 
 ## 5. Isolated visualization and scoped review
 
-Every semantic mechanism requires a purpose-built visualization that makes its exact claim
-inspectable without requiring the reviewer to infer it from a final palette. The visualization
-should show the supplied image, the mechanism output in its native semantic form, source witnesses
-or overlays where applicable, alternatives, uncertainty, and abstention. It should not quietly ask
-whether the output is attractive when the claim is structural or semantic.
+Every semantic-mechanism trial requires a purpose-built visualization proportionate to its
+consequence boundary. Exploration uses the cheapest view that exposes the claimed effect and obvious
+failures. An evidence-bearing or protected review should show the supplied image, the mechanism
+output in its native semantic form, source witnesses or overlays where applicable, alternatives,
+uncertainty, and abstention. It should not quietly ask whether the output is attractive when the
+claim is structural or semantic.
 
-Each semantic review must freeze:
+Each evidence-bearing or protected semantic review must freeze:
 
 - the question and answer vocabulary;
 - the visualization and renderer version;
@@ -238,11 +283,12 @@ affordances have changed recorded judgments in prior work
 `research/v2-3-eval/TRANSCRIPT_ARCHAEOLOGY.md:119-127`), while the Phase 3 grade-only rounds provided
 little causal diagnosis (`research/v4/PROJECT.md:129-133`).
 
-Mechanical claims use mechanical invariants, exact reconstruction, deterministic repeats,
-inspection, and independent verification. A mechanical pass is not semantic support or visual
-quality. The repository's strict custody protocols explicitly distinguish structural validity from
-scientific support and preserve falsified, unsupported, contradictory, and incomparable results
-without manufacturing an aggregate winner (`research/NATIVE_SCALE_SPACE_EVIDENCE_PLAN.md:450-493`).
+Mechanical claims offered as evidence use mechanical invariants, exact reconstruction,
+deterministic repeats, inspection, and independent verification. A mechanical pass is not semantic
+support or visual quality. The repository's strict custody protocols explicitly distinguish
+structural validity from scientific support and preserve falsified, unsupported, contradictory, and
+incomparable results without manufacturing an aggregate winner
+(`research/NATIVE_SCALE_SPACE_EVIDENCE_PLAN.md:450-493`).
 
 Independent semantic review is also not product review. A locally correct semantic artifact can
 still be placed in the wrong role, combined badly, or turned into an unfaithful treatment. Complete
@@ -396,6 +442,10 @@ expected outputs, exposure history, and custody mappings never enter a mechanism
 prompt, configuration, ranker, fitter, fallback, or cache. Runtime behavior must not depend on corpus
 lookup, reviewed artifacts, or precomputed per-item data.
 
+Exploration receives no firewall exception. Cheap exploration avoids protected review data and
+review-derived fields rather than constructing full custody first; ordinary development, synthetic,
+or already exposed source inputs do not carry their review records into the mechanism.
+
 The only review-field exception is harness-side use for custody, batch sampling, offline evaluation
 scoring, and adjudication. Those operations run outside the mechanism process after its output is
 sealed; their allowlisted result may enter a report, but their review fields and derived encodings do
@@ -404,7 +454,8 @@ The separately typed `answer-bearing-upper-bound` diagnostic in Section 6.1 is n
 review fields: its dedicated consumer receives only the declared minimal semantic answer projection
 and its result remains privileged and non-generalizing.
 
-Required controls are:
+For evidence-bearing, protected-data, composed, substantial, or release work, the following
+applicable controls are required at the depth of the claim and exposure:
 
 - allowlisted input fields for every research runner and runtime candidate;
 - process or serialization boundaries that make harness custody joins unavailable to mechanism code;
@@ -467,10 +518,10 @@ currencies tested in prior work failed as aesthetic judges, and aggregate improv
 already hidden incomparable populations and objectives (`research/v4/PROJECT.md:163-187`,
 `:330-345`).
 
-Each experiment must pre-register one or more primary statistics appropriate to its exact claim,
-their direction, bars, falsifiers, and stop conditions. Primary statistics do not become a global
-currency. Results are also reported through a multidimensional scorecard containing the applicable
-dimensions:
+Each evidence-bearing evaluation must preregister one or more primary statistics appropriate to its
+exact claim, their direction, bars, falsifiers, and stop conditions. Primary statistics do not become
+a global currency. Results are also reported through a multidimensional scorecard containing the
+applicable dimensions:
 
 - structural and contract validity;
 - semantic acceptance, rejection, ambiguity, and abstention;
@@ -492,17 +543,20 @@ fail a preregistered falsifier. Means must not hide strata or one-way damage. As
 require a census because a sampled batch may not reveal the damaging direction
 (`research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md:218-231`).
 
-Parameter provenance remains explicit from birth: reviewed, measured, fitted, inherited, held,
-uncalibrated, or single-case evidence as applicable. A fitted value records its fitting population
-and artifact. Parameter budgets and sensitivity checks are established before accumulation, not
-reconstructed later. The historical parameter and perturbation evidence makes this a primary
-research dimension rather than code hygiene
+For substantial implementation and evidence-bearing evaluation, parameter provenance remains
+explicit from birth: reviewed, measured, fitted, inherited, held, uncalibrated, or single-case
+evidence as applicable. A fitted value records its fitting population and artifact. Parameter budgets
+and sensitivity checks are established before accumulation, not reconstructed later. An exploratory
+trial exposes the randomness and behavior-affecting choices needed to inspect that trial but does not
+require a full parameter census. The historical parameter and perturbation evidence makes parameter
+honesty a primary research dimension rather than code hygiene
 (`research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md:501-510`).
 
-Before implementation evidence can advance, an agent other than the implementation author must
-generate a parameter census independently from the complete code and execution closure, then
-reconcile it against the author's declared record. The census includes behavior-affecting choices,
-not only numeric constants:
+A full parameter census is required for substantial implementation and before implementation output
+can be treated as scientific evidence or support composition, integration, advancement, or release.
+An agent other than the implementation author generates it independently from the complete code and
+execution closure, then reconciles it against the author's declared record. The census includes
+behavior-affecting choices, not only numeric constants:
 
 - numeric thresholds, weights, scales, budgets, and resource limits;
 - booleans, enums, branch and fallback order, stop conditions, and relaxation order;
@@ -521,12 +575,15 @@ This check is required even when aggregate sensitivity appears acceptable becaus
 materially more stable on reviewed than unseen artwork
 (`research/v2-3-experiments/provenance-hygiene/REPORT.md:59-76`).
 
+Exploratory implementations do not require this census; their output remains non-evidence.
+
 ## 9. Census entries and funded experiment records
 
 V4 uses two record depths. The current `MECHANISMS.md` is a compact census, not a collection of
-fully specified artifact transformations. A richer experiment record is required only when a census
-entry or a bounded composition is funded for implementation or evaluation. This avoids freezing raw
-historical descriptions into premature APIs.
+fully specified artifact transformations. A richer experiment record is required when work is
+funded for substantial implementation or is intended to bear evidence, use protected data, test a
+composition, support integration, or support release. It is not a gate for exploration under Section
+3.1. This avoids freezing raw historical descriptions into premature APIs.
 
 ### 9.1 Compact census entry
 
@@ -573,9 +630,11 @@ authorization.
 
 ### 9.2 Rich experiment record
 
-Before implementation or evaluation begins, the funded question receives the richer record below.
-The schema is a research template, not a frozen serialization API. Fields that do not apply are
-explicitly marked not applicable rather than populated with invented structure.
+Before substantial implementation, evidence-bearing evaluation, protected-data use, composition,
+integration, or release work begins, the funded question receives the richer record below. The
+schema is a research template, not a frozen serialization API or an exploratory-trial requirement.
+Fields that do not apply are explicitly marked not applicable rather than populated with invented
+structure.
 
 ```yaml
 schemaVersion: "<experiment-record-version>"
@@ -740,6 +799,9 @@ statistic vector. It receives one scientific disposition. Mechanical and semanti
 and known-good conditions, development and held-out populations, or isolated and complete-treatment
 claims never share one disposition. These labels are not a maturity ladder.
 
+This vocabulary applies only to evidence-bearing work. Exploratory runs receive no scientific
+disposition, including `invalid`; inadequate exploratory custody makes the run non-evidence.
+
 ### 10.1 Scientific dispositions
 
 | disposition | meaning |
@@ -790,6 +852,11 @@ study's own prerequisites are satisfied and may begin after Flo grants it. Modes
 fan out from one artifact, converge on a shared question, use alternate producers, bypass an assumed
 dependency, or participate in a versioned experimental cycle. Results may remain incomparable. No
 ordering below defines runtime order, a build order, or an architecture.
+
+The consequence boundaries in Section 3.1 are not additional modes. Exploration under Flo's standing
+gate need not select a mode, create a rich record, preregister a statistic, complete graph-wide
+typing, or arrange independent verification. It remains non-evidence unless rerun under the
+appropriate evidence-bearing requirements.
 
 Within a pre-execution authorization, **Authorized result** below means the scoped artifact or
 evidence the study may produce. It is not a scientific disposition, a Flo interpretation, or
@@ -925,9 +992,11 @@ capability ladder, build order, or v4 architecture are selected now.
 treatment.
 
 **Prerequisites:** a separately proposed and independently reviewed candidate, cold-runtime and
-output-contract validity, duplicate-safe frozen data, genuinely fresh reserved review capacity,
-controlled rendition and perturbation sets, parameter and runtime audits, destination adjudication,
-and a passed content-channel identifiability audit before any claim of blinding.
+output-contract validity, duplicate-safe frozen data and full execution and review custody,
+genuinely fresh reserved review capacity, controlled rendition and perturbation sets, parameter,
+resource, robustness, and runtime audits, destination adjudication, a passed content-channel
+identifiability audit before any claim of blinding, and Flo authorization for the exact release or
+product claim.
 
 **Authorized result:** pairwise and absolute human judgments of complete treatments, robustness and
 runtime distributions, failure notes, and tightly scoped product-quality evidence. Every human
@@ -949,11 +1018,17 @@ produced. Neither promotes a mechanism generally. Both are recorded Flo rulings 
 an explicit standing policy issued by Flo; agents and the orchestrator may verify prerequisites and
 recommend an outcome but may not grant either authorization.
 
+Section 3.1 records Flo's standing permission for bounded exploration that satisfies its four-item
+gate and avoids protected review data. Such a trial does not need a separate rich authorization
+record, but it also cannot receive post-result scientific, integration, advancement, release, or
+product use. Any such intended use requires a new run under the applicable consequence boundary.
+
 ### 12.1 Pre-execution study authorization
 
-Pre-execution authorization permits only the named question, mode, access, implementation,
-execution, instrument, or review actions in one frozen rich record. It does not predict a scientific
-disposition or authorize later use. It may be granted only when:
+Outside the bounded exploration standing gate, pre-execution authorization permits only the named
+question, mode, access, substantial implementation, execution, instrument, or review actions in one
+frozen rich record. It does not predict a scientific disposition or authorize later use. It may be
+granted only when:
 
 - the question, requested mode, allowed actions, forbidden actions, and expiration or completion
   boundary are explicit;
@@ -1019,8 +1094,10 @@ Evidence scopes create non-implications, not a sequence:
 
 ### 12.3 Run closure and proposed scientific disposition
 
-A run closes as invalid when custody, determinism, schema, source safety, leakage, completeness, or
-execution requirements fail. It yields no scientific disposition beyond invalidity.
+An evidence-bearing run closes as invalid when custody, determinism, schema, source safety, leakage,
+completeness, or execution requirements fail. It yields no scientific disposition beyond invalidity.
+An exploratory run outside those safeguards remains non-evidence rather than entering scientific
+closure.
 
 After structural validity, each atomic claim under its exact scope, condition, population, and
 statistic vector receives exactly one mechanically proposed disposition under the preregistered
@@ -1070,6 +1147,10 @@ composition evidence is required before a composition can be promoted
 (`research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md:206-240`).
 
 ## 14. Specialized-subagent orchestration
+
+One implementer may conduct a bounded exploratory trial under Section 3.1 without subagent
+orchestration, a full parameter census, or independent verification. Its output remains non-evidence
+and cannot authorize integration, advancement, release, or a product claim.
 
 All substantial v4 research, writing, implementation, testing, adversarial review, revision,
 verification, citation and source checking, integration review, and read-only git inspection is
@@ -1136,6 +1217,14 @@ ownership discipline, not unrestricted concurrency or self-verifying agents.
 
 V4 must reject the following patterns:
 
+- treating the four consequence boundaries as a ladder or requiring exploration to traverse the
+  research modes;
+- blocking a cheap bounded trial on a rich record, preregistration, graph-wide typing, full parameter
+  census, full custody system, or subagent orchestration;
+- reporting exploration as scientific evidence, integration authority, release authority, or a
+  generalization result;
+- allowing custody, diagnostics, review infrastructure, or governance to dominate the capability
+  map rather than support mechanism research;
 - choosing an existing algorithm and relabeling its modules as the inventory;
 - treating the current compact census as complete, immutable, or already experiment-ready;
 - counting a normative policy as a mechanism when no testable transformation or gate implements it;

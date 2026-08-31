@@ -1,0 +1,1943 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://palette.local/research/v4/capability-graph/schema/capability-graph.schema.json",
+  "title": "Typed Capability Compatibility Hypergraph",
+  "description": "Generated candidate semantic compatibility among typed artifacts and census mechanisms. It is not an architecture, dependency graph, selected runtime pipeline, or build order.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "documentKind",
+    "schemaVersion",
+    "semantics",
+    "generationDigest",
+    "sourceSnapshot",
+    "capabilityGroups",
+    "artifactTypes",
+    "mechanisms",
+    "analysis"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "documentKind": {
+      "const": "typed-capability-compatibility-hypergraph"
+    },
+    "schemaVersion": {
+      "const": "1.3.0"
+    },
+    "semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relation",
+        "sameArtifactTypeAssertsTestedBinding",
+        "assertsDependencyGraph",
+        "assertsArchitecture",
+        "assertsBuildOrder"
+      ],
+      "properties": {
+        "relation": {
+          "const": "candidate-semantic-compatibility"
+        },
+        "sameArtifactTypeAssertsTestedBinding": {
+          "const": false
+        },
+        "assertsDependencyGraph": {
+          "const": false
+        },
+        "assertsArchitecture": {
+          "const": false
+        },
+        "assertsBuildOrder": {
+          "const": false
+        }
+      }
+    },
+    "generationDigest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "sourceSnapshot": {
+      "$ref": "#/$defs/sourceSnapshot"
+    },
+    "capabilityGroups": {
+      "$ref": "#/$defs/capabilityGroups"
+    },
+    "artifactTypes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/artifactType"
+      }
+    },
+    "mechanisms": {
+      "type": "array",
+      "minItems": 149,
+      "maxItems": 149,
+      "items": {
+        "$ref": "#/$defs/mechanismRecord"
+      }
+    },
+    "analysis": {
+      "$ref": "#/$defs/generatedAnalysis"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repositoryRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifactTypeId": {
+      "type": "string",
+      "pattern": "^artifact\\.[a-z0-9]+(?:[.-][a-z0-9]+)*\\.v[1-9][0-9]*$"
+    },
+    "mechanismId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+$"
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^capability\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "axisPositionId": {
+      "type": "string",
+      "pattern": "^commitment\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "laneId": {
+      "type": "string",
+      "pattern": "^lane\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "portId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "stringList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "sourceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "gitCommit",
+        "gitBlob",
+        "gitTree",
+        "gitCommitTimestamp",
+        "sha256",
+        "byteLength",
+        "lineCount",
+        "mechanismCount"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryRelativePath"
+        },
+        "gitCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "gitBlob": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "gitTree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "gitCommitTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lineCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mechanismCount": {
+          "const": 149
+        }
+      }
+    },
+    "mechanismSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "headingText", "headingLine"],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryRelativePath"
+        },
+        "headingText": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "headingLine": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "censusStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorizationText",
+        "statusText",
+        "scientificInterpretations",
+        "implementationStates",
+        "evidenceScopes",
+        "runtimeAdmissibilities",
+        "authorizationTokens"
+      ],
+      "properties": {
+        "authorizationText": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "statusText": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "scientificInterpretations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "supported",
+              "falsified",
+              "unsupported",
+              "inconclusive",
+              "unmeasured"
+            ]
+          }
+        },
+        "implementationStates": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["live", "historical", "prototype", "instrument", "unbuilt"]
+          }
+        },
+        "evidenceScopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "mechanical",
+              "isolated-semantic",
+              "conditional-known-good",
+              "natural-handoff",
+              "perturbation",
+              "downstream-utility",
+              "composition",
+              "complete-treatment",
+              "none-local"
+            ]
+          }
+        },
+        "runtimeAdmissibilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["permitted", "prohibited", "unresolved"]
+          }
+        },
+        "authorizationTokens": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["inventory-only", "diagnostic-only", "prohibited"]
+          }
+        }
+      }
+    },
+    "artifactType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "productFocus",
+        "label",
+        "description",
+        "category",
+        "plane",
+        "axisPositionId",
+        "laneId",
+        "contractMaturity",
+        "boundaryClassification",
+        "sourceNotes",
+        "provenanceNotes"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "productFocus": {
+          "enum": [
+            "product-flow",
+            "inspector-metadata",
+            "secondary-overlay",
+            "full-analysis-only"
+          ]
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "category": {
+          "enum": [
+            "encoded-source",
+            "raster",
+            "color",
+            "scalar-field",
+            "mask",
+            "label-map",
+            "region-set",
+            "graph",
+            "measurement",
+            "statistic",
+            "hypothesis",
+            "candidate",
+            "candidate-set",
+            "treatment",
+            "rendering",
+            "configuration",
+            "control",
+            "model",
+            "review",
+            "provenance",
+            "custody",
+            "diagnostic",
+            "report",
+            "decision"
+          ]
+        },
+        "plane": {
+          "enum": ["runtime", "development", "governance"]
+        },
+        "axisPositionId": {
+          "$ref": "#/$defs/axisPositionId"
+        },
+        "laneId": {
+          "$ref": "#/$defs/laneId"
+        },
+        "contractMaturity": {
+          "enum": [
+            "descriptive",
+            "draft",
+            "experiment-bound",
+            "validated",
+            "frozen"
+          ]
+        },
+        "boundaryClassification": {
+          "enum": [
+            "internal",
+            "expected-external",
+            "unresolved-external",
+            "product-goal"
+          ]
+        },
+        "intentionalTerminalPurpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "valueInspection": {
+          "$ref": "#/$defs/artifactValueInspectionContract"
+        },
+        "sourceNotes": {
+          "$ref": "#/$defs/stringList"
+        },
+        "provenanceNotes": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "id": {
+                "const": "artifact.raster.native-srgb8-opaque.v1"
+              }
+            },
+            "required": ["id"]
+          },
+          "then": {
+            "properties": {
+              "category": {
+                "const": "raster"
+              },
+              "plane": {
+                "const": "runtime"
+              },
+              "axisPositionId": {
+                "const": "commitment.native-source"
+              },
+              "laneId": {
+                "const": "lane.image-and-color"
+              },
+              "productFocus": {
+                "const": "product-flow"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "id": {
+                "const": "artifact.product.ui-palette.v3"
+              }
+            },
+            "required": ["id"]
+          },
+          "then": {
+            "properties": {
+              "category": {
+                "const": "treatment"
+              },
+              "plane": {
+                "const": "runtime"
+              },
+              "axisPositionId": {
+                "const": "commitment.exact-product-contract"
+              },
+              "laneId": {
+                "const": "lane.role-and-treatment"
+              },
+              "boundaryClassification": {
+                "const": "product-goal"
+              },
+              "productFocus": {
+                "const": "product-flow"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "portCardinality": {
+      "enum": [
+        "exactly-one",
+        "exactly-two",
+        "zero-or-one",
+        "zero-to-two",
+        "zero-to-six",
+        "one-to-two",
+        "one-or-more",
+        "zero-or-more"
+      ]
+    },
+    "valueConstraintComparator": {
+      "enum": [
+        "present",
+        "absent",
+        "equals",
+        "not-equals",
+        "in",
+        "not-in",
+        "less-than",
+        "less-than-or-equal",
+        "greater-than",
+        "greater-than-or-equal",
+        "count-equals",
+        "count-between-inclusive"
+      ]
+    },
+    "valuePath": {
+      "type": "string",
+      "pattern": "^(?:/(?:[^~/]|~0|~1)*)*$"
+    },
+    "portValueConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valuePath", "comparator", "notes"],
+      "properties": {
+        "valuePath": {
+          "$ref": "#/$defs/valuePath"
+        },
+        "comparator": {
+          "$ref": "#/$defs/valueConstraintComparator"
+        },
+        "value": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparator": {
+                "enum": ["present", "absent"]
+              }
+            },
+            "required": ["comparator"]
+          },
+          "then": {
+            "not": {
+              "required": ["value"]
+            }
+          },
+          "else": {
+            "required": ["value"]
+          }
+        }
+      ]
+    },
+    "artifactPermittedValueConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comparator"],
+      "properties": {
+        "comparator": {
+          "$ref": "#/$defs/valueConstraintComparator"
+        },
+        "value": {
+          "$ref": "#/$defs/jsonValue"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparator": {
+                "enum": ["present", "absent"]
+              }
+            },
+            "required": ["comparator"]
+          },
+          "then": {
+            "not": {
+              "required": ["value"]
+            }
+          },
+          "else": {
+            "required": ["value"]
+          }
+        }
+      ]
+    },
+    "artifactValueInspectionPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valuePath",
+        "valueKind",
+        "permittedConstraints",
+        "notes"
+      ],
+      "properties": {
+        "valuePath": {
+          "$ref": "#/$defs/valuePath"
+        },
+        "valueKind": {
+          "enum": ["state", "scalar", "collection", "object"]
+        },
+        "permittedConstraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/artifactPermittedValueConstraint"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "artifactValueInspectionContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paths", "notes"],
+      "properties": {
+        "paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/artifactValueInspectionPath"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "inputPort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "artifactTypeId",
+        "requirement",
+        "cardinality",
+        "inputClass",
+        "notes"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/portId"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "requirement": {
+          "enum": ["required", "optional", "alternative", "configuration"]
+        },
+        "alternativeGroupId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "cardinality": {
+          "$ref": "#/$defs/portCardinality"
+        },
+        "inputClass": {
+          "enum": [
+            "natural",
+            "known-good-projection",
+            "answer-bearing-upper-bound",
+            "configuration",
+            "control",
+            "model",
+            "review",
+            "external-observation"
+          ]
+        },
+        "valueConstraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/portValueConstraint"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "requirement": {
+                "const": "alternative"
+              }
+            },
+            "required": ["requirement"]
+          },
+          "then": {
+            "required": ["alternativeGroupId"]
+          },
+          "else": {
+            "not": {
+              "required": ["alternativeGroupId"]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "requirement": {
+                "enum": ["required", "configuration"]
+              }
+            },
+            "required": ["requirement"]
+          },
+          "then": {
+            "properties": {
+              "cardinality": {
+                "enum": ["exactly-one", "exactly-two", "one-to-two", "one-or-more"]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "cardinality": {
+                "enum": ["zero-or-one", "zero-to-two", "zero-to-six", "zero-or-more"]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "outputPort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "artifactTypeId",
+        "cardinality",
+        "valueStateNotes",
+        "notes"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/portId"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "cardinality": {
+          "$ref": "#/$defs/portCardinality"
+        },
+        "valueStateNotes": {
+          "$ref": "#/$defs/stringList"
+        },
+        "valueConstraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/portValueConstraint"
+          }
+        },
+        "terminalPurpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "alternativeGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "selectionCardinality", "notes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "selectionCardinality": {
+          "enum": ["exactly-one", "one-or-more"]
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "outputGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "portIds", "selectionCardinality", "notes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "portIds": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/portId"
+          }
+        },
+        "selectionCardinality": {
+          "const": "exactly-one"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "constraintPortSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction", "portId", "valuePath"],
+      "properties": {
+        "direction": {
+          "enum": ["input", "output"]
+        },
+        "portId": {
+          "$ref": "#/$defs/portId"
+        },
+        "valuePath": {
+          "$ref": "#/$defs/valuePath"
+        }
+      }
+    },
+    "constraintPredicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "comparator"],
+      "properties": {
+        "subject": {
+          "$ref": "#/$defs/constraintPortSubject"
+        },
+        "comparator": {
+          "$ref": "#/$defs/valueConstraintComparator"
+        },
+        "value": {
+          "$ref": "#/$defs/jsonValue"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparator": {
+                "enum": ["present", "absent"]
+              }
+            },
+            "required": ["comparator"]
+          },
+          "then": {
+            "not": {
+              "required": ["value"]
+            }
+          },
+          "else": {
+            "required": ["value"]
+          }
+        }
+      ]
+    },
+    "conditionalConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "if", "then", "notes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "if": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/constraintPredicate"
+          }
+        },
+        "then": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/constraintPredicate"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "mechanismRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "focusClass",
+        "title",
+        "source",
+        "capabilityIds",
+        "primaryCapabilityId",
+        "censusStatus",
+        "alternativeGroups",
+        "inputPorts",
+        "outputPorts"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/mechanismId"
+        },
+        "focusClass": {
+          "enum": [
+            "product-transformation",
+            "product-admission",
+            "evaluation-probe",
+            "review-custody",
+            "configuration-governance",
+            "historical-comparator",
+            "research-only-oracle"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/mechanismSource"
+        },
+        "capabilityIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capabilityId"
+          }
+        },
+        "primaryCapabilityId": {
+          "$ref": "#/$defs/capabilityId"
+        },
+        "censusStatus": {
+          "$ref": "#/$defs/censusStatus"
+        },
+        "alternativeGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/alternativeGroup"
+          }
+        },
+        "outputGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outputGroup"
+          }
+        },
+        "conditionalConstraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/conditionalConstraint"
+          }
+        },
+        "inputPorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/inputPort"
+          }
+        },
+        "outputPorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/outputPort"
+          }
+        }
+      }
+    },
+    "axisPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "order", "label", "description"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/axisPositionId"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "capabilityLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "description"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/laneId"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "capabilityDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "description", "axisPositionId", "laneId"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/capabilityId"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "axisPositionId": {
+          "$ref": "#/$defs/axisPositionId"
+        },
+        "laneId": {
+          "$ref": "#/$defs/laneId"
+        }
+      }
+    },
+    "productAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactTypeId", "axisPositionId", "laneId", "label", "meaning"],
+      "properties": {
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "axisPositionId": {
+          "$ref": "#/$defs/axisPositionId"
+        },
+        "laneId": {
+          "$ref": "#/$defs/laneId"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "meaning": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "capabilityGroups": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "id",
+        "label",
+        "description",
+        "semantics",
+        "axis",
+        "lanes",
+        "capabilities",
+        "productAnchors",
+        "topologyPolicy"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "const": "capability-groups.semantic-commitment.v1"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "semantics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["orderingMeaning", "dependencyMeaning", "maturityMeaning"],
+          "properties": {
+            "orderingMeaning": {
+              "const": "semantic-commitment-only"
+            },
+            "dependencyMeaning": {
+              "const": "none"
+            },
+            "maturityMeaning": {
+              "const": "none"
+            }
+          }
+        },
+        "axis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "label", "description", "direction", "positions"],
+          "properties": {
+            "id": {
+              "const": "axis.semantic-commitment"
+            },
+            "label": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "description": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "direction": {
+              "const": "left-to-right"
+            },
+            "positions": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/axisPosition"
+              }
+            }
+          }
+        },
+        "lanes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/capabilityLane"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/capabilityDefinition"
+          }
+        },
+        "productAnchors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["left", "right"],
+          "properties": {
+            "left": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/productAnchor"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "artifactTypeId": {
+                      "const": "artifact.raster.native-srgb8-opaque.v1"
+                    },
+                    "axisPositionId": {
+                      "const": "commitment.native-source"
+                    },
+                    "laneId": {
+                      "const": "lane.image-and-color"
+                    }
+                  }
+                }
+              ]
+            },
+            "right": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/productAnchor"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "artifactTypeId": {
+                      "const": "artifact.product.ui-palette.v3"
+                    },
+                    "axisPositionId": {
+                      "const": "commitment.exact-product-contract"
+                    },
+                    "laneId": {
+                      "const": "lane.role-and-treatment"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "topologyPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compatibility",
+            "externalRoots",
+            "diagnostics",
+            "cycles",
+            "fanOut",
+            "convergence",
+            "dataPlanes",
+            "architectureInference"
+          ],
+          "properties": {
+            "compatibility": {
+              "const": "candidate-semantic-compatibility-only"
+            },
+            "externalRoots": {
+              "const": "permitted-and-classified"
+            },
+            "diagnostics": {
+              "const": "first-class-and-filterable"
+            },
+            "cycles": {
+              "const": "permitted"
+            },
+            "fanOut": {
+              "const": "permitted"
+            },
+            "convergence": {
+              "const": "permitted"
+            },
+            "dataPlanes": {
+              "const": "runtime-development-governance-distinct"
+            },
+            "architectureInference": {
+              "const": "not-asserted"
+            }
+          }
+        }
+      }
+    },
+    "portReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanismId", "direction", "portId"],
+      "properties": {
+        "mechanismId": {
+          "$ref": "#/$defs/mechanismId"
+        },
+        "direction": {
+          "enum": ["input", "output"]
+        },
+        "portId": {
+          "$ref": "#/$defs/portId"
+        }
+      }
+    },
+    "jsonValue": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      ]
+    },
+    "generatedPortDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["port", "details"],
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/portReference"
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      }
+    },
+    "compatibilityHyperedge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactTypeId", "producerPorts", "consumerPorts"],
+      "properties": {
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "producerPorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/portReference"
+          }
+        },
+        "consumerPorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/portReference"
+          }
+        },
+        "perPortDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/generatedPortDetail"
+          }
+        }
+      }
+    },
+    "alternativeGroupAvailability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "selectionCardinality",
+        "memberPortCount",
+        "producerBackedMemberPortCount"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "selectionCardinality": {
+          "enum": ["exactly-one", "one-or-more"]
+        },
+        "memberPortCount": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "producerBackedMemberPortCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "neverProvidedInputPortDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "port",
+        "requirement",
+        "producerAvailability",
+        "obligationClassification"
+      ],
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/portReference"
+        },
+        "requirement": {
+          "enum": ["required", "optional", "alternative", "configuration"]
+        },
+        "producerAvailability": {
+          "enum": ["available", "unavailable"]
+        },
+        "obligationClassification": {
+          "enum": [
+            "direct-obligation",
+            "collective-alternative-group-obligation",
+            "optional-absence",
+            "unused-alternative"
+          ]
+        },
+        "alternativeGroup": {
+          "$ref": "#/$defs/alternativeGroupAvailability"
+        }
+      }
+    },
+    "neverUsedOutputPortDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["port", "disposition"],
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/portReference"
+        },
+        "disposition": {
+          "enum": [
+            "intentional-terminal",
+            "product-goal-terminal",
+            "expected-external-handoff",
+            "unresolved-terminal",
+            "internal-unused"
+          ]
+        },
+        "terminalPurpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "neverProvidedInputType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactTypeId",
+        "boundaryClassification",
+        "disposition",
+        "consumerPorts",
+        "consumerPortDetails"
+      ],
+      "properties": {
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "boundaryClassification": {
+          "enum": [
+            "internal",
+            "expected-external",
+            "unresolved-external",
+            "product-goal"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "expected-external-root",
+            "unresolved-external-root",
+            "internal-gap",
+            "product-goal-gap"
+          ]
+        },
+        "consumerPorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/portReference"
+          }
+        },
+        "consumerPortDetails": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/neverProvidedInputPortDetail"
+          }
+        }
+      }
+    },
+    "neverUsedOutputType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactTypeId",
+        "boundaryClassification",
+        "disposition",
+        "producerPorts",
+        "producerPortDetails"
+      ],
+      "properties": {
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "boundaryClassification": {
+          "enum": [
+            "internal",
+            "expected-external",
+            "unresolved-external",
+            "product-goal"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "intentional-terminal",
+            "product-goal-terminal",
+            "expected-external-handoff",
+            "unresolved-terminal",
+            "internal-unused"
+          ]
+        },
+        "producerPorts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/portReference"
+          }
+        },
+        "producerPortDetails": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/neverUsedOutputPortDetail"
+          }
+        }
+      }
+    },
+    "openInputContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantics", "kind", "artifactTypeId", "consumerPort"],
+      "properties": {
+        "semantics": {
+          "const": "candidate-connectivity-observation"
+        },
+        "kind": {
+          "enum": [
+            "missing-natural-provider",
+            "nonprimary-provider-observed"
+          ]
+        },
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "consumerPort": {
+          "$ref": "#/$defs/portReference"
+        }
+      }
+    },
+    "openAlternativeContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantics",
+        "kind",
+        "mechanismId",
+        "alternativeGroupId",
+        "artifactTypeIds",
+        "memberPorts"
+      ],
+      "properties": {
+        "semantics": {
+          "const": "candidate-connectivity-observation"
+        },
+        "kind": {
+          "enum": [
+            "missing-natural-provider",
+            "nonprimary-provider-observed"
+          ]
+        },
+        "mechanismId": {
+          "$ref": "#/$defs/mechanismId"
+        },
+        "alternativeGroupId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "artifactTypeIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/artifactTypeId"
+          }
+        },
+        "memberPorts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/portReference"
+          }
+        }
+      }
+    },
+    "openOutputContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantics", "kind", "artifactTypeId", "producerPorts"],
+      "properties": {
+        "semantics": {
+          "const": "candidate-connectivity-observation"
+        },
+        "kind": {
+          "const": "unconsumed-product-evidence"
+        },
+        "artifactTypeId": {
+          "$ref": "#/$defs/artifactTypeId"
+        },
+        "producerPorts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/portReference"
+          }
+        }
+      }
+    },
+    "productFocusAnalysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interpretationWarnings",
+        "mechanismClassCounts",
+        "artifactFocusCounts",
+        "primaryMechanismIds",
+        "primaryArtifactIds",
+        "primaryIncidences",
+        "inspectorInputPorts",
+        "secondaryOverlayMechanismIds",
+        "secondaryOverlayArtifactIds",
+        "fullOnlyMechanismIds",
+        "fullOnlyArtifactIds",
+        "fullRegistryCounts",
+        "openContractSemantics",
+        "connectivityCounts",
+        "materializerGaps",
+        "openInputContracts",
+        "openAlternativeContracts",
+        "openOutputContracts"
+      ],
+      "properties": {
+        "interpretationWarnings": {
+          "$ref": "#/$defs/stringList"
+        },
+        "mechanismClassCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "product-transformation",
+            "product-admission",
+            "evaluation-probe",
+            "review-custody",
+            "configuration-governance",
+            "historical-comparator",
+            "research-only-oracle"
+          ],
+          "properties": {
+            "product-transformation": { "type": "integer", "minimum": 0 },
+            "product-admission": { "type": "integer", "minimum": 0 },
+            "evaluation-probe": { "type": "integer", "minimum": 0 },
+            "review-custody": { "type": "integer", "minimum": 0 },
+            "configuration-governance": { "type": "integer", "minimum": 0 },
+            "historical-comparator": { "type": "integer", "minimum": 0 },
+            "research-only-oracle": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "artifactFocusCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "product-flow",
+            "inspector-metadata",
+            "secondary-overlay",
+            "full-analysis-only"
+          ],
+          "properties": {
+            "product-flow": { "type": "integer", "minimum": 0 },
+            "inspector-metadata": { "type": "integer", "minimum": 0 },
+            "secondary-overlay": { "type": "integer", "minimum": 0 },
+            "full-analysis-only": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "primaryMechanismIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/mechanismId" }
+        },
+        "primaryArtifactIds": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/artifactTypeId" }
+        },
+        "primaryIncidences": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/portReference" }
+        },
+        "inspectorInputPorts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/portReference" }
+        },
+        "secondaryOverlayMechanismIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/mechanismId" }
+        },
+        "secondaryOverlayArtifactIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/artifactTypeId" }
+        },
+        "fullOnlyMechanismIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/mechanismId" }
+        },
+        "fullOnlyArtifactIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/artifactTypeId" }
+        },
+        "fullRegistryCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mechanisms", "artifacts", "incidences"],
+          "properties": {
+            "mechanisms": { "type": "integer", "minimum": 0 },
+            "artifacts": { "type": "integer", "minimum": 0 },
+            "incidences": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "openContractSemantics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "semantics",
+            "confirmedGapCondition",
+            "assertsPrerequisite",
+            "assertsWorkQueueItem",
+            "assertsBuildOrder",
+            "assertsMissingMechanism",
+            "assertsTrialGate"
+          ],
+          "properties": {
+            "semantics": {
+              "const": "candidate-connectivity-observation"
+            },
+            "confirmedGapCondition": {
+              "const": "future-selected-composition-requires-exact-contract"
+            },
+            "assertsPrerequisite": { "const": false },
+            "assertsWorkQueueItem": { "const": false },
+            "assertsBuildOrder": { "const": false },
+            "assertsMissingMechanism": { "const": false },
+            "assertsTrialGate": { "const": false }
+          }
+        },
+        "connectivityCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "materializerGaps",
+            "openInputContracts",
+            "openAlternativeContracts",
+            "openOutputContracts"
+          ],
+          "properties": {
+            "materializerGaps": { "type": "integer", "minimum": 0 },
+            "openInputContracts": { "type": "integer", "minimum": 0 },
+            "openAlternativeContracts": { "type": "integer", "minimum": 0 },
+            "openOutputContracts": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "materializerGaps": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["status", "kind", "artifactTypeId"],
+            "properties": {
+              "status": { "const": "confirmed-structural-gap" },
+              "kind": { "const": "missing-product-materializer" },
+              "artifactTypeId": {
+                "const": "artifact.product.ui-palette.v3"
+              }
+            }
+          }
+        },
+        "openInputContracts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/openInputContract" }
+        },
+        "openAlternativeContracts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/openAlternativeContract" }
+        },
+        "openOutputContracts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/openOutputContract" }
+        }
+      }
+    },
+    "generatedAnalysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generatedAt",
+        "generationDigest",
+        "generator",
+        "generationInputs",
+        "sourceFragments",
+        "counts",
+        "obligationCounts",
+        "productFocus",
+        "compatibilityHyperedges",
+        "orphans",
+        "warnings"
+      ],
+      "properties": {
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "generationDigest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "generator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {
+            "name": {
+              "const": "research/v4/capability-graph/src/build.ts"
+            },
+            "version": {
+              "const": "1.5.0"
+            }
+          }
+        },
+        "generationInputs": {
+          "type": "array",
+          "minItems": 13,
+          "maxItems": 13,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "byteLength"],
+            "properties": {
+              "path": {
+                "$ref": "#/$defs/repositoryRelativePath"
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "byteLength": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "sourceFragments": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fragmentId", "path", "sha256", "byteLength"],
+            "properties": {
+              "fragmentId": {
+                "type": "string",
+                "pattern": "^fragment\\.[a-z0-9]+(?:[.-][a-z0-9]+)*\\.v[1-9][0-9]*$"
+              },
+              "path": {
+                "$ref": "#/$defs/repositoryRelativePath"
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "byteLength": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "productFocus": {
+          "$ref": "#/$defs/productFocusAnalysis"
+        },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactTypes",
+            "mechanisms",
+            "inputPorts",
+            "outputPorts",
+            "compatibilityHyperedges",
+            "neverProvidedInputTypes",
+            "neverProvidedInputPorts",
+            "neverUsedOutputTypes",
+            "neverUsedOutputPorts"
+          ],
+          "properties": {
+            "artifactTypes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "mechanisms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "inputPorts": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "outputPorts": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "compatibilityHyperedges": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "neverProvidedInputTypes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "neverProvidedInputPorts": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "neverUsedOutputTypes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "neverUsedOutputPorts": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "obligationCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "directObligations",
+            "collectiveAlternativeGroupObligations",
+            "optionalAbsences",
+            "unusedAlternatives"
+          ],
+          "properties": {
+            "directObligations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "collectiveAlternativeGroupObligations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "optionalAbsences": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unusedAlternatives": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "compatibilityHyperedges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/compatibilityHyperedge"
+          }
+        },
+        "orphans": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["neverProvidedInputTypes", "neverUsedOutputTypes"],
+          "properties": {
+            "neverProvidedInputTypes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/neverProvidedInputType"
+              }
+            },
+            "neverUsedOutputTypes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/neverUsedOutputType"
+              }
+            }
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      }
+    }
+  }
+}

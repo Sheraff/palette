@@ -1,0 +1,3971 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.03-image-evidence.v1",
+  "title": "Section 3 image evidence, fields, frames, texture, and topology",
+  "description": "Artifact contracts and complete typed ports for the 27 mechanisms in Section 3 of the v4 mechanism census. Type matches express candidate semantic compatibility only, not bindings, dependencies, architecture, or build order.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-oklab-float.v1",
+      "productFocus": "product-flow",
+      "label": "Native OKLab pixel raster",
+      "description": "One floating OKLab triple for every native source pixel in unchanged pixel order and cardinality.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Produced by color.oklab-working-space from the native opaque raster and required by family quantization, robust native fitting, and continuous surround mechanisms."
+      ],
+      "provenanceNotes": [
+        "Must retain the native raster identity and one-to-one pixel correspondence; it is not a working-raster conversion."
+      ]
+    },
+    {
+      "id": "artifact.raster.working-srgb8-max-edge-224-lanczos3.v1",
+      "productFocus": "product-flow",
+      "label": "Max-edge-224 Lanczos3 sRGB8 working raster",
+      "description": "A three-channel opaque sRGB8 discovery raster resized with the historical max-edge-224 Lanczos3 policy and distinct from native source truth.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The historical region-graph and SLIC path used this exact max-edge-224 Lanczos3 working raster; current runtime use remains prohibited by the native/no-resampling policy."
+      ],
+      "provenanceNotes": [
+        "Carries source identity, working dimensions, kernel, orientation, color conversion, and flattening policy; it must never be substituted for the native raster type."
+      ]
+    },
+    {
+      "id": "artifact.raster.working-oklab-declared.v1",
+      "productFocus": "product-flow",
+      "label": "Declared discovery-raster OKLab samples",
+      "description": "OKLab samples on an explicitly declared non-native discovery lattice.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Produced by color.oklab-working-space only for an explicitly declared non-native discovery lattice and admitted as a distinct robust-fit alternative."
+      ],
+      "provenanceNotes": [
+        "Must bind its source raster, lattice, sampling, and color-conversion identities and cannot claim native-pixel cardinality."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.native-intensity.v1",
+      "productFocus": "product-flow",
+      "label": "Native scalar intensity plane",
+      "description": "A scalar image plane on the native lattice with a declared channel or intensity conversion.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Required by the noise, grayscale morphology, and scalar texture formulations; Section 3 does not provide the scalar conversion."
+      ],
+      "provenanceNotes": [
+        "The conversion, range, lattice, boundary policy, and native raster identity must be explicit."
+      ]
+    },
+    {
+      "id": "artifact.measurement.packed-rgb-color-counts.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Packed RGB color-count observations",
+      "description": "A flattened ordered sequence of distinct packed RGB values and nonnegative population counts.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Legacy k-means, elbow, and gap implementations consume repeated color,count pairs; histogram formation is not a Section 3 mechanism."
+      ],
+      "provenanceNotes": [
+        "Observation order is consequential to initialization and ties; counts preserve full weighted population."
+      ]
+    },
+    {
+      "id": "artifact.configuration.color-space-distance.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Color-space distance configuration",
+      "description": "A named color representation with distance, conversion, and identity-tolerance behavior used by legacy color measurements.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Legacy k-means assignment, nearest-observation publication, and local-contrast saliency depend on a supplied color-space implementation."
+      ],
+      "provenanceNotes": [
+        "Distance identity and version must be retained because assignment may use a different space from packed-RGB centroid updates."
+      ]
+    },
+    {
+      "id": "artifact.configuration.legacy-kmeans-k.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Requested legacy k-means K",
+      "description": "The requested positive cluster count and fixed iteration policy for one legacy k-means run.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "The implementation may reduce K when too few distinct colors exist and stops at convergence or 100 iterations."
+      ],
+      "provenanceNotes": [
+        "Requested K remains distinct from effective k in the result statistic."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.legacy-kmeans-public-clusters.v1",
+      "productFocus": "product-flow",
+      "label": "Public legacy k-means observed-color map",
+      "description": "The returned map from observed representative packed RGB colors to full weighted cluster populations.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This is the public k-means/election output; it does not expose cluster memberships, synthesized means, selected K, WCSS points, or slopes."
+      ],
+      "provenanceNotes": [
+        "Duplicate observed representative keys can overwrite earlier clusters; values do not include native pixel witnesses."
+      ]
+    },
+    {
+      "id": "artifact.statistic.legacy-kmeans-fit.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Legacy k-means WCSS and effective k",
+      "description": "Population-normalized within-cluster squared distance and the effective cluster count for one run.",
+      "category": "statistic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Returned alongside the public observed-color map by the direct k-means implementation."
+      ],
+      "provenanceNotes": [
+        "Binds requested K, effective k, distance implementation, input observation identity, and implementation behavior."
+      ]
+    },
+    {
+      "id": "artifact.measurement.legacy-kmeans-internal-cluster-state.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Internal legacy k-means cluster state",
+      "description": "Non-public observation-to-cluster memberships together with packed-RGB weighted mean centers.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Mechanically formed inside legacy k-means but explicitly not returned in its public result; the separate publication mechanism therefore retains this as an unresolved required handoff."
+      ],
+      "provenanceNotes": [
+        "Preserves input observation order, membership indices, mean centers, empty-cluster invalidity, and convergence state; it is not the public cluster map."
+      ]
+    },
+    {
+      "id": "artifact.configuration.legacy-elbow-k-election.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Legacy elbow election policy",
+      "description": "Early and late K sets plus outlier, regression, synthetic-endpoint, ceiling, and tie behavior for slope-intersection election.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Defaults are early [1,2,3,4] and late [50,100]; mutable closure state is part of implemented behavior."
+      ],
+      "provenanceNotes": [
+        "Configuration identity must include malformed cleaned-regression and repeated-call behavior when describing the live implementation."
+      ]
+    },
+    {
+      "id": "artifact.configuration.legacy-gap-k-election.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Legacy gap election policy",
+      "description": "Minimum and maximum K plus gap maximization and single-reference-draw behavior.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Describes the implemented legacy election, not a corrected standard gap-statistic formulation."
+      ],
+      "provenanceNotes": [
+        "Binds minK, maxK, logarithm behavior, maximizing tie behavior, and reference draw count."
+      ]
+    },
+    {
+      "id": "artifact.model.legacy-gap-reference-distribution.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Legacy gap reference generator model",
+      "description": "The built-in reference-distribution generator used for legacy gap comparisons.",
+      "category": "model",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "The live generator samples packed RGB code order and contains the documented flattened-pair indexing defect."
+      ],
+      "provenanceNotes": [
+        "Model identity must distinguish this invalid implementation from any corrected color-space bounding-box reference distribution."
+      ]
+    },
+    {
+      "id": "artifact.candidate.legacy-observed-cluster-representative.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Observed legacy cluster representative",
+      "description": "One assigned observed packed RGB color nearest to a synthesized cluster mean, paired with the cluster's weighted population.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents the publication step per mean cluster; it is not a native exact-pixel publication witness."
+      ],
+      "provenanceNotes": [
+        "Retains mean-state identity, assigned observation order, nearest-distance tie behavior, and full weighted population."
+      ]
+    },
+    {
+      "id": "artifact.configuration.oklab-family-grid.v1",
+      "productFocus": "inspector-metadata",
+      "label": "OKLab family grid configuration",
+      "description": "Fine-grid step, origin, boundary, representative, and deterministic tie policies for native color-family quantization.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "The inherited historical step was 0.04 and is not independently derived."
+      ],
+      "provenanceNotes": [
+        "Grid identity must distinguish source-preserving family assignment from mean-emitting quantization."
+      ]
+    },
+    {
+      "id": "artifact.label-map.native-color-family.v1",
+      "productFocus": "product-flow",
+      "label": "Native color-family label plane",
+      "description": "One deterministic fine-grid OKLab family label per native pixel.",
+      "category": "label-map",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Primary spatial output of evidence.family-quantization and input to four-connected family components."
+      ],
+      "provenanceNotes": [
+        "Retains native lattice, grid policy, family identity, and exact source-pixel correspondence."
+      ]
+    },
+    {
+      "id": "artifact.region-set.native-color-families.v1",
+      "productFocus": "product-flow",
+      "label": "Native color-family records",
+      "description": "Finite family records with occupancy, prototype, components when available, and exact representative options.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Family records preserve stable color grouping without granting field, figure, or role semantics."
+      ],
+      "provenanceNotes": [
+        "Prototype values remain distinct from exact representative options and native witnesses."
+      ]
+    },
+    {
+      "id": "artifact.mask.native-family-support.v1",
+      "productFocus": "product-flow",
+      "label": "Native binary family support mask",
+      "description": "A native-lattice binary mask for exactly one declared color family.",
+      "category": "mask",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "May be materialized from the family label plane for support and scale-space measurements."
+      ],
+      "provenanceNotes": [
+        "Binds family identity, native dimensions, membership policy, exact population, and mask hash."
+      ]
+    },
+    {
+      "id": "artifact.mask.native-candidate-support.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Native binary candidate support mask",
+      "description": "A frozen native-lattice binary mask for one declared candidate rather than a family union.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Native mask scale-space accepts candidate masks as distinct from family masks; candidate availability formation is outside this Section 3 mapping."
+      ],
+      "provenanceNotes": [
+        "Requires frozen candidate identity, native witness, native dimensions, exact population, and mask hash."
+      ]
+    },
+    {
+      "id": "artifact.region-set.native-family-components.v1",
+      "productFocus": "product-flow",
+      "label": "Native four-connected family components",
+      "description": "Deterministically ordered four-connected components within native color-family labels, with membership and geometry.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Exposes spatial support for color families without asserting one semantic object per component."
+      ],
+      "provenanceNotes": [
+        "Retains family ID, scan order, neighbor order, connectivity, pixel membership, bounds, and native raster identity."
+      ]
+    },
+    {
+      "id": "artifact.configuration.slic-region-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "SLIC region policy",
+      "description": "Region-count, compactness, iteration, connectivity-cleanup, and exact-representative policies for SLIC-style aggregation.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Historical controls yielded roughly 48-320 regions and version 0.19 did not connectivity-clean labels."
+      ],
+      "provenanceNotes": [
+        "Must bind the working-raster identity and preserve whether connectivity cleanup was absent."
+      ]
+    },
+    {
+      "id": "artifact.label-map.working-slic-region.v1",
+      "productFocus": "product-flow",
+      "label": "Working-raster SLIC label plane",
+      "description": "One SLIC-style region label per pixel on the declared working raster lattice.",
+      "category": "label-map",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This label plane is working-raster evidence and is unsuitable as an assumed connectivity-clean segmentation API in historical 0.19."
+      ],
+      "provenanceNotes": [
+        "Retains working dimensions, source and resize identity, region policy, and exact label ordering."
+      ]
+    },
+    {
+      "id": "artifact.graph.slic-region-adjacency.v1",
+      "productFocus": "product-flow",
+      "label": "SLIC region adjacency graph",
+      "description": "Perceptual-spatial region records and their adjacency, boundary, border, variance, saliency, and text evidence on a working lattice.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Aggregates pixels into regions but does not decide whether grain is material or grant segmentation authority."
+      ],
+      "provenanceNotes": [
+        "Binds label plane, adjacency construction, working raster, region attributes, and ordering."
+      ]
+    },
+    {
+      "id": "artifact.custody.slic-source-representatives.v1",
+      "productFocus": "secondary-overlay",
+      "label": "SLIC exact source representatives",
+      "description": "Exact source representative records associated with working-raster SLIC regions.",
+      "category": "custody",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Keeps representative custody separate from interpolated working-raster values and from region labels."
+      ],
+      "provenanceNotes": [
+        "Each record must identify its region, source raster, representative selection rule, and source location or explicitly bounded historical custody."
+      ]
+    },
+    {
+      "id": "artifact.configuration.normalized-image-coordinates.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Normalized image-coordinate policy",
+      "description": "Declared border bands, side and corner conventions, interior domain, and normalized coordinate formulas.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Border/frame ownership measurements require explicit normalized coordinate and null-domain behavior."
+      ],
+      "provenanceNotes": [
+        "Binds lattice dimensions, border width, corner definitions, side order, and empty-interior behavior."
+      ]
+    },
+    {
+      "id": "artifact.measurement.border-frame-ownership.v1",
+      "productFocus": "product-flow",
+      "label": "Border and frame ownership diagnostics",
+      "description": "Border coverage, per-side coverage, corner count, interior ownership, and border-versus-interior excess for one support source.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "These values are evidence and never field authority by themselves."
+      ],
+      "provenanceNotes": [
+        "Retains support identity, coordinate policy, denominators, threshold if any, and explicit undefined states."
+      ]
+    },
+    {
+      "id": "artifact.configuration.legacy-local-saliency.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Legacy local-contrast saliency policy",
+      "description": "Radius-3 maximum color distance, three-tap separable blur, scale-relative max dilation, and maximum normalization policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Describes the live fixed-radius implementation, not Itti-Koch center-surround saliency or local variance."
+      ],
+      "provenanceNotes": [
+        "Binds radius, kernel, border clamping, dilation-radius formula, normalization, and output quantization."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.legacy-local-contrast-saliency-u8.v1",
+      "productFocus": "product-flow",
+      "label": "Legacy local-contrast saliency map",
+      "description": "An 8-bit maximum-normalized local color-contrast field at the input raster cardinality.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Live root saliency output; large objects may be represented mostly by their edges and absolute magnitude is lost."
+      ],
+      "provenanceNotes": [
+        "Retains raster identity, dimensions, distance configuration, policy identity, and 8-bit normalization behavior."
+      ]
+    },
+    {
+      "id": "artifact.statistic.otsu-saliency-threshold.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Otsu saliency threshold",
+      "description": "One integer threshold in [0,255] maximizing between-class variance for an 8-bit map.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Expose the unused Otsu helper result as a diagnostic without attributing it to the live saliency path.",
+      "sourceNotes": [
+        "The formula is implemented but has no live call site in the cited saliency worker."
+      ],
+      "provenanceNotes": [
+        "Retains histogram, map identity, tie behavior, empty-class handling, and integer result."
+      ]
+    },
+    {
+      "id": "artifact.mask.native-exact-color-support.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Native exact-color support mask",
+      "description": "A native binary mask identifying every exact occurrence of one declared source RGB color.",
+      "category": "mask",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "One alternative support input; Section 3 does not define exact-color mask formation."
+      ],
+      "provenanceNotes": [
+        "Binds exact RGB, native raster identity, dimensions, population, and mask hash."
+      ]
+    },
+    {
+      "id": "artifact.measurement.population-connectivity-spread.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Population, connectivity, and spread vector",
+      "description": "Mass and geometry measurements including exact population, local same-color mass, connected share, family concentration, spread, and observation breadth.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Report-only support evidence under v3; it is not a belonging or validity gate."
+      ],
+      "provenanceNotes": [
+        "Every value retains its exact denominator, source mask, native raster, neighborhood definition, and null behavior."
+      ]
+    },
+    {
+      "id": "artifact.measurement.component-local-raster.v1",
+      "productFocus": "product-flow",
+      "label": "Component-local raster measurements",
+      "description": "Per-component edge, contrast, variance, geometry, repetition, polarity, compactness, and stroke-width measurements.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Structural text-shape interpretation requires these measurements, but Section 3 contains no single mechanism that provides the complete vector."
+      ],
+      "provenanceNotes": [
+        "Retains component identity, raster identity, local neighborhood, formulas, scale normalization, and unavailable cues."
+      ]
+    },
+    {
+      "id": "artifact.measurement.component-typography-signature-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Component typography and signature evidence",
+      "description": "Uncertain per-component evidence for title-like typography or signature marks, without assigning a text label or UI role.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Output of the bounded structural text-shape mechanism; remains distinct from root foreground colors and pixel-retention diagnostics."
+      ],
+      "provenanceNotes": [
+        "Retains source component, cue values, cue availability, uncertainty, and method identity."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.structural-text-chains.v1",
+      "productFocus": "product-flow",
+      "label": "Optional structural text-chain hypotheses",
+      "description": "Optional uncertain chains of components that may form typography-like marks without OCR or text authority.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Semantically different from the two legacy text-region pixel buffers and from scored root foreground-color hypotheses."
+      ],
+      "provenanceNotes": [
+        "Retains member components, ordering, grouping policy, uncertainty, and explicit absence when no chain is formed."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.field-color.v1",
+      "productFocus": "product-flow",
+      "label": "Declared field-color hypothesis",
+      "description": "One uncertain field-color hypothesis supplied to contrastive root foreground heuristics.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "The root structural-text heuristic requires a field color; its election is outside this Section 3 mechanism."
+      ],
+      "provenanceNotes": [
+        "Must retain source color custody, hypothesis method, confidence or abstention semantics, and raster identity."
+      ]
+    },
+    {
+      "id": "artifact.configuration.foreground-contrast-floor.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Foreground contrast-floor configuration",
+      "description": "A declared color-contrast function and minimum foreground contrast used by root foreground hypotheses.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Required by legacy structural-text heuristic scoring and fallback behavior."
+      ],
+      "provenanceNotes": [
+        "Binds contrast algorithm, direction, threshold, comparison semantics, and version."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.legacy-root-foreground-colors.v1",
+      "productFocus": "product-flow",
+      "label": "Legacy root foreground-color hypotheses",
+      "description": "Several independently scored foreground color hypotheses with method identities, scores, and fallback states.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Produced for comparison by the live root caller; this is not a text mask, OCR result, reviewed joint model, or elected complete treatment."
+      ],
+      "provenanceNotes": [
+        "Retains method name, source cluster map, saliency threshold, field color, contrast floor, score, and fallback reason."
+      ]
+    },
+    {
+      "id": "artifact.raster.legacy-fixed-text-rectangle-retention.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Fixed-threshold text-rectangle retention buffer",
+      "description": "A full-size RGB buffer retaining source pixels inside grouped scanline rectangles and zeroing other positions.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Output of the inactive fixed-threshold scanline route; rectangle filling includes non-text pixels."
+      ],
+      "provenanceNotes": [
+        "Retains native input coordinates, grayscale and inversion policy, rectangle grouping order, dimensions, and channel count."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.legacy-fixed-text-rectangle-pixels.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Packed fixed-threshold rectangle pixels",
+      "description": "A packed source-pixel buffer containing pixels from grouped fixed-threshold rectangles without a full-size lattice.",
+      "category": "candidate-set",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Semantically and structurally distinct from the full-size rectangle buffer and adaptive contour outputs."
+      ],
+      "provenanceNotes": [
+        "Retains source offsets, rectangle order, channel count, allocated length behavior, and originating full-size raster identity."
+      ]
+    },
+    {
+      "id": "artifact.raster.legacy-adaptive-text-contour-retention.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Adaptive text-contour retention buffer",
+      "description": "A full-size RGB buffer retaining source pixels only at adaptive-threshold morphology/Sobel contour locations.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Live visual diagnostic output; contours are not filled text masks and have no semantic text authority."
+      ],
+      "provenanceNotes": [
+        "Retains adaptive threshold, 5x5 opening/closing, Sobel threshold, eight-connectivity, border handling, dimensions, and contour order."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.legacy-adaptive-text-contour-pixels.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Packed adaptive contour pixels",
+      "description": "A packed source-pixel buffer containing adaptive morphology/Sobel contour pixels without a full-size lattice.",
+      "category": "candidate-set",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Distinct from fixed-threshold rectangle pixels and from component-level typography hypotheses."
+      ],
+      "provenanceNotes": [
+        "Retains contour order, source offsets, channel count, documented double channel multiplication in allocation, and originating raster identity."
+      ]
+    },
+    {
+      "id": "artifact.configuration.native-mask-scale-target.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Native mask scale-space target attribution",
+      "description": "A declared max-edge or pixel-budget target with exact target dimensions, box-filter, sampling, Q0.24, and hash policies.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Target attribution distinguishes max-edge from pixel-budget policies and does not mean semantic or human attribution."
+      ],
+      "provenanceNotes": [
+        "Binds requested value, actual dimensions, SAT/BigInt box filter, half-up Q0.24 rounding, exact center sampling, and typed hashes."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.native-support-q024-lowpass.v1",
+      "productFocus": "product-flow",
+      "label": "Native Q0.24 low-pass support plane",
+      "description": "A centered-box low-pass field over one frozen binary mask, stored on the native lattice in unsigned Q0.24.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Derived diagnostic evidence only; never source truth, candidate color, resized raster, or palette output."
+      ],
+      "provenanceNotes": [
+        "Retains parent mask identity, native dimensions, target attribution, low-pass filter identity, Q0.24 encoding, and plane hash."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.target-lattice-support-q024.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Target-lattice Q0.24 support samples",
+      "description": "The exact nearest-center subset sampled from a corresponding native Q0.24 low-pass plane onto a target lattice.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This is a sampled derived field, not a working RGB raster and not an independently filtered plane."
+      ],
+      "provenanceNotes": [
+        "Retains source indices, target dimensions, parent native plane and mask identities, exact equality checks, and typed hashes."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.native-mask-scale-space-custody.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Native mask scale-space custody diagnostics",
+      "description": "Filter identity, mass residual, typed hashes, target attribution, exact-sampling checks, and explicit invalid states for one mask observation.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Record mechanical scale-space custody and residual checks without emitting or selecting a palette.",
+      "sourceNotes": [
+        "The mechanism explicitly has no palette output and corpus vectors cannot be averaged into a winner."
+      ],
+      "provenanceNotes": [
+        "Binds mask, target, SAT/BigInt implementation, Q0.24 policy, residual bounds, source indices, hashes, and validity state."
+      ]
+    },
+    {
+      "id": "artifact.configuration.support-topology-threshold.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Support topology threshold policy",
+      "description": "A declared threshold, connectivity, distance-transform, boundary, hole, enclosure, reach, and undefined-state policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Topology over soft support is threshold-dependent; deferred metrics must not be emitted as placeholders."
+      ],
+      "provenanceNotes": [
+        "Binds threshold, lattice, connectivity, scan order, transforms, normalization, and every undefined case."
+      ]
+    },
+    {
+      "id": "artifact.measurement.support-topology-descriptors.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Support topology descriptor vector",
+      "description": "Component signatures and counts, largest mass, boundary density, side ownership, thickness, enclosure, reach, and explicit undefined values.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Diagnostic geometry only; no field, frame, typography, or figure authority is conferred."
+      ],
+      "provenanceNotes": [
+        "Retains input support identity, threshold, topology policy, exact normalization, component ordering, and undefined states."
+      ]
+    },
+    {
+      "id": "artifact.configuration.robust-field-fit.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Robust field-fit configuration",
+      "description": "Declared flat, block, linear, and radial surface families with sampling, redescending loss, initialization, stopping, abstention, recursion, and resource policies.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Required to make robust fitting behavior, alternatives, and cold-resource assumptions explicit."
+      ],
+      "provenanceNotes": [
+        "Binds raster lattice, sampled pixels, surface family, robust loss, fit order, random state if any, stopping, and recursion."
+      ]
+    },
+    {
+      "id": "artifact.model.robust-color-surface-fit.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Fitted robust color-surface model",
+      "description": "One fitted flat, block, linear, or radial per-image color-surface model with parameters and source-lattice identity.",
+      "category": "model",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "A fitted per-image model output, not an external warm model and not field authority by itself."
+      ],
+      "provenanceNotes": [
+        "Retains source samples, surface family, parameters, fit policy, explained fraction, fit order, and recursion lineage."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.robust-fit-residual-weight.v1",
+      "productFocus": "product-flow",
+      "label": "Robust fit residual and inlier-weight fields",
+      "description": "Per-pixel residuals and redescending inlier weights for one fitted color surface.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Residual is enriched for marks but is not a pure figure mask."
+      ],
+      "provenanceNotes": [
+        "Retains fitted model identity, source lattice, residual metric, weight function, scale, and every pixel correspondence."
+      ]
+    },
+    {
+      "id": "artifact.evidence.robust-field-model-residual-aggregate.v1",
+      "productFocus": "product-flow",
+      "label": "P5 robust field model and residual aggregate",
+      "description": "The complete P5 fit aggregate containing fitted flat, block, linear, or radial model records, paired residual and inlier-weight fields, absolute explained fractions, alternatives, abstention, and recursion state.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Aggregates exactly the P5 robust model, residual, inlier-weight, explained-fraction, abstention, and recursion outputs without asserting historical v2-3 GradientFitDiagnostic semantics."
+      ],
+      "provenanceNotes": [
+        "Retains every model-to-residual pairing, selected sample lattice, scores, explained fractions, abstention reason, recursion, source identity, and resource observations."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.residual-mark-groups.v1",
+      "productFocus": "product-flow",
+      "label": "Residual mark-group hypotheses",
+      "description": "Zero or more groups of robust-fit rejections with span, mass, neighborhood, exact-color support, and residual provenance.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Groups are figure-enriched hypotheses, not pure figures or UI role assignments."
+      ],
+      "provenanceNotes": [
+        "Retains fitted model, residual and weight fields, grouping policy, native exact-color support, and empty result."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.declared-image-channel-family.v1",
+      "productFocus": "product-flow",
+      "label": "Declared image channel family",
+      "description": "One or more scalar or chromatic image channels with a declared source, conversion, ordering, and lattice.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Tree-of-shapes can consume an image or channel family; Section 3 does not define channel-family formation."
+      ],
+      "provenanceNotes": [
+        "Binds source raster, channel formulas, ordering, dimensions, numeric encoding, and any chromatic-lane interpretation."
+      ]
+    },
+    {
+      "id": "artifact.configuration.tree-of-shapes.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Tree-of-shapes configuration",
+      "description": "Level-set, connectivity, channel-lane, attribute, representative, candidate-lane, and ordering policy for hierarchical shape extraction.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Required to distinguish nested level-set hierarchy formation from ranking or role correctness."
+      ],
+      "provenanceNotes": [
+        "Binds channel family, connectivity, level ordering, parent ties, attribute formulas, representatives, and lane generation."
+      ]
+    },
+    {
+      "id": "artifact.graph.tree-of-shapes.v1",
+      "productFocus": "product-flow",
+      "label": "Rooted tree-of-shapes hierarchy",
+      "description": "A rooted nested level-set hierarchy with parent/child relations, node area, depth, shape attributes, and exact-pixel representative custody.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Hierarchical candidate evidence can expose isoluminant marks but does not establish ranking or roles."
+      ],
+      "provenanceNotes": [
+        "Retains source image or channel, level-set policy, deterministic hierarchy order, node attributes, and exact representative witness."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.tree-of-shapes-lanes.v1",
+      "productFocus": "product-flow",
+      "label": "Tree-of-shapes candidate lanes",
+      "description": "Candidate lanes read from hierarchy nodes at declared containment scales, including exact-pixel representatives.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Reachability remains separate from assignment-set stability, ranking, and role correctness."
+      ],
+      "provenanceNotes": [
+        "Retains hierarchy node, lane policy, containment scale, attributes, exact representative, and candidate ordering."
+      ]
+    },
+    {
+      "id": "artifact.configuration.per-pixel-rank-fields.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Per-pixel rank-field policy",
+      "description": "Declared scalar field definitions, rank ordering, ties, requested role or hypothesis set, and exact-pixel publication rules.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Field design and requested output identities remain consequential even though pixel availability is complete."
+      ],
+      "provenanceNotes": [
+        "Binds field formulas, role/hypothesis requests, rank direction, ties, exclusions, and source-pixel witness policy."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.per-pixel-rank-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Per-pixel scalar rank evidence",
+      "description": "Several scalar fields and complete native-pixel rank orderings for declared roles or hypotheses.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Complete availability does not establish field quality or role correctness."
+      ],
+      "provenanceNotes": [
+        "Retains native raster, field definition, requested semantic identity, every score, ordering, and tie rule."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.rank-published-native-pixels.v1",
+      "productFocus": "product-flow",
+      "label": "Rank-published native role pixels",
+      "description": "Exactly one native pixel witness per requested role or hypothesis, collected with rank and field provenance.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Exact-pixel publication is supported mechanically while role-field semantics remain inconclusive."
+      ],
+      "provenanceNotes": [
+        "Each requested identity retains exact RGB, native index and coordinates, rank, scalar field, ties, and source hash."
+      ]
+    },
+    {
+      "id": "artifact.configuration.multiscale-surround.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Multiscale surround policy",
+      "description": "Blur ladder, positional fields, anisotropy, habitual-ground, excursion, delayed-quantization, and exact-redemption policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Continuous measurements are distinct from the falsified P6 weighted joint objective that consumed them."
+      ],
+      "provenanceNotes": [
+        "Binds scales, kernels, positions, anisotropy, boundary handling, quantization delay, and source sample identity."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.multiscale-surround-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Multiscale surround evidence collection",
+      "description": "Surround-at-scale fields, habitual-ground evidence, excursion profiles, and the continuous substrate before exact-pixel redemption.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Preserves continuous evidence discarded by fixed-radius or early-bin mechanisms without solving exchange rates or role vocabulary."
+      ],
+      "provenanceNotes": [
+        "Retains native samples, scale and position identities, each field and profile, continuous encoding, and deferred exact redemption."
+      ]
+    },
+    {
+      "id": "artifact.mask.extent-eligible-pixels.v1",
+      "productFocus": "product-flow",
+      "label": "Extent-eligible native pixels",
+      "description": "A native-lattice eligibility mask supplied to octave-ladder area-integral extent measurement.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Arm C's claimed input includes eligibility, but no portable Section 3 producer or contract is provided."
+      ],
+      "provenanceNotes": [
+        "Must retain native raster identity, eligibility rule, mask hash, population, and any candidate or field attribution."
+      ]
+    },
+    {
+      "id": "artifact.configuration.area-integral-extent.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Area-integral extent policy",
+      "description": "Declared octave windows, area-integral formula, top-quarter extent rule, field formation, ordering, and comparison policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "The exact excluded-worktree policy is nonportable archaeology and is not inherited as a validated contract."
+      ],
+      "provenanceNotes": [
+        "Must bind octave windows, integral boundaries, eligibility, top-quarter rule, field set, ordering, and drift formulas."
+      ]
+    },
+    {
+      "id": "artifact.review.frozen-p3-extent-rows.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Frozen P3 extent comparison rows",
+      "description": "Reviewed or frozen development rows used as the P3 baseline for extent ordering drift comparisons.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "The portable repository does not provide the authoritative frozen P3 rows required by the archaeology claim."
+      ],
+      "provenanceNotes": [
+        "Requires review/freeze identity, source cases, P3 substrate identity, row hashes, ordering fields, and custody status."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.area-integral-extent.v1",
+      "productFocus": "product-flow",
+      "label": "Area-integral extent field",
+      "description": "The proposed octave-ladder area-integral extent values over eligible native pixels.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Proposed output with unsupported inherited evidence and unmeasured portable custody."
+      ],
+      "provenanceNotes": [
+        "Retains native raster, eligibility mask, octave policy, every extent value, lattice, and portable/nonportable custody state."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.extent-field-set.v1",
+      "productFocus": "product-flow",
+      "label": "Extent-derived field set and ordering",
+      "description": "An uncertain field set with extent-based ordering summaries and explicit empty or ambiguous states.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Proposed Arm C field interpretation; no portable inherited result establishes it."
+      ],
+      "provenanceNotes": [
+        "Retains extent field, eligibility, top-quarter rule, ordering ties, field identities, and uncertainty."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.area-integral-extent-drift.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Area-integral extent drift diagnostics",
+      "description": "Ordering summaries and rendition/same-resolution drift ratios against frozen P3 rows.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Expose portable or nonportable comparison outcomes without converting archaeology into inherited evidence.",
+      "sourceNotes": [
+        "Must distinguish absent portable results from excluded-worktree figures."
+      ],
+      "provenanceNotes": [
+        "Retains frozen-row review identity, comparison cohort, perturbation identity, ratio formulas, missing states, and custody classification."
+      ]
+    },
+    {
+      "id": "artifact.statistic.global-noise-scale.v1",
+      "productFocus": "product-flow",
+      "label": "Global additive-noise scale estimate",
+      "description": "One global noise standard-deviation estimate with the fixed 3x3 high-pass filter identity.",
+      "category": "statistic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "A global noise magnitude, not a local texture mask, shading classifier, or semantic field gate."
+      ],
+      "provenanceNotes": [
+        "Retains scalar plane, filter coefficients, boundary policy, normalization, dimensions, and invalid small-image states."
+      ]
+    },
+    {
+      "id": "artifact.graph.grayscale-max-tree.v1",
+      "productFocus": "product-flow",
+      "label": "Grayscale max-tree",
+      "description": "A connected grayscale component hierarchy suitable for attribute area openings.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Alternative morphology input; no Section 3 mechanism constructs the max-tree."
+      ],
+      "provenanceNotes": [
+        "Must bind scalar plane, connectivity, level ordering, node identity, parent ties, area, and boundary policy."
+      ]
+    },
+    {
+      "id": "artifact.configuration.area-granulometry-scales.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Area-granulometry scales",
+      "description": "An ordered set of component-area thresholds with resolution normalization, connectivity, and null behavior.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Area scale defines removed detail and can erase fine typography; no normalized policy is selected."
+      ],
+      "provenanceNotes": [
+        "Binds ordered thresholds, units, normalization, connectivity, polarity, and empty-domain behavior."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.area-opened-grayscale.v1",
+      "productFocus": "product-flow",
+      "label": "Area-opened grayscale planes",
+      "description": "Grayscale planes after connected area openings at each declared ordered area scale.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Surviving connected components are not geometrically deformed by the area opening claim."
+      ],
+      "provenanceNotes": [
+        "Retains source plane or max-tree, scale order, component identities, removed nodes, reconstruction policy, and lattice."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.area-granulometry-response.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Area-granulometry response",
+      "description": "Removed-component provenance and the response distribution across ordered area scales.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Descriptor output only; no automatic texture, field, figure, or typography authority."
+      ],
+      "provenanceNotes": [
+        "Retains each scale, removed component, mass difference, normalization, distribution bins, and null cases."
+      ]
+    },
+    {
+      "id": "artifact.configuration.texture-descriptors.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Texture descriptor policy",
+      "description": "Declared quantization, offsets, orientations, radii, neighborhood, boundary, aggregation, and histogram policies for local texture statistics.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Parameters distinguish co-occurrence and binary-pattern formulations and remain unresolved."
+      ],
+      "provenanceNotes": [
+        "Binds descriptor family, scalar/color conversion, quantization, offsets, radii, orientation pooling, boundaries, and output normalization."
+      ]
+    },
+    {
+      "id": "artifact.measurement.local-texture-descriptors.v1",
+      "productFocus": "product-flow",
+      "label": "Local or region-level texture descriptors",
+      "description": "Contrast, homogeneity, entropy, and pattern histograms for declared local neighborhoods or regions.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Descriptor similarity does not determine whether typography, halftone, grain, or other material belongs to a field."
+      ],
+      "provenanceNotes": [
+        "Retains source plane, spatial support, descriptor policy, every histogram or scalar, scale, orientation, and aggregation scope."
+      ]
+    },
+    {
+      "id": "artifact.graph.pixel-adjacency.v1",
+      "productFocus": "product-flow",
+      "label": "Pixel adjacency graph",
+      "description": "A declared pixel graph with node-to-native-pixel identity and deterministic edge ordering.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "One FH merge input alternative; pixel-graph construction is not a Section 3 mechanism."
+      ],
+      "provenanceNotes": [
+        "Must retain native raster, neighborhood connectivity, edge endpoints, boundary handling, and deterministic equal-edge order."
+      ]
+    },
+    {
+      "id": "artifact.measurement.graph-edge-dissimilarities.v1",
+      "productFocus": "product-flow",
+      "label": "Graph edge dissimilarities",
+      "description": "One declared dissimilarity value per edge of a compatible pixel or region graph.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "FH merging requires edge dissimilarities, but Section 3 does not define their computation for either graph alternative."
+      ],
+      "provenanceNotes": [
+        "Must bind graph identity, edge order, color or region attributes, formula, units, ties, and nonfinite handling."
+      ]
+    },
+    {
+      "id": "artifact.configuration.fh-merge.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Felzenszwalb-Huttenlocher merge policy",
+      "description": "The k value, internal-difference update, nondecreasing edge order, equality behavior, and minimum-size cleanup policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Graph construction, k, cleanup, and equal-edge ordering are consequential and no policy is selected."
+      ],
+      "provenanceNotes": [
+        "Binds graph and edge identities, k, merge inequality, component-size terms, internal differences, cleanup, and ordering."
+      ]
+    },
+    {
+      "id": "artifact.label-map.fh-partition.v1",
+      "productFocus": "product-flow",
+      "label": "FH graph partition",
+      "description": "A node-to-component partition resulting from size-adaptive nondecreasing-edge graph merging.",
+      "category": "label-map",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Partition output has no field or figure labels."
+      ],
+      "provenanceNotes": [
+        "Retains input graph nodes, final component IDs, deterministic ordering, merge policy, and minimum-size cleanup effects."
+      ]
+    },
+    {
+      "id": "artifact.report.fh-merge-trace.v1",
+      "productFocus": "secondary-overlay",
+      "label": "FH merge trace and diagnostics",
+      "description": "Ordered accepted merges, component internal differences, rejected edges, thresholds, and cleanup actions.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Makes the unbuilt rule inspectable without claiming human utility or semantic labels."
+      ],
+      "provenanceNotes": [
+        "Retains graph, edge dissimilarities, sorted order, every comparison term, merge decision, internal-difference update, and cleanup."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "evidence.legacy-weighted-kmeans",
+      "focusClass": "historical-comparator",
+      "title": "Population-weighted root clustering",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-weighted-kmeans` - Population-weighted root clustering",
+        "headingLine": 229
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically and `inconclusive` semantically; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "observations",
+          "label": "Ordered packed RGB color-count observations",
+          "artifactTypeId": "artifact.measurement.packed-rgb-color-counts.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Distinct observation order affects first-distinct-color initialization and publication ties."
+          ]
+        },
+        {
+          "id": "distance",
+          "label": "Color-space distance",
+          "artifactTypeId": "artifact.configuration.color-space-distance.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Assignment and nearest-observed publication use this distance while updates average packed RGB channels."
+          ]
+        },
+        {
+          "id": "requested-k",
+          "label": "Requested cluster count",
+          "artifactTypeId": "artifact.configuration.legacy-kmeans-k.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Effective k can be smaller when insufficient distinct colors are found."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "public-clusters",
+          "label": "Returned observed-color population map",
+          "artifactTypeId": "artifact.candidate-set.legacy-kmeans-public-clusters.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Can contain fewer entries than effective k when representatives collide as Map keys.",
+            "Invalid numeric state can arise after an empty-cluster division by zero."
+          ],
+          "notes": [
+            "This public output omits memberships and synthesized mean centers."
+          ]
+        },
+        {
+          "id": "fit-statistic",
+          "label": "Normalized WCSS and effective k",
+          "artifactTypeId": "artifact.statistic.legacy-kmeans-fit.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "WCSS is population-normalized and may be invalid if cluster state contains invalid means."
+          ],
+          "notes": [
+            "Effective k is returned separately from requested K; memberships and mean centers remain non-returned internal state."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.legacy-elbow-k-election",
+      "focusClass": "historical-comparator",
+      "title": "Slope-intersection cluster count",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-elbow-k-election` - Slope-intersection cluster count",
+        "headingLine": 248
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` for palette utility; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "observations",
+          "label": "Ordered packed RGB color-count observations",
+          "artifactTypeId": "artifact.measurement.packed-rgb-color-counts.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Input cardinality filters and mutates captured early and late K sets across calls."
+          ]
+        },
+        {
+          "id": "distance",
+          "label": "Color-space distance",
+          "artifactTypeId": "artifact.configuration.color-space-distance.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Used by every internal k-means trial."
+          ]
+        },
+        {
+          "id": "election-policy",
+          "label": "Early/late slope-intersection policy",
+          "artifactTypeId": "artifact.configuration.legacy-elbow-k-election.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes defaults, outlier removal, malformed regression behavior, synthetic zero-WCSS endpoint, and ceiling."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-clusters",
+          "label": "Selected public observed-color cluster map",
+          "artifactTypeId": "artifact.candidate-set.legacy-kmeans-public-clusters.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "One-color input selects the one-cluster map.",
+            "Malformed slopes or nonfinite intersection can make election or the selected k invalid."
+          ],
+          "notes": [
+            "Selected K, WCSS points, slopes, and intersection are logged or internal rather than returned."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.legacy-gap-k-election",
+      "focusClass": "historical-comparator",
+      "title": "Uniform-reference gap statistic",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-gap-k-election` - Uniform-reference gap statistic",
+        "headingLine": 264
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.development-diagnostics",
+        "capability.model-assisted-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unsupported` for the implemented gap-statistic claim and `unmeasured` for a corrected formulation; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "unsupported",
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "observations",
+          "label": "Image packed RGB color-count observations",
+          "artifactTypeId": "artifact.measurement.packed-rgb-color-counts.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The supplied size controls the malformed reference buffer length."
+          ]
+        },
+        {
+          "id": "distance",
+          "label": "Color-space distance",
+          "artifactTypeId": "artifact.configuration.color-space-distance.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Used for both image and reference k-means trials."
+          ]
+        },
+        {
+          "id": "election-policy",
+          "label": "Gap K-range and maximization policy",
+          "artifactTypeId": "artifact.configuration.legacy-gap-k-election.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares minK, maxK, one reference draw, log-WCSS differences, and maximizing selection."
+          ]
+        },
+        {
+          "id": "reference-model",
+          "label": "Built-in reference-distribution generator",
+          "artifactTypeId": "artifact.model.legacy-gap-reference-distribution.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "The live model has overlapping flattened-pair writes, zero-filled entries, and packed-code-order sampling; it is not a valid standard reference distribution."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-clusters",
+          "label": "Selected public observed-color cluster map",
+          "artifactTypeId": "artifact.candidate-set.legacy-kmeans-public-clusters.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Log zero, malformed reference observations, or invalid k-means state can yield nonfinite gaps or an invalid selection."
+          ],
+          "notes": [
+            "Only the selected map is returned; selected K and gap values remain internal."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "publication.legacy-nearest-observed-cluster-color",
+      "focusClass": "historical-comparator",
+      "title": "Observed representative for a mean cluster",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `publication.legacy-nearest-observed-cluster-color` - Observed representative for a mean cluster",
+        "headingLine": 283
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted` under exact-pixel publication only when native witness custody is added.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "cluster-state",
+          "label": "Mean centers and assigned observed colors",
+          "artifactTypeId": "artifact.measurement.legacy-kmeans-internal-cluster-state.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Consumes internal membership/mean state rather than the already-public observed-color map."
+          ]
+        },
+        {
+          "id": "distance",
+          "label": "Nearest-observation color distance",
+          "artifactTypeId": "artifact.configuration.color-space-distance.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Ties retain the first assigned observation in input order."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "representatives",
+          "label": "Nearest observed cluster representatives",
+          "artifactTypeId": "artifact.candidate.legacy-observed-cluster-representative.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each valid nonempty cluster yields one observed color and full weighted population.",
+            "An empty or invalid cluster has no valid observed representative."
+          ],
+          "notes": [
+            "Observed packed RGB existence does not include native index, coordinates, source hash, or full v3 publication custody."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.family-quantization",
+      "focusClass": "product-transformation",
+      "title": "Fixed-grid OKLab color families",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.family-quantization` - Fixed-grid OKLab color families",
+        "headingLine": 299
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `mechanical` and `perturbation`; runtime admissibility `permitted` as evidence formation but not as selected v4 policy.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "perturbation"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-oklab",
+          "label": "All native OKLab pixels",
+          "artifactTypeId": "artifact.raster.native-oklab-float.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Pixel order and cardinality must match the native source raster exactly."
+          ]
+        },
+        {
+          "id": "grid-policy",
+          "label": "Fine OKLab family grid",
+          "artifactTypeId": "artifact.configuration.oklab-family-grid.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Step, origin, boundaries, and representative behavior are consequential and must be versioned."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "family-labels",
+          "label": "Native family label plane",
+          "artifactTypeId": "artifact.label-map.native-color-family.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Every valid native pixel has exactly one finite family label."
+          ],
+          "notes": [
+            "Family labels preserve the native lattice."
+          ]
+        },
+        {
+          "id": "families",
+          "label": "Family occupancy and representative records",
+          "artifactTypeId": "artifact.region-set.native-color-families.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "A valid nonempty raster yields a finite nonempty family set."
+          ],
+          "notes": [
+            "Prototypes remain distinct from exact representative options."
+          ]
+        },
+        {
+          "id": "family-masks",
+          "label": "Per-family native support masks",
+          "artifactTypeId": "artifact.mask.native-family-support.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each occupied family has one nonempty binary support mask."
+          ],
+          "notes": [
+            "Masks may be materialized lazily from the label plane without changing family identity."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.connected-components",
+      "focusClass": "product-transformation",
+      "title": "Native family-component observations",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.connected-components` - Native family-component observations",
+        "headingLine": 315
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `historical`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "family-labels",
+          "label": "Native color-family label plane",
+          "artifactTypeId": "artifact.label-map.native-color-family.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Four-connectivity is applied within each exact family label on the native lattice."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "components",
+          "label": "Deterministic family components",
+          "artifactTypeId": "artifact.region-set.native-family-components.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Empty input yields no components; each occupied family otherwise yields one or more components."
+          ],
+          "notes": [
+            "Scan and neighbor order are retained as consequential provenance; components do not imply semantic objects."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.slic-region-graph",
+      "focusClass": "product-transformation",
+      "title": "SLIC-style perceptual-spatial regions",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.slic-region-graph` - SLIC-style perceptual-spatial regions",
+        "headingLine": 331
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.pixel-and-color-measurement",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded aggregation and `falsified` as the tested texture-versus-structure mask; implementation state `historical`; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `unresolved` for a native formulation.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "working-raster",
+          "label": "Declared SLIC working raster",
+          "artifactTypeId": "artifact.raster.working-srgb8-max-edge-224-lanczos3.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Historical 0.19 uses the exact max-edge-224 Lanczos3 working lattice, not native raster custody."
+          ]
+        },
+        {
+          "id": "region-policy",
+          "label": "Region count and compactness controls",
+          "artifactTypeId": "artifact.configuration.slic-region-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Connectivity cleanup absence and representative policy remain explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "labels",
+          "label": "Working-pixel region labels",
+          "artifactTypeId": "artifact.label-map.working-slic-region.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Roughly 48-320 labels are expected under historical controls; labels may be spatially disconnected."
+          ],
+          "notes": [
+            "Cardinality matches working pixels, not native pixels."
+          ]
+        },
+        {
+          "id": "region-graph",
+          "label": "Region records and adjacency graph",
+          "artifactTypeId": "artifact.graph.slic-region-adjacency.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains bounded region and edge evidence but no texture-versus-structure decision."
+          ],
+          "notes": [
+            "Adjacency and attributes bind the same working label plane."
+          ]
+        },
+        {
+          "id": "source-representatives",
+          "label": "Exact source representative records",
+          "artifactTypeId": "artifact.custody.slic-source-representatives.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each valid region has a representative record; historical custody may be weaker than v3 exact-pixel publication."
+          ],
+          "notes": [
+            "Source representatives remain distinct from interpolated working-raster values."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.border-frame-ownership",
+      "focusClass": "product-transformation",
+      "title": "Border, side, corner, and interior evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.border-frame-ownership` - Border, side, corner, and interior evidence",
+        "headingLine": 347
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `isolated-semantic`; runtime admissibility `permitted` as evidence, not field authority.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "support-source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Measure either component membership or a declared soft support field; a type match does not select either representation."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "components",
+          "label": "Component support",
+          "artifactTypeId": "artifact.region-set.native-family-components.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Component geometry and membership provide discrete support."
+          ]
+        },
+        {
+          "id": "soft-support",
+          "label": "Soft support field",
+          "artifactTypeId": "artifact.scalar-field.native-support-q024-lowpass.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Threshold and weighting semantics must be supplied by the coordinate/measurement policy rather than assumed."
+          ]
+        },
+        {
+          "id": "coordinates",
+          "label": "Normalized border and interior policy",
+          "artifactTypeId": "artifact.configuration.normalized-image-coordinates.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Defines sides, corners, border band, interior, denominators, and empty cases."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "ownership",
+          "label": "Border/frame ownership measurements",
+          "artifactTypeId": "artifact.measurement.border-frame-ownership.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty interior or unsupported corners remain explicitly undefined rather than silently zero unless policy declares zero."
+          ],
+          "notes": [
+            "Broad perimeter contact is evidence only; bars and decorative frames can dominate it."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.legacy-local-contrast-saliency",
+      "focusClass": "historical-comparator",
+      "title": "Fixed-radius local color-contrast map",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-local-contrast-saliency` - Fixed-radius local color-contrast map",
+        "headingLine": 363
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically and `inconclusive` semantically; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted` as a diagnostic, not selection authority.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "source-raster",
+          "label": "Source native RGB raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Output cardinality and lattice match this source input."
+          ]
+        },
+        {
+          "id": "distance",
+          "label": "Color-space distance",
+          "artifactTypeId": "artifact.configuration.color-space-distance.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The maximum radius-3 neighbor distance is measured in this supplied space."
+          ]
+        },
+        {
+          "id": "saliency-policy",
+          "label": "Fixed-radius saliency policy",
+          "artifactTypeId": "artifact.configuration.legacy-local-saliency.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Makes blur, dilation, normalization, border, and 8-bit quantization behavior explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "saliency-map",
+          "label": "Normalized 8-bit local-contrast map",
+          "artifactTypeId": "artifact.scalar-field.legacy-local-contrast-saliency-u8.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Uniform input produces zero-valued output through epsilon-protected normalization.",
+            "Absolute contrast magnitude is absent after max normalization."
+          ],
+          "notes": [
+            "This is not center-surround saliency and does not compute local variance despite historical naming."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.unused-otsu-threshold",
+      "focusClass": "historical-comparator",
+      "title": "Otsu threshold helper",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.unused-otsu-threshold` - Otsu threshold helper",
+        "headingLine": 379
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for the formula and `unmeasured` in the live path; implementation state `live` but unused; evidence scope `mechanical`; runtime admissibility `permitted` as a diagnostic.",
+        "scientificInterpretations": [
+          "supported",
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "u8-map",
+          "label": "Eight-bit saliency map",
+          "artifactTypeId": "artifact.scalar-field.legacy-local-contrast-saliency-u8.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The helper accepts an 8-bit histogram source but has no live call site."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "threshold",
+          "label": "Between-class-variance threshold",
+          "artifactTypeId": "artifact.statistic.otsu-saliency-threshold.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always an integer in [0,255]; degenerate histograms can retain the initial zero threshold."
+          ],
+          "terminalPurpose": "Diagnostic value for the unused helper only; it is not part of current saliency behavior.",
+          "notes": [
+            "No binary mask is emitted by this mechanism."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.population-connectivity-spread",
+      "focusClass": "evaluation-probe",
+      "title": "Support measurements",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.population-connectivity-spread` - Support measurements",
+        "headingLine": 392
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as measurement and `falsified` as a validity gate; implementation state `live` reporting and historical gates; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `permitted` for reporting and `prohibited` as a validity floor.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted",
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "support-mask",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Measure either exact-color support or family support with its own identity and denominator."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "exact-color-mask",
+          "label": "Exact-color support mask",
+          "artifactTypeId": "artifact.mask.native-exact-color-support.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support-mask",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Represents literal exact RGB occupancy."
+          ]
+        },
+        {
+          "id": "family-mask",
+          "label": "Color-family support mask",
+          "artifactTypeId": "artifact.mask.native-family-support.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support-mask",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Represents quantized family occupancy and must not be reported as exact-color population."
+          ]
+        },
+        {
+          "id": "native-raster",
+          "label": "Native raster and geometry",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Supplies native dimensions, exact denominators, neighborhoods, and source identity."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "support-vector",
+          "label": "Mass and geometry support vector",
+          "artifactTypeId": "artifact.measurement.population-connectivity-spread.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty support and unavailable neighborhood/family terms retain declared null behavior and exact zero denominators."
+          ],
+          "notes": [
+            "Population remains report-only; this output cannot act as a validity floor."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.structural-text-shape",
+      "focusClass": "product-transformation",
+      "title": "Typography and mark-shape evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.structural-text-shape` - Typography and mark-shape evidence",
+        "headingLine": 410
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded shape evidence and `inconclusive` for full text recognition; implementation state `historical`; evidence scope `isolated-semantic`; runtime admissibility `permitted` as evidence, not role authority.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "components",
+          "label": "Native component observations",
+          "artifactTypeId": "artifact.region-set.native-family-components.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Components may be letters, word blobs, decoration, texture, or other structures; no text identity is assumed."
+          ]
+        },
+        {
+          "id": "local-measurements",
+          "label": "Component-local raster cues",
+          "artifactTypeId": "artifact.measurement.component-local-raster.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Includes cue availability and uncertainty, including optional historical stroke-width measurements."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "component-evidence",
+          "label": "Per-component typography/signature evidence",
+          "artifactTypeId": "artifact.measurement.component-typography-signature-evidence.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Components can remain ambiguous or receive low evidence rather than a text label."
+          ],
+          "notes": [
+            "Bounded shape evidence remains separate from OCR and UI role authority."
+          ]
+        },
+        {
+          "id": "text-chains",
+          "label": "Optional structural text-chain hypotheses",
+          "artifactTypeId": "artifact.hypothesis.structural-text-chains.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "No chain is a valid explicit outcome; chains remain uncertain and non-OCR."
+          ],
+          "notes": [
+            "This semantic hypothesis is not interchangeable with either legacy pixel-retention route."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.legacy-structural-text-heuristics",
+      "focusClass": "product-transformation",
+      "title": "Root salient-component text cues",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-structural-text-heuristics` - Root salient-component text cues",
+        "headingLine": 428
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "source-raster",
+          "label": "Source native RGB raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Provides pixel colors and native geometry for salient components and method-specific cues."
+          ]
+        },
+        {
+          "id": "saliency",
+          "label": "Root local-contrast saliency map",
+          "artifactTypeId": "artifact.scalar-field.legacy-local-contrast-saliency-u8.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Live methods use uncalibrated thresholding, including the fixed salient-pixel threshold in component cues."
+          ]
+        },
+        {
+          "id": "root-clusters",
+          "label": "Public root color clusters",
+          "artifactTypeId": "artifact.candidate-set.legacy-kmeans-public-clusters.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Consumes returned representative-color counts, not internal k-means memberships."
+          ]
+        },
+        {
+          "id": "field-color",
+          "label": "Field-color hypothesis",
+          "artifactTypeId": "artifact.hypothesis.field-color.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Supplied field identity is upstream and uncertain; this mechanism does not elect it."
+          ]
+        },
+        {
+          "id": "contrast-floor",
+          "label": "Foreground contrast floor",
+          "artifactTypeId": "artifact.configuration.foreground-contrast-floor.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Controls candidate acceptance and fallback states."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "foreground-hypotheses",
+          "label": "Independently scored foreground hypotheses",
+          "artifactTypeId": "artifact.hypothesis.legacy-root-foreground-colors.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each method reports a color, score, method identity, and possibly black/white fallback state.",
+            "No-candidate states are represented before or within fallback rather than treated as reviewed text recognition."
+          ],
+          "notes": [
+            "The caller compares several methods; downstream policy historically elects roles separately."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.legacy-fixed-threshold-text-regions",
+      "focusClass": "historical-comparator",
+      "title": "Fixed-threshold scanline text grouping",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-fixed-threshold-text-regions` - Fixed-threshold scanline text grouping",
+        "headingLine": 444
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` for semantic text detection; implementation state `historical`; evidence scope `mechanical`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "rgb-buffer",
+          "label": "RGB pixel buffer with dimensions and channels",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The implementation accepts a pixel buffer plus width, height, and channel count; this typing binds it to the native opaque source contract."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "rectangle-retention",
+          "label": "Full-size grouped-rectangle retention buffer",
+          "artifactTypeId": "artifact.raster.legacy-fixed-text-rectangle-retention.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "No grouped rectangles yields an all-zero full-size buffer.",
+            "Rectangle filling retains non-text pixels inside each box."
+          ],
+          "notes": [
+            "Retains source coordinates but is not a binary mask or source raster substitute."
+          ]
+        },
+        {
+          "id": "packed-rectangle-pixels",
+          "label": "Packed grouped-rectangle pixel buffer",
+          "artifactTypeId": "artifact.candidate-set.legacy-fixed-text-rectangle-pixels.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "No grouped rectangles yields an empty packed buffer."
+          ],
+          "notes": [
+            "Has no full-size lattice and is distinct from adaptive contour pixels."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.legacy-adaptive-edge-text-regions",
+      "focusClass": "evaluation-probe",
+      "title": "Adaptive morphology and contour text diagnostic",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.legacy-adaptive-edge-text-regions` - Adaptive morphology and contour text diagnostic",
+        "headingLine": 460
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` for semantic text detection; implementation state `live` as a visual diagnostic; evidence scope `mechanical`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "rgb-buffer",
+          "label": "RGB pixel buffer with dimensions and channels",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The implementation accepts a pixel buffer plus width, height, and channel count; this typing binds it to the native opaque source contract."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "contour-retention",
+          "label": "Full-size contour-pixel retention buffer",
+          "artifactTypeId": "artifact.raster.legacy-adaptive-text-contour-retention.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "No contours yields an all-zero full-size buffer.",
+            "Only contour source pixels are retained; enclosed regions are not filled."
+          ],
+          "notes": [
+            "This diagnostic is not the fixed-threshold rectangle route or a semantic text mask."
+          ]
+        },
+        {
+          "id": "packed-contour-pixels",
+          "label": "Packed contour-pixel buffer",
+          "artifactTypeId": "artifact.candidate-set.legacy-adaptive-text-contour-pixels.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "No contours yields a zero-content buffer; allocation can exceed written content because channels are multiplied twice."
+          ],
+          "notes": [
+            "Packed contour order is eight-connected flood-fill order and has no full-size lattice."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.native-mask-scale-space",
+      "focusClass": "evaluation-probe",
+      "title": "Frozen-mask Q0.24 scale-space",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.native-mask-scale-space` - Frozen-mask Q0.24 scale-space",
+        "headingLine": 475
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `instrument` and tested; evidence scope `mechanical`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "frozen-mask",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Observe one frozen native candidate mask or one frozen native family-union mask without changing candidate availability."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "candidate-mask",
+          "label": "Frozen native candidate mask",
+          "artifactTypeId": "artifact.mask.native-candidate-support.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "frozen-mask",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Candidate identity, witness, and mask remain frozen across scale observations."
+          ]
+        },
+        {
+          "id": "family-mask",
+          "label": "Frozen native family mask",
+          "artifactTypeId": "artifact.mask.native-family-support.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "frozen-mask",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Family union remains distinct from a candidate mask and keeps its own stable identity."
+          ]
+        },
+        {
+          "id": "target-attribution",
+          "label": "Scale target attribution and numeric policy",
+          "artifactTypeId": "artifact.configuration.native-mask-scale-target.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares max-edge or pixel-budget attribution, target lattice, SAT/BigInt filter, Q0.24 encoding, and exact center sampling."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "native-lowpass",
+          "label": "Native-lattice Q0.24 low-pass plane",
+          "artifactTypeId": "artifact.scalar-field.native-support-q024-lowpass.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Structural bound violations produce an invalid diagnostic rather than a usable field."
+          ],
+          "notes": [
+            "Derived evidence on the native lattice; it is not source truth or a resized raster."
+          ]
+        },
+        {
+          "id": "target-samples",
+          "label": "Exact target-lattice subset",
+          "artifactTypeId": "artifact.scalar-field.target-lattice-support-q024.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Every sample must equal its declared native low-pass source index exactly."
+          ],
+          "notes": [
+            "The subset is not independently filtered and has a different lattice and view identity."
+          ]
+        },
+        {
+          "id": "custody",
+          "label": "Scale-space residual and hash diagnostics",
+          "artifactTypeId": "artifact.diagnostic.native-mask-scale-space-custody.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records valid, invalid-structural, unavailable, and inapplicable states explicitly."
+          ],
+          "terminalPurpose": "Mechanical scale-space evidence and custody only; no palette output or arm winner is emitted.",
+          "notes": [
+            "Includes mass residual, typed hashes, filter identity, source indices, and exact sampling checks."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.topology-descriptors",
+      "focusClass": "evaluation-probe",
+      "title": "Components, holes, reach, thickness, and enclosure",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.topology-descriptors` - Components, holes, reach, thickness, and enclosure",
+        "headingLine": 490
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `instrument` and prototype; evidence scope `mechanical`; runtime admissibility `permitted` as diagnostics, not semantic authority.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "support",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Analyze one binary candidate mask, binary family mask, or soft Q0.24 support field under the declared threshold."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "candidate-mask",
+          "label": "Binary candidate support",
+          "artifactTypeId": "artifact.mask.native-candidate-support.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Binary support uses its declared native mask identity."
+          ]
+        },
+        {
+          "id": "family-mask",
+          "label": "Binary family support",
+          "artifactTypeId": "artifact.mask.native-family-support.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Family union topology remains distinct from candidate topology."
+          ]
+        },
+        {
+          "id": "soft-support",
+          "label": "Soft Q0.24 support",
+          "artifactTypeId": "artifact.scalar-field.native-support-q024-lowpass.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "support",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Threshold topology can change discontinuously and must retain the low-pass field identity."
+          ]
+        },
+        {
+          "id": "topology-policy",
+          "label": "Threshold and topology policy",
+          "artifactTypeId": "artifact.configuration.support-topology-threshold.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares which requested metrics are defined; deferred holes, Euler, compactness, or perimeter values must remain absent when unspecified."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "descriptors",
+          "label": "Topology and normalized-geometry descriptors",
+          "artifactTypeId": "artifact.measurement.support-topology-descriptors.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty support, empty interior, unreachable domains, and deferred metrics have explicit undefined or absent states."
+          ],
+          "notes": [
+            "Measurements do not classify field, frame, typography, island, or transition semantics."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.robust-field-fit",
+      "focusClass": "product-transformation",
+      "title": "Redescending smooth-color surface fit",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.robust-field-fit` - Redescending smooth-color surface fit",
+        "headingLine": 507
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.field-and-figure-hypotheses",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in bounded field cases and `inconclusive` on no-field scenes; implementation state `prototype`; evidence scope `isolated-semantic` and `natural-handoff`; runtime admissibility `unresolved` under the cold resource envelope.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic",
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "sample-lattice",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Fit either native OKLab samples or explicitly declared discovery-raster OKLab samples; the two custody domains are not interchangeable."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "native-samples",
+          "label": "Native OKLab samples",
+          "artifactTypeId": "artifact.raster.native-oklab-float.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "sample-lattice",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Preserves native lattice and source-pixel correspondence."
+          ]
+        },
+        {
+          "id": "working-samples",
+          "label": "Declared discovery-raster OKLab samples",
+          "artifactTypeId": "artifact.raster.working-oklab-declared.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "sample-lattice",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Carries non-native lattice and sampling custody; cannot be treated as native evidence."
+          ]
+        },
+        {
+          "id": "fit-policy",
+          "label": "Robust surface fit policy",
+          "artifactTypeId": "artifact.configuration.robust-field-fit.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares surface families, sampling, robust weighting, stopping, abstention, recursion, and resource limits."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "surface-models",
+          "label": "Fitted color-surface models",
+          "artifactTypeId": "artifact.model.robust-color-surface-fit.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Abstention can yield no accepted model; recursion or competing forms can yield multiple models."
+          ],
+          "notes": [
+            "Per-image fitted models remain distinct from hypotheses granting field authority."
+          ]
+        },
+        {
+          "id": "residual-weights",
+          "label": "Per-model residual and inlier-weight fields",
+          "artifactTypeId": "artifact.scalar-field.robust-fit-residual-weight.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "One field collection accompanies each emitted model; abstention before a fit can yield none."
+          ],
+          "notes": [
+            "Residual and inlier weights preserve the selected sample lattice."
+          ]
+        },
+        {
+          "id": "fit-aggregate",
+          "label": "P5 model, residual, abstention, and recursion aggregate",
+          "artifactTypeId": "artifact.evidence.robust-field-model-residual-aggregate.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always binds every emitted model to its residual and inlier-weight fields and records abstention, invalidity, alternatives, or recursion rather than forcing a field."
+          ],
+          "notes": [
+            "This P5 aggregate does not contain or imply the historical accepted GradientFitDiagnostic parameterization used by v2-3 endpoint and midpoint routes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.residual-marks",
+      "focusClass": "product-transformation",
+      "title": "Figure evidence from robust-fit rejection",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.residual-marks` - Figure evidence from robust-fit rejection",
+        "headingLine": 526
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses",
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as enrichment and `inconclusive` for natural semantic purity; implementation state `prototype`; evidence scope `isolated-semantic` and `natural-handoff`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic",
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "surface-model",
+          "label": "Fitted robust color surface",
+          "artifactTypeId": "artifact.model.robust-color-surface-fit.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "This is a fitted per-image model input; it is not hidden as natural raster data or treated as a warm external model."
+          ]
+        },
+        {
+          "id": "residual-weights",
+          "label": "Per-pixel residuals and inlier weights",
+          "artifactTypeId": "artifact.scalar-field.robust-fit-residual-weight.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Must correspond exactly to the supplied fitted model and source lattice."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "mark-groups",
+          "label": "Residual mark-group hypotheses",
+          "artifactTypeId": "artifact.hypothesis.residual-mark-groups.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "No coherent residual groups is valid; groups can contain field error, texture, faces, or photography rather than pure figures."
+          ],
+          "notes": [
+            "Each group retains span, mass, neighborhood, exact-color support, and residual provenance without assigning a UI role."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.tree-of-shapes",
+      "focusClass": "product-transformation",
+      "title": "Hierarchical region-tree candidates",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.tree-of-shapes` - Hierarchical region-tree candidates",
+        "headingLine": 541
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a candidate generator and `inconclusive` for complete treatment behavior; implementation state `prototype`; evidence scope `mechanical`, `perturbation`, and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "perturbation",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "image-input",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Construct the hierarchy from one image raster or one declared channel family without implying a preferred lane."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "image",
+          "label": "Native image raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "image-input",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Direct image formulation preserves native source custody."
+          ]
+        },
+        {
+          "id": "channels",
+          "label": "Declared image channel family",
+          "artifactTypeId": "artifact.scalar-field.declared-image-channel-family.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "image-input",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Chromatic or scalar lanes retain explicit source and ordering identity."
+          ]
+        },
+        {
+          "id": "tree-policy",
+          "label": "Hierarchy and candidate-lane policy",
+          "artifactTypeId": "artifact.configuration.tree-of-shapes.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares level sets, connectivity, attributes, exact representatives, lane formation, and deterministic ordering."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "hierarchy",
+          "label": "Rooted shape hierarchy",
+          "artifactTypeId": "artifact.graph.tree-of-shapes.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "A valid nonempty image yields one rooted hierarchy; invalid channel or topology state remains explicit."
+          ],
+          "notes": [
+            "Parent/child structure and attributes do not establish ranking or roles."
+          ]
+        },
+        {
+          "id": "candidate-lanes",
+          "label": "Hierarchy-derived candidate lanes",
+          "artifactTypeId": "artifact.candidate-set.tree-of-shapes-lanes.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "No lane candidate is valid for an empty or filtered lane; exact representatives remain source pixels."
+          ],
+          "notes": [
+            "Candidate reachability stays distinct from assignment-set stability and complete-treatment behavior."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.per-pixel-rank-fields",
+      "focusClass": "product-transformation",
+      "title": "Pixel fields with rank publication",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.per-pixel-rank-fields` - Pixel fields with rank publication",
+        "headingLine": 558
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive` for role fields and `supported` for exact-pixel publication; implementation state `prototype`; evidence scope `perturbation` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive",
+          "supported"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "perturbation",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-raster",
+          "label": "Native source raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Every native pixel remains available for field scoring and rank publication."
+          ]
+        },
+        {
+          "id": "rank-policy",
+          "label": "Field definitions and requested outputs",
+          "artifactTypeId": "artifact.configuration.per-pixel-rank-fields.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares fields, requested role or hypothesis identities, ordering, ties, and witness publication."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "rank-fields",
+          "label": "Per-pixel fields and complete rank orderings",
+          "artifactTypeId": "artifact.scalar-field.per-pixel-rank-evidence.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One field/order is present per declared request; nonfinite or empty rank domains are invalid."
+          ],
+          "notes": [
+            "Complete availability makes candidate-recall evaluation vacuous but preserves field provenance."
+          ]
+        },
+        {
+          "id": "published-pixels",
+          "label": "One native pixel per requested identity",
+          "artifactTypeId": "artifact.candidate-set.rank-published-native-pixels.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains exactly one witness for each requested role or hypothesis under valid nonempty rank domains."
+          ],
+          "notes": [
+            "Each witness includes exact source pixel, rank, and field provenance; field correctness is not implied."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.multiscale-surround",
+      "focusClass": "product-transformation",
+      "title": "Blur-ladder surround and habitual-ground fields",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.multiscale-surround` - Blur-ladder surround and habitual-ground fields",
+        "headingLine": 574
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.field-and-figure-hypotheses",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for measurements and `falsified` for the P6 joint objective; implementation state `prototype`; evidence scope `mechanical`, `perturbation`, and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "perturbation",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-samples",
+          "label": "Native continuous color and position samples",
+          "artifactTypeId": "artifact.raster.native-oklab-float.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Native pixel coordinates are implicit in unchanged raster order and dimensions."
+          ]
+        },
+        {
+          "id": "surround-policy",
+          "label": "Blur-ladder and positional policy",
+          "artifactTypeId": "artifact.configuration.multiscale-surround.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares scales, anisotropy, positions, ground/excursion formulas, delayed quantization, and exact redemption boundary."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "surround-evidence",
+          "label": "Surround, ground, excursion, and continuous substrate",
+          "artifactTypeId": "artifact.scalar-field.multiscale-surround-evidence.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains all declared scales and profiles before exact-pixel redemption; unsupported scales or invalid boundaries remain explicit."
+          ],
+          "notes": [
+            "The measurement collection is not the falsified P6 weighted joint objective and does not settle exchange rates or roles."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.area-integral-extent-substrate",
+      "focusClass": "product-transformation",
+      "title": "Phase 3 Arm C octave-ladder extent",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.area-integral-extent-substrate` - Phase 3 Arm C octave-ladder extent",
+        "headingLine": 591
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.field-and-figure-hypotheses",
+        "capability.development-diagnostics",
+        "capability.review-and-evidence-custody"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unsupported` as inherited repository evidence and `unmeasured` in portable custody; implementation state `prototype` in an excluded worktree; evidence scope `none-local` for portable evidence; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unsupported",
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-raster",
+          "label": "Native source raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The proposed substrate is defined over native pixels."
+          ]
+        },
+        {
+          "id": "eligibility",
+          "label": "Eligible native pixels",
+          "artifactTypeId": "artifact.mask.extent-eligible-pixels.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Eligibility formation is an unresolved external requirement and must remain visible."
+          ]
+        },
+        {
+          "id": "extent-policy",
+          "label": "Octave windows and top-quarter extent rule",
+          "artifactTypeId": "artifact.configuration.area-integral-extent.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "No portable exact policy is inferred from excluded-worktree archaeology."
+          ]
+        },
+        {
+          "id": "frozen-p3-rows",
+          "label": "Frozen P3 comparison rows",
+          "artifactTypeId": "artifact.review.frozen-p3-extent-rows.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "review",
+          "notes": [
+            "Review/freeze custody is required to compute authoritative drift ratios; the portable repository does not provide it."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "extent-field",
+          "label": "Octave-ladder extent field",
+          "artifactTypeId": "artifact.scalar-field.area-integral-extent.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Without a portable policy or implementation the value is unresolved rather than populated from archaeology."
+          ],
+          "notes": [
+            "Native extent values remain distinct from P3's binary edge-to-distance-transform substrate."
+          ]
+        },
+        {
+          "id": "field-set",
+          "label": "Extent-derived field set and ordering",
+          "artifactTypeId": "artifact.hypothesis.extent-field-set.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Can be empty, tied, ambiguous, or unresolved under absent portable custody."
+          ],
+          "notes": [
+            "Top-quarter field interpretation is an uncertain hypothesis, not inherited authority."
+          ]
+        },
+        {
+          "id": "drift",
+          "label": "Ordering and drift-ratio diagnostics",
+          "artifactTypeId": "artifact.diagnostic.area-integral-extent-drift.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Portable result may be explicitly unavailable; excluded-worktree figures remain nonportable archaeology."
+          ],
+          "terminalPurpose": "Compare against frozen P3 rows without treating nonportable archaeology as inherited evidence.",
+          "notes": [
+            "Separates rendition and same-resolution comparisons and retains exact baseline review custody."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.global-noise-estimation",
+      "focusClass": "product-transformation",
+      "title": "Immerkaer global noise scale",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.global-noise-estimation` - Immerkaer global noise scale",
+        "headingLine": 609
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "scalar-plane",
+          "label": "Scalar native image plane",
+          "artifactTypeId": "artifact.scalar-field.native-intensity.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The scalar conversion and boundary policy are unresolved external requirements."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "noise-scale",
+          "label": "Global noise standard deviation and filter identity",
+          "artifactTypeId": "artifact.statistic.global-noise-scale.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Too-small or invalid scalar domains must be explicitly invalid or undefined.",
+            "Valid output is one global estimate, not a local mask."
+          ],
+          "notes": [
+            "Edges and intentional texture can contaminate the additive-noise estimate."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.attribute-morphology-granulometry",
+      "focusClass": "product-transformation",
+      "title": "Area openings and area granulometry",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.attribute-morphology-granulometry` - Area openings and area granulometry",
+        "headingLine": 624
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "morphology-source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Apply area openings from a grayscale plane or a compatible max-tree without inferring a preferred representation."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "grayscale",
+          "label": "Grayscale scalar plane",
+          "artifactTypeId": "artifact.scalar-field.native-intensity.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "morphology-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Requires a declared scalar conversion and connectivity for tree construction or direct opening."
+          ]
+        },
+        {
+          "id": "max-tree",
+          "label": "Compatible grayscale max-tree",
+          "artifactTypeId": "artifact.graph.grayscale-max-tree.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "morphology-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Tree connectivity, polarity, levels, area, and reconstruction identity must be explicit."
+          ]
+        },
+        {
+          "id": "area-scales",
+          "label": "Ordered area scales",
+          "artifactTypeId": "artifact.configuration.area-granulometry-scales.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Scale normalization and null behavior remain unresolved and can erase fine typography."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "opened-planes",
+          "label": "Area-opened grayscale planes",
+          "artifactTypeId": "artifact.scalar-field.area-opened-grayscale.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One plane is emitted per ordered area scale for a valid source; invalid tree or scale ordering is explicit."
+          ],
+          "notes": [
+            "Surviving connected components are reconstructed without the deformation claimed for ordinary structuring elements."
+          ]
+        },
+        {
+          "id": "granulometry",
+          "label": "Removed-component and area-scale response",
+          "artifactTypeId": "artifact.diagnostic.area-granulometry-response.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty removals yield a declared zero response rather than semantic smoothness."
+          ],
+          "notes": [
+            "No h-maxima, generic prominence, texture label, or field/figure authority is added."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.texture-descriptors",
+      "focusClass": "product-transformation",
+      "title": "Local statistical texture evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.texture-descriptors` - Local statistical texture evidence",
+        "headingLine": 638
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "texture-source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Describe texture from one declared scalar plane or native color neighborhoods without collapsing their quantization contracts."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "scalar-neighborhoods",
+          "label": "Scalar image neighborhoods",
+          "artifactTypeId": "artifact.scalar-field.native-intensity.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "texture-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Scalar conversion remains explicit."
+          ]
+        },
+        {
+          "id": "color-neighborhoods",
+          "label": "Native color neighborhoods",
+          "artifactTypeId": "artifact.raster.native-oklab-float.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "texture-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Color neighborhoods retain native lattice and color-space custody."
+          ]
+        },
+        {
+          "id": "descriptor-policy",
+          "label": "Texture quantization and neighborhood policy",
+          "artifactTypeId": "artifact.configuration.texture-descriptors.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares co-occurrence or binary-pattern family, quantization, offsets, radii, orientation, boundaries, and aggregation."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "texture-evidence",
+          "label": "Local or region-level texture measurements",
+          "artifactTypeId": "artifact.measurement.local-texture-descriptors.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One or more descriptor fields or region records are emitted for valid declared policies; out-of-domain neighborhoods remain explicit."
+          ],
+          "notes": [
+            "Contrast, homogeneity, entropy, and pattern histograms do not decide material belonging or field authority."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence.fh-size-adaptive-merge",
+      "focusClass": "product-transformation",
+      "title": "Felzenszwalb-Huttenlocher graph merging",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `evidence.fh-size-adaptive-merge` - Felzenszwalb-Huttenlocher graph merging",
+        "headingLine": 652
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "merge-graph",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Merge a pixel graph or an existing region graph; matching does not select either graph construction."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "pixel-graph",
+          "label": "Pixel adjacency graph",
+          "artifactTypeId": "artifact.graph.pixel-adjacency.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "merge-graph",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Pixel-node identity and deterministic edge order must be declared."
+          ]
+        },
+        {
+          "id": "region-graph",
+          "label": "Existing SLIC region graph",
+          "artifactTypeId": "artifact.graph.slic-region-adjacency.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "merge-graph",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Region graph compatibility does not assert that historical SLIC and FH have been tested together."
+          ]
+        },
+        {
+          "id": "edge-dissimilarities",
+          "label": "Graph edge dissimilarities",
+          "artifactTypeId": "artifact.measurement.graph-edge-dissimilarities.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Values and ordering must correspond exactly to the selected graph alternative."
+          ]
+        },
+        {
+          "id": "merge-policy",
+          "label": "k and minimum-size merge policy",
+          "artifactTypeId": "artifact.configuration.fh-merge.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares the size-adaptive inequality, internal-difference updates, equal-edge order, and cleanup."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "partition",
+          "label": "Final graph partition",
+          "artifactTypeId": "artifact.label-map.fh-partition.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Valid graphs yield one partition; empty, malformed, or nonfinite-edge graphs retain explicit invalid behavior."
+          ],
+          "notes": [
+            "Component labels carry no field or figure semantics."
+          ]
+        },
+        {
+          "id": "merge-trace",
+          "label": "Merge trace, internal differences, and rejected edges",
+          "artifactTypeId": "artifact.report.fh-merge-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "No accepted merges still yields a complete trace with rejected edges and cleanup state."
+          ],
+          "notes": [
+            "Every comparison term and consequential edge order remains inspectable."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "This fragment types all 27 Section 3 census mechanisms exactly once and contains no generated compatibility edges, bindings, architecture, runtime pipeline, or build order.",
+    "Native and working rasters, public legacy k-means maps and internal cluster state, and the three structurally different text-output families remain separate artifact contracts.",
+    "Configuration, fitted-model, built-in reference-model, and frozen-review values are explicit ports; missing Section 3 requirements are retained as unresolved-external artifact types rather than hidden prerequisites."
+  ]
+}
