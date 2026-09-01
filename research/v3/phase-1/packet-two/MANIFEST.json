@@ -1,0 +1,29 @@
+{
+  "packet": "phase-1/packet-two",
+  "description": "A Phase 1 author packet. You receive exactly this directory and read nothing outside it.",
+  "commit": "71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2",
+  "builtOn": "2026-08-04",
+  "notes": [
+    "Every file carries a prepended provenance header (an HTML comment). `kind` describes the body below that header.",
+    "MANIFEST.json is not listed among its own files.",
+    "Extract line ranges in research/v3/PHASE_1_AUTHOR_BRIEF.md at the commit above: 1 (title), 11-14 (\"Who this is for\"), 38-252 (\u00a72 through the end of \u00a73, \u00a73.1 included).",
+    "\u00a73.1 names `src/contract/PERCEPTION_VERDICT.md` as its \"Canonical text\" for open question 3. That file is not in this packet: the pointer is a provenance citation and \u00a73.1 is self-contained. If you need it, name it in your proposal \u2014 which part you wanted and why your design turns on it \u2014 and it will be adjudicated."
+  ],
+  "selfCheck": {
+    "auditedFor": "content disclosure \u2014 whether any field in this file describes what a withheld document says, or describes the design of the exercise this packet belongs to",
+    "date": "2026-08-04",
+    "check": "String-match of this file against every disclosure marker enumerated in the Phase 1 confinement audit, plus a scan for terms that would describe how this packet was produced rather than what it contains. Zero matches required.",
+    "rule": "A manifest inside a packet describes files, never findings, and never the experiment."
+  },
+  "files": [
+    {
+      "path": "PHASE_1_AUTHOR_BRIEF_SECTIONS_2_AND_3.md",
+      "sourcePath": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+      "kind": "verbatim-extract",
+      "bytes": 16525,
+      "sha256": "c91a106b26962b3e536758cceb64c9cfd4225c5cc9d2c199f414bc15ed8eca55",
+      "sourceBytes": 29492,
+      "sourceSha256": "d287c3f75a753970d04528dc9a5342b6ea459b3006a4570d90a890f9f3385dcd"
+    }
+  ]
+}

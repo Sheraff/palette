@@ -1,0 +1,1069 @@
+{
+  "what_this_is": "The reviewer (primary judge) scored against variant D on the exact answer value the B-unmapped cascade policy gates on. Replaces the refuted flag-scored basis.",
+  "status": "computed",
+  "generated_at": "2026-08-03T20:21:44Z",
+  "generated_by": "research/v3/oracle/premise/analyze_cascade_ground_truth.py",
+  "pre_registration": {
+    "the_policy_under_decision": "When variant B's ground answer is unmapped, take variant D's answer if and only if D says multiple_distinct_fields; otherwise leave the cover unlabeled.",
+    "why_this_round_exists": "The policy's previous evidential basis was refuted in reviews/phase-0-adversarial/cascade-basis.md: the quoted '32/34, p=2.3e-7' is D's pooled non-shaded class (flat_field + multiple_distinct_fields), not the answer value the policy gates on, and every 'right' in it was scored against the published accepted-palette gradient flag — the palette-conditional signal Appendix R bars from counting as accuracy. This round puts the primary judge (the reviewer) on the exact answer value and the exact wording the policy names.",
+    "judge": "reviewer-elicited ground_type answers, batch cascade-ground-truth-1, schema group-a.v2, served with the reviewer-signed ORACLE_QUESTION_SET.md §A.2 criterion. Supersession and retraction respected: latest revision wins, retracted records dropped.",
+    "slices": {
+      "corpus_wide_19": "all covers in the premise primary population where variant D answered multiple_distinct_fields (n=19)",
+      "policy_slice_8": "B-unmapped intersect D-multiple_distinct_fields, i.e. the covers the policy would actually commit (n=8), a strict subset of the 19"
+    },
+    "never_pool": "The two slices are never combined into a single headline number without both being stated separately. The policy is decided on the 8; the 19 is context for how the answer value behaves in general.",
+    "binary_projection": "The allowlisted GRADIENT_MAP from the fixed analyzer oracle/premise/analyze.py:35-53 — shaded_field->gradient, flat_field->flat, multiple_distinct_fields->flat. full_scene, pattern_or_texture and none_discernible are DELIBERATELY UNMAPPED and project to neither binary; underdetermined is unanswerable. No denylist is used anywhere: a value projects only if it is named in the allowlist.",
+    "reviewer_disclosure_received_before_scoring": {
+      "when": "2026-08-03, after the reviewer's answers were given and before/during this analysis, relayed mid-analysis by a sibling session",
+      "verbatim": "for this round, some images are *genuinely hard* to rank, and none of the options fit, or maybe several. So I answered \"none discernible\" but this is not true, i can see the field, I just don't know how to tag it.",
+      "how_it_is_applied": "A none_discernible answer in THIS round is not a literal claim that no ground exists — the reviewer can see the ground. It is a statement that the vocabulary does not fit that cover. Such answers are bucketed separately as 'vocabulary-misfit (reviewer post-hoc disclosure)'. They may NOT be counted as the reviewer agreeing with B's abstention, and they may NOT be counted as a clean contradiction of D's substantive answer. They DO count toward the escape-value share that triggers the ESCALATE branch below. Answers are reported in the per-cover table exactly as given; the disclosure is the reading key, not an edit."
+    },
+    "escape_values": [
+      "full_scene",
+      "pattern_or_texture",
+      "none_discernible"
+    ],
+    "thresholds": {
+      "ADOPT": "On the 8-cover policy slice: reviewer exact ground_type match with D >= 6 of 8 (clearly better than the 4 of 8 a coin offers) AND, among the policy-slice covers where the reviewer's answer projects to a binary at all, binary agreement with D >= 2/3 with at least 6 of the 8 covers yielding a reviewer binary. Both halves required.",
+      "REJECT": "On the 8-cover policy slice: reviewer exact match <= 4 of 8 (at or below a coin flip) OR binary disagreement on >= 1/3 of the covers that yield a comparable binary. This is the 'contradicts on a material share' branch, of which the single previously-labeled cover (reviewer pattern_or_texture vs D multiple_distinct_fields) is the known instance.",
+      "UNDECIDED_ESCALATE": "Escape values (full_scene / pattern_or_texture / none_discernible) account for >= 3 of the 8 policy-slice covers (>= 37.5%), or >= 7 of the 19 corpus-wide covers (>= 36.8%). Reading: that many covers carry no answer in this vocabulary, so neither adoption nor a clean contradiction is honest, and the correct policy is to leave those covers unlabeled and fix the vocabulary. If this branch fires, the verdict must state that it fired for the disclosed reason (the reviewer sees the ground but the vocabulary has no tag for it), which is the same conclusion CD_RESULT.md §5 reached independently."
+    },
+    "precedence_if_more_than_one_branch_fires": [
+      "1. ESCALATE trigger fires -> verdict is UNDECIDED-ESCALATE, with the adopt/reject sub-evidence reported beside it. A slice that is one-third unlabelable cannot fund an adoption regardless of the exact-match count.",
+      "2. Otherwise ADOPT thresholds fully met -> ADOPT.",
+      "3. Otherwise -> REJECT."
+    ],
+    "also_pre_registered": {
+      "B_abstention_cost": "For each of the 8, classify B's unmapped abstention against the reviewer's answer: COSTLY if the reviewer gave a mappable answer (flat_field / shaded_field / multiple_distinct_fields) that B could have given and did not; VINDICATED if the reviewer gave the same escape value B gave; JUSTIFIED-OTHER if the reviewer gave a different escape value; VOCABULARY-MISFIT if the reviewer answered none_discernible, which per the disclosure is neither vindication nor cost.",
+      "rendition_tier": "Every cover is reported with its rendition tier. The policy slice is 6 thumbnail_<=320 and 2 standard_<=640, against a corpus mix of roughly 30% thumbnails, so tier is reported per cover and per slice and never averaged away.",
+      "no_new_truth_source": "The accepted-palette gradient flag is not used to score anything in this file. It may be reported as context, never as accuracy."
+    },
+    "what_the_author_had_already_seen_when_pre_registering": "Full honesty note: before writing this block the author had seen the first three raw warehouse records of the batch in a CLI dump — cover ab67616d00001e020000269ead63cf2376a6b67d (multiple_distinct_fields) and cover artofficial (full_scene, superseded to none_discernible). Neither is a member of the 8-cover policy slice; both are corpus-wide-only members of the 19. No policy-slice answer and no aggregate count had been seen. The thresholds above were not adjusted to any observed value."
+  },
+  "pre_registration_provenance": "written to this file before any reviewer answer was scored and copied through verbatim by the analyzer; the analyzer refuses to run without it",
+  "inputs": {
+    "reviewer_labels": "warehouse batch cascade-ground-truth-1 (19 live labels)",
+    "batch_definition": "/Users/Flo/GitHub/palette/research/v3/data/oracle-validation/cascade-ground-truth-1.json",
+    "policy_slice_definition": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/b-unmapped-class-analysis.json per_item[is_class && D==MDF]",
+    "bulk_D": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/premise-run-cd.jsonl",
+    "bulk_B": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/premise-run-1.jsonl"
+  },
+  "warehouse_audit": {
+    "cli": "src/warehouse/cli.ts query --batch cascade-ground-truth-1 --json --no-retracted",
+    "records_returned": 21,
+    "oracle_labels_returned": 20,
+    "superseded_dropped": [
+      "o-msdnxnql-529c8e5d"
+    ],
+    "live_labels": 19,
+    "revisions_above_1": [
+      [
+        "artofficial.jpg",
+        2
+      ]
+    ],
+    "authors": [
+      "human:flo"
+    ],
+    "label_schema_versions": [
+      "group-a.v2"
+    ],
+    "question_keys": [
+      "ground_type"
+    ]
+  },
+  "binary_projection_map": {
+    "shaded_field": "gradient",
+    "flat_field": "flat",
+    "multiple_distinct_fields": "flat",
+    "full_scene": "unmapped",
+    "pattern_or_texture": "unmapped",
+    "none_discernible": "unmapped",
+    "underdetermined": "unanswerable"
+  },
+  "slices_reported_separately_never_pooled": {
+    "corpus_wide_19": {
+      "slice": "corpus_wide_D_multiple_distinct_fields (19)",
+      "n_covers": 19,
+      "n_with_reviewer_answer": 19,
+      "reviewer_answer_distribution": {
+        "none_discernible": 9,
+        "full_scene": 5,
+        "multiple_distinct_fields": 4,
+        "flat_field": 1
+      },
+      "rendition_tiers": {
+        "standard_<=640": 9,
+        "thumbnail_<=320": 8,
+        "large_>640": 2
+      },
+      "exact_ground_type_match": {
+        "right": 4,
+        "of": 19,
+        "rate": 0.2105,
+        "covers_matched": [
+          "0002dfdcde2cb0a75822168c",
+          "0000269ead63cf2376a6b67d",
+          "disney",
+          "elephunk"
+        ]
+      },
+      "binary_projection": {
+        "comparable": 5,
+        "of": 19,
+        "not_comparable_because_reviewer_answer_projects_to_neither": 14,
+        "agree": 5,
+        "disagree": 0,
+        "rate_among_comparable": 1.0,
+        "note": "allowlist projection (analyze.py GRADIENT_MAP); reviewer answers on full_scene / pattern_or_texture / none_discernible project to neither binary and are excluded from the comparable set rather than forced"
+      },
+      "escape_values": {
+        "n": 14,
+        "of": 19,
+        "share": 0.7368,
+        "distribution": {
+          "none_discernible": 9,
+          "full_scene": 5
+        },
+        "vocabulary_misfit_none_discernible": {
+          "n": 9,
+          "covers": [
+            "000300752f338b6aedff856c",
+            "00066a61bbcbeadd632f7f38",
+            "000c4d52300a016ee65f1622",
+            "00014fb430dd1b693e653121",
+            "00075841f68d8cd71db368d8",
+            "000f0a78a1791248aec707e3",
+            "000fa9b53f161dc999ef557d",
+            "artofficial",
+            "krafty"
+          ],
+          "reading": "per the reviewer's post-hoc disclosure these are NOT 'no ground visible'; the reviewer can see the ground and has no tag for it"
+        }
+      },
+      "per_cover": [
+        {
+          "artworkId": "0002dfdcde2cb0a75822168c",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "multiple_distinct_fields",
+          "exact": true,
+          "D_binary": "flat",
+          "reviewer_binary": "flat",
+          "binary": "agree"
+        },
+        {
+          "artworkId": "000300752f338b6aedff856c",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00066a61bbcbeadd632f7f38",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "0007d42f64cb70acce41c71d",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00083a2d455755e4c1116825",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "000c4d52300a016ee65f1622",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "000e229142cb6dbae156341c",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00124d0597059e8987bc4577",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "0000269ead63cf2376a6b67d",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "multiple_distinct_fields",
+          "exact": true,
+          "D_binary": "flat",
+          "reviewer_binary": "flat",
+          "binary": "agree"
+        },
+        {
+          "artworkId": "00014fb430dd1b693e653121",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00075841f68d8cd71db368d8",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "000bc98f315aba36374f9f93",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "flat_field",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": "flat",
+          "binary": "agree"
+        },
+        {
+          "artworkId": "000f0a78a1791248aec707e3",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "000fa9b53f161dc999ef557d",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "artofficial",
+          "tier": "large_>640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "disney",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "multiple_distinct_fields",
+          "exact": true,
+          "D_binary": "flat",
+          "reviewer_binary": "flat",
+          "binary": "agree"
+        },
+        {
+          "artworkId": "elephunk",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "multiple_distinct_fields",
+          "exact": true,
+          "D_binary": "flat",
+          "reviewer_binary": "flat",
+          "binary": "agree"
+        },
+        {
+          "artworkId": "krafty",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "skap",
+          "tier": "large_>640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        }
+      ]
+    },
+    "policy_slice_8": {
+      "slice": "policy_slice_B_unmapped_and_D_MDF (8)",
+      "n_covers": 8,
+      "n_with_reviewer_answer": 8,
+      "reviewer_answer_distribution": {
+        "full_scene": 4,
+        "none_discernible": 3,
+        "multiple_distinct_fields": 1
+      },
+      "rendition_tiers": {
+        "thumbnail_<=320": 6,
+        "standard_<=640": 2
+      },
+      "exact_ground_type_match": {
+        "right": 1,
+        "of": 8,
+        "rate": 0.125,
+        "covers_matched": [
+          "0002dfdcde2cb0a75822168c"
+        ]
+      },
+      "binary_projection": {
+        "comparable": 1,
+        "of": 8,
+        "not_comparable_because_reviewer_answer_projects_to_neither": 7,
+        "agree": 1,
+        "disagree": 0,
+        "rate_among_comparable": 1.0,
+        "note": "allowlist projection (analyze.py GRADIENT_MAP); reviewer answers on full_scene / pattern_or_texture / none_discernible project to neither binary and are excluded from the comparable set rather than forced"
+      },
+      "escape_values": {
+        "n": 7,
+        "of": 8,
+        "share": 0.875,
+        "distribution": {
+          "full_scene": 4,
+          "none_discernible": 3
+        },
+        "vocabulary_misfit_none_discernible": {
+          "n": 3,
+          "covers": [
+            "000300752f338b6aedff856c",
+            "00066a61bbcbeadd632f7f38",
+            "000c4d52300a016ee65f1622"
+          ],
+          "reading": "per the reviewer's post-hoc disclosure these are NOT 'no ground visible'; the reviewer can see the ground and has no tag for it"
+        }
+      },
+      "per_cover": [
+        {
+          "artworkId": "0002dfdcde2cb0a75822168c",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "multiple_distinct_fields",
+          "exact": true,
+          "D_binary": "flat",
+          "reviewer_binary": "flat",
+          "binary": "agree"
+        },
+        {
+          "artworkId": "000300752f338b6aedff856c",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00066a61bbcbeadd632f7f38",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "0007d42f64cb70acce41c71d",
+          "tier": "standard_<=640",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00083a2d455755e4c1116825",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "000c4d52300a016ee65f1622",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "none_discernible",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "000e229142cb6dbae156341c",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        },
+        {
+          "artworkId": "00124d0597059e8987bc4577",
+          "tier": "thumbnail_<=320",
+          "D": "multiple_distinct_fields",
+          "reviewer": "full_scene",
+          "exact": false,
+          "D_binary": "flat",
+          "reviewer_binary": null,
+          "binary": "reviewer answer projects to neither binary"
+        }
+      ]
+    }
+  },
+  "headline_pair": {
+    "note": "the two slices, always together, never as one number",
+    "corpus_wide_19": {
+      "exact": "4/19",
+      "binary_among_comparable": "5/5",
+      "escape_values": "14/19"
+    },
+    "policy_slice_8": {
+      "exact": "1/8",
+      "binary_among_comparable": "1/1",
+      "escape_values": "7/8"
+    }
+  },
+  "structural_caveats": {
+    "binary_agreement_is_directionally_vacuous": {
+      "reviewer_answers_projecting_to_gradient": 0,
+      "why_it_matters": "D projects to `flat` on every cover in this round by construction (multiple_distinct_fields -> flat). The reviewer answered `shaded_field` on 0 of 19 covers, so every reviewer answer that projects at all projects to `flat` too. The binary agreement counts are therefore true but carry no information about direction: they cannot distinguish 'D reads the ground correctly' from 'nothing in this round was on the gradient side'. Do not quote the binary rate without this sentence."
+    },
+    "the_exact_matches_sit_off_the_policy_route": {
+      "exact_matches_total": 4,
+      "of_which_B_was_NOT_unmapped": 3,
+      "covers_off_route": [
+        {
+          "artworkId": "0000269ead63cf2376a6b67d",
+          "B": "multiple_distinct_fields"
+        },
+        {
+          "artworkId": "disney",
+          "B": "multiple_distinct_fields"
+        },
+        {
+          "artworkId": "elephunk",
+          "B": "flat_field"
+        }
+      ],
+      "why_it_matters": "The policy fires only where B abstains. Most of the covers where D's multiple_distinct_fields does match the reviewer are covers where B gave a mappable answer of its own, i.e. covers the policy never touches. D's answer value agrees with the human least often exactly where the policy would use it."
+    }
+  },
+  "b_abstention_cost_on_the_8": {
+    "question": "was there a mappable true answer B failed to give, or was the cover genuinely hard?",
+    "counts": {
+      "VINDICATED: reviewer gave B's own escape value": 4,
+      "vocabulary-misfit (reviewer post-hoc disclosure)": 3,
+      "COSTLY: reviewer gave a mappable answer B declined to give": 1
+    },
+    "per_cover": [
+      {
+        "artworkId": "0002dfdcde2cb0a75822168c",
+        "tier": "standard_<=640",
+        "B": "pattern_or_texture",
+        "reviewer": "multiple_distinct_fields",
+        "D": "multiple_distinct_fields",
+        "verdict": "COSTLY: reviewer gave a mappable answer B declined to give"
+      },
+      {
+        "artworkId": "000300752f338b6aedff856c",
+        "tier": "thumbnail_<=320",
+        "B": "full_scene",
+        "reviewer": "none_discernible",
+        "D": "multiple_distinct_fields",
+        "verdict": "vocabulary-misfit (reviewer post-hoc disclosure)"
+      },
+      {
+        "artworkId": "00066a61bbcbeadd632f7f38",
+        "tier": "thumbnail_<=320",
+        "B": "pattern_or_texture",
+        "reviewer": "none_discernible",
+        "D": "multiple_distinct_fields",
+        "verdict": "vocabulary-misfit (reviewer post-hoc disclosure)"
+      },
+      {
+        "artworkId": "0007d42f64cb70acce41c71d",
+        "tier": "standard_<=640",
+        "B": "full_scene",
+        "reviewer": "full_scene",
+        "D": "multiple_distinct_fields",
+        "verdict": "VINDICATED: reviewer gave B's own escape value"
+      },
+      {
+        "artworkId": "00083a2d455755e4c1116825",
+        "tier": "thumbnail_<=320",
+        "B": "full_scene",
+        "reviewer": "full_scene",
+        "D": "multiple_distinct_fields",
+        "verdict": "VINDICATED: reviewer gave B's own escape value"
+      },
+      {
+        "artworkId": "000c4d52300a016ee65f1622",
+        "tier": "thumbnail_<=320",
+        "B": "full_scene",
+        "reviewer": "none_discernible",
+        "D": "multiple_distinct_fields",
+        "verdict": "vocabulary-misfit (reviewer post-hoc disclosure)"
+      },
+      {
+        "artworkId": "000e229142cb6dbae156341c",
+        "tier": "thumbnail_<=320",
+        "B": "full_scene",
+        "reviewer": "full_scene",
+        "D": "multiple_distinct_fields",
+        "verdict": "VINDICATED: reviewer gave B's own escape value"
+      },
+      {
+        "artworkId": "00124d0597059e8987bc4577",
+        "tier": "thumbnail_<=320",
+        "B": "full_scene",
+        "reviewer": "full_scene",
+        "D": "multiple_distinct_fields",
+        "verdict": "VINDICATED: reviewer gave B's own escape value"
+      }
+    ]
+  },
+  "significance_context": {
+    "note": "reported for scale only; the decision is made on the pre-registered thresholds, not on a p-value. n=8 cannot carry a strong test in either direction. The tail reported is the LOWER tail against the pre-registered adoption bar of 0.5 (the coin): P(X <= observed | n, 0.5), i.e. 'how surprising would a match rate this low be if D were merely a coin'. The upper tail against 0.5 is not reported because the observed rates are below the bar, not above it. 0.5 is the adoption bar, not a chance rate; blind chance on a six-way vocabulary is lower.",
+    "p_exact_match_on_8_at_or_below_the_coin_bar": 0.035156,
+    "p_exact_match_on_19_at_or_below_the_coin_bar": 0.009605
+  },
+  "verdict": {
+    "decision": "UNDECIDED-ESCALATE",
+    "triggers": {
+      "ESCALATE_fired": true,
+      "ESCALATE_because": "escape values on 7/8 of the policy slice (threshold >=3) and 14/19 corpus-wide (threshold >=7)",
+      "ADOPT_thresholds_met": false,
+      "REJECT_thresholds_met": true,
+      "precedence_applied": [
+        "1. ESCALATE trigger fires -> verdict is UNDECIDED-ESCALATE, with the adopt/reject sub-evidence reported beside it. A slice that is one-third unlabelable cannot fund an adoption regardless of the exact-match count.",
+        "2. Otherwise ADOPT thresholds fully met -> ADOPT.",
+        "3. Otherwise -> REJECT."
+      ]
+    },
+    "reviewer_disclosure_is_the_reading_key": {
+      "when": "2026-08-03, after the reviewer's answers were given and before/during this analysis, relayed mid-analysis by a sibling session",
+      "verbatim": "for this round, some images are *genuinely hard* to rank, and none of the options fit, or maybe several. So I answered \"none discernible\" but this is not true, i can see the field, I just don't know how to tag it.",
+      "how_it_is_applied": "A none_discernible answer in THIS round is not a literal claim that no ground exists — the reviewer can see the ground. It is a statement that the vocabulary does not fit that cover. Such answers are bucketed separately as 'vocabulary-misfit (reviewer post-hoc disclosure)'. They may NOT be counted as the reviewer agreeing with B's abstention, and they may NOT be counted as a clean contradiction of D's substantive answer. They DO count toward the escape-value share that triggers the ESCALATE branch below. Answers are reported in the per-cover table exactly as given; the disclosure is the reading key, not an edit."
+    },
+    "vocabulary_misfit_covers": {
+      "artworkIds": [
+        "00014fb430dd1b693e653121",
+        "000300752f338b6aedff856c",
+        "00066a61bbcbeadd632f7f38",
+        "00075841f68d8cd71db368d8",
+        "000c4d52300a016ee65f1622",
+        "000f0a78a1791248aec707e3",
+        "000fa9b53f161dc999ef557d",
+        "artofficial",
+        "krafty"
+      ],
+      "imagePaths": [
+        "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+        "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+        "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+        "07/ab67616d0000b27300075841f68d8cd71db368d8",
+        "0c/ab67616d00001e02000c4d52300a016ee65f1622",
+        "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+        "0f/ab67616d0000b273000fa9b53f161dc999ef557d",
+        "images/artofficial.jpg",
+        "images/krafty.jpg"
+      ],
+      "next_instrument": "a free-text follow-up round targeted at exactly these covers, being built separately; it should ask the reviewer to describe the ground in their own words rather than pick from the group-a.v2 vocabulary"
+    }
+  },
+  "per_cover_all_19": [
+    {
+      "sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+      "artworkId": "0002dfdcde2cb0a75822168c",
+      "imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "pattern_or_texture",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "multiple_distinct_fields",
+      "reviewer_label_id": "o-msdo11vm-9bedc458",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": false,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": "flat",
+      "D_binary": "flat",
+      "exact_match": true,
+      "binary_comparable": true,
+      "binary_match": true,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+      "artworkId": "000300752f338b6aedff856c",
+      "imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "full_scene",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo0nyv-faa9f6f8",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "c6d19597ab9d71847da3dc53ae70d7526d61ea14bb08ffdcac3bd475d768eace",
+      "artworkId": "00066a61bbcbeadd632f7f38",
+      "imagePath": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "pattern_or_texture",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo0jrb-b02dfc4a",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "834de9d0d1cf7c9a0d49bfff03afa83b60a5c8f01559b34cbd50c300dc8a2566",
+      "artworkId": "0007d42f64cb70acce41c71d",
+      "imagePath": "07/ab67616d0000b2730007d42f64cb70acce41c71d",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "full_scene",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "full_scene",
+      "reviewer_label_id": "o-msdo1idm-7aae9959",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "29f1763b1608c0adc395996bfdca56075b8b2ae6a8a4e05909453f8aaf179a7c",
+      "artworkId": "00083a2d455755e4c1116825",
+      "imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "full_scene",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "full_scene",
+      "reviewer_label_id": "o-msdo2vfu-01075a11",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "3bda1f6ebf2e36e3d1281731bfa0b8ccd62a3e589d03a7b83424df6e2f65552c",
+      "artworkId": "000c4d52300a016ee65f1622",
+      "imagePath": "0c/ab67616d00001e02000c4d52300a016ee65f1622",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "full_scene",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo3421-3e4174a9",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+      "artworkId": "000e229142cb6dbae156341c",
+      "imagePath": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "full_scene",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "full_scene",
+      "reviewer_label_id": "o-msdo3ezj-92ce42d7",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "0473407d713fd4c4544191bf7c4238b04f05b474873d069e8d409924b0ea4e68",
+      "artworkId": "00124d0597059e8987bc4577",
+      "imagePath": "12/ab67616d00001e0200124d0597059e8987bc4577",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": true,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "full_scene",
+      "B_is_unmapped": true,
+      "reviewer_ground_type": "full_scene",
+      "reviewer_label_id": "o-msdo1xzy-32aed9cf",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": false,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+      "artworkId": "0000269ead63cf2376a6b67d",
+      "imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "multiple_distinct_fields",
+      "reviewer_label_id": "o-msdnwffn-14507a0a",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": false,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": "flat",
+      "D_binary": "flat",
+      "exact_match": true,
+      "binary_comparable": true,
+      "binary_match": true,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+      "artworkId": "00014fb430dd1b693e653121",
+      "imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdny92h-e966e168",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+      "artworkId": "00075841f68d8cd71db368d8",
+      "imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "flat_field",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo1vs3-7c8c211d",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+      "artworkId": "000bc98f315aba36374f9f93",
+      "imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "flat_field",
+      "reviewer_label_id": "o-msdo2ta3-f58b45f1",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": false,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": "flat",
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": true,
+      "binary_match": true,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "eb8b829680d8b55a6bb2d77ff982dc225b32db097c04734f3c006c9f36f0cd41",
+      "artworkId": "000f0a78a1791248aec707e3",
+      "imagePath": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+      "rendition_tier": "thumbnail_<=320",
+      "rendition_long_edge_px": 300,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo1nbq-0f21f242",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "5da9408e8e01c391c1b9fe4d0496929ed18e3199bfaeca4d63151cf690404079",
+      "artworkId": "000fa9b53f161dc999ef557d",
+      "imagePath": "0f/ab67616d0000b273000fa9b53f161dc999ef557d",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo2j8e-8b0a9e86",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "artworkId": "artofficial",
+      "imagePath": "images/artofficial.jpg",
+      "rendition_tier": "large_>640",
+      "rendition_long_edge_px": 1000,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdny7v0-d056c1dd",
+      "reviewer_revision": 2,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b",
+      "artworkId": "disney",
+      "imagePath": "images/disney.avif",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 483,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "multiple_distinct_fields",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "multiple_distinct_fields",
+      "reviewer_label_id": "o-msdo2y83-b68e5e59",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": false,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": "flat",
+      "D_binary": "flat",
+      "exact_match": true,
+      "binary_comparable": true,
+      "binary_match": true,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+      "artworkId": "elephunk",
+      "imagePath": "images/elephunk.jpg",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 500,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "flat_field",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "multiple_distinct_fields",
+      "reviewer_label_id": "o-msdo24yc-7c691563",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": false,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": "flat",
+      "D_binary": "flat",
+      "exact_match": true,
+      "binary_comparable": true,
+      "binary_match": true,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "3afaf90cd911c134fe26708b3da3fdad181eb38cd8455a8a4538de88a4894091",
+      "artworkId": "krafty",
+      "imagePath": "images/krafty.jpg",
+      "rendition_tier": "standard_<=640",
+      "rendition_long_edge_px": 640,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "flat_field",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "none_discernible",
+      "reviewer_label_id": "o-msdo0za1-3329ad66",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": true,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    },
+    {
+      "sha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+      "artworkId": "skap",
+      "imagePath": "images/skap.jpg",
+      "rendition_tier": "large_>640",
+      "rendition_long_edge_px": 1000,
+      "in_policy_slice": false,
+      "D_ground_type": "multiple_distinct_fields",
+      "B_ground_type": "flat_field",
+      "B_is_unmapped": false,
+      "reviewer_ground_type": "full_scene",
+      "reviewer_label_id": "o-msdo1d4t-ec3aacc6",
+      "reviewer_revision": 1,
+      "reviewer_is_escape_value": true,
+      "reviewer_is_vocabulary_misfit": false,
+      "reviewer_binary": null,
+      "D_binary": "flat",
+      "exact_match": false,
+      "binary_comparable": false,
+      "binary_match": null,
+      "context_only_accepted_palette_flag_gradient": null,
+      "context_note": "the flag column is palette-conditional context; it scores nothing here"
+    }
+  ]
+}

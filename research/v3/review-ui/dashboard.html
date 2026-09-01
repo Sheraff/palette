@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>v3 review — what is waiting</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="dash-body">
+		<header class="dash-head">
+			<h1>v3 review</h1>
+			<p id="summary" class="dash-summary">loading…</p>
+		</header>
+
+		<main id="open" class="dash-main" aria-live="polite">
+			<p class="dash-empty">loading…</p>
+		</main>
+
+		<section class="dash-section">
+			<details id="retired-wrap" hidden>
+				<summary id="retired-summary">retired rounds</summary>
+				<div id="retired" class="dash-released"></div>
+			</details>
+
+			<details id="released-wrap">
+				<summary id="released-summary">released rounds</summary>
+				<div id="released" class="dash-released"></div>
+			</details>
+		</section>
+
+		<footer class="dash-foot">
+			<p id="status" role="status">…</p>
+			<p class="dash-note">
+				The orchestrator starts and stops this server — you never have to. If a page here is
+				broken, say so and stop; nothing you do can make it worse.
+			</p>
+		</footer>
+
+		<script type="module" src="/dashboard.js"></script>
+	</body>
+</html>

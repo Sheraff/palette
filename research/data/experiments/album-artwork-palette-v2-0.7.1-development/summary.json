@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "candidateVersion": "album-artwork-first-principles-0.7.1",
+  "implementationHash": "a24561fd38227afdc6e68928a8cffc51e2e22213591bef6680290637a635103e",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "workerCount": 6,
+  "sourceCount": 28,
+  "reusedSourceArtifacts": 28,
+  "scientificSha256": "0c3780a114cab31a0ae8384548d93c8ee49a541f70c3da214ca4527e3909d642",
+  "fieldHypothesisCoverage": {
+    "oneField": 28,
+    "separateFlatFields": 26,
+    "gradientField": 12
+  },
+  "emergencyEligibleCount": 2,
+  "connectedFieldDomainCoverage": 23,
+  "completeCandidateCount": 30243,
+  "paretoFrontierCandidateCount": 3045,
+  "dominatedCandidateCount": 27198,
+  "retainedTreatmentCount": 210,
+  "identityObligationGate": {
+    "pass": true,
+    "totalObligations": 104,
+    "feasibleObligations": 104,
+    "winnerCoveredObligations": 40,
+    "deferredObligations": 64,
+    "qualityDeferredObligations": 60,
+    "priorityDeferredObligations": 4,
+    "blockedNodes": 0,
+    "globalParetoFrontierCandidates": 3045,
+    "identityRetentionFrontierCandidates": 3098,
+    "identityChallengers": 4949,
+    "eligibleIdentityChallengers": 2,
+    "finalSlateTreatments": 210,
+    "winnerChangesFromPredecessor": [
+      "development-03",
+      "development-04",
+      "development-05",
+      "development-06",
+      "development-07",
+      "development-08",
+      "development-12",
+      "development-13",
+      "development-14",
+      "development-15",
+      "development-17",
+      "development-18",
+      "development-19",
+      "development-23",
+      "development-26",
+      "development-27",
+      "development-28"
+    ],
+    "failedCaseIds": []
+  },
+  "runtime": {
+    "wallMs": 268.864666,
+    "totalCpuUserMicros": 86031257,
+    "totalCpuSystemMicros": 1006710,
+    "maximumSourceWallMs": 10121.795958
+  }
+}

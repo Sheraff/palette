@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "currentCandidateVersion": "album-artwork-first-principles-0.4.4",
+  "currentImplementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+  "currentScientificSha256": "be484fa948c0a625cc1e7f56b698bcea3b8652296e7408871d582932cf87dbd3",
+  "priorAbsoluteQualityManifestId": "e052f2814f83f0313d3732e779927e5f4a3fd29d7292ba49d5291537bbf9a7d1",
+  "inputHashes": {
+    "currentManifestSha256": "97c744f50f16373cd8356ad654764099ef7b6ab5a15413b9c23b31ac300fd92e",
+    "priorManifestSha256": "57d173c4f39ccb421b940d6ab50545983945018615d8ea524042be301f3b86d5",
+    "priorFeedbackSha256": "581083cff08c90885ea96b09471b10459350904f3ddf5d4ddc3231dee7864d9e",
+    "prerequisiteGateSha256": "7e72fd7ca7b7a945e1969aa2d831a9a49fc0c0e5872a48c4f0a615b1a0a1276a"
+  },
+  "transferredExactTopCount": 4,
+  "changedTopCount": 8,
+  "transferredExactTops": [
+    {
+      "caseId": "development-02",
+      "sourceSha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "absoluteQuality": "strong",
+      "comment": "",
+      "priorTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+      "currentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+      "treatmentKey": "#fe0000:#fe0000:#ffffff:#ffffff:0"
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "absoluteQuality": "unacceptable",
+      "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork",
+      "priorTreatmentId": "gradient:field-domain-800:radial-upper-center:center-out:family-3302:family-5047:#1c026d:#22438a|28,2,109|34,67,138|224,205,199|208,41,129|gradient",
+      "currentTreatmentId": "gradient:field-domain-800:radial-upper-center:center-out:family-3302:family-5047:#1c026d:#22438a|28,2,109|34,67,138|224,205,199|208,41,129|gradient",
+      "treatmentKey": "#1c026d:#22438a:#e0cdc7:#d02981:1"
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "absoluteQuality": "strong",
+      "comment": "would work better as a gradient, colors and roles are good",
+      "priorTreatmentId": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+      "currentTreatmentId": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+      "treatmentKey": "#02102b:#030208:#bed6e2:#539db8:0"
+    },
+    {
+      "caseId": "development-25",
+      "sourceSha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+      "absoluteQuality": "strong",
+      "comment": "",
+      "priorTreatmentId": "flat:family-220:family-1102|0,0,0|10,1,0|253,155,2|253,11,237|flat",
+      "currentTreatmentId": "flat:family-220:family-1102|0,0,0|10,1,0|253,155,2|253,11,237|flat",
+      "treatmentKey": "#000000:#0a0100:#fd9b02:#fd0bed:0"
+    }
+  ],
+  "changedTopCaseIds": [
+    "development-04",
+    "development-06",
+    "development-15",
+    "development-16",
+    "development-18",
+    "development-19",
+    "development-21",
+    "development-26"
+  ],
+  "freshSampleOpened": false
+}

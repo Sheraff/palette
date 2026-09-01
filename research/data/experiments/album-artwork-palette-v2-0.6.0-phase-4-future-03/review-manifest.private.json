@@ -1,0 +1,884 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-future-03-review-v1",
+  "presentationVersion": "album-artwork-palette-v2-phase-4-presentation-v1",
+  "cases": [
+    {
+      "caseId": "future03-01-140173463185",
+      "order": 0,
+      "source": {
+        "file": "11/ab67616d00001e0200117b5a2eaec3afe0d64b31",
+        "sha256": "4873b88c3b34bddbabc74c9d5950e73d0d18e788a86a4de194e3fa09d0381fc1",
+        "bytes": 49486
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#fdfdfd",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#f51b0f",
+              "nearestName": "Scarlet Blaze",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#020012",
+              "nearestName": "Black Hole",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#0a18f3",
+              "nearestName": "Blue",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#fdfbfd",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#e1afa7",
+              "nearestName": "Perfect Pink",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#140d19",
+              "nearestName": "Eigengrau",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#073fcf",
+              "nearestName": "Flying Fish Blue",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "future03-02-186b0bfab9c5",
+      "order": 1,
+      "source": {
+        "file": "11/ab67616d0000b2730011d0014f7295d79c6e85a3",
+        "sha256": "92ca3a33ab372b8d1e026f672ef61e58840e3d154a19131d25578158bb6130f3",
+        "bytes": 171419
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#353b55",
+              "nearestName": "Crepuscule",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#cec6dd",
+              "nearestName": "Ariel",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fcfac1",
+              "nearestName": "Moonbeam",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#f8f6fb",
+              "nearestName": "Snow",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#1d3554",
+              "nearestName": "Shuriken",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#543234",
+              "nearestName": "Fig",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f5f2e7",
+              "nearestName": "White",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#08090c",
+              "nearestName": "Blackout",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "future03-03-27153b35dabc",
+      "order": 2,
+      "source": {
+        "file": "11/ab67616d0000b273001179f22153b0aac84891f2",
+        "sha256": "61cb4460101b8f6f707a474cbbdf4c79aa2a02c6acb72051172ff01335e3df2d",
+        "bytes": 71281
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#e5e4df",
+              "nearestName": "Ivory",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#e5e4df",
+              "nearestName": "Ivory",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#212629",
+              "nearestName": "Lead",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#7b8793",
+              "nearestName": "Drizzle",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#e5e4df",
+              "nearestName": "Ivory",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#e5e4df",
+              "nearestName": "Ivory",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#212628",
+              "nearestName": "Lead",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#dcc670",
+              "nearestName": "Flax",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "future03-04-2eb0d3abef58",
+      "order": 3,
+      "source": {
+        "file": "11/ab67616d0000b27300113b49e76a0efd1de9136b",
+        "sha256": "507d20466f28c0128843881a57a616ff44e55317c394778e2d59b4a3f94c3d67",
+        "bytes": 97270
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#bfbcff",
+              "nearestName": "Aquilegia",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#c7c4df",
+              "nearestName": "Ariel",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#001221",
+              "nearestName": "Winter Solstice",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#3a434a",
+              "nearestName": "Tuxedo",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#bbb7f4",
+              "nearestName": "Pillow Talk",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#bbb7f4",
+              "nearestName": "Pillow Talk",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#011123",
+              "nearestName": "Winter Solstice",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#61587b",
+              "nearestName": "Wizard",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "future03-05-7a25113befbd",
+      "order": 4,
+      "source": {
+        "file": "11/ab67616d0000b2730011ecbdbea06137fa27aeb9",
+        "sha256": "8a606c6d3e610670eba49b89bc1ded8d173f6ed33d3347c487b5fc162c04f4bf",
+        "bytes": 43430
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#2d464d",
+              "nearestName": "Tuxedo",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#2d464d",
+              "nearestName": "Tuxedo",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#c1ebb9",
+              "nearestName": "Honeydew",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#436564",
+              "nearestName": "Steel Teal",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#0d1527",
+              "nearestName": "Darkroom",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#0d1527",
+              "nearestName": "Darkroom",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#a3d2ae",
+              "nearestName": "Murmur",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#2f4a4f",
+              "nearestName": "Charcoal",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "future03-06-80ca3794fda9",
+      "order": 5,
+      "source": {
+        "file": "11/ab67616d0000b2730011dfbde1e63428d89cd93f",
+        "sha256": "04839e58297cc603bdb4f9dcab80ce0418aa44940c9c93ca0b323612f247c462",
+        "bytes": 263619
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#000e15",
+              "nearestName": "Onyx",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#000e15",
+              "nearestName": "Onyx",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f4fcfe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#065e8e",
+              "nearestName": "Denim",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#011017",
+              "nearestName": "Winter Solstice",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#07283c",
+              "nearestName": "Midnight Blue",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f7fbfc",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#aec0c6",
+              "nearestName": "Wild Life",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "future03-07-856314f006cf",
+      "order": 6,
+      "source": {
+        "file": "11/ab67616d00001e0200114a4d74f39d894b17bc9e",
+        "sha256": "2b3fbbafc34e38264e41eb4a9d4cd37dbedfe218989694bf3f7291d17483e2ea",
+        "bytes": 36814
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#cd9d88",
+              "nearestName": "Hickory",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fed0b4",
+              "nearestName": "Wafer",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#20140f",
+              "nearestName": "Espresso Martini",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#fef7f0",
+              "nearestName": "Snow",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#ddab94",
+              "nearestName": "Almond",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fde2cd",
+              "nearestName": "Dwindling Dandelion",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#211310",
+              "nearestName": "Espresso Martini",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#764b45",
+              "nearestName": "Brownstone",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "future03-08-c4928c6179fc",
+      "order": 7,
+      "source": {
+        "file": "11/ab67616d0000b2730011782767de5acc2f8960f9",
+        "sha256": "9102274adb87fbef72c95b05777d16e9e19f435e0948a11fe2534d4272c837c1",
+        "bytes": 111684
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#5e1a0e",
+              "nearestName": "Rust Shadow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fcfcf2",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d49a5f",
+              "nearestName": "Fawn",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#110302",
+              "nearestName": "Black Coffee",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#481709",
+              "nearestName": "Bitter Chocolate",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#faf786",
+              "nearestName": "Lemon Chiffon",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#f4a34a",
+              "nearestName": "Golden Mango",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "future03-09-c69d9e863d6b",
+      "order": 8,
+      "source": {
+        "file": "11/ab67616d0000b27300110ba51b7bbbc47ac1f051",
+        "sha256": "f1d3ad56ba0aa529c84b1f609549d7c85848d47e965846829f5eede626f9cd5c",
+        "bytes": 178708
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#7a9fee",
+              "nearestName": "Windjammer",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#a8b3dc",
+              "nearestName": "Electric Sheep",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#010204",
+              "nearestName": "Ink Black",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#5074d2",
+              "nearestName": "Dusty Chimney",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#b0c0e4",
+              "nearestName": "Bedtime Story",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#b0c0e4",
+              "nearestName": "Bedtime Story",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#010206",
+              "nearestName": "Ink Black",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#516485",
+              "nearestName": "Faded Sapphire",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "future03-10-ded7cd3e2735",
+      "order": 9,
+      "source": {
+        "file": "11/ab67616d0000b27300115e0b2406c9c2ac670f64",
+        "sha256": "787c79b67b6422a3a2e069f46ab5266e67840b2df4faad5ea68e8ecf8d03eee0",
+        "bytes": 177999
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#aeab91",
+              "nearestName": "Olive or Twist",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#ea1359",
+              "nearestName": "Ferocious",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#9eeae6",
+              "nearestName": "Crystal",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#eb1259",
+              "nearestName": "Ferocious",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "future03-11-e37560ad1acf",
+      "order": 10,
+      "source": {
+        "file": "11/ab67616d00001e0200111dca3684f9afb1cb6ba0",
+        "sha256": "c275561fda369ce3ed0484362ea6dec811411173d9aa77771be1561c824ed349",
+        "bytes": 54823
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#473015",
+              "nearestName": "Couch",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#85511f",
+              "nearestName": "Annatto",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fbfbf8",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#070000",
+              "nearestName": "Soot",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#552a07",
+              "nearestName": "Meatloaf",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#a57336",
+              "nearestName": "Copper Gold",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fbfcf6",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d1b284",
+              "nearestName": "Pony",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "future03-12-ed4e93fdbd18",
+      "order": 11,
+      "source": {
+        "file": "11/ab67616d00001e02001170c20f7f3c4d39f39459",
+        "sha256": "3803bf754a6c093c26a6a8b5ed3d30fa966db0ddb41e4410654d3e78a99b7913",
+        "bytes": 40172
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#1f1f14",
+              "nearestName": "Holy Crow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#35381b",
+              "nearestName": "Thyme",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fdfbeb",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#9fa845",
+              "nearestName": "Tisane",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#f9fad0",
+              "nearestName": "Moonbeam",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#f9fad0",
+              "nearestName": "Moonbeam",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#2c2e19",
+              "nearestName": "Moss Shadow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#9da746",
+              "nearestName": "Za'atar",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    }
+  ],
+  "manifestId": "b9dd852a0e16d3b03b39aa9fdd5085b580a6664a457952bfce927b39c3624254"
+}

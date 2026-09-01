@@ -1,0 +1,663 @@
+{
+	"what": "First run of the challenger disagreement counter, over the v2-3 palettes distilled into data/legacy/. Report-only: nothing here moved a bar, a threshold, or a verdict. Governed by reviews/challenger-counter/PRE_REGISTRATION.md, committed before this ran.",
+	"scope": "LEGACY-FIXTURE RUN, NOT A V3-PIPELINE RUN. The fixtures publish no v3 gradient stops, so only role pairs are judged. Both challenger bars were measured in dark-neutral alone and are applied globally: a disagreement outside dark-neutral is a difference between two rules, not evidence that the frozen bar is wrong there.",
+	"observedAt": "2026-08-04T00:00:00.000Z",
+	"population": {
+		"entriesRead": 554,
+		"perTier": {
+			"endorsements": 351,
+			"acceptable": 166,
+			"known-bad": 37
+		},
+		"distinctRoleSignatures": 492,
+		"palettesRun": 492,
+		"palettesByRoleCount": {
+			"1": 2,
+			"3": 1,
+			"4": 489
+		},
+		"palettesJudgingZeroPairs": 2,
+		"judgedPairsTotal": 2857,
+		"pairsExemptBySanctionedCollapse": 80,
+		"imagesDecoded": 0
+	},
+	"positiveControl": {
+		"what": "The palette tests/contract-challengers.test.ts uses to prove the counter counts (#202020 / #232323 field roles). Run through the identical code path; NOT in the ledger. Non-zero disagreements here are what rule out 'the instrument counted nothing'.",
+		"tallies": [
+			{
+				"challenger": "direction-aware-oklab",
+				"judged": 6,
+				"disagreed": 1,
+				"disagreedByRegion": {
+					"dark-neutral": 1,
+					"dark-saturated": 0,
+					"light-neutral": 0,
+					"light-saturated": 0
+				}
+			},
+			{
+				"challenger": "ictcp-global",
+				"judged": 6,
+				"disagreed": 1,
+				"disagreedByRegion": {
+					"dark-neutral": 1,
+					"dark-saturated": 0,
+					"light-neutral": 0,
+					"light-saturated": 0
+				}
+			}
+		]
+	},
+	"distanceStructure": {
+		"judgedPairs": 2857,
+		"distanceOverBarQuantiles": {
+			"min": 1.2973179269327535,
+			"p01": 4.131351732099017,
+			"p05": 6.19431826423519,
+			"p25": 12.37731439771049,
+			"median": 19.532569170426196
+		},
+		"judgedPairsWithinMultipleOfBar": {
+			"<1x (would be a violation)": 0,
+			"<2x": 1,
+			"<3x": 4,
+			"<5x": 64
+		},
+		"closestJudgedPairs": [
+			{
+				"subject": "legacy:#fa7b34,#ebda8a,#fde5d9,#fc8831",
+				"distance": 0.029747500064568035,
+				"bar": 0.02293,
+				"ratio": 1.2973179269327535,
+				"region": "light-saturated",
+				"directionAware": 0.05797028134842573,
+				"ictcp": 0.018898379256098666
+			},
+			{
+				"subject": "legacy:#7a609f,#856fad,#c5ab20,#fdfdf1",
+				"distance": 0.04663948049425582,
+				"bar": 0.02293,
+				"ratio": 2.03399391601639,
+				"region": "light-saturated",
+				"directionAware": 0.04902661140300703,
+				"ictcp": 0.02363890704703587
+			},
+			{
+				"subject": "legacy:#1f3835,#f2f3ee,#fffef9,#a15852",
+				"distance": 0.034473969375110096,
+				"bar": 0.01627,
+				"ratio": 2.118867201912114,
+				"region": "light-neutral",
+				"directionAware": 0.034892532602065145,
+				"ictcp": 0.010993422880165738
+			},
+			{
+				"subject": "legacy:#f2f3ee,#1f3835,#fffef9,#a15852",
+				"distance": 0.034473969375110096,
+				"bar": 0.01627,
+				"ratio": 2.118867201912114,
+				"region": "light-neutral",
+				"directionAware": 0.034892532602065145,
+				"ictcp": 0.010993422880165738
+			},
+			{
+				"subject": "legacy:#beb4b5,#dfdde0,#3a2828,#cc9a8f",
+				"distance": 0.07086636307306515,
+				"bar": 0.02293,
+				"ratio": 3.0905522491524273,
+				"region": "light-saturated",
+				"directionAware": 0.15700653080825888,
+				"ictcp": 0.04729584298927626
+			},
+			{
+				"subject": "legacy:#0041fd,#6987f7,#efe1ee,#d5d5f1",
+				"distance": 0.050389083788638045,
+				"bar": 0.01627,
+				"ratio": 3.0970549347657066,
+				"region": "light-neutral",
+				"directionAware": 0.08482568235199583,
+				"ictcp": 0.02136397252363318
+			},
+			{
+				"subject": "legacy:#9dcfcc,#ccddd7,#297269,#ce9f71",
+				"distance": 0.07274778159803587,
+				"bar": 0.02293,
+				"ratio": 3.1726027735733044,
+				"region": "light-saturated",
+				"directionAware": 0.11650975995317446,
+				"ictcp": 0.031386821204764166
+			},
+			{
+				"subject": "legacy:#9dcfcc,#ccddd7,#297269,#fcfef0",
+				"distance": 0.07274778159803587,
+				"bar": 0.02293,
+				"ratio": 3.1726027735733044,
+				"region": "light-saturated",
+				"directionAware": 0.11650975995317446,
+				"ictcp": 0.031386821204764166
+			},
+			{
+				"subject": "legacy:#e3e1cc,#e1d48e,#9b282f,#383a77",
+				"distance": 0.07485551483546463,
+				"bar": 0.02293,
+				"ratio": 3.2645231066491336,
+				"region": "light-saturated",
+				"directionAware": 0.18467899096265525,
+				"ictcp": 0.04242990571639131
+			},
+			{
+				"subject": "legacy:#373737,#7f80ac,#d6deeb,#696b91",
+				"distance": 0.07504356732220785,
+				"bar": 0.02293,
+				"ratio": 3.2727242617622263,
+				"region": "light-saturated",
+				"directionAware": 0.07750323908058493,
+				"ictcp": 0.036012902348117104
+			}
+		]
+	},
+	"challengers": [
+		{
+			"challenger": "direction-aware-oklab",
+			"judged": 2857,
+			"disagreed": 0,
+			"rate": 0,
+			"directional": {
+				"challengerSaysSame": 0,
+				"incumbentSaysSame": 0
+			},
+			"wilson": {
+				"ok": true,
+				"successes": 0,
+				"trials": 2857,
+				"rate": 0,
+				"low": 0,
+				"high": 0.0013427723563763597,
+				"confidence": 0.95,
+				"summary": "0/2857 = 0.0% (95% CI 0.0%-0.1%)",
+				"provenance": {
+					"method": "Wilson score interval at 95%",
+					"n": 2857,
+					"inputs": {
+						"successes": 0,
+						"trials": 2857,
+						"confidence": 0.95,
+						"z": 1.959963986120195
+					},
+					"corrections": [],
+					"caveats": []
+				}
+			},
+			"bootstrap": {
+				"ok": true,
+				"pointEstimate": 0,
+				"low": 0,
+				"high": 0,
+				"confidence": 0.95,
+				"resamples": 10000,
+				"seed": 20260804,
+				"resamplingUnits": 490,
+				"resamplingUnitLabel": "palette",
+				"degenerateDraws": 0,
+				"summary": "0.0000 (95% percentile CI 0.0000-0.0000 over 490 palettes)",
+				"provenance": {
+					"method": "cluster percentile bootstrap, resampling whole palettes, 10000 resamples, seed 20260804",
+					"n": 490,
+					"inputs": {
+						"resamplingUnits": 490,
+						"observations": 2857,
+						"resamples": 10000,
+						"seed": 20260804,
+						"confidence": 0.95,
+						"clusterBy": "palette"
+					},
+					"corrections": [],
+					"caveats": [
+						"the interval rests on the number of palettes, not on the number of observations inside them"
+					]
+				}
+			},
+			"regions": [
+				{
+					"region": "dark-neutral",
+					"judged": 120,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.04200210010500525,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 120,
+						"rate": 0,
+						"low": 0,
+						"high": 0.031019166467167906,
+						"confidence": 0.95,
+						"summary": "0/120 = 0.0% (95% CI 0.0%-3.1%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 120,
+							"inputs": {
+								"successes": 0,
+								"trials": 120,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				},
+				{
+					"region": "dark-saturated",
+					"judged": 320,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.112005600280014,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 320,
+						"rate": 0,
+						"low": 0,
+						"high": 0.011862158850209612,
+						"confidence": 0.95,
+						"summary": "0/320 = 0.0% (95% CI 0.0%-1.2%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 320,
+							"inputs": {
+								"successes": 0,
+								"trials": 320,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				},
+				{
+					"region": "light-neutral",
+					"judged": 925,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.32376618830941545,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 925,
+						"rate": 0,
+						"low": 0,
+						"high": 0.004135752975260024,
+						"confidence": 0.95,
+						"summary": "0/925 = 0.0% (95% CI 0.0%-0.4%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 925,
+							"inputs": {
+								"successes": 0,
+								"trials": 925,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				},
+				{
+					"region": "light-saturated",
+					"judged": 1492,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.5222261113055653,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 1492,
+						"rate": 0,
+						"low": 0,
+						"high": 0.0025680922294404273,
+						"confidence": 0.95,
+						"summary": "0/1492 = 0.0% (95% CI 0.0%-0.3%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 1492,
+							"inputs": {
+								"successes": 0,
+								"trials": 1492,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				}
+			],
+			"palettesScoring": 490,
+			"palettesWithAnyDisagreement": 0,
+			"topPalettes": [
+				{
+					"subject": "legacy:#000000,#000000,#b6b6b6,#fbfbfb",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#c7c6c1,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#c7c6c1,#f22632",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#cd972b,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#cd972b,#f22632",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#e4b144,#f22632",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f0bb47,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f1b73c,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f6f4f7,#9f045f",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f6f4f7,#fa0202",
+					"judged": 5,
+					"disagreed": 0
+				}
+			],
+			"decile": {
+				"size": 49,
+				"disagreements": 0,
+				"share": null
+			},
+			"rule": {
+				"H1_rateAtLeast0_10": false,
+				"H2_bootstrapLowAtLeast0_05": false,
+				"HIGH": false,
+				"C_region": false,
+				"C_palette": false,
+				"CONCENTRATED": false,
+				"VERDICT": "keep the round deferred"
+			}
+		},
+		{
+			"challenger": "ictcp-global",
+			"judged": 2857,
+			"disagreed": 0,
+			"rate": 0,
+			"directional": {
+				"challengerSaysSame": 0,
+				"incumbentSaysSame": 0
+			},
+			"wilson": {
+				"ok": true,
+				"successes": 0,
+				"trials": 2857,
+				"rate": 0,
+				"low": 0,
+				"high": 0.0013427723563763597,
+				"confidence": 0.95,
+				"summary": "0/2857 = 0.0% (95% CI 0.0%-0.1%)",
+				"provenance": {
+					"method": "Wilson score interval at 95%",
+					"n": 2857,
+					"inputs": {
+						"successes": 0,
+						"trials": 2857,
+						"confidence": 0.95,
+						"z": 1.959963986120195
+					},
+					"corrections": [],
+					"caveats": []
+				}
+			},
+			"bootstrap": {
+				"ok": true,
+				"pointEstimate": 0,
+				"low": 0,
+				"high": 0,
+				"confidence": 0.95,
+				"resamples": 10000,
+				"seed": 20260804,
+				"resamplingUnits": 490,
+				"resamplingUnitLabel": "palette",
+				"degenerateDraws": 0,
+				"summary": "0.0000 (95% percentile CI 0.0000-0.0000 over 490 palettes)",
+				"provenance": {
+					"method": "cluster percentile bootstrap, resampling whole palettes, 10000 resamples, seed 20260804",
+					"n": 490,
+					"inputs": {
+						"resamplingUnits": 490,
+						"observations": 2857,
+						"resamples": 10000,
+						"seed": 20260804,
+						"confidence": 0.95,
+						"clusterBy": "palette"
+					},
+					"corrections": [],
+					"caveats": [
+						"the interval rests on the number of palettes, not on the number of observations inside them"
+					]
+				}
+			},
+			"regions": [
+				{
+					"region": "dark-neutral",
+					"judged": 120,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.04200210010500525,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 120,
+						"rate": 0,
+						"low": 0,
+						"high": 0.031019166467167906,
+						"confidence": 0.95,
+						"summary": "0/120 = 0.0% (95% CI 0.0%-3.1%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 120,
+							"inputs": {
+								"successes": 0,
+								"trials": 120,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				},
+				{
+					"region": "dark-saturated",
+					"judged": 320,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.112005600280014,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 320,
+						"rate": 0,
+						"low": 0,
+						"high": 0.011862158850209612,
+						"confidence": 0.95,
+						"summary": "0/320 = 0.0% (95% CI 0.0%-1.2%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 320,
+							"inputs": {
+								"successes": 0,
+								"trials": 320,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				},
+				{
+					"region": "light-neutral",
+					"judged": 925,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.32376618830941545,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 925,
+						"rate": 0,
+						"low": 0,
+						"high": 0.004135752975260024,
+						"confidence": 0.95,
+						"summary": "0/925 = 0.0% (95% CI 0.0%-0.4%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 925,
+							"inputs": {
+								"successes": 0,
+								"trials": 925,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				},
+				{
+					"region": "light-saturated",
+					"judged": 1492,
+					"disagreed": 0,
+					"rate": 0,
+					"disagreementShare": null,
+					"judgedShare": 0.5222261113055653,
+					"interval": {
+						"ok": true,
+						"successes": 0,
+						"trials": 1492,
+						"rate": 0,
+						"low": 0,
+						"high": 0.0025680922294404273,
+						"confidence": 0.95,
+						"summary": "0/1492 = 0.0% (95% CI 0.0%-0.3%)",
+						"provenance": {
+							"method": "Wilson score interval at 95%",
+							"n": 1492,
+							"inputs": {
+								"successes": 0,
+								"trials": 1492,
+								"confidence": 0.95,
+								"z": 1.959963986120195
+							},
+							"corrections": [],
+							"caveats": []
+						}
+					}
+				}
+			],
+			"palettesScoring": 490,
+			"palettesWithAnyDisagreement": 0,
+			"topPalettes": [
+				{
+					"subject": "legacy:#000000,#000000,#b6b6b6,#fbfbfb",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#c7c6c1,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#c7c6c1,#f22632",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#cd972b,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#cd972b,#f22632",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#e4b144,#f22632",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f0bb47,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f1b73c,#cd1227",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f6f4f7,#9f045f",
+					"judged": 5,
+					"disagreed": 0
+				},
+				{
+					"subject": "legacy:#000000,#000000,#f6f4f7,#fa0202",
+					"judged": 5,
+					"disagreed": 0
+				}
+			],
+			"decile": {
+				"size": 49,
+				"disagreements": 0,
+				"share": null
+			},
+			"rule": {
+				"H1_rateAtLeast0_10": false,
+				"H2_bootstrapLowAtLeast0_05": false,
+				"HIGH": false,
+				"C_region": false,
+				"C_palette": false,
+				"CONCENTRATED": false,
+				"VERDICT": "keep the round deferred"
+			}
+		}
+	]
+}

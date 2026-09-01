@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-absolute-quality-delta-review-v10",
+  "manifestId": "c394705632021d0423d4e6a65e86410d0315d432637f642f30e8d19ae8ad8aa7",
+  "candidateVersion": "album-artwork-first-principles-0.4.4",
+  "implementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+  "scientificSha256": "be484fa948c0a625cc1e7f56b698bcea3b8652296e7408871d582932cf87dbd3",
+  "inputHashes": {
+    "manifestSha256": "de51d04b1bb30c90334f3cd2d6a2ce137168dce68f32e5cbd9706eb6e4a91e7a",
+    "feedbackSha256": "1390baabe604722c3d298fae31e1e48bcfa97c8e496c5eda5619576f557b6457",
+    "preparationSha256": "9cf5f5fbb7f7d83c23e9d90eb93c1d961ccb4f7506920bf6d205a49a23eb0ed1"
+  },
+  "storeIntegrity": {
+    "changedExpectedCount": 8,
+    "changedReviewedCount": 8,
+    "changedUniqueCount": 8,
+    "transferredExactCount": 4,
+    "combinedCaseCount": 12
+  },
+  "deltaDistribution": {
+    "strong": 2,
+    "acceptable": 6,
+    "weak-fallback": 0,
+    "unacceptable": 0,
+    "uncertain": 0
+  },
+  "combinedDistribution": {
+    "strong": 5,
+    "acceptable": 6,
+    "weak-fallback": 0,
+    "unacceptable": 1,
+    "uncertain": 0
+  },
+  "priorDistribution": {
+    "strong": 5,
+    "acceptable": 2,
+    "weak-fallback": 4,
+    "unacceptable": 1,
+    "uncertain": 0
+  },
+  "distributionChange": {
+    "strong": 0,
+    "acceptable": 4,
+    "weak-fallback": -4,
+    "unacceptable": 0,
+    "uncertain": 0,
+    "positive": 4
+  },
+  "technicalFailureClasses": [
+    {
+      "failureClass": "gradient-state-underselection",
+      "caseIds": [
+        "development-06",
+        "development-16",
+        "development-22"
+      ],
+      "currentQualities": [
+        "acceptable",
+        "acceptable",
+        "strong"
+      ],
+      "interpretation": "Repeated gradient requests remain qualified improvements on independently usable complete treatments."
+    },
+    {
+      "failureClass": "foreground-polarity-or-text-role",
+      "caseIds": [
+        "development-03",
+        "development-26"
+      ],
+      "currentQualities": [
+        "unacceptable",
+        "acceptable"
+      ],
+      "interpretation": "One unchanged failure and one usable-but-not-ideal treatment retain a foreground-role mismatch."
+    },
+    {
+      "failureClass": "deterministic-top-below-known-alternative",
+      "caseIds": [
+        "development-19"
+      ],
+      "currentQualities": [
+        "acceptable"
+      ],
+      "interpretation": "The current top is usable but prior review contains a strongly preferred exact predecessor."
+    }
+  ],
+  "caseResults": [
+    {
+      "caseId": "development-02",
+      "sourceSha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "treatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+      "absoluteQuality": "strong",
+      "comment": "",
+      "reviewSource": "exact-0.4.1-transfer"
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "treatmentId": "gradient:field-domain-800:radial-upper-center:center-out:family-3302:family-5047:#1c026d:#22438a|28,2,109|34,67,138|224,205,199|208,41,129|gradient",
+      "absoluteQuality": "unacceptable",
+      "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork",
+      "reviewSource": "exact-0.4.1-transfer"
+    },
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "treatmentId": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|251,253,250|69,91,89|gradient",
+      "absoluteQuality": "strong",
+      "comment": "",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "treatmentId": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+      "absoluteQuality": "acceptable",
+      "comment": "This should be a gradient ",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "treatmentId": "flat:family-2403:family-4167|20,27,37|54,68,79|204,211,217|128,139,145|flat",
+      "absoluteQuality": "acceptable",
+      "comment": "",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "treatmentId": "flat:family-5489:family-4607|68,100,139|53,79,112|251,252,247|16,13,40|flat",
+      "absoluteQuality": "acceptable",
+      "comment": "- This should be a gradient \n- Accent could be a better color. Like a slightly lighter blue, still darker than the background, but that would match the album's title on the artwork, or it could be some shade of yellow, orange, or red to match the many dots at the bottom ",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-18",
+      "sourceSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "treatmentId": "flat:family-3746:family-1540|49,48,92|4,3,37|245,229,12|253,237,159|flat",
+      "absoluteQuality": "acceptable",
+      "comment": "",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "treatmentId": "flat:family-8598:family-7715|190,178,198|155,155,189|28,0,49|216,203,221|flat",
+      "absoluteQuality": "acceptable",
+      "comment": "This kind of works, but it was so much better before we had a version that matched the artwork much better. You should be able to find it in former reviews ",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "treatmentId": "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|233,146,53|flat",
+      "absoluteQuality": "strong",
+      "comment": "",
+      "reviewSource": "0.4.4-delta-review"
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "treatmentId": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+      "absoluteQuality": "strong",
+      "comment": "would work better as a gradient, colors and roles are good",
+      "reviewSource": "exact-0.4.1-transfer"
+    },
+    {
+      "caseId": "development-25",
+      "sourceSha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+      "treatmentId": "flat:family-220:family-1102|0,0,0|10,1,0|253,155,2|253,11,237|flat",
+      "absoluteQuality": "strong",
+      "comment": "",
+      "reviewSource": "exact-0.4.1-transfer"
+    },
+    {
+      "caseId": "development-26",
+      "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+      "treatmentId": "gradient:field-domain-0:linear:diagonal-down:family-8599:family-6835:#cdcac5:#8e8b86|205,202,197|142,139,134|8,8,8|57,54,49|gradient",
+      "absoluteQuality": "acceptable",
+      "comment": "That works, but it would be better if the foreground was actually lighter than the background to match the artwork ",
+      "reviewSource": "0.4.4-delta-review"
+    }
+  ],
+  "phase3Gate": {
+    "pass": true,
+    "positiveCount": 11,
+    "positiveShare": 0.9166666666666666,
+    "freezeCandidateForPhase4": true,
+    "reason": "Eleven of twelve deterministic tops are strong or acceptable, no weak fallbacks remain, and additional development-only tuning would center one unchanged known failure."
+  },
+  "phaseDisposition": "phase3-passed-freeze-0.4.4-for-one-time-fresh-directional-review",
+  "freshSampleOpened": false,
+  "nextStep": "Freeze 0.4.4 and run the preselected fresh sample once against region-graph-0.19.0 without adaptation."
+}

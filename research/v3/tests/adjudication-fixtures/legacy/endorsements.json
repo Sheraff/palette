@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "contract": "v2-3",
+    "purpose": "SYNTHETIC test fixture for the adjudication consumer. Not real reviewer evidence.",
+    "shape": "mirrors research/v3/data/legacy/endorsements.json — same fields, tiny hand-built corpus",
+    "cases": {
+      "artwork a…": "the MANY-VALID case — three different palettes are all endorsed for one file",
+      "artwork b…": "the CONFLICT case — e4 is one LSB from known-bad k1, and e5 is also in acceptable.json",
+      "artwork d…": "a PARTIAL correction — accent only, per legacy README A6",
+      "artwork e…": "a GRADE-HISTORY conflict — graded acceptable, then strong"
+    }
+  },
+  "entries": [
+    {
+      "contract": "v2-3",
+      "entryId": "e1",
+      "kind": "grade-strong",
+      "artwork": {
+        "imagePath": "fixtures/artwork-a.jpg",
+        "contentSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#101018" },
+          "surface": { "hex": "#1c1c2a" },
+          "foreground": { "hex": "#e8e6f0" },
+          "accent": { "hex": "#c94f3d" }
+        }
+      },
+      "roleSignature": "#101018,#1c1c2a,#e8e6f0,#c94f3d",
+      "standingGrade": "strong",
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": ["strong"],
+        "latestGrade": "strong",
+        "latestRecordedAt": "2026-07-30T10:00:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-30T10:00:00.000Z", "grade": "strong", "batch": "fixture", "label": "one" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-30T10:00:00.000Z", "batch": "fixture", "label": "one", "notes": "first valid palette" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "e2",
+      "kind": "grade-strong",
+      "artwork": {
+        "imagePath": "fixtures/artwork-a.jpg",
+        "contentSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#201810" },
+          "surface": { "hex": "#2c2418" },
+          "foreground": { "hex": "#f0eee8" },
+          "accent": { "hex": "#3d7fc9" }
+        }
+      },
+      "roleSignature": "#201810,#2c2418,#f0eee8,#3d7fc9",
+      "standingGrade": "strong",
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": ["strong"],
+        "latestGrade": "strong",
+        "latestRecordedAt": "2026-07-30T11:00:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-30T11:00:00.000Z", "grade": "strong", "batch": "fixture", "label": "two" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-30T11:00:00.000Z", "batch": "fixture", "label": "two", "notes": "a second, different, equally valid palette" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "e3",
+      "kind": "correction-endorsed-sample",
+      "artwork": {
+        "imagePath": "fixtures/artwork-a.jpg",
+        "contentSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "roles-only",
+        "roles": {
+          "background": { "hex": "#0a0a0a" },
+          "surface": { "hex": "#181818" },
+          "foreground": { "hex": "#fafafa" },
+          "accent": { "hex": "#7fc93d" }
+        }
+      },
+      "roleSignature": "#0a0a0a,#181818,#fafafa,#7fc93d",
+      "standingGrade": null,
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": [],
+        "latestGrade": null,
+        "latestRecordedAt": "2026-07-30T12:00:00.000Z",
+        "gradeHistory": []
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-30T12:00:00.000Z", "batch": "fixture", "label": null, "notes": "a third palette the reviewer built by hand" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "e4",
+      "kind": "grade-strong",
+      "artwork": {
+        "imagePath": "fixtures/artwork-b.jpg",
+        "contentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#313131" },
+          "surface": { "hex": "#414141" },
+          "foreground": { "hex": "#f1f1f1" },
+          "accent": { "hex": "#a13131" }
+        }
+      },
+      "roleSignature": "#313131,#414141,#f1f1f1,#a13131",
+      "standingGrade": "strong",
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": ["strong"],
+        "latestGrade": "strong",
+        "latestRecordedAt": "2026-07-31T09:00:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-31T09:00:00.000Z", "grade": "strong", "batch": "fixture", "label": "near" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-31T09:00:00.000Z", "batch": "fixture", "label": "near", "notes": "one LSB per channel away from a palette the same reviewer called weak-fallback" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "e5",
+      "kind": "grade-strong",
+      "artwork": {
+        "imagePath": "fixtures/artwork-b.jpg",
+        "contentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#123456" },
+          "surface": { "hex": "#234567" },
+          "foreground": { "hex": "#eeeeee" },
+          "accent": { "hex": "#ff8800" }
+        }
+      },
+      "roleSignature": "#123456,#234567,#eeeeee,#ff8800",
+      "standingGrade": "strong",
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": ["strong"],
+        "latestGrade": "strong",
+        "latestRecordedAt": "2026-07-31T10:00:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-31T10:00:00.000Z", "grade": "strong", "batch": "fixture", "label": "overlap" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-31T10:00:00.000Z", "batch": "fixture", "label": "overlap", "notes": "the same palette also sits in acceptable.json" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "e6",
+      "kind": "correction-endorsed-sample",
+      "artwork": {
+        "imagePath": "fixtures/artwork-d.jpg",
+        "contentSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "rendition": { "format": "jpeg", "width": 300, "height": 300 }
+      },
+      "palette": {
+        "completeness": "partial",
+        "roles": {
+          "accent": { "hex": "#12ab34" }
+        }
+      },
+      "roleSignature": "-,-,-,#12ab34",
+      "standingGrade": null,
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": [],
+        "latestGrade": null,
+        "latestRecordedAt": "2026-08-01T08:00:00.000Z",
+        "gradeHistory": []
+      },
+      "evidence": [
+        { "recordedAt": "2026-08-01T08:00:00.000Z", "batch": "fixture", "label": null, "notes": "the reviewer set only the accent" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "e7",
+      "kind": "grade-strong",
+      "artwork": {
+        "imagePath": "fixtures/artwork-e.jpg",
+        "contentSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#222222" },
+          "surface": { "hex": "#333333" },
+          "foreground": { "hex": "#eeeeee" },
+          "accent": { "hex": "#00aaff" }
+        }
+      },
+      "roleSignature": "#222222,#333333,#eeeeee,#00aaff",
+      "standingGrade": "strong",
+      "contested": false,
+      "resolvedByRecency": true,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": ["acceptable", "strong"],
+        "latestGrade": "strong",
+        "latestRecordedAt": "2026-08-02T09:00:00.000Z",
+        "resolvedByRecency": true,
+        "supersededByLaterGrade": false,
+        "gradeHistory": [
+          { "recordedAt": "2026-07-28T09:00:00.000Z", "grade": "acceptable", "batch": "fixture", "label": "early" },
+          { "recordedAt": "2026-08-02T09:00:00.000Z", "grade": "strong", "batch": "fixture", "label": "late" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-28T09:00:00.000Z", "batch": "fixture", "label": "early", "notes": "tolerable" },
+        { "recordedAt": "2026-08-02T09:00:00.000Z", "batch": "fixture", "label": "late", "notes": "actually this one is good" }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,32 @@
 node_modules
+/00/
+/01/
+/02/
+/03/
+/04/
+/05/
+/06/
+/07/
+/08/
+/09/
+/0a/
+/0b/
+/0c/
+/0d/
+/0e/
+/0f/
+/10/
+/11/
+/12/
+/13/
+/14/
+# Fresh-shard import drill, 2026-08-04 (loose end A11). Shard 15/ arrived
+# untracked AND unignored: this list is a per-directory enumeration, and the
+# `*.jpg` rule below does not catch it because sharded files carry no extension.
+# 378 files / 34.6 MB were one `git add -A` away from the history. Corpus shards
+# are never committed; a new shard must be added here on arrival.
+/15/
+/music-artworks/
 *.jpg
 *.png
 *.avif

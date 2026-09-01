@@ -1,0 +1,12 @@
+[cjk] queue=7 already_done=0 out=/Users/Flo/GitHub/palette/research/v3/data/sam/sam-cjk-probe-7.jsonl
+[cjk] prompts=['chinese characters', 'kanji', 'words'] score_threshold=0.3 probe_set=0b0a2f5f1ae0aaa1
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 2024.28it/s]
+[cjk] model loaded in 0.2s
+[cjk] 1/7 10/ab67616d0000b27300100a3e9c764acf01c16db8 640x640 n=15 cjk=0.393 kanji=0.367 words=0.000 1.91s
+[cjk] 2/7 03/ab67616d0000b2730003f2b6590090abe420d104.jpg 640x640 n=2 cjk=0.395 kanji=0.000 words=0.000 1.30s
+[cjk] 3/7 08/ab67616d0000b2730008f7b7f01d9149dbe92fa0 640x640 n=24 cjk=0.472 kanji=0.605 words=0.496 1.33s
+[cjk] 4/7 10/ab67616d00001e0200106c3252a4c133c0abde36 300x300 n=9 cjk=0.377 kanji=0.642 words=0.587 1.29s
+[cjk] 5/7 07/ab67616d0000b2730007960724fb77c8041c6c13 640x640 n=2 cjk=0.449 kanji=0.308 words=0.000 1.29s
+[cjk] 6/7 10/ab67616d0000b27300103a3729bf589e0dc913ab 640x640 n=0 cjk=0.000 kanji=0.000 words=0.000 1.29s
+[cjk] 7/7 images/nobs.jpg 1200x1200 n=0 cjk=0.000 kanji=0.000 words=0.000 1.29s
+[cjk] done processed=7 failed=0 elapsed=12.2s

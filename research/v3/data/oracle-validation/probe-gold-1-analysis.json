@@ -1,0 +1,1053 @@
+{
+	"generatedAt": "2026-08-03T14:24:03.723Z",
+	"warehousePath": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"probeBatchId": "oracle-probe-gold-1",
+	"directBatchId": "oracle-premise-disambiguation-1",
+	"derivation": {
+		"path": "/Users/Flo/GitHub/palette/research/v3/oracle/premise/prompts/derivation.group-a.probes.v1.json",
+		"sha256": "da67d5ebf0aaab0c593f8fb8e040192e0e688f9dccfcc9bb2fe6b2af391a2fc5",
+		"schemaVersion": "group-a.probes.v1"
+	},
+	"scoping": [
+		"CLEAN ON THE RULES: the reviewer answered all 180 probes before reading the derivation table, so no answer was chosen to steer a tag. This is the condition use (b) needs.",
+		"MILD ANCHORING CAVEAT, RECORDED: the reviewer browsed /oracle-review earlier the same day, which displays their own direct answers for these same 30 artworks. The probe round itself shows none of them, but the two sittings were not separated. Any agreement measured here is therefore an upper bound on what two genuinely independent sittings would give.",
+		"REVIEWER'S OWN REPORT, after answering: \"these questions are so ambiguous when looking at the diverse artworks\", with a worry that some answers were incorrect. The unsure answers and the tension flags are the machinery that is supposed to carry exactly that; whether it did is measured under `ambiguitySurfaced`, not assumed.",
+		"NO MODEL IS INVOLVED. Nothing here is compared against any VLM probe answers; none exist yet, and when they do they must not be read before this analysis is committed."
+	],
+	"counts": {
+		"artworks": 30,
+		"probeAnswers": 180,
+		"expectedProbeAnswers": 180,
+		"comparable": 30,
+		"missingProbeAnswers": 0,
+		"missingDirectAnswers": 0
+	},
+	"skipped": {
+		"probe": {
+			"otherBatch": 310,
+			"machineAuthored": 0,
+			"retracted": 0,
+			"superseded": 0,
+			"nonString": 0
+		},
+		"direct": {
+			"otherBatch": 458,
+			"machineAuthored": 0,
+			"retracted": 0,
+			"superseded": 2,
+			"nonString": 0
+		}
+	},
+	"confusion": {
+		"flat_field": {
+			"flat_field": 2
+		},
+		"multiple_distinct_fields": {
+			"multiple_distinct_fields": 4,
+			"pattern_or_texture": 3,
+			"flat_field": 4,
+			"none_discernible": 1,
+			"shaded_field": 1
+		},
+		"shaded_field": {
+			"shaded_field": 6,
+			"flat_field": 2,
+			"multiple_distinct_fields": 1
+		},
+		"underdetermined": {
+			"pattern_or_texture": 1,
+			"flat_field": 3
+		},
+		"pattern_or_texture": {
+			"pattern_or_texture": 1,
+			"shaded_field": 1
+		}
+	},
+	"agreement": {
+		"exact": {
+			"n": 30,
+			"agreed": 13,
+			"rate": 0.4333
+		},
+		"binary": {
+			"n": 20,
+			"agreed": 16,
+			"rate": 0.8,
+			"unmappable": 10
+		},
+		"noiseFloor": 0.63
+	},
+	"perProbe": [
+		{
+			"probe": "bg_visible",
+			"answered": 30,
+			"yes": 30,
+			"no": 0,
+			"unsure": 0,
+			"unsureRate": 0
+		},
+		{
+			"probe": "one_colour",
+			"answered": 30,
+			"yes": 6,
+			"no": 24,
+			"unsure": 0,
+			"unsureRate": 0
+		},
+		{
+			"probe": "continuous_change",
+			"answered": 30,
+			"yes": 13,
+			"no": 16,
+			"unsure": 1,
+			"unsureRate": 0.0333
+		},
+		{
+			"probe": "separate_areas",
+			"answered": 30,
+			"yes": 19,
+			"no": 11,
+			"unsure": 0,
+			"unsureRate": 0
+		},
+		{
+			"probe": "motif_or_material",
+			"answered": 30,
+			"yes": 10,
+			"no": 20,
+			"unsure": 0,
+			"unsureRate": 0
+		},
+		{
+			"probe": "depicted_place",
+			"answered": 30,
+			"yes": 4,
+			"no": 26,
+			"unsure": 0,
+			"unsureRate": 0
+		}
+	],
+	"dispositions": {
+		"derived": 26,
+		"contradiction_uniformity": 4
+	},
+	"tensions": {
+		"areas_vs_material": 6,
+		"continuity_vs_areas": 6,
+		"continuity_vs_place": 2,
+		"areas_vs_place": 1,
+		"material_vs_place": 1,
+		"continuity_vs_material": 1
+	},
+	"underdetermined": {
+		"count": 4,
+		"byDisposition": {
+			"contradiction_uniformity": 4
+		}
+	},
+	"pattern": {
+		"byDirectTag": {
+			"flat_field": {
+				"n": 11,
+				"agreed": 2,
+				"rate": 0.1818
+			},
+			"multiple_distinct_fields": {
+				"n": 5,
+				"agreed": 4,
+				"rate": 0.8
+			},
+			"shaded_field": {
+				"n": 8,
+				"agreed": 6,
+				"rate": 0.75
+			},
+			"pattern_or_texture": {
+				"n": 5,
+				"agreed": 1,
+				"rate": 0.2
+			},
+			"none_discernible": {
+				"n": 1,
+				"agreed": 0,
+				"rate": 0
+			}
+		},
+		"byDerivedTag": {
+			"flat_field": {
+				"n": 2,
+				"agreed": 2,
+				"rate": 1
+			},
+			"multiple_distinct_fields": {
+				"n": 13,
+				"agreed": 4,
+				"rate": 0.3077
+			},
+			"shaded_field": {
+				"n": 9,
+				"agreed": 6,
+				"rate": 0.6667
+			},
+			"underdetermined": {
+				"n": 4,
+				"agreed": 0,
+				"rate": 0
+			},
+			"pattern_or_texture": {
+				"n": 2,
+				"agreed": 1,
+				"rate": 0.5
+			}
+		},
+		"byStratum": {
+			"large_>640": {
+				"n": 2,
+				"agreed": 2,
+				"rate": 1
+			},
+			"thumbnail_<=320": {
+				"n": 7,
+				"agreed": 3,
+				"rate": 0.4286
+			},
+			"standard_<=640": {
+				"n": 21,
+				"agreed": 8,
+				"rate": 0.381
+			}
+		}
+	},
+	"ambiguitySurfaced": {
+		"unsureAnswers": 1,
+		"unsureUsageRate": 0.0056,
+		"artworksWithAnyUnsure": 1,
+		"artworksWithAnyTension": 14,
+		"artworksWithNeither": 15,
+		"agreeing": {
+			"n": 13,
+			"meanUnsure": 0,
+			"withTension": 6,
+			"underdetermined": 0
+		},
+		"disagreeing": {
+			"n": 17,
+			"meanUnsure": 0.059,
+			"withTension": 8,
+			"underdetermined": 4
+		},
+		"reading": "The UNSURE CHANNEL WENT ESSENTIALLY UNUSED: 1 of 180 answers (1%). The reviewer reported the questions as ambiguous and then almost never said so through the answer built for it. Two readings, and this round cannot separate them: either each probe really is answerable on its own even when the six-way question is not — which is the decomposition's whole hypothesis — or the escape hatch is under-used and the ambiguity is being forced into a yes or a no. Nothing below rests on the unsure counts. YES, through the tensions and the underdetermined tags — not through unsure. 71% of the disagreeing artworks fired a tension or landed underdetermined, against 46% of the agreeing ones. So where the two instruments part company, the derivation is usually already saying that something about the artwork does not resolve — the disagreement is visible from inside the instrument."
+	},
+	"perArtwork": [
+		{
+			"imageId": "vvbrown.jpg",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"stratum": "large_>640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "yes",
+				"continuous_change": "no",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "yynnnn",
+			"unsureCount": 0,
+			"derivedGroundType": "flat_field",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": true,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			],
+			"directGroundType": "multiple_distinct_fields",
+			"agrees": true,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynyynn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			],
+			"directGroundType": "shaded_field",
+			"agrees": true,
+			"derivedBinary": "gradient",
+			"directBinary": "gradient",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "meteora.jpg",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnynn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "multiple_distinct_fields",
+			"agrees": true,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnynn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "multiple_distinct_fields",
+			"agrees": true,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			],
+			"directGroundType": "pattern_or_texture",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": null,
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynyynn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": "gradient",
+			"directBinary": "flat",
+			"binaryAgrees": false
+		},
+		{
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "yes"
+			},
+			"probeVector": "ynyyny",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			],
+			"directGroundType": "multiple_distinct_fields",
+			"agrees": false,
+			"derivedBinary": "gradient",
+			"directBinary": "flat",
+			"binaryAgrees": false
+		},
+		{
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "yes",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "yyynyn",
+			"unsureCount": 0,
+			"derivedGroundType": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": [],
+			"directGroundType": "pattern_or_texture",
+			"agrees": false,
+			"derivedBinary": null,
+			"directBinary": null,
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "unsure",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynuynn",
+			"unsureCount": 1,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "no",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnnyn",
+			"unsureCount": 0,
+			"derivedGroundType": "pattern_or_texture",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "pattern_or_texture",
+			"agrees": true,
+			"derivedBinary": null,
+			"directBinary": null,
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "yes"
+			},
+			"probeVector": "ynnyny",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			],
+			"directGroundType": "multiple_distinct_fields",
+			"agrees": true,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynyynn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			],
+			"directGroundType": "shaded_field",
+			"agrees": true,
+			"derivedBinary": "gradient",
+			"directBinary": "gradient",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "placebo.jpg",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"stratum": "large_>640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynynnn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "shaded_field",
+			"agrees": true,
+			"derivedBinary": "gradient",
+			"directBinary": "gradient",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "yes",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "yyynnn",
+			"unsureCount": 0,
+			"derivedGroundType": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": null,
+			"directBinary": "flat",
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			],
+			"directGroundType": "pattern_or_texture",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": null,
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynynnn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "shaded_field",
+			"agrees": true,
+			"derivedBinary": "gradient",
+			"directBinary": "gradient",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"stratum": "thumbnail_<=320",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnynn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnynn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "none_discernible",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": null,
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			],
+			"directGroundType": "pattern_or_texture",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": null,
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "yes",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "yyynnn",
+			"unsureCount": 0,
+			"derivedGroundType": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": null,
+			"directBinary": "flat",
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "muse.jpg",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "yes"
+			},
+			"probeVector": "ynyyny",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			],
+			"directGroundType": "shaded_field",
+			"agrees": true,
+			"derivedBinary": "gradient",
+			"directBinary": "gradient",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "yes",
+				"continuous_change": "no",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "yynnnn",
+			"unsureCount": 0,
+			"derivedGroundType": "flat_field",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": true,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "yes",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "yyynnn",
+			"unsureCount": 0,
+			"derivedGroundType": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": null,
+			"directBinary": "flat",
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "no",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynynnn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": "gradient",
+			"directBinary": "flat",
+			"binaryAgrees": false
+		},
+		{
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			],
+			"directGroundType": "shaded_field",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": "gradient",
+			"binaryAgrees": false
+		},
+		{
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "no",
+				"motif_or_material": "yes",
+				"depicted_place": "yes"
+			},
+			"probeVector": "ynnnyy",
+			"unsureCount": 0,
+			"derivedGroundType": "pattern_or_texture",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			],
+			"directGroundType": "shaded_field",
+			"agrees": false,
+			"derivedBinary": null,
+			"directBinary": "gradient",
+			"binaryAgrees": null
+		},
+		{
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "no",
+				"separate_areas": "yes",
+				"motif_or_material": "no",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynnynn",
+			"unsureCount": 0,
+			"derivedGroundType": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tensions": [],
+			"directGroundType": "flat_field",
+			"agrees": false,
+			"derivedBinary": "flat",
+			"directBinary": "flat",
+			"binaryAgrees": true
+		},
+		{
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"stratum": "standard_<=640",
+			"probeAnswers": {
+				"bg_visible": "yes",
+				"one_colour": "no",
+				"continuous_change": "yes",
+				"separate_areas": "yes",
+				"motif_or_material": "yes",
+				"depicted_place": "no"
+			},
+			"probeVector": "ynyyyn",
+			"unsureCount": 0,
+			"derivedGroundType": "shaded_field",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			],
+			"directGroundType": "shaded_field",
+			"agrees": true,
+			"derivedBinary": "gradient",
+			"directBinary": "gradient",
+			"binaryAgrees": true
+		}
+	],
+	"summaryLines": [
+		"Human probe round — oracle-probe-gold-1 vs oracle-premise-disambiguation-1",
+		"Same reviewer, same 30 artworks, two instruments. No model is involved.",
+		"",
+		"180 of 180 probe answers · 30 artworks comparable · derivation group-a.probes.v1 (da67d5ebf0aa…, 729 rows, lookup only)",
+		"",
+		"CONFUSION MATRIX — rows: tag derived from the six probes · columns: the direct six-way answer",
+		"  derived \\ direct          flat_field multiple_d none_disce pattern_or shaded_fie underdeter   total",
+		"  flat_field                         2          0          0          0          0          0       2",
+		"  multiple_distinct_fields           4          4          1          3          1          0      13",
+		"  none_discernible                   0          0          0          0          0          0       0",
+		"  pattern_or_texture                 0          0          0          1          1          0       2",
+		"  shaded_field                       2          1          0          0          6          0       9",
+		"  underdetermined                    3          0          0          1          0          0       4",
+		"  total                             11          5          1          5          8          0",
+		"",
+		"AGREEMENT, against the reviewer's own 63% repeat-consistency floor:",
+		"  exact six-way   13 of 30 (43%)",
+		"  binary-mapped   16 of 20 (80%)  ·  10 artworks map to no prediction on either side",
+		"  The floor is 63%. Exact agreement sits 20 points below it. Below the floor, the two instruments disagree more than the reviewer disagrees with themselves — which is itself the finding.",
+		"",
+		"PER PROBE — how often the reviewer could not tell:",
+		"  bg_visible         yes 30 · no  0 · unsure  0 of 30 (0%)",
+		"  one_colour         yes  6 · no 24 · unsure  0 of 30 (0%)",
+		"  continuous_change  yes 13 · no 16 · unsure  1 of 30 (3%)",
+		"  separate_areas     yes 19 · no 11 · unsure  0 of 30 (0%)",
+		"  motif_or_material  yes 10 · no 20 · unsure  0 of 30 (0%)",
+		"  depicted_place     yes  4 · no 26 · unsure  0 of 30 (0%)",
+		"",
+		"WHAT THE DERIVATION DID WITH THEM:",
+		"  derived                    26",
+		"  contradiction_uniformity   4",
+		"  underdetermined tags        4 of 30",
+		"  tension flags fired:",
+		"    areas_vs_material        6",
+		"    continuity_vs_areas      6",
+		"    continuity_vs_place      2",
+		"    areas_vs_place           1",
+		"    material_vs_place        1",
+		"    continuity_vs_material   1",
+		"",
+		"WHERE THE DISAGREEMENT SITS (the pattern, which is the part that carries information):",
+		"  direct said flat_field                 2/11 agreed (18%)",
+		"  direct said shaded_field               6/8 agreed (75%)",
+		"  direct said multiple_distinct_fields   4/5 agreed (80%)",
+		"  direct said pattern_or_texture         1/5 agreed (20%)",
+		"  direct said none_discernible           0/1 agreed (0%)",
+		"",
+		"DID THE REPORTED AMBIGUITY SURFACE IN THE INSTRUMENT?",
+		"  agreeing artworks    n=13 · 0 unsure/artwork · 6 with a tension · 0 underdetermined",
+		"  disagreeing artworks n=17 · 0.059 unsure/artwork · 8 with a tension · 4 underdetermined",
+		"  The UNSURE CHANNEL WENT ESSENTIALLY UNUSED: 1 of 180 answers (1%). The reviewer reported the questions as ambiguous and then almost never said so through the answer built for it. Two readings, and this round cannot separate them: either each probe really is answerable on its own even when the six-way question is not — which is the decomposition's whole hypothesis — or the escape hatch is under-used and the ambiguity is being forced into a yes or a no. Nothing below rests on the unsure counts. YES, through the tensions and the underdetermined tags — not through unsure. 71% of the disagreeing artworks fired a tension or landed underdetermined, against 46% of the agreeing ones. So where the two instruments part company, the derivation is usually already saying that something about the artwork does not resolve — the disagreement is visible from inside the instrument.",
+		"",
+		"SCOPING:",
+		"  - CLEAN ON THE RULES: the reviewer answered all 180 probes before reading the derivation table, so no answer was chosen to steer a tag. This is the condition use (b) needs.",
+		"  - MILD ANCHORING CAVEAT, RECORDED: the reviewer browsed /oracle-review earlier the same day, which displays their own direct answers for these same 30 artworks. The probe round itself shows none of them, but the two sittings were not separated. Any agreement measured here is therefore an upper bound on what two genuinely independent sittings would give.",
+		"  - REVIEWER'S OWN REPORT, after answering: \"these questions are so ambiguous when looking at the diverse artworks\", with a worry that some answers were incorrect. The unsure answers and the tension flags are the machinery that is supposed to carry exactly that; whether it did is measured under `ambiguitySurfaced`, not assumed.",
+		"  - NO MODEL IS INVOLVED. Nothing here is compared against any VLM probe answers; none exist yet, and when they do they must not be read before this analysis is committed."
+	]
+}

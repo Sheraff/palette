@@ -1,0 +1,25 @@
+# Ten deliberately diverse smoke images, picked by eye from a random contact sheet of
+# 18 premise eval-set images + 18 music-artworks images (2026-08-03).
+# Mix: text-heavy, portrait, abstract, thumbnails, AVIF/PNG/JPEG, one non-square banner,
+# one file whose name lies about its resolution (§7.4.1 trap 1).
+#
+# text-heavy 300px thumbnail, karaoke cover, several logos and a badge
+06/ab67616d00001e0200066a61bbcbeadd632f7f38
+# person on steps at night, parental-advisory sticker bottom-right, 640
+0d/ab67616d0000b273000d8049603d6ab7f5d759bb
+# pastel gradient + thin triangle outline, 300px — almost pure "stuff"
+01/ab67616d00001e0200018a1e2daf68a53f504cb9.jpg
+# abstract paint splatter, no text, 640
+09/ab67616d0000b27300097e55f9a93ceb03afa4b2
+# heavy wood-grain typography with a small corner sticker, 640
+03/ab67616d0000b2730003580bd2766859c4d81e13.jpg
+# Adele close-up portrait, face fills the frame, thin title text, 700 JPEG
+music-artworks/1/e/d/1edd7735b74e156ef1a7991bf4a8093e.jpg
+# five-person band photo at 147x147 AVIF — the extreme small end
+music-artworks/b/f/8/bf8c64bda873640a50bc5986ed34ac73_147x147.avif
+# typography-only wide banner 400x155 PNG — non-square stress case
+music-artworks/c/c/5/cc526851893a18c26dc536dc35643e62.png
+# abstract illustration, name says 1082x1082, header says 640x565 (trap 1)
+music-artworks/5/a/2/5a2ed3e7b225548114942aeea99b4b55_1082x1082.avif
+# dense cartoon collage with big display type, 483x483 AVIF
+music-artworks/3/9/a/39a033512ffcae11035d32c1d0de9515_483x483.avif

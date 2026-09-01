@@ -1,0 +1,25 @@
+{
+	"stage": "determinism-cross-process-compare",
+	"at": "2026-08-02T21:22:41.526Z",
+	"tags": [
+		"proc1",
+		"proc2"
+	],
+	"identical": true,
+	"a": {
+		"A": "ea39a8f2288892acc7c4ec65cc01af73c7585d090e504e848fd0f86f8f2d96d4",
+		"B": "694c7f5b7c4579325ee9870d289c89786a91cb6cbb749765b564ce72f1ba2d6e"
+	},
+	"b": {
+		"A": "ea39a8f2288892acc7c4ec65cc01af73c7585d090e504e848fd0f86f8f2d96d4",
+		"B": "694c7f5b7c4579325ee9870d289c89786a91cb6cbb749765b564ce72f1ba2d6e"
+	},
+	"texts_a": {
+		"A": "{\"ground\": \"shaded_field\", \"shading\": \"radial_or_vignette\", \"texture\": \"one_textured_material\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
+		"B": "{\"enclosure\": \"none\", \"texture\": \"one_textured_material\", \"background\": \"shaded_field\", \"fade\": \"radial_or_vignette\", \"certainty\": \"high\", \"note\": \"\"}"
+	},
+	"texts_b": {
+		"A": "{\"ground\": \"shaded_field\", \"shading\": \"radial_or_vignette\", \"texture\": \"one_textured_material\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
+		"B": "{\"enclosure\": \"none\", \"texture\": \"one_textured_material\", \"background\": \"shaded_field\", \"fade\": \"radial_or_vignette\", \"certainty\": \"high\", \"note\": \"\"}"
+	}
+}

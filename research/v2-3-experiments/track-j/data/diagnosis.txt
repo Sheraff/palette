@@ -1,0 +1,245 @@
+
+=== 07/ab67616d0000b2730007cc8b341c11227aa7b461   want accent #f06d13
+winner: #5d856b #99bece fg=#fbfbfb ac=#242426 grad
+winner familyRoles: {"background":"family-6352","surface":"family-8577","foreground":"family-10804","accent":"family-2865"}
+obligations: family-10804@p0, family-2865@p1, family-7783@p2
+
+-- nearest family to #f06d13: family-7783 proto-distance 0.0110
+   L=0.690 chroma=0.174 pop=0.167%
+   markSupport=0.716 components=11 observed=11 marks=9
+   (d) in signature lane: YES (rank 14/16)
+   (d) source representatives: #f66d1d #ee7326 #ef7226
+   (a) identity obligation: YES @p2
+   role classifier on the winning field: accent/decisive-accent fg=0.556 ac=0.676
+
+-- (d) scored treatments using family-7783 as accent: 276 of 1500
+   best such treatment ranks 20 of 1500 by relationUtility
+   winner : #5d856b #99bece fg=#fbfbfb ac=#242426 grad
+      rel=0.8807 qual=0.8450 idCov=0.714 idGain=0.0357 authGain=0.0000 pareto=true
+      fieldFidelity=0.938 surfaceFidelity=0.701 artworkIdentity=0.876 representativeness=0.884 sourceSupport=0.788 renderedFieldClaim=0.619 foregroundPath=0.847 accentFidelity=0.760 accentPath=1.000 coherence=1.000 economy=0.730
+   wanted : #5d856b #99bece fg=#fbfbfb ac=#ee7326 grad
+      rel=0.8514 qual=0.7976 idCov=0.915 idGain=0.0538 authGain=0.0080 pareto=true
+      fieldFidelity=0.938 surfaceFidelity=0.701 artworkIdentity=0.808 representativeness=0.892 sourceSupport=0.791 renderedFieldClaim=0.619 foregroundPath=0.847 accentFidelity=0.511 accentPath=0.752 coherence=1.000 economy=0.606
+   (c) gap: rel 0.0294  qual 0.0474
+   per-axis deficit (winner - wanted), largest first:
+      accentFidelity         +0.2493
+      accentPath             +0.2479
+      economy                +0.1247
+      artworkIdentity        +0.0673
+      fieldFidelity          +0.0000
+
+   top 6 treatments carrying the wanted accent:
+      #5d856b #99bece fg=#fbfbfb ac=#ee7326 grad rel=0.8514 qual=0.7976 idCov=0.915 pareto=true
+      #52725a #92b9ca fg=#fbfbfb ac=#ee7326 grad rel=0.8461 qual=0.7924 idCov=0.915 pareto=true
+      #4e745b #8daab8 fg=#fbfbfb ac=#f66d1d grad rel=0.8319 qual=0.7782 idCov=0.915 pareto=false
+      #52725a #8ab1c0 fg=#fbfbfb ac=#ee7326 grad rel=0.8298 qual=0.7761 idCov=0.915 pareto=true
+      #5d856b #99bece fg=#242426 ac=#ee7326 grad rel=0.8214 qual=0.7855 idCov=0.558 pareto=false
+      #567661 #87acb5 fg=#fbfbfb ac=#ee7326 grad rel=0.8181 qual=0.7644 idCov=0.915 pareto=false
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-10804, family-2865, family-7783
+
+=== 08/ab67616d00001e0200087b1314ac8e17bc1c6916   want accent #ff4e2a
+winner: #020401 #311f13 fg=#f1e8df ac=#e7a680 grad
+winner familyRoles: {"background":"family-1081","surface":"family-2866","foreground":"family-10363","accent":"family-8621"}
+obligations: family-8621@p0, family-10363@p1, family-7718@p2, family-7362@p3, family-1984@p4
+
+-- nearest family to #ff4e2a: family-7362 proto-distance 0.0222
+   L=0.650 chroma=0.213 pop=0.572%
+   markSupport=0.103 components=50 observed=24 marks=8
+   (d) in signature lane: YES (rank 2/16)
+   (d) source representatives: #f94a2f #f5472e #f64930
+   (a) identity obligation: YES @p3
+   role classifier on the winning field: ambiguous/simultaneous-role-support fg=0.793 ac=0.886
+
+-- (d) scored treatments using family-7362 as accent: 298 of 1500
+   best such treatment ranks 8 of 1500 by relationUtility
+   winner : #020401 #311f13 fg=#f1e8df ac=#e7a680 grad
+      rel=0.9291 qual=0.8598 idCov=0.929 idGain=0.0693 authGain=0.0229 pareto=true
+      fieldFidelity=0.982 surfaceFidelity=0.709 artworkIdentity=0.867 representativeness=0.796 sourceSupport=0.692 renderedFieldClaim=0.626 foregroundPath=1.000 accentFidelity=0.784 accentPath=1.000 coherence=1.000 economy=0.773
+   wanted : #020401 #311f13 fg=#e9a784 ac=#f5472e grad
+      rel=0.8843 qual=0.8429 idCov=0.714 idGain=0.0414 authGain=0.0057 pareto=true
+      fieldFidelity=0.982 surfaceFidelity=0.709 artworkIdentity=0.887 representativeness=0.781 sourceSupport=0.665 renderedFieldClaim=0.626 foregroundPath=0.908 accentFidelity=0.780 accentPath=1.000 coherence=1.000 economy=0.756
+   (c) gap: rel 0.0448  qual 0.0170
+   per-axis deficit (winner - wanted), largest first:
+      foregroundPath         +0.0923
+      sourceSupport          +0.0270
+      economy                +0.0173
+      representativeness     +0.0152
+      accentFidelity         +0.0039
+
+   top 6 treatments carrying the wanted accent:
+      #020401 #311f13 fg=#e9a784 ac=#f5472e grad rel=0.8843 qual=0.8429 idCov=0.714 pareto=true
+      #030502 #2a1804 fg=#e9a784 ac=#f5472e grad rel=0.8837 qual=0.8422 idCov=0.714 pareto=true
+      #020401 #311f13 fg=#f1e8df ac=#f94a2f grad rel=0.8820 qual=0.8513 idCov=0.500 pareto=true
+      #030502 #2a1804 fg=#f1e8df ac=#f94a2f grad rel=0.8810 qual=0.8503 idCov=0.500 pareto=false
+      #020401 #1a1007 fg=#e9a784 ac=#f5472e grad rel=0.8627 qual=0.8212 idCov=0.714 pareto=false
+      #030502 #191208 fg=#e9a784 ac=#f5472e grad rel=0.8614 qual=0.8200 idCov=0.714 pareto=false
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-8621, family-10363, family-7718, family-7362, family-1984
+
+=== 11/ab67616d0000b2730011c0148119c34e2b222b02   want accent #c35151
+winner: #0e1317 #2d4a84 fg=#f5f9fa ac=#8d9fc3 grad
+winner familyRoles: {"background":"family-1962","surface":"family-4606","foreground":"family-10782","accent":"family-7694"}
+obligations: family-9921@p0, family-7694@p1, family-5090@p2, family-3349@p3, family-3284@p4
+
+-- nearest family to #c35151: family-6458 proto-distance 0.0117
+   L=0.583 chroma=0.136 pop=0.036%
+   markSupport=0.403 components=10 observed=10 marks=6
+   (d) in signature lane: NO
+   (d) source representatives: #c35151 #bd5552 #bf5652
+   (a) identity obligation: NO
+   role classifier on the winning field: ambiguous/close-role-evidence fg=0.439 ac=0.472
+
+-- (d) scored treatments using family-6458 as accent: 0 of 1500
+   => the accent shortlist never carried it. This is a candidacy/shortlist failure, not a ranking one.
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-9921, family-7694, family-5090, family-3349, family-3284
+
+=== 03/ab67616d00001e020003e50500c5d762da89643a.jpg   want accent #c8a13c
+winner: #050a06 #21331b fg=#cfd4c0 ac=#51613a flat
+winner familyRoles: {"background":"family-1522","surface":"family-3286","foreground":"family-9460","accent":"family-5030"}
+obligations: family-5030@p0, family-2404@p1, family-640@p2, family-7256@p3
+
+-- nearest family to #c8a13c: family-7741 proto-distance 0.0444
+   L=0.702 chroma=0.140 pop=0.031%
+   markSupport=0.000 components=20 observed=20 marks=0
+   (d) in signature lane: NO
+   (d) source representatives: #d58814 #d58e22 #d38f22
+   (a) identity obligation: NO
+   role classifier on the winning field: ambiguous/insufficient-role-evidence fg=0.514 ac=0.469
+
+-- (d) scored treatments using family-7741 as accent: 0 of 1500
+   => the accent shortlist never carried it. This is a candidacy/shortlist failure, not a ranking one.
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-5030, family-2404, family-640, family-7256
+
+=== 04/ab67616d00001e020004ccf0ae91364130886c02   want accent #b5652a
+winner: #4d8a15 #64a821 fg=#d1e4d0 ac=#35710f flat
+winner familyRoles: {"background":"family-6333","surface":"family-7195","foreground":"family-9901","accent":"family-5451"}
+obligations: family-5451@p0, family-3707@p1, family-6333@p2, family-7195@p3
+
+-- nearest family to #b5652a: family-6858 proto-distance 0.0241
+   L=0.612 chroma=0.123 pop=0.011%
+   markSupport=0.000 components=3 observed=3 marks=0
+   (d) in signature lane: YES (rank 15/16)
+   (d) source representatives: #be6b35 #bb6e32
+   (a) identity obligation: NO
+   role classifier on the winning field: ambiguous/insufficient-role-evidence fg=0.318 ac=0.395
+
+-- (d) scored treatments using family-6858 as accent: 13 of 1500
+   best such treatment ranks 897 of 1500 by relationUtility
+   winner : #4d8a15 #64a821 fg=#d1e4d0 ac=#35710f flat
+      rel=0.7225 qual=0.6939 idCov=0.571 idGain=0.0286 authGain=0.0000 pareto=true
+      fieldFidelity=0.712 surfaceFidelity=0.667 artworkIdentity=0.756 representativeness=0.843 sourceSupport=0.689 renderedFieldClaim=0.000 foregroundPath=0.834 accentFidelity=0.734 accentPath=0.632 coherence=0.937 economy=0.700
+   wanted : #64a821 #35710f fg=#be6b35 ac=#be6b35 flat
+      rel=0.5958 qual=0.5744 idCov=0.429 idGain=0.0214 authGain=0.0000 pareto=false
+      fieldFidelity=0.647 surfaceFidelity=0.717 artworkIdentity=0.557 representativeness=0.759 sourceSupport=0.648 renderedFieldClaim=0.000 foregroundPath=0.573 accentFidelity=0.353 accentPath=0.573 coherence=0.880 economy=0.535
+   (c) gap: rel 0.1267  qual 0.1195
+   per-axis deficit (winner - wanted), largest first:
+      accentFidelity         +0.3811
+      foregroundPath         +0.2608
+      artworkIdentity        +0.1989
+      economy                +0.1656
+      representativeness     +0.0842
+
+   top 6 treatments carrying the wanted accent:
+      #64a821 #35710f fg=#be6b35 ac=#be6b35 flat rel=0.5958 qual=0.5744 idCov=0.429 pareto=false
+      #60a912 #38750e fg=#be6b35 ac=#be6b35 flat rel=0.5949 qual=0.5735 idCov=0.429 pareto=false
+      #60a912 #60a912 fg=#be6b35 ac=#be6b35 flat rel=0.5251 qual=0.5251 idCov=0.000 pareto=false
+      #64a821 #64a821 fg=#be6b35 ac=#be6b35 flat rel=0.5245 qual=0.5245 idCov=0.000 pareto=false
+      #4e8b14 #60a912 fg=#be6b35 ac=#be6b35 flat rel=0.5156 qual=0.5156 idCov=0.000 pareto=false
+      #4d8a15 #64a821 fg=#be6b35 ac=#be6b35 flat rel=0.5154 qual=0.5154 idCov=0.000 pareto=false
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-5451, family-3707, family-6333, family-7195
+
+=== 05/ab67616d0000b2730005230fae1822525e5a5ff6   want accent #ee231f
+winner: #e8ebf0 #d1d4d9 fg=#121117 ac=#ee231f grad
+winner familyRoles: {"background":"family-10341","surface":"family-9459","foreground":"family-1983","accent":"family-6942"}
+obligations: family-6834@p0, family-1983@p1, family-6942@p2, family-6370@p3
+
+-- nearest family to #ee231f: family-6942 proto-distance 0.0017
+   L=0.609 chroma=0.234 pop=0.112%
+   markSupport=0.819 components=12 observed=12 marks=12
+   (d) in signature lane: YES (rank 10/16)
+   (d) source representatives: #f62020 #ee231f #ef221e
+   (a) identity obligation: YES @p2
+   role classifier on the winning field: ambiguous/close-role-evidence fg=0.553 ac=0.644
+
+-- (d) scored treatments using family-6942 as accent: 275 of 1500
+   best such treatment ranks 4 of 1500 by relationUtility
+   winner : #e8ebf0 #d1d4d9 fg=#121117 ac=#ee231f grad
+      rel=0.8552 qual=0.8202 idCov=0.548 idGain=0.0350 authGain=0.0076 pareto=true
+      fieldFidelity=0.833 surfaceFidelity=0.709 artworkIdentity=0.804 representativeness=0.855 sourceSupport=0.782 renderedFieldClaim=0.695 foregroundPath=0.981 accentFidelity=0.510 accentPath=1.000 coherence=0.946 economy=0.610
+   wanted : #e8ebf0 #d1d4d9 fg=#121117 ac=#ee231f grad
+      rel=0.8552 qual=0.8202 idCov=0.548 idGain=0.0350 authGain=0.0076 pareto=true
+      fieldFidelity=0.833 surfaceFidelity=0.709 artworkIdentity=0.804 representativeness=0.855 sourceSupport=0.782 renderedFieldClaim=0.695 foregroundPath=0.981 accentFidelity=0.510 accentPath=1.000 coherence=0.946 economy=0.610
+   (c) gap: rel 0.0000  qual 0.0000
+   per-axis deficit (winner - wanted), largest first:
+      fieldFidelity          +0.0000
+      surfaceFidelity        +0.0000
+      artworkIdentity        +0.0000
+      representativeness     +0.0000
+      sourceSupport          +0.0000
+
+   top 6 treatments carrying the wanted accent:
+      #e8ebf0 #d1d4d9 fg=#121117 ac=#ee231f grad rel=0.8552 qual=0.8202 idCov=0.548 pareto=true
+      #eff3f6 #d6d7dc fg=#121117 ac=#ee231f grad rel=0.8540 qual=0.8190 idCov=0.548 pareto=true
+      #eff3f6 #d6d7dc fg=#86858b ac=#ee231f grad rel=0.8261 qual=0.7732 idCov=0.905 pareto=false
+      #e8ebf0 #d1d4d9 fg=#86858b ac=#ee231f grad rel=0.8253 qual=0.7724 idCov=0.905 pareto=false
+      #eff3f6 #d6d7dc fg=#212330 ac=#ee231f grad rel=0.8206 qual=0.8035 idCov=0.190 pareto=false
+      #e8ebf0 #d1d4d9 fg=#212330 ac=#ee231f grad rel=0.8205 qual=0.8034 idCov=0.190 pareto=false
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-6834, family-1983, family-6942, family-6370
+
+=== 01/ab67616d00001e0200018a1e2daf68a53f504cb9.jpg   want accent #e8763c
+winner: #f4d3f0 #d3b6c8 fg=#887b8d ac=#c399bd grad
+winner familyRoles: {"background":"family-9942","surface":"family-9060","foreground":"family-6834","accent":"family-8178"}
+obligations: family-9060@p0, family-8178@p1, family-8641@p2, family-7296@p3
+
+-- nearest family to #e8763c: family-7759 proto-distance 0.1101
+   L=0.700 chroma=0.107 pop=0.459%
+   markSupport=0.005 components=57 observed=24 marks=3
+   (d) in signature lane: YES (rank 6/16)
+   (d) source representatives: #da8195 #d68198 #d58299
+   (a) identity obligation: NO
+   role classifier on the winning field: ambiguous/simultaneous-role-support fg=0.717 ac=0.736
+
+-- (d) scored treatments using family-7759 as accent: 49 of 1500
+   best such treatment ranks 200 of 1500 by relationUtility
+   winner : #f4d3f0 #d3b6c8 fg=#887b8d ac=#c399bd grad
+      rel=0.8186 qual=0.7955 idCov=0.286 idGain=0.0231 authGain=0.0089 pareto=true
+      fieldFidelity=0.875 surfaceFidelity=0.659 artworkIdentity=0.803 representativeness=0.847 sourceSupport=0.727 renderedFieldClaim=0.626 foregroundPath=0.794 accentFidelity=0.628 accentPath=1.000 coherence=0.938 economy=0.713
+   wanted : #facef1 #d9b8d7 fg=#d68198 ac=#d68198 grad
+      rel=0.7221 qual=0.7221 idCov=0.000 idGain=0.0000 authGain=0.0000 pareto=false
+      fieldFidelity=0.875 surfaceFidelity=0.659 artworkIdentity=0.597 representativeness=0.829 sourceSupport=0.710 renderedFieldClaim=0.626 foregroundPath=0.717 accentFidelity=0.590 accentPath=0.717 coherence=0.837 economy=0.625
+   (c) gap: rel 0.0965  qual 0.0733
+   per-axis deficit (winner - wanted), largest first:
+      accentPath             +0.2830
+      artworkIdentity        +0.2064
+      coherence              +0.1012
+      economy                +0.0888
+      foregroundPath         +0.0771
+
+   top 6 treatments carrying the wanted accent:
+      #facef1 #d9b8d7 fg=#d68198 ac=#d68198 grad rel=0.7221 qual=0.7221 idCov=0.000 pareto=false
+      #f4d3f0 #d3b6c8 fg=#d68198 ac=#d68198 grad rel=0.7192 qual=0.7192 idCov=0.000 pareto=false
+      #f4d3f0 #ccb0d8 fg=#d68198 ac=#d68198 grad rel=0.6853 qual=0.6853 idCov=0.000 pareto=false
+      #facef1 #ee9ea9 fg=#d68198 ac=#d68198 grad rel=0.6655 qual=0.6584 idCov=0.143 pareto=false
+      #f4d3f0 #d4afb7 fg=#d68198 ac=#d68198 grad rel=0.6620 qual=0.6620 idCov=0.000 pareto=false
+      #efd1eb #efd1eb fg=#d68198 ac=#d68198 flat rel=0.6535 qual=0.6535 idCov=0.000 pareto=false
+
+-- (b) accent shortlist retention quota = 4, obligations get priority retention
+   retainPeakObservableFamilyDirections is exported and exercised by the runtime; obligation ids passed in are
+   family-9060, family-8178, family-8641, family-7296

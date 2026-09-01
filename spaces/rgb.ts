@@ -84,6 +84,31 @@ export const rgbSpace: ColorSpace = {
 
 		return chroma / 1.5
 	},
+	/** [0-360] hue angle in degrees (computed via oklab) */
+	hue(hex) {
+		const r = hex >> 16 & 0xff
+		const g = hex >> 8 & 0xff
+		const b = hex & 0xff
+
+		const sr = rgb2srgbLinearBase(r)
+		const sg = rgb2srgbLinearBase(g)
+		const sb = rgb2srgbLinearBase(b)
+
+		const x = 0.41239079926595934 * sr + 0.357584339383878 * sg + 0.1804807884018343 * sb
+		const y = 0.21263900587151027 * sr + 0.715168678767756 * sg + 0.07219231536073371 * sb
+		const z = 0.01933081871559182 * sr + 0.11919477979462598 * sg + 0.9505321522496607 * sb
+
+		const l0 = Math.cbrt(0.8190224379967030 * x + 0.3619062600528904 * y + -0.1288737815209879 * z)
+		const a0 = Math.cbrt(0.0329836539323885 * x + 0.9292868615863434 * y + 0.0361446663506424 * z)
+		const b0 = Math.cbrt(0.0481771893596242 * x + 0.2642395317527308 * y + 0.6335478284694309 * z)
+
+		const a1 = 1.9779985324311684 * l0 + -2.4285922420485799 * a0 + 0.4505937096174110 * b0
+		const b1 = 0.0259040424655478 * l0 + 0.7827717124575296 * a0 + -0.8086757549230774 * b0
+
+		const isAchromatic = Math.abs(a1) < dε && Math.abs(b1) < dε
+		if (isAchromatic) return 0
+		return (((Math.atan2(b1, a1) * 180) / Math.PI % 360) + 360) % 360
+	},
 	increaseContrast(of: number, against: number, towards: number, desired: number, foreground: boolean) {
 		let contrast = 0
 		let result = of

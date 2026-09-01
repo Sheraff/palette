@@ -1,0 +1,4467 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.10a-literature-vision.v1",
+  "title": "Section 10A literature vision mechanisms",
+  "description": "Typed artifact contracts and mechanism hyperedges for 18 literature-derived vision, decomposition, saliency, and rendering-diagnostic census entries. The fragment records candidate semantic compatibility only and selects no architecture, binding, or runtime pipeline.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.graph.pixel-region-adjacency.v1",
+      "productFocus": "product-flow",
+      "label": "Pixel or region adjacency graph",
+      "description": "A graph whose vertices are source pixels or source-derived regions and whose edges encode declared local adjacency only.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Required adjacency input for hierarchical constrained connectivity."
+      ],
+      "provenanceNotes": [
+        "Vertex construction, neighborhood convention, and stable edge identity must be retained."
+      ]
+    },
+    {
+      "id": "artifact.measurement.edge-dissimilarity.v1",
+      "productFocus": "product-flow",
+      "label": "Adjacency-edge dissimilarities",
+      "description": "Declared local dissimilarity values keyed to stable edges of a pixel or region adjacency graph.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 10 names dissimilarity separately from adjacency and connectivity constraints."
+      ],
+      "provenanceNotes": [
+        "Metric, scale, quantization, and tie behavior remain part of the value contract."
+      ]
+    },
+    {
+      "id": "artifact.configuration.constrained-connectivity-limits.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Constrained-connectivity limits",
+      "description": "The local dissimilarity and global range constraints used to form a constrained-connectivity hierarchy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Both local and global constraints are load-bearing Section 10 inputs."
+      ],
+      "provenanceNotes": [
+        "Units, inclusivity, scale policy, and revision must be explicit."
+      ]
+    },
+    {
+      "id": "artifact.label-map.constrained-connectivity-nested-partitions.v1",
+      "productFocus": "product-flow",
+      "label": "Constrained-connectivity nested partitions",
+      "description": "A hierarchy of nested unlabeled partitions produced under local and global connectivity constraints.",
+      "category": "label-map",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "One permitted representation of the constrained-connectivity hierarchy."
+      ],
+      "provenanceNotes": [
+        "Partition labels are structural identifiers and carry no field, figure, identity, or role semantics."
+      ]
+    },
+    {
+      "id": "artifact.graph.constrained-connectivity-component-tree.v1",
+      "productFocus": "product-flow",
+      "label": "Constrained-connectivity component tree",
+      "description": "A component-tree representation of an unlabeled constrained-connectivity hierarchy.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Alternative representation named alongside nested partitions in Section 10."
+      ],
+      "provenanceNotes": [
+        "Nodes and parentage encode hierarchy only, not semantic ownership."
+      ]
+    },
+    {
+      "id": "artifact.provenance.constrained-connectivity-thresholds.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Constrained-connectivity threshold provenance",
+      "description": "A record linking hierarchy levels and component decisions to the effective local and global thresholds.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Preserves threshold and hierarchy provenance for audit; it is not an inference artifact.",
+      "sourceNotes": [
+        "Threshold provenance is an explicit constrained-connectivity output."
+      ],
+      "provenanceNotes": [
+        "Must identify the graph, dissimilarities, limits, ordering, and implementation revision."
+      ]
+    },
+    {
+      "id": "artifact.graph.ordered-signed-affinities.v1",
+      "productFocus": "product-flow",
+      "label": "Stable ordered signed-affinity graph",
+      "description": "A graph edge stream with stable total ordering and declared attractive or repulsive affinity values.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The sole compact-census input to mutex watershed."
+      ],
+      "provenanceNotes": [
+        "Affinity source, equal-weight ordering, and stable edge IDs must be retained; learned and classical cues remain distinguishable."
+      ]
+    },
+    {
+      "id": "artifact.label-map.mutex-watershed-partition.v1",
+      "productFocus": "product-flow",
+      "label": "Mutex-watershed partition",
+      "description": "One unlabeled graph partition inferred from attractive and repulsive edges under mutex constraints.",
+      "category": "label-map",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 10 specifies one partition without seeds or a partition threshold."
+      ],
+      "provenanceNotes": [
+        "Segment IDs have no field, figure, identity, or UI-role meaning."
+      ]
+    },
+    {
+      "id": "artifact.graph.mutex-watershed-constraints.v1",
+      "productFocus": "product-flow",
+      "label": "Mutex-watershed constraints",
+      "description": "The accepted exclusion relations maintained while constructing a mutex-watershed partition.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Mutex constraints are a distinct compact-census output."
+      ],
+      "provenanceNotes": [
+        "Constraint endpoints must retain stable source-edge identity."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.mutex-watershed-edge-decisions.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Mutex-watershed edge-decision trace",
+      "description": "An ordered diagnostic trace of accepted, rejected, and mutex-blocked edge decisions.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Explains edge-order and tie sensitivity during research; it cannot assign segment semantics.",
+      "sourceNotes": [
+        "Edge-decision trace is an explicit mutex-watershed output."
+      ],
+      "provenanceNotes": [
+        "Must preserve edge order, weights, tie rule, and graph revision."
+      ]
+    },
+    {
+      "id": "artifact.graph.lifted-multicut-base.v1",
+      "productFocus": "product-flow",
+      "label": "Lifted-multicut base graph",
+      "description": "The local graph whose vertices and ordinary edges define the base decomposition domain.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Base graph input named by the lifted-multicut census entry."
+      ],
+      "provenanceNotes": [
+        "Vertex, edge, and local-cost identity must remain stable."
+      ]
+    },
+    {
+      "id": "artifact.graph.lifted-multicut-nonlocal-edges.v1",
+      "productFocus": "product-flow",
+      "label": "Lifted nonlocal edges",
+      "description": "Long-range graph edges carrying declared must-join or must-cut evidence over a base graph.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Lifted edges are distinct from the local base graph."
+      ],
+      "provenanceNotes": [
+        "Every edge must retain endpoints, relation source, and confidence or cost provenance without claiming semantic correctness."
+      ]
+    },
+    {
+      "id": "artifact.configuration.lifted-multicut-costs-constraints.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Lifted-multicut costs and constraints",
+      "description": "The declared local/lifted costs, hard constraints, optimization tolerances, and bound policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Costs and constraints are effective lifted-multicut inputs."
+      ],
+      "provenanceNotes": [
+        "Currency, signs, hard/soft status, solver tolerances, and revision must be explicit."
+      ]
+    },
+    {
+      "id": "artifact.label-map.lifted-multicut-decompositions.v1",
+      "productFocus": "product-flow",
+      "label": "Lifted-multicut graph decompositions",
+      "description": "One or more unlabeled graph decompositions satisfying the declared local and lifted consistency conditions.",
+      "category": "label-map",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The census permits one or more graph decompositions."
+      ],
+      "provenanceNotes": [
+        "Component labels encode no field, figure, identity, or role semantics."
+      ]
+    },
+    {
+      "id": "artifact.report.lifted-multicut-objective-bound.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Lifted-multicut objective and bound certificate",
+      "description": "A solver report containing objective value, available bound, gap, and exact/approximate status.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Reports optimization status and bounds; it is not evidence of semantic correctness.",
+      "sourceNotes": [
+        "Objective/bound certificate is a distinct lifted-multicut output."
+      ],
+      "provenanceNotes": [
+        "Must identify objective currency, solver, tolerances, termination reason, and input revisions."
+      ]
+    },
+    {
+      "id": "artifact.provenance.lifted-multicut-cut-edges.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Lifted-multicut cut-edge provenance",
+      "description": "A record of local and lifted edges cut or joined in each returned decomposition.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Supports decomposition audit without adding semantic authority.",
+      "sourceNotes": [
+        "Cut-edge provenance is an explicit lifted-multicut output."
+      ],
+      "provenanceNotes": [
+        "Stable base and lifted edge IDs are required."
+      ]
+    },
+    {
+      "id": "artifact.raster.tokencut-model-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut model-normalized raster",
+      "description": "The resized and model-normalized image tensor required by the cited TokenCut formulation.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The census explicitly distinguishes this input from the native raster boundary."
+      ],
+      "provenanceNotes": [
+        "Resize, crop, color conversion, normalization, and tensor-layout provenance are mandatory."
+      ]
+    },
+    {
+      "id": "artifact.measurement.tokencut-patch-token-grid.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut transformer patch-token grid",
+      "description": "Per-image pretrained-transformer patch tokens with explicit token-grid geometry.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Pretrained transformer patch tokens are a required TokenCut input."
+      ],
+      "provenanceNotes": [
+        "Model revision, layer, token selection, normalization, and grid-to-image transform must be retained."
+      ]
+    },
+    {
+      "id": "artifact.model.tokencut-dino-transformer.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut DINO transformer revision",
+      "description": "The exact pretrained self-supervised transformer revision governing the supplied patch tokens.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "TokenCut's published claim depends on pretrained DINO token features."
+      ],
+      "provenanceNotes": [
+        "Weights digest, architecture, source, license, and token-extraction revision are required; this port asserts no binding to a producer."
+      ]
+    },
+    {
+      "id": "artifact.custody.tokencut-pretraining-corpus.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut model pretraining-corpus identity",
+      "description": "Governance custody for the population and revision used to pretrain the supplied DINO transformer.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Corpus identity is required to interpret a pretrained model's transfer claim."
+      ],
+      "provenanceNotes": [
+        "This is provenance metadata, not permission to access training data during per-file inference."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.tokencut-eigenvector.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut normalized-cut eigenvector",
+      "description": "The selected normalized-cut eigenvector over the transformer token grid.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Eigenvector is a distinct TokenCut output before bipartitioning."
+      ],
+      "provenanceNotes": [
+        "Eigenproblem convention, selected vector, sign orientation, and tie handling must be retained."
+      ]
+    },
+    {
+      "id": "artifact.label-map.tokencut-bipartition.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut token bipartition",
+      "description": "An unlabeled two-way partition of the model token grid produced by normalized cut.",
+      "category": "label-map",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Bipartition is kept separate from its image-space mask projection."
+      ],
+      "provenanceNotes": [
+        "Sides are structural until the TokenCut object-orientation rule is recorded; they confer no UI role or identity."
+      ]
+    },
+    {
+      "id": "artifact.mask.tokencut-salient-object.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut salient-object mask",
+      "description": "An image-space competing salient-object mask projected from a TokenCut bipartition.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The mask represents TokenCut's salient-object prior, not a UI role assignment."
+      ],
+      "provenanceNotes": [
+        "Projection, interpolation, polarity, threshold, and token-grid transform must be explicit; no field or identity authority is attached."
+      ]
+    },
+    {
+      "id": "artifact.statistic.tokencut-object-score.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut object score",
+      "description": "The scalar score attached to the selected TokenCut object-side hypothesis.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Object score is a distinct TokenCut census output."
+      ],
+      "provenanceNotes": [
+        "Score definition and calibration must remain model/revision scoped and do not establish treatment quality."
+      ]
+    },
+    {
+      "id": "artifact.provenance.tokencut-token-grid.v1",
+      "productFocus": "full-analysis-only",
+      "label": "TokenCut token-grid provenance",
+      "description": "A record of model, preprocessing, token-grid geometry, projection, and output calibration.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audits the prohibited model/resampling path and does not enter product inference.",
+      "sourceNotes": [
+        "Token-grid provenance is explicitly required by the TokenCut entry."
+      ],
+      "provenanceNotes": [
+        "Must link image transform, model digest, token artifact, cut settings, and image-space projection."
+      ]
+    },
+    {
+      "id": "artifact.configuration.relative-total-variation-scales.v1",
+      "productFocus": "inspector-metadata",
+      "label": "RTV spatial and regularization scales",
+      "description": "The spatial window, regularization, numerical, and stopping scales for relative total variation.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Spatial and regularization scales determine what RTV treats as texture."
+      ],
+      "provenanceNotes": [
+        "Values, units, boundary handling, solver revision, and stopping rule must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.raster.relative-total-variation-structure.v1",
+      "productFocus": "product-flow",
+      "label": "RTV smoothed structure image",
+      "description": "A synthesized structure-preserving smoothed image produced by relative total variation.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Smoothed structure image is one of two distinct RTV outputs."
+      ],
+      "provenanceNotes": [
+        "Synthesized pixels are evidence only and are not publishable source colors or semantic field labels."
+      ]
+    },
+    {
+      "id": "artifact.raster.relative-total-variation-texture-residual.v1",
+      "productFocus": "product-flow",
+      "label": "RTV texture residual",
+      "description": "The residual between the supplied image and the RTV structure reconstruction under a declared residual convention.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Texture residual is distinct from the smoothed structure image."
+      ],
+      "provenanceNotes": [
+        "Residual sign, range, channel space, and relation to the exact input must be retained; it is not a figure mask."
+      ]
+    },
+    {
+      "id": "artifact.model.double-dip-random-initialization.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Randomly initialized coupled Double-DIP networks",
+      "description": "The exact untrained coupled deep-image-prior network definitions, parameters, and random initial states used for one image.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Random network initialization is an explicit Double-DIP input despite the absence of an external training corpus."
+      ],
+      "provenanceNotes": [
+        "Architecture, parameter initialization, PRNG algorithm/state, precision, and framework revision are required."
+      ]
+    },
+    {
+      "id": "artifact.configuration.double-dip-layer-count.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP layer count",
+      "description": "The declared number of reconstructed layers and associated mask channels requested from Double-DIP.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Number of layers is a load-bearing explicit input."
+      ],
+      "provenanceNotes": [
+        "The count does not name or semantically label any layer."
+      ]
+    },
+    {
+      "id": "artifact.configuration.double-dip-task-hints.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP task hints",
+      "description": "Any task-specific hints or constraints supplied to resolve a particular single-image decomposition.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The census states that hints are effective inputs, not incidental details."
+      ],
+      "provenanceNotes": [
+        "Hint source, coordinates, values, semantic intent, and custody must be explicit; hints do not silently become output labels."
+      ]
+    },
+    {
+      "id": "artifact.configuration.double-dip-losses.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP task-specific losses",
+      "description": "The exact reconstruction, exclusion, and regularization losses and their effective coefficients.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Task-specific reconstruction, exclusion, and regularization losses are explicit census inputs."
+      ],
+      "provenanceNotes": [
+        "Formula revisions, reductions, weights, numerical precision, and schedules must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.double-dip-stopping-policy.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP stopping policy",
+      "description": "The iteration, convergence, early-stopping, checkpoint-selection, and timeout policy for per-image optimization.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Stopping sensitivity is an explicit Double-DIP input and risk."
+      ],
+      "provenanceNotes": [
+        "Iteration counts and selected checkpoint must be replayable from the optimization trace."
+      ]
+    },
+    {
+      "id": "artifact.raster.double-dip-unlabeled-layers.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP unlabeled reconstructed layers",
+      "description": "Several synthesized image layers from a coupled single-image prior, without field, figure, identity, or role labels.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The census explicitly says reconstructed layers remain unlabeled until a separate task interpretation."
+      ],
+      "provenanceNotes": [
+        "Layer indices are optimization identities only; synthesized pixels are not exact-source publication values."
+      ]
+    },
+    {
+      "id": "artifact.mask.double-dip-unlabeled-layers.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP unlabeled layer masks",
+      "description": "Several soft or hard decomposition masks paired with reconstructed layers, carrying no semantic polarity or role meaning.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Masks are explicit Double-DIP outputs but are not unsupervised semantic labels."
+      ],
+      "provenanceNotes": [
+        "Mask range, normalization, layer pairing, overlap policy, and checkpoint must be retained; no field/figure interpretation is attached."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.double-dip-optimization-trace.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Double-DIP optimization trace",
+      "description": "A per-iteration trace of losses, regularizers, convergence observations, checkpoints, and stopping decision.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Diagnoses non-identifiability, randomness, and stopping sensitivity in research-only optimization.",
+      "sourceNotes": [
+        "Optimization trace is an explicit Double-DIP output."
+      ],
+      "provenanceNotes": [
+        "Must bind input, random initialization, losses, optimizer state, checkpoints, and stopping policy without asserting a runtime binding."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.field-observations.v1",
+      "productFocus": "product-flow",
+      "label": "Scalar field observations",
+      "description": "A scalar observation field over an image domain, with validity support and measurement-space definition.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Alternative to image observations in the total-generalized-variation entry."
+      ],
+      "provenanceNotes": [
+        "The term field describes mathematical domain only and conveys no compositional-ground or UI-role meaning."
+      ]
+    },
+    {
+      "id": "artifact.configuration.total-generalized-variation-weights.v1",
+      "productFocus": "inspector-metadata",
+      "label": "TGV first- and second-order weights",
+      "description": "The first-order and second-order regularization weights and numerical solver policy for total generalized variation.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Both first- and second-order weights are explicit TGV inputs."
+      ],
+      "provenanceNotes": [
+        "Weights, units, boundary conditions, solver, tolerances, and stopping policy must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.total-generalized-variation-regularized.v1",
+      "productFocus": "product-flow",
+      "label": "TGV regularized field",
+      "description": "A synthesized piecewise-smooth regularized field estimated under second-order total generalized variation.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Regularized field is a distinct TGV output."
+      ],
+      "provenanceNotes": [
+        "This synthetic mathematical field is not source truth, a compositional-ground label, or a role artifact."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.total-generalized-variation-derivatives.v1",
+      "productFocus": "product-flow",
+      "label": "TGV derivative fields",
+      "description": "One or more first- or second-order auxiliary derivative fields returned by the TGV formulation.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Derivative fields are explicit and distinct from the regularized field."
+      ],
+      "provenanceNotes": [
+        "Derivative order, discretization, axis convention, and relation to the regularized result must be retained."
+      ]
+    },
+    {
+      "id": "artifact.measurement.total-generalized-variation-residual.v1",
+      "productFocus": "product-flow",
+      "label": "TGV observation residual",
+      "description": "The signed residual between supplied observations and the TGV regularized estimate in their declared measurement space.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Residual is a distinct TGV output."
+      ],
+      "provenanceNotes": [
+        "Residual sign, units, channels, support, and input relation must remain explicit; it carries no figure semantics."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.total-generalized-variation-convergence.v1",
+      "productFocus": "secondary-overlay",
+      "label": "TGV convergence diagnostics",
+      "description": "Solver residuals, objective history, termination reason, iteration count, and null/no-field observations.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Reports unresolved solver and null/no-field behavior; it is not a field hypothesis.",
+      "sourceNotes": [
+        "Convergence diagnostics are an explicit TGV output."
+      ],
+      "provenanceNotes": [
+        "Must identify solver revision, precision, tolerances, and termination state."
+      ]
+    },
+    {
+      "id": "artifact.measurement.graph-trend-signal.v1",
+      "productFocus": "product-flow",
+      "label": "Graph trend-filtering signal",
+      "description": "A scalar signal keyed to stable vertices of an image-derived graph.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The cited graph trend-filtering formulation is scalar."
+      ],
+      "provenanceNotes": [
+        "Signal units, validity, vertex mapping, and any channel identity must be retained; independent channels are not a joint vector formulation."
+      ]
+    },
+    {
+      "id": "artifact.graph.graph-trend-difference-operator.v1",
+      "productFocus": "product-flow",
+      "label": "Graph incidence or higher-order difference operator",
+      "description": "The exact graph incidence or recursively constructed higher-order difference operator applied to a graph signal.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Incidence/higher-order operator is an explicit graph trend-filtering input."
+      ],
+      "provenanceNotes": [
+        "Graph revision, orientation, order, normalization, sparse layout, and boundary convention must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.graph-trend-regularization.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Graph trend-filtering regularization",
+      "description": "The L1 regularization strength, trend order, solver tolerances, and stopping policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Regularization is a load-bearing graph trend-filtering input."
+      ],
+      "provenanceNotes": [
+        "A joint/group-norm penalty is outside this scalar contract and would require a separate artifact and claim."
+      ]
+    },
+    {
+      "id": "artifact.measurement.graph-trend-fitted-signal.v1",
+      "productFocus": "product-flow",
+      "label": "Graph trend-filtered signal",
+      "description": "The fitted locally adaptive piecewise-polynomial scalar signal over graph vertices.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Fitted signal is a distinct graph trend-filtering output."
+      ],
+      "provenanceNotes": [
+        "The fitted signal is synthetic scalar evidence and has no field/figure or role semantics."
+      ]
+    },
+    {
+      "id": "artifact.graph.graph-trend-sparse-knots.v1",
+      "productFocus": "product-flow",
+      "label": "Graph trend-filtering sparse knots and edges",
+      "description": "The sparse graph locations at which the selected higher-order differences remain nonzero.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Sparse knots/edges are an explicit graph trend-filtering output."
+      ],
+      "provenanceNotes": [
+        "Knot support is channel- and operator-specific and carries no semantic boundary meaning."
+      ]
+    },
+    {
+      "id": "artifact.measurement.graph-trend-residual.v1",
+      "productFocus": "product-flow",
+      "label": "Graph trend-filtering residual",
+      "description": "The scalar residual between the input graph signal and its fitted signal.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Residual is distinct from fitted signal and knot support."
+      ],
+      "provenanceNotes": [
+        "Sign, units, support, and source/fitted revisions must be retained."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.graph-trend-optimization-status.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Graph trend-filtering optimization status",
+      "description": "Objective, residual, iteration, convergence, and termination status for the scalar graph fit.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Reports optimization behavior without conferring semantic meaning on fitted knots or fields.",
+      "sourceNotes": [
+        "Optimization status is an explicit graph trend-filtering output."
+      ],
+      "provenanceNotes": [
+        "Must identify solver, precision, tolerances, stopping state, and input revisions."
+      ]
+    },
+    {
+      "id": "artifact.mask.topology-loss-soft-prediction.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Soft predicted mask for topology loss",
+      "description": "A learned producer's soft mask prediction supplied for research-only topological comparison.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Soft predicted mask is a required topology-loss input."
+      ],
+      "provenanceNotes": [
+        "Producer/model revision, range, class channel, geometry, and preprocessing must be retained; the mask does not gain role authority."
+      ]
+    },
+    {
+      "id": "artifact.review.topology-loss-target-specification.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Reviewed target-topology specification",
+      "description": "A question-scoped reviewed target specifying required components, holes, or other persistent-homology constraints.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Target topology is one permitted reviewed target input."
+      ],
+      "provenanceNotes": [
+        "Reviewer, question, scope, class meaning, acceptance record, and exposure custody are required; it is prohibited from unsupervised runtime use."
+      ]
+    },
+    {
+      "id": "artifact.review.topology-loss-target-mask.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Reviewed target mask for topology loss",
+      "description": "A question-scoped reviewed target mask from which target persistent topology is computed.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Target mask is the alternative to a direct target-topology specification."
+      ],
+      "provenanceNotes": [
+        "Reviewer, image identity, geometry, class definition, uncertainty, acceptance, and exposure custody are required; it cannot enter cold inference."
+      ]
+    },
+    {
+      "id": "artifact.statistic.topology-loss.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Differentiable topological loss",
+      "description": "The differentiable penalty comparing predicted-mask and reviewed-target persistent topology.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Research-only topology-training diagnostic; it is not a selector or semantic correctness measure.",
+      "sourceNotes": [
+        "Differentiable topological loss is the primary scalar output."
+      ],
+      "provenanceNotes": [
+        "Filtration, homology dimensions, target revision, reduction, and numerical implementation must be retained."
+      ]
+    },
+    {
+      "id": "artifact.graph.topology-loss-persistence-pairs.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Topology-loss persistence pairs",
+      "description": "Birth/death pairs and critical locations used to compute the topological discrepancy.",
+      "category": "graph",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Explains the research-only topology loss without asserting correct geometry or semantics.",
+      "sourceNotes": [
+        "Persistence pairs are a distinct topology-loss output."
+      ],
+      "provenanceNotes": [
+        "Pair identity, filtration values, locations, homology dimensions, and target/prediction side must be retained."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.topology-loss-error-attribution.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Topology-loss error attribution",
+      "description": "A diagnostic attribution of topological penalty to predicted components, holes, and critical pixels or cells.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Supports reviewed research diagnosis only and cannot authorize runtime segmentation.",
+      "sourceNotes": [
+        "Error attribution is an explicit topology-loss output."
+      ],
+      "provenanceNotes": [
+        "Must bind each attribution to persistence pairs, prediction, reviewed target, and loss revision."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.archetypoids-observations.v1",
+      "productFocus": "product-flow",
+      "label": "Finite archetypoids observation set",
+      "description": "A finite, ordered set of observations in the paper's standard normed feature setting.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Finite observations in a normed feature setting are the archetypoids data input."
+      ],
+      "provenanceNotes": [
+        "Observation identity, feature definition, scaling, order, and multiplicity policy must be retained; no population weighting is implied."
+      ]
+    },
+    {
+      "id": "artifact.configuration.archetypoids-cardinality.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Archetypoids cardinality",
+      "description": "The requested number of observed archetypal representatives.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Cardinality is an explicit and answer-defining archetypoids input."
+      ],
+      "provenanceNotes": [
+        "Requested count and any feasibility handling must be explicit."
+      ]
+    },
+    {
+      "id": "artifact.configuration.archetypoids-build-initialization.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Archetypoids BUILD initialization",
+      "description": "The exact BUILD initialization choice, tie policy, and deterministic observation ordering used before SWAP.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "BUILD initialization is explicit because BUILD/SWAP reaches a local optimum."
+      ],
+      "provenanceNotes": [
+        "Initial witness indices, tie rule, order, and implementation revision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.archetypoids-observed-exemplars.v1",
+      "productFocus": "product-flow",
+      "label": "Locally optimized archetypoids",
+      "description": "The selected observed exemplars after BUILD/SWAP local optimization.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Outputs are observed data points rather than synthetic archetypes."
+      ],
+      "provenanceNotes": [
+        "Selection as an exemplar does not establish role, support, semantic belonging, or population representativeness."
+      ]
+    },
+    {
+      "id": "artifact.measurement.archetypoids-mixture-coefficients.v1",
+      "productFocus": "product-flow",
+      "label": "Archetypoids mixture coefficients",
+      "description": "The coefficients reconstructing observations from the selected observed exemplars under the cited normed setting.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Mixture coefficients are distinct from selected exemplars."
+      ],
+      "provenanceNotes": [
+        "Matrix orientation, constraints, observation order, exemplar order, and precision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.statistic.archetypoids-residual-sum-of-squares.v1",
+      "productFocus": "product-flow",
+      "label": "Archetypoids residual sum of squares",
+      "description": "The final residual sum of squares for the locally optimized archetypoids representation.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Reports local reconstruction fit and cannot select or authorize a palette role.",
+      "sourceNotes": [
+        "Residual sum of squares is an explicit archetypoids output."
+      ],
+      "provenanceNotes": [
+        "Feature scaling, norm, selected witnesses, coefficient revision, and precision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.provenance.archetypoids-witness-indices.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Archetypoids witness indices",
+      "description": "Stable indices linking every selected archetypoid to its exact input observation.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Witness indices distinguish observed exemplars from synthetic means."
+      ],
+      "provenanceNotes": [
+        "Indices must bind to the ordered observation-set digest and BUILD/SWAP revision."
+      ]
+    },
+    {
+      "id": "artifact.raster.deepgaze-iii-model-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III model-normalized raster",
+      "description": "The resized and normalized image tensor required by the pinned DeepGaze III image network.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "DeepGaze III conflicts with the native-no-resampling boundary."
+      ],
+      "provenanceNotes": [
+        "Resize, crop, color conversion, normalization, and tensor layout must be retained."
+      ]
+    },
+    {
+      "id": "artifact.model.deepgaze-iii-image-network.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III pretrained image network",
+      "description": "The exact pretrained image-feature network revision used by DeepGaze III.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Pretrained image and scanpath networks are separate required inputs."
+      ],
+      "provenanceNotes": [
+        "Weights digest, architecture, source, license, framework, and feature-layer revision are required."
+      ]
+    },
+    {
+      "id": "artifact.model.deepgaze-iii-scanpath-network.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III pretrained scanpath network",
+      "description": "The exact pretrained fixation-history conditioning network revision used by DeepGaze III.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The scanpath network is distinct from the image network."
+      ],
+      "provenanceNotes": [
+        "Weights digest, architecture, history encoding, source, license, and framework revision are required."
+      ]
+    },
+    {
+      "id": "artifact.measurement.deepgaze-iii-fixation-history.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III previous-fixation history",
+      "description": "An ordered, possibly empty history of prior fixation coordinates and timing under a declared coordinate system.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Previous fixations condition the next-fixation density; an empty history represents the first fixation."
+      ],
+      "provenanceNotes": [
+        "Observer/session identity, coordinate transform, timing, censoring, and history order must be retained when present."
+      ]
+    },
+    {
+      "id": "artifact.model.deepgaze-iii-center-bias.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III center-bias log-density",
+      "description": "The exact additive center-bias log-density artifact used by DeepGaze III before output normalization.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The center bias is an effective additive input and must not be hidden as a default."
+      ],
+      "provenanceNotes": [
+        "Artifact digest, training population, geometry, interpolation, units, and calibration revision are required."
+      ]
+    },
+    {
+      "id": "artifact.custody.deepgaze-iii-fixation-corpus.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III fixation-corpus identity",
+      "description": "Governance custody for the natural-image free-viewing population used to fit and calibrate the pinned model artifacts.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Population transfer is a load-bearing DeepGaze III risk."
+      ],
+      "provenanceNotes": [
+        "Dataset/revision, population, task, split, exposure, and license are required; no training records enter per-file inference."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.deepgaze-iii-next-fixation-log-density.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III conditional next-fixation log-density",
+      "description": "A normalized conditional log-probability density for the next fixation, not an autoregressively sampled scanpath.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Research-only human-attention diagnostic; it cannot assign identity, field, figure, or treatment roles.",
+      "sourceNotes": [
+        "The direct model output is one conditional density; scanpath sampling is a separate policy not encoded here."
+      ],
+      "provenanceNotes": [
+        "Normalization domain, history, center bias, model revisions, preprocessing, calibration, and numerical precision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.provenance.deepgaze-iii-inference.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DeepGaze III inference provenance",
+      "description": "Model, center-bias, preprocessing, history, corpus, calibration, and output-normalization provenance.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audits a prohibited warm-model diagnostic path and grants no product authority.",
+      "sourceNotes": [
+        "The census requires model, center-bias, preprocessing, and calibration provenance."
+      ],
+      "provenanceNotes": [
+        "Must bind exact input and artifact digests without asserting a producer/consumer binding."
+      ]
+    },
+    {
+      "id": "artifact.rendering.registered-color-image.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Registered rendered color image",
+      "description": "A rendered color image in a declared display encoding and pixel geometry, registered to its comparison counterpart.",
+      "category": "rendering",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "S-CIELAB requires two registered rendered images."
+      ],
+      "provenanceNotes": [
+        "Rendering revision, encoding, dimensions, alignment transform, alpha treatment, and source identity must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.s-cielab-viewing-display.v1",
+      "productFocus": "inspector-metadata",
+      "label": "S-CIELAB viewing and display parameters",
+      "description": "The declared viewing distance, pixel density, display calibration, white point, and color-conversion assumptions.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Viewing/display parameters are effective S-CIELAB inputs."
+      ],
+      "provenanceNotes": [
+        "Physical units, calibration source, observer assumptions, and revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.configuration.s-cielab-spatial-filters.v1",
+      "productFocus": "inspector-metadata",
+      "label": "S-CIELAB spatial filters",
+      "description": "The exact opponent-channel spatial filter kernels, boundary handling, and sampling convention.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Spatial filters are a separate explicit S-CIELAB input."
+      ],
+      "provenanceNotes": [
+        "Kernel coefficients, support, normalization, channel assignment, convolution, and edge policy must be retained."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.s-cielab-difference-map.v1",
+      "productFocus": "secondary-overlay",
+      "label": "S-CIELAB spatial difference map",
+      "description": "A registered per-pixel spatially filtered CIELAB difference map under declared viewing assumptions.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Diagnostic-only rendition-difference map; it is not a palette-semantic or treatment selector.",
+      "sourceNotes": [
+        "Spatial difference map is the primary S-CIELAB output."
+      ],
+      "provenanceNotes": [
+        "Must bind both registered renderings, filters, viewing/display parameters, conversion, and implementation revision."
+      ]
+    },
+    {
+      "id": "artifact.statistic.s-cielab-difference-distribution.v1",
+      "productFocus": "secondary-overlay",
+      "label": "S-CIELAB difference summary distribution",
+      "description": "A declared distributional summary of values in an S-CIELAB spatial difference map.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Diagnostic-only rendition summary; low difference does not authorize semantic equivalence.",
+      "sourceNotes": [
+        "Summary distribution is distinct from the full S-CIELAB map."
+      ],
+      "provenanceNotes": [
+        "Statistic definitions, weighting, exclusions, quantiles/bins, and source-map digest must be retained."
+      ]
+    },
+    {
+      "id": "artifact.rendering.cambi-field-image.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Rendered field image for CAMBI",
+      "description": "A rendered field or gradient image presented to the no-reference CAMBI diagnostic.",
+      "category": "rendering",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "CAMBI consumes a rendered field image, not a source-field role claim."
+      ],
+      "provenanceNotes": [
+        "Render dimensions, encoding, gradient implementation, stop definitions, dithering, and display transform must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.cambi-display-scale.v1",
+      "productFocus": "inspector-metadata",
+      "label": "CAMBI display and scale assumptions",
+      "description": "The declared display, contrast, viewing, spatial-scale, bit-depth, and multiscale-analysis assumptions.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Display/scale assumptions are explicit CAMBI inputs."
+      ],
+      "provenanceNotes": [
+        "Scale pyramid, contrast thresholds, display transfer, bit depth, and implementation revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.cambi-banding-map.v1",
+      "productFocus": "secondary-overlay",
+      "label": "CAMBI multiscale banding maps",
+      "description": "One or more spatial maps of contrast-aware contour-banding evidence at declared scales.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Diagnostic-only banding evidence; it cannot decide whether a gradient belongs or authorize a stop.",
+      "sourceNotes": [
+        "Banding map across scales is distinct from the aggregate CAMBI index."
+      ],
+      "provenanceNotes": [
+        "Scale, render size, dithering state, thresholds, support, and source rendering must be retained."
+      ]
+    },
+    {
+      "id": "artifact.statistic.cambi-banding-index.v1",
+      "productFocus": "secondary-overlay",
+      "label": "CAMBI banding index",
+      "description": "The aggregate contrast-aware multiscale banding index for a rendered field image.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Diagnostic-only transferred quality index; it is not a gradient, stop, or treatment selector.",
+      "sourceNotes": [
+        "The index is a distinct CAMBI output and its transfer to UI gradients is unvalidated."
+      ],
+      "provenanceNotes": [
+        "Aggregation, scale weights, display assumptions, implementation revision, and source-map digests must be retained."
+      ]
+    },
+    {
+      "id": "artifact.raster.decolor-registered-video-frames.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR registered video frames",
+      "description": "A registered multi-frame image sequence required by canonical DECOLOR and absent from the one-supplied-file product boundary.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Canonical DECOLOR requires registered video frames; pseudo-frames from transforms are not native evidence."
+      ],
+      "provenanceNotes": [
+        "Frame source, order, registration, dimensions, encoding, timestamps, and any synthetic origin must be explicit."
+      ]
+    },
+    {
+      "id": "artifact.graph.decolor-neighborhood.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR neighborhood graph",
+      "description": "The spatial neighborhood graph used to enforce contiguous outlier support over registered frames.",
+      "category": "graph",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Neighborhood graph is a distinct DECOLOR input."
+      ],
+      "provenanceNotes": [
+        "Spatial/temporal edges, weights, topology, boundary conditions, and frame geometry must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.decolor-rank-regularization.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR rank and regularization choices",
+      "description": "The low-rank dimensionality policy and sparsity/contiguity regularization parameters.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Rank and regularization choices are load-bearing DECOLOR inputs."
+      ],
+      "provenanceNotes": [
+        "Values, schedules, units, hard/soft conventions, and revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.configuration.decolor-optimization-policy.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR optimization policy",
+      "description": "The initialization, alternating-update, numerical, tie, convergence, and stopping policy for DECOLOR.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Optimization policy is an explicit DECOLOR input."
+      ],
+      "provenanceNotes": [
+        "Initialization, solver revision, precision, tolerances, iteration limit, and stopping rule must be retained."
+      ]
+    },
+    {
+      "id": "artifact.raster.decolor-low-rank-background-frames.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR low-rank background frames",
+      "description": "Synthesized low-rank frame reconstructions from the canonical multi-frame decomposition.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Low-rank background frames are distinct from outlier masks."
+      ],
+      "provenanceNotes": [
+        "Background is a matrix-decomposition term only; synthesized frames are not source truth or semantic compositional ground."
+      ]
+    },
+    {
+      "id": "artifact.mask.decolor-contiguous-outliers.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR contiguous outlier masks",
+      "description": "Unlabeled binary supports for spatially contiguous outliers in each registered frame.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Contiguous outlier masks are explicit DECOLOR outputs."
+      ],
+      "provenanceNotes": [
+        "Outlier membership has no field, figure, foreground, identity, or UI-role semantics; frame pairing and binary convention must be retained."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.decolor-convergence-trace.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DECOLOR convergence trace",
+      "description": "Per-iteration rank, objective, support, residual, and termination observations from DECOLOR optimization.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Diagnoses a prohibited canonical multi-frame mechanism and grants no field/figure authority.",
+      "sourceNotes": [
+        "Convergence trace is an explicit DECOLOR output."
+      ],
+      "provenanceNotes": [
+        "Must bind frame sequence, graph, parameters, optimizer state, solver revision, and termination."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.soft-morphology-input.v1",
+      "productFocus": "product-flow",
+      "label": "Scalar image for soft morphology",
+      "description": "A scalar image supplied to fixed or learned differentiable soft morphology.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Scalar image is one of two alternative source forms."
+      ],
+      "provenanceNotes": [
+        "Units, range, geometry, validity, and source derivation must be retained; scalar values convey no field role."
+      ]
+    },
+    {
+      "id": "artifact.mask.soft-morphology-input.v1",
+      "productFocus": "product-flow",
+      "label": "Soft mask for soft morphology",
+      "description": "A soft mask supplied to fixed or learned differentiable soft morphology without assuming semantic polarity.",
+      "category": "mask",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Soft mask is the alternative to a general scalar image."
+      ],
+      "provenanceNotes": [
+        "Range, geometry, polarity if any, validity, and source must be retained; no field/figure or role semantics are implied."
+      ]
+    },
+    {
+      "id": "artifact.configuration.soft-morphology-fixed-structuring-element.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Fixed soft-morphology structuring element",
+      "description": "A pinned nonlearned structuring-element kernel, origin, support, and boundary convention.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The fixed-kernel variant is runtime-permitted when kernel and temperature are pinned."
+      ],
+      "provenanceNotes": [
+        "Coefficients, shape, scale, origin, normalization, boundary handling, and revision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.model.soft-morphology-learned-structuring-element.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Learned soft-morphology parameters",
+      "description": "A learned structuring element or morphology-layer parameter artifact for the prohibited learned variant.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Learning structuring elements is distinct from a deterministic fixed operator."
+      ],
+      "provenanceNotes": [
+        "Weights digest, architecture, training objective/population, source, license, and framework revision are required."
+      ]
+    },
+    {
+      "id": "artifact.configuration.soft-morphology-operator-sequence.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Soft-morphology operator sequence",
+      "description": "The ordered erosion, dilation, opening, closing, or loss-producing operation sequence.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Operator sequence is an explicit differentiable-soft-morphology input."
+      ],
+      "provenanceNotes": [
+        "Operation order, repetitions, composition, boundary handling, and output selection must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.configuration.soft-morphology-temperature.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Soft-morphology softness and temperature",
+      "description": "The exact smooth-min/max family, softness or temperature values, schedules, and numerical stabilization.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Softness changes topology and is a load-bearing input."
+      ],
+      "provenanceNotes": [
+        "Formula, temperature, schedule, precision, clipping, and stabilization revision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.custody.soft-morphology-training-corpus.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Learned soft-morphology training-corpus identity",
+      "description": "Conditional governance custody for the population used when the learned-parameter variant is selected.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Training-population restrictions apply only to the learned variant, not the fixed operator."
+      ],
+      "provenanceNotes": [
+        "Dataset/revision, task, population, split, exposure, and license are required when learned parameters are used; no corpus records enter inference."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.soft-morphology-output.v1",
+      "productFocus": "product-flow",
+      "label": "Soft morphological field",
+      "description": "The scalar result of the declared smooth erosion, dilation, opening, closing, or composed morphology operation.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The same output contract can describe the permitted fixed operator; learned production remains prohibited by mechanism status."
+      ],
+      "provenanceNotes": [
+        "Values are morphology-derived evidence and carry no field, figure, role, or identity semantics."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.soft-morphology-parameter-gradients.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Soft-morphology parameter gradients",
+      "description": "Training-time gradients with respect to learned morphology parameters or structuring elements.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Training-only gradients for the prohibited learned variant; absent for fixed inference and never a runtime product input.",
+      "sourceNotes": [
+        "Parameter gradients are produced only when training."
+      ],
+      "provenanceNotes": [
+        "Loss, batch/corpus, model, operator sequence, temperature, autodiff framework, and precision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.measurement.rgbxy-normalized-coordinates.v1",
+      "productFocus": "product-flow",
+      "label": "RGBXY normalized pixel coordinates",
+      "description": "Per-pixel normalized X and Y coordinates paired exactly with a source raster geometry.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Normalized pixel coordinates are a distinct RGBXY decomposition input."
+      ],
+      "provenanceNotes": [
+        "Origin, axis direction, pixel-center convention, normalization range, dimensions, and source-raster digest must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.rgbxy-palette-simplification.v1",
+      "productFocus": "inspector-metadata",
+      "label": "RGBXY palette-size and simplification settings",
+      "description": "The requested palette cardinality, hull simplification tolerances, and stopping conditions.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Palette cardinality and simplification define the RGBXY decomposition."
+      ],
+      "provenanceNotes": [
+        "Values, feasibility handling, tie rules, and revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.configuration.rgbxy-geometric-solver.v1",
+      "productFocus": "inspector-metadata",
+      "label": "RGBXY geometric solver policy",
+      "description": "The RGB/XY scaling, hull construction, simplification, barycentric solve, numerical, and tie policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Geometric solver policy is an explicit RGBXY input."
+      ],
+      "provenanceNotes": [
+        "RGB encoding, coordinate scaling, hull algorithm, precision, tolerances, tie handling, and implementation revision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.rgbxy-palette-vertices.v1",
+      "productFocus": "product-flow",
+      "label": "RGBXY palette vertices",
+      "description": "A compact set of source-space geometric palette vertices selected from the simplified RGBXY hull.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Palette vertices are distinct from per-pixel mixing layers."
+      ],
+      "provenanceNotes": [
+        "Vertices are decomposition coordinates, not UI role assignments or a complete treatment; observed/synthetic status must be explicit."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.rgbxy-additive-mixing-layers.v1",
+      "productFocus": "product-flow",
+      "label": "RGBXY additive mixing-weight layers",
+      "description": "Per-pixel additive weights associated with RGBXY palette vertices for reconstruction and recoloring.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Mixing-weight layers are an explicit RGBXY output."
+      ],
+      "provenanceNotes": [
+        "Layer indices refer only to palette vertices; they are not field, figure, identity, foreground, or UI-role masks."
+      ]
+    },
+    {
+      "id": "artifact.rendering.rgbxy-reconstruction.v1",
+      "productFocus": "product-flow",
+      "label": "RGBXY synthesized reconstruction",
+      "description": "The image reconstructed from RGBXY palette vertices and additive mixing weights.",
+      "category": "rendering",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Reconstruction witness for decomposition diagnosis; synthesized pixels are not exact-source publication or a UI treatment.",
+      "sourceNotes": [
+        "Reconstruction is a distinct RGBXY output."
+      ],
+      "provenanceNotes": [
+        "Must bind vertices, layers, raster geometry, color encoding, clipping, rounding, and solver revision."
+      ]
+    },
+    {
+      "id": "artifact.control.rgbxy-recoloring.v1",
+      "productFocus": "inspector-metadata",
+      "label": "RGBXY recoloring controls",
+      "description": "Controls that replace or transform palette vertices while preserving the computed additive mixing layers.",
+      "category": "control",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Recoloring controls are an explicit output, not an elected treatment."
+      ],
+      "provenanceNotes": [
+        "Control domains, vertex mapping, gamut policy, defaults, and revision must be explicit; controls assign no UI roles."
+      ]
+    },
+    {
+      "id": "artifact.raster.dbnet-model-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet model-normalized raster",
+      "description": "The resized and normalized raster tensor required by the pinned DBNet detector revision.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "DBNet's resized/model-normalized input conflicts with the native-no-resampling boundary."
+      ],
+      "provenanceNotes": [
+        "Resize, crop, padding, color conversion, normalization, tensor layout, and native inverse transform must be retained."
+      ]
+    },
+    {
+      "id": "artifact.model.dbnet-detector.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet pretrained detector revision",
+      "description": "The exact pretrained DBNet/DBNet++ detector weights and architecture revision.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Pretrained detector revision is an explicit DBNet input."
+      ],
+      "provenanceNotes": [
+        "Weights digest, architecture, feature scales, adaptive-fusion revision, source, license, and framework are required."
+      ]
+    },
+    {
+      "id": "artifact.configuration.dbnet-thresholds.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet binarization thresholds",
+      "description": "The differentiable-binarization steepness, score thresholds, and related threshold-map settings.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Threshold settings are effective DBNet inputs."
+      ],
+      "provenanceNotes": [
+        "Values, formulas, inclusivity, scale dependence, calibration, and revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.configuration.dbnet-postprocessing.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet polygon postprocessing settings",
+      "description": "The contour extraction, unclip, filtering, coordinate projection, simplification, and tie settings.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Polygon postprocessing is a separate effective DBNet input."
+      ],
+      "provenanceNotes": [
+        "Every threshold, geometry convention, clipping rule, ordering, and implementation revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.custody.dbnet-scene-text-corpus.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet scene-text training-corpus identity",
+      "description": "Governance custody for the scene-text population and split used to train or calibrate the pinned detector.",
+      "category": "custody",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Scene-text population transfer to album typography is an explicit DBNet risk."
+      ],
+      "provenanceNotes": [
+        "Dataset/revision, annotation policy, language/script mix, split, augmentations, exposure, and license are required; no corpus records enter inference."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.dbnet-text-probability.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet text probability map",
+      "description": "A model-resolution scalar map of learned scene-text region probability.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Text probability map is distinct from threshold and approximate binary maps."
+      ],
+      "provenanceNotes": [
+        "A text score supplies no foreground polarity, identity, UI role, or product-quality authority."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.dbnet-adaptive-threshold.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet adaptive threshold map",
+      "description": "The learned per-location adaptive threshold map used by differentiable binarization.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Adaptive threshold map is a distinct DBNet output."
+      ],
+      "provenanceNotes": [
+        "Map range, resolution, model head, preprocessing, and projection must be retained; values carry no role semantics."
+      ]
+    },
+    {
+      "id": "artifact.mask.dbnet-approximate-binary.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet approximate binary map",
+      "description": "The differentiable approximate binary text-region map derived from probability and adaptive-threshold maps.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Approximate binary map is separate from hard polygon extraction."
+      ],
+      "provenanceNotes": [
+        "Range, steepness, threshold settings, model geometry, and projection must be retained; it is text evidence, not a foreground/role mask."
+      ]
+    },
+    {
+      "id": "artifact.region-set.dbnet-text-polygons.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet text polygons",
+      "description": "Postprocessed polygonal regions proposed as scene-text evidence in model or native coordinates.",
+      "category": "region-set",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Polygons are a distinct postprocessed DBNet output."
+      ],
+      "provenanceNotes": [
+        "Coordinate system, projection, scores, contour identity, clipping, and postprocessing revision must be retained; regions carry no UI role or identity authority."
+      ]
+    },
+    {
+      "id": "artifact.provenance.dbnet-inference.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DBNet model and preprocessing provenance",
+      "description": "A record of detector, training corpus, preprocessing, thresholds, postprocessing, coordinate projection, and calibration.",
+      "category": "provenance",
+      "plane": "governance",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audits a prohibited pretrained/resampled text-evidence path and grants no product authority.",
+      "sourceNotes": [
+        "Model/preprocessing provenance is an explicit DBNet output."
+      ],
+      "provenanceNotes": [
+        "Must bind exact input and artifact digests without asserting an architecture or producer binding."
+      ]
+    },
+    {
+      "id": "artifact.region-set.boundary-connectivity-regions.v1",
+      "productFocus": "product-flow",
+      "label": "Boundary-connectivity image regions",
+      "description": "An unlabeled region or superpixel partition of the image domain for boundary-connectivity saliency.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Image regions/superpixels are a required boundary-connectivity input."
+      ],
+      "provenanceNotes": [
+        "Region IDs, complete support, source geometry, and construction scale must be retained; regions carry no field/figure or role labels."
+      ]
+    },
+    {
+      "id": "artifact.graph.boundary-connectivity-region-adjacency.v1",
+      "productFocus": "product-flow",
+      "label": "Boundary-connectivity region adjacency",
+      "description": "A graph over the supplied regions with stable adjacency identities for saliency propagation.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Region adjacency is distinct from edge color distances."
+      ],
+      "provenanceNotes": [
+        "Graph topology, neighborhood rule, stable region IDs, edge ordering, and source partition must be retained."
+      ]
+    },
+    {
+      "id": "artifact.measurement.boundary-connectivity-color-distances.v1",
+      "productFocus": "product-flow",
+      "label": "Boundary-connectivity region color distances",
+      "description": "Declared pairwise color-distance values keyed to edges of the region adjacency graph.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Color distances are a separate explicit saliency-graph input."
+      ],
+      "provenanceNotes": [
+        "Region color statistic, color space, distance formula, edge mapping, scale, and precision must be retained."
+      ]
+    },
+    {
+      "id": "artifact.measurement.boundary-connectivity-contacts.v1",
+      "productFocus": "product-flow",
+      "label": "Region boundary contacts",
+      "description": "Per-region measurements of contact extent with the declared image boundary.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Boundary contacts are a distinct required input to the background prior."
+      ],
+      "provenanceNotes": [
+        "Boundary definition, contact metric, frame handling, region IDs, normalization, and image geometry must be retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.boundary-connectivity-optimization.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Boundary-connectivity optimization constants",
+      "description": "The background-prior, graph propagation, saliency optimization, numerical, and stopping constants.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Optimization constants are explicit boundary-connectivity inputs."
+      ],
+      "provenanceNotes": [
+        "Every scale, regularizer, transform, solver tolerance, stopping rule, and revision must be pinned."
+      ]
+    },
+    {
+      "id": "artifact.measurement.boundary-connectivity-scores.v1",
+      "productFocus": "product-flow",
+      "label": "Region boundary-connectivity scores",
+      "description": "Per-region measurements of area-normalized connection strength to the image boundary.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Boundary-connectivity values are kept distinct from derived background probabilities."
+      ],
+      "provenanceNotes": [
+        "Scores encode a geometric prior only and do not establish background, field ownership, or UI role."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.boundary-connectivity-background-probability.v1",
+      "productFocus": "product-flow",
+      "label": "Boundary-prior background probabilities",
+      "description": "Region-keyed background-prior probabilities derived from boundary connectivity before final saliency optimization.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Background probabilities are a prior output, not reviewed compositional-ground labels."
+      ],
+      "provenanceNotes": [
+        "Probabilities retain region IDs, prior transform, constants, and boundary-contact source; they confer no field or role authority."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.boundary-connectivity-saliency.v1",
+      "productFocus": "product-flow",
+      "label": "Boundary-connectivity optimized saliency map",
+      "description": "The optimized image-domain salient-object scalar map after propagating a boundary-background prior over the region graph.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Optimized saliency map is distinct from boundary connectivity and background-prior probabilities."
+      ],
+      "provenanceNotes": [
+        "Saliency is not compositional ground, foreground truth, UI role, identity, or treatment-quality evidence."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "literature.constrained-connectivity",
+      "focusClass": "product-transformation",
+      "title": "Hierarchical constrained connectivity",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.constrained-connectivity` - Hierarchical constrained connectivity",
+        "headingLine": 2053
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "adjacency",
+          "label": "Pixel or region adjacency graph",
+          "artifactTypeId": "artifact.graph.pixel-region-adjacency.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Stable vertices and edge ordering are required; no semantic region labels are assumed."
+          ]
+        },
+        {
+          "id": "dissimilarity",
+          "label": "Local edge dissimilarities",
+          "artifactTypeId": "artifact.measurement.edge-dissimilarity.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Values must be keyed exactly to the adjacency graph and retain metric/scale provenance."
+          ]
+        },
+        {
+          "id": "limits",
+          "label": "Local and global constraints",
+          "artifactTypeId": "artifact.configuration.constrained-connectivity-limits.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Both constraints are effective inputs and define scale-sensitive hierarchy behavior."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "partitions",
+          "label": "Nested partitions",
+          "artifactTypeId": "artifact.label-map.constrained-connectivity-nested-partitions.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "May be omitted when the hierarchy is represented solely as a component tree."
+          ],
+          "notes": [
+            "At least one of nested partitions or component-tree representation must be emitted; labels remain structural only."
+          ]
+        },
+        {
+          "id": "component-tree",
+          "label": "Component tree",
+          "artifactTypeId": "artifact.graph.constrained-connectivity-component-tree.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "May be omitted when nested partitions are the sole hierarchy representation."
+          ],
+          "notes": [
+            "At least one hierarchy representation must be emitted; tree nodes carry no field/figure semantics."
+          ]
+        },
+        {
+          "id": "threshold-provenance",
+          "label": "Threshold provenance",
+          "artifactTypeId": "artifact.provenance.constrained-connectivity-thresholds.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Present for every returned hierarchy representation."
+          ],
+          "terminalPurpose": "Preserves threshold and hierarchy provenance for audit; it is not an inference artifact.",
+          "notes": [
+            "Records local/global limits and threshold-to-component decisions."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.mutex-watershed",
+      "focusClass": "product-transformation",
+      "title": "Attractive and repulsive graph partitioning",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.mutex-watershed` - Attractive and repulsive graph partitioning",
+        "headingLine": 2066
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` for the learned-affinity form and `unresolved` for a classical-cue formulation.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited",
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "signed-edges",
+          "label": "Stable ordered graph edges with signed affinities",
+          "artifactTypeId": "artifact.graph.ordered-signed-affinities.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Affinity provenance must distinguish the prohibited learned form from an unresolved classical-cue formulation; equal-weight ordering is load-bearing."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "partition",
+          "label": "Unlabeled partition",
+          "artifactTypeId": "artifact.label-map.mutex-watershed-partition.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always one partition; no segment count, seed, or partition-threshold input is required."
+          ],
+          "notes": [
+            "Segments carry no role meaning."
+          ]
+        },
+        {
+          "id": "mutex-constraints",
+          "label": "Mutex constraints",
+          "artifactTypeId": "artifact.graph.mutex-watershed-constraints.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains the accepted exclusion relations for the returned partition."
+          ],
+          "notes": [
+            "Kept distinct from the partition and edge-decision trace."
+          ]
+        },
+        {
+          "id": "edge-trace",
+          "label": "Edge-decision trace",
+          "artifactTypeId": "artifact.diagnostic.mutex-watershed-edge-decisions.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Includes every consequential edge-order and tie decision."
+          ],
+          "terminalPurpose": "Research diagnostic for edge-order and affinity sensitivity; not a semantic segment label.",
+          "notes": [
+            "Required even when the partition is valid mechanically."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.lifted-multicut",
+      "focusClass": "product-transformation",
+      "title": "Nonlocal must-join and must-cut partitioning",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.lifted-multicut` - Nonlocal must-join and must-cut partitioning",
+        "headingLine": 2080
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "base-graph",
+          "label": "Base graph",
+          "artifactTypeId": "artifact.graph.lifted-multicut-base.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Defines local vertices and edges without semantic labels."
+          ]
+        },
+        {
+          "id": "lifted-edges",
+          "label": "Lifted edges",
+          "artifactTypeId": "artifact.graph.lifted-multicut-nonlocal-edges.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Long-range attraction/repulsion provenance must be explicit because wrong relations can propagate."
+          ]
+        },
+        {
+          "id": "costs-constraints",
+          "label": "Costs and constraints",
+          "artifactTypeId": "artifact.configuration.lifted-multicut-costs-constraints.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Cost design and hard/soft consistency constraints are effective inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "decompositions",
+          "label": "Graph decompositions",
+          "artifactTypeId": "artifact.label-map.lifted-multicut-decompositions.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One or more feasible or approximate decompositions may be returned."
+          ],
+          "notes": [
+            "Component IDs remain unlabeled structural evidence."
+          ]
+        },
+        {
+          "id": "objective-bound",
+          "label": "Objective and bound certificate",
+          "artifactTypeId": "artifact.report.lifted-multicut-objective-bound.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Explicitly records absent bounds, nonzero gaps, approximate termination, or invalid status."
+          ],
+          "terminalPurpose": "Optimization diagnostic only; a bound does not certify semantic correctness.",
+          "notes": [
+            "Distinct from cut-edge provenance."
+          ]
+        },
+        {
+          "id": "cut-provenance",
+          "label": "Cut-edge provenance",
+          "artifactTypeId": "artifact.provenance.lifted-multicut-cut-edges.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records cut/join status for local and lifted edges in each decomposition."
+          ],
+          "terminalPurpose": "Audits decomposition decisions without adding semantic authority.",
+          "notes": [
+            "Stable edge identities are required."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.tokencut",
+      "focusClass": "research-only-oracle",
+      "title": "Normalized cuts over self-supervised tokens",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.tokencut` - Normalized cuts over self-supervised tokens",
+        "headingLine": 2093
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "normalized-image",
+          "label": "Resized model-normalized image",
+          "artifactTypeId": "artifact.raster.tokencut-model-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Resampling and model normalization are prohibited at the current runtime boundary."
+          ]
+        },
+        {
+          "id": "patch-tokens",
+          "label": "Pretrained transformer patch tokens",
+          "artifactTypeId": "artifact.measurement.tokencut-patch-token-grid.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Stored DINO artifacts without per-image patch tokens do not satisfy this port."
+          ]
+        },
+        {
+          "id": "transformer",
+          "label": "Pretrained DINO transformer revision",
+          "artifactTypeId": "artifact.model.tokencut-dino-transformer.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Required to make the supplied tokens and their extraction contract interpretable; no producer binding is asserted."
+          ]
+        },
+        {
+          "id": "pretraining-corpus",
+          "label": "Transformer pretraining-corpus identity",
+          "artifactTypeId": "artifact.custody.tokencut-pretraining-corpus.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Governance provenance only; training records are not per-image runtime inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "eigenvector",
+          "label": "Normalized-cut eigenvector",
+          "artifactTypeId": "artifact.scalar-field.tokencut-eigenvector.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Degenerate, sign-ambiguous, and tied eigensolutions must be represented explicitly."
+          ],
+          "notes": [
+            "Kept distinct from thresholded partition and image mask."
+          ]
+        },
+        {
+          "id": "bipartition",
+          "label": "Token-grid bipartition",
+          "artifactTypeId": "artifact.label-map.tokencut-bipartition.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Both sides remain structural until object-side orientation is recorded."
+          ],
+          "notes": [
+            "Does not assign a UI role."
+          ]
+        },
+        {
+          "id": "mask",
+          "label": "Salient-object mask",
+          "artifactTypeId": "artifact.mask.tokencut-salient-object.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May be empty, full, ambiguous, or out-of-domain for collage, typography, and no-object art; those states must be retained."
+          ],
+          "notes": [
+            "A competing object mask is not a field, foreground-role, or identity artifact."
+          ]
+        },
+        {
+          "id": "object-score",
+          "label": "Object score",
+          "artifactTypeId": "artifact.statistic.tokencut-object-score.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Uncalibrated or out-of-domain status must remain visible."
+          ],
+          "notes": [
+            "Score is model-scoped and cannot select a treatment."
+          ]
+        },
+        {
+          "id": "token-provenance",
+          "label": "Token-grid provenance",
+          "artifactTypeId": "artifact.provenance.tokencut-token-grid.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Present even when the partition is degenerate or invalid."
+          ],
+          "terminalPurpose": "Audits the prohibited model/resampling path; it never enters product inference.",
+          "notes": [
+            "Includes model, corpus, preprocessing, grid, cut, projection, and calibration identity."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.relative-total-variation",
+      "focusClass": "product-transformation",
+      "title": "Structure/texture separation by RTV",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.relative-total-variation` - Structure/texture separation by RTV",
+        "headingLine": 2106
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "image",
+          "label": "Native image",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The typed contract introduces no resizing or model preprocessing."
+          ]
+        },
+        {
+          "id": "scales",
+          "label": "Spatial and regularization scales",
+          "artifactTypeId": "artifact.configuration.relative-total-variation-scales.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "These scales define what counts as texture and can remove thin typography."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "structure",
+          "label": "Smoothed structure image",
+          "artifactTypeId": "artifact.raster.relative-total-variation-structure.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Solver failure, nonfinite values, or unsupported image dimensions must be represented as invalid rather than source pixels."
+          ],
+          "notes": [
+            "Synthesized evidence only; not publishable color or semantic ground."
+          ]
+        },
+        {
+          "id": "residual",
+          "label": "Texture residual",
+          "artifactTypeId": "artifact.raster.relative-total-variation-texture-residual.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Defined by the pinned residual sign/range convention whenever a structure image is valid."
+          ],
+          "notes": [
+            "Residual is not a figure mask or role artifact."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.double-dip",
+      "focusClass": "research-only-oracle",
+      "title": "Single-image coupled-prior layer decomposition",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.double-dip` - Single-image coupled-prior layer decomposition",
+        "headingLine": 2119
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` under the current cold envelope.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "image",
+          "label": "Single native image",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Exactly one supplied image; no external training corpus is used."
+          ]
+        },
+        {
+          "id": "initialized-networks",
+          "label": "Random initialized coupled networks",
+          "artifactTypeId": "artifact.model.double-dip-random-initialization.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Random initialization is answer-affecting and must be replayable."
+          ]
+        },
+        {
+          "id": "layer-count",
+          "label": "Number of layers",
+          "artifactTypeId": "artifact.configuration.double-dip-layer-count.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Layer count does not name or semantically type the layers."
+          ]
+        },
+        {
+          "id": "task-hints",
+          "label": "Task hints",
+          "artifactTypeId": "artifact.configuration.double-dip-task-hints.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "An explicit empty-hints value is required when no hints are used; hints must never be hidden defaults."
+          ]
+        },
+        {
+          "id": "losses",
+          "label": "Reconstruction, exclusion, and regularization losses",
+          "artifactTypeId": "artifact.configuration.double-dip-losses.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "All task-specific losses, coefficients, and schedules are effective inputs."
+          ]
+        },
+        {
+          "id": "stopping",
+          "label": "Stopping policy",
+          "artifactTypeId": "artifact.configuration.double-dip-stopping-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Checkpoint selection and stopping sensitivity are part of the mechanism contract."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "layers",
+          "label": "Unlabeled reconstructed layers",
+          "artifactTypeId": "artifact.raster.double-dip-unlabeled-layers.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "May be non-identifiable, permutation-equivalent, unstable across initialization, or invalid; those states remain explicit."
+          ],
+          "notes": [
+            "Layers are synthesized and unlabeled, never field/figure or role artifacts by implication."
+          ]
+        },
+        {
+          "id": "masks",
+          "label": "Unlabeled layer masks",
+          "artifactTypeId": "artifact.mask.double-dip-unlabeled-layers.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "May be diffuse, overlapping, collapsed, permutation-equivalent, or invalid."
+          ],
+          "notes": [
+            "Mask indices pair with layers only and carry no semantic polarity."
+          ]
+        },
+        {
+          "id": "optimization-trace",
+          "label": "Optimization trace",
+          "artifactTypeId": "artifact.diagnostic.double-dip-optimization-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Retains timeout, divergence, nonfinite, checkpoint, and stopping states even when no usable decomposition exists."
+          ],
+          "terminalPurpose": "Research-only diagnosis of optimization, randomness, and non-identifiability.",
+          "notes": [
+            "Not a source of runtime semantic labels."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.total-generalized-variation",
+      "focusClass": "product-transformation",
+      "title": "Piecewise-smooth field regularization",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.total-generalized-variation` - Piecewise-smooth field regularization",
+        "headingLine": 2138
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "observations",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Supply image observations or an already scalar field, never both under one run contract."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "image-observations",
+          "label": "Image observations",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "observations",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Channel treatment must be declared; this port does not silently imply independent or joint vector regularization."
+          ]
+        },
+        {
+          "id": "field-observations",
+          "label": "Scalar field observations",
+          "artifactTypeId": "artifact.scalar-field.field-observations.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "observations",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "The scalar mathematical field has no compositional-ground semantics."
+          ]
+        },
+        {
+          "id": "weights",
+          "label": "First- and second-order weights",
+          "artifactTypeId": "artifact.configuration.total-generalized-variation-weights.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Weights set structural scale and can blur boundaries or absorb figures."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "regularized-field",
+          "label": "Regularized field",
+          "artifactTypeId": "artifact.scalar-field.total-generalized-variation-regularized.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Null/no-field, solver failure, out-of-domain channel handling, and nonfinite states must remain explicit."
+          ],
+          "notes": [
+            "Synthetic mathematical field, not source truth or a semantic field role."
+          ]
+        },
+        {
+          "id": "derivatives",
+          "label": "Derivative fields",
+          "artifactTypeId": "artifact.scalar-field.total-generalized-variation-derivatives.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each derivative order and axis is separately identified; invalid derivatives remain explicit."
+          ],
+          "notes": [
+            "Distinct from the regularized field."
+          ]
+        },
+        {
+          "id": "residual",
+          "label": "Observation residual",
+          "artifactTypeId": "artifact.measurement.total-generalized-variation-residual.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Defined in the selected observation space when the regularized estimate is valid."
+          ],
+          "notes": [
+            "Residual has no figure semantics."
+          ]
+        },
+        {
+          "id": "convergence",
+          "label": "Convergence diagnostics",
+          "artifactTypeId": "artifact.diagnostic.total-generalized-variation-convergence.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records convergence, failure, timeout, nonfinite, and unresolved null/no-field behavior."
+          ],
+          "terminalPurpose": "Reports solver and null/no-field behavior without becoming a field hypothesis.",
+          "notes": [
+            "Required diagnostic output."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.graph-trend-filtering",
+      "focusClass": "product-transformation",
+      "title": "Adaptive piecewise-polynomial graph fields",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.graph-trend-filtering` - Adaptive piecewise-polynomial graph fields",
+        "headingLine": 2151
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "signal",
+          "label": "Scalar graph signal",
+          "artifactTypeId": "artifact.measurement.graph-trend-signal.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The cited claim is scalar; one port does not authorize an undeclared joint color penalty."
+          ]
+        },
+        {
+          "id": "operator",
+          "label": "Incidence or higher-order operator",
+          "artifactTypeId": "artifact.graph.graph-trend-difference-operator.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Graph and difference order are load-bearing."
+          ]
+        },
+        {
+          "id": "regularization",
+          "label": "Regularization",
+          "artifactTypeId": "artifact.configuration.graph-trend-regularization.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "L1 strength and optimization policy are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "fitted-signal",
+          "label": "Fitted graph signal",
+          "artifactTypeId": "artifact.measurement.graph-trend-fitted-signal.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Failure, nonfinite, unsupported graph, and invalid states remain explicit."
+          ],
+          "notes": [
+            "Synthetic scalar evidence with no field/figure meaning."
+          ]
+        },
+        {
+          "id": "knots",
+          "label": "Sparse knots and edges",
+          "artifactTypeId": "artifact.graph.graph-trend-sparse-knots.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May be empty when no higher-order differences survive; channel-specific support must remain distinct."
+          ],
+          "notes": [
+            "Knots do not become semantic boundaries."
+          ]
+        },
+        {
+          "id": "residual",
+          "label": "Graph-signal residual",
+          "artifactTypeId": "artifact.measurement.graph-trend-residual.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Defined under the pinned sign and support convention for valid fits."
+          ],
+          "notes": [
+            "Distinct from fitted signal and knots."
+          ]
+        },
+        {
+          "id": "optimization-status",
+          "label": "Optimization status",
+          "artifactTypeId": "artifact.diagnostic.graph-trend-optimization-status.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records optimal, approximate, failed, timeout, and nonfinite status."
+          ],
+          "terminalPurpose": "Reports scalar graph-fit optimization without assigning semantic meaning.",
+          "notes": [
+            "A required terminal diagnostic."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.topology-loss",
+      "focusClass": "research-only-oracle",
+      "title": "Persistent-homology segmentation constraint",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.topology-loss` - Persistent-homology segmentation constraint",
+        "headingLine": 2166
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.review-and-evidence-custody"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` because target topology is research-only and the cited producer is learned.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "reviewed-target",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "A reviewed topology specification or reviewed target mask is required; neither is an unsupervised runtime input."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "prediction",
+          "label": "Soft predicted mask",
+          "artifactTypeId": "artifact.mask.topology-loss-soft-prediction.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Prediction provenance must identify the learned producer; this mechanism does not type or bind that producer."
+          ]
+        },
+        {
+          "id": "target-topology",
+          "label": "Reviewed target topology",
+          "artifactTypeId": "artifact.review.topology-loss-target-specification.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "reviewed-target",
+          "cardinality": "zero-or-one",
+          "inputClass": "review",
+          "notes": [
+            "Question-scoped reviewed target; prohibited from cold runtime use."
+          ]
+        },
+        {
+          "id": "target-mask",
+          "label": "Reviewed target mask",
+          "artifactTypeId": "artifact.review.topology-loss-target-mask.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "reviewed-target",
+          "cardinality": "zero-or-one",
+          "inputClass": "review",
+          "notes": [
+            "Alternative reviewed source for target topology; exposure and acceptance custody are mandatory."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "loss",
+          "label": "Differentiable topological loss",
+          "artifactTypeId": "artifact.statistic.topology-loss.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Undefined, nonfinite, unsupported topology, and target/prediction geometry mismatch remain explicit."
+          ],
+          "terminalPurpose": "Research-only training diagnostic; cannot select or certify semantic segmentation.",
+          "notes": [
+            "Correct Betti numbers do not imply correct semantics or geometry."
+          ]
+        },
+        {
+          "id": "persistence-pairs",
+          "label": "Persistence pairs",
+          "artifactTypeId": "artifact.graph.topology-loss-persistence-pairs.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Empty pair sets, essential classes, ties, and unsupported dimensions remain explicit."
+          ],
+          "terminalPurpose": "Explains the topology loss in reviewed research only.",
+          "notes": [
+            "Pairs are distinct from scalar loss and attribution."
+          ]
+        },
+        {
+          "id": "error-attribution",
+          "label": "Topological error attribution",
+          "artifactTypeId": "artifact.diagnostic.topology-loss-error-attribution.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May report no attributable error when the requested topology agrees, without claiming geometric correctness."
+          ],
+          "terminalPurpose": "Question-scoped research diagnosis; prohibited from runtime segmentation authority.",
+          "notes": [
+            "Binds attribution to the reviewed target."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.archetypoids",
+      "focusClass": "product-transformation",
+      "title": "Observed exemplars instead of synthetic archetypes",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.archetypoids` - Observed exemplars instead of synthetic archetypes",
+        "headingLine": 2180
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "observations",
+          "label": "Finite normed observations",
+          "artifactTypeId": "artifact.candidate-set.archetypoids-observations.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Feature scaling, ordering, multiplicity, and standard normed setting are part of the contract; no population-weighted extension is implied."
+          ]
+        },
+        {
+          "id": "cardinality",
+          "label": "Requested cardinality",
+          "artifactTypeId": "artifact.configuration.archetypoids-cardinality.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Cardinality determines the answer and must be provenance-bound."
+          ]
+        },
+        {
+          "id": "build-initialization",
+          "label": "BUILD initialization choice",
+          "artifactTypeId": "artifact.configuration.archetypoids-build-initialization.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Initialization and tie policy are explicit because SWAP reaches a local optimum."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "archetypoids",
+          "label": "Locally optimized archetypoids",
+          "artifactTypeId": "artifact.candidate-set.archetypoids-observed-exemplars.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Count follows feasible requested cardinality; ties, duplicates, infeasibility, and local-optimum status remain explicit."
+          ],
+          "notes": [
+            "Observed exemplars do not establish role, support, or semantic belonging."
+          ]
+        },
+        {
+          "id": "coefficients",
+          "label": "Mixture coefficients",
+          "artifactTypeId": "artifact.measurement.archetypoids-mixture-coefficients.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Invalid or nonfinite coefficient solves remain explicit."
+          ],
+          "notes": [
+            "Coefficient matrix retains observation and exemplar order."
+          ]
+        },
+        {
+          "id": "rss",
+          "label": "Residual sum of squares",
+          "artifactTypeId": "artifact.statistic.archetypoids-residual-sum-of-squares.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Reports invalid/nonfinite status when coefficients or feature values are invalid."
+          ],
+          "terminalPurpose": "Local-fit diagnostic only; it cannot authorize an exemplar as a palette role.",
+          "notes": [
+            "Distinct from exemplar and coefficient outputs."
+          ]
+        },
+        {
+          "id": "witnesses",
+          "label": "Witness indices",
+          "artifactTypeId": "artifact.provenance.archetypoids-witness-indices.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Every valid exemplar has exactly one stable input witness index."
+          ],
+          "notes": [
+            "Preserves observed-data identity."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.deepgaze-iii",
+      "focusClass": "research-only-oracle",
+      "title": "Human fixation-density and scanpath prior",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.deepgaze-iii` - Human fixation-density and scanpath prior",
+        "headingLine": 2223
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "normalized-image",
+          "label": "Model-normalized image",
+          "artifactTypeId": "artifact.raster.deepgaze-iii-model-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Warm-model preprocessing and resampling are prohibited at the product boundary."
+          ]
+        },
+        {
+          "id": "image-network",
+          "label": "Pretrained image network",
+          "artifactTypeId": "artifact.model.deepgaze-iii-image-network.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Exact weights and feature revision are required."
+          ]
+        },
+        {
+          "id": "scanpath-network",
+          "label": "Pretrained scanpath network",
+          "artifactTypeId": "artifact.model.deepgaze-iii-scanpath-network.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Separate from the image network and history artifact."
+          ]
+        },
+        {
+          "id": "fixation-history",
+          "label": "Previous fixations",
+          "artifactTypeId": "artifact.measurement.deepgaze-iii-fixation-history.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "The history artifact is explicitly empty for the first-fixation condition and ordered thereafter."
+          ]
+        },
+        {
+          "id": "center-bias",
+          "label": "Center-bias log-density",
+          "artifactTypeId": "artifact.model.deepgaze-iii-center-bias.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "An effective additive log-density input that must not be hidden as a harmless default."
+          ]
+        },
+        {
+          "id": "fixation-corpus",
+          "label": "Fixation training-corpus identity",
+          "artifactTypeId": "artifact.custody.deepgaze-iii-fixation-corpus.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Required population provenance for transfer interpretation; corpus records are not per-file inference inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "next-fixation-density",
+          "label": "Conditional next-fixation log-density",
+          "artifactTypeId": "artifact.scalar-field.deepgaze-iii-next-fixation-log-density.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Must be normalized or explicitly invalid/out-of-domain; it is one conditional density, never a directly returned scanpath."
+          ],
+          "terminalPurpose": "Research-only human-attention diagnostic; no identity, field, or treatment-role authority.",
+          "notes": [
+            "Autoregressive sampling policy and randomness are deliberately absent from this mechanism typing."
+          ]
+        },
+        {
+          "id": "provenance",
+          "label": "Model, center-bias, preprocessing, and calibration provenance",
+          "artifactTypeId": "artifact.provenance.deepgaze-iii-inference.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Present for valid, invalid, and out-of-domain density results."
+          ],
+          "terminalPurpose": "Audits the prohibited warm-model path and does not enter cold inference.",
+          "notes": [
+            "Includes corpus and history custody."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.s-cielab",
+      "focusClass": "evaluation-probe",
+      "title": "Spatially filtered color-difference measurement",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.s-cielab` - Spatially filtered color-difference measurement",
+        "headingLine": 2361
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "reference-render",
+          "label": "Registered reference rendering",
+          "artifactTypeId": "artifact.rendering.registered-color-image.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Reference/test orientation is explicit and both images must share registered geometry."
+          ]
+        },
+        {
+          "id": "test-render",
+          "label": "Registered test rendering",
+          "artifactTypeId": "artifact.rendering.registered-color-image.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Alignment and rendering/display encoding provenance are mandatory."
+          ]
+        },
+        {
+          "id": "viewing-display",
+          "label": "Viewing and display parameters",
+          "artifactTypeId": "artifact.configuration.s-cielab-viewing-display.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Viewing assumptions are load-bearing and cannot be hidden defaults."
+          ]
+        },
+        {
+          "id": "filters",
+          "label": "Spatial filters",
+          "artifactTypeId": "artifact.configuration.s-cielab-spatial-filters.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Exact channel filters and boundary handling are required."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "difference-map",
+          "label": "Spatial difference map",
+          "artifactTypeId": "artifact.scalar-field.s-cielab-difference-map.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Registration mismatch, unsupported display assumptions, invalid conversion, and nonfinite states remain explicit."
+          ],
+          "terminalPurpose": "Diagnostic-only rendition comparison; not a selector or palette-semantic equivalence claim.",
+          "notes": [
+            "Retains full spatial support."
+          ]
+        },
+        {
+          "id": "summary",
+          "label": "Summary distribution",
+          "artifactTypeId": "artifact.statistic.s-cielab-difference-distribution.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Invalid when the source map is invalid; empty-support and exclusion behavior must be explicit."
+          ],
+          "terminalPurpose": "Diagnostic-only summary; low difference does not imply unchanged palette semantics.",
+          "notes": [
+            "Distinct from the map."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.cambi",
+      "focusClass": "evaluation-probe",
+      "title": "Contrast-aware multiscale banding index",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.cambi` - Contrast-aware multiscale banding index",
+        "headingLine": 2374
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "rendered-field",
+          "label": "Rendered field image",
+          "artifactTypeId": "artifact.rendering.cambi-field-image.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Render size, encoding, stop implementation, and dithering are part of the image artifact."
+          ]
+        },
+        {
+          "id": "assumptions",
+          "label": "Display and scale assumptions",
+          "artifactTypeId": "artifact.configuration.cambi-display-scale.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Transferred video-quality assumptions are explicit and locally unvalidated."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "banding-maps",
+          "label": "Banding maps across scales",
+          "artifactTypeId": "artifact.scalar-field.cambi-banding-map.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each map identifies scale; unsupported bit depth, dimensions, and invalid contrast states remain explicit."
+          ],
+          "terminalPurpose": "Diagnostic-only banding evidence; cannot decide whether a gradient belongs or authorize a stop.",
+          "notes": [
+            "Distinct from aggregate index."
+          ]
+        },
+        {
+          "id": "banding-index",
+          "label": "Banding index",
+          "artifactTypeId": "artifact.statistic.cambi-banding-index.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Invalid/out-of-domain transfer status must remain visible rather than being coerced to a quality score."
+          ],
+          "terminalPurpose": "Diagnostic-only transferred index; not a treatment or stop selector.",
+          "notes": [
+            "Video-compression validation does not establish UI-gradient validity."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.decolor-contiguous-outliers",
+      "focusClass": "research-only-oracle",
+      "title": "Low-rank background and contiguous outliers",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.decolor-contiguous-outliers` - Low-rank background and contiguous outliers",
+        "headingLine": 2389
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` for the canonical multi-frame mechanism under the one-supplied-file boundary.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "frames",
+          "label": "Registered video frames",
+          "artifactTypeId": "artifact.raster.decolor-registered-video-frames.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "Canonical use requires a genuine registered multi-frame sequence; pseudo-frames from renditions or transforms are non-native evidence."
+          ]
+        },
+        {
+          "id": "neighborhood",
+          "label": "Neighborhood graph",
+          "artifactTypeId": "artifact.graph.decolor-neighborhood.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Defines contiguity support across registered frame geometry."
+          ]
+        },
+        {
+          "id": "rank-regularization",
+          "label": "Rank and regularization choices",
+          "artifactTypeId": "artifact.configuration.decolor-rank-regularization.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Rank, outlier sparsity, and contiguity weights are answer-defining."
+          ]
+        },
+        {
+          "id": "optimization",
+          "label": "Optimization policy",
+          "artifactTypeId": "artifact.configuration.decolor-optimization-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Initialization, alternating updates, convergence, and stopping are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "background-frames",
+          "label": "Low-rank background frames",
+          "artifactTypeId": "artifact.raster.decolor-low-rank-background-frames.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Frame count and registration match input; rank collapse, motion failure, nonfinite, and invalid states remain explicit."
+          ],
+          "notes": [
+            "Background is an unlabeled matrix component, not semantic compositional ground."
+          ]
+        },
+        {
+          "id": "outlier-masks",
+          "label": "Contiguous binary outlier masks",
+          "artifactTypeId": "artifact.mask.decolor-contiguous-outliers.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Masks may be empty, full, unstable, or invalid and remain paired with frames."
+          ],
+          "notes": [
+            "Outlier masks acquire no field/figure, foreground, identity, or UI-role semantics."
+          ]
+        },
+        {
+          "id": "convergence-trace",
+          "label": "Convergence trace",
+          "artifactTypeId": "artifact.diagnostic.decolor-convergence-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records converged, approximate, failed, timeout, and nonfinite status."
+          ],
+          "terminalPurpose": "Diagnoses the prohibited canonical multi-frame mechanism; no runtime or semantic authority.",
+          "notes": [
+            "Required even when decomposition outputs are invalid."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.differentiable-soft-morphology",
+      "focusClass": "product-transformation",
+      "title": "Smooth erosion and dilation operators",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.differentiable-soft-morphology` - Smooth erosion and dilation operators",
+        "headingLine": 2407
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `permitted` for fixed operators with pinned kernels and temperatures, and `prohibited` for learned-parameter variants under the current no-model boundary.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted",
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Supply a scalar image or a soft mask under one declared range contract."
+          ]
+        },
+        {
+          "id": "structuring-element",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Select a fixed pinned kernel for the permitted form or learned parameters for the prohibited form."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "scalar-image",
+          "label": "Scalar image",
+          "artifactTypeId": "artifact.scalar-field.soft-morphology-input.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Range, units, geometry, and boundary validity are explicit."
+          ]
+        },
+        {
+          "id": "soft-mask",
+          "label": "Soft mask",
+          "artifactTypeId": "artifact.mask.soft-morphology-input.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "No semantic polarity or role is inferred from selecting the mask form."
+          ]
+        },
+        {
+          "id": "fixed-kernel",
+          "label": "Fixed structuring element",
+          "artifactTypeId": "artifact.configuration.soft-morphology-fixed-structuring-element.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "structuring-element",
+          "cardinality": "zero-or-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Selecting this pinned configuration is the runtime-permitted fixed-operator form."
+          ]
+        },
+        {
+          "id": "learned-kernel",
+          "label": "Learned morphology parameters",
+          "artifactTypeId": "artifact.model.soft-morphology-learned-structuring-element.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "structuring-element",
+          "cardinality": "zero-or-one",
+          "inputClass": "model",
+          "notes": [
+            "Selecting this model artifact is prohibited under the current no-model boundary."
+          ]
+        },
+        {
+          "id": "operators",
+          "label": "Operator sequence",
+          "artifactTypeId": "artifact.configuration.soft-morphology-operator-sequence.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Erosion/dilation/opening/closing order and any loss-producing use are explicit."
+          ]
+        },
+        {
+          "id": "temperature",
+          "label": "Softness and temperature",
+          "artifactTypeId": "artifact.configuration.soft-morphology-temperature.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pinned for fixed runtime use because softness can change topology."
+          ]
+        },
+        {
+          "id": "training-corpus",
+          "label": "Learned-variant training-corpus identity",
+          "artifactTypeId": "artifact.custody.soft-morphology-training-corpus.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Mandatory provenance when learned parameters are selected; absent for the fixed operator and never a per-file inference input."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "morphological-field",
+          "label": "Soft morphological field",
+          "artifactTypeId": "artifact.scalar-field.soft-morphology-output.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Invalid, nonfinite, saturated, topology-leaking, and unsupported boundary states remain explicit."
+          ],
+          "notes": [
+            "Morphology-derived evidence carries no field, figure, identity, or role semantics."
+          ]
+        },
+        {
+          "id": "parameter-gradients",
+          "label": "Parameter gradients",
+          "artifactTypeId": "artifact.diagnostic.soft-morphology-parameter-gradients.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent for fixed inference; present only under a declared learned training objective."
+          ],
+          "terminalPurpose": "Training-only diagnostic for the prohibited learned variant; never a runtime product input.",
+          "notes": [
+            "Gradient source loss and corpus/model provenance are required when present."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.rgbxy-palette-layers",
+      "focusClass": "product-transformation",
+      "title": "Spatial palette decomposition in RGBXY space",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.rgbxy-palette-layers` - Spatial palette decomposition in RGBXY space",
+        "headingLine": 2426
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "raster",
+          "label": "Native raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Source raster remains distinct from synthesized reconstruction."
+          ]
+        },
+        {
+          "id": "coordinates",
+          "label": "Normalized pixel coordinates",
+          "artifactTypeId": "artifact.measurement.rgbxy-normalized-coordinates.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Coordinate normalization and source geometry are answer-defining."
+          ]
+        },
+        {
+          "id": "palette-settings",
+          "label": "Palette-size and simplification settings",
+          "artifactTypeId": "artifact.configuration.rgbxy-palette-simplification.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Cardinality and simplification tolerance define the decomposition."
+          ]
+        },
+        {
+          "id": "solver",
+          "label": "Geometric solver policy",
+          "artifactTypeId": "artifact.configuration.rgbxy-geometric-solver.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "RGBXY scaling, hull policy, numerical precision, and ties are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "vertices",
+          "label": "Palette vertices",
+          "artifactTypeId": "artifact.candidate-set.rgbxy-palette-vertices.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Count may be lower only under explicit infeasibility/degeneracy status; observed versus synthetic status remains visible."
+          ],
+          "notes": [
+            "Vertices assign no UI roles and are not a complete treatment."
+          ]
+        },
+        {
+          "id": "mixing-layers",
+          "label": "Additive mixing-weight layers",
+          "artifactTypeId": "artifact.scalar-field.rgbxy-additive-mixing-layers.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One layer per returned vertex; invalid, negative, non-normalized, or degenerate weights remain explicit under the pinned contract."
+          ],
+          "notes": [
+            "Layers are unlabeled geometric weights, not field/figure or role masks."
+          ]
+        },
+        {
+          "id": "reconstruction",
+          "label": "Synthesized reconstruction",
+          "artifactTypeId": "artifact.rendering.rgbxy-reconstruction.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Clipping, gamut, invalid weights, and reconstruction failure remain explicit."
+          ],
+          "terminalPurpose": "Research reconstruction witness; not exact-source pixels or a product rendering.",
+          "notes": [
+            "Distinct from recoloring controls."
+          ]
+        },
+        {
+          "id": "recoloring-controls",
+          "label": "Recoloring controls",
+          "artifactTypeId": "artifact.control.rgbxy-recoloring.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Control domains and invalid/out-of-gamut states are explicit; no recolored image is implied as a direct output."
+          ],
+          "notes": [
+            "Controls map geometric vertices and carry no role assignment."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.dbnet-text-maps",
+      "focusClass": "research-only-oracle",
+      "title": "Learned differentiable-binarization text evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.dbnet-text-maps` - Learned differentiable-binarization text evidence",
+        "headingLine": 2443
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` under the current pretrained-model and native-no-resampling boundary.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "normalized-raster",
+          "label": "Resized model-normalized raster",
+          "artifactTypeId": "artifact.raster.dbnet-model-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Preprocessing and inverse native-coordinate transform are required; current runtime forbids the resampled model path."
+          ]
+        },
+        {
+          "id": "detector",
+          "label": "Pretrained detector revision",
+          "artifactTypeId": "artifact.model.dbnet-detector.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Exact weights, architecture, adaptive scale fusion, and source are effective inputs."
+          ]
+        },
+        {
+          "id": "thresholds",
+          "label": "Threshold settings",
+          "artifactTypeId": "artifact.configuration.dbnet-thresholds.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Differentiable-binarization and score thresholds cannot be hidden defaults."
+          ]
+        },
+        {
+          "id": "postprocessing",
+          "label": "Polygon postprocessing settings",
+          "artifactTypeId": "artifact.configuration.dbnet-postprocessing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Contour, unclip, filter, projection, and simplification settings are answer-affecting."
+          ]
+        },
+        {
+          "id": "training-corpus",
+          "label": "Scene-text training-corpus identity",
+          "artifactTypeId": "artifact.custody.dbnet-scene-text-corpus.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Required to interpret population transfer; corpus records are not per-file inference inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "probability-map",
+          "label": "Text probability map",
+          "artifactTypeId": "artifact.scalar-field.dbnet-text-probability.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Out-of-domain, invalid, nonfinite, and unsupported geometry states remain explicit."
+          ],
+          "notes": [
+            "Learned text evidence supplies no foreground polarity, role, or identity."
+          ]
+        },
+        {
+          "id": "threshold-map",
+          "label": "Adaptive threshold map",
+          "artifactTypeId": "artifact.scalar-field.dbnet-adaptive-threshold.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Invalid/nonfinite and model-head mismatch states remain explicit."
+          ],
+          "notes": [
+            "Distinct learned map with no semantic role meaning."
+          ]
+        },
+        {
+          "id": "binary-map",
+          "label": "Approximate binary map",
+          "artifactTypeId": "artifact.mask.dbnet-approximate-binary.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May be empty, full, diffuse, invalid, or out-of-domain; it remains approximate rather than silently hard-thresholded."
+          ],
+          "notes": [
+            "Text-region evidence is not a field/foreground-role mask."
+          ]
+        },
+        {
+          "id": "polygons",
+          "label": "Text polygons",
+          "artifactTypeId": "artifact.region-set.dbnet-text-polygons.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Empty is valid; rejected contours, clipping, coordinate failures, and invalid postprocessing remain explicit."
+          ],
+          "notes": [
+            "Regions assign no role, identity, or product-quality authority."
+          ]
+        },
+        {
+          "id": "provenance",
+          "label": "Model and preprocessing provenance",
+          "artifactTypeId": "artifact.provenance.dbnet-inference.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Present for valid, empty, invalid, and out-of-domain outputs."
+          ],
+          "terminalPurpose": "Audits the prohibited pretrained/resampled text-evidence path and grants no product authority.",
+          "notes": [
+            "Includes corpus, model, thresholds, postprocessing, and coordinate projection."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.boundary-connectivity-saliency",
+      "focusClass": "product-transformation",
+      "title": "Boundary-prior background propagation",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.boundary-connectivity-saliency` - Boundary-prior background propagation",
+        "headingLine": 2493
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "regions",
+          "label": "Image regions or superpixels",
+          "artifactTypeId": "artifact.region-set.boundary-connectivity-regions.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Scale and complete unlabeled support are required; regions have no semantic role."
+          ]
+        },
+        {
+          "id": "adjacency",
+          "label": "Region adjacency graph",
+          "artifactTypeId": "artifact.graph.boundary-connectivity-region-adjacency.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Graph must key exactly to the region set."
+          ]
+        },
+        {
+          "id": "color-distances",
+          "label": "Region color distances",
+          "artifactTypeId": "artifact.measurement.boundary-connectivity-color-distances.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Metric and graph-edge mapping are load-bearing."
+          ]
+        },
+        {
+          "id": "boundary-contacts",
+          "label": "Boundary contacts",
+          "artifactTypeId": "artifact.measurement.boundary-connectivity-contacts.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Frame and border definitions are explicit because border-touching subjects violate the prior."
+          ]
+        },
+        {
+          "id": "constants",
+          "label": "Optimization constants",
+          "artifactTypeId": "artifact.configuration.boundary-connectivity-optimization.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Background-prior transform, graph propagation, optimizer, and stopping constants cannot be hidden."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "connectivity",
+          "label": "Boundary-connectivity scores",
+          "artifactTypeId": "artifact.measurement.boundary-connectivity-scores.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Undefined area/contact, empty/full support, invalid regions, and nonfinite values remain explicit."
+          ],
+          "notes": [
+            "Geometric measurements only, not background truth."
+          ]
+        },
+        {
+          "id": "background-probability",
+          "label": "Background probabilities",
+          "artifactTypeId": "artifact.scalar-field.boundary-connectivity-background-probability.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Prior probabilities may be uncertain, saturated, invalid, or contradicted by border-touching content."
+          ],
+          "notes": [
+            "Background prior is not compositional-ground, field, or role authority."
+          ]
+        },
+        {
+          "id": "saliency",
+          "label": "Optimized saliency map",
+          "artifactTypeId": "artifact.scalar-field.boundary-connectivity-saliency.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May be empty, full, unstable, failed, or out-of-domain for frames, edge typography, and nonuniform grounds."
+          ],
+          "notes": [
+            "Foreground saliency is not compositional ground, UI role, identity, or treatment-quality evidence."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Mechanism IDs, titles, headings, normalized authorization/status text, and runtime-admissibility tokens are bound to the declared MECHANISMS.md snapshot.",
+    "Matching artifact type IDs express candidate semantic compatibility only; this fragment asserts no architecture, dependency, producer binding, selected pipeline, or build order.",
+    "Unlabeled partitions, decomposition layers, masks, geometric mixing layers, saliency maps, and mathematical fields remain structured evidence and do not become compositional-field, figure, identity, foreground-role, or UI-treatment artifacts by implication.",
+    "Model, corpus-custody, reviewed-target, configuration, control, provenance, and terminal diagnostic artifacts remain first-class ports on their proper data planes."
+  ]
+}

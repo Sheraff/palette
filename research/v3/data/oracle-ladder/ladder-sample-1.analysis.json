@@ -1,0 +1,1043 @@
+{
+	"what": "Resolution-ladder analysis (ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md \u00a77.4.3) and the \u00a77.3 transfer check",
+	"generated_by": "research/v3/oracle/ladder/analyze.py",
+	"generated_at": "2026-08-03T14:02:20Z",
+	"settings": {
+		"agreement_floor": 0.85,
+		"min_bin_n": 30,
+		"reference_min_long_edge_px": 500,
+		"long_edge_bins": [
+			"0-160",
+			"161-240",
+			"241-340",
+			"341-440",
+			"441-560",
+			"561-680",
+			"681-900",
+			"901-1400",
+			"1401+"
+		],
+		"conditional_questions": {
+			"shading_geometry": [
+				"ground_type",
+				"shaded_field"
+			]
+		},
+		"gradient_map": {
+			"shaded_field": "gradient",
+			"flat_field": "flat",
+			"multiple_distinct_fields": "flat"
+		}
+	},
+	"health": {
+		"result_files": [
+			"../../data/oracle-ladder/ladder-sample-1.jsonl",
+			"../../data/oracle-ladder/ladder-codec-control-1.jsonl",
+			"../../data/oracle-ladder/ladder-pairs-1.jsonl"
+		],
+		"rows": 3136,
+		"work_rows": 3088,
+		"canary_rows": 48,
+		"ok": 3088,
+		"failed": 0,
+		"parse_failed": 0,
+		"attempts_gt_1": 0,
+		"scopes": [
+			"pairs",
+			"sample"
+		],
+		"collections": {
+			"music-artworks": 1800,
+			"sharded": 1288
+		},
+		"prompt_hashes": [
+			"c46f055e873fe7a0b9b569b1fd1444a194d3803ff11196e4f71441b7d07e6fc4"
+		],
+		"model_revisions": [
+			"f31102655767c89366f63d3eab2a5e2a8fd6d293"
+		],
+		"resolution_caps": [
+			0
+		],
+		"canary": {
+			"count": 48,
+			"distinct_parsed_answers": 1,
+			"stable": true
+		},
+		"native_resolution": true
+	},
+	"population": {
+		"ladder_comparisons_total": 1431,
+		"ladder_comparisons_primary": 1190,
+		"codec_control_comparisons": 206,
+		"matched_contrast_comparisons": 86,
+		"sharded_pair_comparisons": 644,
+		"artworks_with_an_answered_reference": 400
+	},
+	"per_question": {
+		"ground_type": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 420,
+					"agree": 319,
+					"agreement": 0.7595,
+					"ci95": [
+						0.7164,
+						0.7979
+					]
+				},
+				"161-240": {
+					"n": 4,
+					"agree": 3,
+					"agreement": 0.75,
+					"ci95": [
+						0.3006,
+						0.9544
+					]
+				},
+				"241-340": {
+					"n": 441,
+					"agree": 378,
+					"agreement": 0.8571,
+					"ci95": [
+						0.8214,
+						0.8867
+					]
+				},
+				"341-440": {
+					"n": 42,
+					"agree": 36,
+					"agreement": 0.8571,
+					"ci95": [
+						0.7216,
+						0.9328
+					]
+				},
+				"441-560": {
+					"n": 264,
+					"agree": 234,
+					"agreement": 0.8864,
+					"ci95": [
+						0.8424,
+						0.9192
+					]
+				},
+				"681-900": {
+					"n": 4,
+					"agree": 4,
+					"agreement": 1.0,
+					"ci95": [
+						0.5101,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 15,
+					"agree": 14,
+					"agreement": 0.9333,
+					"ci95": [
+						0.7018,
+						0.9881
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "unanswerable_below",
+				"floor": 0.85,
+				"lowest_passing_bin": "241-340",
+				"unanswerable_below_px": 241,
+				"first_failing_bin": "0-160",
+				"thin_bins": [
+					"161-240",
+					"681-900",
+					"901-1400"
+				],
+				"action": "record `below_resolution` for this question on any rendition under unanswerable_below_px; never a confident negative (\u00a77.1)"
+			},
+			"pooled_primary": {
+				"n": 1190,
+				"agree": 988,
+				"agreement": 0.8303,
+				"ci95": [
+					0.8079,
+					0.8505
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 1225,
+				"agree": 1019,
+				"agreement": 0.8318,
+				"ci95": [
+					0.8099,
+					0.8517
+				]
+			},
+			"codec_control_same_size": {
+				"n": 206,
+				"agree": 186,
+				"agreement": 0.9029,
+				"ci95": [
+					0.8548,
+					0.9363
+				]
+			},
+			"by_reference_band": {
+				"441-560": {
+					"n": 12,
+					"agree": 10,
+					"agreement": 0.8333,
+					"ci95": [
+						0.552,
+						0.953
+					]
+				},
+				"561-680": {
+					"n": 556,
+					"agree": 461,
+					"agreement": 0.8291,
+					"ci95": [
+						0.7956,
+						0.8581
+					]
+				},
+				"681-900": {
+					"n": 531,
+					"agree": 440,
+					"agreement": 0.8286,
+					"ci95": [
+						0.7942,
+						0.8583
+					]
+				},
+				"901-1400": {
+					"n": 19,
+					"agree": 19,
+					"agreement": 1.0,
+					"ci95": [
+						0.8318,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 72,
+					"agree": 58,
+					"agreement": 0.8056,
+					"ci95": [
+						0.6997,
+						0.8805
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "ground_type",
+				"predicted_from_curve": {
+					"n": 145,
+					"agree": 121,
+					"agreement": 0.8345,
+					"ci95": [
+						0.7655,
+						0.8862
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 86,
+					"agree": 70,
+					"agreement": 0.814,
+					"ci95": [
+						0.7189,
+						0.8821
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 644,
+					"agree": 527,
+					"agreement": 0.8183,
+					"ci95": [
+						0.7867,
+						0.8462
+					]
+				},
+				"verdict_vs_curve": "transfer_holds",
+				"verdict_vs_matched_contrast": "transfer_holds",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"field_texture": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 420,
+					"agree": 337,
+					"agreement": 0.8024,
+					"ci95": [
+						0.7616,
+						0.8376
+					]
+				},
+				"161-240": {
+					"n": 4,
+					"agree": 4,
+					"agreement": 1.0,
+					"ci95": [
+						0.5101,
+						1.0
+					]
+				},
+				"241-340": {
+					"n": 441,
+					"agree": 384,
+					"agreement": 0.8707,
+					"ci95": [
+						0.8362,
+						0.8989
+					]
+				},
+				"341-440": {
+					"n": 42,
+					"agree": 38,
+					"agreement": 0.9048,
+					"ci95": [
+						0.7793,
+						0.9623
+					]
+				},
+				"441-560": {
+					"n": 264,
+					"agree": 236,
+					"agreement": 0.8939,
+					"ci95": [
+						0.851,
+						0.9256
+					]
+				},
+				"681-900": {
+					"n": 4,
+					"agree": 4,
+					"agreement": 1.0,
+					"ci95": [
+						0.5101,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 15,
+					"agree": 15,
+					"agreement": 1.0,
+					"ci95": [
+						0.7961,
+						1.0
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "unanswerable_below",
+				"floor": 0.85,
+				"lowest_passing_bin": "241-340",
+				"unanswerable_below_px": 241,
+				"first_failing_bin": "0-160",
+				"thin_bins": [
+					"161-240",
+					"681-900",
+					"901-1400"
+				],
+				"action": "record `below_resolution` for this question on any rendition under unanswerable_below_px; never a confident negative (\u00a77.1)"
+			},
+			"pooled_primary": {
+				"n": 1190,
+				"agree": 1018,
+				"agreement": 0.8555,
+				"ci95": [
+					0.8343,
+					0.8743
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 1225,
+				"agree": 1052,
+				"agreement": 0.8588,
+				"ci95": [
+					0.8381,
+					0.8772
+				]
+			},
+			"codec_control_same_size": {
+				"n": 206,
+				"agree": 190,
+				"agreement": 0.9223,
+				"ci95": [
+					0.8776,
+					0.9516
+				]
+			},
+			"by_reference_band": {
+				"441-560": {
+					"n": 12,
+					"agree": 12,
+					"agreement": 1.0,
+					"ci95": [
+						0.7575,
+						1.0
+					]
+				},
+				"561-680": {
+					"n": 556,
+					"agree": 458,
+					"agreement": 0.8237,
+					"ci95": [
+						0.7899,
+						0.8532
+					]
+				},
+				"681-900": {
+					"n": 531,
+					"agree": 463,
+					"agreement": 0.8719,
+					"ci95": [
+						0.8408,
+						0.8977
+					]
+				},
+				"901-1400": {
+					"n": 19,
+					"agree": 19,
+					"agreement": 1.0,
+					"ci95": [
+						0.8318,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 72,
+					"agree": 66,
+					"agreement": 0.9167,
+					"ci95": [
+						0.8299,
+						0.9612
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "field_texture",
+				"predicted_from_curve": {
+					"n": 145,
+					"agree": 116,
+					"agreement": 0.8,
+					"ci95": [
+						0.7275,
+						0.857
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 86,
+					"agree": 70,
+					"agreement": 0.814,
+					"ci95": [
+						0.7189,
+						0.8821
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 644,
+					"agree": 540,
+					"agreement": 0.8385,
+					"ci95": [
+						0.8081,
+						0.8649
+					]
+				},
+				"verdict_vs_curve": "transfer_holds",
+				"verdict_vs_matched_contrast": "transfer_holds",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"enclosure": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 420,
+					"agree": 377,
+					"agreement": 0.8976,
+					"ci95": [
+						0.8649,
+						0.9231
+					]
+				},
+				"161-240": {
+					"n": 4,
+					"agree": 4,
+					"agreement": 1.0,
+					"ci95": [
+						0.5101,
+						1.0
+					]
+				},
+				"241-340": {
+					"n": 441,
+					"agree": 415,
+					"agreement": 0.941,
+					"ci95": [
+						0.915,
+						0.9595
+					]
+				},
+				"341-440": {
+					"n": 42,
+					"agree": 40,
+					"agreement": 0.9524,
+					"ci95": [
+						0.8421,
+						0.9868
+					]
+				},
+				"441-560": {
+					"n": 264,
+					"agree": 243,
+					"agreement": 0.9205,
+					"ci95": [
+						0.8815,
+						0.9474
+					]
+				},
+				"681-900": {
+					"n": 4,
+					"agree": 4,
+					"agreement": 1.0,
+					"ci95": [
+						0.5101,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 15,
+					"agree": 14,
+					"agreement": 0.9333,
+					"ci95": [
+						0.7018,
+						0.9881
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "answerable_at_every_measured_size",
+				"floor": 0.85,
+				"lowest_passing_bin": "0-160",
+				"unanswerable_below_px": null,
+				"thin_bins": [
+					"161-240",
+					"681-900",
+					"901-1400"
+				]
+			},
+			"pooled_primary": {
+				"n": 1190,
+				"agree": 1097,
+				"agreement": 0.9218,
+				"ci95": [
+					0.9052,
+					0.9358
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 1225,
+				"agree": 1130,
+				"agreement": 0.9224,
+				"ci95": [
+					0.9061,
+					0.9361
+				]
+			},
+			"codec_control_same_size": {
+				"n": 206,
+				"agree": 198,
+				"agreement": 0.9612,
+				"ci95": [
+					0.9253,
+					0.9802
+				]
+			},
+			"by_reference_band": {
+				"441-560": {
+					"n": 12,
+					"agree": 11,
+					"agreement": 0.9167,
+					"ci95": [
+						0.6461,
+						0.9851
+					]
+				},
+				"561-680": {
+					"n": 556,
+					"agree": 495,
+					"agreement": 0.8903,
+					"ci95": [
+						0.8616,
+						0.9136
+					]
+				},
+				"681-900": {
+					"n": 531,
+					"agree": 512,
+					"agreement": 0.9642,
+					"ci95": [
+						0.9448,
+						0.977
+					]
+				},
+				"901-1400": {
+					"n": 19,
+					"agree": 15,
+					"agreement": 0.7895,
+					"ci95": [
+						0.5667,
+						0.9149
+					]
+				},
+				"1401+": {
+					"n": 72,
+					"agree": 64,
+					"agreement": 0.8889,
+					"ci95": [
+						0.7958,
+						0.9426
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "enclosure",
+				"predicted_from_curve": {
+					"n": 145,
+					"agree": 130,
+					"agreement": 0.8966,
+					"ci95": [
+						0.8363,
+						0.9363
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 86,
+					"agree": 75,
+					"agreement": 0.8721,
+					"ci95": [
+						0.7853,
+						0.9271
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 644,
+					"agree": 553,
+					"agreement": 0.8587,
+					"ci95": [
+						0.8297,
+						0.8835
+					]
+				},
+				"verdict_vs_curve": "transfer_holds",
+				"verdict_vs_matched_contrast": "transfer_holds",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"shading_geometry": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 121,
+					"agree": 65,
+					"agreement": 0.5372,
+					"ci95": [
+						0.4486,
+						0.6235
+					]
+				},
+				"161-240": {
+					"n": 1,
+					"agree": 0,
+					"agreement": 0.0,
+					"ci95": [
+						0.0,
+						0.7935
+					]
+				},
+				"241-340": {
+					"n": 126,
+					"agree": 86,
+					"agreement": 0.6825,
+					"ci95": [
+						0.5969,
+						0.7574
+					]
+				},
+				"341-440": {
+					"n": 13,
+					"agree": 10,
+					"agreement": 0.7692,
+					"ci95": [
+						0.4974,
+						0.9182
+					]
+				},
+				"441-560": {
+					"n": 63,
+					"agree": 55,
+					"agreement": 0.873,
+					"ci95": [
+						0.7689,
+						0.9342
+					]
+				},
+				"681-900": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 3,
+					"agree": 3,
+					"agreement": 1.0,
+					"ci95": [
+						0.4385,
+						1.0
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "unanswerable_below",
+				"floor": 0.85,
+				"lowest_passing_bin": "441-560",
+				"unanswerable_below_px": 441,
+				"first_failing_bin": "241-340",
+				"thin_bins": [
+					"161-240",
+					"341-440",
+					"681-900",
+					"901-1400"
+				],
+				"action": "record `below_resolution` for this question on any rendition under unanswerable_below_px; never a confident negative (\u00a77.1)"
+			},
+			"pooled_primary": {
+				"n": 328,
+				"agree": 220,
+				"agreement": 0.6707,
+				"ci95": [
+					0.6182,
+					0.7194
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 340,
+				"agree": 231,
+				"agreement": 0.6794,
+				"ci95": [
+					0.628,
+					0.7268
+				]
+			},
+			"codec_control_same_size": {
+				"n": 63,
+				"agree": 54,
+				"agreement": 0.8571,
+				"ci95": [
+					0.7503,
+					0.923
+				]
+			},
+			"by_reference_band": {
+				"441-560": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"561-680": {
+					"n": 137,
+					"agree": 93,
+					"agreement": 0.6788,
+					"ci95": [
+						0.5967,
+						0.7512
+					]
+				},
+				"681-900": {
+					"n": 168,
+					"agree": 106,
+					"agreement": 0.631,
+					"ci95": [
+						0.5558,
+						0.7002
+					]
+				},
+				"901-1400": {
+					"n": 2,
+					"agree": 2,
+					"agreement": 1.0,
+					"ci95": [
+						0.3424,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 21,
+					"agree": 19,
+					"agreement": 0.9048,
+					"ci95": [
+						0.7109,
+						0.9735
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "shading_geometry",
+				"predicted_from_curve": {
+					"n": 39,
+					"agree": 25,
+					"agreement": 0.641,
+					"ci95": [
+						0.4842,
+						0.7726
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 23,
+					"agree": 15,
+					"agreement": 0.6522,
+					"ci95": [
+						0.4489,
+						0.8119
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 212,
+					"agree": 156,
+					"agreement": 0.7358,
+					"ci95": [
+						0.6727,
+						0.7906
+					]
+				},
+				"verdict_vs_curve": "transfer_holds",
+				"verdict_vs_matched_contrast": "underpowered",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"gradient_boolean": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 299,
+					"agree": 243,
+					"agreement": 0.8127,
+					"ci95": [
+						0.7646,
+						0.8529
+					]
+				},
+				"161-240": {
+					"n": 1,
+					"agree": 0,
+					"agreement": 0.0,
+					"ci95": [
+						0.0,
+						0.7935
+					]
+				},
+				"241-340": {
+					"n": 336,
+					"agree": 293,
+					"agreement": 0.872,
+					"ci95": [
+						0.8321,
+						0.9036
+					]
+				},
+				"341-440": {
+					"n": 31,
+					"agree": 28,
+					"agreement": 0.9032,
+					"ci95": [
+						0.751,
+						0.9665
+					]
+				},
+				"441-560": {
+					"n": 177,
+					"agree": 163,
+					"agreement": 0.9209,
+					"ci95": [
+						0.8716,
+						0.9523
+					]
+				},
+				"681-900": {
+					"n": 2,
+					"agree": 2,
+					"agreement": 1.0,
+					"ci95": [
+						0.3424,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 10,
+					"agree": 10,
+					"agreement": 1.0,
+					"ci95": [
+						0.7225,
+						1.0
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "unanswerable_below",
+				"floor": 0.85,
+				"lowest_passing_bin": "241-340",
+				"unanswerable_below_px": 241,
+				"first_failing_bin": "0-160",
+				"thin_bins": [
+					"161-240",
+					"681-900",
+					"901-1400"
+				],
+				"action": "record `below_resolution` for this question on any rendition under unanswerable_below_px; never a confident negative (\u00a77.1)"
+			},
+			"pooled_primary": {
+				"n": 856,
+				"agree": 739,
+				"agreement": 0.8633,
+				"ci95": [
+					0.8387,
+					0.8847
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 886,
+				"agree": 768,
+				"agreement": 0.8668,
+				"ci95": [
+					0.8429,
+					0.8876
+				]
+			},
+			"codec_control_same_size": {
+				"n": 150,
+				"agree": 136,
+				"agreement": 0.9067,
+				"ci95": [
+					0.8494,
+					0.9436
+				]
+			},
+			"by_reference_band": {
+				"441-560": {
+					"n": 5,
+					"agree": 5,
+					"agreement": 1.0,
+					"ci95": [
+						0.5655,
+						1.0
+					]
+				},
+				"561-680": {
+					"n": 387,
+					"agree": 333,
+					"agreement": 0.8605,
+					"ci95": [
+						0.8224,
+						0.8915
+					]
+				},
+				"681-900": {
+					"n": 401,
+					"agree": 338,
+					"agreement": 0.8429,
+					"ci95": [
+						0.804,
+						0.8752
+					]
+				},
+				"901-1400": {
+					"n": 18,
+					"agree": 18,
+					"agreement": 1.0,
+					"ci95": [
+						0.8241,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 45,
+					"agree": 45,
+					"agreement": 1.0,
+					"ci95": [
+						0.9213,
+						1.0
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "gradient_boolean",
+				"predicted_from_curve": {
+					"n": 108,
+					"agree": 91,
+					"agreement": 0.8426,
+					"ci95": [
+						0.7623,
+						0.8993
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 61,
+					"agree": 51,
+					"agreement": 0.8361,
+					"ci95": [
+						0.7239,
+						0.9084
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 431,
+					"agree": 370,
+					"agreement": 0.8585,
+					"ci95": [
+						0.8224,
+						0.8882
+					]
+				},
+				"verdict_vs_curve": "transfer_holds",
+				"verdict_vs_matched_contrast": "transfer_holds",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		}
+	},
+	"confidence_by_bin": {
+		"0-160": {
+			"high": 419,
+			"medium": 1
+		},
+		"161-240": {
+			"high": 4
+		},
+		"241-340": {
+			"high": 440,
+			"medium": 1
+		},
+		"341-440": {
+			"high": 42
+		},
+		"441-560": {
+			"high": 264
+		},
+		"681-900": {
+			"high": 4
+		},
+		"901-1400": {
+			"high": 15
+		}
+	},
+	"notes": [
+		"Agreement here is agreement with the SAME MODEL at a larger size, never with a human. It measures how much of the answer survives downscaling, which is exactly the \u00a77.1 question; it says nothing about whether the large-size answer is right.",
+		"Read every curve against `codec_control_same_size`. That is the noise floor: two byte-different encodings of the same pixels. Agreement cannot exceed it for reasons of resolution.",
+		"`shading_geometry` is conditioned on the reference answering `shaded_field`; its n is therefore much smaller than the others'."
+	]
+}

@@ -1,0 +1,465 @@
+{
+	"manifestVersion": "pointing-round-sample.v1",
+	"batchId": "pointing-ground-1",
+	"seed": 20260810,
+	"generatedBy": "research/v3/oracle/sam/pointing_round_1.py",
+	"builtFrom": [
+		"research/v3/data/sam/pointing-phrasing-sweep-molmo.json",
+		"research/v3/oracle/sam/pointing_phrasing_sweep.py",
+		"research/v3/oracle/sam/POINTING_PHRASING_PREREG.md",
+		"research/v3/oracle/sam/pointing_covers.py",
+		"research/v3/oracle/sam/point_prompt.py",
+		"research/v3/oracle/premise/GROUND_FREETEXT_SYNTHESIS.md"
+	],
+	"sourceSweep": "research/v3/data/sam/pointing-phrasing-sweep-molmo.json",
+	"pointer": {
+		"name": "molmopoint-8b-8bit",
+		"repo": "mlx-community/MolmoPoint-8B-8bit",
+		"revision": "e295e68b2ee56c2d9a912453b5130633bd35aa4b",
+		"cap_px": 640,
+		"max_tokens": 256
+	},
+	"sam": {
+		"repo": "mlx-community/sam3.1-bf16",
+		"revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
+		"coord_space": "feature",
+		"selection": "containing"
+	},
+	"pickedPhrasing": "plain",
+	"rivalPhrasing": "backdrop",
+	"phrasingDisagreement": [
+		{
+			"cover_id": "elephunk",
+			"mask_iou": 0.2462
+		},
+		{
+			"cover_id": "0002dfdc",
+			"mask_iou": 0.4089
+		},
+		{
+			"cover_id": "000fa9b5",
+			"mask_iou": 0.6004
+		},
+		{
+			"cover_id": "disney",
+			"mask_iou": 0.8674
+		},
+		{
+			"cover_id": "000bc98f",
+			"mask_iou": 0.9774
+		},
+		{
+			"cover_id": "0000269e",
+			"mask_iou": 1.0
+		},
+		{
+			"cover_id": "000c4d52",
+			"mask_iou": 1.0
+		},
+		{
+			"cover_id": "krafty",
+			"mask_iou": 1.0
+		},
+		{
+			"cover_id": "skap",
+			"mask_iou": 1.0
+		}
+	],
+	"preRegisteredBar": {
+		"source": "research/v3/oracle/sam/POINTING_PHRASING_PREREG.md \u00a75",
+		"fixedBefore": "any answer was seen",
+		"dotRightMin": 6,
+		"dotRightAndWashRightMin": 4,
+		"of": 8,
+		"rule": "carry pointing forward as a ground route only if dot-right >= 6/8 AND dot-right-and-wash-right >= 4/8",
+		"whySeparated": "a right dot under a bad wash is a SAM candidate-selection problem (probe \u00a72.4); a wrong dot is a pointer problem; the two have different fixes and pooling them would hide which one we have"
+	},
+	"panelRenderer": {
+		"panelPx": 480,
+		"gutterPx": 12,
+		"maskRgb": [
+			255,
+			64,
+			160
+		],
+		"maskAlpha": 0.45,
+		"dotRgb": [
+			60,
+			255,
+			140
+		],
+		"captions": "none \u2014 no number or phrasing is printed on the panel"
+	},
+	"items": [
+		{
+			"itemId": "pg1-ff38be64bfb8",
+			"coverId": "00014fb4",
+			"role": "misfit",
+			"decidable": true,
+			"inDecidableSix": true,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "green on the left and red on the right - two fields",
+			"groundRegions": [
+				"green field, left",
+				"red field, right"
+			],
+			"subjectRegions": [
+				"the woman",
+				"the dragons",
+				"the footballs"
+			],
+			"pointsNormalized": [
+				[
+					0.5036,
+					0.1412,
+					1
+				]
+			],
+			"samAreaFraction": 0.2056,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[]
+			],
+			"artwork": {
+				"imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+				"artworkId": "00014fb430dd1b693e653121",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "decidable-six",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-ff38be64bfb8.png",
+				"sha256": "3d301add91c1e8bd87ca1fa095b06fac04f1c9065b426474102308c0132b2751",
+				"bytes": 562608,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-d1cf37d028cc",
+			"coverId": "00030075",
+			"role": "misfit",
+			"decidable": true,
+			"inDecidableSix": true,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "one green wall, 'maybe 30% of the entire picture'",
+			"groundRegions": [
+				"the green wall"
+			],
+			"subjectRegions": [],
+			"pointsNormalized": [
+				[
+					0.4506,
+					0.3887,
+					1
+				]
+			],
+			"samAreaFraction": 0.3061,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[
+					"dyn-building"
+				]
+			],
+			"artwork": {
+				"imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+				"artworkId": "000300752f338b6aedff856c",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "decidable-six",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-d1cf37d028cc.png",
+				"sha256": "48a3828ea3bb65b5885c4106324c2036cb0c5f6aa0563b649034a66674c25521",
+				"bytes": 456722,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-7857d3d2cb81",
+			"coverId": "00066a61",
+			"role": "misfit",
+			"decidable": true,
+			"inDecidableSix": true,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "many pink squares ... one coherent background",
+			"groundRegions": [
+				"the pink squares"
+			],
+			"subjectRegions": [],
+			"pointsNormalized": [
+				[
+					0.5861,
+					0.2528,
+					1
+				]
+			],
+			"samAreaFraction": 0.896,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[]
+			],
+			"artwork": {
+				"imagePath": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+				"artworkId": "00066a61bbcbeadd632f7f38",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "decidable-six",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-7857d3d2cb81.png",
+				"sha256": "c5b63d093ef97eaeda1cbbcd1029de55530742e12fbd056573e23d78372122d9",
+				"bytes": 513283,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-3bac21054d40",
+			"coverId": "00075841",
+			"role": "misfit",
+			"decidable": true,
+			"inDecidableSix": true,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "white banner 'about maybe 15% of the height'; hardwood floor behind the objects",
+			"groundRegions": [
+				"the white top banner",
+				"the hardwood floor"
+			],
+			"subjectRegions": [
+				"the shoes",
+				"the hat",
+				"the guitar"
+			],
+			"pointsNormalized": [
+				[
+					0.5108,
+					0.1775,
+					1
+				]
+			],
+			"samAreaFraction": 0.4064,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[]
+			],
+			"artwork": {
+				"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+				"artworkId": "00075841f68d8cd71db368d8",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "decidable-six",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-3bac21054d40.png",
+				"sha256": "b416620158e6736d7ac96c86d2553fa3217d771a86542259231ef7440bf596af",
+				"bytes": 736913,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-cf6c72a46d63",
+			"coverId": "000f0a78",
+			"role": "misfit",
+			"decidable": true,
+			"inDecidableSix": true,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "black bar at the top, then a champagne bar, then a red field",
+			"groundRegions": [
+				"the black top bar",
+				"the champagne bar",
+				"the red field"
+			],
+			"subjectRegions": [],
+			"pointsNormalized": [
+				[
+					0.9194,
+					0.932,
+					1
+				]
+			],
+			"samAreaFraction": 0.6301,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[]
+			],
+			"artwork": {
+				"imagePath": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+				"artworkId": "000f0a78a1791248aec707e3",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "decidable-six",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-cf6c72a46d63.png",
+				"sha256": "4810a7ceb960c4fdf440aebca75cebb3264f288bbf87a28fefb8ea7fef2e8890",
+				"bytes": 571735,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-05f6d86b7af5",
+			"coverId": "artofficial",
+			"role": "misfit",
+			"decidable": true,
+			"inDecidableSix": true,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "one face near the middle is the subject, 'everything else feels like the background'",
+			"groundRegions": [
+				"the illustrated field, anywhere but the central face"
+			],
+			"subjectRegions": [
+				"the one central face"
+			],
+			"pointsNormalized": [
+				[
+					0.4166,
+					0.8368,
+					1
+				]
+			],
+			"samAreaFraction": 0.2894,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[]
+			],
+			"artwork": {
+				"imagePath": "images/artofficial.jpg",
+				"artworkId": "artofficial",
+				"collection": "other:images",
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "decidable-six",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-05f6d86b7af5.png",
+				"sha256": "6ddf68c1ddf493845d4a7067d117df9f0156b46751175f9d911c32b788ad2bfe",
+				"bytes": 774571,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-585d6009c28e",
+			"coverId": "elephunk",
+			"role": "control",
+			"decidable": true,
+			"inDecidableSix": false,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "multiple distinct fields",
+			"groundRegions": [
+				"the distinct fields"
+			],
+			"subjectRegions": [],
+			"pointsNormalized": [
+				[
+					0.076,
+					0.0614,
+					1
+				]
+			],
+			"samAreaFraction": 0.1578,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": true,
+			"conceptsAtPoints": [
+				[
+					"sticker"
+				]
+			],
+			"artwork": {
+				"imagePath": "images/elephunk.jpg",
+				"artworkId": "elephunk",
+				"collection": "other:images",
+				"width": 500,
+				"height": 500
+			},
+			"stratum": "phrasing-disagreement",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-585d6009c28e.png",
+				"sha256": "a003e4405060fb19c8540ac7867104faa53ad4d54ddba66d2cb21bb57b44e3f2",
+				"bytes": 558096,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pg1-eb7a9c835d16",
+			"coverId": "0002dfdc",
+			"role": "control",
+			"decidable": true,
+			"inDecidableSix": false,
+			"phrasingKey": "plain",
+			"phrasing": "point to the background",
+			"pointer": "molmopoint-8b-8bit",
+			"reviewerGround": "multiple distinct fields",
+			"groundRegions": [
+				"the distinct fields"
+			],
+			"subjectRegions": [],
+			"pointsNormalized": [
+				[
+					0.8732,
+					0.1049,
+					1
+				]
+			],
+			"samAreaFraction": 0.4388,
+			"samContainsPoints": true,
+			"onFigure": false,
+			"onMark": false,
+			"conceptsAtPoints": [
+				[]
+			],
+			"artwork": {
+				"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"artworkId": "0002dfdcde2cb0a75822168c",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "phrasing-disagreement",
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-pointing-1/pg1-eb7a9c835d16.png",
+				"sha256": "766866bd466ea172baeddbeb5145a6e7688e261dffc9dd3f34ed2c0e24455540",
+				"bytes": 749602,
+				"width": 972,
+				"height": 480
+			}
+		}
+	]
+}

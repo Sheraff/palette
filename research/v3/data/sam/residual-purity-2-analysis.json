@@ -1,0 +1,1052 @@
+{
+	"analysis": "residual-purity-2",
+	"generatedBy": "research/v3/oracle/sam/analyze_residual_purity_2.py",
+	"generatedAt": "2026-08-04T06:15:27.073274Z",
+	"batch": "residual-purity-2",
+	"labelSchemaVersion": "residual-purity.v2",
+	"batchCompleteIds": [
+		"bc-mse9775m-9656ec48"
+	],
+	"labelIds": [
+		"o-mse8rh4r-f7ef4ce3",
+		"o-mse8rnlo-87a8a64e",
+		"o-mse8rsfp-d074cc2f",
+		"o-mse8rttz-a15b067e",
+		"o-mse8rvt1-7f4b6bfa",
+		"o-mse8s3gz-8f050efb",
+		"o-mse8s5pp-794410e4",
+		"o-mse8scbf-24e8ddd3",
+		"o-mse8sgmd-8d8934f5",
+		"o-mse8sj56-6a7f4a0e",
+		"o-mse8spqi-fd198149",
+		"o-mse8st2d-12eb509c",
+		"o-mse8sxt2-df03aa8e",
+		"o-mse8t186-b73dff20",
+		"o-mse8t4wu-4d2a9c06",
+		"o-mse8trds-4c585c0a",
+		"o-mse8tsqt-c168557f",
+		"o-mse8tyc3-28527c3e",
+		"o-mse8u53k-7e4154fc",
+		"o-mse8u92c-ad0cafbd",
+		"o-mse8udrz-256ed51d",
+		"o-mse8uf3g-ecffc852",
+		"o-mse8umjw-9e05b57e",
+		"o-mse8uvzc-c672292a",
+		"o-mse8v0uw-4d562c57",
+		"o-mse8v1v0-4d769ba1",
+		"o-mse8v3l2-2824d4f7",
+		"o-mse8v4yx-4c85a6a2",
+		"o-mse8v64x-23980049",
+		"o-mse8vakf-86a8d526",
+		"o-mse8vgxj-6415e474",
+		"o-mse8vjc4-99bd2d2f",
+		"o-mse8vksw-f208ce78",
+		"o-mse96i8c-3dc1e9b6",
+		"o-mse96jtx-20b5b843",
+		"o-mse96mh9-ea01a746",
+		"o-mse96nzj-3770b008",
+		"o-mse96p3v-2d2e1caf",
+		"o-mse96q4v-404d0833",
+		"o-mse96r31-ff739464",
+		"o-mse96sdm-fc9bd759",
+		"o-mse96tjx-b5f936c5",
+		"o-mse96x1i-e1b14ca7",
+		"o-mse96y8g-40854b21",
+		"o-mse96zna-9e8ea8fa",
+		"o-mse970yb-bc36d1dd",
+		"o-mse974gw-e49312a1",
+		"o-mse975x6-7775a7ee"
+	],
+	"nLabels": 48,
+	"nSheets": 24,
+	"supersededLabels": [],
+	"integrityProblems": [],
+	"poolingProhibition": "Round 1 used label schema residual-purity.v1 (three answers) and a v4 single-noun subtraction. Round 2 uses residual-purity.v2 (four answers, escape added) and a v5 all-nouns subtraction. The two rounds' answers are NEVER pooled and no combined rate is computed anywhere in this file: a fourth answer drains the other three, and the thing being subtracted also changed. Every round-1 number here is an instrument reading beside a round-2 instrument reading.",
+	"bar": {
+		"source": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md \u00a712.9 (held from RESIDUAL_EXPERIMENT_NOTES.md \u00a711.11)",
+		"preRegistered": true,
+		"heldNotMoved": true,
+		"aggregateThreshold": 0.75,
+		"stratumFloor": 0.5,
+		"rule": "Adopt R-3's structural claim only if the stratum-reweighted pure_field rate is >= 0.75 in at least one guard variant AND no single stratum falls below 0.50; otherwise the residual stays a field-enriched prior.",
+		"weights": {
+			"noun-fired": 102,
+			"noun-silent": 12,
+			"contaminated": 20,
+			"class-only": 1,
+			"static-only-clean": 7
+		},
+		"weightTotal": 142,
+		"weightsNote": "v5 pools, which differ from v4's (77/10/25/2/28): the all-nouns elicitation prompts almost every cover, so static-only-clean collapsed 28->7 and class-only 2->1 while noun-fired grew 77->102 (\u00a712.8). Same weighting RULE, different population shape."
+	},
+	"escapeRule": {
+		"source": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md \u00a712.9, built at commit 3926344",
+		"answer": "cant_tell",
+		"label": "can't tell what is field here",
+		"scoring": "cant_tell is NOT counted as pure, NOT counted as not-pure, and NOT dropped. It leaves both the numerator and the denominator of the pure-field rate. Its share is reported per stratum as a first-class result \u2014 figure/ground ambiguity is a property of the covers, not noise.",
+		"unreliableAbove": 0.5,
+		"unreliableRule": "A stratum whose escape share exceeds 0.50 has no reliable purity rate and is reported as having none, rather than as having a low one.",
+		"provenance": "The reviewer's own request after round 1: 'sometimes it's hard to tell what is field and what is subject, so answers for those cases are not reliable (even with human feedback) unless we add an escape answer choice.'"
+	},
+	"perStratum": {
+		"noun-fired": {
+			"poolSize": 102,
+			"poolWeight": 0.7183098591549296,
+			"sheetsSampled": 8,
+			"variants": {
+				"guard_on": {
+					"n": 8,
+					"counts": {
+						"pure_field": 4,
+						"mostly_field": 3,
+						"not_field": 1,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 8,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.5,
+					"mostlyFieldRate": 0.375,
+					"notFieldRate": 0.125,
+					"pureOrMostlyRate": 0.875
+				},
+				"guard_off": {
+					"n": 8,
+					"counts": {
+						"pure_field": 5,
+						"mostly_field": 3,
+						"not_field": 0,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 8,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.625,
+					"mostlyFieldRate": 0.375,
+					"notFieldRate": 0.0,
+					"pureOrMostlyRate": 1.0
+				}
+			}
+		},
+		"noun-silent": {
+			"poolSize": 12,
+			"poolWeight": 0.08450704225352113,
+			"sheetsSampled": 5,
+			"variants": {
+				"guard_on": {
+					"n": 5,
+					"counts": {
+						"pure_field": 1,
+						"mostly_field": 3,
+						"not_field": 1,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 5,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.2,
+					"mostlyFieldRate": 0.6,
+					"notFieldRate": 0.2,
+					"pureOrMostlyRate": 0.8
+				},
+				"guard_off": {
+					"n": 5,
+					"counts": {
+						"pure_field": 1,
+						"mostly_field": 3,
+						"not_field": 1,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 5,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.2,
+					"mostlyFieldRate": 0.6,
+					"notFieldRate": 0.2,
+					"pureOrMostlyRate": 0.8
+				}
+			}
+		},
+		"contaminated": {
+			"poolSize": 20,
+			"poolWeight": 0.14084507042253522,
+			"sheetsSampled": 6,
+			"variants": {
+				"guard_on": {
+					"n": 6,
+					"counts": {
+						"pure_field": 0,
+						"mostly_field": 3,
+						"not_field": 3,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 6,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.0,
+					"mostlyFieldRate": 0.5,
+					"notFieldRate": 0.5,
+					"pureOrMostlyRate": 0.5
+				},
+				"guard_off": {
+					"n": 6,
+					"counts": {
+						"pure_field": 3,
+						"mostly_field": 2,
+						"not_field": 1,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 6,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.5,
+					"mostlyFieldRate": 0.3333333333333333,
+					"notFieldRate": 0.16666666666666666,
+					"pureOrMostlyRate": 0.8333333333333334
+				}
+			}
+		},
+		"class-only": {
+			"poolSize": 1,
+			"poolWeight": 0.007042253521126761,
+			"sheetsSampled": 1,
+			"variants": {
+				"guard_on": {
+					"n": 1,
+					"counts": {
+						"pure_field": 0,
+						"mostly_field": 1,
+						"not_field": 0,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 1,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.0,
+					"mostlyFieldRate": 1.0,
+					"notFieldRate": 0.0,
+					"pureOrMostlyRate": 1.0
+				},
+				"guard_off": {
+					"n": 1,
+					"counts": {
+						"pure_field": 0,
+						"mostly_field": 1,
+						"not_field": 0,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 1,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.0,
+					"mostlyFieldRate": 1.0,
+					"notFieldRate": 0.0,
+					"pureOrMostlyRate": 1.0
+				}
+			}
+		},
+		"static-only-clean": {
+			"poolSize": 7,
+			"poolWeight": 0.04929577464788732,
+			"sheetsSampled": 4,
+			"variants": {
+				"guard_on": {
+					"n": 4,
+					"counts": {
+						"pure_field": 2,
+						"mostly_field": 1,
+						"not_field": 1,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 4,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.5,
+					"mostlyFieldRate": 0.25,
+					"notFieldRate": 0.25,
+					"pureOrMostlyRate": 0.75
+				},
+				"guard_off": {
+					"n": 4,
+					"counts": {
+						"pure_field": 2,
+						"mostly_field": 1,
+						"not_field": 1,
+						"cant_tell": 0
+					},
+					"escapes": 0,
+					"escapeShare": 0.0,
+					"scoredN": 4,
+					"hasReliableRate": true,
+					"pureFieldRate": 0.5,
+					"mostlyFieldRate": 0.25,
+					"notFieldRate": 0.25,
+					"pureOrMostlyRate": 0.75
+				}
+			}
+		}
+	},
+	"aggregates": {
+		"guard_on": {
+			"reweightedPureFieldRate": {
+				"value": 0.4007042253521127,
+				"weightUsed": 1.0,
+				"weightDropped": 0.0,
+				"strataDropped": [],
+				"renormalized": false
+			},
+			"reweightedMostlyFieldRate": {
+				"value": 0.4098591549295775,
+				"weightUsed": 1.0,
+				"weightDropped": 0.0,
+				"strataDropped": [],
+				"renormalized": false
+			},
+			"reweightedPureOrMostlyCeiling": {
+				"value": 0.8105633802816902,
+				"weightUsed": 1.0,
+				"weightDropped": 0.0,
+				"strataDropped": [],
+				"renormalized": false
+			},
+			"reweightedEscapeShare": {
+				"value": 0.0,
+				"weightUsed": 1.0,
+				"allStrataIncluded": true
+			},
+			"rawCounts": {
+				"pure_field": 7,
+				"mostly_field": 11,
+				"not_field": 6,
+				"cant_tell": 0
+			},
+			"rawN": 24,
+			"rawScoredN": 24,
+			"rawPureFieldRate": 0.2916666666666667,
+			"rawEscapeShare": 0.0,
+			"meetsAggregateBar": false,
+			"strataBelowFloor": [
+				"class-only",
+				"contaminated",
+				"noun-silent"
+			],
+			"strataWithNoReliableRate": [],
+			"meetsFloorClause": false,
+			"verdict": "NOT-ADOPT"
+		},
+		"guard_off": {
+			"reweightedPureFieldRate": {
+				"value": 0.5609154929577465,
+				"weightUsed": 1.0,
+				"weightDropped": 0.0,
+				"strataDropped": [],
+				"renormalized": false
+			},
+			"reweightedMostlyFieldRate": {
+				"value": 0.3863849765258216,
+				"weightUsed": 1.0,
+				"weightDropped": 0.0,
+				"strataDropped": [],
+				"renormalized": false
+			},
+			"reweightedPureOrMostlyCeiling": {
+				"value": 0.9473004694835682,
+				"weightUsed": 1.0,
+				"weightDropped": 0.0,
+				"strataDropped": [],
+				"renormalized": false
+			},
+			"reweightedEscapeShare": {
+				"value": 0.0,
+				"weightUsed": 1.0,
+				"allStrataIncluded": true
+			},
+			"rawCounts": {
+				"pure_field": 11,
+				"mostly_field": 10,
+				"not_field": 3,
+				"cant_tell": 0
+			},
+			"rawN": 24,
+			"rawScoredN": 24,
+			"rawPureFieldRate": 0.4583333333333333,
+			"rawEscapeShare": 0.0,
+			"meetsAggregateBar": false,
+			"strataBelowFloor": [
+				"class-only",
+				"noun-silent"
+			],
+			"strataWithNoReliableRate": [],
+			"meetsFloorClause": false,
+			"verdict": "NOT-ADOPT"
+		}
+	},
+	"verdict": {
+		"overall": "NOT-ADOPT",
+		"adoptingVariants": [],
+		"perVariant": {
+			"guard_on": "NOT-ADOPT",
+			"guard_off": "NOT-ADOPT"
+		},
+		"consequence": "R-3 NOT adopted on this evidence; the residual stays a field-enriched prior."
+	},
+	"escapeShare": {
+		"why": "Pre-registered as a first-class result, not a diagnostic. It measures how often a cover has no figure/ground fact to get right.",
+		"overall": {
+			"guard_on": 0.0,
+			"guard_off": 0.0,
+			"totalEscapeAnswers": 0,
+			"totalAnswers": 48
+		},
+		"reweighted": {
+			"guard_on": 0.0,
+			"guard_off": 0.0
+		},
+		"perStratum": {
+			"noun-fired": {
+				"guard_on": 0.0,
+				"guard_off": 0.0
+			},
+			"noun-silent": {
+				"guard_on": 0.0,
+				"guard_off": 0.0
+			},
+			"contaminated": {
+				"guard_on": 0.0,
+				"guard_off": 0.0
+			},
+			"class-only": {
+				"guard_on": 0.0,
+				"guard_off": 0.0
+			},
+			"static-only-clean": {
+				"guard_on": 0.0,
+				"guard_off": 0.0
+			}
+		},
+		"strataWithNoReliableRate": {
+			"guard_on": [],
+			"guard_off": []
+		},
+		"proseAmbiguityPrior": {
+			"ambiguous": 3,
+			"covers": 9,
+			"rate": 0.3333333333333333,
+			"source": "GROUND_FREETEXT_SYNTHESIS.md \u2014 covers 5, 7, 9 of 9 were ambiguous in unconstrained prose",
+			"comparison": "The prose arm found 0.3333 of covers ambiguous when the reviewer wrote free text about the ground. This round offered a slot for exactly that answer on every panel.",
+			"caveat": "Different cover sets and different tasks: the prose arm described a whole artwork's ground in words; this round judged a subtracted panel against a named question with the artwork visible beside it. A gap between the two rates is a fact about the two elicitations as much as about the covers."
+		}
+	},
+	"sensitivityCeiling": {
+		"what": "The maximally generous reallocation: count EVERY mostly_field answer as pure_field, escapes still excluded. Pre-registered in \u00a712.9 so a reader can see whether the verdict is boundary-sensitive.",
+		"perVariant": {
+			"guard_on": {
+				"reweightedCeiling": 0.8105633802816902,
+				"reachesAggregateThreshold": true,
+				"strataBelowFloorAtCeiling": [],
+				"wouldClearWholeBarAtCeiling": true
+			},
+			"guard_off": {
+				"reweightedCeiling": 0.9473004694835682,
+				"reachesAggregateThreshold": true,
+				"strataBelowFloorAtCeiling": [],
+				"wouldClearWholeBarAtCeiling": true
+			}
+		},
+		"boundarySensitivity": "This is the one place round 2 differs in KIND from round 1. Round 1's ceiling missed the bar in BOTH variants (0.7412 / 0.6127), so its NOT-ADOPT could not be overturned by any reallocation of the soft answers \u2014 the verdict did not sit near the boundary. Round 2's ceiling clears the aggregate threshold AND every stratum floor in both variants (0.8106 / 0.9473). The verdict now rests entirely on where the reviewer drew the pure/mostly line, and 'mostly field' is the modal answer of the round (21 of 48). It is still a NOT-ADOPT \u2014 the bar asks for pure, the ceiling is not a rate, and nobody may read the ceiling as the result \u2014 but it is no longer a verdict that is safe against the boundary, and any re-run should expect the pure/mostly distinction to be doing the deciding. That distinction has never been calibrated."
+	},
+	"guardComparison": {
+		"perStratum": {
+			"noun-fired": {
+				"pureFieldOn": 0.5,
+				"pureFieldOff": 0.625,
+				"offMinusOn": 0.125,
+				"winner": "guard_off"
+			},
+			"noun-silent": {
+				"pureFieldOn": 0.2,
+				"pureFieldOff": 0.2,
+				"offMinusOn": 0.0,
+				"winner": null
+			},
+			"contaminated": {
+				"pureFieldOn": 0.0,
+				"pureFieldOff": 0.5,
+				"offMinusOn": 0.5,
+				"winner": "guard_off"
+			},
+			"class-only": {
+				"pureFieldOn": 0.0,
+				"pureFieldOff": 0.0,
+				"offMinusOn": 0.0,
+				"winner": null
+			},
+			"static-only-clean": {
+				"pureFieldOn": 0.5,
+				"pureFieldOff": 0.5,
+				"offMinusOn": 0.0,
+				"winner": null
+			}
+		},
+		"overall": {
+			"reweightedOn": 0.4007042253521127,
+			"reweightedOff": 0.5609154929577465,
+			"offMinusOn": 0.16021126760563376,
+			"rawPureFieldOn": 7,
+			"rawPureFieldOff": 11
+		},
+		"pairedSheets": {
+			"n": 24,
+			"agree": 18,
+			"agreementRate": 0.75,
+			"guardOnBetter": 0,
+			"guardOffBetter": 6,
+			"incomparable": 0,
+			"disagreements": [
+				{
+					"sheet": "resid5-236d3db46739",
+					"stratum": "noun-fired",
+					"guard_on": "mostly_field",
+					"guard_off": "pure_field",
+					"direction": "guard OFF purer"
+				},
+				{
+					"sheet": "resid5-417f95ea29e2",
+					"stratum": "contaminated",
+					"guard_on": "not_field",
+					"guard_off": "mostly_field",
+					"direction": "guard OFF purer"
+				},
+				{
+					"sheet": "resid5-5aef26a06014",
+					"stratum": "noun-fired",
+					"guard_on": "not_field",
+					"guard_off": "mostly_field",
+					"direction": "guard OFF purer"
+				},
+				{
+					"sheet": "resid5-5dcb480eb3cd",
+					"stratum": "contaminated",
+					"guard_on": "mostly_field",
+					"guard_off": "pure_field",
+					"direction": "guard OFF purer"
+				},
+				{
+					"sheet": "resid5-92502aa8ecae",
+					"stratum": "contaminated",
+					"guard_on": "not_field",
+					"guard_off": "pure_field",
+					"direction": "guard OFF purer"
+				},
+				{
+					"sheet": "resid5-9f6aa31d9b8b",
+					"stratum": "contaminated",
+					"guard_on": "mostly_field",
+					"guard_off": "pure_field",
+					"direction": "guard OFF purer"
+				}
+			]
+		}
+	},
+	"instrumentComparison": {
+		"framing": "Two instrument readings side by side. NOT a paired rate and NOT a pooled rate. Three things changed at once between the rounds: (1) the subtraction \u2014 v4 subtracted the one main noun, v5 subtracts every noun a J list named; (2) the elicitation of the ANSWER \u2014 round 1 forced a choice among three, round 2 offered a fourth; (3) the sample \u2014 a different seed over pools that themselves moved. Any movement below is attributable to any of the three, and this round cannot separate them.",
+		"round1": {
+			"batch": "residual-purity-1",
+			"labelSchemaVersion": "residual-purity.v1",
+			"subtraction": "sam-eval-142-v4-nouns (single main noun)",
+			"answers": [
+				"pure_field",
+				"mostly_field",
+				"not_field"
+			],
+			"reweightedPureFieldRate": {
+				"guard_on": 0.24237089201877932,
+				"guard_off": 0.24237089201877932
+			},
+			"verdict": "NOT-ADOPT"
+		},
+		"round2": {
+			"batch": "residual-purity-2",
+			"labelSchemaVersion": "residual-purity.v2",
+			"subtraction": "sam-eval-142-v5-allnouns (every noun a variant-J list named, cap 8)",
+			"answers": [
+				"pure_field",
+				"mostly_field",
+				"not_field",
+				"cant_tell"
+			],
+			"reweightedPureFieldRate": {
+				"guard_on": 0.4007042253521127,
+				"guard_off": 0.5609154929577465
+			},
+			"verdict": "NOT-ADOPT"
+		},
+		"movement": {
+			"guard_on": {
+				"round1": 0.24237089201877932,
+				"round2": 0.4007042253521127,
+				"delta": 0.15833333333333338
+			},
+			"guard_off": {
+				"round1": 0.24237089201877932,
+				"round2": 0.5609154929577465,
+				"delta": 0.31854460093896714
+			}
+		},
+		"perStratum": {
+			"noun-fired": {
+				"poolV4": 77,
+				"poolV5": 102,
+				"poolDelta": 25,
+				"guard_on": {
+					"round1PureFieldRate": 0.25,
+					"round1N": 8,
+					"round2PureFieldRate": 0.5,
+					"round2N": 8,
+					"round2EscapeShare": 0.0,
+					"movement": 0.25
+				},
+				"guard_off": {
+					"round1PureFieldRate": 0.25,
+					"round1N": 8,
+					"round2PureFieldRate": 0.625,
+					"round2N": 8,
+					"round2EscapeShare": 0.0,
+					"movement": 0.375
+				}
+			},
+			"noun-silent": {
+				"poolV4": 10,
+				"poolV5": 12,
+				"poolDelta": 2,
+				"guard_on": {
+					"round1PureFieldRate": 0.4,
+					"round1N": 5,
+					"round2PureFieldRate": 0.2,
+					"round2N": 5,
+					"round2EscapeShare": 0.0,
+					"movement": -0.2
+				},
+				"guard_off": {
+					"round1PureFieldRate": 0.4,
+					"round1N": 5,
+					"round2PureFieldRate": 0.2,
+					"round2N": 5,
+					"round2EscapeShare": 0.0,
+					"movement": -0.2
+				}
+			},
+			"contaminated": {
+				"poolV4": 25,
+				"poolV5": 20,
+				"poolDelta": -5,
+				"guard_on": {
+					"round1PureFieldRate": 0.16666666666666666,
+					"round1N": 6,
+					"round2PureFieldRate": 0.0,
+					"round2N": 6,
+					"round2EscapeShare": 0.0,
+					"movement": -0.16666666666666666
+				},
+				"guard_off": {
+					"round1PureFieldRate": 0.16666666666666666,
+					"round1N": 6,
+					"round2PureFieldRate": 0.5,
+					"round2N": 6,
+					"round2EscapeShare": 0.0,
+					"movement": 0.33333333333333337
+				}
+			},
+			"class-only": {
+				"poolV4": 2,
+				"poolV5": 1,
+				"poolDelta": -1,
+				"guard_on": {
+					"round1PureFieldRate": 0.0,
+					"round1N": 2,
+					"round2PureFieldRate": 0.0,
+					"round2N": 1,
+					"round2EscapeShare": 0.0,
+					"movement": 0.0
+				},
+				"guard_off": {
+					"round1PureFieldRate": 0.0,
+					"round1N": 2,
+					"round2PureFieldRate": 0.0,
+					"round2N": 1,
+					"round2EscapeShare": 0.0,
+					"movement": 0.0
+				}
+			},
+			"static-only-clean": {
+				"poolV4": 28,
+				"poolV5": 7,
+				"poolDelta": -21,
+				"guard_on": {
+					"round1PureFieldRate": 0.25,
+					"round1N": 4,
+					"round2PureFieldRate": 0.5,
+					"round2N": 4,
+					"round2EscapeShare": 0.0,
+					"movement": 0.25
+				},
+				"guard_off": {
+					"round1PureFieldRate": 0.25,
+					"round1N": 4,
+					"round2PureFieldRate": 0.5,
+					"round2N": 4,
+					"round2EscapeShare": 0.0,
+					"movement": 0.25
+				}
+			}
+		},
+		"sharedCovers": {
+			"n": 5,
+			"ofRound1": 25,
+			"ofRound2": 24,
+			"note": "The two rounds drew independently under different seeds over pools that changed size, so only these covers appear in both. That is far too few for a paired rate; they are listed as direct observations, not as a statistic. \u00a712.9's 'paired question' framing means paired at the POPULATION level (both draws come from eval-142), not at the cover level.",
+			"judgmentsIdentical": 9,
+			"judgmentsTotal": 10,
+			"netSteps": 1,
+			"newPureFieldAnswers": 0,
+			"readThis": "On the covers BOTH rounds happened to draw, the answers barely moved. That is the single most important caveat on the headline movement: the aggregate rose, but not on the covers where a before/after is actually visible. It is consistent with the movement coming from the redrawn sample rather than from the better subtraction \u2014 and equally consistent with 5 covers being too few to show anything. n=5 of 24 settles nothing on its own; it is reported because it points the opposite way from the headline and must not be omitted for that reason.",
+			"covers": [
+				{
+					"cover": "2bfbcbb4f189",
+					"round1Stratum": "contaminated",
+					"round2Stratum": "contaminated",
+					"stratumMoved": false,
+					"guard_on": {
+						"round1": "not_field",
+						"round2": "not_field",
+						"same": true,
+						"step": 0
+					},
+					"guard_off": {
+						"round1": "not_field",
+						"round2": "not_field",
+						"same": true,
+						"step": 0
+					}
+				},
+				{
+					"cover": "44b793fb749e",
+					"round1Stratum": "class-only",
+					"round2Stratum": "noun-silent",
+					"stratumMoved": true,
+					"guard_on": {
+						"round1": "not_field",
+						"round2": "mostly_field",
+						"same": false,
+						"step": 1
+					},
+					"guard_off": {
+						"round1": "mostly_field",
+						"round2": "mostly_field",
+						"same": true,
+						"step": 0
+					}
+				},
+				{
+					"cover": "46821d170334",
+					"round1Stratum": "noun-fired",
+					"round2Stratum": "noun-fired",
+					"stratumMoved": false,
+					"guard_on": {
+						"round1": "pure_field",
+						"round2": "pure_field",
+						"same": true,
+						"step": 0
+					},
+					"guard_off": {
+						"round1": "pure_field",
+						"round2": "pure_field",
+						"same": true,
+						"step": 0
+					}
+				},
+				{
+					"cover": "77802c9bd678",
+					"round1Stratum": "class-only",
+					"round2Stratum": "class-only",
+					"stratumMoved": false,
+					"guard_on": {
+						"round1": "mostly_field",
+						"round2": "mostly_field",
+						"same": true,
+						"step": 0
+					},
+					"guard_off": {
+						"round1": "mostly_field",
+						"round2": "mostly_field",
+						"same": true,
+						"step": 0
+					}
+				},
+				{
+					"cover": "e0dc3c587b37",
+					"round1Stratum": "contaminated",
+					"round2Stratum": "contaminated",
+					"stratumMoved": false,
+					"guard_on": {
+						"round1": "mostly_field",
+						"round2": "mostly_field",
+						"same": true,
+						"step": 0
+					},
+					"guard_off": {
+						"round1": "mostly_field",
+						"round2": "mostly_field",
+						"same": true,
+						"step": 0
+					}
+				}
+			]
+		},
+		"whatEachChangeCouldExplain": {
+			"subtraction_v4_to_v5": "The one change expected to RAISE purity: more nouns named means more subject removed, so fewer leftover objects. Round 1's own free-text feedback named exactly the misses an all-nouns list targets \u2014 a flame, a cello, a second object the single main-noun question never prompted.",
+			"escape_added": "Expected to RAISE the rate mechanically if it is used, by removing the hardest covers from the denominator. Whether it did is answered by the escape share: at 0 escape answers out of 48, this explanation is UNAVAILABLE \u2014 the denominator never shrank.",
+			"sample_redrawn": "Different covers, and pools that moved hard (static-only-clean 28->7). With 8/5/6/1/4 sheets per stratum, a per-stratum rate moves in steps of 0.125/0.2/0.167/1.0/0.25, so single-cover sampling noise is large relative to the movement in the small strata."
+		}
+	},
+	"proxyVsHuman": {
+		"claim": {
+			"run": "sam-eval-142-v5-allnouns",
+			"cut": "subtraction",
+			"perVariant": {
+				"guard_on": {
+					"clean": 121,
+					"total": 142,
+					"rate": 0.852113
+				},
+				"guard_off": {
+					"clean": 122,
+					"total": 142,
+					"rate": 0.859155
+				}
+			},
+			"note": "The proxy's non-clean set IS the `contaminated` stratum, so it asserts 0.0 clean there and 1.0 clean in every other stratum \u2014 the same stark claim it made on v4."
+		},
+		"perStratum": {
+			"noun-fired": {
+				"proxyClean": 1.0,
+				"humanPure": {
+					"guard_on": 0.5,
+					"guard_off": 0.625
+				},
+				"gap": {
+					"guard_on": -0.5,
+					"guard_off": -0.375
+				}
+			},
+			"noun-silent": {
+				"proxyClean": 1.0,
+				"humanPure": {
+					"guard_on": 0.2,
+					"guard_off": 0.2
+				},
+				"gap": {
+					"guard_on": -0.8,
+					"guard_off": -0.8
+				}
+			},
+			"contaminated": {
+				"proxyClean": 0.0,
+				"humanPure": {
+					"guard_on": 0.0,
+					"guard_off": 0.5
+				},
+				"gap": {
+					"guard_on": 0.0,
+					"guard_off": 0.5
+				}
+			},
+			"class-only": {
+				"proxyClean": 1.0,
+				"humanPure": {
+					"guard_on": 0.0,
+					"guard_off": 0.0
+				},
+				"gap": {
+					"guard_on": -1.0,
+					"guard_off": -1.0
+				}
+			},
+			"static-only-clean": {
+				"proxyClean": 1.0,
+				"humanPure": {
+					"guard_on": 0.5,
+					"guard_off": 0.5
+				},
+				"gap": {
+					"guard_on": -0.5,
+					"guard_off": -0.5
+				}
+			}
+		},
+		"aggregate": {
+			"guard_on": {
+				"proxyClean": 0.852113,
+				"humanPureReweighted": 0.4007042253521127,
+				"gap": -0.4514087746478873
+			},
+			"guard_off": {
+				"proxyClean": 0.859155,
+				"humanPureReweighted": 0.5609154929577465,
+				"gap": -0.29823950704225355
+			}
+		},
+		"priorOverclaim": {
+			"v4Measured": 0.582,
+			"note": "Round 1 measured this proxy over-claiming purity by 0.582. This round is the second measurement of the same offset, on the v5 run."
+		}
+	},
+	"scope": {
+		"population": "eval-142, the 142-cover SAM run set. NOT the corpus and NOT the v3 tuning bench. COVERAGE_SET.md establishes eval-142 was never a sample of this corpus (cluster-mix total-variation distance 0.2273 against coverage-set-1's 0.0851, 2.67x worse), so NO number in this file is a corpus-level purity estimate.",
+		"prescribedCorpusRerun": "coverage-set-1 (200 artworks, seed 0xc0efface), per RESIDUAL_PURITY_VERDICT.md",
+		"enrichment": "The sample is deliberately enriched for hard cases (contaminated 6/24 = 25% of the sample vs 20/142 = 14.1% of the population). Reweighting corrects the aggregate; the raw rate is not a population rate.",
+		"cut": "Panels render at the SUBTRACTION cut \u2014 min(pooled, group cut) per group under concept set v2.2, because cjk_script's cut (0.392655, PROVISIONAL) is below pooled \u2014 not config.py's shipped precision cut. Not a proposal to change config.py.",
+		"smallCells": "class-only n=1 per variant (the entire v5 pool), static-only-clean n=4, noun-silent n=5. A class-only rate can only be 0.0 or 1.0, so the floor clause is decided in that stratum by a single answer. Read the floor clause with that in mind.",
+		"knownLeaks": "\u00a712.11 item 5: of the three fixes the round-1 verdict named as preconditions for a meaningful re-run \u2014 list-ALL-things, the text_below_cut leak, the ornament policy \u2014 this round did the first only. The result is still read against a known-leaking text arm and an unowned ornament class."
+	},
+	"proposedDecisionRecords": [
+		{
+			"id": "d-2026-08-04-r3-not-adopted-on-v5-allnouns",
+			"status": "PROPOSED \u2014 not recorded by this analysis",
+			"title": "R-3 not adopted: the all-nouns residual is still a field-enriched prior",
+			"decision": "R-3's structural claim \u2014 that 'everything but the masks' isolates background well enough to retire ground vocabulary to pixel computation \u2014 is NOT adopted on the residual-purity-2 evidence. The stratum-reweighted pure-field rate is 0.4007 (guard ON) and 0.5609 (guard OFF) against a pre-registered bar of 0.75, with noun-silent (0.20) and class-only (0.00) below the 0.50 stratum floor in both variants and contaminated (0.00) below it under guard ON. The residual remains a field-enriched prior, not a field.",
+			"alsoDecides": "The escape answer works and figure/ground ambiguity did NOT materialise at the panel: cant_tell was available on all 48 items and chosen 0 times, so the escape-excluded denominator equals the full denominator and no stratum lost its purity rate. The rate rise from round 1 is therefore NOT denominator shrinkage.",
+			"barHeldNotMoved": true,
+			"supersedes": null,
+			"succeeds": "the round-1 verdict d-2026-08-04-r3-not-adopted (RESIDUAL_PURITY_VERDICT.md \u00a7'Proposed decision records' 1), which this round re-tests with a corrected instrument and confirms",
+			"fundedBy": [
+				"o-mse8rh4r-f7ef4ce3",
+				"o-mse8rnlo-87a8a64e",
+				"o-mse8rsfp-d074cc2f",
+				"o-mse8rttz-a15b067e",
+				"o-mse8rvt1-7f4b6bfa",
+				"o-mse8s3gz-8f050efb",
+				"o-mse8s5pp-794410e4",
+				"o-mse8scbf-24e8ddd3",
+				"o-mse8sgmd-8d8934f5",
+				"o-mse8sj56-6a7f4a0e",
+				"o-mse8spqi-fd198149",
+				"o-mse8st2d-12eb509c",
+				"o-mse8sxt2-df03aa8e",
+				"o-mse8t186-b73dff20",
+				"o-mse8t4wu-4d2a9c06",
+				"o-mse8trds-4c585c0a",
+				"o-mse8tsqt-c168557f",
+				"o-mse8tyc3-28527c3e",
+				"o-mse8u53k-7e4154fc",
+				"o-mse8u92c-ad0cafbd",
+				"o-mse8udrz-256ed51d",
+				"o-mse8uf3g-ecffc852",
+				"o-mse8umjw-9e05b57e",
+				"o-mse8uvzc-c672292a",
+				"o-mse8v0uw-4d562c57",
+				"o-mse8v1v0-4d769ba1",
+				"o-mse8v3l2-2824d4f7",
+				"o-mse8v4yx-4c85a6a2",
+				"o-mse8v64x-23980049",
+				"o-mse8vakf-86a8d526",
+				"o-mse8vgxj-6415e474",
+				"o-mse8vjc4-99bd2d2f",
+				"o-mse8vksw-f208ce78",
+				"o-mse96i8c-3dc1e9b6",
+				"o-mse96jtx-20b5b843",
+				"o-mse96mh9-ea01a746",
+				"o-mse96nzj-3770b008",
+				"o-mse96p3v-2d2e1caf",
+				"o-mse96q4v-404d0833",
+				"o-mse96r31-ff739464",
+				"o-mse96sdm-fc9bd759",
+				"o-mse96tjx-b5f936c5",
+				"o-mse96x1i-e1b14ca7",
+				"o-mse96y8g-40854b21",
+				"o-mse96zna-9e8ea8fa",
+				"o-mse970yb-bc36d1dd",
+				"o-mse974gw-e49312a1",
+				"o-mse975x6-7775a7ee",
+				"bc-mse9775m-9656ec48"
+			],
+			"fundedByNote": "The 48 released oracle-label ids of batch residual-purity-2 plus its batch-complete record. Every id was released before this analysis ran; none is superseded, amended or retracted.",
+			"scopeLimit": "eval-142 only. Not a corpus estimate \u2014 COVERAGE_SET.md establishes eval-142 was never a sample of this corpus. The prescribed corpus re-run is on coverage-set-1.",
+			"knownWeakness": "The charitable ceiling clears the whole bar in both variants, so this NOT-ADOPT is boundary-sensitive in a way round 1's was not. It is recorded as a NOT-ADOPT because the bar asks for pure field and 0.4007/0.5609 is what was answered."
+		},
+		{
+			"id": "d-2026-08-04-area-guard-off-wins-on-purity",
+			"status": "PROPOSED \u2014 not recorded by this analysis, and NOT a config change",
+			"title": "The uniform area guard costs residual purity (A6 evidence)",
+			"decision": "On the all-nouns subtraction, turning the uniform area guard OFF produces a purer residual, unanimously in direction: of 24 sheets the two settings disagreed on 6, and guard OFF was the purer answer on all 6 \u2014 guard ON on none. Reweighted, 0.5609 (OFF) vs 0.4007 (ON), +0.1602. The effect is concentrated in `contaminated` (0.50 OFF vs 0.00 ON). This is evidence FOR loose end A6's person exemption and evidence that the exemption question now also applies to dyn-noun-N.",
+			"mechanism": "The guard drops masks above an area fraction. With eight noun prompts per cover instead of one, far more large masks are proposed, so the guard rejects more of them \u2014 and a rejected subject mask leaves its subject in the residual. Round 1 saw no such effect (2 ON-better / 1 OFF-better, a tie) because a single main-noun list rarely produced a mask big enough for the guard to bite.",
+			"doesNotDecide": "This does NOT authorise turning the guard off. The guard exists to stop a runaway mask eating the whole image, and this round measured only what remains, never whether too much was removed \u2014 the reviewer was explicitly instructed that 'whether too much was removed is not this question'. The over-removal arm is unmeasured, and the guard cannot be changed on a one-sided measurement.",
+			"fundedBy": [
+				"o-mse8rh4r-f7ef4ce3",
+				"o-mse8rnlo-87a8a64e",
+				"o-mse8rsfp-d074cc2f",
+				"o-mse8rttz-a15b067e",
+				"o-mse8rvt1-7f4b6bfa",
+				"o-mse8s3gz-8f050efb",
+				"o-mse8s5pp-794410e4",
+				"o-mse8scbf-24e8ddd3",
+				"o-mse8sgmd-8d8934f5",
+				"o-mse8sj56-6a7f4a0e",
+				"o-mse8spqi-fd198149",
+				"o-mse8st2d-12eb509c",
+				"o-mse8sxt2-df03aa8e",
+				"o-mse8t186-b73dff20",
+				"o-mse8t4wu-4d2a9c06",
+				"o-mse8trds-4c585c0a",
+				"o-mse8tsqt-c168557f",
+				"o-mse8tyc3-28527c3e",
+				"o-mse8u53k-7e4154fc",
+				"o-mse8u92c-ad0cafbd",
+				"o-mse8udrz-256ed51d",
+				"o-mse8uf3g-ecffc852",
+				"o-mse8umjw-9e05b57e",
+				"o-mse8uvzc-c672292a",
+				"o-mse8v0uw-4d562c57",
+				"o-mse8v1v0-4d769ba1",
+				"o-mse8v3l2-2824d4f7",
+				"o-mse8v4yx-4c85a6a2",
+				"o-mse8v64x-23980049",
+				"o-mse8vakf-86a8d526",
+				"o-mse8vgxj-6415e474",
+				"o-mse8vjc4-99bd2d2f",
+				"o-mse8vksw-f208ce78",
+				"o-mse96i8c-3dc1e9b6",
+				"o-mse96jtx-20b5b843",
+				"o-mse96mh9-ea01a746",
+				"o-mse96nzj-3770b008",
+				"o-mse96p3v-2d2e1caf",
+				"o-mse96q4v-404d0833",
+				"o-mse96r31-ff739464",
+				"o-mse96sdm-fc9bd759",
+				"o-mse96tjx-b5f936c5",
+				"o-mse96x1i-e1b14ca7",
+				"o-mse96y8g-40854b21",
+				"o-mse96zna-9e8ea8fa",
+				"o-mse970yb-bc36d1dd",
+				"o-mse974gw-e49312a1",
+				"o-mse975x6-7775a7ee",
+				"bc-mse9775m-9656ec48"
+			],
+			"fundedByNote": "Same 48 labels \u2014 the guard comparison is the same answers read pairwise."
+		}
+	],
+	"rulingContext": {
+		"question": "R-3 / the ground-vocabulary question: can 'everything but the masks' isolate backgrounds well enough to retire ground vocabulary to pixel computation?",
+		"otherArm": "GROUND_FREETEXT_SYNTHESIS.md: on free-text ground descriptions, 6 of 9 covers were palette-decidable in prose (ambiguous: 5, 7, 9).",
+		"whoDecides": "The vocabulary-vs-pixels ruling is the REVIEWER'S to make. This analysis supplies the pixel arm only."
+	}
+}

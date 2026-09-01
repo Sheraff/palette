@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "caseId": "future03-05-7a25113befbd",
+      "commentSha256": "68e3d201231789c80970fbd2097c5c64125cfa5dce638885f163404ea8f615fa",
+      "classes": [
+        "signature-color-accent-availability-underselection"
+      ],
+      "rationale": "The candidate is option A. Orange and warm-gold source families including family-5976 and family-5094 reached the signature lane, but neither reached the complete-candidate accent-family set; the winner and retained slate therefore remain blue-green. The missing orange-gold identity described for both methods is a candidate accent-availability loss before complete-treatment Pareto ranking.",
+      "uncertain": false
+    },
+    {
+      "caseId": "future03-07-856314f006cf",
+      "commentSha256": "09e2c91a256686398fc766d857c973ef8695a6491adb3c272ac8ff744d6c1ae0",
+      "classes": [
+        "signature-color-retained-slate-underselection"
+      ],
+      "rationale": "The candidate is option B. Green source families including family-7235, family-8117, and family-9020 reached complete accent candidates, but no green family survived into the retained accent slate; the selected treatment uses a brown accent. The missing green dome identity is therefore retained-slate underselection after candidate availability rather than source-family discovery failure.",
+      "uncertain": false
+    },
+    {
+      "caseId": "future03-09-c69d9e863d6b",
+      "commentSha256": "d0f9ba3de6560d305ff83bb7924e15ab366b5e74d1b41c7ece37e997012cdf27",
+      "classes": [
+        "identity-bearing-accent-top-ranking-underselection"
+      ],
+      "rationale": "The candidate is option B. Green family-7237 reached both complete accent candidates and the retained accent slate, while red family-5995 reached complete candidates; the deterministic winner nevertheless uses muted blue family-5489 as accent. The candidate was rated weak fallback and the baseline stronger, so the omitted green and red variety identifies top-treatment ranking underselection despite an identity-bearing green retained alternative.",
+      "uncertain": false
+    }
+  ]
+}

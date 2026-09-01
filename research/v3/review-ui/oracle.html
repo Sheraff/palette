@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>oracle validation</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="oracle-body">
+		<header class="oracle-bar oracle-head">
+			<div class="oracle-prompt">
+				<!-- Reconciliation context: the reviewer's own earlier answers for this artwork and the
+				     rule they break. Empty, and therefore invisible, on every by-question round. -->
+				<p id="reconcile-prior" class="oracle-reconcile"></p>
+				<p id="reconcile-conflict" class="oracle-reconcile oracle-reconcile-conflict"></p>
+				<p id="preamble" class="oracle-preamble"></p>
+				<p id="framing" class="oracle-preamble"></p>
+				<p id="question">loading…</p>
+				<p id="instruction" class="oracle-instruction"></p>
+			</div>
+			<p id="progress"></p>
+		</header>
+
+		<main id="stage" class="oracle-stage" aria-live="polite"></main>
+
+		<footer class="oracle-bar oracle-foot">
+			<ul id="mapping" class="oracle-mapping"></ul>
+			<p id="pending" class="oracle-pending"></p>
+			<p id="status">…</p>
+			<p class="oracle-keys">
+				<b id="undokey">u</b> undo one · <b>r</b> release when finished · <a href="/">all reviews</a>
+			</p>
+		</footer>
+	</body>
+	<script type="module" src="/oracle.js"></script>
+</html>

@@ -1,0 +1,145 @@
+{
+  "_comment": [
+    "Pinned query covers for gallery/neighbors.html. Not sampled per run: the",
+    "same twelve covers every time, so two reviewers looking at the panel on",
+    "different days are looking at the same thing.",
+    "",
+    "Selection, by group:",
+    "  famous      recognisable covers, so a reviewer can judge neighbour quality",
+    "              against their own knowledge of the record.",
+    "  v2-3-hard   covers the v2-3 palette algorithm demonstrably failed on. These",
+    "              were matched into music-artworks by CONTENT (sha256 of the file",
+    "              bytes), not by filename -- the eval keeps them in images/ under",
+    "              short names, and 7 of the 25 turn out to be byte-identical to a",
+    "              file already in the corpus.",
+    "  v2-3-hard-proxy",
+    "              working-set stand-ins for three v2-3-hard covers that turned out",
+    "              to be HELD OUT. They are not themselves v2-3 failures and must",
+    "              never be described as such -- they are the nearest working-set",
+    "              artworks to the covers they replace.",
+    "",
+    "HELD-OUT QUERY REPLACEMENT (2026-08-03, closes review finding C-new-2):",
+    "  Three of the original twelve -- 'johns', 'krafty' and 'muse' -- were in the",
+    "  frozen holdout (data/holdout/holdout.json), so rendering this panel put three",
+    "  held-out artworks in front of a reviewer. gallery.py already calls a held-out",
+    "  query 'an editing mistake, not a sampling accident'; this is the edit.",
+    "",
+    "  Selection rule, applied mechanically and stated so it can be re-run:",
+    "    1. Rank all other corpus artworks by cosine to the removed cover under the",
+    "       CANONICAL embedding -- dinov2-vitl14 at native 224 px, per decision",
+    "       d-2026-08-02-embedding-canonical-model. Vectors are L2-normalized",
+    "       (verified: norms within 1.2e-7 of 1.0), so cosine is a plain dot product.",
+    "    2. Keep the highest-ranked artwork that is in the WORKING SET -- open under",
+    "       holdout.json, i.e. neither held nor quarantined -- and not already pinned.",
+    "    3. CROSS-ARM SAME-FAMILY SCREEN: reject any candidate whose maximum cosine to",
+    "       any rendition of the removed cover, over all six embedding arms, is >= 0.80.",
+    "       This step is load-bearing, not decoration. For 'muse' the mechanical winner",
+    "       of steps 1-2 was b9202199ce8e738fce42630101615c28, which is Muse 'Showbiz' --",
+    "       the same record family under a different artwork id. The canonical arm reads",
+    "       it at only 0.68, below the 0.95 census threshold, so the near-duplicate",
+    "       census never flagged it and the holdout's zero-crossing-edges guarantee is",
+    "       untouched. But pe-core-l14 reads it at 0.906 and siglip2-so400m at 0.916 --",
+    "       and pe-core is the arm GALLERY_NOTES.md eliminated precisely BECAUSE it",
+    "       matches by artist. Pinning it would have put a near-relative of a held-out",
+    "       cover back on the page under a different filename. The three covers actually",
+    "       chosen top out at 0.587 / 0.608 / 0.528 across all six arms, so the screen",
+    "       separates cleanly and is not a tuned threshold.",
+    "",
+    "  Verified after the edit: all twelve pinned covers now classify as 'open'.",
+    "",
+    "  The removed covers stay in the record. GALLERY_NOTES.md observations that name",
+    "  johns, krafty or muse are HISTORICAL RECORD of what a reviewer actually saw on",
+    "  the browse of 2026-08-02, and are deliberately left untouched -- that file is",
+    "  sha-pinned evidence. Nothing here retroactively edits what was observed; it only",
+    "  changes what the panel renders from now on.",
+    "  distinctive covers with the LOWEST best-neighbour cosine across all three",
+    "              finalists, i.e. the corpus's genuine visual outliers, chosen by",
+    "              measurement rather than by browsing.",
+    "  random-300  seeded draw from the 300 px tier, to show what the models do",
+    "              with a low-detail thumbnail.",
+    "",
+    "loups.jpg and doja.jpg were requested but are NOT present in either corpus by",
+    "content hash, so they cannot be shown without embedding them ad hoc."
+  ],
+  "seed": 20260802,
+  "queries": [
+    {
+      "path": "music-artworks/9/6/e/96e11373275cc8adb4db639a986401b9.jpg",
+      "label": "System of a Down — Toxicity",
+      "group": "famous",
+      "why": "Globally recognisable. Photographic scene, heavy grain, hillside lettering integrated into the artwork plus a separate red title overlay — two different kinds of text in one cover."
+    },
+    {
+      "path": "music-artworks/6/9/e/69eb0435ce0c9f41665c9e2c480314a9.jpg",
+      "label": "Green Day — American Idiot",
+      "group": "famous",
+      "why": "Globally recognisable, and does triple duty: flat black field with white/red vector art, a parental-advisory badge in the corner, and a known v2-3 failure (the algorithm reversed the black background and white foreground)."
+    },
+    {
+      "path": "08/ab67616d0000b27300082070bf294fdedef84fd1",
+      "label": "flood, wave and grandfather clock (stand-in for v2-3 'johns')",
+      "group": "v2-3-hard-proxy",
+      "replaces": "music-artworks/8/7/e/87e9beeb1ba665f10b446ae57c79b672.jpg — The Longest Johns, Between Wind and Water; removed 2026-08-03 as held-out",
+      "cosineToReplaced": 0.4846,
+      "why": "Nearest working-set artwork to the held-out 'johns' cover under the canonical arm (0.4846; rank 3 overall, the two above it are both held out). Stands in for the same property: a large blue-green water field filling the lower two thirds, which is exactly what the v2-3 ask 'we are really missing the sailor blue surface' was about. Flat-colour comic illustration — a Hokusai-style breaking wave, a slumped figure at a flooded table, a drowning grandfather clock and TV, a big orange moon on a pink/mauve sky. Note it is NOT a v2-3 failure case; no v2-3 verdict exists for it."
+    },
+    {
+      "path": "0b/ab67616d0000b273000bb675cd00bd7a80a1c924",
+      "label": "Valeria — #100tete mas Barranquillero (stand-in for v2-3 'krafty')",
+      "group": "v2-3-hard-proxy",
+      "replaces": "music-artworks/6/2/7/62730e508630a4192921b87e0530ccd6.jpg — v2-3 'krafty'; removed 2026-08-03 as held-out",
+      "cosineToReplaced": 0.5644,
+      "why": "Nearest working-set artwork to the held-out 'krafty' cover under the canonical arm (0.5644; the three above it are all held out). Carries krafty's diagnostic property — the wanted colour lives in the LETTERING, not in area. Dense tropical floral border (magenta, red, yellow, green) around a near-black centre, with large white brush script, a yellow crown and multi-coloured hand-lettered type. If a model returns neighbours that match the black field rather than the type, that is the same failure krafty exposed. NOT itself a v2-3 failure case."
+    },
+    {
+      "path": "0e/ab67616d0000b273000e878a265e2394f76e78a5",
+      "label": "American Horror Story: Apocalypse — The Supreme Playlist (stand-in for v2-3 'muse')",
+      "group": "v2-3-hard-proxy",
+      "replaces": "music-artworks/d/7/a/d7a06753cf29eeb6ffecd71ed7c56a7a.jpg — v2-3 'muse'; removed 2026-08-03 as held-out",
+      "cosineToReplaced": 0.4312,
+      "why": "Highest-ranked working-set artwork to the held-out 'muse' cover that survives the cross-arm same-family screen (0.4312 on the canonical arm; the mechanical winner above it was a different pressing of the same record and was rejected — see the selection rule in _comment). Carries muse's diagnostic property: dark-on-dark with one hot accent, the case where midpoint and background both collapse to near-black. Silhouetted figure before an orange/amber fire on a near-black ground, chrome title, and a long block of yellow-outlined tracklist text. NOT itself a v2-3 failure case."
+    },
+    {
+      "path": "music-artworks/1/c/7/1c73b3ebefa105bf82f2324fb39f75dc.jpg",
+      "label": "v2-3 'infected'",
+      "group": "v2-3-hard",
+      "why": "The ask that is provably unreachable: the reviewer wanted a blue that 'no measurable property' separates from the rest. If any model puts visually blue covers next to this one, that is a hint the property exists in embedding space even though it did not exist in colorimetry."
+    },
+    {
+      "path": "0c/ab67616d0000b273000cddab7c4a5e6d8ad9e140",
+      "label": "fly agaric on forest floor",
+      "group": "distinctive",
+      "why": "The single most isolated cover in the corpus — lowest best-neighbour cosine averaged across all three finalists (dinov2 0.180 / pe-core 0.468 / dinov3 0.170). One sharp red subject on dark bokeh: exactly the has_dominant_subject + has_accent_color case the palette cares about."
+    },
+    {
+      "path": "0c/ab67616d0000b273000c539f3879b821f1edc886",
+      "label": "boarding passes on black",
+      "group": "distinctive",
+      "why": "PE-Core put this cover in a cluster of its OWN (size 1) — the only degenerate cluster in any of the three models. All three agree it is an outlier (best neighbour 0.39-0.48). Red and white paper documents, dense fine print, pure black ground."
+    },
+    {
+      "path": "09/ab67616d0000b2730009376e1bc66e075b74cd3d",
+      "label": "Monĕsk — Departure",
+      "group": "distinctive",
+      "why": "Near-monochrome fog photograph, very low chroma, thin grey type. The 'has_accent_color = false' case — if a model returns colourful neighbours here it is not reading chroma at all."
+    },
+    {
+      "path": "03/ab67616d00001e020003bbca465dc03873544b29.jpg",
+      "label": "baroque pavilion, muted photograph",
+      "group": "distinctive",
+      "why": "Highly isolated (dinov2 0.152, the lowest single score in the sample) and a 300 px thumbnail, so it tests outlier behaviour and low resolution at the same time. Desaturated architectural photograph with no text at all."
+    },
+    {
+      "path": "01/ab67616d00001e020001881aa1230782fc989799.jpg",
+      "label": "random 300 px thumbnail (1 of 2)",
+      "group": "random-300",
+      "why": "Seeded draw from the 2,917-file 300 px tier. Included unfiltered: a sanity check should contain some covers nobody chose for being interesting."
+    },
+    {
+      "path": "03/ab67616d00001e0200035e3fabeee4bd013a833d.jpg",
+      "label": "random 300 px thumbnail (2 of 2)",
+      "group": "random-300",
+      "why": "Seeded draw from the 300 px tier. At this resolution small text and label logos are physically illegible, so neighbours driven by fine detail are suspect."
+    }
+  ]
+}

@@ -1,0 +1,3183 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "bcde-validation-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "group-bcde.v1",
+	"seed": 20260803,
+	"generatedBy": "research/v3/src/review-server/oracle-validation.ts",
+	"builtFrom": [
+		"research/v3/data/coverage-set/coverage-set-1.json",
+		"research/v3/oracle/premise/prompts/group-bcde.v1.variant-e.json",
+		"research/v3/data/oracle-premise/group-bcde-pilot-1.jsonl",
+		"research/v3/data/oracle-premise/bcde-pilot-1-analysis.json"
+	],
+	"selection": {
+		"rule": "Twenty artworks from the coverage set's CORE (research/v3/data/coverage-set/coverage-set-1.json, role === 'core'), which is the canonical tuning bench; NOT from eval-142, which COVERAGE_SET.md establishes was never a sample of this corpus. Two steps, neither of which looks at any model answer. (1) PINNED: every core artwork the group-BCDE pilot actually decoded — there are three, and they are the only artworks in the whole core where a reviewer-vs-E/F comparison is possible at all, so all three are taken. (2) DRAWN: the remaining slots, apportioned across the core's own resolution tiers in proportion to the core's tier mix (largest remainder, ties to the larger tier), and inside each tier taken by a seeded round-robin over clusters — every cluster is visited at most once before any is revisited, so twenty artworks land in twenty different clusters wherever the tier quotas allow. Seed 20260803. Deliberately NOT re-selected on E-vs-F disagreement (§3's rule, restated by §15.9): a round conditioned on disagreement is a different population and must be reported as one. WORDING: every stem and every gloss is parsed byte-identically out of variant E's prompt file (the \"N. \" enumerator is the only thing dropped, because this round has eight passes and not thirteen). §15.9: E and F word the same questions differently, so scoring F against these answers carries a stated wording caveat that scoring E does not. THE JOIN: only 2 of the 200 core artworks were decoded by the pilot on the same bytes, and 1 more at another rendition — so on the other artworks in this round there is no model answer to compare against yet, and the round's product there is a reviewer label on the coverage set and an answer to 'is this question answerable by a human at all'.",
+		"counts": {
+			"core_artworks": 200,
+			"pilot_images": 142,
+			"core_in_pilot_exact_bytes": 2,
+			"core_in_pilot_same_artwork_other_rendition": 1,
+			"pinned": 3,
+			"drawn": 17,
+			"selected": 20,
+			"distinct_clusters": 20,
+			"tier_<=400": 5,
+			"tier_401-640": 13,
+			"tier_641-1024": 2,
+			"tier_>1024": 0,
+			"questions": 8,
+			"items": 160
+		}
+	},
+	"questions": [
+		{
+			"key": "grain_or_noise",
+			"kind": "enum",
+			"question": "texture_noise - is there visible grain or noise over large parts of the cover?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "film grain, print dots, sensor noise, or added speckle, over a large area",
+					"hotkey": "1"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "the surfaces are clean",
+					"hotkey": "2"
+				}
+			]
+		},
+		{
+			"key": "overlays",
+			"kind": "multi",
+			"question": "stickers - which of these have been added on top of the artwork? List every one you can see.",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "parental_advisory",
+					"label": "parental_advisory",
+					"gloss": "a parental advisory or explicit content sticker",
+					"hotkey": "1"
+				},
+				{
+					"key": "label_logo",
+					"label": "label_logo",
+					"gloss": "a record label's or distributor's logo",
+					"hotkey": "2"
+				},
+				{
+					"key": "barcode_or_price",
+					"label": "barcode_or_price",
+					"gloss": "a barcode, a catalogue number block, or a price tag",
+					"hotkey": "3"
+				},
+				{
+					"key": "watermark",
+					"label": "watermark",
+					"gloss": "a shop's or a stock library's mark laid over the picture",
+					"hotkey": "4"
+				},
+				{
+					"key": "none",
+					"label": "none",
+					"gloss": "nothing has been added on top",
+					"hotkey": "5"
+				}
+			]
+		},
+		{
+			"key": "has_dominant_subject",
+			"kind": "enum",
+			"question": "subject_count - how many main subjects does the cover have?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "single",
+					"label": "single",
+					"gloss": "one",
+					"hotkey": "1"
+				},
+				{
+					"key": "multiple",
+					"label": "multiple",
+					"gloss": "two or more",
+					"hotkey": "2"
+				},
+				{
+					"key": "none",
+					"label": "none",
+					"gloss": "there is no subject; the cover is lettering, pattern, or an empty field",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "subject_kind",
+			"kind": "enum",
+			"question": "subject_is - what kind of thing is the subject?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "person",
+					"label": "person",
+					"gloss": "a person, a face, a figure, a crowd",
+					"hotkey": "1"
+				},
+				{
+					"key": "animal",
+					"label": "animal",
+					"gloss": "a creature of any kind",
+					"hotkey": "2"
+				},
+				{
+					"key": "vehicle",
+					"label": "vehicle",
+					"gloss": "a car, a bike, a boat, a plane, a train",
+					"hotkey": "3"
+				},
+				{
+					"key": "object",
+					"label": "object",
+					"gloss": "a made thing: an instrument, a bottle, a chair, a tool",
+					"hotkey": "4"
+				},
+				{
+					"key": "building_or_structure",
+					"label": "building_or_structure",
+					"gloss": "a building, a bridge, a tower, a room read as a structure",
+					"hotkey": "5"
+				},
+				{
+					"key": "abstract_shape",
+					"label": "abstract_shape",
+					"gloss": "a shape or form that is not a thing you could name",
+					"hotkey": "6"
+				},
+				{
+					"key": "not_applicable",
+					"label": "not_applicable",
+					"gloss": "there is no subject",
+					"hotkey": "7"
+				}
+			]
+		},
+		{
+			"key": "subject_area_band",
+			"kind": "enum",
+			"question": "subject_size - roughly how much of the cover do the subjects cover, taken together?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "under_25",
+					"label": "under_25",
+					"gloss": "less than a quarter of the cover",
+					"hotkey": "1"
+				},
+				{
+					"key": "25_60",
+					"label": "25_60",
+					"gloss": "between a quarter and about three fifths",
+					"hotkey": "2"
+				},
+				{
+					"key": "over_60",
+					"label": "over_60",
+					"gloss": "more than three fifths",
+					"hotkey": "3"
+				},
+				{
+					"key": "not_applicable",
+					"label": "not_applicable",
+					"gloss": "there is no subject",
+					"hotkey": "4"
+				}
+			]
+		},
+		{
+			"key": "has_signature_color",
+			"kind": "enum",
+			"question": "signature_colour - is there one colour that reads as this cover's colour?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "one colour a person would name for it",
+					"hotkey": "1"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "no single colour stands for it",
+					"hotkey": "2"
+				}
+			]
+		},
+		{
+			"key": "text_dominance",
+			"kind": "enum",
+			"question": "lettering_weight - how much of the cover's design is the text?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "dominant_element",
+					"label": "dominant_element",
+					"gloss": "the text is the artwork; it is the biggest thing on the cover",
+					"hotkey": "1"
+				},
+				{
+					"key": "present_secondary",
+					"label": "present_secondary",
+					"gloss": "the text is clearly there and clearly not the main event",
+					"hotkey": "2"
+				},
+				{
+					"key": "minor",
+					"label": "minor",
+					"gloss": "the text is small, tucked away, or easy to miss",
+					"hotkey": "3"
+				},
+				{
+					"key": "not_applicable",
+					"label": "not_applicable",
+					"gloss": "there is no readable text",
+					"hotkey": "4"
+				}
+			]
+		},
+		{
+			"key": "signature_carrier",
+			"kind": "enum",
+			"question": "signature_source - which part of the cover carries the signature colour?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story.",
+			"preamble": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.",
+			"answers": [
+				{
+					"key": "text",
+					"label": "text",
+					"gloss": "the lettering is that colour",
+					"hotkey": "1"
+				},
+				{
+					"key": "subject",
+					"label": "subject",
+					"gloss": "the subject is that colour",
+					"hotkey": "2"
+				},
+				{
+					"key": "background",
+					"label": "background",
+					"gloss": "the ground behind everything is that colour",
+					"hotkey": "3"
+				},
+				{
+					"key": "small_element",
+					"label": "small_element",
+					"gloss": "a small area carries it: a badge, an object, a stripe",
+					"hotkey": "4"
+				},
+				{
+					"key": "not_applicable",
+					"label": "not_applicable",
+					"gloss": "there is no signature colour",
+					"hotkey": "5"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "bv-grain_or_noise-6e3ed0aa2c70",
+			"questionKey": "grain_or_noise",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-grain_or_noise-76977c801ed7",
+			"questionKey": "grain_or_noise",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-8ca89e51c8ba",
+			"questionKey": "grain_or_noise",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-grain_or_noise-1149533670b8",
+			"questionKey": "grain_or_noise",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-grain_or_noise-5bc626b7736b",
+			"questionKey": "grain_or_noise",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-grain_or_noise-744d3094eb04",
+			"questionKey": "grain_or_noise",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-grain_or_noise-e228517f3a69",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-35db4e822f13",
+			"questionKey": "grain_or_noise",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-9f6797d3bc0f",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-032ea002cee0",
+			"questionKey": "grain_or_noise",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-11a6d2b55b18",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-517aadc6d399",
+			"questionKey": "grain_or_noise",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-b709d1cd0e5c",
+			"questionKey": "grain_or_noise",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-11bb8cc34c30",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-8840a304b00c",
+			"questionKey": "grain_or_noise",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-272b5ae00953",
+			"questionKey": "grain_or_noise",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-ad5ff788e6e2",
+			"questionKey": "grain_or_noise",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-d63faaf130d4",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-grain_or_noise-03701cc83770",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-grain_or_noise-a2f490fb5594",
+			"questionKey": "grain_or_noise",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-overlays-6e3ed0aa2c70",
+			"questionKey": "overlays",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-overlays-76977c801ed7",
+			"questionKey": "overlays",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-8ca89e51c8ba",
+			"questionKey": "overlays",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-overlays-1149533670b8",
+			"questionKey": "overlays",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-overlays-5bc626b7736b",
+			"questionKey": "overlays",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-overlays-744d3094eb04",
+			"questionKey": "overlays",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-overlays-e228517f3a69",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-35db4e822f13",
+			"questionKey": "overlays",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-9f6797d3bc0f",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-032ea002cee0",
+			"questionKey": "overlays",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-11a6d2b55b18",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-517aadc6d399",
+			"questionKey": "overlays",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-b709d1cd0e5c",
+			"questionKey": "overlays",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-11bb8cc34c30",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-8840a304b00c",
+			"questionKey": "overlays",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-272b5ae00953",
+			"questionKey": "overlays",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-ad5ff788e6e2",
+			"questionKey": "overlays",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-d63faaf130d4",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-overlays-03701cc83770",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-overlays-a2f490fb5594",
+			"questionKey": "overlays",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-6e3ed0aa2c70",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-76977c801ed7",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-8ca89e51c8ba",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-1149533670b8",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-5bc626b7736b",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-744d3094eb04",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-e228517f3a69",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-35db4e822f13",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-9f6797d3bc0f",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-032ea002cee0",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-11a6d2b55b18",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-517aadc6d399",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-b709d1cd0e5c",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-11bb8cc34c30",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-8840a304b00c",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-272b5ae00953",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-ad5ff788e6e2",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-d63faaf130d4",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-03701cc83770",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-has_dominant_subject-a2f490fb5594",
+			"questionKey": "has_dominant_subject",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-subject_kind-6e3ed0aa2c70",
+			"questionKey": "subject_kind",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_kind-76977c801ed7",
+			"questionKey": "subject_kind",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-8ca89e51c8ba",
+			"questionKey": "subject_kind",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_kind-1149533670b8",
+			"questionKey": "subject_kind",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_kind-5bc626b7736b",
+			"questionKey": "subject_kind",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_kind-744d3094eb04",
+			"questionKey": "subject_kind",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_kind-e228517f3a69",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-35db4e822f13",
+			"questionKey": "subject_kind",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-9f6797d3bc0f",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-032ea002cee0",
+			"questionKey": "subject_kind",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-11a6d2b55b18",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-517aadc6d399",
+			"questionKey": "subject_kind",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-b709d1cd0e5c",
+			"questionKey": "subject_kind",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-11bb8cc34c30",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-8840a304b00c",
+			"questionKey": "subject_kind",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-272b5ae00953",
+			"questionKey": "subject_kind",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-ad5ff788e6e2",
+			"questionKey": "subject_kind",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-d63faaf130d4",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_kind-03701cc83770",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-subject_kind-a2f490fb5594",
+			"questionKey": "subject_kind",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-subject_area_band-6e3ed0aa2c70",
+			"questionKey": "subject_area_band",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_area_band-76977c801ed7",
+			"questionKey": "subject_area_band",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-8ca89e51c8ba",
+			"questionKey": "subject_area_band",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_area_band-1149533670b8",
+			"questionKey": "subject_area_band",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_area_band-5bc626b7736b",
+			"questionKey": "subject_area_band",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_area_band-744d3094eb04",
+			"questionKey": "subject_area_band",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-subject_area_band-e228517f3a69",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-35db4e822f13",
+			"questionKey": "subject_area_band",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-9f6797d3bc0f",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-032ea002cee0",
+			"questionKey": "subject_area_band",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-11a6d2b55b18",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-517aadc6d399",
+			"questionKey": "subject_area_band",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-b709d1cd0e5c",
+			"questionKey": "subject_area_band",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-11bb8cc34c30",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-8840a304b00c",
+			"questionKey": "subject_area_band",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-272b5ae00953",
+			"questionKey": "subject_area_band",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-ad5ff788e6e2",
+			"questionKey": "subject_area_band",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-d63faaf130d4",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-subject_area_band-03701cc83770",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-subject_area_band-a2f490fb5594",
+			"questionKey": "subject_area_band",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-has_signature_color-6e3ed0aa2c70",
+			"questionKey": "has_signature_color",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_signature_color-76977c801ed7",
+			"questionKey": "has_signature_color",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-8ca89e51c8ba",
+			"questionKey": "has_signature_color",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_signature_color-1149533670b8",
+			"questionKey": "has_signature_color",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_signature_color-5bc626b7736b",
+			"questionKey": "has_signature_color",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_signature_color-744d3094eb04",
+			"questionKey": "has_signature_color",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-has_signature_color-e228517f3a69",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-35db4e822f13",
+			"questionKey": "has_signature_color",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-9f6797d3bc0f",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-032ea002cee0",
+			"questionKey": "has_signature_color",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-11a6d2b55b18",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-517aadc6d399",
+			"questionKey": "has_signature_color",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-b709d1cd0e5c",
+			"questionKey": "has_signature_color",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-11bb8cc34c30",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-8840a304b00c",
+			"questionKey": "has_signature_color",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-272b5ae00953",
+			"questionKey": "has_signature_color",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-ad5ff788e6e2",
+			"questionKey": "has_signature_color",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-d63faaf130d4",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-has_signature_color-03701cc83770",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-has_signature_color-a2f490fb5594",
+			"questionKey": "has_signature_color",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-text_dominance-6e3ed0aa2c70",
+			"questionKey": "text_dominance",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-text_dominance-76977c801ed7",
+			"questionKey": "text_dominance",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-8ca89e51c8ba",
+			"questionKey": "text_dominance",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-text_dominance-1149533670b8",
+			"questionKey": "text_dominance",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-text_dominance-5bc626b7736b",
+			"questionKey": "text_dominance",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-text_dominance-744d3094eb04",
+			"questionKey": "text_dominance",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-text_dominance-e228517f3a69",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-35db4e822f13",
+			"questionKey": "text_dominance",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-9f6797d3bc0f",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-032ea002cee0",
+			"questionKey": "text_dominance",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-11a6d2b55b18",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-517aadc6d399",
+			"questionKey": "text_dominance",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-b709d1cd0e5c",
+			"questionKey": "text_dominance",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-11bb8cc34c30",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-8840a304b00c",
+			"questionKey": "text_dominance",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-272b5ae00953",
+			"questionKey": "text_dominance",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-ad5ff788e6e2",
+			"questionKey": "text_dominance",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-d63faaf130d4",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-text_dominance-03701cc83770",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-text_dominance-a2f490fb5594",
+			"questionKey": "text_dominance",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-signature_carrier-6e3ed0aa2c70",
+			"questionKey": "signature_carrier",
+			"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+			"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+			"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+			"artworkId": "0004ccf0ae91364130886c02",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0004ccf0ae91364130886c02",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-signature_carrier-76977c801ed7",
+			"questionKey": "signature_carrier",
+			"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+			"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+			"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+			"artworkId": "0013bebcaee941ebcc13437c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0013bebcaee941ebcc13437c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-8ca89e51c8ba",
+			"questionKey": "signature_carrier",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000e007955ee2f8b29f5b2b4",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-signature_carrier-1149533670b8",
+			"questionKey": "signature_carrier",
+			"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+			"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad40f7a92f3abf74f4683",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-signature_carrier-5bc626b7736b",
+			"questionKey": "signature_carrier",
+			"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+			"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+			"artworkId": "0002653adc4ef57bc46a3680",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0002653adc4ef57bc46a3680",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-signature_carrier-744d3094eb04",
+			"questionKey": "signature_carrier",
+			"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+			"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+			"artworkId": "000b18d965d30345a2754191",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000b18d965d30345a2754191",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "<=400"
+		},
+		{
+			"itemId": "bv-signature_carrier-e228517f3a69",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+			"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "3871a29a60651eb65e6ba7f31f7f899f",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-35db4e822f13",
+			"questionKey": "signature_carrier",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+			"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0005165a15d80c563a8d1ec2",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-9f6797d3bc0f",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+			"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "266c6365bde8d74f42e9f603845c7491",
+				"longEdgePx": 512,
+				"width": 512,
+				"height": 512
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-032ea002cee0",
+			"questionKey": "signature_carrier",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+			"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+			"artworkId": "0011a326091e7dd7df58b175",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "0011a326091e7dd7df58b175",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-11a6d2b55b18",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+			"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+			"artworkId": "a6ef87d93332870d480ed5bbdf044713",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "a6ef87d93332870d480ed5bbdf044713",
+				"longEdgePx": 600,
+				"width": 600,
+				"height": 600
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-517aadc6d399",
+			"questionKey": "signature_carrier",
+			"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+			"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+			"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+			"artworkId": "000899b3352ee28935439b14",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000899b3352ee28935439b14",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-b709d1cd0e5c",
+			"questionKey": "signature_carrier",
+			"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+			"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+			"artworkId": "000ad9116781016bd6e6c21c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000ad9116781016bd6e6c21c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-11bb8cc34c30",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+			"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+			"artworkId": "fc9a8d8e3d3668fb816a317ec92828d3",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "fc9a8d8e3d3668fb816a317ec92828d3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-8840a304b00c",
+			"questionKey": "signature_carrier",
+			"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+			"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+			"imageId": "ab67616d0000b27300137c811595edad61c67781",
+			"artworkId": "00137c811595edad61c67781",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "00137c811595edad61c67781",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-272b5ae00953",
+			"questionKey": "signature_carrier",
+			"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+			"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+			"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+			"artworkId": "000528de96baaabaa2cf3608",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000528de96baaabaa2cf3608",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-ad5ff788e6e2",
+			"questionKey": "signature_carrier",
+			"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+			"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+			"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+			"artworkId": "000d0955a0875537c7738df8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "000d0955a0875537c7738df8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-d63faaf130d4",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+			"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+			"artworkId": "c8010570617778ff9c5d0afdc4c0fb31",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "c8010570617778ff9c5d0afdc4c0fb31",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "401-640"
+		},
+		{
+			"itemId": "bv-signature_carrier-03701cc83770",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+			"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "d76d845e33b98c986bb8b1297e49487b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		},
+		{
+			"itemId": "bv-signature_carrier-a2f490fb5594",
+			"questionKey": "signature_carrier",
+			"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+			"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+			"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+			"artworkId": "862ae92add8a96848aa277840ebccc8b",
+			"collection": "music-artworks",
+			"rendition": {
+				"source": "research/v3/data/coverage-set/coverage-set-1.json",
+				"sourceEntryId": "862ae92add8a96848aa277840ebccc8b",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "641-1024"
+		}
+	],
+	"serveOrder": [
+		"bv-grain_or_noise-5bc626b7736b",
+		"bv-grain_or_noise-8840a304b00c",
+		"bv-grain_or_noise-9f6797d3bc0f",
+		"bv-grain_or_noise-03701cc83770",
+		"bv-grain_or_noise-b709d1cd0e5c",
+		"bv-grain_or_noise-76977c801ed7",
+		"bv-grain_or_noise-517aadc6d399",
+		"bv-grain_or_noise-ad5ff788e6e2",
+		"bv-grain_or_noise-8ca89e51c8ba",
+		"bv-grain_or_noise-032ea002cee0",
+		"bv-grain_or_noise-744d3094eb04",
+		"bv-grain_or_noise-11bb8cc34c30",
+		"bv-grain_or_noise-6e3ed0aa2c70",
+		"bv-grain_or_noise-272b5ae00953",
+		"bv-grain_or_noise-a2f490fb5594",
+		"bv-grain_or_noise-d63faaf130d4",
+		"bv-grain_or_noise-1149533670b8",
+		"bv-grain_or_noise-11a6d2b55b18",
+		"bv-grain_or_noise-e228517f3a69",
+		"bv-grain_or_noise-35db4e822f13",
+		"bv-overlays-b709d1cd0e5c",
+		"bv-overlays-032ea002cee0",
+		"bv-overlays-744d3094eb04",
+		"bv-overlays-8840a304b00c",
+		"bv-overlays-a2f490fb5594",
+		"bv-overlays-ad5ff788e6e2",
+		"bv-overlays-d63faaf130d4",
+		"bv-overlays-35db4e822f13",
+		"bv-overlays-11bb8cc34c30",
+		"bv-overlays-517aadc6d399",
+		"bv-overlays-9f6797d3bc0f",
+		"bv-overlays-272b5ae00953",
+		"bv-overlays-76977c801ed7",
+		"bv-overlays-1149533670b8",
+		"bv-overlays-11a6d2b55b18",
+		"bv-overlays-6e3ed0aa2c70",
+		"bv-overlays-e228517f3a69",
+		"bv-overlays-5bc626b7736b",
+		"bv-overlays-8ca89e51c8ba",
+		"bv-overlays-03701cc83770",
+		"bv-has_dominant_subject-76977c801ed7",
+		"bv-has_dominant_subject-8840a304b00c",
+		"bv-has_dominant_subject-5bc626b7736b",
+		"bv-has_dominant_subject-744d3094eb04",
+		"bv-has_dominant_subject-35db4e822f13",
+		"bv-has_dominant_subject-03701cc83770",
+		"bv-has_dominant_subject-b709d1cd0e5c",
+		"bv-has_dominant_subject-6e3ed0aa2c70",
+		"bv-has_dominant_subject-a2f490fb5594",
+		"bv-has_dominant_subject-e228517f3a69",
+		"bv-has_dominant_subject-d63faaf130d4",
+		"bv-has_dominant_subject-1149533670b8",
+		"bv-has_dominant_subject-ad5ff788e6e2",
+		"bv-has_dominant_subject-8ca89e51c8ba",
+		"bv-has_dominant_subject-272b5ae00953",
+		"bv-has_dominant_subject-9f6797d3bc0f",
+		"bv-has_dominant_subject-032ea002cee0",
+		"bv-has_dominant_subject-517aadc6d399",
+		"bv-has_dominant_subject-11a6d2b55b18",
+		"bv-has_dominant_subject-11bb8cc34c30",
+		"bv-subject_kind-8840a304b00c",
+		"bv-subject_kind-1149533670b8",
+		"bv-subject_kind-d63faaf130d4",
+		"bv-subject_kind-11a6d2b55b18",
+		"bv-subject_kind-517aadc6d399",
+		"bv-subject_kind-6e3ed0aa2c70",
+		"bv-subject_kind-8ca89e51c8ba",
+		"bv-subject_kind-ad5ff788e6e2",
+		"bv-subject_kind-5bc626b7736b",
+		"bv-subject_kind-a2f490fb5594",
+		"bv-subject_kind-76977c801ed7",
+		"bv-subject_kind-11bb8cc34c30",
+		"bv-subject_kind-744d3094eb04",
+		"bv-subject_kind-9f6797d3bc0f",
+		"bv-subject_kind-032ea002cee0",
+		"bv-subject_kind-b709d1cd0e5c",
+		"bv-subject_kind-e228517f3a69",
+		"bv-subject_kind-03701cc83770",
+		"bv-subject_kind-272b5ae00953",
+		"bv-subject_kind-35db4e822f13",
+		"bv-subject_area_band-8ca89e51c8ba",
+		"bv-subject_area_band-e228517f3a69",
+		"bv-subject_area_band-d63faaf130d4",
+		"bv-subject_area_band-b709d1cd0e5c",
+		"bv-subject_area_band-6e3ed0aa2c70",
+		"bv-subject_area_band-35db4e822f13",
+		"bv-subject_area_band-032ea002cee0",
+		"bv-subject_area_band-a2f490fb5594",
+		"bv-subject_area_band-1149533670b8",
+		"bv-subject_area_band-ad5ff788e6e2",
+		"bv-subject_area_band-9f6797d3bc0f",
+		"bv-subject_area_band-8840a304b00c",
+		"bv-subject_area_band-03701cc83770",
+		"bv-subject_area_band-76977c801ed7",
+		"bv-subject_area_band-5bc626b7736b",
+		"bv-subject_area_band-11bb8cc34c30",
+		"bv-subject_area_band-517aadc6d399",
+		"bv-subject_area_band-272b5ae00953",
+		"bv-subject_area_band-11a6d2b55b18",
+		"bv-subject_area_band-744d3094eb04",
+		"bv-has_signature_color-5bc626b7736b",
+		"bv-has_signature_color-a2f490fb5594",
+		"bv-has_signature_color-11bb8cc34c30",
+		"bv-has_signature_color-35db4e822f13",
+		"bv-has_signature_color-6e3ed0aa2c70",
+		"bv-has_signature_color-8840a304b00c",
+		"bv-has_signature_color-03701cc83770",
+		"bv-has_signature_color-517aadc6d399",
+		"bv-has_signature_color-d63faaf130d4",
+		"bv-has_signature_color-11a6d2b55b18",
+		"bv-has_signature_color-8ca89e51c8ba",
+		"bv-has_signature_color-b709d1cd0e5c",
+		"bv-has_signature_color-032ea002cee0",
+		"bv-has_signature_color-272b5ae00953",
+		"bv-has_signature_color-1149533670b8",
+		"bv-has_signature_color-76977c801ed7",
+		"bv-has_signature_color-ad5ff788e6e2",
+		"bv-has_signature_color-e228517f3a69",
+		"bv-has_signature_color-744d3094eb04",
+		"bv-has_signature_color-9f6797d3bc0f",
+		"bv-text_dominance-ad5ff788e6e2",
+		"bv-text_dominance-6e3ed0aa2c70",
+		"bv-text_dominance-744d3094eb04",
+		"bv-text_dominance-a2f490fb5594",
+		"bv-text_dominance-e228517f3a69",
+		"bv-text_dominance-11a6d2b55b18",
+		"bv-text_dominance-11bb8cc34c30",
+		"bv-text_dominance-d63faaf130d4",
+		"bv-text_dominance-272b5ae00953",
+		"bv-text_dominance-8ca89e51c8ba",
+		"bv-text_dominance-9f6797d3bc0f",
+		"bv-text_dominance-76977c801ed7",
+		"bv-text_dominance-5bc626b7736b",
+		"bv-text_dominance-03701cc83770",
+		"bv-text_dominance-b709d1cd0e5c",
+		"bv-text_dominance-517aadc6d399",
+		"bv-text_dominance-8840a304b00c",
+		"bv-text_dominance-35db4e822f13",
+		"bv-text_dominance-032ea002cee0",
+		"bv-text_dominance-1149533670b8",
+		"bv-signature_carrier-e228517f3a69",
+		"bv-signature_carrier-b709d1cd0e5c",
+		"bv-signature_carrier-032ea002cee0",
+		"bv-signature_carrier-a2f490fb5594",
+		"bv-signature_carrier-517aadc6d399",
+		"bv-signature_carrier-11a6d2b55b18",
+		"bv-signature_carrier-03701cc83770",
+		"bv-signature_carrier-8840a304b00c",
+		"bv-signature_carrier-272b5ae00953",
+		"bv-signature_carrier-76977c801ed7",
+		"bv-signature_carrier-d63faaf130d4",
+		"bv-signature_carrier-744d3094eb04",
+		"bv-signature_carrier-9f6797d3bc0f",
+		"bv-signature_carrier-35db4e822f13",
+		"bv-signature_carrier-8ca89e51c8ba",
+		"bv-signature_carrier-11bb8cc34c30",
+		"bv-signature_carrier-6e3ed0aa2c70",
+		"bv-signature_carrier-1149533670b8",
+		"bv-signature_carrier-5bc626b7736b",
+		"bv-signature_carrier-ad5ff788e6e2"
+	]
+}

@@ -239,6 +239,18 @@ export const labSpace: ColorSpace = {
 		const chroma = isAchromatic ? 0 : Math.sqrt(a ** 2 + b ** 2)
 
 		return chroma / 1.5
+	},
+	/** [0-360] hue angle in degrees */
+	hue(hex) {
+		const a = (hex >> 8 & 0xff) / negativePercentToHex - 125
+		const b = (hex & 0xff) / negativePercentToHex - 125
+		const isAchromatic = Math.abs(a) < dε && Math.abs(b) < dε
+		if (isAchromatic) return 0
+		return (((Math.atan2(b, a) * 180) / Math.PI % 360) + 360) % 360
+	},
+	increaseContrast(of: number, _against: number, _towards: number, _desired: number, _foreground: boolean) {
+		// Lab contrast is simplified, just return the original color
+		return of
 	}
 }
 

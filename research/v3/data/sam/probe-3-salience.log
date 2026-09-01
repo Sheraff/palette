@@ -1,0 +1,46 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 1985.94it/s]
+strong-subject  images/orelsan.jpg             
+strong-subject  b27300103a3729bf589e0dc913ab   
+strong-subject  00015a7a9909e03141e001e3.jpg   the subject=1 the eye-catching element=1 the background=2
+strong-subject  b2730009448702be55dfc86fde67   the eye-catching element=1 the background=1
+all-typography  0000269ead63cf2376a6b67d.jpg   the eye-catching element=16
+all-typography  1e020004ccf0ae91364130886c02   
+accent-on-flat  000060b6aa68cdd9e02567b1.jpg   the main focal point=1 the eye-catching element=1 the background=1
+accent-on-flat  0000e692a330542f8ed14132.jpg   the main focal point=1 the eye-catching element=4 the background=1
+abstract        00018a1e2daf68a53f504cb9.jpg   the eye-catching element=1 brightly colored object=2 the background=1
+abstract        b27300097e55f9a93ceb03afa4b2   
+scene           000300752f338b6aedff856c.jpg   
+scene           0002dc280ccc28cadb7d4ae4.jpg   the eye-catching element=48 brightly colored object=29 colorful accent=27
+
+images (of 12) where the phrasing fired, at the stored cut 0.3 / at the calibrated 0.578:
+  [salience_noun]
+     2 /  1  the main focal point
+     0 /  0  the most prominent object
+     1 /  0  the subject
+     7 /  6  the eye-catching element
+  [colour_attribute]
+     2 /  0  brightly colored object
+     1 /  0  colorful accent
+     0 /  0  accent of color
+     0 /  0  bright spot
+     0 /  0  colorful detail
+  [control]
+     5 /  5  the background
+
+by image kind (stored cut):
+    phrasing                          abstract  accent-on-flat  all-typography           scene  strong-subject
+    the main focal point                     0               2               0               0               0
+    the most prominent object                0               0               0               0               0
+    the subject                              0               0               0               0               1
+    the eye-catching element                 1               2               1               1               2
+    brightly colored object                  1               0               0               1               0
+    colorful accent                          0               0               0               1               0
+    accent of color                          0               0               0               0               0
+    bright spot                              0               0               0               0               0
+    colorful detail                          0               0               0               0               0
+    the background                           1               2               0               0               2
+overlay: ../../data/sam/salience-probe-overlays/strong-subject-orelsan.png
+overlay: ../../data/sam/salience-probe-overlays/strong-subject-c86fde67.png
+overlay: ../../data/sam/salience-probe-overlays/all-typography-76a6b67d.png
+overlay: ../../data/sam/salience-probe-overlays/accent-on-flat-e02567b1.png
+overlay: ../../data/sam/salience-probe-overlays/accent-on-flat-8ed14132.png

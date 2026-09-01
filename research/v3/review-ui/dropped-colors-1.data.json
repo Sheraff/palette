@@ -1,0 +1,1086 @@
+{
+	"batchId": "dropped-colors-1",
+	"items": [
+		{
+			"questionKey": "dropped_color_829eb70bd92575e6_44252a",
+			"entryId": "829eb70bd92575e6",
+			"droppedHex": "#44252a",
+			"droppedName": "Dark Cocoa",
+			"droppedRoles": [
+				"foreground"
+			],
+			"dropLine": "The rule would drop the foreground — Dark Cocoa, #44252a. It covers 0.0066% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Liver (#534a4f, 1.8% of the artwork), 0.119 away in OKLab.",
+			"region": "dark-neutral",
+			"measurements": {
+				"exactShare": 0.0000048828125,
+				"neighbourhoodShare": 0.00006591796875,
+				"populationFloor": 0.001,
+				"modeDistance": 0.11901391354756237,
+				"nearestModeHex": "#534a4f",
+				"nearestModeName": "Liver",
+				"nearestModeMass": 0.01787353515625,
+				"substantialModes": 8,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#efebdf",
+						"name": "Eggshell",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d0c9c3",
+						"name": "Beige",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#44252a",
+						"name": "Dark Cocoa",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#784144",
+						"name": "Cherrywood",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#efebdf"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_0193dbdddc8de533_9f022f",
+			"entryId": "0193dbdddc8de533",
+			"droppedHex": "#9f022f",
+			"droppedName": "Lifeline",
+			"droppedRoles": [
+				"foreground",
+				"accent"
+			],
+			"dropLine": "The rule would drop the foreground and accent — Lifeline, #9f022f. It covers 0.013% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Haunted Library (#430f1d, 1.4% of the artwork), 0.207 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.000011111111111111112,
+				"neighbourhoodShare": 0.00013333333333333334,
+				"populationFloor": 0.001,
+				"modeDistance": 0.2071046433409401,
+				"nearestModeHex": "#430f1d",
+				"nearestModeName": "Haunted Library",
+				"nearestModeMass": 0.014388888888888889,
+				"substantialModes": 6,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#0a0710",
+						"name": "Blackberry",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#250d25",
+						"name": "Blackened Plum",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#9f022f",
+						"name": "Lifeline",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#9f022f",
+						"name": "Lifeline",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#0a0710"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_0a4880fd107f1ea1_b46f6a",
+			"entryId": "0a4880fd107f1ea1",
+			"droppedHex": "#b46f6a",
+			"droppedName": "Nipple",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Nipple, #b46f6a. It covers 0.017% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pebble (#8f8588, 1.2% of the artwork), 0.078 away in OKLab.",
+			"region": "light-saturated",
+			"measurements": {
+				"exactShare": 0.00000244140625,
+				"neighbourhoodShare": 0.00016845703125,
+				"populationFloor": 0.001,
+				"modeDistance": 0.07811575350330226,
+				"nearestModeHex": "#8f8588",
+				"nearestModeName": "Pebble",
+				"nearestModeMass": 0.01202392578125,
+				"substantialModes": 8,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#efebdf",
+						"name": "Eggshell",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d0c9c3",
+						"name": "Beige",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#695f67",
+						"name": "Wren",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#b46f6a",
+						"name": "Nipple",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#efebdf"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_829eb70bd92575e6_784144",
+			"entryId": "829eb70bd92575e6",
+			"droppedHex": "#784144",
+			"droppedName": "Cherrywood",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Cherrywood, #784144. It covers 0.021% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Liver (#534a4f, 1.8% of the artwork), 0.069 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.00000732421875,
+				"neighbourhoodShare": 0.0002099609375,
+				"populationFloor": 0.001,
+				"modeDistance": 0.06913217963546048,
+				"nearestModeHex": "#534a4f",
+				"nearestModeName": "Liver",
+				"nearestModeMass": 0.01787353515625,
+				"substantialModes": 8,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#efebdf",
+						"name": "Eggshell",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d0c9c3",
+						"name": "Beige",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#44252a",
+						"name": "Dark Cocoa",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#784144",
+						"name": "Cherrywood",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#efebdf"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_7290b14e20b3ef06_3f322c",
+			"entryId": "7290b14e20b3ef06",
+			"droppedHex": "#3f322c",
+			"droppedName": "Walnut",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Walnut, #3f322c. It covers 0.032% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Gunmetal (#273a43, 1.6% of the artwork), 0.051 away in OKLab.",
+			"region": "dark-neutral",
+			"measurements": {
+				"exactShare": 0.00000244140625,
+				"neighbourhoodShare": 0.00032470703125,
+				"populationFloor": 0.001,
+				"modeDistance": 0.05070358152423349,
+				"nearestModeHex": "#273a43",
+				"nearestModeName": "Gunmetal",
+				"nearestModeMass": 0.01642578125,
+				"substantialModes": 13,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#8e8580",
+						"name": "Pebble",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d7ae8e",
+						"name": "Almond",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#020a0d",
+						"name": "Onyx",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#3f322c",
+						"name": "Walnut",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#8e8580"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_e3d27b2eca8f6e5b_8827c4",
+			"entryId": "e3d27b2eca8f6e5b",
+			"droppedHex": "#8827c4",
+			"droppedName": "Van de Graaff",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Van de Graaff, #8827c4. It covers 0.036% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Royal Robe (#6f3ea1, 2.0% of the artwork), 0.077 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.000011111111111111112,
+				"neighbourhoodShare": 0.00035555555555555557,
+				"populationFloor": 0.001,
+				"modeDistance": 0.07735223989085038,
+				"nearestModeHex": "#6f3ea1",
+				"nearestModeName": "Royal Robe",
+				"nearestModeMass": 0.019911111111111112,
+				"substantialModes": 14,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#2a0c54",
+						"name": "Cotinga Purple",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#09060d",
+						"name": "Blackout",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#f7f2f9",
+						"name": "Milk",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#8827c4",
+						"name": "Van de Graaff",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#2a0c54"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_3d40402fc5ceb6a0_672a4c",
+			"entryId": "3d40402fc5ceb6a0",
+			"droppedHex": "#672a4c",
+			"droppedName": "Heartless",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Heartless, #672a4c. It covers 0.041% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Smoky Mauve (#57384d, 1.1% of the artwork), 0.045 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.000022222222222222223,
+				"neighbourhoodShare": 0.0004111111111111111,
+				"populationFloor": 0.001,
+				"modeDistance": 0.04462084416650981,
+				"nearestModeHex": "#57384d",
+				"nearestModeName": "Smoky Mauve",
+				"nearestModeMass": 0.010555555555555556,
+				"substantialModes": 22,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#3a2922",
+						"name": "Dark Cocoa",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#c3a897",
+						"name": "Plaster",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#fbfbf3",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#672a4c",
+						"name": "Heartless",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#3a2922"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_921047b2563ef619_1f3835",
+			"entryId": "921047b2563ef619",
+			"droppedHex": "#1f3835",
+			"droppedName": "Blackboard",
+			"droppedRoles": [
+				"background"
+			],
+			"dropLine": "The rule would drop the background — Blackboard, #1f3835. It covers 0.044% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Thicket (#273f3d, 50.0% of the artwork), 0.029 away in OKLab.",
+			"region": "dark-neutral",
+			"measurements": {
+				"exactShare": 0.0000048828125,
+				"neighbourhoodShare": 0.0004443359375,
+				"populationFloor": 0.001,
+				"modeDistance": 0.028570071355907375,
+				"nearestModeHex": "#273f3d",
+				"nearestModeName": "Thicket",
+				"nearestModeMass": 0.49950439453125,
+				"substantialModes": 9,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#1f3835",
+						"name": "Blackboard",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#bfbfbd",
+						"name": "Dim",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#fffef9",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#a15852",
+						"name": "Terra Blush",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#1f3835"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_6a69bd0792a13148_417779",
+			"entryId": "6a69bd0792a13148",
+			"droppedHex": "#417779",
+			"droppedName": "Ming",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Ming, #417779. It covers 0.046% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Ash (#717278, 2.3% of the artwork), 0.060 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.000022222222222222223,
+				"neighbourhoodShare": 0.00045555555555555556,
+				"populationFloor": 0.001,
+				"modeDistance": 0.060074058539224304,
+				"nearestModeHex": "#717278",
+				"nearestModeName": "Ash",
+				"nearestModeMass": 0.0225,
+				"substantialModes": 18,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#353537",
+						"name": "Tamahagane",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#7f80ac",
+						"name": "Mecha Metal",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#d6deeb",
+						"name": "Bare Mintimum",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#417779",
+						"name": "Ming",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#353537"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_e4a83d5aea066526_11010b",
+			"entryId": "e4a83d5aea066526",
+			"droppedHex": "#11010b",
+			"droppedName": "Ebony",
+			"droppedRoles": [
+				"background"
+			],
+			"dropLine": "The rule would drop the background — Ebony, #11010b. It covers 0.050% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Ink (#09040a, 6.2% of the artwork), 0.028 away in OKLab.",
+			"region": "dark-neutral",
+			"measurements": {
+				"exactShare": 0.000011111111111111112,
+				"neighbourhoodShare": 0.0005,
+				"populationFloor": 0.001,
+				"modeDistance": 0.02790885220537572,
+				"nearestModeHex": "#09040a",
+				"nearestModeName": "Ink",
+				"nearestModeMass": 0.06207777777777778,
+				"substantialModes": 25,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#11010b",
+						"name": "Ebony",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#0d528b",
+						"name": "Slumber",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#fdfdfd",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#763d8a",
+						"name": "Heather Purple",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#11010b"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_49f50bee9f39fc6e_f168a0",
+			"entryId": "49f50bee9f39fc6e",
+			"droppedHex": "#f168a0",
+			"droppedName": "Serenade",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Serenade, #f168a0. It covers 0.054% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Nougat (#a98878, 2.0% of the artwork), 0.160 away in OKLab.",
+			"region": "light-saturated",
+			"measurements": {
+				"exactShare": 0.0000048828125,
+				"neighbourhoodShare": 0.0005419921875,
+				"populationFloor": 0.001,
+				"modeDistance": 0.1595863319540929,
+				"nearestModeHex": "#a98878",
+				"nearestModeName": "Nougat",
+				"nearestModeMass": 0.020205078125,
+				"substantialModes": 20,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#dbdce1",
+						"name": "Fog",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#fbfbfb",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#1d1a21",
+						"name": "Umbra",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#f168a0",
+						"name": "Serenade",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#dbdce1"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_4791ac96cb9a5f19_887b8d",
+			"entryId": "4791ac96cb9a5f19",
+			"droppedHex": "#887b8d",
+			"droppedName": "Whale",
+			"droppedRoles": [
+				"foreground"
+			],
+			"dropLine": "The rule would drop the foreground — Whale, #887b8d. It covers 0.057% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pink Lavender (#c297bb, 7.4% of the artwork), 0.133 away in OKLab.",
+			"region": "light-neutral",
+			"measurements": {
+				"exactShare": 0.000011111111111111112,
+				"neighbourhoodShare": 0.0005666666666666667,
+				"populationFloor": 0.001,
+				"modeDistance": 0.13321790202170325,
+				"nearestModeHex": "#c297bb",
+				"nearestModeName": "Pink Lavender",
+				"nearestModeMass": 0.07355555555555555,
+				"substantialModes": 8,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#f4d3f0",
+						"name": "Sweet Nothings",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d3b6c8",
+						"name": "Blotting Paper",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#887b8d",
+						"name": "Whale",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#c399bd",
+						"name": "Pink Lavender",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#f4d3f0"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_921047b2563ef619_a15852",
+			"entryId": "921047b2563ef619",
+			"droppedHex": "#a15852",
+			"droppedName": "Terra Blush",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Terra Blush, #a15852. It covers 0.058% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Batman (#5b6968, 1.9% of the artwork), 0.119 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.00000244140625,
+				"neighbourhoodShare": 0.0005810546875,
+				"populationFloor": 0.001,
+				"modeDistance": 0.11915575687947445,
+				"nearestModeHex": "#5b6968",
+				"nearestModeName": "Batman",
+				"nearestModeMass": 0.01887939453125,
+				"substantialModes": 9,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#1f3835",
+						"name": "Blackboard",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#bfbfbd",
+						"name": "Dim",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#fffef9",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#a15852",
+						"name": "Terra Blush",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#1f3835"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_e4cca43ae5f9f8eb_466291",
+			"entryId": "e4cca43ae5f9f8eb",
+			"droppedHex": "#466291",
+			"droppedName": "Faded Sapphire",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Faded Sapphire, #466291. It covers 0.060% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Heather (#615e66, 1.1% of the artwork), 0.075 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.00005555555555555556,
+				"neighbourhoodShare": 0.0006,
+				"populationFloor": 0.001,
+				"modeDistance": 0.07471278429772171,
+				"nearestModeHex": "#615e66",
+				"nearestModeName": "Heather",
+				"nearestModeMass": 0.010544444444444445,
+				"substantialModes": 23,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#030e2e",
+						"name": "Logbook",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#03020a",
+						"name": "Octopus Ink",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#d5dfeb",
+						"name": "Bare Mintimum",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#466291",
+						"name": "Faded Sapphire",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#030e2e"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_631a7449b0753ce1_916244",
+			"entryId": "631a7449b0753ce1",
+			"droppedHex": "#916244",
+			"droppedName": "Pecan",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Pecan, #916244. It covers 0.065% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Field Drab (#625741, 1.0% of the artwork), 0.091 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.0000048828125,
+				"neighbourhoodShare": 0.00065185546875,
+				"populationFloor": 0.001,
+				"modeDistance": 0.09052765764878894,
+				"nearestModeHex": "#625741",
+				"nearestModeName": "Field Drab",
+				"nearestModeMass": 0.0101318359375,
+				"substantialModes": 6,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#ffffff",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#ffffff",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#0e1122",
+						"name": "Darkroom",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#916244",
+						"name": "Pecan",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#ffffff"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_742b8a94ed6cde6c_ee231f",
+			"entryId": "742b8a94ed6cde6c",
+			"droppedHex": "#ee231f",
+			"droppedName": "Scarlet Blaze",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Scarlet Blaze, #ee231f. It covers 0.070% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pebble (#87868c, 1.1% of the artwork), 0.235 away in OKLab.",
+			"region": "light-saturated",
+			"measurements": {
+				"exactShare": 0.00000244140625,
+				"neighbourhoodShare": 0.000703125,
+				"populationFloor": 0.001,
+				"modeDistance": 0.23458285244894234,
+				"nearestModeHex": "#87868c",
+				"nearestModeName": "Pebble",
+				"nearestModeMass": 0.01098876953125,
+				"substantialModes": 8,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#eff3f6",
+						"name": "Frost",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d6d7dc",
+						"name": "Fog",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#121117",
+						"name": "Darkroom",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#ee231f",
+						"name": "Scarlet Blaze",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#eff3f6"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_9a09b5f9c9d81dd3_fcd552",
+			"entryId": "9a09b5f9c9d81dd3",
+			"droppedHex": "#fcd552",
+			"droppedName": "Banana",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Banana, #fcd552. It covers 0.076% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Bronze Umber (#6d470d, 1.8% of the artwork), 0.458 away in OKLab.",
+			"region": "light-saturated",
+			"measurements": {
+				"exactShare": 0.00000244140625,
+				"neighbourhoodShare": 0.0007568359375,
+				"populationFloor": 0.001,
+				"modeDistance": 0.4578262883409271,
+				"nearestModeHex": "#6d470d",
+				"nearestModeName": "Bronze Umber",
+				"nearestModeMass": 0.017919921875,
+				"substantialModes": 10,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#0d0804",
+						"name": "Black Olive",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#010101",
+						"name": "Soot",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#fafcf1",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#fcd552",
+						"name": "Banana",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#0d0804"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_541381a040d65fe5_b62d1a",
+			"entryId": "541381a040d65fe5",
+			"droppedHex": "#b62d1a",
+			"droppedName": "Roasted Pepper",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Roasted Pepper, #b62d1a. It covers 0.080% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pulp (#e76d63, 2.1% of the artwork), 0.169 away in OKLab.",
+			"region": "dark-saturated",
+			"measurements": {
+				"exactShare": 0.000011111111111111112,
+				"neighbourhoodShare": 0.0008,
+				"populationFloor": 0.001,
+				"modeDistance": 0.16875706274218943,
+				"nearestModeHex": "#e76d63",
+				"nearestModeName": "Pulp",
+				"nearestModeMass": 0.0215,
+				"substantialModes": 16,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#0c070b",
+						"name": "Blackout",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#25160f",
+						"name": "Espresso Martini",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#e7a37e",
+						"name": "Caramel Cream",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#b62d1a",
+						"name": "Roasted Pepper",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#0c070b"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_c65c797e0907eaa5_f7f7f5",
+			"entryId": "c65c797e0907eaa5",
+			"droppedHex": "#f7f7f5",
+			"droppedName": "Snow",
+			"droppedRoles": [
+				"accent"
+			],
+			"dropLine": "The rule would drop the accent — Snow, #f7f7f5. It covers 0.088% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Greige (#bebbb5, 2.6% of the artwork), 0.184 away in OKLab.",
+			"region": "light-neutral",
+			"measurements": {
+				"exactShare": 0.00000244140625,
+				"neighbourhoodShare": 0.0008837890625,
+				"populationFloor": 0.001,
+				"modeDistance": 0.18418149446055143,
+				"nearestModeHex": "#bebbb5",
+				"nearestModeName": "Greige",
+				"nearestModeMass": 0.0256689453125,
+				"substantialModes": 13,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#242424",
+						"name": "Lead",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#000000",
+						"name": "Pitch Black",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#ffd800",
+						"name": "Sunbeam",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#f7f7f5",
+						"name": "Snow",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#242424"
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "dropped_color_e873a1cba8760d4e_ececee",
+			"entryId": "e873a1cba8760d4e",
+			"droppedHex": "#ececee",
+			"droppedName": "Linen",
+			"droppedRoles": [
+				"foreground"
+			],
+			"dropLine": "The rule would drop the foreground — Linen, #ececee. It covers 0.098% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Smoky Iris (#535478, 1.3% of the artwork), 0.487 away in OKLab.",
+			"region": "light-neutral",
+			"measurements": {
+				"exactShare": 0.000068359375,
+				"neighbourhoodShare": 0.00097900390625,
+				"populationFloor": 0.001,
+				"modeDistance": 0.4867677486222586,
+				"nearestModeHex": "#535478",
+				"nearestModeName": "Smoky Iris",
+				"nearestModeMass": 0.013115234375,
+				"substantialModes": 9,
+				"modeRadius": 0.05,
+				"modeMassFloor": 0.01
+			},
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#131313",
+						"name": "Iron Black",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#363054",
+						"name": "Basalt",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#ececee",
+						"name": "Linen",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#842c68",
+						"name": "Berry Velvet",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#131313"
+			},
+			"gradientNote": null
+		}
+	]
+}

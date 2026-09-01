@@ -1,0 +1,2957 @@
+{
+	"batchId": "accent-real-1",
+	"schema": "accent-real-round-1-truth/v1",
+	"generatedBy": "research/v3/src/review-server/accent-real.ts",
+	"builtFrom": [
+		"research/v3/data/legacy/endorsements.json",
+		"research/v3/data/calibration/accent-functional-round-1.json"
+	],
+	"criterion": "functional-visibility on real stimuli — does this work as an accent at a glance; the same criterion and the same wording as accent-functional-1, asked of the whole mock player over a real cover instead of a synthetic flat panel",
+	"question": "Does this work as an accent at a glance?",
+	"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+	"reviewerItemRefNote": "The id shown on the page is `<batchId>/<token>`, minted at push time and resolvable only by the server. Do NOT try to match it against anything in this file. A NOTE the reviewer files already carries the real `itemId`, which is this file's join key; for a bare quoted ref, resolve the token through the running server rather than guessing.",
+	"placements": [
+		{
+			"fieldRole": "field",
+			"elements": 5,
+			"what": "two top icons and the three-icon bottom transport, on side.fieldCss"
+		},
+		{
+			"fieldRole": "surface",
+			"elements": 2,
+			"what": "the surface card's play and bars icons"
+		},
+		{
+			"fieldRole": "background",
+			"elements": 2,
+			"what": "the two progress-rail fills, on a background-coloured track"
+		}
+	],
+	"items": [
+		{
+			"itemId": "ar-ladder-00",
+			"questionKey": "accent_real_09841fc9",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 0,
+			"targetDistance": 0.06,
+			"governingRole": "surface",
+			"band": "dark",
+			"hueThird": 0,
+			"entryId": "d7ef763045a9c84b",
+			"imageId": "ab67616d0000b273001063830a2e597293293797",
+			"accentHex": "#41362a",
+			"originalAccentHex": "#405a6b",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#273a48",
+				"okLabDistance": 0.06009559052364709,
+				"chromaDistance": 0.060041011670812015,
+				"apcaRaw": 0.5593202523489559,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00009151429772880082,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#090a0c",
+					"okLabDistance": 0.19876631347519205,
+					"chromaDistance": 0.029965396902228717,
+					"apcaRaw": -8.356593558833882,
+					"apcaLc": 0,
+					"deltaApcaY": 0.025768884808628687,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#273a48",
+					"okLabDistance": 0.06009559052364709,
+					"chromaDistance": 0.060041011670812015,
+					"apcaRaw": 0.5593202523489559,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00009151429772880082,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#090a0c",
+					"okLabDistance": 0.19876631347519205,
+					"chromaDistance": 0.029965396902228717,
+					"apcaRaw": -8.356593558833882,
+					"apcaLc": 0,
+					"deltaApcaY": 0.025768884808628687,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#5f7f8e",
+					"okLabDistance": 0.24596385585366481,
+					"chromaDistance": 0.06744511371853254,
+					"apcaRaw": 28.219404815487575,
+					"apcaLc": 25.519404815487572,
+					"deltaApcaY": -0.1456324171632305,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-01",
+			"questionKey": "accent_real_5f4ad9db",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 0,
+			"targetDistance": 0.06,
+			"governingRole": "background",
+			"band": "mid",
+			"hueThird": 2,
+			"entryId": "e8d2a986b18eb1d5",
+			"imageId": "ab67616d00001e0200060491ade88c8893373d9f",
+			"accentHex": "#997e87",
+			"originalAccentHex": "#04e3d1",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#a07f5e",
+				"okLabDistance": 0.05997125627194323,
+				"chromaDistance": 0.05995594830944879,
+				"apcaRaw": 0.7989802225288953,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0004908768237549543,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#a07f5e",
+					"okLabDistance": 0.05997125627194323,
+					"chromaDistance": 0.05995594830944879,
+					"apcaRaw": 0.7989802225288953,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0004908768237549543,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#6a770e",
+					"okLabDistance": 0.16325041324645437,
+					"chromaDistance": 0.1416512060368135,
+					"apcaRaw": -11.421922718794498,
+					"apcaLc": -8.721922718794499,
+					"deltaApcaY": 0.06904532995074586,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#a07f5e",
+					"okLabDistance": 0.05997125627194323,
+					"chromaDistance": 0.05995594830944879,
+					"apcaRaw": 0.7989802225288953,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0004908768237549543,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#c7c3c0",
+					"okLabDistance": 0.20114368902970764,
+					"chromaDistance": 0.03321936638567164,
+					"apcaRaw": 33.036947645490066,
+					"apcaLc": 30.336947645490064,
+					"deltaApcaY": -0.3196690468103645,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-02",
+			"questionKey": "accent_real_fe42e36c",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 0,
+			"targetDistance": 0.06,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 1,
+			"entryId": "13d692cd730368d0",
+			"imageId": "loups.jpg",
+			"accentHex": "#c3e3af",
+			"originalAccentHex": "#fc8831",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#ebda8a",
+				"okLabDistance": 0.06028270584580186,
+				"chromaDistance": 0.0600440204462551,
+				"apcaRaw": 0.3775673465607072,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00034428765596228317,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#fa7b34",
+					"okLabDistance": 0.24669462152341784,
+					"chromaDistance": 0.18800449411858244,
+					"apcaRaw": -34.59988360457334,
+					"apcaLc": -31.899883604573336,
+					"deltaApcaY": 0.35321912635481156,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#ebda8a",
+					"okLabDistance": 0.06028270584580186,
+					"chromaDistance": 0.0600440204462551,
+					"apcaRaw": 0.3775673465607072,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00034428765596228317,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#fa7b34",
+					"okLabDistance": 0.24669462152341784,
+					"chromaDistance": 0.18800449411858244,
+					"apcaRaw": -34.59988360457334,
+					"apcaLc": -31.899883604573336,
+					"deltaApcaY": 0.35321912635481156,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#fde5d9",
+					"okLabDistance": 0.10008458680974797,
+					"chromaDistance": 0.0809545836465134,
+					"apcaRaw": 9.672753040362513,
+					"apcaLc": 0,
+					"deltaApcaY": -0.12824871663844395,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-03",
+			"questionKey": "accent_real_0aae3b20",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 1,
+			"targetDistance": 0.07174879047002411,
+			"governingRole": "background",
+			"band": "mid",
+			"hueThird": 1,
+			"entryId": "458f416feb7c17cf",
+			"imageId": "ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+			"accentHex": "#3f8676",
+			"originalAccentHex": "#61625a",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#7b7b71",
+				"okLabDistance": 0.07314767943857445,
+				"chromaDistance": 0.07239613463961077,
+				"apcaRaw": 0.7498321420375222,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00005449115967900986,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#7b7b71",
+					"okLabDistance": 0.07314767943857445,
+					"chromaDistance": 0.07239613463961077,
+					"apcaRaw": 0.7498321420375222,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00005449115967900986,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#c1c3c0",
+					"okLabDistance": 0.25587548673504334,
+					"chromaDistance": 0.07275702104085442,
+					"apcaRaw": 37.421042917446776,
+					"apcaLc": 34.72104291744677,
+					"deltaApcaY": -0.3497140785791118,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#7b7b71",
+					"okLabDistance": 0.07314767943857445,
+					"chromaDistance": 0.07239613463961077,
+					"apcaRaw": 0.7498321420375222,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00005449115967900986,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#000b14",
+					"okLabDistance": 0.4331486027147529,
+					"chromaDistance": 0.06580495360985598,
+					"apcaRaw": -34.59990931288384,
+					"apcaLc": -31.899909312883835,
+					"deltaApcaY": 0.1709071053931759,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-04",
+			"questionKey": "accent_real_d0f946df",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 1,
+			"targetDistance": 0.07174879047002411,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 0,
+			"entryId": "b9985d18c36d1d76",
+			"imageId": "once.jpg",
+			"accentHex": "#e9deb2",
+			"originalAccentHex": "#6c5f71",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#dddde7",
+				"okLabDistance": 0.07221058719414172,
+				"chromaDistance": 0.07218217647600116,
+				"apcaRaw": 0.35664233104147813,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0005368360934022709,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#817486",
+					"okLabDistance": 0.3325394101897376,
+					"chromaDistance": 0.08487293129764811,
+					"apcaRaw": -57.235657083758575,
+					"apcaLc": -54.53565708375857,
+					"deltaApcaY": 0.5496813686000652,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#dddde7",
+					"okLabDistance": 0.07221058719414172,
+					"chromaDistance": 0.07218217647600116,
+					"apcaRaw": 0.35664233104147813,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0005368360934022709,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#817486",
+					"okLabDistance": 0.3325394101897376,
+					"chromaDistance": 0.08487293129764811,
+					"apcaRaw": -57.235657083758575,
+					"apcaLc": -54.53565708375857,
+					"deltaApcaY": 0.5496813686000652,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#3b303e",
+					"okLabDistance": 0.5774929581286463,
+					"chromaDistance": 0.08194923691595038,
+					"apcaRaw": -83.082504198241,
+					"apcaLc": -80.382504198241,
+					"deltaApcaY": 0.6927695247013278,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-05",
+			"questionKey": "accent_real_3ff90325",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 1,
+			"targetDistance": 0.07174879047002411,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 2,
+			"entryId": "8d5b08cf7bcccfe3",
+			"imageId": "ab67616d00001e0200083a2d455755e4c1116825",
+			"accentHex": "#57345b",
+			"originalAccentHex": "#d2bfc5",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#4d3e3b",
+				"okLabDistance": 0.07259192334478316,
+				"chromaDistance": 0.0724433859894628,
+				"apcaRaw": 0.6528538799762044,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00024366167290498786,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#4d3e3b",
+					"okLabDistance": 0.07259192334478316,
+					"chromaDistance": 0.0724433859894628,
+					"apcaRaw": 0.6528538799762044,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00024366167290498786,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#7c6778",
+					"okLabDistance": 0.16185305181226076,
+					"chromaDistance": 0.04197452700038996,
+					"apcaRaw": 18.819892275687245,
+					"apcaLc": 16.119892275687246,
+					"deltaApcaY": -0.09277276661176746,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#4d3e3b",
+					"okLabDistance": 0.07259192334478316,
+					"chromaDistance": 0.0724433859894628,
+					"apcaRaw": 0.6528538799762044,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00024366167290498786,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f4ece9",
+					"okLabDistance": 0.5701884864428861,
+					"chromaDistance": 0.07640505874033811,
+					"apcaRaw": 85.96536658966848,
+					"apcaLc": 83.26536658966847,
+					"deltaApcaY": -0.8053758485923421,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-06",
+			"questionKey": "accent_real_12657ef8",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 2,
+			"targetDistance": 0.08579814889852372,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 2,
+			"entryId": "b20bb6cc9e79e384",
+			"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+			"accentHex": "#e1cfda",
+			"originalAccentHex": "#917a8e",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#b6debc",
+				"okLabDistance": 0.08766214071109496,
+				"chromaDistance": 0.08712989599378684,
+				"apcaRaw": 0.5203367503356405,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0016176156701712685,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#80bbf7",
+					"okLabDistance": 0.14632907165507386,
+					"chromaDistance": 0.10908030095759555,
+					"apcaRaw": -18.92071619379434,
+					"apcaLc": -16.220716193794342,
+					"deltaApcaY": 0.19332103556660207,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#b6debc",
+					"okLabDistance": 0.08766214071109496,
+					"chromaDistance": 0.08712989599378684,
+					"apcaRaw": 0.5203367503356405,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0016176156701712685,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#80bbf7",
+					"okLabDistance": 0.14632907165507386,
+					"chromaDistance": 0.10908030095759555,
+					"apcaRaw": -18.92071619379434,
+					"apcaLc": -16.220716193794342,
+					"deltaApcaY": 0.19332103556660207,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#090810",
+					"okLabDistance": 0.7323188844141086,
+					"chromaDistance": 0.019099252759925432,
+					"apcaRaw": -82.96018250423171,
+					"apcaLc": -80.26018250423171,
+					"deltaApcaY": 0.6402357367595624,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-07",
+			"questionKey": "accent_real_9f6b4ebc",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 2,
+			"targetDistance": 0.08579814889852372,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 1,
+			"entryId": "7903ccd604858a64",
+			"imageId": "ab67616d0000b2730006c5d727b329e4477f4a81",
+			"accentHex": "#001508",
+			"originalAccentHex": "#f5c982",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#0e0e28",
+				"okLabDistance": 0.08306346785777909,
+				"chromaDistance": 0.08254635037136868,
+				"apcaRaw": -0.6973750304344795,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00008193171636226306,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#0e0e28",
+					"okLabDistance": 0.08306346785777909,
+					"chromaDistance": 0.08254635037136868,
+					"apcaRaw": -0.6973750304344795,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00008193171636226306,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#2a284d",
+					"okLabDistance": 0.15959264198064352,
+					"chromaDistance": 0.09706396094686263,
+					"apcaRaw": 5.23224023478045,
+					"apcaLc": 0,
+					"deltaApcaY": -0.01346392011173012,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#0e0e28",
+					"okLabDistance": 0.08306346785777909,
+					"chromaDistance": 0.08254635037136868,
+					"apcaRaw": -0.6973750304344795,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00008193171636226306,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f3f5f4",
+					"okLabDistance": 0.7971909174071076,
+					"chromaDistance": 0.03911651003623505,
+					"apcaRaw": 101.67334484102197,
+					"apcaLc": 98.97334484102197,
+					"deltaApcaY": -0.9022440248098558,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-08",
+			"questionKey": "accent_real_695e2d62",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 2,
+			"targetDistance": 0.08579814889852372,
+			"governingRole": "surface",
+			"band": "mid",
+			"hueThird": 0,
+			"entryId": "6803c6dc44c787c9",
+			"imageId": "knuckles.jpg",
+			"accentHex": "#a87481",
+			"originalAccentHex": "#60aac5",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#7b80a8",
+				"okLabDistance": 0.08622126997430157,
+				"chromaDistance": 0.08606109526494762,
+				"apcaRaw": 0.7485080672097476,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00007340003575120879,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#beb2c6",
+					"okLabDistance": 0.1723831158709314,
+					"chromaDistance": 0.05367346387870676,
+					"apcaRaw": 26.966358305189036,
+					"apcaLc": 24.266358305189037,
+					"deltaApcaY": -0.2459028558876433,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#7b80a8",
+					"okLabDistance": 0.08622126997430157,
+					"chromaDistance": 0.08606109526494762,
+					"apcaRaw": 0.7485080672097476,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00007340003575120879,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#beb2c6",
+					"okLabDistance": 0.1723831158709314,
+					"chromaDistance": 0.05367346387870676,
+					"apcaRaw": 26.966358305189036,
+					"apcaLc": 24.266358305189037,
+					"deltaApcaY": -0.2459028558876433,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#d8cbdd",
+					"okLabDistance": 0.24765052504471619,
+					"chromaDistance": 0.05213375890492267,
+					"apcaRaw": 40.67847114184841,
+					"apcaLc": 37.97847114184841,
+					"deltaApcaY": -0.40751693463290317,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-09",
+			"questionKey": "accent_real_35f6824b",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 3,
+			"targetDistance": 0.10259855680060181,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 0,
+			"entryId": "4623df3e8507f916",
+			"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+			"accentHex": "#b41916",
+			"originalAccentHex": "#faef9d",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#ab2266",
+				"okLabDistance": 0.10238349583663413,
+				"chromaDistance": 0.1022251325973124,
+				"apcaRaw": 0.725825813451296,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00008877980488418424,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#ab2266",
+					"okLabDistance": 0.10238349583663413,
+					"chromaDistance": 0.1022251325973124,
+					"apcaRaw": 0.725825813451296,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00008877980488418424,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#1f636c",
+					"okLabDistance": 0.2576811113785156,
+					"chromaDistance": 0.255701026556882,
+					"apcaRaw": -3.6576394551266724,
+					"apcaLc": 0,
+					"deltaApcaY": 0.01074030024758324,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#ab2266",
+					"okLabDistance": 0.10238349583663413,
+					"chromaDistance": 0.1022251325973124,
+					"apcaRaw": 0.725825813451296,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00008877980488418424,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#50fdf7",
+					"okLabDistance": 0.5241270828151701,
+					"chromaDistance": 0.32285628999850174,
+					"apcaRaw": 69.50172625633778,
+					"apcaLc": 66.80172625633777,
+					"deltaApcaY": -0.6866856140339386,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-10",
+			"questionKey": "accent_real_af38f4a6",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 3,
+			"targetDistance": 0.10259855680060181,
+			"governingRole": "surface",
+			"band": "mid",
+			"hueThird": 2,
+			"entryId": "25c7f0aa82856981",
+			"imageId": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"accentHex": "#7e6a85",
+			"originalAccentHex": "#a3aea0",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#537962",
+				"okLabDistance": 0.10273687141270045,
+				"chromaDistance": 0.10200126135926592,
+				"apcaRaw": -1.9501180834852958,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00012394224428738387,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#1b1b13",
+					"okLabDistance": 0.33909573923171865,
+					"chromaDistance": 0.060887511338897,
+					"apcaRaw": -29.064781338699348,
+					"apcaLc": -26.364781338699345,
+					"deltaApcaY": 0.13690363965242372,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#537962",
+					"okLabDistance": 0.10273687141270045,
+					"chromaDistance": 0.10200126135926592,
+					"apcaRaw": -1.9501180834852958,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00012394224428738387,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#1b1b13",
+					"okLabDistance": 0.33909573923171865,
+					"chromaDistance": 0.060887511338897,
+					"apcaRaw": -29.064781338699348,
+					"apcaLc": -26.364781338699345,
+					"deltaApcaY": 0.13690363965242372,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f9fbf6",
+					"okLabDistance": 0.4357079633328924,
+					"chromaDistance": 0.0542172189453273,
+					"apcaRaw": 73.77280999249973,
+					"apcaLc": 71.07280999249973,
+					"deltaApcaY": -0.8143135417698961,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-11",
+			"questionKey": "accent_real_4bf668c8",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 3,
+			"targetDistance": 0.10259855680060181,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": 1,
+			"entryId": "ea9e8706790c5e50",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"accentHex": "#b3f168",
+			"originalAccentHex": "#fcfcfc",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#fcdd68",
+				"okLabDistance": 0.10418624830650636,
+				"chromaDistance": 0.10340058215094247,
+				"apcaRaw": -1.023436980871714,
+				"apcaLc": 0,
+				"deltaApcaY": 0.001485290733032385,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#fcdd68",
+					"okLabDistance": 0.10418624830650636,
+					"chromaDistance": 0.10340058215094247,
+					"apcaRaw": -1.023436980871714,
+					"apcaLc": 0,
+					"deltaApcaY": 0.001485290733032385,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#a46d08",
+					"okLabDistance": 0.34420860825495003,
+					"chromaDistance": 0.1502420792966943,
+					"apcaRaw": -57.717964848806005,
+					"apcaLc": -55.017964848806,
+					"deltaApcaY": 0.557107660043027,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#fcdd68",
+					"okLabDistance": 0.10418624830650636,
+					"chromaDistance": 0.10340058215094247,
+					"apcaRaw": -1.023436980871714,
+					"apcaLc": 0,
+					"deltaApcaY": 0.001485290733032385,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#030303",
+					"okLabDistance": 0.8115180055181986,
+					"chromaDistance": 0.17904456844608568,
+					"apcaRaw": -89.87886685019747,
+					"apcaLc": -87.17886685019747,
+					"deltaApcaY": 0.7238406235984639,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-12",
+			"questionKey": "accent_real_6cc7a9c0",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 4,
+			"targetDistance": 0.12268870590688745,
+			"governingRole": "surface",
+			"band": "mid",
+			"hueThird": 1,
+			"entryId": "59b2306022c2147d",
+			"imageId": "ab67616d0000b2730014cb7f2229ff8195e3ba04",
+			"accentHex": "#1f7d4e",
+			"originalAccentHex": "#572816",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#6b6f7a",
+				"okLabDistance": 0.12296711003943185,
+				"chromaDistance": 0.12164513959506382,
+				"apcaRaw": 0.9135278659289685,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0011513483880378206,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#0f0f0f",
+					"okLabDistance": 0.3733055801986419,
+					"chromaDistance": 0.11348034419494751,
+					"apcaRaw": -29.110668197397217,
+					"apcaLc": -26.410668197397214,
+					"deltaApcaY": 0.13365040001631215,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#6b6f7a",
+					"okLabDistance": 0.12296711003943185,
+					"chromaDistance": 0.12164513959506382,
+					"apcaRaw": 0.9135278659289685,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0011513483880378206,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#0f0f0f",
+					"okLabDistance": 0.3733055801986419,
+					"chromaDistance": 0.11348034419494751,
+					"apcaRaw": -29.110668197397217,
+					"apcaLc": -26.410668197397214,
+					"deltaApcaY": 0.13365040001631215,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#929fb2",
+					"okLabDistance": 0.21381635838019794,
+					"chromaDistance": 0.12364715126455306,
+					"apcaRaw": 23.47562526585483,
+					"apcaLc": 20.77562526585483,
+					"deltaApcaY": -0.1816446516158755,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-13",
+			"questionKey": "accent_real_7133b161",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 4,
+			"targetDistance": 0.12268870590688745,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": 0,
+			"entryId": "ae1c9fcc17150433",
+			"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"accentHex": "#fdbd83",
+			"originalAccentHex": "#2c2c2c",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#fab6db",
+				"okLabDistance": 0.12314893614764433,
+				"chromaDistance": 0.12302629540042173,
+				"apcaRaw": -1.3920144886069348,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0005712926087244607,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#fab6db",
+					"okLabDistance": 0.12314893614764433,
+					"chromaDistance": 0.12302629540042173,
+					"apcaRaw": -1.3920144886069348,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0005712926087244607,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#fab6db",
+					"okLabDistance": 0.12314893614764433,
+					"chromaDistance": 0.12302629540042173,
+					"apcaRaw": -1.3920144886069348,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0005712926087244607,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#fab6db",
+					"okLabDistance": 0.12314893614764433,
+					"chromaDistance": 0.12302629540042173,
+					"apcaRaw": -1.3920144886069348,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0005712926087244607,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#2c2c2c",
+					"okLabDistance": 0.5611378946713756,
+					"chromaDistance": 0.10465008794957768,
+					"apcaRaw": -72.9543329415854,
+					"apcaLc": -70.2543329415854,
+					"deltaApcaY": 0.5570474484164814,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-14",
+			"questionKey": "accent_real_3d431fc0",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 4,
+			"targetDistance": 0.12268870590688745,
+			"governingRole": "surface",
+			"band": "dark",
+			"hueThird": 2,
+			"entryId": "d1e2de70ad2c800a",
+			"imageId": "ab67616d0000b2730011c1dcb3a4a0cd92bdf203",
+			"accentHex": "#000f46",
+			"originalAccentHex": "#dc9581",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#221713",
+				"okLabDistance": 0.12056404044595413,
+				"chromaDistance": 0.12005901567242536,
+				"apcaRaw": 0.3559405720367241,
+				"apcaLc": 0,
+				"deltaApcaY": -0.000013503584702343613,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#0c0807",
+					"okLabDistance": 0.129007828221584,
+					"chromaDistance": 0.11042409198265811,
+					"apcaRaw": -1.933086225704714,
+					"apcaLc": 0,
+					"deltaApcaY": 0.003711741909484948,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#221713",
+					"okLabDistance": 0.12056404044595413,
+					"chromaDistance": 0.12005901567242536,
+					"apcaRaw": 0.3559405720367241,
+					"apcaLc": 0,
+					"deltaApcaY": -0.000013503584702343613,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#0c0807",
+					"okLabDistance": 0.129007828221584,
+					"chromaDistance": 0.11042409198265811,
+					"apcaRaw": -1.933086225704714,
+					"apcaLc": 0,
+					"deltaApcaY": 0.003711741909484948,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#ecde95",
+					"okLabDistance": 0.716670425449236,
+					"chromaDistance": 0.19669853083039288,
+					"apcaRaw": 87.07328559929405,
+					"apcaLc": 84.37328559929405,
+					"deltaApcaY": -0.7052437983174286,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-15",
+			"questionKey": "accent_real_52a70b79",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 5,
+			"targetDistance": 0.1467127708858613,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": 2,
+			"entryId": "49704bcef2e51625",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"accentHex": "#f2b1e8",
+			"originalAccentHex": "#ce9f71",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#9dcfcc",
+				"okLabDistance": 0.14857031599492315,
+				"chromaDistance": 0.14735863542596878,
+				"apcaRaw": -1.4772137627922157,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0006497019449830388,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#9dcfcc",
+					"okLabDistance": 0.14857031599492315,
+					"chromaDistance": 0.14735863542596878,
+					"apcaRaw": -1.4772137627922157,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0006497019449830388,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#ccddd7",
+					"okLabDistance": 0.1304143707960198,
+					"chromaDistance": 0.12224762232886792,
+					"apcaRaw": 11.356467782126472,
+					"apcaLc": 8.656467782126473,
+					"deltaApcaY": -0.13684597319690905,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#9dcfcc",
+					"okLabDistance": 0.14857031599492315,
+					"chromaDistance": 0.14735863542596878,
+					"apcaRaw": -1.4772137627922157,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0006497019449830388,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#297269",
+					"okLabDistance": 0.37418642097916693,
+					"chromaDistance": 0.16987099385014,
+					"apcaRaw": -50.13708950176709,
+					"apcaLc": -47.43708950176709,
+					"deltaApcaY": 0.42803285353198506,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-16",
+			"questionKey": "accent_real_6f137b5e",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 5,
+			"targetDistance": 0.1467127708858613,
+			"governingRole": "surface",
+			"band": "dark",
+			"hueThird": 1,
+			"entryId": "d7fd1e683b9e0aa7",
+			"imageId": "krafty.jpg",
+			"accentHex": "#293b47",
+			"originalAccentHex": "#eb0a8a",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#680b3a",
+				"okLabDistance": 0.14751792687517074,
+				"chromaDistance": 0.14750610442084985,
+				"apcaRaw": -1.2954945751863887,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00016503386191494065,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#050306",
+					"okLabDistance": 0.23931059560547915,
+					"chromaDistance": 0.03129954026710151,
+					"apcaRaw": -8.802602224364595,
+					"apcaLc": 0,
+					"deltaApcaY": 0.027277187547036064,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#680b3a",
+					"okLabDistance": 0.14751792687517074,
+					"chromaDistance": 0.14750610442084985,
+					"apcaRaw": -1.2954945751863887,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00016503386191494065,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#050306",
+					"okLabDistance": 0.23931059560547915,
+					"chromaDistance": 0.03129954026710151,
+					"apcaRaw": -8.802602224364595,
+					"apcaLc": 0,
+					"deltaApcaY": 0.027277187547036064,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f7a223",
+					"okLabDistance": 0.47672191046336776,
+					"chromaDistance": 0.19108790264279366,
+					"apcaRaw": 57.18864951294053,
+					"apcaLc": 54.488649512940526,
+					"deltaApcaY": -0.4110390138987863,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-17",
+			"questionKey": "accent_real_118bd984",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 5,
+			"targetDistance": 0.1467127708858613,
+			"governingRole": "background",
+			"band": "mid",
+			"hueThird": 0,
+			"entryId": "7835550e3f108a87",
+			"imageId": "ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+			"accentHex": "#b37800",
+			"originalAccentHex": "#824892",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#927f92",
+				"okLabDistance": 0.1461825265271236,
+				"chromaDistance": 0.14617358939641412,
+				"apcaRaw": 0.841552770301892,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0008204070364032368,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#927f92",
+					"okLabDistance": 0.1461825265271236,
+					"chromaDistance": 0.14617358939641412,
+					"apcaRaw": 0.841552770301892,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0008204070364032368,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#fcfef9",
+					"okLabDistance": 0.3963633782711462,
+					"chromaDistance": 0.12629674447268416,
+					"apcaRaw": 66.33707492323524,
+					"apcaLc": 63.637074923235225,
+					"deltaApcaY": -0.7752121603650276,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#927f92",
+					"okLabDistance": 0.1461825265271236,
+					"chromaDistance": 0.14617358939641412,
+					"apcaRaw": 0.841552770301892,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0008204070364032368,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#23232d",
+					"okLabDistance": 0.38689024846630754,
+					"chromaDistance": 0.14701051419645098,
+					"apcaRaw": -36.93777344030032,
+					"apcaLc": -34.237773440300316,
+					"deltaApcaY": 0.19908986730488418,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-18",
+			"questionKey": "accent_real_1fd228c2",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 6,
+			"targetDistance": 0.17544106429277195,
+			"governingRole": "surface",
+			"band": "dark",
+			"hueThird": 0,
+			"entryId": "96841f1c143dfe2a",
+			"imageId": "johns.jpg",
+			"accentHex": "#804c34",
+			"originalAccentHex": "#ff5a62",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#315a92",
+				"okLabDistance": 0.17539849868297896,
+				"chromaDistance": 0.17530586610913057,
+				"apcaRaw": 0.753925460750226,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00031608352103278115,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#0d181c",
+					"okLabDistance": 0.28799578607637927,
+					"chromaDistance": 0.09725635980321926,
+					"apcaRaw": -19.678719486799455,
+					"apcaLc": -16.978719486799456,
+					"deltaApcaY": 0.07841695646912836,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#315a92",
+					"okLabDistance": 0.17539849868297896,
+					"chromaDistance": 0.17530586610913057,
+					"apcaRaw": 0.753925460750226,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00031608352103278115,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#0d181c",
+					"okLabDistance": 0.28799578607637927,
+					"chromaDistance": 0.09725635980321926,
+					"apcaRaw": -19.678719486799455,
+					"apcaLc": -16.978719486799456,
+					"deltaApcaY": 0.07841695646912836,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f7f8fa",
+					"okLabDistance": 0.5139328713009568,
+					"chromaDistance": 0.08175132723396368,
+					"apcaRaw": 82.48573229559415,
+					"apcaLc": 79.78573229559414,
+					"deltaApcaY": -0.8533671990179195,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-19",
+			"questionKey": "accent_real_63ece911",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 6,
+			"targetDistance": 0.17544106429277195,
+			"governingRole": "background",
+			"band": "mid",
+			"hueThird": 2,
+			"entryId": "a427cf168614e1b6",
+			"imageId": "ab67616d0000b27300097e55f9a93ceb03afa4b2",
+			"accentHex": "#b03a93",
+			"originalAccentHex": "#93dcfc",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#c03902",
+				"okLabDistance": 0.17537159606511143,
+				"chromaDistance": 0.17524050760280416,
+				"apcaRaw": 0.7658644321964945,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0002067858091942265,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#c03902",
+					"okLabDistance": 0.17537159606511143,
+					"chromaDistance": 0.17524050760280416,
+					"apcaRaw": 0.7658644321964945,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0002067858091942265,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#df5304",
+					"okLabDistance": 0.20573972151778813,
+					"chromaDistance": 0.1916872942861293,
+					"apcaRaw": 11.444684007912027,
+					"apcaLc": 8.744684007912028,
+					"deltaApcaY": -0.07546528121362112,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#c03902",
+					"okLabDistance": 0.17537159606511143,
+					"chromaDistance": 0.17524050760280416,
+					"apcaRaw": 0.7658644321964945,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0002067858091942265,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#020204",
+					"okLabDistance": 0.49270151991046746,
+					"chromaDistance": 0.17566791782357533,
+					"apcaRaw": -28.30330468910586,
+					"apcaLc": -25.60330468910586,
+					"deltaApcaY": 0.1270382352237939,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-20",
+			"questionKey": "accent_real_f1551d76",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 6,
+			"targetDistance": 0.17544106429277195,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 1,
+			"entryId": "c06573716f6fab72",
+			"imageId": "placebo.jpg",
+			"accentHex": "#00b656",
+			"originalAccentHex": "#111312",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#86a5aa",
+				"okLabDistance": 0.1704335530326773,
+				"chromaDistance": 0.1690692469410668,
+				"apcaRaw": 0.7435740300363783,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0006073560589348048,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#6c8a8a",
+					"okLabDistance": 0.17691433679786633,
+					"chromaDistance": 0.1632021829746218,
+					"apcaRaw": -15.635084745576954,
+					"apcaLc": -12.935084745576955,
+					"deltaApcaY": 0.1162158500377109,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#86a5aa",
+					"okLabDistance": 0.1704335530326773,
+					"chromaDistance": 0.1690692469410668,
+					"apcaRaw": 0.7435740300363783,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0006073560589348048,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#6c8a8a",
+					"okLabDistance": 0.17691433679786633,
+					"chromaDistance": 0.1632021829746218,
+					"apcaRaw": -15.635084745576954,
+					"apcaLc": -12.935084745576955,
+					"deltaApcaY": 0.1162158500377109,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#fbfdfa",
+					"okLabDistance": 0.3613607686046794,
+					"chromaDistance": 0.18070935095294252,
+					"apcaRaw": 52.487654034008294,
+					"apcaLc": 49.78765403400829,
+					"deltaApcaY": -0.6517017642082352,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-21",
+			"questionKey": "accent_real_a0506870",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 7,
+			"targetDistance": 0.20979473602966875,
+			"governingRole": "background",
+			"band": "mid",
+			"hueThird": 1,
+			"entryId": "384b881c94850d47",
+			"imageId": "horsley.jpg",
+			"accentHex": "#2f9630",
+			"originalAccentHex": "#f2eec1",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#bd7042",
+				"okLabDistance": 0.2107460916536629,
+				"chromaDistance": 0.2089068369154054,
+				"apcaRaw": 0.8157843799967212,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0006080838708329983,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#bd7042",
+					"okLabDistance": 0.2107460916536629,
+					"chromaDistance": 0.2089068369154054,
+					"apcaRaw": 0.8157843799967212,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0006080838708329983,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#d6a944",
+					"okLabDistance": 0.22241769041141604,
+					"chromaDistance": 0.14954144827994367,
+					"apcaRaw": 22.899135431280826,
+					"apcaLc": 20.199135431280826,
+					"deltaApcaY": -0.2040048649832586,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#bd7042",
+					"okLabDistance": 0.2107460916536629,
+					"chromaDistance": 0.2089068369154054,
+					"apcaRaw": 0.8157843799967212,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0006080838708329983,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#0f0f0f",
+					"okLabDistance": 0.4566886986397983,
+					"chromaDistance": 0.16833727274555677,
+					"apcaRaw": -38.89933917701459,
+					"apcaLc": -36.199339177014586,
+					"deltaApcaY": 0.2040044444510107,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-22",
+			"questionKey": "accent_real_a17bd89f",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 7,
+			"targetDistance": 0.20979473602966875,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 0,
+			"entryId": "c15a32c411582a19",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"accentHex": "#e0a136",
+			"originalAccentHex": "#1f5263",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#78b5d2",
+				"okLabDistance": 0.20938823963192169,
+				"chromaDistance": 0.20917171730377465,
+				"apcaRaw": -1.809413103363338,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0004638383257890566,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#78b5d2",
+					"okLabDistance": 0.20938823963192169,
+					"chromaDistance": 0.20917171730377465,
+					"apcaRaw": -1.809413103363338,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0004638383257890566,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#78b5d2",
+					"okLabDistance": 0.20938823963192169,
+					"chromaDistance": 0.20917171730377465,
+					"apcaRaw": -1.809413103363338,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0004638383257890566,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#78b5d2",
+					"okLabDistance": 0.20938823963192169,
+					"chromaDistance": 0.20917171730377465,
+					"apcaRaw": -1.809413103363338,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0004638383257890566,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#131929",
+					"okLabDistance": 0.5625197756082737,
+					"chromaDistance": 0.17139528455826408,
+					"apcaRaw": -59.35235007846117,
+					"apcaLc": -56.65235007846117,
+					"deltaApcaY": 0.39070749902746976,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-23",
+			"questionKey": "accent_real_60c420b4",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 7,
+			"targetDistance": 0.20979473602966875,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 2,
+			"entryId": "b2a972dd2d4b51bd",
+			"imageId": "ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+			"accentHex": "#6429fe",
+			"originalAccentHex": "#f7bdcb",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#06679a",
+				"okLabDistance": 0.2116210536817771,
+				"chromaDistance": 0.2097490929698716,
+				"apcaRaw": -1.8612029579668465,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0001559243439132607,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#06679a",
+					"okLabDistance": 0.2116210536817771,
+					"chromaDistance": 0.2097490929698716,
+					"apcaRaw": -1.8612029579668465,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0001559243439132607,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#06679a",
+					"okLabDistance": 0.2116210536817771,
+					"chromaDistance": 0.2097490929698716,
+					"apcaRaw": -1.8612029579668465,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0001559243439132607,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#06679a",
+					"okLabDistance": 0.2116210536817771,
+					"chromaDistance": 0.2097490929698716,
+					"apcaRaw": -1.8612029579668465,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0001559243439132607,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f8e1d9",
+					"okLabDistance": 0.5006884488375615,
+					"chromaDistance": 0.29165609842940843,
+					"apcaRaw": 67.82988482494198,
+					"apcaLc": 65.12988482494198,
+					"deltaApcaY": -0.674631081571203,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-24",
+			"questionKey": "accent_real_282bb882",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 8,
+			"targetDistance": 0.25087530928511204,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 2,
+			"entryId": "f5e25294d8e134ee",
+			"imageId": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+			"accentHex": "#ffa8ff",
+			"originalAccentHex": "#131313",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#fbbb4d",
+				"okLabDistance": 0.24184535604839977,
+				"chromaDistance": 0.24150080151134332,
+				"apcaRaw": 0.5728176118866112,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0010126817933814314,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#fbbb4d",
+					"okLabDistance": 0.24184535604839977,
+					"chromaDistance": 0.24150080151134332,
+					"apcaRaw": 0.5728176118866112,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0010126817933814314,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#fbbb4d",
+					"okLabDistance": 0.24184535604839977,
+					"chromaDistance": 0.24150080151134332,
+					"apcaRaw": 0.5728176118866112,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0010126817933814314,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#fbbb4d",
+					"okLabDistance": 0.24184535604839977,
+					"chromaDistance": 0.24150080151134332,
+					"apcaRaw": 0.5728176118866112,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0010126817933814314,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#131313",
+					"okLabDistance": 0.6747497016924583,
+					"chromaDistance": 0.1494874216843104,
+					"apcaRaw": -74.40329451140173,
+					"apcaLc": -71.70329451140172,
+					"deltaApcaY": 0.5455736003275647,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-25",
+			"questionKey": "accent_real_0bec5499",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 8,
+			"targetDistance": 0.25087530928511204,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 1,
+			"entryId": "e15c85e191a92dc7",
+			"imageId": "ab67616d0000b27300083cc5b8d8d2e7ca7147cd",
+			"accentHex": "#2a4804",
+			"originalAccentHex": "#871b3f",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#700e63",
+				"okLabDistance": 0.2504497627709791,
+				"chromaDistance": 0.2498843379955849,
+				"apcaRaw": 0.7090959494090414,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0004605656482929432,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#700e63",
+					"okLabDistance": 0.2504497627709791,
+					"chromaDistance": 0.2498843379955849,
+					"apcaRaw": 0.7090959494090414,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0004605656482929432,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#fac1c7",
+					"okLabDistance": 0.5193372937399764,
+					"chromaDistance": 0.1424296235995084,
+					"apcaRaw": 68.90240339607739,
+					"apcaLc": 66.20240339607739,
+					"deltaApcaY": -0.571890618129733,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#700e63",
+					"okLabDistance": 0.2504497627709791,
+					"chromaDistance": 0.2498843379955849,
+					"apcaRaw": 0.7090959494090414,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0004605656482929432,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#180a21",
+					"okLabDistance": 0.23588702454314492,
+					"chromaDistance": 0.1461519867208607,
+					"apcaRaw": -10.868446842877145,
+					"apcaLc": -8.168446842877145,
+					"deltaApcaY": 0.03562054010193284,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-26",
+			"questionKey": "accent_real_dbdca989",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 8,
+			"targetDistance": 0.25087530928511204,
+			"governingRole": "surface",
+			"band": "mid",
+			"hueThird": 0,
+			"entryId": "8eb8704de97fed7c",
+			"imageId": "muse.jpg",
+			"accentHex": "#c65271",
+			"originalAccentHex": "#82d1ef",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#0381bb",
+				"okLabDistance": 0.2508252930079193,
+				"chromaDistance": 0.24978416466743436,
+				"apcaRaw": 0.8187496482537143,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0005542632447462781,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#000000",
+					"okLabDistance": 0.6151786708297632,
+					"chromaDistance": 0.15030135672726644,
+					"apcaRaw": -35.011394874355695,
+					"apcaLc": -32.31139487435569,
+					"deltaApcaY": 0.17308952371910893,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#0381bb",
+					"okLabDistance": 0.2508252930079193,
+					"chromaDistance": 0.24978416466743436,
+					"apcaRaw": 0.8187496482537143,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0005542632447462781,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#000000",
+					"okLabDistance": 0.6151786708297632,
+					"chromaDistance": 0.15030135672726644,
+					"apcaRaw": -35.011394874355695,
+					"apcaLc": -32.31139487435569,
+					"deltaApcaY": 0.17308952371910893,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#edf6fb",
+					"okLabDistance": 0.403803813232094,
+					"chromaDistance": 0.15872501335115122,
+					"apcaRaw": 65.78406035026602,
+					"apcaLc": 63.084060350266014,
+					"deltaApcaY": -0.7308691597072643,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-27",
+			"questionKey": "accent_real_c439c4a5",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 9,
+			"targetDistance": 0.3,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 0,
+			"entryId": "c5527285046d8e41",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"accentHex": "#bf0c00",
+			"originalAccentHex": "#f0d732",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#1f6998",
+				"okLabDistance": 0.2968525054948475,
+				"chromaDistance": 0.29670740359082626,
+				"apcaRaw": 0.8012917275664228,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00047308009016658326,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#1f6998",
+					"okLabDistance": 0.2968525054948475,
+					"chromaDistance": 0.29670740359082626,
+					"apcaRaw": 0.8012917275664228,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00047308009016658326,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#123146",
+					"okLabDistance": 0.325767561538101,
+					"chromaDistance": 0.25092360035819256,
+					"apcaRaw": -20.173314732464192,
+					"apcaLc": -17.473314732464193,
+					"deltaApcaY": 0.08949610671800816,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#1f6998",
+					"okLabDistance": 0.2968525054948475,
+					"chromaDistance": 0.29670740359082626,
+					"apcaRaw": 0.8012917275664228,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00047308009016658326,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f9fcf3",
+					"okLabDistance": 0.5199504836456309,
+					"chromaDistance": 0.20502371512261466,
+					"apcaRaw": 79.5927775480374,
+					"apcaLc": 76.8927775480374,
+					"deltaApcaY": -0.8535191057317465,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-28",
+			"questionKey": "accent_real_15f027f9",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 9,
+			"targetDistance": 0.3,
+			"governingRole": "surface",
+			"band": "mid",
+			"hueThird": 2,
+			"entryId": "d67b8e45303efdf0",
+			"imageId": "ab67616d0000b273000a9e0be9521986cc08839e",
+			"accentHex": "#a14293",
+			"originalAccentHex": "#a1bd34",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#277722",
+				"okLabDistance": 0.3024409031587368,
+				"chromaDistance": 0.3007052604729443,
+				"apcaRaw": 0.7385578503052876,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00006351002111668058,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#4f1337",
+					"okLabDistance": 0.2427982212017527,
+					"chromaDistance": 0.06821716464175792,
+					"apcaRaw": -22.27066713402118,
+					"apcaLc": -19.57066713402118,
+					"deltaApcaY": 0.10167938545184688,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#277722",
+					"okLabDistance": 0.3024409031587368,
+					"chromaDistance": 0.3007052604729443,
+					"apcaRaw": 0.7385578503052876,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00006351002111668058,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#4f1337",
+					"okLabDistance": 0.2427982212017527,
+					"chromaDistance": 0.06821716464175792,
+					"apcaRaw": -22.27066713402118,
+					"apcaLc": -19.57066713402118,
+					"deltaApcaY": 0.10167938545184688,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#fcf7fd",
+					"okLabDistance": 0.4716093363586545,
+					"chromaDistance": 0.15029503439462008,
+					"apcaRaw": 76.45266764488201,
+					"apcaLc": 73.75266764488201,
+					"deltaApcaY": -0.8223480716569452,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-ladder-29",
+			"questionKey": "accent_real_f63b0d3d",
+			"role": "ladder",
+			"stimulus": "mock",
+			"rung": 9,
+			"targetDistance": 0.3,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": 1,
+			"entryId": "4791ac96cb9a5f19",
+			"imageId": "ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+			"accentHex": "#72f93c",
+			"originalAccentHex": "#c399bd",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#f4d3f0",
+				"okLabDistance": 0.30232876444446605,
+				"chromaDistance": 0.30077827931609546,
+				"apcaRaw": -1.0167732224464499,
+				"apcaLc": 0,
+				"deltaApcaY": 0.000834347691898718,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#f4d3f0",
+					"okLabDistance": 0.30232876444446605,
+					"chromaDistance": 0.30077827931609546,
+					"apcaRaw": -1.0167732224464499,
+					"apcaLc": 0,
+					"deltaApcaY": 0.000834347691898718,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#d3b6c8",
+					"okLabDistance": 0.2947541280238865,
+					"chromaDistance": 0.28729923619496506,
+					"apcaRaw": -20.02300304042361,
+					"apcaLc": -17.32300304042361,
+					"deltaApcaY": 0.21487162660596937,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#f4d3f0",
+					"okLabDistance": 0.30232876444446605,
+					"chromaDistance": 0.30077827931609546,
+					"apcaRaw": -1.0167732224464499,
+					"apcaLc": 0,
+					"deltaApcaY": 0.000834347691898718,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#887b8d",
+					"okLabDistance": 0.3899926961907303,
+					"chromaDistance": 0.2796945154498952,
+					"apcaRaw": -53.498070523456654,
+					"apcaLc": -50.79807052345665,
+					"deltaApcaY": 0.5197166950477909,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-anchor-00-af-ladder-r00-h1-mid",
+			"questionKey": "accent_real_8feb6e5c",
+			"role": "anchor",
+			"stimulus": "panel",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "panel-field",
+			"band": null,
+			"hueThird": null,
+			"entryId": null,
+			"imageId": null,
+			"accentHex": "#4f7b7f",
+			"originalAccentHex": null,
+			"governing": {
+				"fieldRole": "panel-field",
+				"fieldHex": "#7b7271",
+				"okLabDistance": 0.060565940487832544,
+				"chromaDistance": 0.06011042113800563,
+				"apcaRaw": 0.7637669621453008,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00015803568506944643,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "panel-field",
+					"fieldHex": "#7b7271",
+					"okLabDistance": 0.060565940487832544,
+					"chromaDistance": 0.06011042113800563,
+					"apcaRaw": 0.7637669621453008,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00015803568506944643,
+					"identical": false
+				}
+			],
+			"replays": "af-ladder-r00-h1-mid",
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-anchor-01-af-ladder-r02-h1-mid",
+			"questionKey": "accent_real_e88513a3",
+			"role": "anchor",
+			"stimulus": "panel",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "panel-field",
+			"band": null,
+			"hueThird": null,
+			"entryId": null,
+			"imageId": null,
+			"accentHex": "#607e62",
+			"originalAccentHex": null,
+			"governing": {
+				"fieldRole": "panel-field",
+				"fieldHex": "#847182",
+				"okLabDistance": 0.0898878802516864,
+				"chromaDistance": 0.08927825590494919,
+				"apcaRaw": 0.765448006559076,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00016536921340620792,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "panel-field",
+					"fieldHex": "#847182",
+					"okLabDistance": 0.0898878802516864,
+					"chromaDistance": 0.08927825590494919,
+					"apcaRaw": 0.765448006559076,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00016536921340620792,
+					"identical": false
+				}
+			],
+			"replays": "af-ladder-r02-h1-mid",
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-anchor-02-af-ladder-r03-h1-dark",
+			"questionKey": "accent_real_44e47c40",
+			"role": "anchor",
+			"stimulus": "panel",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "panel-field",
+			"band": null,
+			"hueThird": null,
+			"entryId": null,
+			"imageId": null,
+			"accentHex": "#27471d",
+			"originalAccentHex": null,
+			"governing": {
+				"fieldRole": "panel-field",
+				"fieldHex": "#453c4f",
+				"okLabDistance": 0.11147332533285531,
+				"chromaDistance": 0.11090479076662478,
+				"apcaRaw": -1.4300896049688643,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00022155795015297436,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "panel-field",
+					"fieldHex": "#453c4f",
+					"okLabDistance": 0.11147332533285531,
+					"chromaDistance": 0.11090479076662478,
+					"apcaRaw": -1.4300896049688643,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00022155795015297436,
+					"identical": false
+				}
+			],
+			"replays": "af-ladder-r03-h1-dark",
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-anchor-03-af-anchor-p2-ladder-08",
+			"questionKey": "accent_real_e2d78654",
+			"role": "anchor",
+			"stimulus": "panel",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "panel-field",
+			"band": null,
+			"hueThird": null,
+			"entryId": null,
+			"imageId": null,
+			"accentHex": "#dda600",
+			"originalAccentHex": null,
+			"governing": {
+				"fieldRole": "panel-field",
+				"fieldHex": "#9ab6a4",
+				"okLabDistance": 0.14812682160091392,
+				"chromaDistance": 0.14800620551820753,
+				"apcaRaw": 0.678472457007615,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0006434846462983757,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "panel-field",
+					"fieldHex": "#9ab6a4",
+					"okLabDistance": 0.14812682160091392,
+					"chromaDistance": 0.14800620551820753,
+					"apcaRaw": 0.678472457007615,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0006434846462983757,
+					"identical": false
+				}
+			],
+			"replays": "af-anchor-p2-ladder-08",
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-anchor-04-af-ladder-r06-h0-mid",
+			"questionKey": "accent_real_a8b11abb",
+			"role": "anchor",
+			"stimulus": "panel",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "panel-field",
+			"band": null,
+			"hueThird": null,
+			"entryId": null,
+			"imageId": null,
+			"accentHex": "#8e8224",
+			"originalAccentHex": null,
+			"governing": {
+				"fieldRole": "panel-field",
+				"fieldHex": "#6d7fb8",
+				"okLabDistance": 0.20043198497426604,
+				"chromaDistance": 0.20035732954471,
+				"apcaRaw": 0.7486586637544719,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00006576258310100891,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "panel-field",
+					"fieldHex": "#6d7fb8",
+					"okLabDistance": 0.20043198497426604,
+					"chromaDistance": 0.20035732954471,
+					"apcaRaw": 0.7486586637544719,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00006576258310100891,
+					"identical": false
+				}
+			],
+			"replays": "af-ladder-r06-h0-mid",
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-anchor-05-af-ladder-r08-h1-dark",
+			"questionKey": "accent_real_7fb7476f",
+			"role": "anchor",
+			"stimulus": "panel",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "panel-field",
+			"band": null,
+			"hueThird": null,
+			"entryId": null,
+			"imageId": null,
+			"accentHex": "#0b6900",
+			"originalAccentHex": null,
+			"governing": {
+				"fieldRole": "panel-field",
+				"fieldHex": "#7f418e",
+				"okLabDistance": 0.2886727620194454,
+				"chromaDistance": 0.28692298150171225,
+				"apcaRaw": -1.8719398435966046,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0006187525035106223,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "panel-field",
+					"fieldHex": "#7f418e",
+					"okLabDistance": 0.2886727620194454,
+					"chromaDistance": 0.28692298150171225,
+					"apcaRaw": -1.8719398435966046,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0006187525035106223,
+					"identical": false
+				}
+			],
+			"replays": "af-ladder-r08-h1-dark",
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-sunshine",
+			"questionKey": "accent_real_d03444ab",
+			"role": "sunshine",
+			"stimulus": "mock",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 0,
+			"entryId": "22e959d5164750bd",
+			"imageId": "ab67616d0000b2730013e7782db25f28b59084ec",
+			"accentHex": "#fac751",
+			"originalAccentHex": "#fac751",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#d5cebe",
+				"okLabDistance": 0.12117273840045097,
+				"chromaDistance": 0.12116543979856605,
+				"apcaRaw": 0.4676273654833851,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00041497264934853284,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#18130f",
+					"okLabDistance": 0.6759599830404743,
+					"chromaDistance": 0.13394093035140442,
+					"apcaRaw": -79.0586527500489,
+					"apcaLc": -76.3586527500489,
+					"deltaApcaY": 0.5995987444731316,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#d5cebe",
+					"okLabDistance": 0.12117273840045097,
+					"chromaDistance": 0.12116543979856605,
+					"apcaRaw": 0.4676273654833851,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00041497264934853284,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#18130f",
+					"okLabDistance": 0.6759599830404743,
+					"chromaDistance": 0.13394093035140442,
+					"apcaRaw": -79.0586527500489,
+					"apcaLc": -76.3586527500489,
+					"deltaApcaY": 0.5995987444731316,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#fcfcfc",
+					"okLabDistance": 0.19897561439772574,
+					"chromaDistance": 0.14421900977340696,
+					"apcaRaw": 26.851953498698055,
+					"apcaLc": 24.151953498698056,
+					"deltaApcaY": -0.37018067853315395,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-control-obvious-0",
+			"questionKey": "accent_real_bcc95add",
+			"role": "control-obvious",
+			"stimulus": "mock",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "surface",
+			"band": "dark",
+			"hueThird": null,
+			"entryId": "6366391a41b49d83",
+			"imageId": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+			"accentHex": "#ffffff",
+			"originalAccentHex": "#99a192",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#2f2e1c",
+				"okLabDistance": 0.7038888167592134,
+				"chromaDistance": 0.030316917154852893,
+				"apcaRaw": -106.08031649971892,
+				"apcaLc": -103.38031649971893,
+				"deltaApcaY": 0.9842365912247583,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#424436",
+					"okLabDistance": 0.6201203491444577,
+					"chromaDistance": 0.02309489904551835,
+					"apcaRaw": -99.92955984838055,
+					"apcaLc": -97.22955984838055,
+					"deltaApcaY": 0.9599910224333372,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#2f2e1c",
+					"okLabDistance": 0.7038888167592134,
+					"chromaDistance": 0.030316917154852893,
+					"apcaRaw": -106.08031649971892,
+					"apcaLc": -103.38031649971893,
+					"deltaApcaY": 0.9842365912247583,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#424436",
+					"okLabDistance": 0.6201203491444577,
+					"chromaDistance": 0.02309489904551835,
+					"apcaRaw": -99.92955984838055,
+					"apcaLc": -97.22955984838055,
+					"deltaApcaY": 0.9599910224333372,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#f6f5f1",
+					"okLabDistance": 0.030673614376806574,
+					"chromaDistance": 0.00540826638378989,
+					"apcaRaw": -6.946286259592245,
+					"apcaLc": 0,
+					"deltaApcaY": 0.09218949050808356,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-control-obvious-1",
+			"questionKey": "accent_real_6f46f00e",
+			"role": "control-obvious",
+			"stimulus": "mock",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": null,
+			"entryId": "0a4880fd107f1ea1",
+			"imageId": "ab67616d0000b2730009448702be55dfc86fde67",
+			"accentHex": "#000000",
+			"originalAccentHex": "#b46f6a",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#efebdf",
+				"okLabDistance": 0.9400491601942752,
+				"chromaDistance": 0.01653527652573367,
+				"apcaRaw": 96.90361094021648,
+				"apcaLc": 94.20361094021648,
+				"deltaApcaY": -0.8222039349376784,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#efebdf",
+					"okLabDistance": 0.9400491601942752,
+					"chromaDistance": 0.01653527652573367,
+					"apcaRaw": 96.90361094021648,
+					"apcaLc": 94.20361094021648,
+					"deltaApcaY": -0.8222039349376784,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#d0c9c3",
+					"okLabDistance": 0.839917038336944,
+					"chromaDistance": 0.011392994160057754,
+					"apcaRaw": 78.14472018676129,
+					"apcaLc": 75.44472018676129,
+					"deltaApcaY": -0.5723306116765872,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#efebdf",
+					"okLabDistance": 0.9400491601942752,
+					"chromaDistance": 0.01653527652573367,
+					"apcaRaw": 96.90361094021648,
+					"apcaLc": 94.20361094021648,
+					"deltaApcaY": -0.8222039349376784,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#695f67",
+					"okLabDistance": 0.4979562860098862,
+					"chromaDistance": 0.017705497223499997,
+					"apcaRaw": 26.200475789400652,
+					"apcaLc": 23.500475789400653,
+					"deltaApcaY": -0.10035061838389513,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-control-identical-0",
+			"questionKey": "accent_real_d14f095f",
+			"role": "control-identical",
+			"stimulus": "mock",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "surface",
+			"band": "dark",
+			"hueThird": null,
+			"entryId": "1a049b516553579b",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"accentHex": "#380703",
+			"originalAccentHex": "#7e0202",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#380703",
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -0.7976120632648891,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#000102",
+					"okLabDistance": 0.18466629136797535,
+					"chromaDistance": 0.09005989309306958,
+					"apcaRaw": -2.593765643822933,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00572105754837907,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#380703",
+					"okLabDistance": 0,
+					"chromaDistance": 0,
+					"apcaRaw": -0.7976120632648891,
+					"apcaLc": 0,
+					"deltaApcaY": 0,
+					"identical": true
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#000102",
+					"okLabDistance": 0.18466629136797535,
+					"chromaDistance": 0.09005989309306958,
+					"apcaRaw": -2.593765643822933,
+					"apcaLc": 0,
+					"deltaApcaY": 0.00572105754837907,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#d50306",
+					"okLabDistance": 0.3560541807111628,
+					"chromaDistance": 0.146308502357577,
+					"apcaRaw": 30.000807473258394,
+					"apcaLc": 27.30080747325839,
+					"deltaApcaY": -0.13238148948780754,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-control-identical-1",
+			"questionKey": "accent_real_b05af37e",
+			"role": "control-identical",
+			"stimulus": "mock",
+			"rung": null,
+			"targetDistance": null,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": null,
+			"entryId": "b9e2494938eff535",
+			"imageId": "skap.jpg",
+			"accentHex": "#ffffff",
+			"originalAccentHex": "#be814b",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#ffffff",
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": 3.420000029841219e-7,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#ffffff",
+					"okLabDistance": 0,
+					"chromaDistance": 0,
+					"apcaRaw": 3.420000029841219e-7,
+					"apcaLc": 0,
+					"deltaApcaY": 0,
+					"identical": true
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#5d763c",
+					"okLabDistance": 0.47668553254411494,
+					"chromaDistance": 0.08846380929846287,
+					"apcaRaw": -83.18289644263564,
+					"apcaLc": -80.48289644263564,
+					"deltaApcaY": 0.866346672188708,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#ffffff",
+					"okLabDistance": 0,
+					"chromaDistance": 0,
+					"apcaRaw": 3.420000029841219e-7,
+					"apcaLc": 0,
+					"deltaApcaY": 0,
+					"identical": true
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#000103",
+					"okLabDistance": 0.9346300218761577,
+					"chromaDistance": 0.017496634418895853,
+					"apcaRaw": -110.58373024040849,
+					"apcaLc": -107.8837302404085,
+					"deltaApcaY": 0.9999972117331916,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": null
+		},
+		{
+			"itemId": "ar-repeat-00",
+			"questionKey": "accent_real_12afef9a",
+			"role": "repeat",
+			"stimulus": "mock",
+			"rung": 7,
+			"targetDistance": 0.20979473602966875,
+			"governingRole": "background",
+			"band": "mid",
+			"hueThird": 1,
+			"entryId": "384b881c94850d47",
+			"imageId": "horsley.jpg",
+			"accentHex": "#2f9630",
+			"originalAccentHex": "#f2eec1",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#bd7042",
+				"okLabDistance": 0.2107460916536629,
+				"chromaDistance": 0.2089068369154054,
+				"apcaRaw": 0.8157843799967212,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0006080838708329983,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#bd7042",
+					"okLabDistance": 0.2107460916536629,
+					"chromaDistance": 0.2089068369154054,
+					"apcaRaw": 0.8157843799967212,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0006080838708329983,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#d6a944",
+					"okLabDistance": 0.22241769041141604,
+					"chromaDistance": 0.14954144827994367,
+					"apcaRaw": 22.899135431280826,
+					"apcaLc": 20.199135431280826,
+					"deltaApcaY": -0.2040048649832586,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#bd7042",
+					"okLabDistance": 0.2107460916536629,
+					"chromaDistance": 0.2089068369154054,
+					"apcaRaw": 0.8157843799967212,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0006080838708329983,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#0f0f0f",
+					"okLabDistance": 0.4566886986397983,
+					"chromaDistance": 0.16833727274555677,
+					"apcaRaw": -38.89933917701459,
+					"apcaLc": -36.199339177014586,
+					"deltaApcaY": 0.2040044444510107,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": "ar-ladder-21"
+		},
+		{
+			"itemId": "ar-repeat-01",
+			"questionKey": "accent_real_2c2c1da2",
+			"role": "repeat",
+			"stimulus": "mock",
+			"rung": 3,
+			"targetDistance": 0.10259855680060181,
+			"governingRole": "background",
+			"band": "dark",
+			"hueThird": 0,
+			"entryId": "4623df3e8507f916",
+			"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+			"accentHex": "#b41916",
+			"originalAccentHex": "#faef9d",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#ab2266",
+				"okLabDistance": 0.10238349583663413,
+				"chromaDistance": 0.1022251325973124,
+				"apcaRaw": 0.725825813451296,
+				"apcaLc": 0,
+				"deltaApcaY": -0.00008877980488418424,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#ab2266",
+					"okLabDistance": 0.10238349583663413,
+					"chromaDistance": 0.1022251325973124,
+					"apcaRaw": 0.725825813451296,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00008877980488418424,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#1f636c",
+					"okLabDistance": 0.2576811113785156,
+					"chromaDistance": 0.255701026556882,
+					"apcaRaw": -3.6576394551266724,
+					"apcaLc": 0,
+					"deltaApcaY": 0.01074030024758324,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#ab2266",
+					"okLabDistance": 0.10238349583663413,
+					"chromaDistance": 0.1022251325973124,
+					"apcaRaw": 0.725825813451296,
+					"apcaLc": 0,
+					"deltaApcaY": -0.00008877980488418424,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#50fdf7",
+					"okLabDistance": 0.5241270828151701,
+					"chromaDistance": 0.32285628999850174,
+					"apcaRaw": 69.50172625633778,
+					"apcaLc": 66.80172625633777,
+					"deltaApcaY": -0.6866856140339386,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": "ar-ladder-09"
+		},
+		{
+			"itemId": "ar-repeat-02",
+			"questionKey": "accent_real_78a3ebfe",
+			"role": "repeat",
+			"stimulus": "mock",
+			"rung": 4,
+			"targetDistance": 0.12268870590688745,
+			"governingRole": "background",
+			"band": "light",
+			"hueThird": 0,
+			"entryId": "ae1c9fcc17150433",
+			"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"accentHex": "#fdbd83",
+			"originalAccentHex": "#2c2c2c",
+			"governing": {
+				"fieldRole": "background",
+				"fieldHex": "#fab6db",
+				"okLabDistance": 0.12314893614764433,
+				"chromaDistance": 0.12302629540042173,
+				"apcaRaw": -1.3920144886069348,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0005712926087244607,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#fab6db",
+					"okLabDistance": 0.12314893614764433,
+					"chromaDistance": 0.12302629540042173,
+					"apcaRaw": -1.3920144886069348,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0005712926087244607,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#fab6db",
+					"okLabDistance": 0.12314893614764433,
+					"chromaDistance": 0.12302629540042173,
+					"apcaRaw": -1.3920144886069348,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0005712926087244607,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#fab6db",
+					"okLabDistance": 0.12314893614764433,
+					"chromaDistance": 0.12302629540042173,
+					"apcaRaw": -1.3920144886069348,
+					"apcaLc": 0,
+					"deltaApcaY": 0.0005712926087244607,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#2c2c2c",
+					"okLabDistance": 0.5611378946713756,
+					"chromaDistance": 0.10465008794957768,
+					"apcaRaw": -72.9543329415854,
+					"apcaLc": -70.2543329415854,
+					"deltaApcaY": 0.5570474484164814,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": "ar-ladder-13"
+		},
+		{
+			"itemId": "ar-repeat-03",
+			"questionKey": "accent_real_518e0e61",
+			"role": "repeat",
+			"stimulus": "mock",
+			"rung": 2,
+			"targetDistance": 0.08579814889852372,
+			"governingRole": "surface",
+			"band": "light",
+			"hueThird": 2,
+			"entryId": "b20bb6cc9e79e384",
+			"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+			"accentHex": "#e1cfda",
+			"originalAccentHex": "#917a8e",
+			"governing": {
+				"fieldRole": "surface",
+				"fieldHex": "#b6debc",
+				"okLabDistance": 0.08766214071109496,
+				"chromaDistance": 0.08712989599378684,
+				"apcaRaw": 0.5203367503356405,
+				"apcaLc": 0,
+				"deltaApcaY": -0.0016176156701712685,
+				"identical": false
+			},
+			"placementProfile": [
+				{
+					"fieldRole": "field",
+					"fieldHex": "#80bbf7",
+					"okLabDistance": 0.14632907165507386,
+					"chromaDistance": 0.10908030095759555,
+					"apcaRaw": -18.92071619379434,
+					"apcaLc": -16.220716193794342,
+					"deltaApcaY": 0.19332103556660207,
+					"identical": false
+				},
+				{
+					"fieldRole": "surface",
+					"fieldHex": "#b6debc",
+					"okLabDistance": 0.08766214071109496,
+					"chromaDistance": 0.08712989599378684,
+					"apcaRaw": 0.5203367503356405,
+					"apcaLc": 0,
+					"deltaApcaY": -0.0016176156701712685,
+					"identical": false
+				},
+				{
+					"fieldRole": "background",
+					"fieldHex": "#80bbf7",
+					"okLabDistance": 0.14632907165507386,
+					"chromaDistance": 0.10908030095759555,
+					"apcaRaw": -18.92071619379434,
+					"apcaLc": -16.220716193794342,
+					"deltaApcaY": 0.19332103556660207,
+					"identical": false
+				},
+				{
+					"fieldRole": "foreground",
+					"fieldHex": "#090810",
+					"okLabDistance": 0.7323188844141086,
+					"chromaDistance": 0.019099252759925432,
+					"apcaRaw": -82.96018250423171,
+					"apcaLc": -80.26018250423171,
+					"deltaApcaY": 0.6402357367595624,
+					"identical": false
+				}
+			],
+			"replays": null,
+			"repeatOf": "ar-ladder-06"
+		}
+	]
+}

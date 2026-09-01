@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-review-v1",
+  "manifestId": "b795cf08eb7bf9e3a91751b633107cf759cc3dcb5dfaff7711ffda147eff1e01",
+  "protocolId": "221af26a6be614b34ef22e3ce3098cf09c54eb497611aaba3ec7f89e8f728e43",
+  "freshManifestId": "3e85bab09130d0fb6c883ba1e4543fce841e1a94a6b63a6539aececb8f58cb91",
+  "freshSealCommitment": "cd780b094b2a83117a2fd767566df657017ae4491f0555db7a999d40a8e3f180",
+  "inputHashes": {
+    "manifestSha256": "fe4408c372dccc1f437e0b743509eb8ce8bfa2e1388bc9f7c7e90e31508d8ac6",
+    "provenanceSha256": "5682f6dd0edf4512de2521b3f500c656b11c5f1da30e979f6e9bb2651c1ae025",
+    "runCompleteSha256": "60c881ef3f2c38a993c7851e73c0e345fac41554bef41346119de47d6b01a779",
+    "feedbackSha256": "470a14bb064dfc66a5f5d154fd33dfb1029dd2669559bd83f15783d4639c58e5",
+    "technicalInterpretationsSha256": "4cac88b51e80d945a0888f46761d820c8a1e442ee50fc2dac99f573e3336fabf"
+  },
+  "counts": {
+    "caseCount": 12,
+    "relative": {
+      "baseline-stronger": 6,
+      "candidate-stronger": 3,
+      "neither-acceptable": 1,
+      "similarly-valid": 2
+    },
+    "candidateQuality": {
+      "acceptable": 6,
+      "strong": 3,
+      "unacceptable": 2,
+      "weak-fallback": 1
+    },
+    "baselineQuality": {
+      "acceptable": 3,
+      "strong": 7,
+      "unacceptable": 1,
+      "weak-fallback": 1
+    },
+    "candidateTags": {
+      "incomplete artwork identity": 3,
+      "missing gradient": 1
+    },
+    "baselineTags": {
+      "incomplete artwork identity": 2
+    },
+    "positiveCandidateCount": 9,
+    "technicalClasses": {
+      "gradient-treatment-ranking-underselection": 2,
+      "low-nonzero-gradient-role-contrast-admission": 1,
+      "signature-color-ranking-underselection": 2
+    }
+  },
+  "runtime": {
+    "candidate": {
+      "workerCount": 6,
+      "wallMs": 2644.4499579999997,
+      "totalChildWallMs": 12431.767623999998,
+      "totalCpuUserMicros": 15479078,
+      "totalCpuSystemMicros": 305331
+    },
+    "baseline": {
+      "mode": "sequential-stop-on-first-mismatch",
+      "wallMs": 10101.993041000002,
+      "totalChildWallMs": 8665.717208,
+      "totalCpuUserMicros": 11041963,
+      "totalCpuSystemMicros": 295403
+    },
+    "totalWallMs": 12843.121208
+  },
+  "repeatConsistency": {
+    "intentionalRepeatsIncluded": false,
+    "note": "One selected source had historical baseline exposure; this is declared provenance, not a designed repeat-consistency estimate."
+  },
+  "results": [
+    {
+      "caseId": "phase4-01-522ec8a241ae",
+      "freshCaseId": "fresh-07",
+      "assignmentKey": "522ec8a241ae070e9995b8fa7b83cf6366cc8f003cf7cbd29369e61c9f9a3129",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "phase4-02-6e0bea36fbd2",
+      "freshCaseId": "fresh-02",
+      "assignmentKey": "6e0bea36fbd29f3b48042d94a0828aeba0407107cc0b8d6951b13e4639bc6dcc",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "phase4-03-70ceed4c0383",
+      "freshCaseId": "fresh-08",
+      "assignmentKey": "70ceed4c0383a97835f9f41102410dc82d4040cfb26c2db99bdd20a4ed93f993",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "phase4-04-7cf39a15255b",
+      "freshCaseId": "fresh-01",
+      "assignmentKey": "7cf39a15255bd26a0d958f18ddf8f6fb729cd3cc4d96da57d5948d12b96c287e",
+      "candidateSide": "A",
+      "candidateQuality": "weak-fallback",
+      "baselineQuality": "weak-fallback",
+      "relative": "similarly-valid",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "There is some red and orange hues in the artwork that are not reflected in these palettes ",
+      "technicalInterpretation": {
+        "caseId": "phase4-04-7cf39a15255b",
+        "commentSha256": "d88f337abfac0b1a976c512e6f553fe256e77c383c91b19c1a6d0833c6c4b39a",
+        "classes": [
+          "signature-color-ranking-underselection"
+        ],
+        "rationale": "The candidate is option A. Red and orange evidence was available rather than absent: complete candidate accents included the #8f392a and #f84e34 families, but the retained slate's accent families were all achromatic. The selected four-color treatment therefore lost the artwork's signature chroma during Pareto direction retention and winner ranking, after evidence discovery and complete generation. The same identity omission was observed on the baseline, but the class here describes the candidate mechanism only.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "phase4-05-8ce8b005da2c",
+      "freshCaseId": "fresh-10",
+      "assignmentKey": "8ce8b005da2cbb5685dc613ea7002b98e3ca392c558769226ef0ca057c34a9c8",
+      "candidateSide": "A",
+      "candidateQuality": "unacceptable",
+      "baselineQuality": "acceptable",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "The issue with candidate A is that the foreground is barely readable on top of the surface, and the accent is hard to distinguish in the middle of the gradient between background surface ",
+      "technicalInterpretation": {
+        "caseId": "phase4-05-8ce8b005da2c",
+        "commentSha256": "9656a790401a5ae9dff571e98f0e650e344c9ffea05b0c5497b1ca932b6db4e1",
+        "classes": [
+          "low-nonzero-gradient-role-contrast-admission"
+        ],
+        "rationale": "The candidate is option A. Its #effafc foreground shares the surface endpoint's source family and reaches only 10.14 absolute Lc at that endpoint. Its #50676f accent reaches only 8.26 and 8.91 absolute Lc at interior gradient samples. The frozen zero-dead-zone rule rejects literal APCA zero for a distinct accent, but these low nonzero crossings remain admissible and the utility ranking selected them. This directly explains both readability failures in the comment.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "phase4-06-8d6cb6d5290d",
+      "freshCaseId": "fresh-12",
+      "assignmentKey": "8d6cb6d5290de4dc9c00a8af1d5679cb5fa5e8e5ade8a49643cbf84125cea3a5",
+      "candidateSide": "A",
+      "candidateQuality": "unacceptable",
+      "baselineQuality": "unacceptable",
+      "relative": "neither-acceptable",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [],
+      "comment": "The artwork has a purplish gradient background, the color of a sunset and some nice gold and yellow colors on top for the album's title and the person's hat.\nOption A is basically black and white so it is missing a lot the artworks identity.\nOption B is making a gradient between the purple of the artworks background and the yellow of the artworks foreground and this does not work. They do not have a gradient in the artwork, and the middle colors don't really work ",
+      "technicalInterpretation": {
+        "caseId": "phase4-06-8d6cb6d5290d",
+        "commentSha256": "65895f099bc87288033c08cdc5e856a9ec6a4bac5a01baa92246f2d9e95591bd",
+        "classes": [
+          "gradient-treatment-ranking-underselection",
+          "signature-color-ranking-underselection"
+        ],
+        "rationale": "The candidate is option A. It selected a white one-field treatment with the surface collapsed, while its retained slate already contained source-supported purple gradient treatments and a #fade18 yellow accent matching the identities named in the comment. This is a complete-treatment ranking failure, not a generation failure: the selector preferred the high-utility achromatic one-field result over the available chromatic gradient and signature color. The comment's extraneous-gradient criticism concerns baseline option B and is not assigned as a candidate class.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "phase4-07-aad2dd34c47d",
+      "freshCaseId": "fresh-06",
+      "assignmentKey": "aad2dd34c47dda1a1bed54217a798b1bbeb7db4b7ee90b487aba1374e010c13f",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "acceptable",
+      "relative": "candidate-stronger",
+      "candidateTags": [
+        "missing gradient"
+      ],
+      "baselineTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "Option A feels too black and white, the red of the accent isn't red enough compared to what we see in the artwork \nOption B is almost very good, but it would be nicer if it had a background to surface gradient like option A ",
+      "technicalInterpretation": {
+        "caseId": "phase4-07-aad2dd34c47d",
+        "commentSha256": "0a84045e1ef4e287ccc798c85cec94cd4d4a7cfa7d0a3f4d7ae497fa1e814a3c",
+        "classes": [
+          "gradient-treatment-ranking-underselection"
+        ],
+        "rationale": "The candidate is option B. It selected a collapsed one-field #b8a994 treatment even though its retained slate included a source-supported #8a7766-to-#b9a894 gradient treatment with a nearly equal ranking score. The requested background-to-surface variation was therefore available but lost during complete-treatment selection. The comment's weak red and achromatic observations concern baseline option A and are not assigned as candidate classes.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "phase4-08-bdd706faa249",
+      "freshCaseId": "fresh-04",
+      "assignmentKey": "bdd706faa249e75649f2b4321a50eb5106146ed81fcbfbf49718e8991145dd8b",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "phase4-09-c81cb07acb2b",
+      "freshCaseId": "fresh-05",
+      "assignmentKey": "c81cb07acb2b79e31f351a2491ce49bb59dd2c897e82a6e96da53e62a3506c4e",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "phase4-10-c99d23baffde",
+      "freshCaseId": "fresh-11",
+      "assignmentKey": "c99d23baffde6cb0931d82810a7fbf7b1cc8e556dfd8f578eb891fc227c82b7f",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "phase4-11-daa1e5610dc4",
+      "freshCaseId": "fresh-09",
+      "assignmentKey": "daa1e5610dc436077ffecf0320c2542570720bc7bfb76e183ac0b86605ffae55",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "acceptable",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "The artwork itself is pretty awful So we shouldn't put too much weight on that particular treatment ",
+      "technicalInterpretation": {
+        "caseId": "phase4-11-daa1e5610dc4",
+        "commentSha256": "4655b4174cd0b016ec9ff7a7e053dac9e73a2a8900806f72b41b26fa4650add1",
+        "classes": [],
+        "rationale": "The comment expresses low confidence in the source artwork as a useful evaluation case but identifies no palette, role, gradient, evidence, generation, or ranking defect. Both options were rated acceptable and similarly valid, so no technical candidate mechanism can be inferred reliably from this response.",
+        "uncertain": true
+      }
+    },
+    {
+      "caseId": "phase4-12-f3b73f94f3e3",
+      "freshCaseId": "fresh-03",
+      "assignmentKey": "f3b73f94f3e316695ede4ea4bef5cc85bf6300e23630a4d633f6d1193a946a57",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    }
+  ],
+  "advancementGate": {
+    "pass": false,
+    "candidateStrongerThanBaseline": false,
+    "candidateQualityCommonlyPositive": true,
+    "noRepeatedSystemicFailureClass": false,
+    "repeatedTechnicalClasses": [
+      "gradient-treatment-ranking-underselection",
+      "signature-color-ranking-underselection"
+    ]
+  },
+  "limitations": [
+    "This is a 12-source deterministic directional sample, not a population-wide estimate.",
+    "The sample was output-unseen for the V2 candidate but not historically untouched by the external baseline research.",
+    "No adaptation, promotion, persistence, or full-roster execution is authorized by this analysis alone."
+  ],
+  "phaseDisposition": "phase4-directional-gate-failed-return-to-development-with-new-future-sample"
+}

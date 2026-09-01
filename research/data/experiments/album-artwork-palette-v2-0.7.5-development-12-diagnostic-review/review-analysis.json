@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "album-artwork-palette-v2-0.7.5-development-12-diagnostic-review-analysis-1.0.0",
+  "analysisType": "read-only-bounded-descriptive-and-frozen-rule-reapplication",
+  "protocolId": "album-artwork-ui-palette-protocol-v2-0.7.5-development-12-diagnostic-review-1",
+  "reviewVersion": "album-artwork-palette-v2-0.7.5-development-12-diagnostic-review-1.0.0",
+  "manifestContentId": "65a45949bcf9e78052076ee00c4443e8ff0881868e5dc47cafd11d08e9bd299e",
+  "submissionId": "e1b09c4956c1fe62e159ae7609ef58490b4675a1e9ed9d3503f044e3fd5af818",
+  "bindings": {
+    "protocol": {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_5_DEVELOPMENT_12_DIAGNOSTIC_REVIEW.md",
+      "rawSha256": "882e82336dceae3e819da02b5bb8196056951d778cc42dbda5c8f9515f93624f"
+    },
+    "privateManifest": {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/review-manifest.private.json",
+      "contentId": "65a45949bcf9e78052076ee00c4443e8ff0881868e5dc47cafd11d08e9bd299e",
+      "rawSha256": "cb34718220eeff392241e2461d894be7899fe3f7e5907a0348a5796a3db8b19a"
+    },
+    "feedback": {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/review-feedback.json",
+      "submissionId": "e1b09c4956c1fe62e159ae7609ef58490b4675a1e9ed9d3503f044e3fd5af818",
+      "rawSha256": "7e8d6198c5e06865b650e056b0f61520fd8f53f6b695eb4d431576ba7fc0596b",
+      "submittedAt": "2026-07-28T10:21:07.277Z"
+    },
+    "analysisScript": {
+      "path": "research/analyze-album-artwork-palette-v2-0.7.5-development-12-diagnostic-review.ts",
+      "rawSha256": "465f6e53b3257ef6cfb46a5db4b4e2d12486752b5133e5b97deadd68a588bd7c"
+    }
+  },
+  "denominator": {
+    "expectedItemCount": 1,
+    "receivedItemCount": 1,
+    "complete": true,
+    "caseIds": [
+      "development-12"
+    ]
+  },
+  "counts": {
+    "candidateAbsoluteQuality": {
+      "strong": 0,
+      "acceptable": 1,
+      "weak-fallback": 0,
+      "unacceptable": 0,
+      "uncertain": 0
+    },
+    "controlAbsoluteQuality": {
+      "strong": 0,
+      "acceptable": 0,
+      "weak-fallback": 0,
+      "unacceptable": 1,
+      "uncertain": 0
+    },
+    "relativeOutcome": {
+      "candidate-stronger": 1,
+      "baseline-stronger": 0,
+      "similarly-valid": 0,
+      "neither-acceptable": 0,
+      "uncertain": 0
+    },
+    "candidateIssues": {
+      "missing gradient": 0,
+      "extraneous gradient": 0,
+      "incomplete artwork identity": 1
+    },
+    "controlIssues": {
+      "missing gradient": 0,
+      "extraneous gradient": 0,
+      "incomplete artwork identity": 1
+    },
+    "comments": {
+      "empty": 0,
+      "nonEmpty": 1
+    }
+  },
+  "item": {
+    "caseId": "development-12",
+    "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+    "evidence": {
+      "assignmentDigest": "bbdb121e847773829c41eafb429aa90c2000f853b7c841881fb1c53230f5b3b7",
+      "candidateSide": "B",
+      "controlSide": "A",
+      "candidateTreatmentKey": "#fffffe:#fffffe:#e6e622:#584c1c:flat",
+      "candidateTreatmentRecordSha256": "f28b498dc304b1d9d4641c50b6e2dba7540c05c3a8d4aeac93dc4f5781eb17c0",
+      "candidatePublicSlateIndex": 1,
+      "controlTreatmentKey": "#fffffe:#fffffe:#080808:#584c1c:flat",
+      "controlTreatmentRecordSha256": "161b9cedb07b6e90d1432d2c9f755502c7343f05958e6f8c5823e7f8327d7477",
+      "controlPublicSlateIndex": 0
+    },
+    "submittedResponse": {
+      "qualityA": "unacceptable",
+      "qualityB": "acceptable",
+      "relativeOutcome": "candidate-stronger",
+      "issuesA": [
+        "incomplete artwork identity"
+      ],
+      "issuesB": [
+        "incomplete artwork identity"
+      ],
+      "comment": "option A is missing the yellow, option B is missing the black"
+    },
+    "unblindedResult": {
+      "candidateQuality": "acceptable",
+      "controlQuality": "unacceptable",
+      "relativeOutcome": "candidate-stronger",
+      "candidateIssues": [
+        "incomplete artwork identity"
+      ],
+      "controlIssues": [
+        "incomplete artwork identity"
+      ],
+      "comment": "option A is missing the yellow, option B is missing the black",
+      "commentSha256": "5ed79ac5edaaf39b930b52626185ca0719936efceee26199fbe36a0fb02a034d"
+    }
+  },
+  "technicalInterpretations": {
+    "status": "not-invented-descriptive-human-evidence-is-sufficient-for-custody-classification",
+    "entries": []
+  },
+  "custodyUpdate": {
+    "caseId": "development-12",
+    "priorClass": "unresolved-after-complete-treatment-construction",
+    "updatedClass": "ranking-failure",
+    "custodyStage": "winner-selection",
+    "evidence": "An acceptable public-slate alternative was judged stronger than the unacceptable selected winner.",
+    "knownFailureStatus": "displaced-not-fully-resolved",
+    "limitation": "The acceptable alternative remains tagged incomplete artwork identity and the verbatim comment says it is missing black."
+  },
+  "mechanismSelectionUpdate": {
+    "severeDenominator": [
+      {
+        "caseId": "development-03",
+        "class": "discovery-semantic-failure"
+      },
+      {
+        "caseId": "development-12",
+        "class": "ranking-failure"
+      }
+    ],
+    "repeatedSevereFailureClassSupported": false,
+    "selectedFailureClass": null,
+    "selectedMechanism": null,
+    "deterministicRankingCorrectionEligible": false,
+    "rankingIneligibilityReasons": [
+      "the reviewed retained alternative is acceptable rather than strong",
+      "only one severe blocker demonstrates ranking failure",
+      "the other severe blocker loses evidence before field-hypothesis proposal"
+    ],
+    "disposition": "retain-0.7.5-diagnostic-stop-no-one-factor-candidate"
+  },
+  "limitations": {
+    "repeatedDevelopmentEvidence": true,
+    "itemCount": 1,
+    "populationClaim": false,
+    "phase4Claim": false,
+    "statement": "This one repeatedly exposed development source resolves a custody classification only; it is not generalization, population, protected-sample, fresh directional, or Phase 4 evidence."
+  },
+  "descriptiveConclusion": "The retained alternative was acceptable and stronger than the unacceptable current winner, but both were tagged incomplete artwork identity; the current winner misses yellow and the alternative misses black.",
+  "authorization": {
+    "descriptiveAnalysisComplete": true,
+    "mechanismRuleReapplied": true,
+    "candidateProtocol": false,
+    "candidateImplementation": false,
+    "candidateOutput": false,
+    "inferenceChange": false,
+    "rankingChange": false,
+    "candidateSupport": false,
+    "candidateFreeze": false,
+    "phase4": false,
+    "promotion": false,
+    "persistence": false,
+    "defaultExtractorChange": false,
+    "protectedOrFreshArtworkAccess": false,
+    "fullRoster": false
+  },
+  "nextAuthorizationBoundary": "Any new evidence unit, candidate protocol, inference or ranking change, candidate support, Phase 4, promotion, persistence, or default-extractor change requires separate explicit authorization.",
+  "analysisId": "cfccad244a5693835656756a556b88c1036ea8da8c65cf734309fdf5883e47e8"
+}

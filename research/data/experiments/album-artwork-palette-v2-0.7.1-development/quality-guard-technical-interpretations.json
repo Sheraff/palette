@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+  "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf",
+  "entries": [
+    {
+      "caseId": "development-03",
+      "target": "candidate",
+      "commentSha256": "cda4dae4b7bfc209555c7ba97da04fdb8e29e77fbabc6246721baeddf5c525b9",
+      "classes": [
+        "identity-quality-guard-incomplete-comparison-domain"
+      ],
+      "rationale": "The selected identity challenger passed every declared guard block but was baseline-inferior in review while taking resolved losses in existing ordinary ranking dimensions omitted from the guard.",
+      "uncertain": false,
+      "evidence": {
+        "qualityIncumbentTreatmentId": "gradient:field-domain-800:radial-upper-center:center-out:family-3302:family-5047:#1c026d:#22438a|28,2,109|34,67,138|224,205,199|208,41,129|gradient",
+        "selectedIdentityChallengerTreatmentId": "gradient:field-domain-800:linear:diagonal-down:family-3302:family-3723:#1c026d:#144184|28,2,109|20,65,132|188,221,176|208,41,129|gradient",
+        "declaredQualityGuardBlocks": [
+          "treatmentFoundation",
+          "fieldIdentity",
+          "foregroundUtility",
+          "accentUtility",
+          "coherence",
+          "economy"
+        ],
+        "omittedResolvedLosses": [
+          {
+            "block": "fieldFidelity",
+            "incumbentEvidenceLevel": 25,
+            "challengerEvidenceLevel": 24
+          },
+          {
+            "block": "representativeness",
+            "incumbentEvidenceLevel": 19,
+            "challengerEvidenceLevel": 18
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "development-03",
+      "target": "shared",
+      "commentSha256": "cda4dae4b7bfc209555c7ba97da04fdb8e29e77fbabc6246721baeddf5c525b9",
+      "classes": [
+        "persistent-foreground-role-identity-misalignment",
+        "persistent-field-chromatic-identity-misalignment"
+      ],
+      "rationale": "The comment repeats previously documented product symptoms for both options: foreground role identity and the artwork's major-hue field transition remain incomplete. These symptoms document the stop decision but are not implementation targets.",
+      "uncertain": false,
+      "evidence": {
+        "candidateIncompleteIdentityTagged": true,
+        "baselineIncompleteIdentityTagged": true
+      }
+    }
+  ],
+  "classCounts": {
+    "identity-quality-guard-incomplete-comparison-domain": 1,
+    "persistent-field-chromatic-identity-misalignment": 1,
+    "persistent-foreground-role-identity-misalignment": 1
+  },
+  "repeatedNewSystemicClasses": [],
+  "interpretationId": "b4d52bcb644ed0e24a39243ef1ec7f9e076c8f544dc281b492adaf04da414cec"
+}

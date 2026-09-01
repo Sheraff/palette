@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.5.1",
+  "implementationHash": "5589b85e5c2b9a1c57c15240dec3ad983c8193f13720bbceee3d5ccb7138cb3f",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "scientificSha256": "8ecbc6e61935cece60bd110a5d41ad7d160fd9ef1dd39109588a5542c2ec6fa5",
+  "inputHashes": {
+    "currentAggregateSha256": "15921ae1d183f56b0e10f8166355897dcd4b3e4527dd089e127bde1d7724b156",
+    "predecessorAggregateSha256": "11396af3e128a4404c4b4e26e687fc2216e51529411027c6187bddb8ee72cf6b",
+    "futureSampleSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c",
+    "protocolSha256": "174414b13b6fc6c157b50f6b3f0204b3ecc598d0ca763e0787d6fbbfe40ba4f7"
+  },
+  "futureSample": {
+    "manifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+    "sealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+    "opened": false
+  },
+  "mechanical": {
+    "changedWinnerCaseIds": [
+      "development-03",
+      "development-04",
+      "development-06",
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-11",
+      "development-13",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-17",
+      "development-19",
+      "development-21",
+      "development-22",
+      "development-23",
+      "development-24",
+      "development-25",
+      "development-27"
+    ],
+    "changedGradientStateCaseIds": [],
+    "changedFieldTreatmentCaseIds": [
+      "development-08"
+    ],
+    "completeCandidateCountDeltaByCase": {},
+    "frontierCandidateCountDeltaByCase": {},
+    "exactRetainedTreatmentCount": 91,
+    "changedRetainedFoundationCount": 39,
+    "collapsedAccentFoundationCount": 5,
+    "changedWinnerScoreEvidence": {
+      "development-03": {
+        "predecessor": {
+          "id": "gradient:field-domain-800:radial-upper-center:center-out:family-3302:family-5047:#1c026d:#22438a|28,2,109|34,67,138|224,205,199|208,41,129|gradient",
+          "treatmentFoundation": 0.7446464023650061,
+          "foregroundUtility": 0.8753418106372766,
+          "accentUtility": 0.5154138495710411
+        },
+        "current": {
+          "id": "gradient:field-domain-800:linear:diagonal-down:family-3302:family-3723:#1c026d:#144184|29,18,123|19,47,120|60,205,174|224,205,199|gradient",
+          "treatmentFoundation": 0.7260294897458776,
+          "foregroundUtility": 0.8033730310324199,
+          "accentUtility": 0.9827327373447821
+        }
+      },
+      "development-04": {
+        "predecessor": {
+          "id": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|251,253,250|69,91,89|gradient",
+          "treatmentFoundation": 0.7729875543728864,
+          "foregroundUtility": 0.8045158357758987,
+          "accentUtility": 0.5384180562574857
+        },
+        "current": {
+          "id": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|17,19,18|251,253,250|gradient",
+          "treatmentFoundation": 0.7374030189543631,
+          "foregroundUtility": 0.681193311404765,
+          "accentUtility": 0.8813029422491628
+        }
+      },
+      "development-06": {
+        "predecessor": {
+          "id": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+          "treatmentFoundation": 0.7641463026115836,
+          "foregroundUtility": 0.8680689004863371,
+          "accentUtility": 0.6286487189655007
+        },
+        "current": {
+          "id": "flat:family-3745:family-2863|49,47,112|33,24,69|73,183,246|86,216,250|flat",
+          "treatmentFoundation": 0.737822516796276,
+          "foregroundUtility": 0.7627314473532629,
+          "accentUtility": 0.9509218365301483
+        }
+      },
+      "development-07": {
+        "predecessor": {
+          "id": "gradient:paired-field-domain:field-domain-0+field-domain-119434:radial-center:center-out:family-220:family-6349:#000000:#026faa|0,0,0|2,111,170|237,246,251|16,164,212|gradient",
+          "treatmentFoundation": 0.9122166216400579,
+          "foregroundUtility": 0.9573222584646345,
+          "accentUtility": 0.6344713685206231
+        },
+        "current": {
+          "id": "gradient:paired-field-domain:field-domain-0+field-domain-119434:radial-center:center-out:family-220:family-6349:#000000:#026faa|0,0,0|2,111,170|237,246,251|130,209,239|gradient",
+          "treatmentFoundation": 0.8787220435982217,
+          "foregroundUtility": 0.9573222584646345,
+          "accentUtility": 0.8582692707050447
+        }
+      },
+      "development-08": {
+        "predecessor": {
+          "id": "flat:family-6792:family-2844|87,144,153|3,40,51|252,253,209|165,199,200|flat",
+          "treatmentFoundation": 0.7797003985407263,
+          "foregroundUtility": 0.9100368346379787,
+          "accentUtility": 0.7203422462234178
+        },
+        "current": {
+          "id": "one:family-2844|2,40,51|2,40,51|245,251,215|165,199,200|flat",
+          "treatmentFoundation": 0.7768255373578444,
+          "foregroundUtility": 1,
+          "accentUtility": 0.9378558227708331
+        }
+      },
+      "development-09": {
+        "predecessor": {
+          "id": "one:family-4253|131,8,10|131,8,10|248,238,179|13,11,14|flat",
+          "treatmentFoundation": 0.8257899501919346,
+          "foregroundUtility": 0.969031092173439,
+          "accentUtility": 0.3895733884332522
+        },
+        "current": {
+          "id": "one:family-4253|131,8,10|131,8,10|248,238,179|238,202,154|flat",
+          "treatmentFoundation": 0.7668132876558662,
+          "foregroundUtility": 0.969031092173439,
+          "accentUtility": 0.9413887979136508
+        }
+      },
+      "development-11": {
+        "predecessor": {
+          "id": "flat:family-7717:family-5513|181,158,142|128,90,51|237,235,210|221,20,52|flat",
+          "treatmentFoundation": 0.7581750356180881,
+          "foregroundUtility": 0.7364091179839972,
+          "accentUtility": 0.37527005333298463
+        },
+        "current": {
+          "id": "flat:family-7717:family-6395|181,158,142|160,114,65|237,235,210|31,13,1|flat",
+          "treatmentFoundation": 0.7292897466412016,
+          "foregroundUtility": 0.7150707359616972,
+          "accentUtility": 0.7211413502978525
+        }
+      },
+      "development-13": {
+        "predecessor": {
+          "id": "one:family-9921|221,221,231|221,221,231|59,48,62|128,115,135|flat",
+          "treatmentFoundation": 0.8297203349180243,
+          "foregroundUtility": 0.9363912122866885,
+          "accentUtility": 0.8275701980995684
+        },
+        "current": {
+          "id": "one:family-9921|221,221,231|221,221,231|81,68,85|129,116,134|flat",
+          "treatmentFoundation": 0.8008132270287301,
+          "foregroundUtility": 0.8908023307610192,
+          "accentUtility": 0.8244733479018902
+        }
+      },
+      "development-14": {
+        "predecessor": {
+          "id": "one:family-220|0,0,0|0,0,0|110,110,110|61,61,61|flat",
+          "treatmentFoundation": 0.6217568009654738,
+          "foregroundUtility": 0.5427383687149293,
+          "accentUtility": 0.3152481022258737
+        },
+        "current": {
+          "id": "one:family-220|0,0,0|0,0,0|110,110,110|86,86,86|flat",
+          "treatmentFoundation": 0.6001786916097572,
+          "foregroundUtility": 0.5427383687149293,
+          "accentUtility": 0.4691192446359329
+        }
+      },
+      "development-15": {
+        "predecessor": {
+          "id": "flat:family-2403:family-4167|20,27,37|54,68,79|204,211,217|128,139,145|flat",
+          "treatmentFoundation": 0.7609823148636466,
+          "foregroundUtility": 0.8883398118191981,
+          "accentUtility": 0.64263693687581
+        },
+        "current": {
+          "id": "flat:family-2403:family-4167|20,27,37|54,68,79|231,236,242|200,210,219|flat",
+          "treatmentFoundation": 0.765532790026699,
+          "foregroundUtility": 0.98229755458557,
+          "accentUtility": 0.9674095858376554
+        }
+      },
+      "development-16": {
+        "predecessor": {
+          "id": "flat:family-5489:family-4607|68,100,139|53,79,112|251,252,247|16,13,40|flat",
+          "treatmentFoundation": 0.7753948448403908,
+          "foregroundUtility": 0.9726913204286086,
+          "accentUtility": 0.4694691733936233
+        },
+        "current": {
+          "id": "flat:family-5489:family-4607|68,100,139|53,79,112|252,218,59|249,251,250|flat",
+          "treatmentFoundation": 0.7345139066507526,
+          "foregroundUtility": 0.84906660681254,
+          "accentUtility": 1
+        }
+      },
+      "development-17": {
+        "predecessor": {
+          "id": "gradient:field-domain-718523:radial-upper-center:center-out:family-5048:family-3726:#375c77:#243a51|55,92,119|36,58,81|238,208,118|238,101,95|gradient",
+          "treatmentFoundation": 0.8432037961209589,
+          "foregroundUtility": 0.8426677710523603,
+          "accentUtility": 0.6138735783371
+        },
+        "current": {
+          "id": "gradient:field-domain-718523:radial-upper-center:center-out:family-5048:family-3726:#375c77:#243a51|55,92,119|36,58,81|255,246,236|238,208,118|gradient",
+          "treatmentFoundation": 0.8477035703909109,
+          "foregroundUtility": 0.9840883866246047,
+          "accentUtility": 0.9230962933759531
+        }
+      },
+      "development-19": {
+        "predecessor": {
+          "id": "flat:family-8598:family-7715|190,178,198|155,155,189|28,0,49|216,203,221|flat",
+          "treatmentFoundation": 0.6319085161807874,
+          "foregroundUtility": 0.7743252960904198,
+          "accentUtility": 0.4752446768106874
+        },
+        "current": {
+          "id": "flat:family-8598:family-7715|191,178,196|156,153,196|28,0,49|241,252,254|flat",
+          "treatmentFoundation": 0.6165656106974309,
+          "foregroundUtility": 0.7729958329171693,
+          "accentUtility": 0.7647796357929937
+        }
+      },
+      "development-21": {
+        "predecessor": {
+          "id": "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|233,146,53|flat",
+          "treatmentFoundation": 0.6862619331523865,
+          "foregroundUtility": 0.7622009130571047,
+          "accentUtility": 0.5429855022783762
+        },
+        "current": {
+          "id": "flat:family-6938:family-5570|223,52,167|140,28,198|238,173,227|239,210,238|flat",
+          "treatmentFoundation": 0.6427070263120704,
+          "foregroundUtility": 0.64336421187817,
+          "accentUtility": 0.8349492668648203
+        }
+      },
+      "development-22": {
+        "predecessor": {
+          "id": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+          "treatmentFoundation": 0.7663434938493895,
+          "foregroundUtility": 0.9361802349705917,
+          "accentUtility": 0.7667757083508804
+        },
+        "current": {
+          "id": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|126,163,171|flat",
+          "treatmentFoundation": 0.7270487222020965,
+          "foregroundUtility": 0.9361802349705917,
+          "accentUtility": 0.8055959392525972
+        }
+      },
+      "development-23": {
+        "predecessor": {
+          "id": "flat:family-2844:family-5469|20,44,46|57,106,102|235,227,180|180,163,94|flat",
+          "treatmentFoundation": 0.7796879917041786,
+          "foregroundUtility": 0.8910249822457101,
+          "accentUtility": 0.683495509425366
+        },
+        "current": {
+          "id": "flat:family-2844:family-5469|20,44,46|57,106,102|235,227,180|215,195,122|flat",
+          "treatmentFoundation": 0.7607679446006327,
+          "foregroundUtility": 0.8910249822457101,
+          "accentUtility": 0.8417322421409786
+        }
+      },
+      "development-24": {
+        "predecessor": {
+          "id": "gradient:paired-field-domain:field-domain-168617+field-domain-171:linear:vertical:family-9043:family-6039:#e9a03a:#c04b16|233,160,58|192,75,22|254,252,175|221,135,34|gradient",
+          "treatmentFoundation": 0.7207477597140797,
+          "foregroundUtility": 0.754245670507057,
+          "accentUtility": 0.2322034398782083
+        },
+        "current": {
+          "id": "gradient:paired-field-domain:field-domain-168617+field-domain-171:linear:vertical:family-9043:family-5136:#e9a03a:#b13d02|233,160,58|177,61,2|38,20,0|254,221,64|gradient",
+          "treatmentFoundation": 0.6882566503502185,
+          "foregroundUtility": 0.5993728441097159,
+          "accentUtility": 0.6958348060106817
+        }
+      },
+      "development-25": {
+        "predecessor": {
+          "id": "flat:family-220:family-1102|0,0,0|10,1,0|253,155,2|253,11,237|flat",
+          "treatmentFoundation": 0.6523321990150993,
+          "foregroundUtility": 0.8229247614437055,
+          "accentUtility": 0.7697602174159507
+        },
+        "current": {
+          "id": "flat:family-220:family-1102|0,0,0|10,1,0|247,180,138|252,151,7|flat",
+          "treatmentFoundation": 0.6530732855878133,
+          "foregroundUtility": 0.8830749996399888,
+          "accentUtility": 0.8903796966106382
+        }
+      },
+      "development-27": {
+        "predecessor": {
+          "id": "gradient:field-domain-0:radial-upper-center:center-out:family-3748:family-1543:#474747:#151515|55,55,55|9,9,9|247,247,247|151,151,151|gradient",
+          "treatmentFoundation": 0.8380346141813849,
+          "foregroundUtility": 1,
+          "accentUtility": 0.7418245330802252
+        },
+        "current": {
+          "id": "gradient:field-domain-0:radial-upper-center:center-out:family-3748:family-1543:#474747:#151515|55,55,55|9,9,9|202,202,202|249,249,249|gradient",
+          "treatmentFoundation": 0.7734701779050862,
+          "foregroundUtility": 0.8793831734046853,
+          "accentUtility": 1
+        }
+      }
+    }
+  },
+  "mechanismGate": {
+    "pass": true,
+    "scientificOutputChanged": true,
+    "candidateCountsUnchanged": true,
+    "frontierCountsUnchanged": true,
+    "activeRoleFoundationSatisfied": true,
+    "activeRoleFoundationExercised": true,
+    "candidateBoundSatisfied": true
+  },
+  "limitations": [
+    "This bounded development comparison uses no opened or future directional-review output.",
+    "The mechanism gate establishes deterministic soft ranking behavior, not product quality.",
+    "Every changed development winner requires the predeclared blinded human checkpoint before freeze."
+  ],
+  "phaseDisposition": "0.5.1-ranking-mechanism-passed-human-checkpoint-required",
+  "analysisId": "d88f5d53cd8218ca608b181b625826f9f2d15887ada34e80ca7eff2a70e48967"
+}

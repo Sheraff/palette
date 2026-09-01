@@ -1,0 +1,133 @@
+{
+	"what_this_is": "Every prompt variant's ground_type scored against the reviewer's own answers on the gold 30 \u2014 the second half of PREMISE_NEXT.md \u00a74's decision gate. These 30 artworks are the CONTESTED ones (oracle and algorithm flag disagreed), so no rate here is a corpus-wide accuracy.",
+	"generated_by": "research/v3/oracle/premise/analyze_gold30_variants.py",
+	"inputs": {
+		"gold": "/Users/Flo/GitHub/palette/research/v3/data/oracle-validation/premise-disambiguation-1-analysis.json",
+		"runs": {
+			"premise-run-1": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/premise-run-1.jsonl",
+			"premise-run-cd": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/premise-run-cd.jsonl"
+		}
+	},
+	"gold_items": 30,
+	"scope_note": "`corpus_unmapped*` is over ALL ok non-canary rows for the variant (142 images), which is the population \u00a74's gate speaks about. `analyze.py`'s `unmapped_label_count` is over its PRIMARY subset (137 \u2014 conflicted-truth artworks excluded), so A reads 63/142 = 0.4437 here and 60/137 = 0.4380 there. Same fact, two populations; neither is wrong.",
+	"gate": {
+		"exact_match_min_of_30": 22,
+		"unmapped_share_max": 0.15,
+		"inter_variant_binary_disagreement_max": 0.15,
+		"source": "PREMISE_NEXT.md \u00a74"
+	},
+	"per_variant": {
+		"A": {
+			"run": "premise-run-1",
+			"gold30_joined": 30,
+			"exact_match": 7,
+			"exact_match_rate": 0.2333,
+			"binary_items": 20,
+			"binary_agree": 8,
+			"binary_agree_rate": 0.4,
+			"unmapped_on_gold30": 5,
+			"corpus_unmapped": 63,
+			"corpus_rows": 142,
+			"corpus_unmapped_share": 0.4437,
+			"ground_type_distribution_on_gold30": {
+				"shaded_field": 21,
+				"multiple_distinct_fields": 3,
+				"full_scene": 4,
+				"flat_field": 1,
+				"pattern_or_texture": 1
+			},
+			"gate_exact_match_met": false,
+			"gate_unmapped_met": false
+		},
+		"B": {
+			"run": "premise-run-1",
+			"gold30_joined": 30,
+			"exact_match": 16,
+			"exact_match_rate": 0.5333,
+			"binary_items": 24,
+			"binary_agree": 17,
+			"binary_agree_rate": 0.7083,
+			"unmapped_on_gold30": 1,
+			"corpus_unmapped": 44,
+			"corpus_rows": 142,
+			"corpus_unmapped_share": 0.3099,
+			"ground_type_distribution_on_gold30": {
+				"flat_field": 17,
+				"pattern_or_texture": 1,
+				"shaded_field": 12
+			},
+			"gate_exact_match_met": false,
+			"gate_unmapped_met": false
+		},
+		"C": {
+			"run": "premise-run-cd",
+			"gold30_joined": 30,
+			"exact_match": 11,
+			"exact_match_rate": 0.3667,
+			"binary_items": 24,
+			"binary_agree": 15,
+			"binary_agree_rate": 0.625,
+			"unmapped_on_gold30": 0,
+			"corpus_unmapped": 0,
+			"corpus_rows": 142,
+			"corpus_unmapped_share": 0.0,
+			"ground_type_distribution_on_gold30": {
+				"multiple_distinct_fields": 12,
+				"shaded_field": 11,
+				"flat_field": 7
+			},
+			"gate_exact_match_met": false,
+			"gate_unmapped_met": true
+		},
+		"D": {
+			"run": "premise-run-cd",
+			"gold30_joined": 30,
+			"exact_match": 9,
+			"exact_match_rate": 0.3,
+			"binary_items": 24,
+			"binary_agree": 10,
+			"binary_agree_rate": 0.4167,
+			"unmapped_on_gold30": 0,
+			"corpus_unmapped": 0,
+			"corpus_rows": 142,
+			"corpus_unmapped_share": 0.0,
+			"ground_type_distribution_on_gold30": {
+				"shaded_field": 26,
+				"multiple_distinct_fields": 2,
+				"flat_field": 2
+			},
+			"gate_exact_match_met": false,
+			"gate_unmapped_met": true
+		}
+	},
+	"self_check_against_disambiguation_1": [
+		{
+			"variant": "A",
+			"block": "exactMatchWithOracle",
+			"published": "7/30",
+			"recomputed": "7/30",
+			"match": true
+		},
+		{
+			"variant": "B",
+			"block": "exactMatchWithOracle",
+			"published": "16/30",
+			"recomputed": "16/30",
+			"match": true
+		},
+		{
+			"variant": "A",
+			"block": "binaryAgreementWithOracle",
+			"published": "8/20",
+			"recomputed": "8/20",
+			"match": true
+		},
+		{
+			"variant": "B",
+			"block": "binaryAgreementWithOracle",
+			"published": "17/24",
+			"recomputed": "17/24",
+			"match": true
+		}
+	]
+}

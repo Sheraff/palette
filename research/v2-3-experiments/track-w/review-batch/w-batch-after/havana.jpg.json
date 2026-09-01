@@ -1,0 +1,98 @@
+{
+ "schemaVersion": 1,
+ "label": "w-batch-after",
+ "algorithm": "v2-3",
+ "algorithmIdentity": "v2-3",
+ "image": "havana.jpg",
+ "imagePath": "images/havana.jpg",
+ "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+ "byteCount": 258556,
+ "extraction": {
+  "algorithm": "v2-3",
+  "width": 1200,
+  "height": 1200,
+  "winner": {
+   "background": {
+    "rgb": [
+     55,
+     92,
+     119
+    ],
+    "oklab": [
+     0.4587995111942291,
+     -0.029255181550979614,
+     -0.05389440432190895
+    ],
+    "hex": "#375c77",
+    "generated": false
+   },
+   "surface": {
+    "rgb": [
+     36,
+     58,
+     81
+    ],
+    "oklab": [
+     0.34116366505622864,
+     -0.01648595929145813,
+     -0.04652028903365135
+    ],
+    "hex": "#243a51",
+    "generated": false
+   },
+   "foreground": {
+    "rgb": [
+     238,
+     208,
+     118
+    ],
+    "oklab": [
+     0.8642865419387817,
+     -0.002900351770222187,
+     0.11488769948482513
+    ],
+    "hex": "#eed076",
+    "generated": false
+   },
+   "accent": {
+    "rgb": [
+     238,
+     101,
+     95
+    ],
+    "oklab": [
+     0.6767589449882507,
+     0.15451236069202423,
+     0.07270694524049759
+    ],
+    "hex": "#ee655f",
+    "generated": false
+   },
+   "gradient": true,
+   "collapse": {
+    "surface": false,
+    "accent": false
+   }
+  },
+  "researchRender": {
+   "schemaVersion": 1,
+   "field": {
+    "kind": "linear-gradient",
+    "angleDegrees": 135,
+    "interpolation": "oklab",
+    "stops": [
+     {
+      "kind": "role",
+      "role": "background",
+      "position": 0
+     },
+     {
+      "kind": "role",
+      "role": "surface",
+      "position": 1
+     }
+    ]
+   }
+  }
+ }
+}

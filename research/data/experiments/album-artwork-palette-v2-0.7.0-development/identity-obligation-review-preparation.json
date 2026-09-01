@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.0-identity-obligation-review-v1",
+  "manifestId": "56587cd633b8cc7995d96dcf56f71f71d6133ea618b0e3bd04d895edcf249d8d",
+  "candidateVersion": "album-artwork-first-principles-0.7.0",
+  "implementationHash": "82487ab0e22ba6e5863c310001153652f9fbe113eaef3ec98470845b17051594",
+  "scientificSha256": "d05f05c56aab803ed4b8b00c327e5af6bf908f154b84ada76b562fc4419f4881",
+  "predecessorVersion": "album-artwork-first-principles-0.6.0",
+  "predecessorImplementationHash": "3f25579340ec3dea5efaa0d8aeeceb35483610b7519fa8892a5b99a96261f315",
+  "predecessorScientificSha256": "f0437a4ab86f321d3723e30527ff455222ed6e5590e891e3f590ab1b920e7d52",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "changedWinnerCount": 17,
+  "changedWinnerCohorts": {
+    "stress": 12,
+    "dataset": 5
+  },
+  "selectedCohorts": {
+    "stress": 8,
+    "dataset": 4
+  },
+  "reviewCaseCount": 12,
+  "candidateSideCounts": {
+    "A": 6,
+    "B": 6
+  },
+  "inputHashes": {
+    "currentAggregateSha256": "abccff26cb806cbaa01a6a5a2068919767b552ff3e6b1683db974746662281d9",
+    "predecessorAggregateSha256": "44fc6ab503208e1be29f697cb5acb0477d2a88092bd192b0068d1f9fde1bdef1",
+    "currentSummarySha256": "adab7eb0ec1e4fffcbdb8bb5ddbfed50a5adbcb69559fa39fcaea85bcd0d8492",
+    "reviewProtocolSha256": "faeab79634843f81cea7f3c2be1dfded3b1fa7f05ea0d594eefd7e2bae704c27"
+  },
+  "sourcePolicy": "fixed-authorized-development-panel-only; no directional sample execution",
+  "preparationId": "3f66f12fb40c17473abcd3ce895aec8a75a10e6e1a98723521289f7fc42dfffe"
+}

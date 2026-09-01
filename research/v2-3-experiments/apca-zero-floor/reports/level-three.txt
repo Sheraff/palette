@@ -1,0 +1,41 @@
+
+=== fg-surface: 0 artwork(s) left alone with the defect ===
+
+=== fg-surface-accent-ok: 0 artwork(s) left alone with the defect ===
+
+=== fg-both: 2 artwork(s) left alone with the defect ===
+  0e/ab67616d0000b273000eb97d43e8a375e41f6768
+    bg=#11648e surface=#0f2c4a fg=#186987 accent=#0b1b32 gradient collapse={"surface":false,"accent":false}
+    still unreadable: foreground-background (raw 3.13)
+    identical to trunk: yes
+  03/ab67616d0000b2730003cdbba19cbfd06f490085.jpg
+    bg=#162e30 surface=#a25a34 fg=#20171c accent=#baa35f flat collapse={"surface":false,"accent":false}
+    still unreadable: foreground-background (raw 3.79)
+    identical to trunk: yes
+
+=== fg-both-accent-ok: 1 artwork(s) left alone with the defect ===
+  0e/ab67616d0000b273000eb97d43e8a375e41f6768
+    bg=#11648e surface=#0f2c4a fg=#186987 accent=#0b1b32 gradient collapse={"surface":false,"accent":false}
+    still unreadable: foreground-background (raw 3.13)
+    identical to trunk: yes
+
+=== accent-only: 1 artwork(s) left alone with the defect ===
+  03/ab67616d00001e020003cdbba19cbfd06f490085.jpg
+    bg=#162e30 surface=#a25a34 fg=#b9a25e accent=#20171c flat collapse={"surface":false,"accent":false}
+    still unreadable: accent-background (raw 3.79)
+    identical to trunk: yes
+
+=== all-four: 3 artwork(s) left alone with the defect ===
+  0e/ab67616d0000b273000eb97d43e8a375e41f6768
+    bg=#11648e surface=#0f2c4a fg=#186987 accent=#0b1b32 gradient collapse={"surface":false,"accent":false}
+    still unreadable: foreground-background (raw 3.13)
+    still unreadable: accent-surface (raw 3.76)
+    identical to trunk: yes
+  03/ab67616d0000b2730003cdbba19cbfd06f490085.jpg
+    bg=#162e30 surface=#a25a34 fg=#20171c accent=#baa35f flat collapse={"surface":false,"accent":false}
+    still unreadable: foreground-background (raw 3.79)
+    identical to trunk: yes
+  03/ab67616d00001e020003cdbba19cbfd06f490085.jpg
+    bg=#162e30 surface=#a25a34 fg=#b9a25e accent=#20171c flat collapse={"surface":false,"accent":false}
+    still unreadable: accent-background (raw 3.79)
+    identical to trunk: yes

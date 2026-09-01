@@ -1,0 +1,65 @@
+{
+	"stage": "constrained-and-retry",
+	"at": "2026-08-03T16:19:58.530Z",
+	"constrained_decoding_available": true,
+	"constrained_attempt": {
+		"status": "ok",
+		"attempts": 1,
+		"parse_failed": false,
+		"parsed": {
+			"medium": "photograph",
+			"color_character": "monochrome",
+			"grain_or_noise": "yes",
+			"physical_media_scan": "no",
+			"overlays": [
+				"watermark"
+			],
+			"has_text": "yes",
+			"has_dominant_subject": "single",
+			"subject_kind": "vehicle",
+			"subject_area_band": "25_60",
+			"has_signature_color": "no",
+			"text_roles": [
+				"title_display"
+			],
+			"text_dominance": "dominant_element",
+			"signature_carrier": "not_applicable"
+		},
+		"raw_text": "{\"picture_kind\": \"photograph\", \"colour_range\": \"monochrome\", \"texture_noise\": \"yes\", \"packaging_shot\": \"no\", \"stickers\": [\"watermark\"], \"lettering\": \"yes\", \"subject_count\": \"single\", \"subject_is\": \"vehicle\", \"subject_size\": \"25_60\", \"signature_colour\": \"no\", \"lettering_kinds\": [\"title_display\"], \"lettering_weight\": \"dominant_element\", \"signature_source\": \"not_applicable\"}"
+	},
+	"unconstrained_attempt": {
+		"status": "ok",
+		"attempts": 1,
+		"parse_failed": false,
+		"parsed": {
+			"medium": "photograph",
+			"color_character": "monochrome",
+			"grain_or_noise": "yes",
+			"physical_media_scan": "no",
+			"overlays": [
+				"watermark"
+			],
+			"has_text": "yes",
+			"has_dominant_subject": "single",
+			"subject_kind": "vehicle",
+			"subject_area_band": "25_60",
+			"has_signature_color": "no",
+			"text_roles": [
+				"title_display"
+			],
+			"text_dominance": "dominant_element",
+			"signature_carrier": "not_applicable"
+		},
+		"raw_text": "{\"picture_kind\": \"photograph\", \"colour_range\": \"monochrome\", \"texture_noise\": \"yes\", \"packaging_shot\": \"no\", \"stickers\": [\"watermark\"], \"lettering\": \"yes\", \"subject_count\": \"single\", \"subject_is\": \"vehicle\", \"subject_size\": \"25_60\", \"signature_colour\": \"no\", \"lettering_kinds\": [\"title_display\"], \"lettering_weight\": \"dominant_element\", \"signature_source\": \"not_applicable\"}",
+		"note": "If this is also clean, the grammar is belt-and-braces rather than load-bearing \u2014 which is the comfortable place to be, not a reason to turn it off."
+	},
+	"forced_failure": {
+		"status": "failed",
+		"attempts": 3,
+		"parse_failed": true,
+		"error_class": "SchemaViolation",
+		"validator_invocations": 3,
+		"expected_attempts": 3,
+		"retry_cap_respected": true
+	}
+}

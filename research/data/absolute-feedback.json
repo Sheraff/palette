@@ -1,0 +1,719 @@
+{
+  "schemaVersion": 3,
+  "manifestId": "3452fec2f0e791d91c84f8fd7aaeb3c01ad2fdaacdfc20f1fd6029d48771e533",
+  "algorithmVersion": "region-graph-0.17.0",
+  "semanticResultsSha256": "558d2f2fbb3350b836017ac10631794cf06f0c1694ffc5b1b143e5c9fe1c5c48",
+  "presentationVersion": 1,
+  "entries": [
+    {
+      "image": "00/ab67616d0000b2730000da2732248f519c60d357.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:09:17.149Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000e47a4e869d4323ad0e3d.jpg",
+      "shippable": false,
+      "reasons": [
+        "lacks-artwork-identity"
+      ],
+      "note": "general lack of color in the extracted palette compared to the colors present in the artwork",
+      "decidedAt": "2026-07-18T16:10:14.176Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300008221f560a41207e9234c.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:10:20.811Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000118e1b98fc4be4e481b1.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:10:23.044Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300008ad6e30f36f723c5a4f0.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:10:27.849Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000089bb2fab58ed5653b0b.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:20:52.342Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200005430e79a3e6fda4ec936.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:10:44.828Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:10:49.358Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000668732f5e168d3cd6fd4.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:10:54.473Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000026056a00f9a0b8178e71.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:11:01.149Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000022208e2095a1884211f0.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:11:05.738Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000cd66c3ae2486eefd5976.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:11:10.746Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000062690f9a82145c2fb5df.jpg",
+      "shippable": false,
+      "reasons": [
+        "accent"
+      ],
+      "note": "accent is visually too similar to foreground, and i see yellow tints in the image we might be able to use instead (low confidence rejection)",
+      "decidedAt": "2026-07-18T16:12:15.190Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T19:54:14.964Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000a698bc37d2fd54342130.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:12:49.961Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000703a9e8740c609dd28e7.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:12:54.973Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200005ddc313068597b41ae3b.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:20:11.106Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200004a7c432cc405b024d111.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:14:20.177Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000081e02d8bbba4964eee0b.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:14:28.503Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300005d04d5a4dee5b4f04754.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:14:30.948Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000f987b7049ee5e87bc0b6.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:14:35.075Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000064c47077c5d50085297f.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T07:09:17.889Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T19:54:02.172Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000c59b1facbb9e2d899099.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:07.251Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000c28d56285dbdbe6ba733.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:11.647Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200006c46494cca56026ada97.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:16.444Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000ebd9a8c276de59517e39.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:21.082Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000620aa8bdabae65a655dd.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:28.434Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000045168a00c9fa6fcc59da.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:35.273Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300009e400506d81cf5476b3a.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:38.360Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000495a4c663cde5b937568.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:40.911Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000773d1216e3c895230a2a.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:16:44.709Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300004e5ae33d52b799ae0f09.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "accent could be maybe a little more chromatic",
+      "decidedAt": "2026-07-18T16:17:09.351Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000f53d39e19f07413917d2.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:17:12.110Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200001073a73e3a949021f65e.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:17:14.963Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300005d4e3cbc103452ed96a1.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:17:21.565Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000040a5c7989893034f93f3.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:17:35.528Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000b69d0872db47295208b2.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T18:16:32.952Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000c932be55cbdd9c974054.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:18:01.829Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300003abe250616f84c91276e.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:18:04.360Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000b82d833c330bb6fd6e75.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T18:16:47.545Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000cc74b5d14832a6839c83.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:21.042Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200002dd7acbdca5ce1c26118.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:25.470Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000140e862ce51b3a3f49d3.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:31.155Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300009aa618da486b768ecadc.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:35.084Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000c775567afe4972b0332b.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:38.353Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000f081db6cbbf55cf97699.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:41.205Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300001b7dc13511d828fe5536.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:47.067Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000f21173084bed26ffc1c6.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:19:51.218Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200004b1453b0c6d8d31c435b.jpg",
+      "shippable": false,
+      "reasons": [
+        "accent"
+      ],
+      "note": "accent looks like a made-up / mixed color, it doesn't feel like a part of this artwork",
+      "decidedAt": "2026-07-18T16:20:20.569Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:20:30.364Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300004fc35a3d65a2d4b1db69.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:20:35.688Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000b9f883ac9efae750b335.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:20:38.785Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300001a3ee120f20345896b12.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T07:09:05.699Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200009c13391bb8e40efc18d0.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:21:38.219Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300003375ae820b0112b39888.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:21:49.066Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300006ca7c0530cf8a60ceb92.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:21:52.322Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000b095f52713d72f64f318.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:06.620Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000013cdd885595a94002abc.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:11.928Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300004a2f595f898d195ea929.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:18.078Z"
+    },
+    {
+      "image": "00/ab67616d00001e0200005f39acd1c2962743b1fb.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:27.636Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000ea76c41b99952455c052.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:44.510Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000357666cb590804780c8f.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:48.068Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000036c519b1c59d6d4813b6.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:50.589Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300007c3db676974ce8bd37fc.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:56.123Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300003b7c60cccae303a1d170.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:22:58.775Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T18:16:15.512Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000f31d2426debbeaea5105.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T07:09:26.219Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000e5d07b040a02043e7460.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:28:59.317Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000675de7a384b7bd335ad9.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:29:05.395Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300003409c3db06f20f3ed7b6.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:29:11.319Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300004554beea0eaa5fef3858.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:22:06.727Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000048c04b59b6a354136b8.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:29:17.874Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000ee65e2f8e74490ec74aa.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:29:20.283Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T19:54:28.181Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000bdd8f68862e90ee24dc8.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:30:12.057Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000685cd0e9597f68328ca8.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:22:47.065Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000037d5a2d47245cb9abc79.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:21:08.574Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000045be7b6dfb8bf9fe7a15.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:19:44.764Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300003d2a08ce63af9a2c19b0.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:21:31.565Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:23.132Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000082b6e9ba2855c904fd26.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:29.717Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000e0f752100cff0d95906a.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:34.321Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000ed73ed265ce435dea940.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:38.909Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000fc82d7c4b0170312292b.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:44.969Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000d1502df8d8aaf3418f0f.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:20:16.053Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000c4d94ab67ad33dc51941.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:54.989Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000456b7e580b5a8995a1e7.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:57.424Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000a5b34e1cd5f6614a6cf9.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:32:59.173Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300004d9bc5a7082303c8b125.jpg",
+      "shippable": false,
+      "reasons": [
+        "surface"
+      ],
+      "note": "surface doesn't feel like it belongs in this artwork, it looks invented / mixed",
+      "decidedAt": "2026-07-18T16:33:30.755Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300005830904e496bd68fee62.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:33:35.851Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300003bdffa5565ae80d51afa.jpg",
+      "shippable": false,
+      "reasons": [
+        "surface"
+      ],
+      "note": "surface doesn't look like it belongs in this artwork, it looks invented / mixed",
+      "decidedAt": "2026-07-19T09:21:21.393Z"
+    },
+    {
+      "image": "00/ab67616d00001e020000342093dd7f3bdbbe9705.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:03.623Z"
+    },
+    {
+      "image": "00/ab67616d0000b273000058cd13720e1e585a110d.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:07.521Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000070b3926c6d8719703ba.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:11.888Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000bb6b7f8e8d22671ebc05.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:15.230Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000fa9e652a602111e390cc.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:17.509Z"
+    },
+    {
+      "image": "00/ab67616d0000b2730000fcab64f02ecb6cbc2f14.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:21.606Z"
+    },
+    {
+      "image": "00/ab67616d0000b27300004851d00ca04301880f47.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:22:34.672Z"
+    },
+    {
+      "image": "00/ab67616d00001e02000068b80cb9d0cf032793d6.jpg",
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T16:34:32.211Z"
+    }
+  ]
+}

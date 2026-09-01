@@ -1,0 +1,61 @@
+{
+	"schema_version": "group-a.probes.v1.1",
+	"prompt_variant": "S-separate_areas",
+	"presentation_mode": "separate",
+	"provenance": "[REVIEWED] research/v3/ORACLE_QUESTION_SET.md v2 §A.6, schema group group-a.probes.v1.1. Probe wordings and the derivation are committed there before any inference exists.",
+	"design_notes": [
+		"v1.1, 2026-08-03: REFERENT FIX. The reviewer stress-tested v1 with an artwork that is half blue sky, half red tiled roof, with title text over both, and found a structural defect: v1 called the background \"the large area\", a SINGULAR referent, so on a plural background probes 2, 3, 5 and 6 read as unanswerable. v1.1 fixes the referent once, in a preamble carried byte-identically by every prompt file and by the human review form, and adds whole-region clauses to probes 2, 3, 5 and 6. The probe ids, the vocabulary and the derivation table are UNCHANGED — derivation.group-a.probes.v1.json is byte-identical, sha256 da67d5ebf0aaab0c593f8fb8e040192e0e688f9dccfcc9bb2fe6b2af391a2fc5.",
+		"Group-a.probes.v1 is the DECOMPOSED-PROBE ARM: six independently meaningful yes/no/unsure probes whose aggregate derives the tag, instead of one six-way question. Reviewer-initiated, 2026-08-03: \"might increase reliability, and make the questions easier to answer.\" Full design: ORACLE_QUESTION_SET.md §A.6.",
+		"Every probe passes the five-second rule standing alone, and every probe is meaningful on its own terms — none of them is the six-way question in disguise.",
+		"`enclosure` is NOT decomposed. It is group A's most reliable field already (raw 0.87, kappa 0.60 inter-variant [MEASURED premise-run-1]); decomposing a reliable question spends decode for nothing. It is also held first in both bundled variants, both because that is the position the measured A->B ordering gain came from and because holding one field constant across arms makes it a control: if enclosure moves in this arm, something about the arm changed the model, not the question.",
+		"Derivation is a priori and committed: `derivation.group-a.probes.v1.json` enumerates all 3^6 = 729 answer vectors. An implementation that disagrees with any entry is wrong, not the table.",
+		"Separate mode: one inference per probe, so no probe can see another probe's answer. This is the test of whether bundling contaminates — whether answering `one_colour: no` pushes the next answer. Its cost is the reason it is gated: see PREMISE_NEXT.md.",
+		"The stem, the option glosses and the framing paragraph are byte-identical to the bundled variants' rendering of this same probe. Only the surrounding questions are gone. If they were not identical the comparison would measure wording, not bundling."
+	],
+	"deviations": [
+		"No `confidence` field and no `note` field, in either mode. Under group-a.v1 both were degenerate: 298 of 299 parsed rows said `high` and the same 298 left the note empty [MEASURED premise-run-1]. In this arm the per-probe `unsure` value IS the confidence, asked at the granularity where it can act, and the aggregate uncertainty instruments are the inconsistency and tension rates from the derivation table. Re-adding `note` to the bundled variants is a one-line change if the reviewer wants the audit trail back.",
+		"`shading_direction` is asked unconditionally, with `not_applicable` available, rather than conditionally on a prior `shaded_field` answer. The derivation forces `not_applicable` when the derived ground_type is not shaded_field. In group-a.v1 the radial_or_vignette<->not_applicable pair was 21 of 26 inter-variant disagreements on this field [MEASURED premise-run-1]; the arm removes that class by construction.",
+		"This arm asks no question whose answer is `ground_type`. `ground_type` and `field_texture` are DERIVED, by the committed table in `derivation.group-a.probes.v1.json`. Nothing downstream may re-derive them a second way.",
+		"No probe quotes the corrected criterion or the canonical examples from ORACLE_QUESTION_SET.md §A.2. That is the point of the arm: importing the hard construct into an \"easy question\" would make it the same question in more words. Where a canonical case bears on one probe it appears as a local clarification of that probe alone (`separate_areas`: \"A blurry or soft join still counts as two areas\").",
+		"Separate mode carries no enclosure and no shading_direction: they are not probes, and the bundling question is about the probes. Those two fields come from the bundled arm."
+	],
+	"referent_preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+	"unsure_framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+	"canonical_fields": [
+		"separate_areas"
+	],
+	"vocabularies": {
+		"separate_areas": [
+			"yes",
+			"no",
+			"unsure"
+		]
+	},
+	"derivation_schema_version": "group-a.probes.v1",
+	"derives": {
+		"ground_type": "derivation.group-a.probes.v1.json (requires all six solo passes)"
+	},
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Look at this album cover.\n\nThe background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts. Small details do not count. What the cover is about does not count. Whether it is attractive does not count.\n\nUnsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.\n\nOne question only.\n\nseparate_areas - Can you point to two or more separate areas of the background, each with its own colour? A blurry or soft join still counts as two areas.\n   yes - two or more separate areas, each its own colour\n   no - you cannot pick out separate areas\n   unsure - you cannot tell\n\nReply with JSON only.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"separate_areas": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			}
+		},
+		"required": [
+			"separate_areas"
+		],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"separate_areas": "separate_areas"
+	},
+	"free_text_fields": []
+}

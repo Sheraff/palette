@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": "album-artwork-palette-v2-phase-3-expanded-development-v1",
+  "custody": {
+    "mode": "source-only",
+    "developmentPanel": {
+      "path": "research/data/album-artwork-palette-v2-development-panel.json",
+      "manifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+      "rawSha256": "9258032b8ea2d40166d2be89767f5b15341145de314b007c09e766ffbaac75e4",
+      "sourceCount": 28
+    },
+    "reserveInventory": {
+      "path": "research/data/source-provenance-inventory-00-14.json",
+      "inventoryVersion": "source-provenance-inventory-00-14-v1",
+      "inventoryId": "3907c57f94cd7dfea992c5d1ce98da6de2165c720b75259b32f0250da1881c7f",
+      "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+    },
+    "phase4Seal": {
+      "path": "research/data/album-artwork-palette-v2-phase-4-fast-sample.sealed.json",
+      "manifestId": "6e65a71b8bdd369e2b3800ad7401d23ada2a4e47bfd2633083896375782bde7e",
+      "sealCommitment": "29a8f75445ed294ae21647b2bc48caf306d6a4d45190cbe32dcc10dc27c62a1f",
+      "rawSha256": "305f3b75320a4bc9d9d5569a37986e4fa22d5a39221cbcc03eb188b555ba88df"
+    }
+  },
+  "selection": {
+    "policy": "retain-the-exact-eight-case-diagnostic-core-and-use-every-distinct-non-core-source-from-the-bound-28-source-development-panel",
+    "batchingPolicy": "source-only-key-order; round-robin-dataset-roots; then-existing-structure-tag-coverage; balanced-7-7-6-capacities",
+    "maximumBatchSize": 8,
+    "batchCount": 3,
+    "batchSizes": [7, 7, 6],
+    "coreCount": 8,
+    "additionCount": 20,
+    "observedAdditionDatasetRoots": ["00", "03", "04", "05", "07", "08"],
+    "dimensions": "not-present-in-bound-development-panel-and-not-decoded-for-selection",
+    "sourceMetadataUsed": [
+      "bound development-panel membership",
+      "diagnostic-core case identity for exclusion from additions",
+      "cohort and dataset/root",
+      "SHA-256 and byte count",
+      "artwork-family identity",
+      "existing structure tags"
+    ],
+    "excludedSignals": [
+      "candidate outputs",
+      "review outcomes",
+      "desired colors",
+      "known failures",
+      "filename semantics"
+    ]
+  },
+  "diagnosticCore": {
+    "runnerCaseIds": [
+      "development-03",
+      "development-12",
+      "development-16",
+      "development-18",
+      "development-19",
+      "development-21",
+      "development-22",
+      "development-26"
+    ],
+    "sources": [
+      {
+        "caseId": "development-03",
+        "path": "images/birdsofprey.jpg",
+        "sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+        "byteCount": 136233,
+        "artworkFamily": "exact:26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+        "cohort": "stress",
+        "datasetRoot": "images",
+        "structureTags": ["broad gradient", "highly chromatic", "photography and portrait"],
+        "selectionKey": "ac727b3eadfa3c7fccbc6066f0f81d1a4b2d6dcc14f68ab782d5cbe48c78a4ea"
+      },
+      {
+        "caseId": "development-12",
+        "path": "images/vvbrown.jpg",
+        "sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+        "byteCount": 57673,
+        "artworkFamily": "exact:06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+        "cohort": "stress",
+        "datasetRoot": "images",
+        "structureTags": ["monochrome and low-chroma", "portrait", "typography-led"],
+        "selectionKey": "8e0ea09007e188fba3b454f64da0cf29752efd459c0081ddd347d8312a90f5df"
+      },
+      {
+        "caseId": "development-16",
+        "path": "images/nada.jpg",
+        "sha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+        "byteCount": 174998,
+        "artworkFamily": "exact:92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+        "cohort": "stress",
+        "datasetRoot": "images",
+        "structureTags": ["broad flat field", "highly chromatic", "repeated small signatures"],
+        "selectionKey": "a194fda5a3fd20bf292339018b2a01655777bc772d41348a22d491380445399e"
+      },
+      {
+        "caseId": "development-18",
+        "path": "images/artofficial.jpg",
+        "sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+        "byteCount": 1657931,
+        "artworkFamily": "exact:c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+        "cohort": "stress",
+        "datasetRoot": "images",
+        "structureTags": ["collage", "high-detail artwork", "highly chromatic"],
+        "selectionKey": "6aa0a7e5962d2988981736bf8807ec1054590779a93efad6ad3fbbba203d80e4"
+      },
+      {
+        "caseId": "development-19",
+        "path": "images/knuckles.jpg",
+        "sha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+        "byteCount": 90657,
+        "artworkFamily": "exact:057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+        "cohort": "stress",
+        "datasetRoot": "images",
+        "structureTags": ["compressed or noisy", "low source quality", "photography"],
+        "selectionKey": "740e3a0bf529c9ace10fc797a676a73a121a013f3a24d1726ee9e48628e1dbbd"
+      },
+      {
+        "caseId": "development-21",
+        "path": "01/ab67616d0000b27300014f6d389bd4b028d8e28e.jpg",
+        "sha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+        "byteCount": 141935,
+        "artworkFamily": "00014f6d389bd4b028d8e28e",
+        "cohort": "dataset",
+        "datasetRoot": "01",
+        "structureTags": ["dataset diversity probe"],
+        "selectionKey": "b4a2e7df8fd23564986e8270cb8597e899e26669dc000c6280e6e6942d931639"
+      },
+      {
+        "caseId": "development-22",
+        "path": "02/ab67616d00001e02000225c634fe58c475965b3e.jpg",
+        "sha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+        "byteCount": 40716,
+        "artworkFamily": "000225c634fe58c475965b3e",
+        "cohort": "dataset",
+        "datasetRoot": "02",
+        "structureTags": ["dataset diversity probe"],
+        "selectionKey": "b8f6069cc7cfcfe034163736bff029ea4912c0b0bf98bb4e6e72a1c7beeb7612"
+      },
+      {
+        "caseId": "development-26",
+        "path": "06/ab67616d00001e020006b33fb3c112e2ae60ab29",
+        "sha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+        "byteCount": 27992,
+        "artworkFamily": "0006b33fb3c112e2ae60ab29",
+        "cohort": "dataset",
+        "datasetRoot": "06",
+        "structureTags": ["dataset diversity probe"],
+        "selectionKey": "afd34d3616b462b1fe4327beb1e267088c157deaba10ee4d971b37a493baa66d"
+      }
+    ]
+  },
+  "additionBatches": [
+    {
+      "batchId": "phase-3-expanded-additions-01",
+      "runnerCaseIds": [
+        "development-14",
+        "development-17",
+        "development-09",
+        "development-04",
+        "development-25",
+        "development-28",
+        "development-15"
+      ],
+      "datasetRoots": ["05", "08", "images"],
+      "structureTags": [
+        "broad fields",
+        "dataset diversity probe",
+        "flat layered fields",
+        "high-detail artwork",
+        "illustration",
+        "low-chroma",
+        "minimalist",
+        "near-uniform",
+        "no defensible distinct accent",
+        "photography",
+        "photography and portrait",
+        "small coherent signature",
+        "small repeated signatures",
+        "small signature colors",
+        "textured field",
+        "typography-led"
+      ],
+      "additions": [
+        {
+          "caseId": "development-14",
+          "path": "images/black.jpg",
+          "sha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+          "byteCount": 38119,
+          "artworkFamily": "exact:519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["near-uniform", "no defensible distinct accent", "small coherent signature"],
+          "selectionKey": "13bae65d1b097a8c9b8e374daac6936bed1c2337bb359151ff761e7985ced7a0"
+        },
+        {
+          "caseId": "development-17",
+          "path": "images/havana.jpg",
+          "sha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+          "byteCount": 258556,
+          "artworkFamily": "exact:1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["broad fields", "flat layered fields", "illustration"],
+          "selectionKey": "43f739e9e0ade165e4d19bf908e4b9f9e250438869ed7a1e235833f69392b2dc"
+        },
+        {
+          "caseId": "development-09",
+          "path": "images/ybbb.jpg",
+          "sha256": "67f6c4f58c00ac4299d5517ba541410eddd0901e34d753c2536229b2c13cd3c3",
+          "byteCount": 35092,
+          "artworkFamily": "exact:67f6c4f58c00ac4299d5517ba541410eddd0901e34d753c2536229b2c13cd3c3",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["minimalist", "small repeated signatures", "textured field"],
+          "selectionKey": "614c57721778fb8c2274e658fb52c2a3d05a5027bef72741c0bc59cee9553769"
+        },
+        {
+          "caseId": "development-04",
+          "path": "images/placebo.jpg",
+          "sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+          "byteCount": 210759,
+          "artworkFamily": "exact:5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["low-chroma", "photography and portrait", "typography-led"],
+          "selectionKey": "68c3094fa80c35bb8dc2978527e0d0b56dab9e7f407d8f3fbebb9c7492d8699d"
+        },
+        {
+          "caseId": "development-25",
+          "path": "05/ab67616d00001e0200057e4cc52de55bd18cd2ce",
+          "sha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+          "byteCount": 56437,
+          "artworkFamily": "00057e4cc52de55bd18cd2ce",
+          "cohort": "dataset",
+          "datasetRoot": "05",
+          "structureTags": ["dataset diversity probe"],
+          "selectionKey": "6db5ce5650453547ec630985a7344c41fef54f26608097db30b6c6865b0e7428"
+        },
+        {
+          "caseId": "development-28",
+          "path": "08/ab67616d0000b2730008d804660f1ce6c664c237",
+          "sha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+          "byteCount": 111547,
+          "artworkFamily": "0008d804660f1ce6c664c237",
+          "cohort": "dataset",
+          "datasetRoot": "08",
+          "structureTags": ["dataset diversity probe"],
+          "selectionKey": "e0b3079e2a90e06ac892d2eeb047a3183807e7900ee046450a7a697a973eacac"
+        },
+        {
+          "caseId": "development-15",
+          "path": "images/horrorwood.jpg",
+          "sha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+          "byteCount": 241855,
+          "artworkFamily": "exact:69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["high-detail artwork", "photography", "small signature colors"],
+          "selectionKey": "f15cb69e9deda07bb8bc722684036807e7b5f906bd087350fbb90f26bedcdf39"
+        }
+      ]
+    },
+    {
+      "batchId": "phase-3-expanded-additions-02",
+      "runnerCaseIds": [
+        "development-02",
+        "development-11",
+        "development-08",
+        "development-10",
+        "development-20",
+        "development-23",
+        "development-01"
+      ],
+      "datasetRoots": ["00", "03", "images"],
+      "structureTags": [
+        "compressed or noisy",
+        "dataset diversity probe",
+        "emergency unsupported color",
+        "exceptionally low supported contrast",
+        "flat layered fields",
+        "frame and border",
+        "genuinely one-color",
+        "minimalist",
+        "no defensible distinct surface",
+        "photography",
+        "repeated small signatures",
+        "small signature color",
+        "typography-led"
+      ],
+      "additions": [
+        {
+          "caseId": "development-02",
+          "path": "images/purered.jpg",
+          "sha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+          "byteCount": 1806,
+          "artworkFamily": "exact:d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["exceptionally low supported contrast", "genuinely one-color"],
+          "selectionKey": "30488cf75883d3040c04d8e7dfd0c494253478f63e4312b9ead2693fa778254a"
+        },
+        {
+          "caseId": "development-11",
+          "path": "images/toxicity.jpg",
+          "sha256": "b62f5cdd35099615d788a6548f62aa8edb0aea93661d336cb856f6c30ee9c9da",
+          "byteCount": 204217,
+          "artworkFamily": "exact:b62f5cdd35099615d788a6548f62aa8edb0aea93661d336cb856f6c30ee9c9da",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["compressed or noisy", "photography", "small signature color", "typography-led"],
+          "selectionKey": "4ace54dc29106bfeff8b364b045994774450f8bc67bb07f6340f402e7958de1a"
+        },
+        {
+          "caseId": "development-08",
+          "path": "images/elephunk.jpg",
+          "sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+          "byteCount": 70051,
+          "artworkFamily": "exact:cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["flat layered fields", "frame and border", "typography-led"],
+          "selectionKey": "92413431d92dd82c6eb4474e2ff6f1f30b53530e9591d107bc10ee94d884a781"
+        },
+        {
+          "caseId": "development-10",
+          "path": "images/snarky.jpg",
+          "sha256": "681a2c4a00cdee770a08049034023bb45309455ab8bf796571fcc6bb3b3a5f9e",
+          "byteCount": 32831,
+          "artworkFamily": "exact:681a2c4a00cdee770a08049034023bb45309455ab8bf796571fcc6bb3b3a5f9e",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["minimalist", "no defensible distinct surface", "repeated small signatures"],
+          "selectionKey": "9787f34bb5c2fc3011550e3e9bb938364a39ce1e2f6d5bb17fa41d0885345100"
+        },
+        {
+          "caseId": "development-20",
+          "path": "00/ab67616d0000b273000001291f0898c4185c3aa9.jpg",
+          "sha256": "d07c8ca590c619cccdbeea00aef8e25a700b859d3f9a01b8cabf03dd2dc22aa9",
+          "byteCount": 46564,
+          "artworkFamily": "000001291f0898c4185c3aa9",
+          "cohort": "dataset",
+          "datasetRoot": "00",
+          "structureTags": ["dataset diversity probe"],
+          "selectionKey": "cfb905a34501588f6561f9f9b7628738023d299121c1b773cfc229f5ee5cf5f5"
+        },
+        {
+          "caseId": "development-23",
+          "path": "03/ab67616d0000b2730003cdbba19cbfd06f490085.jpg",
+          "sha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+          "byteCount": 93716,
+          "artworkFamily": "0003cdbba19cbfd06f490085",
+          "cohort": "dataset",
+          "datasetRoot": "03",
+          "structureTags": ["dataset diversity probe"],
+          "selectionKey": "f0af133e2fcc88bcbd5999753d9d4f48556e800b4b38bccda2be0d54f9874b75"
+        },
+        {
+          "caseId": "development-01",
+          "path": "images/pureblack.jpg",
+          "sha256": "79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+          "byteCount": 1802,
+          "artworkFamily": "exact:79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["emergency unsupported color", "genuinely one-color"],
+          "selectionKey": "fdbe66f95515d76aea557098a35585fd522019fa21be8350e30103742e0ac1c5"
+        }
+      ]
+    },
+    {
+      "batchId": "phase-3-expanded-additions-03",
+      "runnerCaseIds": [
+        "development-06",
+        "development-05",
+        "development-07",
+        "development-27",
+        "development-13",
+        "development-24"
+      ],
+      "datasetRoots": ["04", "07", "images"],
+      "structureTags": [
+        "dataset diversity probe",
+        "flat layered fields",
+        "frame and border",
+        "highly chromatic",
+        "illustration",
+        "low-chroma",
+        "monochrome",
+        "near-uniform",
+        "photography",
+        "small signature colors",
+        "strong corner fields",
+        "typography-led"
+      ],
+      "additions": [
+        {
+          "caseId": "development-06",
+          "path": "images/infected.jpg",
+          "sha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+          "byteCount": 146935,
+          "artworkFamily": "exact:32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["highly chromatic", "illustration", "small signature colors"],
+          "selectionKey": "3fd325b35837d485d61a9b993224f9cf7ded26bae0d0e20b0755689e24fe2617"
+        },
+        {
+          "caseId": "development-05",
+          "path": "images/maroon5-original.jpg",
+          "sha256": "6dfd27c93891e02bccb9597196bca250807177c210e3e660f6fb66257cd2c1ef",
+          "byteCount": 105355,
+          "artworkFamily": "exact:6dfd27c93891e02bccb9597196bca250807177c210e3e660f6fb66257cd2c1ef",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["flat layered fields", "illustration", "typography-led"],
+          "selectionKey": "58dd23097e7c21c692abab04513fbbf10f3ce3e2a93425224797b2035397c571"
+        },
+        {
+          "caseId": "development-07",
+          "path": "images/muse.jpg",
+          "sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+          "byteCount": 113438,
+          "artworkFamily": "exact:c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["monochrome", "photography", "strong corner fields"],
+          "selectionKey": "837589b646dd57b9d138ac996b3afeeaaa2eac4a30aad3ae41f53e4f8a97c893"
+        },
+        {
+          "caseId": "development-27",
+          "path": "07/ab67616d0000b27300070e66133561bdacc16ad8",
+          "sha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+          "byteCount": 121570,
+          "artworkFamily": "00070e66133561bdacc16ad8",
+          "cohort": "dataset",
+          "datasetRoot": "07",
+          "structureTags": ["dataset diversity probe"],
+          "selectionKey": "d3e3829ee9b37178b826283e148e1c7a87a2eec3cb412d445b297f6a4a68deaa"
+        },
+        {
+          "caseId": "development-13",
+          "path": "images/once.jpg",
+          "sha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+          "byteCount": 91019,
+          "artworkFamily": "exact:26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+          "cohort": "stress",
+          "datasetRoot": "images",
+          "structureTags": ["frame and border", "low-chroma", "near-uniform"],
+          "selectionKey": "e05fc37dd827417c16e5f5c34b1b7243c140f3cc49f76225cd548e94245bdff2"
+        },
+        {
+          "caseId": "development-24",
+          "path": "04/ab67616d0000b2730004b07fec8023569296fd5e",
+          "sha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+          "byteCount": 156494,
+          "artworkFamily": "0004b07fec8023569296fd5e",
+          "cohort": "dataset",
+          "datasetRoot": "04",
+          "structureTags": ["dataset diversity probe"],
+          "selectionKey": "faa8fecabefeb55ffbede9f34147acb5d55343cc11308011ec1bba26cb60af95"
+        }
+      ]
+    }
+  ],
+  "manifestId": "46fac359c0189a006dd9a175163da0bf4f0deee720e55aaf0adf9d68315b030d"
+}

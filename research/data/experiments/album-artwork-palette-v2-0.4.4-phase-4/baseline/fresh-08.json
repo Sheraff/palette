@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "method": "baseline",
+  "protocolId": "221af26a6be614b34ef22e3ce3098cf09c54eb497611aaba3ec7f89e8f728e43",
+  "baselineVersion": "region-graph-0.19.0",
+  "promotedPoc10HistoricalVersion": "region-chromatic-role-0.1.0-poc.10",
+  "freshManifestId": "3e85bab09130d0fb6c883ba1e4543fce841e1a94a6b63a6539aececb8f58cb91",
+  "freshSealCommitment": "cd780b094b2a83117a2fd767566df657017ae4491f0555db7a999d40a8e3f180",
+  "source": {
+    "caseId": "fresh-08",
+    "path": "0f/ab67616d0000b273000fc159393ca3d552b90d9a",
+    "sha256": "7cfa0f1c1b35625a6c35e6ec48d5e4b8d767d6f75e6a79b5302ee72cdf28c4ad",
+    "byteCount": 81410,
+    "artworkId": "000fc159393ca3d552b90d9a",
+    "cohort": "fresh",
+    "structureTags": []
+  },
+  "dimensions": {
+    "width": 224,
+    "height": 224
+  },
+  "extraction": {
+    "version": "region-graph-0.19.0",
+    "width": 224,
+    "height": 224,
+    "methods": {
+      "spatial": {
+        "background": {
+          "rgb": [
+            252,
+            252,
+            252
+          ],
+          "hex": "#fcfcfc",
+          "generated": false,
+          "sourceDistance": 0.000033061223294716966
+        },
+        "foreground": {
+          "rgb": [
+            96,
+            96,
+            96
+          ],
+          "hex": "#606060",
+          "generated": false,
+          "sourceDistance": 0.044820894345730194
+        },
+        "surface": {
+          "rgb": [
+            229,
+            229,
+            229
+          ],
+          "hex": "#e5e5e5",
+          "generated": false,
+          "sourceDistance": 0.000013011342164692694
+        },
+        "accent": {
+          "rgb": [
+            141,
+            195,
+            183
+          ],
+          "hex": "#8dc3b7",
+          "generated": false,
+          "sourceDistance": 0.007451252904743762
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.44363839285714285,
+          "continuity": 1,
+          "coherence": 0.32038774622506677
+        },
+        "score": 0.5592592829624694,
+        "metrics": {
+          "foregroundContrast": 6.129491509722046,
+          "foregroundSurfaceContrast": 4.992121087589688,
+          "accentContrast": 1.926962920325477,
+          "accentSurfaceContrast": 1.5694013466373893,
+          "minimumRoleDistance": 0.06916288587495671,
+          "meanSourceDistance": 0.013079554953983342,
+          "meanReconstructionError": 0.027325393293166186
+        }
+      },
+      "expressive": {
+        "background": {
+          "rgb": [
+            252,
+            252,
+            252
+          ],
+          "hex": "#fcfcfc",
+          "generated": false,
+          "sourceDistance": 0.000033061223294716966
+        },
+        "foreground": {
+          "rgb": [
+            96,
+            96,
+            96
+          ],
+          "hex": "#606060",
+          "generated": false,
+          "sourceDistance": 0.044820894345730194
+        },
+        "surface": {
+          "rgb": [
+            229,
+            229,
+            229
+          ],
+          "hex": "#e5e5e5",
+          "generated": false,
+          "sourceDistance": 0.000013011342164692694
+        },
+        "accent": {
+          "rgb": [
+            141,
+            195,
+            183
+          ],
+          "hex": "#8dc3b7",
+          "generated": false,
+          "sourceDistance": 0.007451252904743762
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.44363839285714285,
+          "continuity": 1,
+          "coherence": 0.32038774622506677
+        },
+        "score": 0.5719872424720334,
+        "metrics": {
+          "foregroundContrast": 6.129491509722046,
+          "foregroundSurfaceContrast": 4.992121087589688,
+          "accentContrast": 1.926962920325477,
+          "accentSurfaceContrast": 1.5694013466373893,
+          "minimumRoleDistance": 0.06916288587495671,
+          "meanSourceDistance": 0.013079554953983342,
+          "meanReconstructionError": 0.027325393293166186
+        }
+      },
+      "quantized": {
+        "background": {
+          "rgb": [
+            252,
+            252,
+            252
+          ],
+          "hex": "#fcfcfc",
+          "generated": false,
+          "sourceDistance": 0.000033061223294716966
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": true,
+          "sourceDistance": 0.5338773396797482
+        },
+        "surface": {
+          "rgb": [
+            240,
+            240,
+            240
+          ],
+          "hex": "#f0f0f0",
+          "generated": false,
+          "sourceDistance": 0.0001005059187179081
+        },
+        "accent": {
+          "rgb": [
+            144,
+            162,
+            175
+          ],
+          "hex": "#90a2af",
+          "generated": false,
+          "sourceDistance": 0.015663123993395745
+        },
+        "gradient": {
+          "isGradient": false,
+          "confidence": 0.6016400304414004,
+          "coverage": 0.2683599695585997,
+          "continuity": 0.29452775000627957,
+          "coherence": 0.8945944494483502
+        },
+        "score": 0,
+        "metrics": {
+          "foregroundContrast": 20.46890580796825,
+          "foregroundSurfaceContrast": 18.427342383975944,
+          "accentContrast": 2.5672714569907424,
+          "accentSurfaceContrast": 2.311212459249329,
+          "minimumRoleDistance": 0.03592885261288949,
+          "meanSourceDistance": 0.13741850770378913,
+          "meanReconstructionError": 0.03689946772071918
+        }
+      }
+    },
+    "candidates": [
+      {
+        "hex": "#fcfcfc",
+        "rgb": [
+          252,
+          252,
+          252
+        ],
+        "population": 0.36330117984693877,
+        "background": 0.5382477129515694,
+        "saliency": 0.17744499389047497,
+        "text": 0.31178325840857957,
+        "chroma": 3.694109781727656e-8
+      },
+      {
+        "hex": "#f0f0f0",
+        "rgb": [
+          240,
+          240,
+          240
+        ],
+        "population": 0.17255261479591835,
+        "background": 0.31187910159312454,
+        "saliency": 0.25358526654069136,
+        "text": 0.3789285293467697,
+        "chroma": 3.560188591525941e-8
+      },
+      {
+        "hex": "#e5e5e5",
+        "rgb": [
+          229,
+          229,
+          229
+        ],
+        "population": 0.1427176339285714,
+        "background": 0.2915716025523967,
+        "saliency": 0.2774124517159573,
+        "text": 0.3903291875887861,
+        "chroma": 3.4363120678861835e-8
+      },
+      {
+        "hex": "#dbdbdb",
+        "rgb": [
+          219,
+          219,
+          219
+        ],
+        "population": 0.08872767857142858,
+        "background": 0.23582222041836362,
+        "saliency": 0.3629824140989992,
+        "text": 0.41102426717914364,
+        "chroma": 3.3227207967760236e-8
+      },
+      {
+        "hex": "#d1d1d1",
+        "rgb": [
+          209,
+          209,
+          209
+        ],
+        "population": 0.08348612882653063,
+        "background": 0.24447095153378515,
+        "saliency": 0.44252541661574973,
+        "text": 0.4030695310995463,
+        "chroma": 3.208150062341307e-8
+      },
+      {
+        "hex": "#c7c7c7",
+        "rgb": [
+          199,
+          199,
+          199
+        ],
+        "population": 0.06261957908163265,
+        "background": 0.15294522538785466,
+        "saliency": 0.6220441472811831,
+        "text": 0.45290708967476173,
+        "chroma": 3.092546906803421e-8
+      },
+      {
+        "hex": "#bdbdbd",
+        "rgb": [
+          189,
+          189,
+          189
+        ],
+        "population": 0.04217155612244899,
+        "background": 0.11319881541130884,
+        "saliency": 0.724232401950105,
+        "text": 0.4636018122293403,
+        "chroma": 2.9758528325888797e-8
+      },
+      {
+        "hex": "#a7b5c1",
+        "rgb": [
+          167,
+          181,
+          193
+        ],
+        "population": 0.022720025510204085,
+        "background": 0.058264397889425903,
+        "saliency": 0.8580338212636034,
+        "text": 0.6377302961844177,
+        "chroma": 0.023220039814855827
+      },
+      {
+        "hex": "#90a2af",
+        "rgb": [
+          144,
+          162,
+          175
+        ],
+        "population": 0.011280293367346938,
+        "background": 0.03577432527768522,
+        "saliency": 0.9071676720959407,
+        "text": 0.683086506246011,
+        "chroma": 0.02787734086639859
+      },
+      {
+        "hex": "#8dc3b7",
+        "rgb": [
+          141,
+          195,
+          183
+        ],
+        "population": 0.006317761479591836,
+        "background": 0.07262331282080044,
+        "saliency": 0.8624525005459053,
+        "text": 0.5463491300211353,
+        "chroma": 0.05888246717952207
+      },
+      {
+        "hex": "#7e8fa8",
+        "rgb": [
+          126,
+          143,
+          168
+        ],
+        "population": 0.00332828443877551,
+        "background": 0.055050201344934366,
+        "saliency": 0.9099494758016498,
+        "text": 0.7274022941912246,
+        "chroma": 0.04239175277407631
+      },
+      {
+        "hex": "#606060",
+        "rgb": [
+          96,
+          96,
+          96
+        ],
+        "population": 0.0007772640306122449,
+        "background": 0.060267970655692706,
+        "saliency": 0.9054688812979043,
+        "text": 0.8499999999999998,
+        "chroma": 1.8229087821282314e-8
+      }
+    ],
+    "diagnostics": {
+      "regionCount": 289,
+      "candidateCount": 12,
+      "processingMs": 601
+    }
+  },
+  "presentation": {
+    "roles": {
+      "background": {
+        "rgb": [
+          252,
+          252,
+          252
+        ],
+        "hex": "#fcfcfc",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#fcfcfc",
+          "nearestName": "Snow",
+          "nearest": {
+            "name": "Snow",
+            "tier": "p3",
+            "referenceHex": "#fffaf9",
+            "referenceOKLab": [
+              0.9879,
+              0.0071,
+              0.0029
+            ],
+            "distance": 0.008298294432183603
+          }
+        }
+      },
+      "surface": {
+        "rgb": [
+          229,
+          229,
+          229
+        ],
+        "hex": "#e5e5e5",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#e5e5e5",
+          "nearestName": "Mist",
+          "nearest": {
+            "name": "Mist",
+            "tier": "srgb",
+            "referenceHex": "#daeaeb",
+            "referenceOKLab": [
+              0.926,
+              -0.0165,
+              -0.0062
+            ],
+            "distance": 0.01809561207774383
+          }
+        }
+      },
+      "foreground": {
+        "rgb": [
+          96,
+          96,
+          96
+        ],
+        "hex": "#606060",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#606060",
+          "nearestName": "Morel",
+          "nearest": {
+            "name": "Morel",
+            "tier": "srgb",
+            "referenceHex": "#5f656a",
+            "referenceOKLab": [
+              0.5025,
+              -0.0041,
+              -0.0103
+            ],
+            "distance": 0.017424968806300706
+          }
+        }
+      },
+      "accent": {
+        "rgb": [
+          141,
+          195,
+          183
+        ],
+        "hex": "#8dc3b7",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#8dc3b7",
+          "nearestName": "Norway",
+          "nearest": {
+            "name": "Norway",
+            "tier": "srgb",
+            "referenceHex": "#85c6b2",
+            "referenceOKLab": [
+              0.7777,
+              -0.0724,
+              0.0097
+            ],
+            "distance": 0.016345605631495726
+          }
+        }
+      }
+    },
+    "gradient": true,
+    "collapse": {
+      "surface": false,
+      "accent": false
+    }
+  },
+  "presentationSha256": "541aa1b3681bdc7847d7f75a4a3c4d4a5e60ebc42e39c2eee67cd6509032a46d",
+  "scientificSha256": "410ad026f613f470638318dedab6e79beed84b8bf5cfad9af8d6b5908cb4e9a6",
+  "promotedPoc10PresentationSha256": "541aa1b3681bdc7847d7f75a4a3c4d4a5e60ebc42e39c2eee67cd6509032a46d",
+  "promotedPoc10ExactPresentationMatch": true,
+  "runtime": {
+    "wallMs": 605.987583,
+    "cpuUserMicros": 809804,
+    "cpuSystemMicros": 21665
+  }
+}

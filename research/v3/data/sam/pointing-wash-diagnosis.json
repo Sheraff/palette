@@ -1,0 +1,2124 @@
+{
+  "analysis": "pointing-wash-1",
+  "date": "2026-08-04",
+  "inference_run": "none \u2014 CPU only, every mask read from disk",
+  "prereg": "research/v3/data/sam/pointing-wash-prereg.json",
+  "in_sample_warning": "The predicates and the admissibility band were written after looking at the eight shipped masks' geometry. Every before/after below is IN-SAMPLE tuning on the tiles it repairs. It generalises to nothing. The typical-strata probe (POINTING_PROBE_NOTES.md \u00a713.8) stays specified-not-run.",
+  "candidate_masks_on_disk": "NONE. Only seg.best_mask was ever serialised (pointing_phrasing_sweep.py:198). The candidate-level counterfactual is not answerable without new inference; the reachability claims below are point-level, not candidate-level.",
+  "covers": {
+    "00014fb4": {
+      "stratum": "decidable-six",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": false
+      },
+      "mask_shape": [
+        640,
+        640
+      ],
+      "figure_complement_area": 0.7315,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              317.1,
+              99.5
+            ]
+          ],
+          "area_fraction": 0.2153,
+          "sam_iou_pred": -0.428,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.1901,
+            "right_half": 0.2404,
+            "area": 0.2153
+          },
+          "vs_figure_complement": {
+            "iou": 0.1757,
+            "recall": 0.1934,
+            "precision": 0.6571
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              502.4,
+              34.7
+            ]
+          ],
+          "area_fraction": 0.2065,
+          "sam_iou_pred": -0.49,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.0845,
+            "right_half": 0.3285,
+            "area": 0.2065
+          },
+          "vs_figure_complement": {
+            "iou": 0.1799,
+            "recall": 0.1956,
+            "precision": 0.6927
+          }
+        },
+        "molmo/fg_minimal": {
+          "point": [
+            [
+              544.1,
+              270.8
+            ]
+          ],
+          "area_fraction": 0.5894,
+          "sam_iou_pred": -3.578,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "left_half": 0.5204,
+            "right_half": 0.6585,
+            "area": 0.5894
+          },
+          "vs_figure_complement": {
+            "iou": 0.3912,
+            "recall": 0.5078,
+            "precision": 0.6301
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              321.8,
+              90.2
+            ]
+          ],
+          "area_fraction": 0.2056,
+          "sam_iou_pred": -0.565,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.172,
+            "right_half": 0.2392,
+            "area": 0.2056
+          },
+          "vs_figure_complement": {
+            "iou": 0.1798,
+            "recall": 0.1953,
+            "precision": 0.6947
+          }
+        },
+        "molmo/wall": {
+          "point": [
+            [
+              553.2,
+              275.4
+            ]
+          ],
+          "area_fraction": 0.3073,
+          "sam_iou_pred": -3.516,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "left_half": 0.2602,
+            "right_half": 0.3544,
+            "area": 0.3073
+          },
+          "vs_figure_complement": {
+            "iou": 0.2076,
+            "recall": 0.2441,
+            "precision": 0.581
+          }
+        },
+        "qwen/backdrop": {
+          "point": [
+            [
+              92.7,
+              223.6
+            ]
+          ],
+          "area_fraction": 0.3203,
+          "sam_iou_pred": -0.96,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.4419,
+            "right_half": 0.1986,
+            "area": 0.3203
+          },
+          "vs_figure_complement": {
+            "iou": 0.1581,
+            "recall": 0.1963,
+            "precision": 0.4483
+          }
+        },
+        "qwen/plain": {
+          "point": [
+            [
+              73.5,
+              95.8
+            ]
+          ],
+          "area_fraction": 0.0905,
+          "sam_iou_pred": 1.032,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.1558,
+            "right_half": 0.0253,
+            "area": 0.0905
+          },
+          "vs_figure_complement": {
+            "iou": 0.0335,
+            "recall": 0.0364,
+            "precision": 0.2938
+          }
+        }
+      },
+      "n_admissible": 7,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.2056,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.172,
+            "right_half": 0.2392,
+            "area": 0.2056
+          },
+          "vs_figure_complement": {
+            "iou": 0.1798,
+            "recall": 0.1953,
+            "precision": 0.6947
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "union of 7 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/fg_minimal', 'molmo/plain', 'molmo/wall', 'qwen/backdrop', 'qwen/plain']",
+          "area_fraction": 0.7305,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "left_half": 0.709,
+            "right_half": 0.752,
+            "area": 0.7305
+          },
+          "vs_figure_complement": {
+            "iou": 0.4743,
+            "recall": 0.643,
+            "precision": 0.6438
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['molmo/fg_minimal', 'qwen/backdrop', 'molmo/wall', 'molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'qwen/plain']",
+          "area_fraction": 0.7305,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "left_half": 0.709,
+            "right_half": 0.752,
+            "area": 0.7305
+          },
+          "vs_figure_complement": {
+            "iou": 0.4743,
+            "recall": 0.643,
+            "precision": 0.6438
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 7",
+          "area_fraction": 0.1994,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "left_half": 0.1798,
+            "right_half": 0.219,
+            "area": 0.1994
+          },
+          "vs_figure_complement": {
+            "iou": 0.1391,
+            "recall": 0.1554,
+            "precision": 0.5699
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (molmo/fg_minimal)",
+          "area_fraction": 0.5894,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "left_half": 0.5204,
+            "right_half": 0.6585,
+            "area": 0.5894
+          },
+          "vs_figure_complement": {
+            "iou": 0.3912,
+            "recall": 0.5078,
+            "precision": 0.6301
+          }
+        }
+      },
+      "union": {
+        "note": "union of 7 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/fg_minimal', 'molmo/plain', 'molmo/wall', 'qwen/backdrop', 'qwen/plain']",
+        "area_fraction": 0.7305,
+        "predicate_pass": true,
+        "predicate_terms": {
+          "left_half": 0.709,
+          "right_half": 0.752,
+          "area": 0.7305
+        },
+        "vs_figure_complement": {
+          "iou": 0.4743,
+          "recall": 0.643,
+          "precision": 0.6438
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": true,
+        "example_pair": [
+          "molmo/backdrop",
+          "molmo/fg_minimal"
+        ],
+        "area_fraction": 0.6222,
+        "predicate_terms": {
+          "left_half": 0.5475,
+          "right_half": 0.6969,
+          "area": 0.6222
+        }
+      },
+      "classification": "better-candidate-existed",
+      "single_masks_that_pass": [
+        "molmo/fg_minimal",
+        "molmo/wall"
+      ]
+    },
+    "00030075": {
+      "stratum": "decidable-six",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": true
+      },
+      "mask_shape": [
+        300,
+        300
+      ],
+      "figure_complement_area": 1.0,
+      "figure_complement_usable": false,
+      "shipped_plain_predicate_pass": true,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              24.0,
+              105.1
+            ]
+          ],
+          "area_fraction": 0.244,
+          "sam_iou_pred": 1.844,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.244
+          },
+          "vs_figure_complement": null
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              142.0,
+              208.5
+            ]
+          ],
+          "area_fraction": 0.2233,
+          "sam_iou_pred": -0.498,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.2233
+          },
+          "vs_figure_complement": null
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              134.7,
+              116.2
+            ]
+          ],
+          "area_fraction": 0.3061,
+          "sam_iou_pred": 0.324,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.3061
+          },
+          "vs_figure_complement": null
+        },
+        "molmo/surface": {
+          "point": [
+            [
+              134.7,
+              116.2
+            ]
+          ],
+          "area_fraction": 0.3061,
+          "sam_iou_pred": 0.324,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.3061
+          },
+          "vs_figure_complement": null
+        },
+        "molmo/wall": {
+          "point": [
+            [
+              134.7,
+              105.1
+            ]
+          ],
+          "area_fraction": 0.2988,
+          "sam_iou_pred": 1.047,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.2988
+          },
+          "vs_figure_complement": null
+        },
+        "qwen/backdrop": {
+          "point": [
+            [
+              134.6,
+              102.0
+            ]
+          ],
+          "area_fraction": 0.2983,
+          "sam_iou_pred": 1.103,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.2983
+          },
+          "vs_figure_complement": null
+        },
+        "qwen/empty_area": {
+          "point": [
+            [
+              149.5,
+              240.7
+            ]
+          ],
+          "area_fraction": 0.3967,
+          "sam_iou_pred": -2.492,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.3967
+          },
+          "vs_figure_complement": null
+        },
+        "qwen/surface": {
+          "point": [
+            [
+              134.6,
+              106.1
+            ]
+          ],
+          "area_fraction": 0.2992,
+          "sam_iou_pred": 1.026,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.2992
+          },
+          "vs_figure_complement": null
+        },
+        "qwen/wall": {
+          "point": [
+            [
+              192.6,
+              106.1
+            ]
+          ],
+          "area_fraction": 0.3026,
+          "sam_iou_pred": 0.58,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.3026
+          },
+          "vs_figure_complement": null
+        }
+      },
+      "n_admissible": 9,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.3061,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.3061
+          },
+          "vs_figure_complement": null
+        },
+        "R1_union_all_admissible": {
+          "note": "union of 9 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'molmo/surface', 'molmo/wall', 'qwen/backdrop', 'qwen/empty_area', 'qwen/surface', 'qwen/wall']",
+          "area_fraction": 0.8024,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8024
+          },
+          "vs_figure_complement": null
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['qwen/empty_area', 'molmo/plain', 'molmo/surface', 'qwen/wall', 'qwen/surface', 'molmo/wall', 'qwen/backdrop', 'molmo/backdrop', 'molmo/empty_area']",
+          "area_fraction": 0.8024,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8024
+          },
+          "vs_figure_complement": null
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 9",
+          "area_fraction": 0.2953,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.2953
+          },
+          "vs_figure_complement": null
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (qwen/empty_area)",
+          "area_fraction": 0.3967,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "area": 0.3967
+          },
+          "vs_figure_complement": null
+        }
+      },
+      "union": {
+        "note": "union of 9 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'molmo/surface', 'molmo/wall', 'qwen/backdrop', 'qwen/empty_area', 'qwen/surface', 'qwen/wall']",
+        "area_fraction": 0.8024,
+        "predicate_pass": false,
+        "predicate_terms": {
+          "area": 0.8024
+        },
+        "vs_figure_complement": null
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": true,
+        "example_pair": [
+          "molmo/backdrop",
+          "molmo/plain"
+        ],
+        "area_fraction": 0.4097,
+        "predicate_terms": {
+          "area": 0.4097
+        }
+      },
+      "classification": "already-passing",
+      "single_masks_that_pass": [
+        "molmo/backdrop",
+        "molmo/empty_area",
+        "molmo/plain",
+        "molmo/surface",
+        "molmo/wall",
+        "qwen/backdrop",
+        "qwen/empty_area",
+        "qwen/surface",
+        "qwen/wall"
+      ]
+    },
+    "00066a61": {
+      "stratum": "decidable-six",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": false
+      },
+      "mask_shape": [
+        300,
+        300
+      ],
+      "figure_complement_area": 0.6915,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              245.5,
+              238.0
+            ]
+          ],
+          "area_fraction": 0.9013,
+          "sam_iou_pred": -2.573,
+          "admissible": false,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.9013,
+            "logo_left_out": 0.1556
+          },
+          "vs_figure_complement": {
+            "iou": 0.6747,
+            "recall": 0.9279,
+            "precision": 0.712
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              156.9,
+              71.9
+            ]
+          ],
+          "area_fraction": 0.8909,
+          "sam_iou_pred": -2.246,
+          "admissible": false,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8909,
+            "logo_left_out": 0.0956
+          },
+          "vs_figure_complement": {
+            "iou": 0.6336,
+            "recall": 0.8875,
+            "precision": 0.6889
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              175.2,
+              75.6
+            ]
+          ],
+          "area_fraction": 0.896,
+          "sam_iou_pred": -2.828,
+          "admissible": false,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.896,
+            "logo_left_out": 0.0207
+          },
+          "vs_figure_complement": {
+            "iou": 0.5977,
+            "recall": 0.8587,
+            "precision": 0.6628
+          }
+        },
+        "qwen/plain": {
+          "point": [
+            [
+              255.3,
+              44.9
+            ]
+          ],
+          "area_fraction": 0.8719,
+          "sam_iou_pred": -1.382,
+          "admissible": false,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8719,
+            "logo_left_out": 0.1878
+          },
+          "vs_figure_complement": {
+            "iou": 0.6769,
+            "recall": 0.9125,
+            "precision": 0.7238
+          }
+        }
+      },
+      "n_admissible": 0,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.896,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.896,
+            "logo_left_out": 0.0207
+          },
+          "vs_figure_complement": {
+            "iou": 0.5977,
+            "recall": 0.8587,
+            "precision": 0.6628
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "no admissible mask; smallest recorded (qwen/plain)",
+          "area_fraction": 0.8719,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8719,
+            "logo_left_out": 0.1878
+          },
+          "vs_figure_complement": {
+            "iou": 0.6769,
+            "recall": 0.9125,
+            "precision": 0.7238
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "no admissible mask; smallest recorded (qwen/plain)",
+          "area_fraction": 0.8719,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8719,
+            "logo_left_out": 0.1878
+          },
+          "vs_figure_complement": {
+            "iou": 0.6769,
+            "recall": 0.9125,
+            "precision": 0.7238
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "no admissible mask; smallest recorded (qwen/plain)",
+          "area_fraction": 0.8719,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8719,
+            "logo_left_out": 0.1878
+          },
+          "vs_figure_complement": {
+            "iou": 0.6769,
+            "recall": 0.9125,
+            "precision": 0.7238
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "no admissible mask; smallest recorded (qwen/plain)",
+          "area_fraction": 0.8719,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.8719,
+            "logo_left_out": 0.1878
+          },
+          "vs_figure_complement": {
+            "iou": 0.6769,
+            "recall": 0.9125,
+            "precision": 0.7238
+          }
+        }
+      },
+      "union": {
+        "note": "no admissible mask; smallest recorded (qwen/plain)",
+        "area_fraction": 0.8719,
+        "predicate_pass": false,
+        "predicate_terms": {
+          "area": 0.8719,
+          "logo_left_out": 0.1878
+        },
+        "vs_figure_complement": {
+          "iou": 0.6769,
+          "recall": 0.9125,
+          "precision": 0.7238
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": false,
+        "example_pair": null,
+        "area_fraction": null,
+        "predicate_terms": null
+      },
+      "classification": "over-coverage-no-point-level-escape",
+      "single_masks_that_pass": []
+    },
+    "00075841": {
+      "stratum": "decidable-six",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": false
+      },
+      "mask_shape": [
+        640,
+        640
+      ],
+      "figure_complement_area": 0.7792,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              326.4,
+              113.4
+            ]
+          ],
+          "area_fraction": 0.4064,
+          "sam_iou_pred": 0.694,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.4708,
+            "bottom20": 0.0797,
+            "area": 0.4064
+          },
+          "vs_figure_complement": {
+            "iou": 0.2677,
+            "recall": 0.3213,
+            "precision": 0.616
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              326.4,
+              113.4
+            ]
+          ],
+          "area_fraction": 0.4064,
+          "sam_iou_pred": 0.694,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.4708,
+            "bottom20": 0.0797,
+            "area": 0.4064
+          },
+          "vs_figure_complement": {
+            "iou": 0.2677,
+            "recall": 0.3213,
+            "precision": 0.616
+          }
+        },
+        "molmo/fg_full": {
+          "point": [
+            [
+              39.2,
+              289.3
+            ]
+          ],
+          "area_fraction": 0.3494,
+          "sam_iou_pred": -4.153,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.0836,
+            "bottom20": 0.0804,
+            "area": 0.3494
+          },
+          "vs_figure_complement": {
+            "iou": 0.2787,
+            "recall": 0.3157,
+            "precision": 0.7039
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              326.4,
+              113.4
+            ]
+          ],
+          "area_fraction": 0.4064,
+          "sam_iou_pred": 0.694,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.4708,
+            "bottom20": 0.0797,
+            "area": 0.4064
+          },
+          "vs_figure_complement": {
+            "iou": 0.2677,
+            "recall": 0.3213,
+            "precision": 0.616
+          }
+        },
+        "molmo/surface": {
+          "point": [
+            [
+              39.2,
+              289.3
+            ]
+          ],
+          "area_fraction": 0.3494,
+          "sam_iou_pred": -4.153,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.0836,
+            "bottom20": 0.0804,
+            "area": 0.3494
+          },
+          "vs_figure_complement": {
+            "iou": 0.2787,
+            "recall": 0.3157,
+            "precision": 0.7039
+          }
+        },
+        "qwen/backdrop": {
+          "point": [
+            [
+              603.2,
+              543.8
+            ]
+          ],
+          "area_fraction": 0.313,
+          "sam_iou_pred": -0.24,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.0036,
+            "bottom20": 0.7574,
+            "area": 0.313
+          },
+          "vs_figure_complement": {
+            "iou": 0.3916,
+            "recall": 0.3945,
+            "precision": 0.9818
+          }
+        },
+        "qwen/empty_area": {
+          "point": [
+            [
+              603.2,
+              545.7
+            ]
+          ],
+          "area_fraction": 0.3189,
+          "sam_iou_pred": -0.261,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.0038,
+            "bottom20": 0.7653,
+            "area": 0.3189
+          },
+          "vs_figure_complement": {
+            "iou": 0.3985,
+            "recall": 0.4016,
+            "precision": 0.9811
+          }
+        },
+        "qwen/fg_full": {
+          "point": [
+            [
+              66.5,
+              306.7
+            ]
+          ],
+          "area_fraction": 0.4739,
+          "sam_iou_pred": -2.08,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.1305,
+            "bottom20": 0.3071,
+            "area": 0.4739
+          },
+          "vs_figure_complement": {
+            "iou": 0.3821,
+            "recall": 0.4446,
+            "precision": 0.731
+          }
+        },
+        "qwen/plain": {
+          "point": [
+            [
+              609.6,
+              543.1
+            ]
+          ],
+          "area_fraction": 0.2918,
+          "sam_iou_pred": -0.165,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.0037,
+            "bottom20": 0.7285,
+            "area": 0.2918
+          },
+          "vs_figure_complement": {
+            "iou": 0.3658,
+            "recall": 0.3682,
+            "precision": 0.983
+          }
+        },
+        "qwen/surface": {
+          "point": [
+            [
+              21.7,
+              319.5
+            ]
+          ],
+          "area_fraction": 0.445,
+          "sam_iou_pred": -2.176,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.0903,
+            "bottom20": 0.3718,
+            "area": 0.445
+          },
+          "vs_figure_complement": {
+            "iou": 0.4141,
+            "recall": 0.46,
+            "precision": 0.8056
+          }
+        }
+      },
+      "n_admissible": 10,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.4064,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.4708,
+            "bottom20": 0.0797,
+            "area": 0.4064
+          },
+          "vs_figure_complement": {
+            "iou": 0.2677,
+            "recall": 0.3213,
+            "precision": 0.616
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "union over cap; largest admissible (qwen/fg_full)",
+          "area_fraction": 0.4739,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.1305,
+            "bottom20": 0.3071,
+            "area": 0.4739
+          },
+          "vs_figure_complement": {
+            "iou": 0.3821,
+            "recall": 0.4446,
+            "precision": 0.731
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['qwen/fg_full', 'qwen/surface', 'molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'molmo/fg_full', 'molmo/surface']",
+          "area_fraction": 0.7191,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.486,
+            "bottom20": 0.3966,
+            "area": 0.7191
+          },
+          "vs_figure_complement": {
+            "iou": 0.5349,
+            "recall": 0.6701,
+            "precision": 0.7261
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 10",
+          "area_fraction": 0.3591,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.1033,
+            "bottom20": 0.1911,
+            "area": 0.3591
+          },
+          "vs_figure_complement": {
+            "iou": 0.2945,
+            "recall": 0.3324,
+            "precision": 0.7211
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (qwen/fg_full)",
+          "area_fraction": 0.4739,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top15": 0.1305,
+            "bottom20": 0.3071,
+            "area": 0.4739
+          },
+          "vs_figure_complement": {
+            "iou": 0.3821,
+            "recall": 0.4446,
+            "precision": 0.731
+          }
+        }
+      },
+      "union": {
+        "note": "union over cap; largest admissible (qwen/fg_full)",
+        "area_fraction": 0.4739,
+        "predicate_pass": false,
+        "predicate_terms": {
+          "top15": 0.1305,
+          "bottom20": 0.3071,
+          "area": 0.4739
+        },
+        "vs_figure_complement": {
+          "iou": 0.3821,
+          "recall": 0.4446,
+          "precision": 0.731
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": false,
+        "example_pair": null,
+        "area_fraction": null,
+        "predicate_terms": null
+      },
+      "classification": "no-good-candidate",
+      "single_masks_that_pass": []
+    },
+    "000f0a78": {
+      "stratum": "decidable-six",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": false
+      },
+      "mask_shape": [
+        300,
+        300
+      ],
+      "figure_complement_area": 0.7834,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              201.2,
+              193.7
+            ]
+          ],
+          "area_fraction": 0.6835,
+          "sam_iou_pred": -1.687,
+          "admissible": true,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "top25": 0.6527,
+            "bottom50": 0.7076,
+            "area": 0.6835
+          },
+          "vs_figure_complement": {
+            "iou": 0.4852,
+            "recall": 0.6117,
+            "precision": 0.7011
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              167.9,
+              75.6
+            ]
+          ],
+          "area_fraction": 0.4209,
+          "sam_iou_pred": -1.829,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top25": 0.5781,
+            "bottom50": 0.3037,
+            "area": 0.4209
+          },
+          "vs_figure_complement": {
+            "iou": 0.2819,
+            "recall": 0.3381,
+            "precision": 0.6293
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              274.9,
+              278.7
+            ]
+          ],
+          "area_fraction": 0.6301,
+          "sam_iou_pred": -1.621,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top25": 0.3115,
+            "bottom50": 0.9697,
+            "area": 0.6301
+          },
+          "vs_figure_complement": {
+            "iou": 0.4667,
+            "recall": 0.5742,
+            "precision": 0.7138
+          }
+        },
+        "qwen/backdrop": {
+          "point": [
+            [
+              254.2,
+              209.3
+            ]
+          ],
+          "area_fraction": 0.4306,
+          "sam_iou_pred": -0.981,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top25": 0.3114,
+            "bottom50": 0.5592,
+            "area": 0.4306
+          },
+          "vs_figure_complement": {
+            "iou": 0.2532,
+            "recall": 0.3131,
+            "precision": 0.5696
+          }
+        }
+      },
+      "n_admissible": 4,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.6301,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "top25": 0.3115,
+            "bottom50": 0.9697,
+            "area": 0.6301
+          },
+          "vs_figure_complement": {
+            "iou": 0.4667,
+            "recall": 0.5742,
+            "precision": 0.7138
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "union over cap; largest admissible (molmo/backdrop)",
+          "area_fraction": 0.6835,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "top25": 0.6527,
+            "bottom50": 0.7076,
+            "area": 0.6835
+          },
+          "vs_figure_complement": {
+            "iou": 0.4852,
+            "recall": 0.6117,
+            "precision": 0.7011
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['molmo/backdrop', 'molmo/plain', 'qwen/backdrop']",
+          "area_fraction": 0.8245,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "top25": 0.6615,
+            "bottom50": 0.9801,
+            "area": 0.8245
+          },
+          "vs_figure_complement": {
+            "iou": 0.615,
+            "recall": 0.7816,
+            "precision": 0.7426
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 4",
+          "area_fraction": 0.6241,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "top25": 0.559,
+            "bottom50": 0.7079,
+            "area": 0.6241
+          },
+          "vs_figure_complement": {
+            "iou": 0.4287,
+            "recall": 0.5391,
+            "precision": 0.6767
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (molmo/backdrop)",
+          "area_fraction": 0.6835,
+          "predicate_pass": true,
+          "predicate_terms": {
+            "top25": 0.6527,
+            "bottom50": 0.7076,
+            "area": 0.6835
+          },
+          "vs_figure_complement": {
+            "iou": 0.4852,
+            "recall": 0.6117,
+            "precision": 0.7011
+          }
+        }
+      },
+      "union": {
+        "note": "union over cap; largest admissible (molmo/backdrop)",
+        "area_fraction": 0.6835,
+        "predicate_pass": true,
+        "predicate_terms": {
+          "top25": 0.6527,
+          "bottom50": 0.7076,
+          "area": 0.6835
+        },
+        "vs_figure_complement": {
+          "iou": 0.4852,
+          "recall": 0.6117,
+          "precision": 0.7011
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": true,
+        "example_pair": [
+          "molmo/backdrop",
+          "molmo/empty_area"
+        ],
+        "area_fraction": 0.7271,
+        "predicate_terms": {
+          "top25": 0.7628,
+          "bottom50": 0.7114,
+          "area": 0.7271
+        }
+      },
+      "classification": "better-candidate-existed",
+      "single_masks_that_pass": [
+        "molmo/backdrop"
+      ]
+    },
+    "artofficial": {
+      "stratum": "decidable-six",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": true
+      },
+      "mask_shape": [
+        1000,
+        1000
+      ],
+      "figure_complement_area": 0.8667,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              416.2,
+              836.0
+            ]
+          ],
+          "area_fraction": 0.2894,
+          "sam_iou_pred": -0.817,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2894,
+            "face_left_out": 0.9825
+          },
+          "vs_figure_complement": {
+            "iou": 0.3166,
+            "recall": 0.3207,
+            "precision": 0.9605
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              416.2,
+              836.0
+            ]
+          ],
+          "area_fraction": 0.2894,
+          "sam_iou_pred": -0.817,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2894,
+            "face_left_out": 0.9825
+          },
+          "vs_figure_complement": {
+            "iou": 0.3166,
+            "recall": 0.3207,
+            "precision": 0.9605
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              416.2,
+              836.0
+            ]
+          ],
+          "area_fraction": 0.2894,
+          "sam_iou_pred": -0.817,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2894,
+            "face_left_out": 0.9825
+          },
+          "vs_figure_complement": {
+            "iou": 0.3166,
+            "recall": 0.3207,
+            "precision": 0.9605
+          }
+        },
+        "molmo/wall": {
+          "point": [
+            [
+              872.3,
+              836.0
+            ]
+          ],
+          "area_fraction": 0.2934,
+          "sam_iou_pred": -2.72,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2934,
+            "face_left_out": 0.7713
+          },
+          "vs_figure_complement": {
+            "iou": 0.2971,
+            "recall": 0.3066,
+            "precision": 0.9057
+          }
+        },
+        "qwen/empty_area": {
+          "point": [
+            [
+              549.5,
+              914.1
+            ]
+          ],
+          "area_fraction": 0.3447,
+          "sam_iou_pred": -2.241,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.3447,
+            "face_left_out": 0.7954
+          },
+          "vs_figure_complement": {
+            "iou": 0.3364,
+            "recall": 0.3518,
+            "precision": 0.8847
+          }
+        },
+        "qwen/plain": {
+          "point": [
+            [
+              113.9,
+              783.2
+            ]
+          ],
+          "area_fraction": 0.1067,
+          "sam_iou_pred": -0.664,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.1067,
+            "face_left_out": 0.7098
+          },
+          "vs_figure_complement": {
+            "iou": 0.1078,
+            "recall": 0.1093,
+            "precision": 0.8878
+          }
+        },
+        "qwen/surface": {
+          "point": [
+            [
+              554.4,
+              944.1
+            ]
+          ],
+          "area_fraction": 0.2618,
+          "sam_iou_pred": -1.32,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2618,
+            "face_left_out": 0.8965
+          },
+          "vs_figure_complement": {
+            "iou": 0.2659,
+            "recall": 0.2735,
+            "precision": 0.9054
+          }
+        }
+      },
+      "n_admissible": 7,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.2894,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2894,
+            "face_left_out": 0.9825
+          },
+          "vs_figure_complement": {
+            "iou": 0.3166,
+            "recall": 0.3207,
+            "precision": 0.9605
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "union of 7 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'molmo/wall', 'qwen/empty_area', 'qwen/plain', 'qwen/surface']",
+          "area_fraction": 0.4993,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.4993,
+            "face_left_out": 0.5605
+          },
+          "vs_figure_complement": {
+            "iou": 0.4902,
+            "recall": 0.5185,
+            "precision": 0.9
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['qwen/empty_area', 'molmo/wall', 'molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'qwen/surface', 'qwen/plain']",
+          "area_fraction": 0.4993,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.4993,
+            "face_left_out": 0.5605
+          },
+          "vs_figure_complement": {
+            "iou": 0.4902,
+            "recall": 0.5185,
+            "precision": 0.9
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 7",
+          "area_fraction": 0.2499,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2499,
+            "face_left_out": 0.9443
+          },
+          "vs_figure_complement": {
+            "iou": 0.2712,
+            "recall": 0.2748,
+            "precision": 0.953
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (qwen/empty_area)",
+          "area_fraction": 0.3447,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.3447,
+            "face_left_out": 0.7954
+          },
+          "vs_figure_complement": {
+            "iou": 0.3364,
+            "recall": 0.3518,
+            "precision": 0.8847
+          }
+        }
+      },
+      "union": {
+        "note": "union of 7 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/plain', 'molmo/wall', 'qwen/empty_area', 'qwen/plain', 'qwen/surface']",
+        "area_fraction": 0.4993,
+        "predicate_pass": false,
+        "predicate_terms": {
+          "area": 0.4993,
+          "face_left_out": 0.5605
+        },
+        "vs_figure_complement": {
+          "iou": 0.4902,
+          "recall": 0.5185,
+          "precision": 0.9
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": false,
+        "example_pair": null,
+        "area_fraction": null,
+        "predicate_terms": null
+      },
+      "classification": "no-good-candidate",
+      "single_masks_that_pass": []
+    },
+    "0002dfdc": {
+      "stratum": "phrasing-disagreement",
+      "reviewer": {
+        "dot_right": true,
+        "wash_right": true
+      },
+      "mask_shape": [
+        640,
+        640
+      ],
+      "figure_complement_area": 0.5853,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              557.9,
+              331.0
+            ]
+          ],
+          "area_fraction": 0.904,
+          "sam_iou_pred": -3.247,
+          "admissible": false,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.904,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.4982,
+            "recall": 0.8462,
+            "precision": 0.5478
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              567.1,
+              67.0
+            ]
+          ],
+          "area_fraction": 0.639,
+          "sam_iou_pred": -2.657,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.639,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.4599,
+            "recall": 0.6589,
+            "precision": 0.6035
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              557.9,
+              67.0
+            ]
+          ],
+          "area_fraction": 0.4388,
+          "sam_iou_pred": -0.765,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.4388,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.6698,
+            "recall": 0.7019,
+            "precision": 0.9361
+          }
+        },
+        "qwen/backdrop": {
+          "point": [
+            [
+              543.8,
+              101.0
+            ]
+          ],
+          "area_fraction": 0.2864,
+          "sam_iou_pred": 0.942,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2864,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.4601,
+            "recall": 0.4693,
+            "precision": 0.959
+          }
+        },
+        "qwen/plain": {
+          "point": [
+            [
+              545.7,
+              98.4
+            ]
+          ],
+          "area_fraction": 0.2933,
+          "sam_iou_pred": 0.92,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.2933,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.4714,
+            "recall": 0.4809,
+            "precision": 0.9597
+          }
+        },
+        "qwen/surface": {
+          "point": [
+            [
+              66.5,
+              417.9
+            ]
+          ],
+          "area_fraction": 0.3662,
+          "sam_iou_pred": -0.028,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.3662,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5659,
+            "recall": 0.5875,
+            "precision": 0.939
+          }
+        }
+      },
+      "n_admissible": 5,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.4388,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.4388,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.6698,
+            "recall": 0.7019,
+            "precision": 0.9361
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "union of 5 admissible: ['molmo/empty_area', 'molmo/plain', 'qwen/backdrop', 'qwen/plain', 'qwen/surface']",
+          "area_fraction": 0.815,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.815,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.6515,
+            "recall": 0.9439,
+            "precision": 0.6778
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['molmo/empty_area', 'molmo/plain', 'qwen/surface', 'qwen/plain', 'qwen/backdrop']",
+          "area_fraction": 0.815,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.815,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.6515,
+            "recall": 0.9439,
+            "precision": 0.6778
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 5",
+          "area_fraction": 0.3706,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.3706,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5945,
+            "recall": 0.609,
+            "precision": 0.9617
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (molmo/empty_area)",
+          "area_fraction": 0.639,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.639,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.4599,
+            "recall": 0.6589,
+            "precision": 0.6035
+          }
+        }
+      },
+      "union": {
+        "note": "union of 5 admissible: ['molmo/empty_area', 'molmo/plain', 'qwen/backdrop', 'qwen/plain', 'qwen/surface']",
+        "area_fraction": 0.815,
+        "predicate_pass": false,
+        "predicate_terms": {
+          "area": 0.815,
+          "scored": false
+        },
+        "vs_figure_complement": {
+          "iou": 0.6515,
+          "recall": 0.9439,
+          "precision": 0.6778
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": false,
+        "example_pair": null,
+        "area_fraction": null,
+        "predicate_terms": null
+      },
+      "classification": "not-scored-no-answer-key",
+      "single_masks_that_pass": []
+    },
+    "elephunk": {
+      "stratum": "phrasing-disagreement",
+      "reviewer": {
+        "dot_right": false,
+        "wash_right": false
+      },
+      "mask_shape": [
+        500,
+        500
+      ],
+      "figure_complement_area": 0.6603,
+      "figure_complement_usable": true,
+      "shipped_plain_predicate_pass": false,
+      "recorded_masks": {
+        "molmo/backdrop": {
+          "point": [
+            [
+              461.0,
+              110.3
+            ]
+          ],
+          "area_fraction": 0.5092,
+          "sam_iou_pred": -0.884,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.5092,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5206,
+            "recall": 0.6064,
+            "precision": 0.7863
+          }
+        },
+        "molmo/empty_area": {
+          "point": [
+            [
+              37.9,
+              30.6
+            ]
+          ],
+          "area_fraction": 0.1578,
+          "sam_iou_pred": 0.142,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.1578,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.2161,
+            "recall": 0.2201,
+            "precision": 0.9214
+          }
+        },
+        "molmo/fg_minimal": {
+          "point": [
+            [
+              461.0,
+              110.3
+            ]
+          ],
+          "area_fraction": 0.5092,
+          "sam_iou_pred": -0.884,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.5092,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5206,
+            "recall": 0.6064,
+            "precision": 0.7863
+          }
+        },
+        "molmo/plain": {
+          "point": [
+            [
+              37.9,
+              30.6
+            ]
+          ],
+          "area_fraction": 0.1578,
+          "sam_iou_pred": 0.142,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.1578,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.2161,
+            "recall": 0.2201,
+            "precision": 0.9214
+          }
+        },
+        "qwen/backdrop": {
+          "point": [
+            [
+              42.4,
+              42.4
+            ]
+          ],
+          "area_fraction": 0.1707,
+          "sam_iou_pred": -0.645,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.1707,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.1849,
+            "recall": 0.1964,
+            "precision": 0.7597
+          }
+        },
+        "qwen/plain": {
+          "point": [
+            [
+              441.6,
+              43.9
+            ]
+          ],
+          "area_fraction": 0.1657,
+          "sam_iou_pred": -1.509,
+          "admissible": true,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.1657,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.0679,
+            "recall": 0.0796,
+            "precision": 0.3171
+          }
+        }
+      },
+      "n_admissible": 6,
+      "policies": {
+        "R0_incumbent_plain": {
+          "note": "the shipped mask: molmo, `plain` phrasing",
+          "area_fraction": 0.1578,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.1578,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.2161,
+            "recall": 0.2201,
+            "precision": 0.9214
+          }
+        },
+        "R1_union_all_admissible": {
+          "note": "union of 6 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/fg_minimal', 'molmo/plain', 'qwen/backdrop', 'qwen/plain']",
+          "area_fraction": 0.6332,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.6332,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5106,
+            "recall": 0.6622,
+            "precision": 0.6905
+          }
+        },
+        "R2_greedy_union_under_cap": {
+          "note": "greedy by area under cap: ['molmo/backdrop', 'molmo/fg_minimal', 'qwen/backdrop', 'qwen/plain', 'molmo/empty_area', 'molmo/plain']",
+          "area_fraction": 0.6332,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.6332,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5106,
+            "recall": 0.6622,
+            "precision": 0.6905
+          }
+        },
+        "R3_pixel_majority_vote": {
+          "note": "pixels in >= half of 6",
+          "area_fraction": 0.232,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.232,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.2457,
+            "recall": 0.2666,
+            "precision": 0.7586
+          }
+        },
+        "R4_largest_admissible_single": {
+          "note": "largest admissible single mask (molmo/backdrop)",
+          "area_fraction": 0.5092,
+          "predicate_pass": false,
+          "predicate_terms": {
+            "area": 0.5092,
+            "scored": false
+          },
+          "vs_figure_complement": {
+            "iou": 0.5206,
+            "recall": 0.6064,
+            "precision": 0.7863
+          }
+        }
+      },
+      "union": {
+        "note": "union of 6 admissible: ['molmo/backdrop', 'molmo/empty_area', 'molmo/fg_minimal', 'molmo/plain', 'qwen/backdrop', 'qwen/plain']",
+        "area_fraction": 0.6332,
+        "predicate_pass": false,
+        "predicate_terms": {
+          "area": 0.6332,
+          "scored": false
+        },
+        "vs_figure_complement": {
+          "iou": 0.5106,
+          "recall": 0.6622,
+          "precision": 0.6905
+        }
+      },
+      "oracle_best_pair": {
+        "is_an_oracle_not_a_policy": true,
+        "any_two_recorded_masks_satisfy_the_predicate": false,
+        "example_pair": null,
+        "area_fraction": null,
+        "predicate_terms": null
+      },
+      "classification": "not-scored-no-answer-key",
+      "single_masks_that_pass": []
+    }
+  },
+  "candidate_family": {
+    "available": true,
+    "source": "point-smoke-synthetic.json",
+    "rows": 1000,
+    "caveat": "synthetic probe points on 000bc98f, 0002dfdc, 0000269e, skap \u2014 only 0002dfdc is in the round, and none of these points came from a pointing model. Areas only; no pixels, so no correctness claim.",
+    "candidate_area_spread": {
+      "mean": 0.2038,
+      "median": 0.1811
+    },
+    "area_picked_by_SELECT_CONTAINING": {
+      "mean": 0.2446,
+      "median": 0.1467
+    },
+    "area_picked_by_SELECT_GROUND": {
+      "mean": 0.3209,
+      "median": 0.2697
+    },
+    "rows_where_the_two_rules_differ": 0.435,
+    "rows_with_no_admissible_containing_candidate": 430
+  },
+  "summary": {
+    "classification_counts": {
+      "already-passing": 1,
+      "better-candidate-existed": 2,
+      "multi-region-ground": 0,
+      "over-coverage-no-point-level-escape": 1,
+      "no-good-candidate": 2
+    },
+    "policy_scores_IN_SAMPLE": {
+      "R0_incumbent_plain": "1/6",
+      "R1_union_all_admissible": "2/6",
+      "R2_greedy_union_under_cap": "2/6",
+      "R3_pixel_majority_vote": "2/6",
+      "R4_largest_admissible_single": "3/6"
+    },
+    "policy_per_cover_IN_SAMPLE": {
+      "R0_incumbent_plain": {
+        "00014fb4": false,
+        "00030075": true,
+        "00066a61": false,
+        "00075841": false,
+        "000f0a78": false,
+        "artofficial": false
+      },
+      "R1_union_all_admissible": {
+        "00014fb4": true,
+        "00030075": false,
+        "00066a61": false,
+        "00075841": false,
+        "000f0a78": true,
+        "artofficial": false
+      },
+      "R2_greedy_union_under_cap": {
+        "00014fb4": true,
+        "00030075": false,
+        "00066a61": false,
+        "00075841": false,
+        "000f0a78": true,
+        "artofficial": false
+      },
+      "R3_pixel_majority_vote": {
+        "00014fb4": false,
+        "00030075": true,
+        "00066a61": false,
+        "00075841": false,
+        "000f0a78": true,
+        "artofficial": false
+      },
+      "R4_largest_admissible_single": {
+        "00014fb4": true,
+        "00030075": true,
+        "00066a61": false,
+        "00075841": false,
+        "000f0a78": true,
+        "artofficial": false
+      }
+    },
+    "predicate_vs_reviewer": {
+      "00014fb4": {
+        "reviewer_wash_right": false,
+        "predicate_on_shipped_mask": false
+      },
+      "00030075": {
+        "reviewer_wash_right": true,
+        "predicate_on_shipped_mask": true
+      },
+      "00066a61": {
+        "reviewer_wash_right": false,
+        "predicate_on_shipped_mask": false
+      },
+      "00075841": {
+        "reviewer_wash_right": false,
+        "predicate_on_shipped_mask": false
+      },
+      "000f0a78": {
+        "reviewer_wash_right": false,
+        "predicate_on_shipped_mask": false
+      },
+      "artofficial": {
+        "reviewer_wash_right": true,
+        "predicate_on_shipped_mask": false
+      }
+    },
+    "in_sample_before": 1,
+    "in_sample_after": 2,
+    "n_scored": 6
+  }
+}

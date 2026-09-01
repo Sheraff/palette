@@ -1,0 +1,648 @@
+{
+	"what_this_is": "SCHEMA_V2_PROPOSAL.md \u00a74's wording mini-pilot: three candidate wordings of `signature_carrier`'s spread value, plus a no-spread-value control arm, over 19 hand-picked covers confirmed by eye. THIS IS A PROBE SET, NOT A SAMPLE \u2014 it measures whether the model understands a wording and says nothing about how often spread colours occur in the corpus. No rate below is a corpus rate.",
+	"generated_by": "research/v3/oracle/premise/analyze_spread_pilot.py",
+	"inputs": {
+		"rows": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/spread-wording-pilot-1.jsonl",
+		"list": "research/v3/oracle/premise/spread-pilot-19.txt"
+	},
+	"pick_rule": {
+		"source": "SCHEMA_V2_PROPOSAL.md \u00a74, transcribed verbatim, numbers unmoved",
+		"primary": "largest (multi fire rate - single fire rate)",
+		"constraint": "escape-hatch rate on the multi group <= 0.25",
+		"no_winner_consequence": "if no candidate clears the constraint, the value is doing harm and the multi-select half of the reviewer's ruling comes back to the reviewer rather than being shipped with the best of three bad options"
+	},
+	"health": {
+		"rows_total": 76,
+		"rows_ok": 76,
+		"parse_failed": 0,
+		"attempts_over_1": 0,
+		"max_generation_tokens": 130,
+		"arms_present": [
+			"A",
+			"B",
+			"C",
+			"N"
+		],
+		"images": 19,
+		"group_sizes": {
+			"multi": 9,
+			"single": 5,
+			"none": 5
+		}
+	},
+	"per_candidate": {
+		"A": {
+			"value_token": "several_places",
+			"gloss": "it sits in several places at once and you cannot pick out which ones",
+			"n": 19,
+			"fires_multi": "0/9",
+			"fire_rate_multi": 0.0,
+			"fires_single": "0/5",
+			"fire_rate_single": 0.0,
+			"fires_none": "0/5",
+			"fire_rate_none": 0.0,
+			"gap_multi_minus_single": 0.0,
+			"escape_hatch_alone_on_multi": "0/9",
+			"escape_hatch_rate": 0.0,
+			"escape_hatch_images": [],
+			"escape_hatch_met": true,
+			"presence_rate": {
+				"text": 0.8421,
+				"subject": 0.8947,
+				"background": 1.0,
+				"small_element": 0.1053,
+				"no_single_colour": 0.0
+			},
+			"shift_vs_control_N": {
+				"text": 0.0,
+				"subject": 0.1579,
+				"background": 0.0,
+				"small_element": 0.1053,
+				"no_single_colour": 0.0
+			},
+			"mean_list_length": 2.8421,
+			"fires_on_multi_group_at_all": false
+		},
+		"B": {
+			"value_token": "spread_throughout",
+			"gloss": "it is spread through the whole cover rather than sitting on any one part",
+			"n": 19,
+			"fires_multi": "0/9",
+			"fire_rate_multi": 0.0,
+			"fires_single": "0/5",
+			"fire_rate_single": 0.0,
+			"fires_none": "2/5",
+			"fire_rate_none": 0.4,
+			"gap_multi_minus_single": 0.0,
+			"escape_hatch_alone_on_multi": "0/9",
+			"escape_hatch_rate": 0.0,
+			"escape_hatch_images": [],
+			"escape_hatch_met": true,
+			"presence_rate": {
+				"text": 0.8947,
+				"subject": 0.8421,
+				"background": 1.0,
+				"small_element": 0.1053,
+				"no_single_colour": 0.0
+			},
+			"shift_vs_control_N": {
+				"text": 0.0526,
+				"subject": 0.1053,
+				"background": 0.0,
+				"small_element": 0.1053,
+				"no_single_colour": 0.0
+			},
+			"mean_list_length": 2.9474,
+			"fires_on_multi_group_at_all": false
+		},
+		"C": {
+			"value_token": "all_over",
+			"gloss": "it is all over the cover, not on any one part you could point to",
+			"n": 19,
+			"fires_multi": "0/9",
+			"fire_rate_multi": 0.0,
+			"fires_single": "0/5",
+			"fire_rate_single": 0.0,
+			"fires_none": "0/5",
+			"fire_rate_none": 0.0,
+			"gap_multi_minus_single": 0.0,
+			"escape_hatch_alone_on_multi": "0/9",
+			"escape_hatch_rate": 0.0,
+			"escape_hatch_images": [],
+			"escape_hatch_met": true,
+			"presence_rate": {
+				"text": 0.8421,
+				"subject": 0.6842,
+				"background": 1.0,
+				"small_element": 0.0,
+				"no_single_colour": 0.0
+			},
+			"shift_vs_control_N": {
+				"text": 0.0,
+				"subject": -0.0526,
+				"background": 0.0,
+				"small_element": 0.0,
+				"no_single_colour": 0.0
+			},
+			"mean_list_length": 2.5263,
+			"fires_on_multi_group_at_all": false
+		}
+	},
+	"control_arm_N": {
+		"n": 19,
+		"presence_rate": {
+			"text": 0.8421,
+			"subject": 0.7368,
+			"background": 1.0,
+			"small_element": 0.0,
+			"no_single_colour": 0.0
+		},
+		"mean_list_length": 2.5789,
+		"exact_set_counts": {
+			"text+subject+background": 11,
+			"text+background": 3,
+			"background+subject": 2,
+			"text+background+subject": 1,
+			"background+text": 1,
+			"background": 1
+		}
+	},
+	"per_image": [
+		{
+			"image_path": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"group": "none",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg",
+			"group": "single",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "06/ab67616d0000b273000626fb25df8b60c4b97ca4",
+			"group": "single",
+			"answers": {
+				"A": [
+					"text",
+					"background",
+					"subject"
+				],
+				"B": [
+					"text",
+					"background",
+					"subject",
+					"small_element"
+				],
+				"C": [
+					"text",
+					"background"
+				],
+				"N": [
+					"text",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "09/ab67616d0000b2730009d178a401f9433fdddff2",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"group": "single",
+			"answers": {
+				"A": [
+					"background",
+					"subject",
+					"text"
+				],
+				"B": [
+					"background",
+					"subject"
+				],
+				"C": [
+					"background",
+					"subject"
+				],
+				"N": [
+					"background",
+					"subject"
+				]
+			}
+		},
+		{
+			"image_path": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"background",
+					"subject"
+				],
+				"B": [
+					"text",
+					"background",
+					"subject"
+				],
+				"C": [
+					"text",
+					"background"
+				],
+				"N": [
+					"text",
+					"background",
+					"subject"
+				]
+			}
+		},
+		{
+			"image_path": "0a/ab67616d0000b273000a8097d86930fb02f5a76d",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"background",
+					"subject"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+			"group": "none",
+			"answers": {
+				"A": [
+					"background"
+				],
+				"B": [
+					"background",
+					"subject",
+					"text",
+					"small_element",
+					"spread_throughout"
+				],
+				"C": [
+					"background"
+				],
+				"N": [
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+			"group": "none",
+			"answers": {
+				"A": [
+					"text",
+					"background",
+					"small_element"
+				],
+				"B": [
+					"text",
+					"background",
+					"spread_throughout"
+				],
+				"C": [
+					"text",
+					"background"
+				],
+				"N": [
+					"text",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "12/ab67616d0000b27300127e4552b22c761d50c8f5",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"background",
+					"subject"
+				],
+				"B": [
+					"text",
+					"background"
+				],
+				"C": [
+					"text",
+					"background"
+				],
+				"N": [
+					"text",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"group": "none",
+			"answers": {
+				"A": [
+					"subject",
+					"background",
+					"text",
+					"small_element"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "images/greenday.jpg",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "images/johns.jpg",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "images/knuckles.jpg",
+			"group": "none",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "images/nobs.jpg",
+			"group": "multi",
+			"answers": {
+				"A": [
+					"text",
+					"subject",
+					"background"
+				],
+				"B": [
+					"text",
+					"subject",
+					"background"
+				],
+				"C": [
+					"text",
+					"subject",
+					"background"
+				],
+				"N": [
+					"text",
+					"subject",
+					"background"
+				]
+			}
+		},
+		{
+			"image_path": "images/placebo.jpg",
+			"group": "single",
+			"answers": {
+				"A": [
+					"background",
+					"subject"
+				],
+				"B": [
+					"background",
+					"subject"
+				],
+				"C": [
+					"background",
+					"subject"
+				],
+				"N": [
+					"background",
+					"subject"
+				]
+			}
+		},
+		{
+			"image_path": "images/toxicity.jpg",
+			"group": "single",
+			"answers": {
+				"A": [
+					"background",
+					"text",
+					"subject"
+				],
+				"B": [
+					"background",
+					"text"
+				],
+				"C": [
+					"background",
+					"text"
+				],
+				"N": [
+					"background",
+					"text"
+				]
+			}
+		}
+	],
+	"carrier_question_degeneracy": {
+		"note": "\u00a77.4's corrected multi-select instruments, computed on arm N over 19 hand-picked covers. A probe set, not a bench \u2014 these are flags for the real pilot, never verdicts.",
+		"modal_exact_set": "background+subject+text",
+		"modal_exact_set_share": 0.6316,
+		"singleton_rate": 0.0526,
+		"presence_rate": {
+			"text": 0.8421,
+			"subject": 0.7368,
+			"background": 1.0,
+			"small_element": 0.0,
+			"no_single_colour": 0.0
+		},
+		"background_presence_rate": 1.0,
+		"no_single_colour_fires": "0/19",
+		"no_single_colour_fires_on_eye_confirmed_none_group": "0/5"
+	},
+	"verdict": {
+		"winner": null,
+		"why": "NO CANDIDATE FIRED ON THE MULTI-CARRIER GROUP AT ALL (0/9 for every wording). \u00a74's first measured metric is 'fires on the multi-carrier group \u2014 the value works at all', and it is zero three times over. The escape-hatch constraint is satisfied by all three only VACUOUSLY: a value that never fires can never be chosen alone. There is no winner to report, and the gap metric (0.0 for all three) is a tie at zero, not a ranking.",
+		"escape_hatch_satisfied_vacuously": true,
+		"precedent": "\u00a73d: `illegible_at_this_size` fired 0 times in 284 rows and the verdict was that it 'cannot fire as worded'. Same shape, three wordings deep.",
+		"consequence": "\u00a74's stated consequence covers the escape-hatch failure, not this one. This is the other failure and the packet does not pre-register a remedy for it, so none is asserted here. See SPREAD_WORDING_PILOT.md for what the rows suggest and what it would cost to be sure."
+	}
+}

@@ -1,0 +1,38 @@
+{
+  "what": "floors and strata inside the bake-off's pair set. Annotates bakeoff.json without rewriting it.",
+  "written_at": "2026-08-03T19:03:58Z",
+  "generated_by": "research/v3/oracle/embeddings/bakeoff_strata.py",
+  "annotates": {
+    "file": "research/v3/data/embeddings/bakeoff.json",
+    "sha256": "ef4cbf93181115213ae3a536e3343d8c6703b888d37df9059a8236ab8e5ca3d3",
+    "why_not_written_into_it": "the bake-off's sha256 is pinned as live evidence in data/decisions/decisions.json under d-2026-08-02-embedding-canonical-model. Rewriting the file to add this block would break that pin. eval_pairs.py now carries the same text in method.floors_and_strata, so any future bake-off states it inline."
+  },
+  "reading": {
+    "identical_bytes": "pairs of files with the same sha256. Rank 1 by construction \u2014 a floor under every arm, not a measurement of any.",
+    "resolution_strata": "pairs whose two files have identical measured width and height. Still different renditions, but not a resolution change; the cross-resolution figure is the resolution-robustness reading of this instrument.",
+    "affects_rankings": "no. Both slices affect every arm identically; the arm order and every conclusion in d-2026-08-02-embedding-canonical-model are unchanged."
+  },
+  "arms": {
+    "dinov2-vitl14": {
+      "arm": "dinov2-vitl14",
+      "pairs": 24648,
+      "recall@1_published_shape": 0.7892323920804933,
+      "recall@1_all_pairs": 0.7892323920804933,
+      "identical_bytes": {
+        "pairs": 246,
+        "pct_of_pairs": 0.9981,
+        "distinct_files": 187,
+        "distinct_artworks": 81,
+        "all_rank_1": true,
+        "recall@1_excluding_them": 0.7871076141299893,
+        "headline_inflation_pp": 0.2125
+      },
+      "resolution_strata": {
+        "same_resolution_pairs": 1986,
+        "same_resolution_pct": 8.0574,
+        "recall@1_same_resolution": 0.8635448136958711,
+        "recall@1_cross_resolution": 0.7827199717588915
+      }
+    }
+  }
+}

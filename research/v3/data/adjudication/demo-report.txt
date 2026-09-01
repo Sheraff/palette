@@ -1,0 +1,342 @@
+AUTO-ADJUDICATION — candidate run against standing reviewer evidence
+==============================================================================
+
+The three principles this tool is built on (reviewer, 2026-08-04):
+  1. There can be many valid palettes: matching an endorsement is a WIN signal; differing from one is NO SIGNAL, never a penalty; only matching a known-bad is a LOSS signal.
+  2. The reviewer can contradict himself: where the evidence corpus conflicts, the conflict is surfaced per item and never averaged away. Recency decides standing; the disagreement is still reported.
+  3. We are rewriting from scratch and old truths might be invalid now: every verdict enters as a DATED PRIOR with an era tag, results split by era, and nothing here gates anything — it informs.
+
+  Gating: none. Nothing below blocks anything. It informs.
+
+INPUT
+  data/adjudication/demo-candidates.jsonl
+  34 candidate palettes parsed · 0 carried the full contract · 0 lines refused
+
+MATCH SEMANTICS
+  bar: regional  ·  roles: background, surface, foreground, accent  ·  partial entries: compare-present
+  as-of: 2026-08-04  ·  reachability: on
+
+EVIDENCE (dated priors, not ground truth)
+  v2-3  endorsement   351 entries  research/v3/data/legacy/endorsements.json  sha256:7d7ea50a60d2
+  v2-3  known-bad      37 entries  research/v3/data/legacy/known-bad.json  sha256:81386caa7cd0
+  v2-3  acceptable    166 entries  research/v3/data/legacy/acceptable.json  sha256:b8bb04249e08
+  v3    endorsement     0 entries  research/v3/data/warehouse/warehouse.jsonl  sha256:e8f32923b797
+  v3    known-bad       0 entries  research/v3/data/warehouse/warehouse.jsonl  sha256:e8f32923b797
+  v3    acceptable      0 entries  research/v3/data/warehouse/warehouse.jsonl  sha256:e8f32923b797
+
+RESULTS BY ERA
+  era v2-3 — 33 candidate palettes had evidence in this era
+    WIN      endorsement matches:   16 candidates · 20 distinct entries · 16 artworks
+    LOSS     known-bad matches:      5 candidates · 6 distinct entries · 5 artworks
+    (base)   acceptable matches:     5 candidates · 5 distinct entries — not-rejected baseline, not an endorsement
+    NO SIGNAL differed from this era's evidence: 10 · never seen in this era: 1
+             (differing is not a miss and costs nothing — principle 1)
+
+  era v3 — 0 candidate palettes had evidence in this era
+    WIN      endorsement matches:    0 candidates · 0 distinct entries · 0 artworks
+    LOSS     known-bad matches:      0 candidates · 0 distinct entries · 0 artworks
+    (base)   acceptable matches:     0 candidates · 0 distinct entries — not-rejected baseline, not an endorsement
+    NO SIGNAL differed from this era's evidence: 0 · never seen in this era: 34
+             (differing is not a miss and costs nothing — principle 1)
+
+BY ARM
+  arm/blind                    1 candidates ·    1 win ·    0 loss ·     0 no signal
+  arm/copycat                  9 candidates ·    8 win ·    0 loss ·     1 no signal
+  arm/divergent                8 candidates ·    0 win ·    0 loss ·     8 no signal
+  arm/nudged                   6 candidates ·    4 win ·    0 loss ·     2 no signal
+  arm/reachable                1 candidates ·    1 win ·    0 loss ·     0 no signal
+  arm/regressor                5 candidates ·    0 win ·    5 loss ·     0 no signal
+  arm/tolerable                4 candidates ·    2 win ·    0 loss ·     2 no signal
+
+REACHABILITY — could the candidate's colour set have produced the prior at all?
+  assessed: 10 entry comparisons · reachable 2 · unreachable 8 · not assessed 94
+  (not assessed = the run did not carry `availableColors`. Silence is not a pass.)
+  endorsements outside the candidate's colour set (7):
+    117fc9631375e7bd (v2-3) 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa
+    14566ff3eb6c3599 (v2-3) 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa
+    1a049b516553579b (v2-3) 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa
+    274d09cfa9c412d7 (v2-3) images/loups.jpg
+    994b9657faebacd0 (v2-3) 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa
+    a31da41f89f792ce (v2-3) images/loups.jpg
+    b6b2d764b533e8a3 (v2-3) images/loups.jpg
+  This is a ceiling fact, not a penalty.
+
+CONFLICTS IN THE EVIDENCE (10) — surfaced per item, never averaged
+  grade-history-conflict         7
+  tier-overlap                   3
+
+  1. [grade-history-conflict] era v2-3 — 0f/ab67616d0000b273000f815611cd5966187e2051
+     the matched entry was graded acceptable and weak-fallback at different times; recency picked the standing grade and the disagreement stands
+     entries: 005ce4940254ef5f
+     standing: acceptable (latest, 2026-07-31T18:14:04.831Z)
+     recency could settle standing: yes
+     history: weak-fallback@2026-07-31T15:40:22.992Z (trunk-k2) → acceptable@2026-07-31T17:37:05.671Z (x-coverage-incumbent) → acceptable@2026-07-31T18:14:04.831Z (w-batch-before)
+
+  2. [grade-history-conflict] era v2-3 — 10/ab67616d00001e020010b864b2a925ec6bfaa30e
+     the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+     entries: 00efa662cb7487e9
+     standing: acceptable (latest, 2026-08-01T12:24:03.989Z)
+     recency could settle standing: yes
+     history: strong@2026-08-01T00:11:10.375Z (ra-on) → acceptable@2026-08-01T12:24:03.989Z (ma-on)
+
+  3. [grade-history-conflict] era v2-3 — 08/ab67616d00001e0200083a2d455755e4c1116825
+     the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+     entries: 023e3a6234ebbd89
+     standing: acceptable (latest, 2026-08-01T17:10:46.797Z)
+     recency could settle standing: yes
+     history: strong@2026-07-30T21:07:49.961Z (v2-2) → acceptable@2026-08-01T17:10:46.797Z (calib-5) → acceptable@2026-08-01T17:10:46.797Z (calib-5b)
+
+  4. [grade-history-conflict] era v2-3 — 12/ab67616d0000b27300127e4552b22c761d50c8f5
+     the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+     entries: 058366e3533ddf80
+     standing: acceptable (latest, 2026-08-01T13:06:16.487Z)
+     recency could settle standing: yes
+     history: strong@2026-08-01T10:39:21.156Z (calib-3) → strong@2026-08-01T10:39:21.156Z (calib-3b) → acceptable@2026-08-01T12:55:27.394Z (trunk) → acceptable@2026-08-01T13:06:16.487Z (co-off)
+
+  5. [grade-history-conflict] era v2-3 — 10/ab67616d00001e020010b864b2a925ec6bfaa30e
+     the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+     entries: 876fb2f953fc7d84
+     standing: acceptable (latest, 2026-08-01T12:24:03.989Z)
+     recency could settle standing: yes
+     history: strong@2026-08-01T00:11:10.375Z (ra-on) → acceptable@2026-08-01T12:24:03.989Z (ma-on)
+
+  6. [grade-history-conflict] era v2-3 — 12/ab67616d0000b27300127e4552b22c761d50c8f5
+     the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+     entries: 8a65989a4a51db43
+     standing: acceptable (latest, 2026-08-01T13:06:16.487Z)
+     recency could settle standing: yes
+     history: strong@2026-08-01T10:39:21.156Z (calib-3) → strong@2026-08-01T10:39:21.156Z (calib-3b) → acceptable@2026-08-01T12:55:27.394Z (trunk) → acceptable@2026-08-01T13:06:16.487Z (co-off)
+
+  7. [grade-history-conflict] era v2-3 — 08/ab67616d00001e0200083a2d455755e4c1116825
+     the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+     entries: 8d5b08cf7bcccfe3
+     standing: acceptable (latest, 2026-08-01T17:10:46.797Z)
+     recency could settle standing: yes
+     history: strong@2026-07-30T21:07:49.961Z (v2-2) → acceptable@2026-08-01T17:10:46.797Z (calib-5) → acceptable@2026-08-01T17:10:46.797Z (calib-5b)
+
+  8. [tier-overlap] era v2-3 — 10/ab67616d00001e020010b864b2a925ec6bfaa30e
+     the same file and the same exact palette sits in 2 tiers at once: acceptable, endorsement
+     entries: 00efa662cb7487e9, 876fb2f953fc7d84
+     recency could settle standing: no
+     history: strong@2026-08-01T00:11:10.375Z (ra-on) → acceptable@2026-08-01T12:24:03.989Z (ma-on)
+     history: strong@2026-08-01T00:11:10.375Z (ra-on) → acceptable@2026-08-01T12:24:03.989Z (ma-on)
+
+  9. [tier-overlap] era v2-3 — 08/ab67616d00001e0200083a2d455755e4c1116825
+     the same file and the same exact palette sits in 2 tiers at once: acceptable, endorsement
+     entries: 023e3a6234ebbd89, 8d5b08cf7bcccfe3
+     recency could settle standing: no
+     history: strong@2026-07-30T21:07:49.961Z (v2-2) → acceptable@2026-08-01T17:10:46.797Z (calib-5) → acceptable@2026-08-01T17:10:46.797Z (calib-5b)
+     history: strong@2026-07-30T21:07:49.961Z (v2-2) → acceptable@2026-08-01T17:10:46.797Z (calib-5) → acceptable@2026-08-01T17:10:46.797Z (calib-5b)
+
+  10. [tier-overlap] era v2-3 — 12/ab67616d0000b27300127e4552b22c761d50c8f5
+     the same file and the same exact palette sits in 2 tiers at once: acceptable, endorsement
+     entries: 058366e3533ddf80, 8a65989a4a51db43
+     recency could settle standing: no
+     history: strong@2026-08-01T10:39:21.156Z (calib-3) → strong@2026-08-01T10:39:21.156Z (calib-3b) → acceptable@2026-08-01T12:55:27.394Z (trunk) → acceptable@2026-08-01T13:06:16.487Z (co-off)
+     history: strong@2026-08-01T10:39:21.156Z (calib-3) → strong@2026-08-01T10:39:21.156Z (calib-3b) → acceptable@2026-08-01T12:55:27.394Z (trunk) → acceptable@2026-08-01T13:06:16.487Z (co-off)
+
+
+SIGNAL-CARRYING CANDIDATES (21 of 34) — --verbose for all
+
+  line    7 [arm/copycat] 10/ab67616d0000b2730010bcd17e41331debec2bd5
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 06a3eaca7b519881 (v2-3, 2026-07-31T07:17:39.280Z, 3d old, basis all-four-roles)
+    no signal: differs from 1 entry for this file. Nearest:
+      7db3cf0164b39913 (endorsement, v2-3) worst role 21.58× the bar
+
+  line   31 [arm/tolerable] 08/ab67616d00001e0200083a2d455755e4c1116825
+    outcome: endorsement-match   signals: win=true loss=false baseline=true
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 8d5b08cf7bcccfe3 (v2-3, 2026-08-01T17:10:46.797Z, 2d old, basis all-four-roles)
+    base matches acceptable 023e3a6234ebbd89 (v2-3) — not an endorsement
+    no signal: differs from 1 entry for this file. Nearest:
+      44b3bc517f8b46ef (endorsement, v2-3) worst role 1.27× the bar
+    CONFLICT [grade-history-conflict] 8d5b08cf7bcccfe3: the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+    CONFLICT [grade-history-conflict] 023e3a6234ebbd89: the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+    CONFLICT [tier-overlap] 023e3a6234ebbd89, 8d5b08cf7bcccfe3: the same file and the same exact palette sits in 2 tiers at once: acceptable, endorsement
+
+  line   18 [arm/regressor] 0e/ab67616d00001e02000eaebc73a8a91dabda71fa
+    outcome: known-bad-match   signals: win=false loss=true baseline=false
+    era v2-3  known-bad-match
+    era v3    unseen
+    LOSS matches known-bad 1a13ead3c54c32ce (v2-3, standing grade weak-fallback, 2026-07-31T14:08:39.819Z)
+    no signal: differs from 2 entries for this file. Nearest:
+      60c3cf90eb95bdfa (known-bad, v2-3) worst role 3.68× the bar
+      f3896297e316e8ea (endorsement, v2-3) worst role 11.85× the bar
+
+  line   11 [arm/nudged] 13/ab67616d00001e020013bebcaee941ebcc13437c
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 097d04fc269eb5b0 (v2-3, 2026-07-31T14:08:39.819Z, 3d old, basis all-four-roles)
+    no signal: differs from 8 entries for this file. Nearest:
+      333bc5ceadeaf2a6 (endorsement, v2-3) worst role 18.03× the bar
+      78c67ae5a1ebcb3f (acceptable, v2-3) worst role 18.03× the bar
+      153f8bee8b5670c7 (acceptable, v2-3) worst role 26.75× the bar
+
+  line    8 [arm/copycat] 0e/ab67616d0000b273000ec4aa76a94a5ba13c5946
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 06d805b151a9e846 (v2-3, 2026-08-01T11:44:07.426Z, 2d old, basis all-four-roles)
+    no signal: differs from 3 entries for this file. Nearest:
+      c7f9c376922a3301 (acceptable, v2-3) worst role 21.14× the bar
+      15023b05935e9efb (known-bad, v2-3) worst role 36.20× the bar
+      d67b3bf575ff7169 (known-bad, v2-3) worst role 36.20× the bar
+
+  line   17 [arm/regressor] 0e/ab67616d0000b273000ec4aa76a94a5ba13c5946
+    outcome: known-bad-match   signals: win=false loss=true baseline=false
+    era v2-3  known-bad-match
+    era v3    unseen
+    LOSS matches known-bad 15023b05935e9efb (v2-3, standing grade weak-fallback, 2026-08-01T11:44:07.426Z)
+    LOSS matches known-bad d67b3bf575ff7169 (v2-3, standing grade weak-fallback, 2026-08-01T11:44:07.426Z)
+    no signal: differs from 2 entries for this file. Nearest:
+      c7f9c376922a3301 (acceptable, v2-3) worst role 15.71× the bar
+      06d805b151a9e846 (endorsement, v2-3) worst role 36.20× the bar
+
+  line   19 [arm/regressor] 0d/ab67616d00001e02000db903479b2da9843413b1
+    outcome: known-bad-match   signals: win=false loss=true baseline=false
+    era v2-3  known-bad-match
+    era v3    unseen
+    LOSS matches known-bad 22ac0b8521d1da8f (v2-3, standing grade weak-fallback, 2026-08-01T16:59:45.057Z)
+    no signal: differs from 3 entries for this file. Nearest:
+      9aa992c51f549f9f (acceptable, v2-3) worst role 6.11× the bar
+      161abeacfe574a3a (endorsement, v2-3) worst role 10.37× the bar
+      9596bff160c5884a (endorsement, v2-3) worst role 10.37× the bar
+
+  line   12 [arm/nudged] 0a/ab67616d0000b273000a8097d86930fb02f5a76d
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 0a136d53a0562ae8 (v2-3, 2026-08-01T15:08:50.167Z, 2d old, basis all-four-roles)
+
+  line    9 [arm/nudged] 10/ab67616d0000b27300103a3729bf589e0dc913ab
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 06e54ebbe755c004 (v2-3, 2026-08-01T13:13:42.003Z, 2d old, basis all-four-roles)
+    no signal: differs from 5 entries for this file. Nearest:
+      1ccb01e2260316d3 (acceptable, v2-3) worst role 12.77× the bar
+      812ab04f110bb5f6 (acceptable, v2-3) worst role 12.77× the bar
+      bb55e5f8f51bf541 (endorsement, v2-3) worst role 31.80× the bar
+
+  line   29 [arm/tolerable] 10/ab67616d00001e020010b864b2a925ec6bfaa30e
+    outcome: endorsement-match   signals: win=true loss=false baseline=true
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 876fb2f953fc7d84 (v2-3, 2026-08-01T12:24:03.989Z, 2d old, basis all-four-roles)
+    base matches acceptable 00efa662cb7487e9 (v2-3) — not an endorsement
+    no signal: differs from 6 entries for this file. Nearest:
+      83f1c7b4a913038c (endorsement, v2-3) worst role 8.90× the bar
+      1b5f10764f43c2f3 (endorsement, v2-3) worst role 17.51× the bar
+      278ba098184e98b3 (endorsement, v2-3) worst role 17.51× the bar
+    CONFLICT [grade-history-conflict] 876fb2f953fc7d84: the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+    CONFLICT [grade-history-conflict] 00efa662cb7487e9: the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+    CONFLICT [tier-overlap] 00efa662cb7487e9, 876fb2f953fc7d84: the same file and the same exact palette sits in 2 tiers at once: acceptable, endorsement
+
+  line    3 [arm/copycat] 00/ab67616d00001e020000ff9a99b8761b17336fa2.jpg
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 0193dbdddc8de533 (v2-3, 2026-07-30T20:56:34.861Z, 4d old, basis all-four-roles)
+
+  line    1 [arm/copycat] 0f/ab67616d0000b273000f58e77c6b56afa4666ad0
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 00b4e409948c872e (v2-3, 2026-08-01T00:11:10.375Z, 2d old, basis all-four-roles)
+    no signal: differs from 1 entry for this file. Nearest:
+      a47bb7a9eea18c28 (acceptable, v2-3) worst role 8.62× the bar
+
+  line   33 [arm/blind] 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 14566ff3eb6c3599 (v2-3, 2026-07-31T23:32:12.408833+00:00, 3d old, basis all-four-roles)
+    WIN  matches endorsement 1a049b516553579b (v2-3, 2026-07-31T23:33:30.435Z, 3d old, basis all-four-roles)
+    no signal: differs from 4 entries for this file. Nearest:
+      994b9657faebacd0 (endorsement, v2-3) worst role 13.00× the bar, unreachable
+      117fc9631375e7bd (endorsement, v2-3) worst role 14.55× the bar, unreachable
+      c21b5cd4c7a71990 (acceptable, v2-3) worst role 14.71× the bar, unreachable
+
+  line    2 [arm/copycat] 0a/ab67616d0000b273000a392cb5a08d9801562845
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 01514dc69bb7ff5b (v2-3, 2026-07-31T14:08:39.819Z, 3d old, basis all-four-roles)
+    no signal: differs from 3 entries for this file. Nearest:
+      c65c797e0907eaa5 (endorsement, v2-3) worst role 1.51× the bar
+      e8001c3d13e8497c (endorsement, v2-3) worst role 1.51× the bar
+      b45cfe4e80e441f9 (acceptable, v2-3) worst role 9.33× the bar
+
+  line    5 [arm/copycat] 08/ab67616d00001e0200087b1314ac8e17bc1c6916
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 03d3ab86b878732d (v2-3, 2026-08-01T09:11:21.817Z, 2d old, basis all-four-roles)
+    WIN  matches endorsement 38fe9579a54cd9e5 (v2-3, 2026-07-31T18:14:04.831Z, 3d old, basis all-four-roles)
+    no signal: differs from 7 entries for this file. Nearest:
+      3e2b78696cdfce51 (acceptable, v2-3) worst role 7.66× the bar
+      c1da1ded1203a191 (endorsement, v2-3) worst role 7.66× the bar
+      4579dcecc9368e51 (endorsement, v2-3) worst role 14.65× the bar
+
+  line   13 [arm/nudged] 09/ab67616d0000b2730009448702be55dfc86fde67
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 0a4880fd107f1ea1 (v2-3, 2026-08-01T13:06:16.487Z, 2d old, basis all-four-roles)
+    no signal: differs from 2 entries for this file. Nearest:
+      6ef89509412ddc9c (endorsement, v2-3) worst role 21.21× the bar
+      829eb70bd92575e6 (endorsement, v2-3) worst role 21.21× the bar
+
+  line   32 [arm/reachable] images/loups.jpg
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 13d692cd730368d0 (v2-3, 2026-07-30T19:05:13.770Z, 4d old, basis all-four-roles)
+    WIN  matches endorsement 9e05a75cd6956ca0 (v2-3, 2026-07-31T06:53:37.434Z, 3d old, basis all-four-roles)
+    no signal: differs from 3 entries for this file. Nearest:
+      a31da41f89f792ce (endorsement, v2-3) worst role 3.99× the bar, unreachable
+      b6b2d764b533e8a3 (endorsement, v2-3) worst role 3.99× the bar, unreachable
+      274d09cfa9c412d7 (endorsement, v2-3) worst role 4.31× the bar, unreachable
+
+  line    6 [arm/copycat] 12/ab67616d0000b27300127e4552b22c761d50c8f5
+    outcome: endorsement-match   signals: win=true loss=false baseline=true
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 058366e3533ddf80 (v2-3, 2026-08-01T13:06:16.487Z, 2d old, basis all-four-roles)
+    base matches acceptable 8a65989a4a51db43 (v2-3) — not an endorsement
+    CONFLICT [grade-history-conflict] 058366e3533ddf80: the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+    CONFLICT [grade-history-conflict] 8a65989a4a51db43: the matched entry was graded acceptable and strong at different times; recency picked the standing grade and the disagreement stands
+    CONFLICT [tier-overlap] 058366e3533ddf80, 8a65989a4a51db43: the same file and the same exact palette sits in 2 tiers at once: acceptable, endorsement
+
+  line   16 [arm/regressor] 0f/ab67616d00001e02000f58e77c6b56afa4666ad0
+    outcome: known-bad-match   signals: win=false loss=true baseline=false
+    era v2-3  known-bad-match
+    era v3    unseen
+    LOSS matches known-bad 092c07550fbadee0 (v2-3, standing grade weak-fallback, 2026-08-01T16:59:45.057Z)
+    no signal: differs from 2 entries for this file. Nearest:
+      1097defd03ac85d1 (endorsement, v2-3) worst role 17.25× the bar
+      d38ba9b620566c84 (known-bad, v2-3) worst role 25.41× the bar
+
+  line    4 [arm/copycat] 09/ab67616d0000b27300093ce40fe3f073dcd87ab5
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 029f06a00bfdb354 (v2-3, 2026-08-01T20:24:29.551Z, 2d old, basis all-four-roles)
+    WIN  matches endorsement 33c90ebc04ef9bb6 (v2-3, 2026-08-01T19:36:53.048Z, 2d old, basis all-four-roles)
+    no signal: differs from 6 entries for this file. Nearest:
+      9d2533a7413002d2 (endorsement, v2-3) worst role 5.70× the bar
+      40a0c78c9d60639c (endorsement, v2-3) worst role 6.90× the bar
+      1453c39b8bd9dafe (acceptable, v2-3) worst role 14.22× the bar
+
+  line   15 [arm/regressor] 11/ab67616d0000b2730011079ecb2d897c4f3d2f6a
+    outcome: known-bad-match   signals: win=false loss=true baseline=false
+    era v2-3  known-bad-match
+    era v3    unseen
+    LOSS matches known-bad 0902c903382ef5d0 (v2-3, standing grade weak-fallback, 2026-08-01T15:08:50.167Z)
+    no signal: differs from 1 entry for this file. Nearest:
+      d8306a49ea4fbcdf (endorsement, v2-3) worst role 11.81× the bar

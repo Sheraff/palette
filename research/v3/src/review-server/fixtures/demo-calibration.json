@@ -1,0 +1,92 @@
+{
+  "_comment": [
+    "Demo calibration round for the v3 review server (REVIEW_UI.md §5): absolute grading, one",
+    "palette per item, no comparison. Same three artworks as the demo pairwise batch, each shown",
+    "with ONE of the palettes that batch compares — so the two modes can be looked at side by side",
+    "without inventing new colours. Every colour is a real pixel of its artwork, taken verbatim from",
+    "demo-batch.json.",
+    "imagePath entries are repo-root-relative here so the fixture is portable; the seeder rewrites",
+    "them to absolute paths before pushing, because the push API requires absolute paths.",
+    "The variantIds below are TRUE names: the server never serves them, in this mode either."
+  ],
+  "imagePathsRelativeTo": "repo-root",
+  "batchId": "demo-calibration-0001",
+  "purpose": "calibration",
+  "fundedBy": [
+    "review-server skeleton, Phase 0 — demo only, not evidence"
+  ],
+  "items": [
+    {
+      "itemId": "demo-cal-1-light-illustration",
+      "imagePath": "00/ab67616d00001e02000027594d67b44c00995865.jpg",
+      "variantId": "trunk-flat-field",
+      "fingerprint": {
+        "algorithmVersion": "demo-fixture-alpha",
+        "preprocessingVersion": "demo-preprocessing-1",
+        "gitCommit": "0000000000000000000000000000000000000000",
+        "dirty": false
+      },
+      "palette": {
+        "background": "#ffffff",
+        "surface": "#eef9f1",
+        "foreground": "#24415f",
+        "accent": "#3c628f",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "demo-cal-2-dark-warm-photo",
+      "imagePath": "00/ab67616d00001e0200003a64886c352827bad270.jpg",
+      "variantId": "trunk-three-stop-field",
+      "fingerprint": {
+        "algorithmVersion": "demo-fixture-alpha",
+        "preprocessingVersion": "demo-preprocessing-1",
+        "gitCommit": "0000000000000000000000000000000000000000",
+        "dirty": false
+      },
+      "palette": {
+        "background": "#1f151d",
+        "surface": "#684436",
+        "foreground": "#ffe6e4",
+        "accent": "#a94a2e",
+        "gradient": {
+          "stops": [
+            { "color": "#1f151d", "position": 0 },
+            { "color": "#442c20", "position": 0.46 },
+            { "color": "#684436", "position": 1 }
+          ]
+        },
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "demo-cal-3-blue-cover",
+      "imagePath": "00/ab67616d00001e02000045168a00c9fa6fcc59da.jpg",
+      "variantId": "candidate-three-stop-field",
+      "fingerprint": {
+        "algorithmVersion": "demo-fixture-bravo",
+        "preprocessingVersion": "demo-preprocessing-1",
+        "gitCommit": "1111111111111111111111111111111111111111",
+        "dirty": false
+      },
+      "palette": {
+        "background": "#010825",
+        "surface": "#4996f0",
+        "foreground": "#fbffff",
+        "accent": "#5499ff",
+        "gradient": {
+          "stops": [
+            { "color": "#010825", "position": 0 },
+            { "color": "#3979c0", "position": 0.62 },
+            { "color": "#4996f0", "position": 1 }
+          ]
+        },
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    }
+  ]
+}

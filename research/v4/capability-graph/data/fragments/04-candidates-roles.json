@@ -1,0 +1,3146 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.candidates-roles.v1",
+  "title": "Candidate, hypothesis, and role mechanisms",
+  "description": "Artifact contracts and complete port typings for the 22 mechanisms in Section 4 of the v4 mechanism census.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.statistic.native-color-histogram-role-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Native color histogram with role evidence",
+      "description": "Stable native-image color bins carrying population, field, salience, chroma, and typography evidence.",
+      "category": "statistic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 4 uses the native histogram both as the role-aware shortlist source and as the supplementation source."
+      ],
+      "provenanceNotes": [
+        "Bins remain tied to native observations; weighted centers are not publishable source colors."
+      ]
+    },
+    {
+      "id": "artifact.candidate.color.role-aware-shortlist.v1",
+      "productFocus": "product-flow",
+      "label": "Role-aware exact-color shortlist candidate",
+      "description": "One shortlisted color with cluster and evidence provenance and an exact observed source representative.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The historical shortlist is about 12 records but may contain only one record for a uniform source."
+      ],
+      "provenanceNotes": [
+        "Candidacy does not grant role reachability, role assignment, or final selection."
+      ]
+    },
+    {
+      "id": "artifact.configuration.hue-family-supplement-reviewed.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Reviewed hue-family supplementation configuration",
+      "description": "The bounded reviewed fixed-family, support, chroma, salience, connectivity, absence, and two-supplement policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Support is scientific only in the bounded reviewed configuration cited by candidate.hue-family-supplement."
+      ],
+      "provenanceNotes": [
+        "This configuration is authority for the bounded diagnostic behavior, not for a role or treatment selection."
+      ]
+    },
+    {
+      "id": "artifact.candidate.color.hue-family-supplement.v1",
+      "productFocus": "product-flow",
+      "label": "Exact-source hue-family supplement",
+      "description": "One exact observed source color from a supported chromatic family absent from the canonical shortlist.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "A run emits zero, one, or two supplements; the output is not an augmented shortlist."
+      ],
+      "provenanceNotes": [
+        "Supplement availability grants neither role authorization nor final selection."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.hue-family-supplement-availability.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Hue-family supplement availability diagnostics",
+      "description": "Per-family availability, rejection, support, and perceptual-absence observations for supplementation.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Availability remained distinct from downstream role and complete-treatment utility."
+      ],
+      "provenanceNotes": [
+        "Diagnostics retain the reviewed configuration identity and do not become cold-inference review inputs."
+      ]
+    },
+    {
+      "id": "artifact.measurement.color-family-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Source-connected color-family evidence",
+      "description": "One color family with prototype, exact representatives, components, population, chroma, salience, connectivity, field ownership, and polarity observations where measured.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 4 consumes family evidence without treating a family as an elected UI role."
+      ],
+      "provenanceNotes": [
+        "Every exact representative retains its source witness; synthesized representatives are identified separately."
+      ]
+    },
+    {
+      "id": "artifact.measurement.field-endpoint-band.v1",
+      "productFocus": "product-flow",
+      "label": "Occupied field endpoint band",
+      "description": "One low or high occupied local band with its pixels, support distribution, spread, geometry, and fit lineage.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Endpoint-band evidence is local to an accepted fit and is not interchangeable with a global family."
+      ],
+      "provenanceNotes": [
+        "Band identity and low/high orientation remain attached to all derived representatives."
+      ]
+    },
+    {
+      "id": "artifact.candidate.color.family-representative.v1",
+      "productFocus": "product-flow",
+      "label": "Family representative alternative",
+      "description": "One dense-exact, nearest-prototype, band-local endpoint, or historical density-synthesized family representative with support and tie provenance.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The finite alternatives expose support and fidelity tradeoffs rather than declaring one universal representative."
+      ],
+      "provenanceNotes": [
+        "Exact witnesses are required where applicable; density-synthesized values remain marked as non-ordinary publication."
+      ]
+    },
+    {
+      "id": "artifact.region-set.family-component-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Family component and observation evidence",
+      "description": "Source-connected components and observations carrying support geometry, repetition, text, mark, contrast, and field measurements.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Component observations support field, typography, accent, and identity hypotheses without semantic authority by themselves."
+      ],
+      "provenanceNotes": [
+        "Region and family identifiers preserve native-image lineage."
+      ]
+    },
+    {
+      "id": "artifact.region-set.field-domain-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Field-domain evidence",
+      "description": "One supported spatial domain proposed for a field, including ownership, population, border, corner, and geometry evidence.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/acceptance",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": "accepted"
+              }
+            ],
+            "notes": [
+              "Only the accepted discriminator is inspected where downstream historical routes require an accepted field domain."
+            ]
+          }
+        ],
+        "notes": [
+          "This declaration exposes one source-backed state path and is not a complete field-domain JSON schema."
+        ]
+      },
+      "sourceNotes": [
+        "A field domain is evidence for a hypothesis and not proof of one physical surface."
+      ],
+      "provenanceNotes": [
+        "Domain identifiers remain stable through fits, transitions, and endpoint refinements."
+      ]
+    },
+    {
+      "id": "artifact.evidence.robust-field-model-residual-aggregate.v1",
+      "productFocus": "product-flow",
+      "label": "P5 robust field model and residual aggregate",
+      "description": "The complete P5 fit aggregate containing fitted flat, block, linear, or radial model records, paired residual and inlier-weight fields, absolute explained fractions, alternatives, abstention, and recursion state.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Aggregates exactly the P5 robust model, residual, inlier-weight, explained-fraction, abstention, and recursion outputs without asserting historical v2-3 GradientFitDiagnostic semantics."
+      ],
+      "provenanceNotes": [
+        "Retains every model-to-residual pairing, selected sample lattice, scores, explained fractions, abstention reason, recursion, source identity, and resource observations."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.accepted-historical-gradient-fit.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Accepted historical GradientFitDiagnostic",
+      "description": "One accepted v2-3 gradient fit diagnostic carrying source field domain, direction and topology, spatial parameter positions, occupied endpoint bands, progression and residual evidence, and exact-source support needed by endpoint and midpoint routes.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Historical band-local endpoint and spatial-midpoint routes consume an accepted GradientFitDiagnostic; no separate census mechanism produces that accepted diagnostic contract."
+      ],
+      "provenanceNotes": [
+        "This accepted historical diagnostic is not interchangeable with a P5 robust model/residual aggregate and remains an explicit internal handoff gap."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.field.native-seed-provenanced.v1",
+      "productFocus": "product-flow",
+      "label": "Native-seed field hypothesis",
+      "description": "A flat, separate-field, or gradient field hypothesis produced by the native seed path with endpoint, geometry, fidelity, support, and rejection provenance.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The ontology retains competing hypotheses rather than inferring a gradient from two colors."
+      ],
+      "provenanceNotes": [
+        "The source type is exactly native-seed and is never erased by later union or treatment deduplication."
+      ]
+    },
+    {
+      "id": "artifact.graph.native-family-component.v1",
+      "productFocus": "product-flow",
+      "label": "Native family-component graph",
+      "description": "Native family components, adjacency, edge steps, and supported spatial domains used to inspect continuous field transitions.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Graph connectivity is evidence and does not assert one semantic surface."
+      ],
+      "provenanceNotes": [
+        "Nodes and edges retain family, region, and native support identifiers."
+      ]
+    },
+    {
+      "id": "artifact.configuration.native-transition-path.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Declared native transition-path configuration",
+      "description": "Endpoint, bridge, directness, continuity, branching, domain-support, ordering, and maximum-16-stage policy for transition discovery.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Runtime permission is limited to a declared configuration because many constants gate paths."
+      ],
+      "provenanceNotes": [
+        "Configuration identity must accompany traces and hypotheses."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.field.native-transition-provenanced.v1",
+      "productFocus": "product-flow",
+      "label": "Native-transition field hypothesis",
+      "description": "One eligible continuous-field hypothesis derived from an ordered native component path of at most 16 exact-color stages.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Zero or more hypotheses may be emitted; a connected path may still join distinct semantic areas."
+      ],
+      "provenanceNotes": [
+        "The source type is exactly native-field-transition and endpoint and stage identities remain attached."
+      ]
+    },
+    {
+      "id": "artifact.evidence.gradient-ordered-transition-paths.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Ordered native field-transition path evidence",
+      "description": "One exact-source native field-transition path record with its complete untrimmed ordered stages, including rejected no-path records with zero stages and rejected over-limit records with more than sixteen stages, exact stage colors and witnesses, endpoint identities and order, topology and domain, progression and support, accepted intermediate support, legacy and current eligibility, an associated field hypothesis or null, and complete rejection reasons.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "MECHANISMS.md:731-746 defines zero or more ordered native transition traces and hypotheses with exact stage colors, endpoint identities, eligibility, and rejection reasons; field-transition.ts:756-784 rejects paths over the configured 16-stage acceptance cap, while :992-1078 publishes every record with its untrimmed stages for direct consumption by gradient-support.ts:197-233."
+      ],
+      "provenanceNotes": [
+        "Every stage retains family and region IDs, spatial and color positions, population, exact RGB/OKLab/hex color, native pixel index, and coordinates; zero-stage and over-limit rejected records, endpoint identities, eligibility flags, nullable hypotheses, and rejection reasons remain present rather than being erased. The 16-stage limit is an acceptance policy recorded through eligibility and rejection state, not a universal artifact-shape bound."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.field.band-local-provenanced.v1",
+      "productFocus": "product-flow",
+      "label": "Band-local endpoint field hypothesis",
+      "description": "A refined field hypothesis for one accepted fit with exact low/high endpoint representatives, band spread, fit quality, support, and lineage.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Each accepted fit emits zero or one refinement; local bands can narrow ramps or capture unrelated objects."
+      ],
+      "provenanceNotes": [
+        "The source type is exactly band-local-endpoint and remains distinct from seed and transition provenance."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.field.provenance-union.v1",
+      "productFocus": "product-flow",
+      "label": "Provenance-preserving field-hypothesis union member",
+      "description": "One field hypothesis in the explicit seed, transition, and band-local fan-in, retaining source type and complete lineage.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Union permits all three producer classes to coexist before complete-treatment deduplication."
+      ],
+      "provenanceNotes": [
+        "Equal treatments with distinct evidence retain every descriptor; fan-in does not arbitrate or normalize."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.logical-treatment-descriptor.v1",
+      "productFocus": "product-flow",
+      "label": "Logical complete-treatment descriptor",
+      "description": "One candidate complete-treatment description with field hypothesis, source mode, source type, strata, and source-connected lineage.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Logical descriptors can describe byte-equivalent treatments through different evidence paths."
+      ],
+      "provenanceNotes": [
+        "Descriptor identity includes treatment, field hypothesis, source type, and lineage rather than an ASCII alias."
+      ]
+    },
+    {
+      "id": "artifact.candidate.treatment-canonical-with-descriptors.v1",
+      "productFocus": "product-flow",
+      "label": "Canonical candidate treatment with retained descriptors",
+      "description": "One candidate per complete treatment key with a stable key, ordered nonduplicate descriptors, and unioned strata.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Only byte-equivalent complete candidate treatments may share a canonical record."
+      ],
+      "provenanceNotes": [
+        "Deduplication retains all consequential evidence and uncertainty and does not make the candidate a final palette."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.identity-obligation.v1",
+      "productFocus": "product-flow",
+      "label": "Ordered identity obligation",
+      "description": "One source-connected, materially distinct, non-field-owned family obligation with priority, direction, and evidence provenance.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The base list has four seats and post-cap major-family and chromatic reservations can increase the output to six."
+      ],
+      "provenanceNotes": [
+        "An obligation is a retention hypothesis, not human semantic truth or final role authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.stratified-materialization-cap.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Stratified materialization capacity policy",
+      "description": "A capacity in the inclusive range 1 through 1500 plus field-direction, obligation-role, legal-form, source-stratum, ordering, and tie policies.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The historical hard maximum is 1500 complete candidate treatments."
+      ],
+      "provenanceNotes": [
+        "The cap and strata are consequential policy and must remain visible inputs."
+      ]
+    },
+    {
+      "id": "artifact.candidate.treatment-cap-materialized.v1",
+      "productFocus": "product-flow",
+      "label": "Capacity-materialized candidate treatment",
+      "description": "One retained canonical candidate in the ordered capacity-bounded subset with descriptor and stratum-coverage provenance.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "A run retains at least one and at most the configured capacity, never above 1500."
+      ],
+      "provenanceNotes": [
+        "Admission under a cap is displacement-sensitive: additions can evict prior candidates without changing their intrinsic evidence."
+      ]
+    },
+    {
+      "id": "artifact.review.endorsed-palette-target.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Endorsed palette review target",
+      "description": "A question-scoped reviewer-endorsed complete or partial color sample with warehouse, batch, item, and role-projection custody.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "validated",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "One or more endorsed samples are effective inputs only to the prohibited development diagnostic."
+      ],
+      "provenanceNotes": [
+        "Targets are reviewed records, not natural runtime observations and not universal ground truth."
+      ]
+    },
+    {
+      "id": "artifact.configuration.reachability-matching.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Reachability matching configuration",
+      "description": "Role-blind minimum-cost OKLab matching, epsilon, projection, tie, and aggregation rules for the bounded recall-versus-ranking diagnostic.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The cited evaluation uses exact permutation matching for four colors and a declared epsilon."
+      ],
+      "provenanceNotes": [
+        "Configuration identity is required to interpret reachability and rank values."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.recall-versus-ranking.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Recall-versus-ranking diagnosis",
+      "description": "A development-only target diagnosis containing minimum mean OKLab cost, epsilon reachability, best rank, and recall, ranking, or match classification.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Report reviewed-sample reachability without leaking the answer-bearing target into cold inference.",
+      "sourceNotes": [
+        "Role-blind matching measures candidacy versus ranking failure, not seat correctness or product accuracy."
+      ],
+      "provenanceNotes": [
+        "Every result remains bound to candidate dump, target record, projection, epsilon, and rank order."
+      ]
+    },
+    {
+      "id": "artifact.configuration.field-conditional-role-classifier.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Field-conditional role classifier policy",
+      "description": "Foreground, accent, support, ambiguity, polarity, blend, threshold, evidence-banding, and deterministic tie policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Fixed blends and thresholds are pervasive cliffs in the historical classifier."
+      ],
+      "provenanceNotes": [
+        "A score margin is not a calibrated probability."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.role-evidence.field-conditioned.v1",
+      "productFocus": "product-flow",
+      "label": "Field-conditioned family role evidence",
+      "description": "One family-by-field matrix cell with foreground and accent scores, preference, reason, confidence, coherent support, field ownership, and polarity evidence.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "A complete classifier run emits exactly one record for every family crossed with every field hypothesis."
+      ],
+      "provenanceNotes": [
+        "Ambiguous and field-owned states remain explicit; a matrix cell does not elect a role."
+      ]
+    },
+    {
+      "id": "artifact.configuration.identity-obligation-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Identity-obligation and reservation policy",
+      "description": "The four-seat base cap, two-neutral quota, polarity exception and banded reorder, material-distance deduplication, and major and chromatic post-cap reservation policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Both reservations are additive after the base four seats and can yield six obligations."
+      ],
+      "provenanceNotes": [
+        "Every quota, exception, deduplication threshold, reservation, ordering band, and tie is causally consequential."
+      ]
+    },
+    {
+      "id": "artifact.provenance.identity-obligation-selection-trace.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Identity-obligation selection trace",
+      "description": "Omitted, field-owned, disconnected, materially duplicate, neutral-quota, polarity-exempt, polarity-reordered, bound-omitted, and major-reserved family traces.",
+      "category": "provenance",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The historical returned trace includes the major-family reservation but no dedicated chromatic-reservation field."
+      ],
+      "provenanceNotes": [
+        "A chromatic reservation is observable in the obligation output even though that omission prevents a symmetric returned trace claim."
+      ]
+    },
+    {
+      "id": "artifact.candidate.color.text-like-source.v1",
+      "productFocus": "product-flow",
+      "label": "Text-like exact-source candidate",
+      "description": "One exact-source color nominated by structural text or ink evidence with support, geometry, repetition, and uncertainty.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Text-like candidates may include decoration, labels, or missed typography and therefore remain hypotheses."
+      ],
+      "provenanceNotes": [
+        "Every candidate retains exact source support and structural evidence rather than an OCR truth label."
+      ]
+    },
+    {
+      "id": "artifact.measurement.foreground-polarity-observation.v1",
+      "productFocus": "product-flow",
+      "label": "Foreground polarity observation",
+      "description": "A source-supported signed foreground lightness-polarity observation with confidence and family or mark lineage.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Polarity is evaluated relative to the considered field where required."
+      ],
+      "provenanceNotes": [
+        "Unpolarized or weak observations remain represented rather than coerced to a direction."
+      ]
+    },
+    {
+      "id": "artifact.measurement.candidate-field-contrast.v1",
+      "productFocus": "product-flow",
+      "label": "Candidate-to-field contrast evidence",
+      "description": "Signed or absolute contrast measurements for one candidate against a flat field or sampled rendered field.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Contrast can establish a legibility floor but cannot establish foreground identity."
+      ],
+      "provenanceNotes": [
+        "Candidate, field, metric, polarity, sample positions, and minimum location remain attached."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.foreground.text-led.v1",
+      "productFocus": "product-flow",
+      "label": "Text-led foreground hypothesis",
+      "description": "One foreground hypothesis with elected exact-source candidate or fallback, structural text evidence, polarity, support, contrast, and fallback state.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The bounded prototype result is not a complete role solution or a final contract palette."
+      ],
+      "provenanceNotes": [
+        "Fallback remains explicit so absence or rejection of text evidence is not hidden."
+      ]
+    },
+    {
+      "id": "artifact.rendering.exact-field-path.v1",
+      "productFocus": "product-flow",
+      "label": "Exact rendered field path",
+      "description": "The exact flat or OKLab ramp path, including stops and deterministic dense samples, on which UI content would render.",
+      "category": "rendering",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Whole-ramp checks include between-stop minima rather than endpoints alone."
+      ],
+      "provenanceNotes": [
+        "The path remains tied to its candidate field and render parameters, not to final product selection."
+      ]
+    },
+    {
+      "id": "artifact.candidate.color.foreground.v1",
+      "productFocus": "product-flow",
+      "label": "Foreground color candidate",
+      "description": "One source-connected candidate color proposed for foreground evaluation without elected-role authority.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Foreground candidates may be supplied by multiple evidence mechanisms."
+      ],
+      "provenanceNotes": [
+        "Candidate identity and exact-source or generated state remain explicit."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.foreground.maximin-ramp-election.v1",
+      "productFocus": "product-flow",
+      "label": "Maximin ramp foreground election",
+      "description": "Per-candidate minimum absolute raw APCA values plus the argmax candidate, its minimizing ramp position, and deterministic tie record.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The elected candidate maximizes the legibility floor over the complete rendered path."
+      ],
+      "provenanceNotes": [
+        "This output is a bounded floor/election hypothesis, not final foreground identity or a final contract palette."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.accent-shape-evidence.v1",
+      "productFocus": "product-flow",
+      "label": "Accent mark-shape evidence",
+      "description": "One family's compactness, repetition, chroma, local contrast, signature observation, coherent support gate, raw score, and exact provenance.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "All five cues and the support gate remain visible; mass alone is not accent evidence."
+      ],
+      "provenanceNotes": [
+        "Neutral accents and giant typography remain valid counterexamples to a universal compact-chromatic rule."
+      ]
+    },
+    {
+      "id": "artifact.measurement.mark-support-cue-totals.v1",
+      "productFocus": "product-flow",
+      "label": "Mark support and cue totals",
+      "description": "One mark's support mass and unnormalized internal cue totals with region, family, and image-area measurements.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The denominator distinguishes mark mass from total image area."
+      ],
+      "provenanceNotes": [
+        "Original mark mass remains reportable after normalization."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.mark-per-mass-ranking.v1",
+      "productFocus": "product-flow",
+      "label": "Per-mass mark score and rank",
+      "description": "One mark's cue score normalized by mark mass, its deterministic rank, retained original mass, and eligibility state.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Per-mass normalization prevents small coherent marks from being erased by canvas area."
+      ],
+      "provenanceNotes": [
+        "Separate semantic and spatial eligibility is required so tiny noise is not amplified into authority."
+      ]
+    },
+    {
+      "id": "artifact.treatment.complete-internal.v1",
+      "productFocus": "product-flow",
+      "label": "Internal complete treatment",
+      "description": "A complete internal background, surface, foreground, accent, and field-state treatment with collapse, lineage, legality, and score data. It is not the exact v3 published Palette contract and carries no product authority.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v2-3/src/internal/palette-core.ts:422-442 defines the historical internal CompletePaletteTreatment shape; research/v3/src/contract/types.ts:326-341 defines a distinct published Palette contract."
+      ],
+      "provenanceNotes": [
+        "This type intentionally does not identify artifact.product.ui-palette.v3 and must not be treated as published product output."
+      ]
+    },
+    {
+      "id": "artifact.measurement.role-swap-legality.v1",
+      "productFocus": "product-flow",
+      "label": "Foreground-accent swap legality assessment",
+      "description": "All pair, stop, contrast, collapse, source, and field legality checks for an unchanged or foreground-accent-swapped candidate treatment.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Both resulting role pairs and every rendered stop require revalidation."
+      ],
+      "provenanceNotes": [
+        "Assessment identifies the treatment, role claims, field, and validation policy."
+      ]
+    },
+    {
+      "id": "artifact.treatment.text-mark-swap-result.v1",
+      "productFocus": "product-flow",
+      "label": "Text-mark swap candidate result",
+      "description": "Exactly the unchanged candidate treatment or one foreground-accent-swapped candidate treatment with repair identity and unchanged color set and field.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The bounded repair exchanges roles only on decisive text-versus-mark evidence and legal output."
+      ],
+      "provenanceNotes": [
+        "This repair result remains a candidate treatment and is not a final contract palette."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.artwork-family-relations.v1",
+      "productFocus": "product-flow",
+      "label": "Artwork family-relation hypothesis",
+      "description": "A hypothesis describing supported sharing and separation relationships among artwork color families without imposing a universal family count.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Observed covers support incompatible two-family and four-family structures."
+      ],
+      "provenanceNotes": [
+        "Relation hypotheses remain artwork-specific and preserve uncertainty."
+      ]
+    },
+    {
+      "id": "artifact.measurement.treatment-family-relational-compatibility.v1",
+      "productFocus": "product-flow",
+      "label": "Treatment-to-artwork family compatibility evidence",
+      "description": "Evidence comparing role sharing and separation in one complete candidate treatment with one artwork family-relation hypothesis.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The output is relational evidence, never a mandatory family count or universal template."
+      ],
+      "provenanceNotes": [
+        "Both treatment and artwork relation-hypothesis identifiers remain attached."
+      ]
+    },
+    {
+      "id": "artifact.measurement.color-population-exact-mass.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Color population and exact mass",
+      "description": "Reportable exact-triple population, family population, connected mass, and denominator measurements for one source color.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Population remains reportable evidence even though no tested threshold established role eligibility."
+      ],
+      "provenanceNotes": [
+        "Color witness, source raster, counting rule, and denominator remain explicit."
+      ]
+    },
+    {
+      "id": "artifact.configuration.population-eligibility-threshold.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Population eligibility threshold policy",
+      "description": "The historical population or exact-mass floor and comparison rule tested as a role-eligibility gate.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The threshold gate is scientifically falsified and prohibited for runtime eligibility."
+      ],
+      "provenanceNotes": [
+        "Historical threshold identity is retained only to reproduce and diagnose the failed gate."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.population-eligibility-bit.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Historical population eligibility bit",
+      "description": "The eligible or ineligible result of applying the tested population floor, retained only as a development diagnostic.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Reproduce the falsified historical gate without allowing it into runtime role eligibility.",
+      "sourceNotes": [
+        "Rare endorsed title, ink, and identity colors falsified this eligibility interpretation."
+      ],
+      "provenanceNotes": [
+        "The result remains bound to the exact threshold and population measurement."
+      ]
+    },
+    {
+      "id": "artifact.region-set.coherent-mark-group.v1",
+      "productFocus": "product-flow",
+      "label": "Coherent mark group",
+      "description": "One spatially coherent candidate mark group with component, geometry, family, and exact-source support.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Mark groups may represent title text, identity graphics, incidental labels, shadows, or noise."
+      ],
+      "provenanceNotes": [
+        "Group membership and source support remain explicit through nomination."
+      ]
+    },
+    {
+      "id": "artifact.measurement.mark-salience-coherence.v1",
+      "productFocus": "product-flow",
+      "label": "Mark salience and coherence evidence",
+      "description": "Salience, spatial coherence, exact-source support, and retained mass diagnostics for one candidate mark group.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Coherent salience is considered before mass ordering without making rarity an eligibility rule."
+      ],
+      "provenanceNotes": [
+        "Mass remains a separate diagnostic and is never discarded by salience normalization."
+      ]
+    },
+    {
+      "id": "artifact.candidate.role.salience-nomination.v1",
+      "productFocus": "product-flow",
+      "label": "Salience-led role nomination",
+      "description": "One nominated, null, or ambiguous role-candidate state with coherent salience, exact support, semantic limits, and retained mass evidence.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The mechanism is unbuilt and nomination does not authorize role assignment or selection."
+      ],
+      "provenanceNotes": [
+        "Null and ambiguous outcomes remain first-class rather than silently dropping a mark."
+      ]
+    },
+    {
+      "id": "artifact.configuration.hue-direction-diversity.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Hue-direction support and diversity configuration",
+      "description": "Hue bins, chroma weighting, smoothing neighborhood, near-neutral and source-support gates, requested cardinality, PSD kernel, and deterministic greedy tie policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/kernelId",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": "repository-2d-unit-hue-gram"
+              }
+            ],
+            "notes": [
+              "Identifies the exact rank-two repository proposal addressed by the conditional bound."
+            ]
+          },
+          {
+            "valuePath": "/requestedCardinality",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "less-than-or-equal",
+                "value": 2
+              }
+            ],
+            "notes": [
+              "The cited 2D Gram kernel can support at most two selected directions."
+            ]
+          }
+        ],
+        "notes": [
+          "These paths expose only the source-stated kernel/rank guard, not the full configuration schema."
+        ]
+      },
+      "sourceNotes": [
+        "For L_ij = q_i q_j v_i^T v_j with 2D unit hue directions, rank is at most two and requested cardinality must be capped at two or use a valid higher-rank PSD kernel."
+      ],
+      "provenanceNotes": [
+        "Kernel identity and rank support are part of the configuration, not an implementation detail."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.smoothed-hue-direction-support.v1",
+      "productFocus": "product-flow",
+      "label": "Smoothed hue-direction support field",
+      "description": "A chroma-weighted circular hue support field after declared neighborhood smoothing and source-support gating.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The proposed source used a 360-bin histogram with a plus-or-minus 15-degree neighborhood."
+      ],
+      "provenanceNotes": [
+        "Near-neutral handling, family support, binning, weighting, and smoothing remain attached."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.hue-direction-diverse.v1",
+      "productFocus": "product-flow",
+      "label": "Diverse supported hue direction",
+      "description": "One member of a finite source-supported direction set selected under a declared positive-semidefinite kernel and cardinality bound.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "A direction candidate is not an accent, role, or final palette selection."
+      ],
+      "provenanceNotes": [
+        "Family support, quality, hue vector, kernel, and selection step remain attached."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.hue-direction-marginal-gain.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Hue-direction diversity marginal-gain trace",
+      "description": "The ordered greedy marginal gains, ties, rejected directions, requested cardinality, kernel rank, and rank-defect state.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The trace must expose zero determinants caused by a requested set larger than the kernel rank."
+      ],
+      "provenanceNotes": [
+        "General DPP literature does not erase the repository proposal's exact rank defect."
+      ]
+    },
+    {
+      "id": "artifact.region-set.legacy-root-clusters.v1",
+      "productFocus": "product-flow",
+      "label": "Legacy root color clusters",
+      "description": "Root color clusters with population, connected-component, edge, and centroid observations used by the live legacy election.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The largest connected root cluster is elected as legacy background."
+      ],
+      "provenanceNotes": [
+        "Cluster population and source membership remain attached to elected and rival methods."
+      ]
+    },
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.legacy-local-saliency.v1",
+      "productFocus": "product-flow",
+      "label": "Legacy local saliency field",
+      "description": "The live root implementation's local saliency values and per-cluster saliency aggregates.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The legacy role election uses local saliency rather than the v4 research-context salience contracts."
+      ],
+      "provenanceNotes": [
+        "Saliency implementation and raster alignment remain explicit."
+      ]
+    },
+    {
+      "id": "artifact.configuration.legacy-independent-role-election.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Legacy independent-role heuristic policy",
+      "description": "The live contrast floor, foreground methods, population, saliency, chroma, fallback, alternate-field, accent, gradient-test, and tie policies.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The caller computes rival methods but returns the original foreground policy with fallbacks."
+      ],
+      "provenanceNotes": [
+        "Generated black or white fallback and every independent heuristic remain identifiable."
+      ]
+    },
+    {
+      "id": "artifact.candidate.treatment.legacy-role-election.v1",
+      "productFocus": "product-flow",
+      "label": "Legacy independently elected role candidate",
+      "description": "Background, surface, foreground, accent, and gradient boolean returned by the live role-by-role heuristic election.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Independently elected roles need not form a faithful complete treatment."
+      ],
+      "provenanceNotes": [
+        "This legacy result is not the exact UI treatment contract and must not be presented as a final contract palette."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.legacy-role-methods.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Legacy rival role-method diagnostics",
+      "description": "Logged foreground and full-palette rival method colors, scores, method names, contrasts, lightness, chroma, and fallback observations.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The caller logs multiple rivals while its returned policy remains separate."
+      ],
+      "provenanceNotes": [
+        "Logging a rival method does not make it jointly reviewed, selected, or a final palette."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "candidate.role-aware-shortlist",
+      "focusClass": "product-transformation",
+      "title": "Role-aware exact-color shortlist",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.role-aware-shortlist` - Role-aware exact-color shortlist",
+        "headingLine": 669
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `natural-handoff` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "natural-handoff",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "histogram-bins",
+          "label": "Histogram bins with role evidence",
+          "artifactTypeId": "artifact.statistic.native-color-histogram-role-evidence.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Stable bins carry dominance, field, salience, chroma, and typography evidence."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "shortlist-candidates",
+          "label": "Role-aware exact-color shortlist candidates",
+          "artifactTypeId": "artifact.candidate.color.role-aware-shortlist.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "The historical result is about 12 records, while a truly uniform source can yield one."
+          ],
+          "notes": [
+            "Each weighted center resolves to an observed source pixel with cluster and evidence provenance."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.hue-family-supplement",
+      "focusClass": "product-transformation",
+      "title": "Missing chromatic-family supplementation",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.hue-family-supplement` - Missing chromatic-family supplementation",
+        "headingLine": 684
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in the bounded reviewed configuration; implementation state `historical`; evidence scope `composition` and `complete-treatment`; runtime admissibility `unresolved` outside that configuration.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "composition",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-histogram",
+          "label": "Native histogram",
+          "artifactTypeId": "artifact.statistic.native-color-histogram-role-evidence.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The native histogram supplies exact observations and family support."
+          ]
+        },
+        {
+          "id": "canonical-shortlist",
+          "label": "Canonical shortlist",
+          "artifactTypeId": "artifact.candidate.color.role-aware-shortlist.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Perceptual absence is evaluated against the canonical shortlist before any supplement is appended elsewhere."
+          ]
+        },
+        {
+          "id": "family-evidence",
+          "label": "Support, chroma, salience, and connectivity evidence",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The reviewed availability gates are evaluated per fixed chromatic family."
+          ]
+        },
+        {
+          "id": "reviewed-configuration",
+          "label": "Reviewed supplementation configuration",
+          "artifactTypeId": "artifact.configuration.hue-family-supplement-reviewed.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Support does not generalize outside this explicitly reviewed bounded configuration."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "supplements",
+          "label": "Exact-source supplements",
+          "artifactTypeId": "artifact.candidate.color.hue-family-supplement.v1",
+          "cardinality": "zero-to-two",
+          "valueStateNotes": [
+            "The reviewed configuration emits zero, one, or two supplements."
+          ],
+          "notes": [
+            "These are supplements only, not an augmented candidate set and not authorized role choices."
+          ]
+        },
+        {
+          "id": "availability-diagnostics",
+          "label": "Availability diagnostics",
+          "artifactTypeId": "artifact.diagnostic.hue-family-supplement-availability.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The diagnostic records available, rejected, and absent family states even when no supplement emits."
+          ],
+          "notes": [
+            "Availability remains separate from role reachability and complete-treatment utility."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.representative-strategies",
+      "focusClass": "product-transformation",
+      "title": "Family representative alternatives",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.representative-strategies` - Family representative alternatives",
+        "headingLine": 700
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `mechanical` and `natural-handoff`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "representative-source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Generate alternatives for either one global family or one local endpoint band."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "family",
+          "label": "Color family",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "representative-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Global family evidence supports dense-exact, nearest-prototype, and historical density-synthesized alternatives."
+          ]
+        },
+        {
+          "id": "endpoint-band",
+          "label": "Endpoint band",
+          "artifactTypeId": "artifact.measurement.field-endpoint-band.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "representative-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "A local endpoint band supports band-local alternatives tied to one fit endpoint."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "representatives",
+          "label": "Finite representative alternatives",
+          "artifactTypeId": "artifact.candidate.color.family-representative.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each applicable strategy yields a finite alternative; exact witnesses are present where the strategy permits them."
+          ],
+          "notes": [
+            "Strategy, support regions, source connection, and deterministic tie key remain explicit."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.field-hypotheses",
+      "focusClass": "product-transformation",
+      "title": "Flat, separate-field, and gradient hypotheses",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.field-hypotheses` - Flat, separate-field, and gradient hypotheses",
+        "headingLine": 715
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for retaining explicit alternatives and `inconclusive` for field ownership; implementation state `historical`; evidence scope `isolated-semantic` and `natural-handoff`; runtime admissibility `permitted` as hypotheses, not selection authority.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic",
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "families",
+          "label": "Color families",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Families remain evidence, not pre-elected field roles."
+          ]
+        },
+        {
+          "id": "components",
+          "label": "Family components",
+          "artifactTypeId": "artifact.region-set.family-component-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Components supply spatial support and source lineage."
+          ]
+        },
+        {
+          "id": "field-domains",
+          "label": "Field domains",
+          "artifactTypeId": "artifact.region-set.field-domain-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Competing domain reconstructions remain available."
+          ]
+        },
+        {
+          "id": "fits",
+          "label": "Field fits",
+          "artifactTypeId": "artifact.evidence.robust-field-model-residual-aggregate.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Gradient fits may be absent; flat and separate-field hypotheses do not require a gradient fit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "seed-hypotheses",
+          "label": "Native-seed field hypotheses",
+          "artifactTypeId": "artifact.hypothesis.field.native-seed-provenanced.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "The finite output retains competing flat, separate-field, and gradient states and their rejection notes."
+          ],
+          "notes": [
+            "Similar colors do not prove one field and different colors do not prove separate areas."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.native-transition-path",
+      "focusClass": "product-transformation",
+      "title": "Native field-transition discovery",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.native-transition-path` - Native field-transition discovery",
+        "headingLine": 731
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded path generation; implementation state `historical`; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `permitted` only under declared configuration.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "component-graph",
+          "label": "Native family-component graph",
+          "artifactTypeId": "artifact.graph.native-family-component.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The graph supplies adjacent family components and local color steps."
+          ]
+        },
+        {
+          "id": "supported-geometry",
+          "label": "Supported field geometry",
+          "artifactTypeId": "artifact.region-set.field-domain-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Only declared supported linear or radial domain geometries are considered."
+          ]
+        },
+        {
+          "id": "transition-configuration",
+          "label": "Declared transition configuration",
+          "artifactTypeId": "artifact.configuration.native-transition-path.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The stage, endpoint, bridge, continuity, branching, and support bounds are load-bearing."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "ordered-traces",
+          "label": "Ordered transition-path evidence",
+          "artifactTypeId": "artifact.evidence.gradient-ordered-transition-paths.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "No record is emitted when no endpoint candidate is formed; every emitted record preserves accepted or rejected state, including zero-stage no-path records and untrimmed over-limit records rejected by the configured 16-stage acceptance cap."
+          ],
+          "notes": [
+            "Each record retains every ordered stage, exact stage colors and witnesses, endpoint identities and order, accepted intermediate support, legacy and current eligibility, its associated hypothesis or null, and explicit rejection reasons."
+          ]
+        },
+        {
+          "id": "transition-hypotheses",
+          "label": "Native-transition field hypotheses",
+          "artifactTypeId": "artifact.hypothesis.field.native-transition-provenanced.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Only eligible supported paths carry a non-null field hypothesis."
+          ],
+          "notes": [
+            "A path is still only a continuous-field hypothesis and can connect two semantic areas."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.band-local-endpoints",
+      "focusClass": "product-transformation",
+      "title": "Endpoint-band refinement",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.band-local-endpoints` - Endpoint-band refinement",
+        "headingLine": 748
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `natural-handoff`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "accepted-fit",
+          "label": "Accepted field fit",
+          "artifactTypeId": "artifact.diagnostic.accepted-historical-gradient-fit.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The fit identifies topology, direction, support, and local endpoint bands."
+          ]
+        },
+        {
+          "id": "field-domain",
+          "label": "Accepted field domain",
+          "artifactTypeId": "artifact.region-set.field-domain-evidence.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/acceptance",
+              "comparator": "equals",
+              "value": "accepted",
+              "notes": [
+                "Band-local endpoint refinement requires the diagnostic's own accepted source domain."
+              ]
+            }
+          ],
+          "notes": [
+            "The domain is the accepted fit's own spatial support."
+          ]
+        },
+        {
+          "id": "low-band",
+          "label": "Occupied low endpoint band",
+          "artifactTypeId": "artifact.measurement.field-endpoint-band.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Low-band representatives are recomputed locally rather than inherited from global families."
+          ]
+        },
+        {
+          "id": "high-band",
+          "label": "Occupied high endpoint band",
+          "artifactTypeId": "artifact.measurement.field-endpoint-band.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "High-band representatives are recomputed locally rather than inherited from global families."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "refined-hypothesis",
+          "label": "Band-local refined field hypothesis",
+          "artifactTypeId": "artifact.hypothesis.field.band-local-provenanced.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Each fit yields no refinement when either endpoint is unsupported, otherwise at most one."
+          ],
+          "notes": [
+            "Exact endpoints, band spread, fit quality, support, and band-local lineage remain attached."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.multi-source-fan-in",
+      "focusClass": "product-transformation",
+      "title": "Seed, transition, and endpoint hypothesis union",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.multi-source-fan-in` - Seed, transition, and endpoint hypothesis union",
+        "headingLine": 763
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for explicit provenance and `inconclusive` for arbitration; implementation state `historical`; evidence scope `mechanical` and `composition`; runtime admissibility `permitted` for union, not downstream authority.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "composition"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "seed-hypotheses",
+          "label": "Native-seed hypotheses",
+          "artifactTypeId": "artifact.hypothesis.field.native-seed-provenanced.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The native-seed collection remains one explicit fan-in arm."
+          ]
+        },
+        {
+          "id": "transition-hypotheses",
+          "label": "Native-transition hypotheses",
+          "artifactTypeId": "artifact.hypothesis.field.native-transition-provenanced.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The transition collection may be empty and remains one explicit fan-in arm."
+          ]
+        },
+        {
+          "id": "band-local-hypotheses",
+          "label": "Band-local endpoint hypotheses",
+          "artifactTypeId": "artifact.hypothesis.field.band-local-provenanced.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The band-local collection may be empty and remains one explicit fan-in arm."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "provenance-union",
+          "label": "Provenance-preserving hypothesis union",
+          "artifactTypeId": "artifact.hypothesis.field.provenance-union.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Every input record survives as a union member with source type native-seed, native-field-transition, or band-local-endpoint."
+          ],
+          "notes": [
+            "Fan-in performs union only: no arbitration, cap, normalization, deduplication, or downstream authority is implied."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.canonical-deduplication",
+      "focusClass": "product-transformation",
+      "title": "Treatment-key deduplication with descriptor retention",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.canonical-deduplication` - Treatment-key deduplication with descriptor retention",
+        "headingLine": 778
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `historical` and tested; evidence scope `mechanical`; runtime admissibility `permitted` when the key preserves all consequential semantics.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "logical-descriptors",
+          "label": "Logical treatment descriptors",
+          "artifactTypeId": "artifact.hypothesis.logical-treatment-descriptor.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Distinct source and evidence paths may describe the same complete treatment bytes."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "canonical-candidates",
+          "label": "Canonical treatments with retained descriptors",
+          "artifactTypeId": "artifact.candidate.treatment-canonical-with-descriptors.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Exactly one candidate is emitted for each complete treatment key."
+          ],
+          "notes": [
+            "Ordered descriptors, unioned strata, and the stable complete key are retained; uncertainty is not collapsed."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.stratified-cap",
+      "focusClass": "product-transformation",
+      "title": "Capacity-bounded materialization",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.stratified-cap` - Capacity-bounded materialization",
+        "headingLine": 792
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `mechanical`, `perturbation`, and `composition`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "perturbation",
+          "composition"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "canonical-candidates",
+          "label": "Canonical treatment set",
+          "artifactTypeId": "artifact.candidate.treatment-canonical-with-descriptors.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Candidates already retain every descriptor and stratum merged by complete treatment key."
+          ]
+        },
+        {
+          "id": "obligations",
+          "label": "Identity obligations",
+          "artifactTypeId": "artifact.hypothesis.identity-obligation.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Obligation-role strata are present only for supplied obligations."
+          ]
+        },
+        {
+          "id": "capacity-policy",
+          "label": "Capacity and stratum policy",
+          "artifactTypeId": "artifact.configuration.stratified-materialization-cap.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Capacity must be an integer in 1 through 1500 and all ordering and coverage policies are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "materialized-subset",
+          "label": "Ordered materialized candidate subset",
+          "artifactTypeId": "artifact.candidate.treatment-cap-materialized.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Output count is at least one and at most the configured capacity, never more than 1500."
+          ],
+          "notes": [
+            "Top quality, stratum coverage, and fair-rank retention provenance remain explicit; the cap can displace candidates when inputs are added."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate.recall-versus-ranking",
+      "focusClass": "review-custody",
+      "title": "Endorsed-sample reachability diagnostic",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `candidate.recall-versus-ranking` - Endorsed-sample reachability diagnostic",
+        "headingLine": 808
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.review-and-evidence-custody"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded recall/ranking diagnosis; implementation state `instrument`; evidence scope `downstream-utility`; runtime admissibility `prohibited` because reviewed samples are effective inputs.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "downstream-utility"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "candidate-treatments",
+          "label": "Bounded candidate treatments",
+          "artifactTypeId": "artifact.candidate.treatment-cap-materialized.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The diagnostic measures the supplied bounded domain and its stable rank order."
+          ]
+        },
+        {
+          "id": "endorsed-targets",
+          "label": "Endorsed review samples",
+          "artifactTypeId": "artifact.review.endorsed-palette-target.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "review",
+          "notes": [
+            "These answer-bearing reviewed targets prohibit this mechanism from cold runtime inference."
+          ]
+        },
+        {
+          "id": "matching-configuration",
+          "label": "Matching and epsilon configuration",
+          "artifactTypeId": "artifact.configuration.reachability-matching.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Role-blind projection, minimum-cost matching, epsilon, ties, and per-image aggregation are declared."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "diagnoses",
+          "label": "Recall-versus-ranking diagnoses",
+          "artifactTypeId": "artifact.diagnostic.recall-versus-ranking.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each reviewed target or aggregate is classified as unreachable, outranked, or matched under the configured epsilon."
+          ],
+          "notes": [
+            "Minimum mean OKLab cost, epsilon reachability, best candidate rank, and first acceptable rank are retained; the result is not accuracy."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.field-conditional-classifier",
+      "focusClass": "product-transformation",
+      "title": "Foreground/accent evidence conditioned on a field",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.field-conditional-classifier` - Foreground/accent evidence conditioned on a field",
+        "headingLine": 824
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in bounded reviewed cases; implementation state `historical`; evidence scope `isolated-semantic` and `natural-handoff`; runtime admissibility `unresolved` outside the cited configuration.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic",
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "families",
+          "label": "Every color family",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Families include source support, component observations, chroma, and polarity evidence."
+          ]
+        },
+        {
+          "id": "field-hypotheses",
+          "label": "Every field hypothesis",
+          "artifactTypeId": "artifact.hypothesis.field.provenance-union.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "All retained field alternatives participate; no field is preselected by this classifier."
+          ]
+        },
+        {
+          "id": "classifier-policy",
+          "label": "Field-conditional classifier policy",
+          "artifactTypeId": "artifact.configuration.field-conditional-role-classifier.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Every blend, cliff, ambiguity threshold, evidence band, and tie remains explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "role-evidence-matrix",
+          "label": "Family-by-field role-evidence matrix",
+          "artifactTypeId": "artifact.hypothesis.role-evidence.field-conditioned.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Exactly one matrix cell is emitted for every family-field pair, including ambiguous and field-owned states."
+          ],
+          "notes": [
+            "Each cell carries foreground and accent scores, preference, reason, confidence, coherent support, and polarity evidence."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.identity-obligations",
+      "focusClass": "product-transformation",
+      "title": "Role-specific identity obligations",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.identity-obligations` - Role-specific identity obligations",
+        "headingLine": 841
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `isolated-semantic`, `natural-handoff`, and `composition`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic",
+          "natural-handoff",
+          "composition"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "field-hypotheses",
+          "label": "Field ownership hypotheses",
+          "artifactTypeId": "artifact.hypothesis.field.provenance-union.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Field-owned families are excluded under the retained field hypotheses."
+          ]
+        },
+        {
+          "id": "family-evidence",
+          "label": "Family prototypes, population, chroma, and polarity",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Prototype distance, population, chroma, and signed polarity are all causally consequential."
+          ]
+        },
+        {
+          "id": "component-evidence",
+          "label": "Source-connected component evidence",
+          "artifactTypeId": "artifact.region-set.family-component-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Obligation nomination requires source-connected retained role observations."
+          ]
+        },
+        {
+          "id": "obligation-policy",
+          "label": "Obligation cap, deduplication, quota, polarity, and reservation policy",
+          "artifactTypeId": "artifact.configuration.identity-obligation-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The four-seat base, two-neutral quota, opposite-polarity exception and reorder, material-distance deduplication, and two post-cap reservations are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "ordered-obligations",
+          "label": "Ordered identity obligations",
+          "artifactTypeId": "artifact.hypothesis.identity-obligation.v1",
+          "cardinality": "zero-to-six",
+          "valueStateNotes": [
+            "The output contains zero through six obligations: at most four base seats, one major-family reservation, and one chromatic reservation."
+          ],
+          "notes": [
+            "Post-cap reservations are additive and every obligation remains an evidence hypothesis rather than semantic truth."
+          ]
+        },
+        {
+          "id": "selection-trace",
+          "label": "Obligation selection and reservation trace",
+          "artifactTypeId": "artifact.provenance.identity-obligation-selection-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty and populated obligation results both carry one trace of evaluated, omitted, exempted, reordered, and major-reserved families."
+          ],
+          "notes": [
+            "The chromatic append is reflected in obligations but the historical returned trace has no dedicated chromatic-reservation field."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.text-led-foreground",
+      "focusClass": "product-transformation",
+      "title": "Typography-led foreground election",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.text-led-foreground` - Typography-led foreground election",
+        "headingLine": 864
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in a bounded reviewed scope; implementation state `prototype`; evidence scope `isolated-semantic`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "field",
+          "label": "Considered field hypothesis",
+          "artifactTypeId": "artifact.hypothesis.field.provenance-union.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Foreground evidence is conditioned on this field rather than a generic black or white prior."
+          ]
+        },
+        {
+          "id": "text-like-candidates",
+          "label": "Text-like exact-source candidates",
+          "artifactTypeId": "artifact.candidate.color.text-like-source.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Candidates carry structural text evidence and exact source support, not OCR truth."
+          ]
+        },
+        {
+          "id": "polarity",
+          "label": "Foreground polarity observations",
+          "artifactTypeId": "artifact.measurement.foreground-polarity-observation.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Polarity is evaluated against the considered field."
+          ]
+        },
+        {
+          "id": "contrast",
+          "label": "Candidate legibility measurements",
+          "artifactTypeId": "artifact.measurement.candidate-field-contrast.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Candidates remain subject to legibility rather than winning on text evidence alone."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "foreground-hypothesis",
+          "label": "Text-led foreground hypothesis",
+          "artifactTypeId": "artifact.hypothesis.foreground.text-led.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The output contains an elected candidate or an explicit fallback state when structural text evidence cannot elect one."
+          ],
+          "notes": [
+            "Evidence and fallback remain attached; this bounded election is not a complete role solution or final palette."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.maximin-ramp-foreground",
+      "focusClass": "product-transformation",
+      "title": "Maximize minimum raw APCA over the field",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.maximin-ramp-foreground` - Maximize minimum raw APCA over the field",
+        "headingLine": 878
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a bounded legibility filter/election; implementation state `prototype`; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `permitted` as a floor, not final identity authority.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "foreground-candidates",
+          "label": "Foreground candidates",
+          "artifactTypeId": "artifact.candidate.color.foreground.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "All candidates are evaluated over the same exact rendered field path."
+          ]
+        },
+        {
+          "id": "rendered-field",
+          "label": "Exact rendered field path",
+          "artifactTypeId": "artifact.rendering.exact-field-path.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The complete flat field or ramp, including between-stop positions, defines the minimum."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "maximin-election",
+          "label": "Per-candidate minima and maximin election",
+          "artifactTypeId": "artifact.hypothesis.foreground.maximin-ramp-election.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "One report contains every candidate minimum, one deterministic argmax, its minimizing ramp position, and tie record."
+          ],
+          "notes": [
+            "The result establishes a legibility floor only and does not claim final foreground identity or a final palette."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.accent-shape-evidence",
+      "focusClass": "product-transformation",
+      "title": "Compact, repeated, chromatic mark evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.accent-shape-evidence` - Compact, repeated, chromatic mark evidence",
+        "headingLine": 893
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded cues and `inconclusive` as universal accent scoring; implementation state `historical`; evidence scope `isolated-semantic`; runtime admissibility `unresolved` as role authority.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "family-observations",
+          "label": "Family components and observations",
+          "artifactTypeId": "artifact.region-set.family-component-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Retained observations carry geometry, recurrence, local contrast, signature, and source-support cues."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "accent-evidence",
+          "label": "Accent shape evidence",
+          "artifactTypeId": "artifact.hypothesis.accent-shape-evidence.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One record is produced for each evaluated family, including weak or unsupported states."
+          ],
+          "notes": [
+            "Compactness, repetition, chroma, local contrast, signature observation, support gate, raw score, and exact provenance all remain visible."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.per-mass-mark-reading",
+      "focusClass": "product-transformation",
+      "title": "Mark evidence normalized by mark mass",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.per-mass-mark-reading` - Mark evidence normalized by mark mass",
+        "headingLine": 909
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in the cited salvage; implementation state `prototype`; evidence scope `natural-handoff`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "natural-handoff"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "mark-cue-totals",
+          "label": "Mark support and cue totals",
+          "artifactTypeId": "artifact.measurement.mark-support-cue-totals.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Each record distinguishes mark mass from whole-image area before normalization."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "normalized-rankings",
+          "label": "Per-mass mark scores and ranks",
+          "artifactTypeId": "artifact.hypothesis.mark-per-mass-ranking.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Every input mark retains a normalized score, deterministic rank, and its original mass."
+          ],
+          "notes": [
+            "Semantic and spatial eligibility stays separate so normalization cannot silently promote tiny noise."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.text-mark-swap",
+      "focusClass": "product-transformation",
+      "title": "Decisive foreground/accent role exchange",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.text-mark-swap` - Decisive foreground/accent role exchange",
+        "headingLine": 922
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` within the reviewed v2-3 rule; implementation state `historical`; evidence scope `composition` and `complete-treatment`; runtime admissibility `unresolved` outside that rule.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "composition",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "candidate-treatment",
+          "label": "Complete candidate treatment",
+          "artifactTypeId": "artifact.treatment.complete-internal.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The color set and field are fixed before evaluating a pure role permutation."
+          ]
+        },
+        {
+          "id": "role-claims",
+          "label": "Field-conditioned foreground and accent claims",
+          "artifactTypeId": "artifact.hypothesis.role-evidence.field-conditioned.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "A swap requires decisive evidence that the selected accent is text and the foreground is the stronger mark."
+          ]
+        },
+        {
+          "id": "legality-checks",
+          "label": "Swap legality checks",
+          "artifactTypeId": "artifact.measurement.role-swap-legality.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "All resulting pairs and rendered stops are revalidated before a swap can emit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "swap-result",
+          "label": "Unchanged or swapped candidate treatment",
+          "artifactTypeId": "artifact.treatment.text-mark-swap-result.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The output is exactly the unchanged candidate or one legal foreground-accent exchange with repair identity."
+          ],
+          "notes": [
+            "The color set and field do not change, and the bounded repair result is not a final contract palette."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.family-relationship-mirroring",
+      "focusClass": "product-transformation",
+      "title": "Palette relationships mirror artwork relationships",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.family-relationship-mirroring` - Palette relationships mirror artwork relationships",
+        "headingLine": 938
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses",
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `unbuilt` as a general rule; evidence scope `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "artwork-relations",
+          "label": "Artwork family-relation hypotheses",
+          "artifactTypeId": "artifact.hypothesis.artwork-family-relations.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Artwork-specific sharing and separation alternatives remain hypotheses."
+          ]
+        },
+        {
+          "id": "candidate-treatments",
+          "label": "Complete candidate treatments",
+          "artifactTypeId": "artifact.treatment.complete-internal.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Treatments are compared relationally without assuming two or four independent families."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "relational-evidence",
+          "label": "Relational compatibility evidence",
+          "artifactTypeId": "artifact.measurement.treatment-family-relational-compatibility.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Evidence may support, contradict, or leave ambiguous each treatment-relation pairing."
+          ],
+          "notes": [
+            "No output asserts a mandatory family count or universal relationship template."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.population-eligibility",
+      "focusClass": "evaluation-probe",
+      "title": "Population or exact-mass role gate",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.population-eligibility` - Population or exact-mass role gate",
+        "headingLine": 952
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `falsified` as a population eligibility gate and `supported` as reportable measurement; implementation state `historical` gate and `live` reporting; evidence scope `isolated-semantic`; runtime admissibility `prohibited` as a gate.",
+        "scientificInterpretations": [
+          "falsified",
+          "supported"
+        ],
+        "implementationStates": [
+          "historical",
+          "live"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "population",
+          "label": "Color population or exact mass",
+          "artifactTypeId": "artifact.measurement.color-population-exact-mass.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Population remains valid reportable evidence about a source color."
+          ]
+        },
+        {
+          "id": "threshold",
+          "label": "Historical eligibility threshold",
+          "artifactTypeId": "artifact.configuration.population-eligibility-threshold.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The threshold is supplied only to reproduce the falsified and prohibited gate."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "eligibility-bit",
+          "label": "Historical eligible or ineligible result",
+          "artifactTypeId": "artifact.diagnostic.population-eligibility-bit.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The output is the tested eligible or ineligible bit under the historical threshold."
+          ],
+          "notes": [
+            "This development diagnostic is prohibited as a runtime role gate; source population stays reportable rather than becoming validity authority."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.salience-led-candidacy",
+      "focusClass": "product-transformation",
+      "title": "Candidate nomination led by coherent salience",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.salience-led-candidacy` - Candidate nomination led by coherent salience",
+        "headingLine": 967
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured`; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "mark-groups",
+          "label": "Coherent mark groups",
+          "artifactTypeId": "artifact.region-set.coherent-mark-group.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Groups retain semantic uncertainty between identity marks, title text, labels, shadows, and noise."
+          ]
+        },
+        {
+          "id": "salience-coherence",
+          "label": "Salience and coherence evidence",
+          "artifactTypeId": "artifact.measurement.mark-salience-coherence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Coherent salience is considered before mass ordering."
+          ]
+        },
+        {
+          "id": "source-support",
+          "label": "Exact-source family support",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Nominations must remain tied to exact source support."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "nominations",
+          "label": "Salience-led candidate nominations",
+          "artifactTypeId": "artifact.candidate.role.salience-nomination.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each evaluated mark group yields a nominated, null, or ambiguous state."
+          ],
+          "notes": [
+            "Retained mass diagnostics prevent salience from turning rarity into an eligibility rule."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.hue-direction-diversity",
+      "focusClass": "product-transformation",
+      "title": "Smoothed hue directions and determinant diversity",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.hue-direction-diversity` - Smoothed hue directions and determinant diversity",
+        "headingLine": 980
+      },
+      "capabilityIds": [
+        "capability.role-and-identity-hypotheses",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.role-and-identity-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured`; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "conditionalConstraints": [
+        {
+          "id": "repository-kernel-rank-bound",
+          "if": [
+            {
+              "subject": {
+                "direction": "input",
+                "portId": "diversity-policy",
+                "valuePath": "/kernelId"
+              },
+              "comparator": "equals",
+              "value": "repository-2d-unit-hue-gram"
+            }
+          ],
+          "then": [
+            {
+              "subject": {
+                "direction": "input",
+                "portId": "diversity-policy",
+                "valuePath": "/requestedCardinality"
+              },
+              "comparator": "less-than-or-equal",
+              "value": 2
+            }
+          ],
+          "notes": [
+            "The cited 2D Gram kernel has rank at most two; larger requests require a separately declared valid higher-rank PSD kernel."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "chromatic-families",
+          "label": "Source-supported chromatic families",
+          "artifactTypeId": "artifact.measurement.color-family-evidence.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Source support is gated before determinant diversity so vivid noise is not automatically favored."
+          ]
+        },
+        {
+          "id": "diversity-policy",
+          "label": "Smoothing, kernel, and cardinality policy",
+          "artifactTypeId": "artifact.configuration.hue-direction-diversity.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The requested cardinality must not exceed kernel rank; the cited 2D Gram kernel supports at most two directions."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "support-field",
+          "label": "Smoothed direction support field",
+          "artifactTypeId": "artifact.scalar-field.smoothed-hue-direction-support.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty supported-family result is represented by a valid all-zero or explicitly empty support field."
+          ],
+          "notes": [
+            "Chroma weighting, circular bins, neighborhood smoothing, near-neutral handling, and support gates remain declared."
+          ]
+        },
+        {
+          "id": "diverse-directions",
+          "label": "Finite diverse direction set",
+          "artifactTypeId": "artifact.hypothesis.hue-direction-diverse.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "No direction is emitted when none passes support; output cardinality never exceeds the valid requested and kernel-supported bound."
+          ],
+          "notes": [
+            "Directions are nomination hypotheses and not elected roles or palette colors."
+          ]
+        },
+        {
+          "id": "marginal-gain-trace",
+          "label": "Marginal-gain and rank trace",
+          "artifactTypeId": "artifact.diagnostic.hue-direction-marginal-gain.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The trace exists even for an empty or rank-defective result."
+          ],
+          "notes": [
+            "For the exact proposed 2D kernel, determinants for sets larger than two are exposed as zero rather than described as repaired by generic DPP literature."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role.legacy-independent-election",
+      "focusClass": "product-transformation",
+      "title": "Root role-by-role heuristic election",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `role.legacy-independent-election` - Root role-by-role heuristic election",
+        "headingLine": 998
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `live`; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "root-clusters",
+          "label": "Root clusters",
+          "artifactTypeId": "artifact.region-set.legacy-root-clusters.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The largest connected cluster becomes the legacy background before independent role elections."
+          ]
+        },
+        {
+          "id": "local-saliency",
+          "label": "Local saliency",
+          "artifactTypeId": "artifact.scalar-field.legacy-local-saliency.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Saliency participates in foreground and accent heuristics."
+          ]
+        },
+        {
+          "id": "source-raster",
+          "label": "Native source raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Connected clusters, saliency, and heuristic colors remain tied to the once-decoded native raster."
+          ]
+        },
+        {
+          "id": "heuristic-policy",
+          "label": "Contrast floor and heuristic policy",
+          "artifactTypeId": "artifact.configuration.legacy-independent-role-election.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Population, saliency, chroma, contrast, fallback, independent role, alternate-field, and gradient-test behavior is explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "legacy-role-election",
+          "label": "Legacy independently elected role candidate",
+          "artifactTypeId": "artifact.candidate.treatment.legacy-role-election.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The live caller returns background, surface, foreground, accent, and one gradient boolean, using fallbacks where required."
+          ],
+          "notes": [
+            "The independently elected legacy roles are a candidate result, not a jointly reviewed or final contract palette."
+          ]
+        },
+        {
+          "id": "method-diagnostics",
+          "label": "Rival role-method diagnostics",
+          "artifactTypeId": "artifact.diagnostic.legacy-role-methods.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "One diagnostic bundle contains all computed rival foreground and full-palette methods, including fallback states."
+          ],
+          "notes": [
+            "Computed and logged rival methods are not thereby selected or jointly reviewed by the returned policy."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "This fragment types candidate semantic compatibility only; it contains no graph bindings, dependency claims, architecture, runtime pipeline, or build order.",
+    "Field-hypothesis fan-in retains native-seed, native-field-transition, and band-local-endpoint provenance before treatment-key deduplication.",
+    "Hue-family supplement outputs remain supplements and diagnostics; no output in this fragment silently denotes an augmented shortlist.",
+    "Candidate elections, bounded selectors, repairs, and the legacy role election are not the exact final UI treatment contract."
+  ]
+}

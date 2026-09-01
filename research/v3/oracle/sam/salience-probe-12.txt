@@ -1,0 +1,41 @@
+# Salience / non-semantic phrasing probe set (probe-3-salience), 12 images.
+# Targeted, not random: every image was OPENED and its content confirmed by eye on a contact
+# sheet built from the eval-142 summary rows before it went on this list. All 12 are members
+# of the 142-image premise eval set, so their v2 SAM rows are available for comparison.
+# read_list_file() has no inline-comment support, so every note is on its own line.
+
+# --- strong single subject (4): a salience prompt has an obvious right answer here -----
+# man behind rain-streaked glass, dark photo, one figure
+images/orelsan.jpg
+# surreal collage: a standing figure beside a van, busy background
+10/ab67616d0000b27300103a3729bf589e0dc913ab
+# studio portrait, one woman, plain surround
+01/ab67616d00001e0200015a7a9909e03141e001e3.jpg
+# a single hand pressed on frosted glass, otherwise empty pale field
+09/ab67616d0000b2730009448702be55dfc86fde67
+
+# --- all-typography (2): no object at all, so a salience prompt must either take the
+# --- lettering or return nothing. Either answer is informative.
+# "8 IS ENOUGH", yellow field, red paint drip, dense credit block
+00/ab67616d00001e020000269ead63cf2376a6b67d.jpg
+# green leaf macro under an all-over type treatment
+04/ab67616d00001e020004ccf0ae91364130886c02
+
+# --- one small coloured mark on a flat field (2): the attributive colour prompts'
+# --- best case. If "colourful accent" ever works, it works here.
+# near-white cover, one small pink lotus mark, thin type
+00/ab67616d00001e02000060b6aa68cdd9e02567b1.jpg
+# single glossy red apple on white, red script type
+00/ab67616d00001e020000e692a330542f8ed14132.jpg
+
+# --- abstract (2): no subject, no ground/figure split a person would agree on
+# pastel triangle and a butterfly over cloud
+01/ab67616d00001e0200018a1e2daf68a53f504cb9.jpg
+# poured orange-and-blue paint, all-over
+09/ab67616d0000b27300097e55f9a93ceb03afa4b2
+
+# --- scene / landscape (2): a background exists and is nameable
+# hotel-room interior, no subject (also a probe-2 confirmed negative)
+03/ab67616d00001e02000300752f338b6aedff856c.jpg
+# neon city street at night, deep perspective, signage everywhere
+02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg

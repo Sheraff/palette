@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+  "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf",
+  "candidateVersion": "album-artwork-first-principles-0.7.1",
+  "implementationHash": "a24561fd38227afdc6e68928a8cffc51e2e22213591bef6680290637a635103e",
+  "scientificSha256": "0c3780a114cab31a0ae8384548d93c8ee49a541f70c3da214ca4527e3909d642",
+  "failedPredecessorVersion": "album-artwork-first-principles-0.7.0",
+  "baselineVersion": "album-artwork-first-principles-0.6.0",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "inputHashes": {
+    "manifestSha256": "0d10397551fab94bfa44763a9c808d319703ac7877a02cda72ed6f9b67ad0132",
+    "preparationSha256": "a6ae2c4db0e706ddc83b8dba8d4deaca57660e05f7738d9c65d67bcae2366722",
+    "feedbackSha256": "3f221d945f05e258c2bab95d2860d5fab2bfb9e610caa6d26e7a048637228be7",
+    "interpretationId": "b4d52bcb644ed0e24a39243ef1ec7f9e076c8f544dc281b492adaf04da414cec"
+  },
+  "developmentDelta": {
+    "exactBaselineMatchCount": 24,
+    "changedFromBaselineCount": 4,
+    "changedFromFailedCount": 17,
+    "freshReviewCaseCount": 3,
+    "transferredReviewCaseCount": 1
+  },
+  "freshReview": {
+    "candidateQualityCounts": {
+      "strong": 2,
+      "unacceptable": 1
+    },
+    "baselineQualityCounts": {
+      "strong": 2,
+      "weak-fallback": 1
+    },
+    "candidatePositiveCount": 2,
+    "baselinePositiveCount": 2,
+    "relativeCounts": {
+      "baseline-stronger": 1,
+      "similarly-valid": 2
+    },
+    "candidateIncompleteIdentityTagCount": 1,
+    "baselineIncompleteIdentityTagCount": 1,
+    "caseResults": [
+      {
+        "caseId": "development-04",
+        "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+        "candidateSide": "A",
+        "candidateQuality": "strong",
+        "baselineQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateTags": [],
+        "baselineTags": [],
+        "comment": "",
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "submittedAt": "2026-07-27T14:36:38.859Z"
+      },
+      {
+        "caseId": "development-03",
+        "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+        "candidateSide": "B",
+        "candidateQuality": "unacceptable",
+        "baselineQuality": "weak-fallback",
+        "relativeOutcome": "baseline-stronger",
+        "candidateTags": [
+          "incomplete artwork identity"
+        ],
+        "baselineTags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "still the same comment as for the last few times this artwork has been shown in review:\n- the foreground should be black like the title of the album on the artwork. Luna can work as a weak fallback.\n- Magentarama is an excellent accent\n- the background should be a gradient between 2 major hues like it is in the artwork (orange-red to green; or green to cyan-blue; or cyan-green to dark blue). Those are some of the strongest gradients in all of our datasets\n\ni know this artwork is exceptionally tricky, this is why it is in this dataset",
+        "commentSha256": "cda4dae4b7bfc209555c7ba97da04fdb8e29e77fbabc6246721baeddf5c525b9",
+        "submittedAt": "2026-07-27T14:41:23.499Z"
+      },
+      {
+        "caseId": "development-17",
+        "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+        "candidateSide": "A",
+        "candidateQuality": "strong",
+        "baselineQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateTags": [],
+        "baselineTags": [],
+        "comment": "",
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "submittedAt": "2026-07-27T14:41:23.325Z"
+      }
+    ]
+  },
+  "transferredExactReviewAssessments": [
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "candidateQuality": "strong",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "similarly-valid"
+    }
+  ],
+  "gate": {
+    "everyFreshCandidateStrongOrAcceptable": {
+      "pass": false,
+      "candidatePositiveCount": 2,
+      "required": 3
+    },
+    "noFreshBaselineStronger": {
+      "pass": false,
+      "baselineStronger": 1
+    },
+    "candidateIncompleteIdentityDoesNotExceedBaseline": {
+      "pass": true,
+      "candidate": 1,
+      "baseline": 1
+    },
+    "transferredExactTreatmentRemainsPositive": {
+      "pass": true,
+      "positiveCount": 1,
+      "required": 1
+    },
+    "noRepeatedNewSystemicFailureClass": {
+      "pass": true,
+      "repeatedClasses": []
+    }
+  },
+  "gatePass": false,
+  "disposition": "quality-guard-mechanics-passed-human-development-gate-failed-revise-comparison-domain",
+  "authorization": {
+    "futureSample": false,
+    "phase5": false,
+    "promotion": false,
+    "persistence": false,
+    "fullRoster": false
+  },
+  "analysisId": "ec8b6d5249d840526aa4465a8a0f5eae219dacf25b27a559b4ec6f38cfe79f17"
+}

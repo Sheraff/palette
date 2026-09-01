@@ -1,0 +1,884 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-review-v1",
+  "presentationVersion": "album-artwork-palette-v2-phase-4-presentation-v1",
+  "cases": [
+    {
+      "caseId": "phase4-01-522ec8a241ae",
+      "order": 0,
+      "source": {
+        "file": "0f/ab67616d0000b273000fd74c362d6ae2d5238117",
+        "sha256": "28f9510d7f84801be3ef873617bd42388a1d88ce0fa7c82a78ce1750b6c47e3e",
+        "bytes": 159919
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#1a1a12",
+              "nearestName": "Dark Forest",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#7a5e36",
+              "nearestName": "Burlap",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#faf5e2",
+              "nearestName": "White",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d48a5b",
+              "nearestName": "Kiln",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#b39c78",
+              "nearestName": "Dune",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#d0b997",
+              "nearestName": "Another One Bites the Dust",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#070b0c",
+              "nearestName": "Onyx",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#f7efdc",
+              "nearestName": "White",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "phase4-02-6e0bea36fbd2",
+      "order": 1,
+      "source": {
+        "file": "0f/ab67616d0000b273000f668bd309255b0a0e1a3e",
+        "sha256": "347efe08c1c9fc478356318563b53cbd9e4b55df8b50f8b707f015851b17f55d",
+        "bytes": 60776
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#181b22",
+              "nearestName": "Umbra",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#292e34",
+              "nearestName": "Oil",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#e3e4e6",
+              "nearestName": "Mist",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#fcfcfa",
+              "nearestName": "Snow",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#15161e",
+              "nearestName": "Darkroom",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#282d34",
+              "nearestName": "Starling",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#efeeef",
+              "nearestName": "Linen",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#9f9fa2",
+              "nearestName": "Cool Grey",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "phase4-03-70ceed4c0383",
+      "order": 2,
+      "source": {
+        "file": "0f/ab67616d0000b273000fc159393ca3d552b90d9a",
+        "sha256": "7cfa0f1c1b35625a6c35e6ec48d5e4b8d767d6f75e6a79b5302ee72cdf28c4ad",
+        "bytes": 81410
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#f6f6f6",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#dbdbdb",
+              "nearestName": "Fog",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#010101",
+              "nearestName": "Soot",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#9facb4",
+              "nearestName": "Cadet Grey",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#fcfcfc",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#e5e5e5",
+              "nearestName": "Mist",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#606060",
+              "nearestName": "Morel",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#8dc3b7",
+              "nearestName": "Norway",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "phase4-04-7cf39a15255b",
+      "order": 3,
+      "source": {
+        "file": "0f/ab67616d0000b273000fc9e032b94152d90efc5d",
+        "sha256": "8bf9fd2f6abdf6ee9b9ccd808abdd9b3d2475abf89cb6854d47acc7d13ba80a0",
+        "bytes": 197992
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#1e191d",
+              "nearestName": "Umbra",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#2e2c2f",
+              "nearestName": "Mole",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#d0d2cf",
+              "nearestName": "Zen",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#676362",
+              "nearestName": "Stone",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#1b1616",
+              "nearestName": "Umbra",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#272427",
+              "nearestName": "Lead",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fdffff",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#b6b3b2",
+              "nearestName": "Silver",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "phase4-05-8ce8b005da2c",
+      "order": 4,
+      "source": {
+        "file": "0f/ab67616d0000b273000fb98c514902f2870cf5b1",
+        "sha256": "5441d52e60c1fd01388bfb6933b62ac75e71e9e24b1f535a6c66c555cdd51c02",
+        "bytes": 126840
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#1a230e",
+              "nearestName": "Black Forest",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#d3e8f9",
+              "nearestName": "Skating Rink",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#effafc",
+              "nearestName": "Frost",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#50676f",
+              "nearestName": "Harbour Grey",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#020507",
+              "nearestName": "Blackout",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#2b2f23",
+              "nearestName": "Moss Shadow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f0fafb",
+              "nearestName": "Frost",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#8fadc7",
+              "nearestName": "Raincoat",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "phase4-06-8d6cb6d5290d",
+      "order": 5,
+      "source": {
+        "file": "0f/ab67616d0000b273000f6ba11d95caf67472cc64",
+        "sha256": "43985495b51ddd618f26b28c9e0c43e95be845038aae836d12096c6aa6fdc67d",
+        "bytes": 140141
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#f5f5f5",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#f5f5f5",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#4a4036",
+              "nearestName": "Cocoa",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#0d0711",
+              "nearestName": "Blackberry",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#aa8182",
+              "nearestName": "Dusty Blush",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fcd803",
+              "nearestName": "Sunbeam",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#130c17",
+              "nearestName": "Eigengrau",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d2ac53",
+              "nearestName": "Doubloon",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "phase4-07-aad2dd34c47d",
+      "order": 6,
+      "source": {
+        "file": "0f/ab67616d0000b273000f8c1255ad2414033ff8d6",
+        "sha256": "03aa6e5678067c3d85186f6cc6c6a608cd4a3ac182a3777bf72144fdc9b5891c",
+        "bytes": 152798
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#9b8978",
+              "nearestName": "Nougat",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#b8b19c",
+              "nearestName": "Olive or Twist",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#340f0d",
+              "nearestName": "Dark Mahogany",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#b8a994",
+              "nearestName": "Olive or Twist",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#b8a994",
+              "nearestName": "Olive or Twist",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#512c1c",
+              "nearestName": "Bark",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#0d0805",
+              "nearestName": "Black Olive",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "phase4-08-bdd706faa249",
+      "order": 7,
+      "source": {
+        "file": "0f/ab67616d0000b273000f8456a2fdf3899f9316b8",
+        "sha256": "2426fbf241c0f8b96a0ac2b8183f782f48e83a7725b2a1cb3854031b1a0b4a73",
+        "bytes": 135271
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#e3e7ea",
+              "nearestName": "Mist",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#bfc8ce",
+              "nearestName": "Dim",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#282929",
+              "nearestName": "Lead",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#4e4d50",
+              "nearestName": "Liver",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#bcc7cd",
+              "nearestName": "Rain Check",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#e6eaed",
+              "nearestName": "Linen",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#2f2d30",
+              "nearestName": "Mole",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#77767b",
+              "nearestName": "Ash",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "phase4-09-c81cb07acb2b",
+      "order": 8,
+      "source": {
+        "file": "0f/ab67616d00001e02000f4be8db16b92533d18168",
+        "sha256": "4617556951304c596abe236321842be5c32e48d39d510a5eacddcf7797e25729",
+        "bytes": 25092
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#0e0612",
+              "nearestName": "Blackberry",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#210e28",
+              "nearestName": "Blackened Plum",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#87c9e3",
+              "nearestName": "Wave",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#80399f",
+              "nearestName": "Clematis",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#190a1d",
+              "nearestName": "Eigengrau",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#31153d",
+              "nearestName": "Nightshade Violet",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#7ff5f7",
+              "nearestName": "Freon",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#7b3899",
+              "nearestName": "Clematis",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "phase4-10-c99d23baffde",
+      "order": 9,
+      "source": {
+        "file": "0f/ab67616d0000b273000f009f04eb600d1428f05b",
+        "sha256": "c0f935ea9cef7ec98eb06e502445e5eac6197d0137c31d1c5a5f41f4a8f20a10",
+        "bytes": 132254
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#1e1d1e",
+              "nearestName": "Umbra",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#705a41",
+              "nearestName": "Mocha",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fbfbf9",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#a75530",
+              "nearestName": "Copper Clay",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#23241f",
+              "nearestName": "Holy Crow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#3f3625",
+              "nearestName": "Walnut",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f8f7f5",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#a69279",
+              "nearestName": "Khaki",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "phase4-11-daa1e5610dc4",
+      "order": 10,
+      "source": {
+        "file": "0f/ab67616d0000b273000fc148598d1f416809d9a2",
+        "sha256": "1a602bce91717dd3eab48a546bb74670b8f2078d8938fdd260f97895c197869a",
+        "bytes": 198843
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#c4a563",
+              "nearestName": "Jackpot",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#9bb6d5",
+              "nearestName": "Adrift on the Nile",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#130e14",
+              "nearestName": "Raven",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#f4e065",
+              "nearestName": "Butter",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#1a4480",
+              "nearestName": "Heritage Blue",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#171017",
+              "nearestName": "Bats Cloak",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#c8e2f1",
+              "nearestName": "Bare Mintimum",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#eee623",
+              "nearestName": "Yuzu",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "phase4-12-f3b73f94f3e3",
+      "order": 11,
+      "source": {
+        "file": "0f/ab67616d0000b273000fb9093d341aa5c5a1356e",
+        "sha256": "9761fbb47b62eff8f6d7cf2607b70751d2e407f44503e7bd7ce45af5e185f20a",
+        "bytes": 130100
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#7a7976",
+              "nearestName": "Sleepy Koala",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#8c8c8c",
+              "nearestName": "Pebble",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#131312",
+              "nearestName": "Iron Black",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#fafafa",
+              "nearestName": "Snow",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#7b7b7b",
+              "nearestName": "Sleepy Koala",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#2d2d2d",
+              "nearestName": "Mole",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f8f8f8",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#afafaf",
+              "nearestName": "Silver",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    }
+  ],
+  "manifestId": "b795cf08eb7bf9e3a91751b633107cf759cc3dcb5dfaff7711ffda147eff1e01"
+}

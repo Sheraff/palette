@@ -1,0 +1,3439 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "oracle-probe-gold-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "group-a.probes.v1.1",
+	"seed": 20260803,
+	"generatedBy": "research/v3/src/review-server/oracle-validation.ts",
+	"builtFrom": [
+		"research/v3/data/oracle-validation/premise-disambiguation-1.json",
+		"research/v3/oracle/premise/prompts/group-a.probes.v1.1.solo-bg-visible.json",
+		"research/v3/oracle/premise/prompts/group-a.probes.v1.1.solo-one-colour.json",
+		"research/v3/oracle/premise/prompts/group-a.probes.v1.1.solo-continuous-change.json",
+		"research/v3/oracle/premise/prompts/group-a.probes.v1.1.solo-separate-areas.json",
+		"research/v3/oracle/premise/prompts/group-a.probes.v1.1.solo-motif-or-material.json",
+		"research/v3/oracle/premise/prompts/group-a.probes.v1.1.solo-depicted-place.json"
+	],
+	"selection": {
+		"rule": "The same 30 gold artworks as the disambiguation round, asked the six group-a.probes.v1.1 probes that derive ground_type, one contiguous pass per probe in bundled-p's order. Two pre-registered uses (PREMISE_NEXT.md §12): a probe-native gold with no construct-match caveat, and the model-free reliability test — the reviewer's probe-derived tags against the reviewer's own direct six-way answers on the same images.",
+		"counts": {
+			"artworks": 30,
+			"probes": 6,
+			"items": 180
+		}
+	},
+	"questions": [
+		{
+			"key": "bg_visible",
+			"kind": "enum",
+			"question": "bg_visible - Can you make out a background at all — anything behind the main subject and the text?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story. If you cannot tell, answer unsure — it is a real answer.",
+			"preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+			"framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "there is a background you can see",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "you cannot make out any background",
+					"hotkey": "n"
+				},
+				{
+					"key": "unsure",
+					"label": "unsure",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		},
+		{
+			"key": "one_colour",
+			"kind": "enum",
+			"question": "one_colour - Is the background essentially one single colour all over? If different parts have different colours, answer no.",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story. If you cannot tell, answer unsure — it is a real answer.",
+			"preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+			"framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "one colour, all over",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "more than one colour is present, or different parts have different colours",
+					"hotkey": "n"
+				},
+				{
+					"key": "unsure",
+					"label": "unsure",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		},
+		{
+			"key": "continuous_change",
+			"kind": "enum",
+			"question": "continuous_change - Does the background's colour change continuously — a fade, a glow, a vignette, colours melting into one another — across the whole background rather than only in one part of it? If it changes in one part and not in another, answer no.",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story. If you cannot tell, answer unsure — it is a real answer.",
+			"preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+			"framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "it changes continuously, across the whole background",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "it does not, or it only changes in one part",
+					"hotkey": "n"
+				},
+				{
+					"key": "unsure",
+					"label": "unsure",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		},
+		{
+			"key": "separate_areas",
+			"kind": "enum",
+			"question": "separate_areas - Can you point to two or more separate areas of the background, each with its own colour? A blurry or soft join still counts as two areas.",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story. If you cannot tell, answer unsure — it is a real answer.",
+			"preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+			"framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "two or more separate areas, each its own colour",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "you cannot pick out separate areas",
+					"hotkey": "n"
+				},
+				{
+					"key": "unsure",
+					"label": "unsure",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		},
+		{
+			"key": "motif_or_material",
+			"kind": "enum",
+			"question": "motif_or_material - Is the background AS A WHOLE a repeating motif, or the surface of a material — paper, fabric, film grain, concrete, brush marks? If only one part of it is, answer no.",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story. If you cannot tell, answer unsure — it is a real answer.",
+			"preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+			"framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "the whole background is a repeating motif, or a material surface",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "neither, or only one part of it is",
+					"hotkey": "n"
+				},
+				{
+					"key": "unsure",
+					"label": "unsure",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		},
+		{
+			"key": "depicted_place",
+			"kind": "enum",
+			"question": "depicted_place - Taken as a whole, does the background show a place with depth — a room, a landscape, a street?",
+			"instruction": "Answer this one question only. Do not try to make your answers across questions tell one story. If you cannot tell, answer unsure — it is a real answer.",
+			"preamble": "The background means everything behind the main subject and the text, taken AS A WHOLE — even if it has several different parts.",
+			"framing": "Unsure is a real answer — some questions won't fit some artworks, and that is measured, not penalized.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "a place with depth is shown",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "no place is shown",
+					"hotkey": "n"
+				},
+				{
+					"key": "unsure",
+					"label": "unsure",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "pg-bg_visible-06c5954c94eb",
+			"questionKey": "bg_visible",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"imageId": "vvbrown.jpg",
+			"artworkId": "vvbrown",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "abeecf7de6e607eb",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-bg_visible-09a7609d09d6",
+			"questionKey": "bg_visible",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b9097edc7cfdcb10",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-14ae242448a2",
+			"questionKey": "bg_visible",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "332af7f7bd6e9dac",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-26ab93c9c2e8",
+			"questionKey": "bg_visible",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": "meteora",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "6a25f67c9d0fe63b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-2954e79ecf8c",
+			"questionKey": "bg_visible",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"artworkId": "0009657a5122a7b3d40458b0",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2d9e9638d2986247",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-303e5c49d86b",
+			"questionKey": "bg_visible",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-30ae45987771",
+			"questionKey": "bg_visible",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e98e52ca59f7288a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-33d63ad96631",
+			"questionKey": "bg_visible",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"artworkId": "0003e50500c5d762da89643a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "19141653c898c8ad",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-352f43c89e4b",
+			"questionKey": "bg_visible",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": "0010def2c33a308e8bd193f8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8e52a762246b7ee7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-4dc30c99f155",
+			"questionKey": "bg_visible",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c6e7c01a345797c8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-511467663e2b",
+			"questionKey": "bg_visible",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"artworkId": "000390c07f75da30b4e8aba8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "12f8e045fdea344e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-53b7d30a76fe",
+			"questionKey": "bg_visible",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "419bdfd5398f8267",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-555179423572",
+			"questionKey": "bg_visible",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "16f00e341d07a7df",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-5a45dc54f71a",
+			"questionKey": "bg_visible",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": "placebo",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "5b5e7945bf3ba203",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-bg_visible-64b30b7fb70f",
+			"questionKey": "bg_visible",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": "0005230fae1822525e5a5ff6",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7b6f2de973609460",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-6ee704038422",
+			"questionKey": "bg_visible",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"artworkId": "00079d5a7d92f2bff88570db",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "561d6dce4338f02f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-842e59bf627f",
+			"questionKey": "bg_visible",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "026d0d121583551a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-8ca89e51c8ba",
+			"questionKey": "bg_visible",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "1a3e56e92776af8f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-bg_visible-8efa4c384ea9",
+			"questionKey": "bg_visible",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b06da28ffdf163ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-9f0f531571fe",
+			"questionKey": "bg_visible",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-a6e03aa683b3",
+			"questionKey": "bg_visible",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": "0005a91812c85db291ea5d85",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7abc27a9bb832e6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-ac7ca45674c6",
+			"questionKey": "bg_visible",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-c1ed7ef0e2d6",
+			"questionKey": "bg_visible",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": "muse",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "cf66fe2140c7c9fa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-c20e8afc76d3",
+			"questionKey": "bg_visible",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"artworkId": "00018a0a56bae40350d9fa8e",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e96ddda5dfd9c5c9",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-c8321c5e6b25",
+			"questionKey": "bg_visible",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"artworkId": "000a24cc32b3d8b6e31bc161",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a79da31faf6cf524",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-d6487802175c",
+			"questionKey": "bg_visible",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"artworkId": "0006a059abb2a6b7dd4ad461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3a3495057c6daa96",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-e5a58747215f",
+			"questionKey": "bg_visible",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a66f1b06f181ce53",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-fb518ecb8841",
+			"questionKey": "bg_visible",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "46c3c6b4c6e43f3f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-fc36ed741bc8",
+			"questionKey": "bg_visible",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "bf6368c1af517dfa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-bg_visible-ff0bc9c4e622",
+			"questionKey": "bg_visible",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"artworkId": "00116380305ae5fd3607c43b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3b53d18f2b8114f3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-06c5954c94eb",
+			"questionKey": "one_colour",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"imageId": "vvbrown.jpg",
+			"artworkId": "vvbrown",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "abeecf7de6e607eb",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-one_colour-09a7609d09d6",
+			"questionKey": "one_colour",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b9097edc7cfdcb10",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-14ae242448a2",
+			"questionKey": "one_colour",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "332af7f7bd6e9dac",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-26ab93c9c2e8",
+			"questionKey": "one_colour",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": "meteora",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "6a25f67c9d0fe63b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-2954e79ecf8c",
+			"questionKey": "one_colour",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"artworkId": "0009657a5122a7b3d40458b0",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2d9e9638d2986247",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-303e5c49d86b",
+			"questionKey": "one_colour",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-30ae45987771",
+			"questionKey": "one_colour",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e98e52ca59f7288a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-33d63ad96631",
+			"questionKey": "one_colour",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"artworkId": "0003e50500c5d762da89643a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "19141653c898c8ad",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-352f43c89e4b",
+			"questionKey": "one_colour",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": "0010def2c33a308e8bd193f8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8e52a762246b7ee7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-4dc30c99f155",
+			"questionKey": "one_colour",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c6e7c01a345797c8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-511467663e2b",
+			"questionKey": "one_colour",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"artworkId": "000390c07f75da30b4e8aba8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "12f8e045fdea344e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-53b7d30a76fe",
+			"questionKey": "one_colour",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "419bdfd5398f8267",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-555179423572",
+			"questionKey": "one_colour",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "16f00e341d07a7df",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-5a45dc54f71a",
+			"questionKey": "one_colour",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": "placebo",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "5b5e7945bf3ba203",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-one_colour-64b30b7fb70f",
+			"questionKey": "one_colour",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": "0005230fae1822525e5a5ff6",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7b6f2de973609460",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-6ee704038422",
+			"questionKey": "one_colour",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"artworkId": "00079d5a7d92f2bff88570db",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "561d6dce4338f02f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-842e59bf627f",
+			"questionKey": "one_colour",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "026d0d121583551a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-8ca89e51c8ba",
+			"questionKey": "one_colour",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "1a3e56e92776af8f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-one_colour-8efa4c384ea9",
+			"questionKey": "one_colour",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b06da28ffdf163ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-9f0f531571fe",
+			"questionKey": "one_colour",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-a6e03aa683b3",
+			"questionKey": "one_colour",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": "0005a91812c85db291ea5d85",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7abc27a9bb832e6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-ac7ca45674c6",
+			"questionKey": "one_colour",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-c1ed7ef0e2d6",
+			"questionKey": "one_colour",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": "muse",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "cf66fe2140c7c9fa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-c20e8afc76d3",
+			"questionKey": "one_colour",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"artworkId": "00018a0a56bae40350d9fa8e",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e96ddda5dfd9c5c9",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-c8321c5e6b25",
+			"questionKey": "one_colour",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"artworkId": "000a24cc32b3d8b6e31bc161",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a79da31faf6cf524",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-d6487802175c",
+			"questionKey": "one_colour",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"artworkId": "0006a059abb2a6b7dd4ad461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3a3495057c6daa96",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-e5a58747215f",
+			"questionKey": "one_colour",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a66f1b06f181ce53",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-fb518ecb8841",
+			"questionKey": "one_colour",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "46c3c6b4c6e43f3f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-fc36ed741bc8",
+			"questionKey": "one_colour",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "bf6368c1af517dfa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-one_colour-ff0bc9c4e622",
+			"questionKey": "one_colour",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"artworkId": "00116380305ae5fd3607c43b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3b53d18f2b8114f3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-06c5954c94eb",
+			"questionKey": "continuous_change",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"imageId": "vvbrown.jpg",
+			"artworkId": "vvbrown",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "abeecf7de6e607eb",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-continuous_change-09a7609d09d6",
+			"questionKey": "continuous_change",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b9097edc7cfdcb10",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-14ae242448a2",
+			"questionKey": "continuous_change",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "332af7f7bd6e9dac",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-26ab93c9c2e8",
+			"questionKey": "continuous_change",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": "meteora",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "6a25f67c9d0fe63b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-2954e79ecf8c",
+			"questionKey": "continuous_change",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"artworkId": "0009657a5122a7b3d40458b0",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2d9e9638d2986247",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-303e5c49d86b",
+			"questionKey": "continuous_change",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-30ae45987771",
+			"questionKey": "continuous_change",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e98e52ca59f7288a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-33d63ad96631",
+			"questionKey": "continuous_change",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"artworkId": "0003e50500c5d762da89643a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "19141653c898c8ad",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-352f43c89e4b",
+			"questionKey": "continuous_change",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": "0010def2c33a308e8bd193f8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8e52a762246b7ee7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-4dc30c99f155",
+			"questionKey": "continuous_change",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c6e7c01a345797c8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-511467663e2b",
+			"questionKey": "continuous_change",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"artworkId": "000390c07f75da30b4e8aba8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "12f8e045fdea344e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-53b7d30a76fe",
+			"questionKey": "continuous_change",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "419bdfd5398f8267",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-555179423572",
+			"questionKey": "continuous_change",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "16f00e341d07a7df",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-5a45dc54f71a",
+			"questionKey": "continuous_change",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": "placebo",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "5b5e7945bf3ba203",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-continuous_change-64b30b7fb70f",
+			"questionKey": "continuous_change",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": "0005230fae1822525e5a5ff6",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7b6f2de973609460",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-6ee704038422",
+			"questionKey": "continuous_change",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"artworkId": "00079d5a7d92f2bff88570db",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "561d6dce4338f02f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-842e59bf627f",
+			"questionKey": "continuous_change",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "026d0d121583551a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-8ca89e51c8ba",
+			"questionKey": "continuous_change",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "1a3e56e92776af8f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-continuous_change-8efa4c384ea9",
+			"questionKey": "continuous_change",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b06da28ffdf163ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-9f0f531571fe",
+			"questionKey": "continuous_change",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-a6e03aa683b3",
+			"questionKey": "continuous_change",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": "0005a91812c85db291ea5d85",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7abc27a9bb832e6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-ac7ca45674c6",
+			"questionKey": "continuous_change",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-c1ed7ef0e2d6",
+			"questionKey": "continuous_change",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": "muse",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "cf66fe2140c7c9fa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-c20e8afc76d3",
+			"questionKey": "continuous_change",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"artworkId": "00018a0a56bae40350d9fa8e",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e96ddda5dfd9c5c9",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-c8321c5e6b25",
+			"questionKey": "continuous_change",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"artworkId": "000a24cc32b3d8b6e31bc161",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a79da31faf6cf524",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-d6487802175c",
+			"questionKey": "continuous_change",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"artworkId": "0006a059abb2a6b7dd4ad461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3a3495057c6daa96",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-e5a58747215f",
+			"questionKey": "continuous_change",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a66f1b06f181ce53",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-fb518ecb8841",
+			"questionKey": "continuous_change",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "46c3c6b4c6e43f3f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-fc36ed741bc8",
+			"questionKey": "continuous_change",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "bf6368c1af517dfa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-continuous_change-ff0bc9c4e622",
+			"questionKey": "continuous_change",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"artworkId": "00116380305ae5fd3607c43b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3b53d18f2b8114f3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-06c5954c94eb",
+			"questionKey": "separate_areas",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"imageId": "vvbrown.jpg",
+			"artworkId": "vvbrown",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "abeecf7de6e607eb",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-separate_areas-09a7609d09d6",
+			"questionKey": "separate_areas",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b9097edc7cfdcb10",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-14ae242448a2",
+			"questionKey": "separate_areas",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "332af7f7bd6e9dac",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-26ab93c9c2e8",
+			"questionKey": "separate_areas",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": "meteora",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "6a25f67c9d0fe63b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-2954e79ecf8c",
+			"questionKey": "separate_areas",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"artworkId": "0009657a5122a7b3d40458b0",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2d9e9638d2986247",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-303e5c49d86b",
+			"questionKey": "separate_areas",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-30ae45987771",
+			"questionKey": "separate_areas",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e98e52ca59f7288a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-33d63ad96631",
+			"questionKey": "separate_areas",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"artworkId": "0003e50500c5d762da89643a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "19141653c898c8ad",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-352f43c89e4b",
+			"questionKey": "separate_areas",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": "0010def2c33a308e8bd193f8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8e52a762246b7ee7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-4dc30c99f155",
+			"questionKey": "separate_areas",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c6e7c01a345797c8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-511467663e2b",
+			"questionKey": "separate_areas",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"artworkId": "000390c07f75da30b4e8aba8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "12f8e045fdea344e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-53b7d30a76fe",
+			"questionKey": "separate_areas",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "419bdfd5398f8267",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-555179423572",
+			"questionKey": "separate_areas",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "16f00e341d07a7df",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-5a45dc54f71a",
+			"questionKey": "separate_areas",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": "placebo",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "5b5e7945bf3ba203",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-separate_areas-64b30b7fb70f",
+			"questionKey": "separate_areas",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": "0005230fae1822525e5a5ff6",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7b6f2de973609460",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-6ee704038422",
+			"questionKey": "separate_areas",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"artworkId": "00079d5a7d92f2bff88570db",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "561d6dce4338f02f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-842e59bf627f",
+			"questionKey": "separate_areas",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "026d0d121583551a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-8ca89e51c8ba",
+			"questionKey": "separate_areas",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "1a3e56e92776af8f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-separate_areas-8efa4c384ea9",
+			"questionKey": "separate_areas",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b06da28ffdf163ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-9f0f531571fe",
+			"questionKey": "separate_areas",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-a6e03aa683b3",
+			"questionKey": "separate_areas",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": "0005a91812c85db291ea5d85",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7abc27a9bb832e6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-ac7ca45674c6",
+			"questionKey": "separate_areas",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-c1ed7ef0e2d6",
+			"questionKey": "separate_areas",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": "muse",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "cf66fe2140c7c9fa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-c20e8afc76d3",
+			"questionKey": "separate_areas",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"artworkId": "00018a0a56bae40350d9fa8e",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e96ddda5dfd9c5c9",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-c8321c5e6b25",
+			"questionKey": "separate_areas",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"artworkId": "000a24cc32b3d8b6e31bc161",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a79da31faf6cf524",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-d6487802175c",
+			"questionKey": "separate_areas",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"artworkId": "0006a059abb2a6b7dd4ad461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3a3495057c6daa96",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-e5a58747215f",
+			"questionKey": "separate_areas",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a66f1b06f181ce53",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-fb518ecb8841",
+			"questionKey": "separate_areas",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "46c3c6b4c6e43f3f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-fc36ed741bc8",
+			"questionKey": "separate_areas",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "bf6368c1af517dfa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-separate_areas-ff0bc9c4e622",
+			"questionKey": "separate_areas",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"artworkId": "00116380305ae5fd3607c43b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3b53d18f2b8114f3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-06c5954c94eb",
+			"questionKey": "motif_or_material",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"imageId": "vvbrown.jpg",
+			"artworkId": "vvbrown",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "abeecf7de6e607eb",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-motif_or_material-09a7609d09d6",
+			"questionKey": "motif_or_material",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b9097edc7cfdcb10",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-14ae242448a2",
+			"questionKey": "motif_or_material",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "332af7f7bd6e9dac",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-26ab93c9c2e8",
+			"questionKey": "motif_or_material",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": "meteora",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "6a25f67c9d0fe63b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-2954e79ecf8c",
+			"questionKey": "motif_or_material",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"artworkId": "0009657a5122a7b3d40458b0",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2d9e9638d2986247",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-303e5c49d86b",
+			"questionKey": "motif_or_material",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-30ae45987771",
+			"questionKey": "motif_or_material",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e98e52ca59f7288a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-33d63ad96631",
+			"questionKey": "motif_or_material",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"artworkId": "0003e50500c5d762da89643a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "19141653c898c8ad",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-352f43c89e4b",
+			"questionKey": "motif_or_material",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": "0010def2c33a308e8bd193f8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8e52a762246b7ee7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-4dc30c99f155",
+			"questionKey": "motif_or_material",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c6e7c01a345797c8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-511467663e2b",
+			"questionKey": "motif_or_material",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"artworkId": "000390c07f75da30b4e8aba8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "12f8e045fdea344e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-53b7d30a76fe",
+			"questionKey": "motif_or_material",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "419bdfd5398f8267",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-555179423572",
+			"questionKey": "motif_or_material",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "16f00e341d07a7df",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-5a45dc54f71a",
+			"questionKey": "motif_or_material",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": "placebo",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "5b5e7945bf3ba203",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-motif_or_material-64b30b7fb70f",
+			"questionKey": "motif_or_material",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": "0005230fae1822525e5a5ff6",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7b6f2de973609460",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-6ee704038422",
+			"questionKey": "motif_or_material",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"artworkId": "00079d5a7d92f2bff88570db",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "561d6dce4338f02f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-842e59bf627f",
+			"questionKey": "motif_or_material",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "026d0d121583551a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-8ca89e51c8ba",
+			"questionKey": "motif_or_material",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "1a3e56e92776af8f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-motif_or_material-8efa4c384ea9",
+			"questionKey": "motif_or_material",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b06da28ffdf163ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-9f0f531571fe",
+			"questionKey": "motif_or_material",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-a6e03aa683b3",
+			"questionKey": "motif_or_material",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": "0005a91812c85db291ea5d85",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7abc27a9bb832e6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-ac7ca45674c6",
+			"questionKey": "motif_or_material",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-c1ed7ef0e2d6",
+			"questionKey": "motif_or_material",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": "muse",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "cf66fe2140c7c9fa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-c20e8afc76d3",
+			"questionKey": "motif_or_material",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"artworkId": "00018a0a56bae40350d9fa8e",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e96ddda5dfd9c5c9",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-c8321c5e6b25",
+			"questionKey": "motif_or_material",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"artworkId": "000a24cc32b3d8b6e31bc161",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a79da31faf6cf524",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-d6487802175c",
+			"questionKey": "motif_or_material",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"artworkId": "0006a059abb2a6b7dd4ad461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3a3495057c6daa96",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-e5a58747215f",
+			"questionKey": "motif_or_material",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a66f1b06f181ce53",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-fb518ecb8841",
+			"questionKey": "motif_or_material",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "46c3c6b4c6e43f3f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-fc36ed741bc8",
+			"questionKey": "motif_or_material",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "bf6368c1af517dfa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-motif_or_material-ff0bc9c4e622",
+			"questionKey": "motif_or_material",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"artworkId": "00116380305ae5fd3607c43b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3b53d18f2b8114f3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-06c5954c94eb",
+			"questionKey": "depicted_place",
+			"imagePath": "images/vvbrown.jpg",
+			"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"imageId": "vvbrown.jpg",
+			"artworkId": "vvbrown",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "abeecf7de6e607eb",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-depicted_place-09a7609d09d6",
+			"questionKey": "depicted_place",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b9097edc7cfdcb10",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-14ae242448a2",
+			"questionKey": "depicted_place",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "332af7f7bd6e9dac",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-26ab93c9c2e8",
+			"questionKey": "depicted_place",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": "meteora",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "6a25f67c9d0fe63b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-2954e79ecf8c",
+			"questionKey": "depicted_place",
+			"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"imageId": "ab67616d00001e020009657a5122a7b3d40458b0",
+			"artworkId": "0009657a5122a7b3d40458b0",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2d9e9638d2986247",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-303e5c49d86b",
+			"questionKey": "depicted_place",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-30ae45987771",
+			"questionKey": "depicted_place",
+			"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"imageId": "ab67616d00001e02000d457f4b8829a59481e78b",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e98e52ca59f7288a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-33d63ad96631",
+			"questionKey": "depicted_place",
+			"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"artworkId": "0003e50500c5d762da89643a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "19141653c898c8ad",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-352f43c89e4b",
+			"questionKey": "depicted_place",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": "0010def2c33a308e8bd193f8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8e52a762246b7ee7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-4dc30c99f155",
+			"questionKey": "depicted_place",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c6e7c01a345797c8",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-511467663e2b",
+			"questionKey": "depicted_place",
+			"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"artworkId": "000390c07f75da30b4e8aba8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "12f8e045fdea344e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-53b7d30a76fe",
+			"questionKey": "depicted_place",
+			"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "419bdfd5398f8267",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-555179423572",
+			"questionKey": "depicted_place",
+			"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "16f00e341d07a7df",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-5a45dc54f71a",
+			"questionKey": "depicted_place",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": "placebo",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "5b5e7945bf3ba203",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "pg-depicted_place-64b30b7fb70f",
+			"questionKey": "depicted_place",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": "0005230fae1822525e5a5ff6",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7b6f2de973609460",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-6ee704038422",
+			"questionKey": "depicted_place",
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+			"artworkId": "00079d5a7d92f2bff88570db",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "561d6dce4338f02f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-842e59bf627f",
+			"questionKey": "depicted_place",
+			"imagePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"imageId": "ab67616d00001e020005a54a9ea60f48619788f1",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "026d0d121583551a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-8ca89e51c8ba",
+			"questionKey": "depicted_place",
+			"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"artworkId": "000e007955ee2f8b29f5b2b4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "1a3e56e92776af8f",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "pg-depicted_place-8efa4c384ea9",
+			"questionKey": "depicted_place",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b06da28ffdf163ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-9f0f531571fe",
+			"questionKey": "depicted_place",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-a6e03aa683b3",
+			"questionKey": "depicted_place",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": "0005a91812c85db291ea5d85",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7abc27a9bb832e6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-ac7ca45674c6",
+			"questionKey": "depicted_place",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-c1ed7ef0e2d6",
+			"questionKey": "depicted_place",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": "muse",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "cf66fe2140c7c9fa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-c20e8afc76d3",
+			"questionKey": "depicted_place",
+			"imagePath": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"imageId": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"artworkId": "00018a0a56bae40350d9fa8e",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e96ddda5dfd9c5c9",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-c8321c5e6b25",
+			"questionKey": "depicted_place",
+			"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"artworkId": "000a24cc32b3d8b6e31bc161",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a79da31faf6cf524",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-d6487802175c",
+			"questionKey": "depicted_place",
+			"imagePath": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"imageId": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"artworkId": "0006a059abb2a6b7dd4ad461",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3a3495057c6daa96",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-e5a58747215f",
+			"questionKey": "depicted_place",
+			"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"imageId": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "a66f1b06f181ce53",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-fb518ecb8841",
+			"questionKey": "depicted_place",
+			"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+			"sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"imageId": "ab67616d0000b2730004515066668684295c41a7",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "46c3c6b4c6e43f3f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-fc36ed741bc8",
+			"questionKey": "depicted_place",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "bf6368c1af517dfa",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "pg-depicted_place-ff0bc9c4e622",
+			"questionKey": "depicted_place",
+			"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+			"artworkId": "00116380305ae5fd3607c43b",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "3b53d18f2b8114f3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		}
+	],
+	"serveOrder": [
+		"pg-bg_visible-c8321c5e6b25",
+		"pg-bg_visible-303e5c49d86b",
+		"pg-bg_visible-33d63ad96631",
+		"pg-bg_visible-a6e03aa683b3",
+		"pg-bg_visible-fc36ed741bc8",
+		"pg-bg_visible-fb518ecb8841",
+		"pg-bg_visible-c1ed7ef0e2d6",
+		"pg-bg_visible-6ee704038422",
+		"pg-bg_visible-14ae242448a2",
+		"pg-bg_visible-64b30b7fb70f",
+		"pg-bg_visible-ff0bc9c4e622",
+		"pg-bg_visible-30ae45987771",
+		"pg-bg_visible-c20e8afc76d3",
+		"pg-bg_visible-ac7ca45674c6",
+		"pg-bg_visible-09a7609d09d6",
+		"pg-bg_visible-26ab93c9c2e8",
+		"pg-bg_visible-5a45dc54f71a",
+		"pg-bg_visible-352f43c89e4b",
+		"pg-bg_visible-e5a58747215f",
+		"pg-bg_visible-8efa4c384ea9",
+		"pg-bg_visible-53b7d30a76fe",
+		"pg-bg_visible-9f0f531571fe",
+		"pg-bg_visible-06c5954c94eb",
+		"pg-bg_visible-d6487802175c",
+		"pg-bg_visible-555179423572",
+		"pg-bg_visible-8ca89e51c8ba",
+		"pg-bg_visible-2954e79ecf8c",
+		"pg-bg_visible-842e59bf627f",
+		"pg-bg_visible-4dc30c99f155",
+		"pg-bg_visible-511467663e2b",
+		"pg-one_colour-09a7609d09d6",
+		"pg-one_colour-14ae242448a2",
+		"pg-one_colour-ac7ca45674c6",
+		"pg-one_colour-303e5c49d86b",
+		"pg-one_colour-c1ed7ef0e2d6",
+		"pg-one_colour-e5a58747215f",
+		"pg-one_colour-a6e03aa683b3",
+		"pg-one_colour-8ca89e51c8ba",
+		"pg-one_colour-ff0bc9c4e622",
+		"pg-one_colour-c20e8afc76d3",
+		"pg-one_colour-33d63ad96631",
+		"pg-one_colour-64b30b7fb70f",
+		"pg-one_colour-2954e79ecf8c",
+		"pg-one_colour-842e59bf627f",
+		"pg-one_colour-26ab93c9c2e8",
+		"pg-one_colour-352f43c89e4b",
+		"pg-one_colour-4dc30c99f155",
+		"pg-one_colour-fc36ed741bc8",
+		"pg-one_colour-555179423572",
+		"pg-one_colour-53b7d30a76fe",
+		"pg-one_colour-fb518ecb8841",
+		"pg-one_colour-30ae45987771",
+		"pg-one_colour-d6487802175c",
+		"pg-one_colour-9f0f531571fe",
+		"pg-one_colour-5a45dc54f71a",
+		"pg-one_colour-8efa4c384ea9",
+		"pg-one_colour-6ee704038422",
+		"pg-one_colour-c8321c5e6b25",
+		"pg-one_colour-511467663e2b",
+		"pg-one_colour-06c5954c94eb",
+		"pg-continuous_change-2954e79ecf8c",
+		"pg-continuous_change-9f0f531571fe",
+		"pg-continuous_change-33d63ad96631",
+		"pg-continuous_change-09a7609d09d6",
+		"pg-continuous_change-53b7d30a76fe",
+		"pg-continuous_change-e5a58747215f",
+		"pg-continuous_change-8efa4c384ea9",
+		"pg-continuous_change-fb518ecb8841",
+		"pg-continuous_change-303e5c49d86b",
+		"pg-continuous_change-555179423572",
+		"pg-continuous_change-64b30b7fb70f",
+		"pg-continuous_change-26ab93c9c2e8",
+		"pg-continuous_change-352f43c89e4b",
+		"pg-continuous_change-06c5954c94eb",
+		"pg-continuous_change-c1ed7ef0e2d6",
+		"pg-continuous_change-5a45dc54f71a",
+		"pg-continuous_change-ac7ca45674c6",
+		"pg-continuous_change-30ae45987771",
+		"pg-continuous_change-842e59bf627f",
+		"pg-continuous_change-c20e8afc76d3",
+		"pg-continuous_change-fc36ed741bc8",
+		"pg-continuous_change-14ae242448a2",
+		"pg-continuous_change-d6487802175c",
+		"pg-continuous_change-4dc30c99f155",
+		"pg-continuous_change-6ee704038422",
+		"pg-continuous_change-8ca89e51c8ba",
+		"pg-continuous_change-a6e03aa683b3",
+		"pg-continuous_change-511467663e2b",
+		"pg-continuous_change-ff0bc9c4e622",
+		"pg-continuous_change-c8321c5e6b25",
+		"pg-separate_areas-5a45dc54f71a",
+		"pg-separate_areas-6ee704038422",
+		"pg-separate_areas-352f43c89e4b",
+		"pg-separate_areas-303e5c49d86b",
+		"pg-separate_areas-8ca89e51c8ba",
+		"pg-separate_areas-ac7ca45674c6",
+		"pg-separate_areas-d6487802175c",
+		"pg-separate_areas-842e59bf627f",
+		"pg-separate_areas-c8321c5e6b25",
+		"pg-separate_areas-64b30b7fb70f",
+		"pg-separate_areas-9f0f531571fe",
+		"pg-separate_areas-c20e8afc76d3",
+		"pg-separate_areas-26ab93c9c2e8",
+		"pg-separate_areas-511467663e2b",
+		"pg-separate_areas-e5a58747215f",
+		"pg-separate_areas-09a7609d09d6",
+		"pg-separate_areas-2954e79ecf8c",
+		"pg-separate_areas-14ae242448a2",
+		"pg-separate_areas-fb518ecb8841",
+		"pg-separate_areas-33d63ad96631",
+		"pg-separate_areas-30ae45987771",
+		"pg-separate_areas-4dc30c99f155",
+		"pg-separate_areas-ff0bc9c4e622",
+		"pg-separate_areas-555179423572",
+		"pg-separate_areas-fc36ed741bc8",
+		"pg-separate_areas-06c5954c94eb",
+		"pg-separate_areas-c1ed7ef0e2d6",
+		"pg-separate_areas-8efa4c384ea9",
+		"pg-separate_areas-a6e03aa683b3",
+		"pg-separate_areas-53b7d30a76fe",
+		"pg-motif_or_material-2954e79ecf8c",
+		"pg-motif_or_material-d6487802175c",
+		"pg-motif_or_material-fc36ed741bc8",
+		"pg-motif_or_material-842e59bf627f",
+		"pg-motif_or_material-555179423572",
+		"pg-motif_or_material-5a45dc54f71a",
+		"pg-motif_or_material-26ab93c9c2e8",
+		"pg-motif_or_material-09a7609d09d6",
+		"pg-motif_or_material-33d63ad96631",
+		"pg-motif_or_material-06c5954c94eb",
+		"pg-motif_or_material-ff0bc9c4e622",
+		"pg-motif_or_material-a6e03aa683b3",
+		"pg-motif_or_material-511467663e2b",
+		"pg-motif_or_material-64b30b7fb70f",
+		"pg-motif_or_material-30ae45987771",
+		"pg-motif_or_material-6ee704038422",
+		"pg-motif_or_material-352f43c89e4b",
+		"pg-motif_or_material-e5a58747215f",
+		"pg-motif_or_material-ac7ca45674c6",
+		"pg-motif_or_material-fb518ecb8841",
+		"pg-motif_or_material-c20e8afc76d3",
+		"pg-motif_or_material-303e5c49d86b",
+		"pg-motif_or_material-8efa4c384ea9",
+		"pg-motif_or_material-14ae242448a2",
+		"pg-motif_or_material-4dc30c99f155",
+		"pg-motif_or_material-8ca89e51c8ba",
+		"pg-motif_or_material-c1ed7ef0e2d6",
+		"pg-motif_or_material-9f0f531571fe",
+		"pg-motif_or_material-c8321c5e6b25",
+		"pg-motif_or_material-53b7d30a76fe",
+		"pg-depicted_place-14ae242448a2",
+		"pg-depicted_place-8efa4c384ea9",
+		"pg-depicted_place-09a7609d09d6",
+		"pg-depicted_place-5a45dc54f71a",
+		"pg-depicted_place-30ae45987771",
+		"pg-depicted_place-fc36ed741bc8",
+		"pg-depicted_place-c8321c5e6b25",
+		"pg-depicted_place-e5a58747215f",
+		"pg-depicted_place-06c5954c94eb",
+		"pg-depicted_place-555179423572",
+		"pg-depicted_place-c20e8afc76d3",
+		"pg-depicted_place-d6487802175c",
+		"pg-depicted_place-ac7ca45674c6",
+		"pg-depicted_place-fb518ecb8841",
+		"pg-depicted_place-53b7d30a76fe",
+		"pg-depicted_place-9f0f531571fe",
+		"pg-depicted_place-511467663e2b",
+		"pg-depicted_place-26ab93c9c2e8",
+		"pg-depicted_place-303e5c49d86b",
+		"pg-depicted_place-33d63ad96631",
+		"pg-depicted_place-ff0bc9c4e622",
+		"pg-depicted_place-4dc30c99f155",
+		"pg-depicted_place-c1ed7ef0e2d6",
+		"pg-depicted_place-842e59bf627f",
+		"pg-depicted_place-6ee704038422",
+		"pg-depicted_place-2954e79ecf8c",
+		"pg-depicted_place-a6e03aa683b3",
+		"pg-depicted_place-64b30b7fb70f",
+		"pg-depicted_place-8ca89e51c8ba",
+		"pg-depicted_place-352f43c89e4b"
+	]
+}

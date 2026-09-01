@@ -1,0 +1,7 @@
+# Results files from `src/devloop/run.ts`. Derived, never committed — same policy as the caches in
+# `research/v3/.gitignore`: the SET FILES in `../sets/` are committed, the run output is not.
+#
+# A run file is reproducible from three things it names in its own header: the set hash, the
+# candidate's measured code version, and the package versions. `run.ts --verify <run.jsonl>` says
+# whether the code and the set on disk still match the ones a given file was produced from.
+*.jsonl

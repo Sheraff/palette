@@ -1,0 +1,964 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "residual-purity-2",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "residual-purity.v2",
+	"seed": 20260805,
+	"generatedBy": "research/v3/src/review-server/residual-purity.ts",
+	"builtFrom": [
+		"research/v3/data/sam/residual-sheets-v5-sample.json",
+		"research/v3/data/sam/sam-eval-142-v5-allnouns.jsonl",
+		"research/v3/oracle/sam/build_residual_sheets_v5.py",
+		"research/v3/oracle/sam/RESIDUAL_V5_NOTES.md"
+	],
+	"selection": {
+		"rule": "Twenty-four three-panel residual sheets from the sam-eval-142-v5-allnouns run (seed 20260805), drawn to the SAME pre-registered per-stratum quotas residual-purity-1 used — noun-fired 8, noun-silent 5, contaminated 6, class-only 3, static-only-clean 4 — over v5 pools of noun-fired [102], noun-silent [12], contaminated [20], class-only [1] and static-only-clean [7]; class-only takes its whole pool, which is why its quota of 3 yields 1 and the round is 24 sheets rather than 25. The quotas were HELD rather than rebalanced to recover a round number: the all-nouns elicitation prompts almost every cover, so static-only-clean collapsed from 28 to 7 and class-only from 2 to 1, and moving a quota to hit a target would be tuning the sampling design to the target. The sample is deliberately enriched for hard cases, so the raw rate is NOT a corpus estimate — the bar applies to the stratum-reweighted rate, using the bracketed pool sizes as inverse-probability weights. It is not a corpus estimate for a second reason either: eval-142 was never a sample of this corpus (cluster-mix total- variation distance 0.2273 against coverage-set-1's 0.0851), so this round answers the PAIRED question — did the all-nouns elicitation move purity on the same covers residual-purity-1 judged — and not the corpus one, whose prescribed re-run is on coverage-set-1. Panels are rendered at the SUBTRACTION cut, not config.py's shipped precision cut, because rendering at the precision cut would ask the reviewer to judge a threshold choice while believing they were judging an instrument; this is not a proposal to change config.py. Under concept set v2.2 that cut is min(pooled, group cut) per group rather than a flat 0.578, because cjk_script's cut (0.392655, PROVISIONAL) is below pooled; on the v4 run the two definitions coincide, so no v4 number moves. Each sheet is asked once per residual panel — area guard ON, then area guard OFF — so an item is one (sheet, panel) pair and a pass-2 sheet has been seen before, in a different order. FOUR answers, not three: the escape can't-tell is excluded from both the numerator and the denominator of the pure-field rate, never dropped, and its share is reported per stratum as a first-class result, with any stratum above 0.50 escape share reported as having no reliable purity rate rather than a low one. What the round decides: whether R-3's structural claim is adopted (stratum-reweighted pure-field rate >= 0.75 in at least one guard variant, and no single stratum below 0.50) — the SAME bar residual-purity-1 returned 0.2424 against, held and not moved, because v5 improved a proxy and that proxy is the one thing already measured to over-claim purity by 0.582; and, ungated by that, which guard variant wins more pure-field answers, which is evidence for loose end A6's person exemption and for whether it should extend to dyn-noun.",
+		"counts": {
+			"sheets": 24,
+			"panels": 2,
+			"class-only": 1,
+			"contaminated": 6,
+			"noun-fired": 8,
+			"noun-silent": 5,
+			"static-only-clean": 4
+		}
+	},
+	"questions": [
+		{
+			"key": "residual_is_field.guard_on",
+			"kind": "enum",
+			"question": "Middle panel, \"what remains - area guard ON\" — is everything still visible here background — is there nothing left that belongs to a depicted subject, to display text, or to an applied mark?",
+			"instruction": "Judge only the panel named in the question, and only what is still visible in it. Whether too much was removed is not this question. Answer this one panel; do not try to make your answers across panels or across sheets tell one story.",
+			"preamble": "Left: the artwork, untouched. The other two panels are what remains of it after the detected subjects were subtracted, under two settings of one internal rule. The grey checkerboard is where pixels were removed — it is not part of the picture and never counts against a panel.",
+			"framing": "If this cover does not separate into a subject and a background at all — if you could not say what the field is even looking at the artwork on the left — answer can't tell. That is a real answer about the cover and it is counted as one, not as a skip. Keep it for that case only: if you can see what the field is and are merely unsure whether one leftover trace belongs to it, answer mostly field. Keep pure field for panels where you are sure nothing is left.",
+			"answers": [
+				{
+					"key": "pure_field",
+					"label": "pure field",
+					"gloss": "everything still visible is background: nothing left that belongs to a depicted subject, to display text, or to an applied mark",
+					"hotkey": "p"
+				},
+				{
+					"key": "mostly_field",
+					"label": "mostly field",
+					"gloss": "background apart from a trace — an edge, a fragment of a letter, part of a mark — that you would not call a subject",
+					"hotkey": "m"
+				},
+				{
+					"key": "not_field",
+					"label": "not field",
+					"gloss": "something that belongs to a depicted subject, to display text, or to an applied mark is plainly still here",
+					"hotkey": "n"
+				},
+				{
+					"key": "cant_tell",
+					"label": "can't tell what is field here",
+					"gloss": "this cover does not separate into a subject and a background you could point to, so there is no fact about whether what is left is background",
+					"hotkey": "c"
+				}
+			]
+		},
+		{
+			"key": "residual_is_field.guard_off",
+			"kind": "enum",
+			"question": "Right panel, \"what remains - area guard OFF\" — is everything still visible here background — is there nothing left that belongs to a depicted subject, to display text, or to an applied mark?",
+			"instruction": "Judge only the panel named in the question, and only what is still visible in it. Whether too much was removed is not this question. Answer this one panel; do not try to make your answers across panels or across sheets tell one story.",
+			"preamble": "Left: the artwork, untouched. The other two panels are what remains of it after the detected subjects were subtracted, under two settings of one internal rule. The grey checkerboard is where pixels were removed — it is not part of the picture and never counts against a panel.",
+			"framing": "If this cover does not separate into a subject and a background at all — if you could not say what the field is even looking at the artwork on the left — answer can't tell. That is a real answer about the cover and it is counted as one, not as a skip. Keep it for that case only: if you can see what the field is and are merely unsure whether one leftover trace belongs to it, answer mostly field. Keep pure field for panels where you are sure nothing is left.",
+			"answers": [
+				{
+					"key": "pure_field",
+					"label": "pure field",
+					"gloss": "everything still visible is background: nothing left that belongs to a depicted subject, to display text, or to an applied mark",
+					"hotkey": "p"
+				},
+				{
+					"key": "mostly_field",
+					"label": "mostly field",
+					"gloss": "background apart from a trace — an edge, a fragment of a letter, part of a mark — that you would not call a subject",
+					"hotkey": "m"
+				},
+				{
+					"key": "not_field",
+					"label": "not field",
+					"gloss": "something that belongs to a depicted subject, to display text, or to an applied mark is plainly still here",
+					"hotkey": "n"
+				},
+				{
+					"key": "cant_tell",
+					"label": "can't tell what is field here",
+					"gloss": "this cover does not separate into a subject and a background you could point to, so there is no fact about whether what is left is background",
+					"hotkey": "c"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "resid5-5aef26a06014.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5aef26a06014.png",
+			"sha256": "0917af2a40ff599acb29578825535cb5643312a3b531307ac58a1e8db57c38b1",
+			"imageId": "resid5-5aef26a06014",
+			"artworkId": "000e91d6c3b44e900d334a78",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5aef26a06014",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-c4e42e0e12ed.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-c4e42e0e12ed.png",
+			"sha256": "440e2c1a57fd022ec97d28d30a37b73ac445954b016a21825df075efbc1c2fba",
+			"imageId": "resid5-c4e42e0e12ed",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-c4e42e0e12ed",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-5f8816aa1e53.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5f8816aa1e53.png",
+			"sha256": "9911173417afb38505189c2368c7b7ecd04710884b81ad96a674d3cc146df758",
+			"imageId": "resid5-5f8816aa1e53",
+			"artworkId": "0001738a49a69ed70ffcbe42",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5f8816aa1e53",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-c030f8379bc7.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-c030f8379bc7.png",
+			"sha256": "e3ba0e417ebeaaee53bede06c5d14b1f8ac5191c154a55a7cdfe9ffbe85c476a",
+			"imageId": "resid5-c030f8379bc7",
+			"artworkId": "000f723f36271de0ed3aa893",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-c030f8379bc7",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-cf66086ea127.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-cf66086ea127.png",
+			"sha256": "23ffcae08780b790e118bcc6b1a58c07f1056ca3b668016f5649b3e5aaa2def5",
+			"imageId": "resid5-cf66086ea127",
+			"artworkId": "00009f60aeb150a5db45b47b",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-cf66086ea127",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-46821d170334.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-46821d170334.png",
+			"sha256": "cef5db889dc0afa216eb4087eb7acadb8b646d967bc7c2e1b028ff086e7a5b13",
+			"imageId": "resid5-46821d170334",
+			"artworkId": "00034b60105d8937440211da",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-46821d170334",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-236d3db46739.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-236d3db46739.png",
+			"sha256": "0502e276de7a74df19f139c2c35f49aeca0cbdf8d46502711a46b7f9a83e164b",
+			"imageId": "resid5-236d3db46739",
+			"artworkId": "00088460068752fad04f8541",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-236d3db46739",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-945c0c690665.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-945c0c690665.png",
+			"sha256": "a23e74b3953dcdbb026e6321e8993b751bcd8b07a588a25f5b5c84b22154828e",
+			"imageId": "resid5-945c0c690665",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-945c0c690665",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-44b793fb749e.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-44b793fb749e.png",
+			"sha256": "5d1b0cba8c5656a6eedf5896e4be70ddf9e2985e8e3162762788c47ace88c9dd",
+			"imageId": "resid5-44b793fb749e",
+			"artworkId": "000913b3e9ae2c7173d1a8b2",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-44b793fb749e",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-91f760ca6526.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-91f760ca6526.png",
+			"sha256": "d8efb67fdcbcaced6c876687c7a209984bbce2b8e263370b3f365e2b4441750d",
+			"imageId": "resid5-91f760ca6526",
+			"artworkId": "000a8aa1dafa651976a7bb44",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-91f760ca6526",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-1f281f71d7a9.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-1f281f71d7a9.png",
+			"sha256": "6544c840a5fb820a3a7a6d0f1bae8b0fefb658c5de1b128918526ef147adc3c9",
+			"imageId": "resid5-1f281f71d7a9",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-1f281f71d7a9",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-78ead7e0eb6b.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-78ead7e0eb6b.png",
+			"sha256": "fde0f2d50afcea2ae374884e70231518eb97bfc3c252408a294abd59c5e5b33c",
+			"imageId": "resid5-78ead7e0eb6b",
+			"artworkId": "knuckles",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-78ead7e0eb6b",
+				"longEdgePx": 2128,
+				"width": 2128,
+				"height": 734
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-5f25212c668f.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5f25212c668f.png",
+			"sha256": "518550dbec69cc89e2e5002484aaaefb26dce5d1a62e4d660526cea53cf0124c",
+			"imageId": "resid5-5f25212c668f",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5f25212c668f",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-5dcb480eb3cd.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5dcb480eb3cd.png",
+			"sha256": "4e10f187231a5fd6516fbfc467844ca3a61267c196ffce0abf5a1ce4daab8a95",
+			"imageId": "resid5-5dcb480eb3cd",
+			"artworkId": "000f815611cd5966187e2051",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5dcb480eb3cd",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-92502aa8ecae.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-92502aa8ecae.png",
+			"sha256": "ac8016a2e140432f6f64bb2182d047c40c2bb76304c367e7999aaafbf29bc834",
+			"imageId": "resid5-92502aa8ecae",
+			"artworkId": "0007960724fb77c8041c6c13",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-92502aa8ecae",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-e0dc3c587b37.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-e0dc3c587b37.png",
+			"sha256": "f89ad29f13729fa7f53cc26c19c457dd9ed6ae4d9b9d52cf600157f53da5c4a1",
+			"imageId": "resid5-e0dc3c587b37",
+			"artworkId": "000b096f0b03b7745c8e8aab",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-e0dc3c587b37",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-9f6aa31d9b8b.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-9f6aa31d9b8b.png",
+			"sha256": "114154704d2c0a452f9024e293501c7331646b14d0497d3c60d107c715f7e5cd",
+			"imageId": "resid5-9f6aa31d9b8b",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-9f6aa31d9b8b",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-2bfbcbb4f189.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-2bfbcbb4f189.png",
+			"sha256": "74f8f08f03db42d7508fc19ceb2115fe84a68e076b567585dab3f7eb14404623",
+			"imageId": "resid5-2bfbcbb4f189",
+			"artworkId": "placebo",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-2bfbcbb4f189",
+				"longEdgePx": 4228,
+				"width": 4228,
+				"height": 1434
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-417f95ea29e2.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-417f95ea29e2.png",
+			"sha256": "22eabe66fc527a5d206b89f63c02cc0c24d5d6b43c043b93039e04cb4f253c12",
+			"imageId": "resid5-417f95ea29e2",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-417f95ea29e2",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-77802c9bd678.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-77802c9bd678.png",
+			"sha256": "f9306fbefd1abdf81413cc81fb397df5b13eb5fac4f4801abbae19e3ba7b6560",
+			"imageId": "resid5-77802c9bd678",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-77802c9bd678",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "class-only"
+		},
+		{
+			"itemId": "resid5-64a3dd0f96f2.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-64a3dd0f96f2.png",
+			"sha256": "d9f33eac02b62de04ef64d7ea098230de42ccfb1839a84c6a8043fd39537dbb9",
+			"imageId": "resid5-64a3dd0f96f2",
+			"artworkId": "00040defaf772cad7a1738ce",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-64a3dd0f96f2",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-b07d15d4b575.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-b07d15d4b575.png",
+			"sha256": "f300d37b56ecbf1b096d02d9c20ea93ea73ae58190547a370fc9b0d63b7b1ee3",
+			"imageId": "resid5-b07d15d4b575",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-b07d15d4b575",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-434764f5aa78.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-434764f5aa78.png",
+			"sha256": "ff91a1612c4cedc32c6db56e3e061fd307a901cf18e653a4b0f176fd7dcb8366",
+			"imageId": "resid5-434764f5aa78",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-434764f5aa78",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-c0c59230ba79.guard_on",
+			"questionKey": "residual_is_field.guard_on",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-c0c59230ba79.png",
+			"sha256": "dd89344a439f9f30e00c65b7e7a1f987006d9399b87c561dac2c96db9da17b43",
+			"imageId": "resid5-c0c59230ba79",
+			"artworkId": "slipknot",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-c0c59230ba79",
+				"longEdgePx": 3028,
+				"width": 3028,
+				"height": 1034
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-5aef26a06014.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5aef26a06014.png",
+			"sha256": "0917af2a40ff599acb29578825535cb5643312a3b531307ac58a1e8db57c38b1",
+			"imageId": "resid5-5aef26a06014",
+			"artworkId": "000e91d6c3b44e900d334a78",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5aef26a06014",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-c4e42e0e12ed.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-c4e42e0e12ed.png",
+			"sha256": "440e2c1a57fd022ec97d28d30a37b73ac445954b016a21825df075efbc1c2fba",
+			"imageId": "resid5-c4e42e0e12ed",
+			"artworkId": "000d457f4b8829a59481e78b",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-c4e42e0e12ed",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-5f8816aa1e53.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5f8816aa1e53.png",
+			"sha256": "9911173417afb38505189c2368c7b7ecd04710884b81ad96a674d3cc146df758",
+			"imageId": "resid5-5f8816aa1e53",
+			"artworkId": "0001738a49a69ed70ffcbe42",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5f8816aa1e53",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-c030f8379bc7.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-c030f8379bc7.png",
+			"sha256": "e3ba0e417ebeaaee53bede06c5d14b1f8ac5191c154a55a7cdfe9ffbe85c476a",
+			"imageId": "resid5-c030f8379bc7",
+			"artworkId": "000f723f36271de0ed3aa893",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-c030f8379bc7",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-cf66086ea127.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-cf66086ea127.png",
+			"sha256": "23ffcae08780b790e118bcc6b1a58c07f1056ca3b668016f5649b3e5aaa2def5",
+			"imageId": "resid5-cf66086ea127",
+			"artworkId": "00009f60aeb150a5db45b47b",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-cf66086ea127",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-46821d170334.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-46821d170334.png",
+			"sha256": "cef5db889dc0afa216eb4087eb7acadb8b646d967bc7c2e1b028ff086e7a5b13",
+			"imageId": "resid5-46821d170334",
+			"artworkId": "00034b60105d8937440211da",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-46821d170334",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-236d3db46739.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-236d3db46739.png",
+			"sha256": "0502e276de7a74df19f139c2c35f49aeca0cbdf8d46502711a46b7f9a83e164b",
+			"imageId": "resid5-236d3db46739",
+			"artworkId": "00088460068752fad04f8541",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-236d3db46739",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-945c0c690665.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-945c0c690665.png",
+			"sha256": "a23e74b3953dcdbb026e6321e8993b751bcd8b07a588a25f5b5c84b22154828e",
+			"imageId": "resid5-945c0c690665",
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-945c0c690665",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-fired"
+		},
+		{
+			"itemId": "resid5-44b793fb749e.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-44b793fb749e.png",
+			"sha256": "5d1b0cba8c5656a6eedf5896e4be70ddf9e2985e8e3162762788c47ace88c9dd",
+			"imageId": "resid5-44b793fb749e",
+			"artworkId": "000913b3e9ae2c7173d1a8b2",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-44b793fb749e",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-91f760ca6526.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-91f760ca6526.png",
+			"sha256": "d8efb67fdcbcaced6c876687c7a209984bbce2b8e263370b3f365e2b4441750d",
+			"imageId": "resid5-91f760ca6526",
+			"artworkId": "000a8aa1dafa651976a7bb44",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-91f760ca6526",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-1f281f71d7a9.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-1f281f71d7a9.png",
+			"sha256": "6544c840a5fb820a3a7a6d0f1bae8b0fefb658c5de1b128918526ef147adc3c9",
+			"imageId": "resid5-1f281f71d7a9",
+			"artworkId": "000442caec7ec8cb724bf265",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-1f281f71d7a9",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-78ead7e0eb6b.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-78ead7e0eb6b.png",
+			"sha256": "fde0f2d50afcea2ae374884e70231518eb97bfc3c252408a294abd59c5e5b33c",
+			"imageId": "resid5-78ead7e0eb6b",
+			"artworkId": "knuckles",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-78ead7e0eb6b",
+				"longEdgePx": 2128,
+				"width": 2128,
+				"height": 734
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-5f25212c668f.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5f25212c668f.png",
+			"sha256": "518550dbec69cc89e2e5002484aaaefb26dce5d1a62e4d660526cea53cf0124c",
+			"imageId": "resid5-5f25212c668f",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5f25212c668f",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "noun-silent"
+		},
+		{
+			"itemId": "resid5-5dcb480eb3cd.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-5dcb480eb3cd.png",
+			"sha256": "4e10f187231a5fd6516fbfc467844ca3a61267c196ffce0abf5a1ce4daab8a95",
+			"imageId": "resid5-5dcb480eb3cd",
+			"artworkId": "000f815611cd5966187e2051",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-5dcb480eb3cd",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-92502aa8ecae.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-92502aa8ecae.png",
+			"sha256": "ac8016a2e140432f6f64bb2182d047c40c2bb76304c367e7999aaafbf29bc834",
+			"imageId": "resid5-92502aa8ecae",
+			"artworkId": "0007960724fb77c8041c6c13",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-92502aa8ecae",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-e0dc3c587b37.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-e0dc3c587b37.png",
+			"sha256": "f89ad29f13729fa7f53cc26c19c457dd9ed6ae4d9b9d52cf600157f53da5c4a1",
+			"imageId": "resid5-e0dc3c587b37",
+			"artworkId": "000b096f0b03b7745c8e8aab",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-e0dc3c587b37",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-9f6aa31d9b8b.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-9f6aa31d9b8b.png",
+			"sha256": "114154704d2c0a452f9024e293501c7331646b14d0497d3c60d107c715f7e5cd",
+			"imageId": "resid5-9f6aa31d9b8b",
+			"artworkId": "00092c140fe03d08e0dc906a",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-9f6aa31d9b8b",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-2bfbcbb4f189.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-2bfbcbb4f189.png",
+			"sha256": "74f8f08f03db42d7508fc19ceb2115fe84a68e076b567585dab3f7eb14404623",
+			"imageId": "resid5-2bfbcbb4f189",
+			"artworkId": "placebo",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-2bfbcbb4f189",
+				"longEdgePx": 4228,
+				"width": 4228,
+				"height": 1434
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-417f95ea29e2.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-417f95ea29e2.png",
+			"sha256": "22eabe66fc527a5d206b89f63c02cc0c24d5d6b43c043b93039e04cb4f253c12",
+			"imageId": "resid5-417f95ea29e2",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-417f95ea29e2",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "contaminated"
+		},
+		{
+			"itemId": "resid5-77802c9bd678.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-77802c9bd678.png",
+			"sha256": "f9306fbefd1abdf81413cc81fb397df5b13eb5fac4f4801abbae19e3ba7b6560",
+			"imageId": "resid5-77802c9bd678",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-77802c9bd678",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "class-only"
+		},
+		{
+			"itemId": "resid5-64a3dd0f96f2.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-64a3dd0f96f2.png",
+			"sha256": "d9f33eac02b62de04ef64d7ea098230de42ccfb1839a84c6a8043fd39537dbb9",
+			"imageId": "resid5-64a3dd0f96f2",
+			"artworkId": "00040defaf772cad7a1738ce",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-64a3dd0f96f2",
+				"longEdgePx": 1948,
+				"width": 1948,
+				"height": 674
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-b07d15d4b575.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-b07d15d4b575.png",
+			"sha256": "f300d37b56ecbf1b096d02d9c20ea93ea73ae58190547a370fc9b0d63b7b1ee3",
+			"imageId": "resid5-b07d15d4b575",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-b07d15d4b575",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-434764f5aa78.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-434764f5aa78.png",
+			"sha256": "ff91a1612c4cedc32c6db56e3e061fd307a901cf18e653a4b0f176fd7dcb8366",
+			"imageId": "resid5-434764f5aa78",
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-434764f5aa78",
+				"longEdgePx": 1828,
+				"width": 1828,
+				"height": 634
+			},
+			"stratum": "static-only-clean"
+		},
+		{
+			"itemId": "resid5-c0c59230ba79.guard_off",
+			"questionKey": "residual_is_field.guard_off",
+			"imagePath": "research/v3/data/sam/residual-sheets-v5/resid5-c0c59230ba79.png",
+			"sha256": "dd89344a439f9f30e00c65b7e7a1f987006d9399b87c561dac2c96db9da17b43",
+			"imageId": "resid5-c0c59230ba79",
+			"artworkId": "slipknot",
+			"collection": "sam-residual-sheet",
+			"rendition": {
+				"source": "research/v3/data/sam/residual-sheets-v5-sample.json",
+				"sourceEntryId": "resid5-c0c59230ba79",
+				"longEdgePx": 3028,
+				"width": 3028,
+				"height": 1034
+			},
+			"stratum": "static-only-clean"
+		}
+	],
+	"serveOrder": [
+		"resid5-5dcb480eb3cd.guard_on",
+		"resid5-77802c9bd678.guard_on",
+		"resid5-46821d170334.guard_on",
+		"resid5-1f281f71d7a9.guard_on",
+		"resid5-c0c59230ba79.guard_on",
+		"resid5-64a3dd0f96f2.guard_on",
+		"resid5-44b793fb749e.guard_on",
+		"resid5-945c0c690665.guard_on",
+		"resid5-2bfbcbb4f189.guard_on",
+		"resid5-c030f8379bc7.guard_on",
+		"resid5-b07d15d4b575.guard_on",
+		"resid5-417f95ea29e2.guard_on",
+		"resid5-5f25212c668f.guard_on",
+		"resid5-91f760ca6526.guard_on",
+		"resid5-cf66086ea127.guard_on",
+		"resid5-92502aa8ecae.guard_on",
+		"resid5-434764f5aa78.guard_on",
+		"resid5-c4e42e0e12ed.guard_on",
+		"resid5-9f6aa31d9b8b.guard_on",
+		"resid5-78ead7e0eb6b.guard_on",
+		"resid5-5aef26a06014.guard_on",
+		"resid5-e0dc3c587b37.guard_on",
+		"resid5-236d3db46739.guard_on",
+		"resid5-5f8816aa1e53.guard_on",
+		"resid5-77802c9bd678.guard_off",
+		"resid5-c0c59230ba79.guard_off",
+		"resid5-44b793fb749e.guard_off",
+		"resid5-e0dc3c587b37.guard_off",
+		"resid5-cf66086ea127.guard_off",
+		"resid5-2bfbcbb4f189.guard_off",
+		"resid5-5aef26a06014.guard_off",
+		"resid5-5f25212c668f.guard_off",
+		"resid5-64a3dd0f96f2.guard_off",
+		"resid5-91f760ca6526.guard_off",
+		"resid5-b07d15d4b575.guard_off",
+		"resid5-92502aa8ecae.guard_off",
+		"resid5-46821d170334.guard_off",
+		"resid5-c030f8379bc7.guard_off",
+		"resid5-1f281f71d7a9.guard_off",
+		"resid5-417f95ea29e2.guard_off",
+		"resid5-434764f5aa78.guard_off",
+		"resid5-5f8816aa1e53.guard_off",
+		"resid5-9f6aa31d9b8b.guard_off",
+		"resid5-78ead7e0eb6b.guard_off",
+		"resid5-5dcb480eb3cd.guard_off",
+		"resid5-236d3db46739.guard_off",
+		"resid5-945c0c690665.guard_off",
+		"resid5-c4e42e0e12ed.guard_off"
+	]
+}

@@ -1,0 +1,127 @@
+RESIDUAL PURITY ACROSS CUT VARIANTS — sam-eval-142-v3-dynamic vs sam-eval-142-v4-nouns
+v3 covers 142   v4 covers 142
+
+CUT VARIANTS
+  precision   : pooled 0.578, text_like raised to 0.697295  (config default, unchanged)
+  subtraction : pooled 0.578 for EVERY group (recall-oriented; a different consumer's cut, NOT a config proposal)
+
+residual_field_fraction (what is LEFT after subtracting the kept masks)
+run    arm      cut          guard         mean   median      min      max
+v3     static   precision    guard_on    0.8445   0.8835   0.4987   1.0000
+v3     dynamic  precision    guard_on    0.8362   0.8758   0.4987   1.0000
+v3     static   precision    guard_off   0.8210   0.8739   0.2193   1.0000
+v3     dynamic  precision    guard_off   0.8128   0.8555   0.2193   1.0000
+v3     static   subtraction  guard_on    0.8286   0.8734   0.3822   1.0000
+v3     dynamic  subtraction  guard_on    0.8204   0.8646   0.3822   1.0000
+v3     static   subtraction  guard_off   0.8052   0.8600   0.2193   1.0000
+v3     dynamic  subtraction  guard_off   0.7971   0.8386   0.2193   1.0000
+v4     static   precision    guard_on    0.8445   0.8835   0.4987   1.0000
+v4     dynamic  precision    guard_on    0.8211   0.8541   0.4731   1.0000
+v4     static   precision    guard_off   0.8210   0.8739   0.2193   1.0000
+v4     dynamic  precision    guard_off   0.7714   0.8197   0.0853   1.0000
+v4     static   subtraction  guard_on    0.8286   0.8734   0.3822   1.0000
+v4     dynamic  subtraction  guard_on    0.8054   0.8406   0.3822   1.0000
+v4     static   subtraction  guard_off   0.8052   0.8600   0.2193   1.0000
+v4     dynamic  subtraction  guard_off   0.7558   0.8050   0.0853   1.0000
+
+what the SPECIES noun newly captured, v4 dynamic vs v4 static, per cut
+  precision    guard_on  mean +0.0233  median +0.0000  max +0.4039  covers moved >0.001: 34
+  precision    guard_off mean +0.0496  median +0.0000  max +0.8943  covers moved >0.001: 38
+  subtraction  guard_on  mean +0.0231  median +0.0000  max +0.4021  covers moved >0.001: 33
+  subtraction  guard_off mean +0.0494  median +0.0000  max +0.8937  covers moved >0.001: 38
+
+v3 -> v4: the same cover, same cut, how much more was subtracted
+  precision    mean +0.0414  median +0.0000  max +0.8943  covers moved >0.001: 33
+  subtraction  mean +0.0412  median +0.0000  max +0.8937  covers moved >0.001: 33
+
+dynamic concepts: asked vs fired above the cut (guard_off)
+  v3 / precision
+    dyn-animal       asked    5  fired    5  rate  1.00
+    dyn-building     asked    8  fired    1  rate  0.12
+    dyn-object       asked   24  fired    0  rate  0.00
+    dyn-vehicle      asked    7  fired    5  rate  0.71
+    dyn-watermark    asked    8  fired    5  rate  0.62
+  v3 / subtraction
+    dyn-animal       asked    5  fired    5  rate  1.00
+    dyn-building     asked    8  fired    1  rate  0.12
+    dyn-object       asked   24  fired    0  rate  0.00
+    dyn-vehicle      asked    7  fired    5  rate  0.71
+    dyn-watermark    asked    8  fired    5  rate  0.62
+  v4 / precision
+    dyn-animal       asked    5  fired    5  rate  1.00
+    dyn-building     asked    8  fired    1  rate  0.12
+    dyn-noun         asked  102  fired   86  rate  0.84
+    dyn-object       asked   24  fired    0  rate  0.00
+    dyn-vehicle      asked    7  fired    5  rate  0.71
+    dyn-watermark    asked    8  fired    5  rate  0.62
+  v4 / subtraction
+    dyn-animal       asked    5  fired    5  rate  1.00
+    dyn-building     asked    8  fired    1  rate  0.12
+    dyn-noun         asked  102  fired   86  rate  0.84
+    dyn-object       asked   24  fired    0  rate  0.00
+    dyn-vehicle      asked    7  fired    5  rate  0.71
+    dyn-watermark    asked    8  fired    5  rate  0.62
+
+THE OBJECT COVERS — the class word's measured dead end (0 of 24 under v3)
+  24 covers whose agreed subject_kind is `object`
+  v3 (class word only) : 10 carry a subject mask at the precision cut, guard off
+  v4 (class + species) : 19 carry a subject mask   <- the recovery count
+  of which the species noun itself fired: 17
+  covers with no usable noun at all: 4 ([('part_noun_barred', 3), ('already_static', 1)])
+
+  per cover (noun -> did a subject mask survive):
+    0000e692a330542f8ed14132.jpg heart              v3=Y v4=Y noun_fired=Y resid 0.633->0.633
+    00018a1e2daf68a53f504cb9.jpg butterfly          v3=n v4=Y noun_fired=Y resid 1.000->0.989
+    00018a0a56bae40350d9fa8e.jpg plant              v3=n v4=Y noun_fired=Y resid 0.975->0.892
+    0002dfdcde2cb0a75822168c.jpg None               v3=Y v4=Y noun_fired=n resid 0.677->0.677
+    000390c07f75da30b4e8aba8.jpg lip                v3=n v4=n noun_fired=n resid 0.809->0.809
+    1e020004ccf0ae91364130886c02 leaf               v3=n v4=n noun_fired=n resid 0.985->0.985
+    b27300075841f68d8cd71db368d8 acoustic guitar    v3=Y v4=Y noun_fired=Y resid 0.857->0.526
+    b2730007d42f64cb70acce41c71d skull              v3=Y v4=Y noun_fired=Y resid 0.992->0.992
+    b27300088460068752fad04f8541 doll               v3=Y v4=Y noun_fired=Y resid 0.647->0.646
+    b273000913b3e9ae2c7173d1a8b2 None               v3=Y v4=Y noun_fired=n resid 0.951->0.951
+    b2730009448702be55dfc86fde67 None               v3=n v4=n noun_fired=n resid 1.000->1.000
+    b273000955ccfc1e8da97a09b32d shield             v3=n v4=Y noun_fired=Y resid 0.713->0.712
+    b27300099f4221cf6ed5f2440904 smartphone         v3=Y v4=Y noun_fired=Y resid 0.676->0.473
+    b2730009d178a401f9433fdddff2 speaker            v3=Y v4=Y noun_fired=Y resid 0.639->0.639
+    b273000a24cc32b3d8b6e31bc161 black hole         v3=n v4=Y noun_fired=Y resid 0.996->0.962
+    b273000aa22923f3a9064c0e525b cross              v3=n v4=Y noun_fired=Y resid 0.784->0.773
+    b273000e440b3d59e91eb43040ee cassette tape      v3=n v4=Y noun_fired=Y resid 0.982->0.342
+    1e02000f0a78a1791248aec707e3 microphone         v3=n v4=n noun_fired=n resid 0.965->0.965
+    b2730010def2c33a308e8bd193f8 drink              v3=n v4=Y noun_fired=Y resid 0.908->0.793
+    1e0200124d0597059e8987bc4577 sign               v3=n v4=Y noun_fired=Y resid 0.966->0.759
+    1e020013bebcaee941ebcc13437c record             v3=n v4=Y noun_fired=Y resid 0.976->0.799
+    images/greenday.jpg          None               v3=n v4=n noun_fired=n resid 0.845->0.845
+    images/infected.jpg          mushroom           v3=Y v4=Y noun_fired=Y resid 0.950->0.949
+    images/nobs.jpg              instrument         v3=Y v4=Y noun_fired=Y resid 0.993->0.976
+
+CONTAMINATION RECOUNT, by cause, per run and cut (guard_off)
+  v3 / precision   : 52 of 142 covers carry a cause (90 clean by proxy)
+      text_below_cut                       26
+      subject_unmasked                     23
+      text_below_pooled_cut_too            11
+      no_subject_prompt_at_all             10
+  v3 / subtraction : 43 of 142 covers carry a cause (99 clean by proxy)
+      subject_unmasked                     23
+      text_below_cut                       15
+      text_below_pooled_cut_too            11
+      no_subject_prompt_at_all             10
+  v4 / precision   : 35 of 142 covers carry a cause (107 clean by proxy)
+      text_below_cut                       26
+      text_below_pooled_cut_too            11
+      subject_unmasked                      9
+      no_subject_prompt_at_all              2
+  v4 / subtraction : 25 of 142 covers carry a cause (117 clean by proxy)
+      text_below_cut                       15
+      text_below_pooled_cut_too            11
+      subject_unmasked                      9
+      no_subject_prompt_at_all              2
+
+  the text gap, split (v4):
+    precision    text_below_cut  26  of which recoverable at the pooled cut  15  A12 shape  11
+    subtraction  text_below_cut  15  of which recoverable at the pooled cut   4  A12 shape  11
+
+  subject_unmasked by agreed subject_kind (v4, precision, guard_off):
+    object                              5
+    building_or_structure               3
+    person                              1

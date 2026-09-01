@@ -1,0 +1,86 @@
+{
+  "what": "PROPOSED decision record for batch sam-determinism-1. NOT PLACED. The orchestrator splices this into research/v3/data/decisions/decisions.json; this file exists because decisions.json is tracked and a history rewrite is live on this branch. It also carries the proposed PHASE_0_DECISIONS.md 6.1 condition-2 replacement and two proposed loose-end entries, neither of which this workstream may write itself: 6.1 and PHASE_0_LOOSE_ENDS.md both belong to the housekeeping workstream under CONVENTIONS.md's path-ownership table.",
+  "proposedAt": "2026-08-04",
+  "proposedBy": "batch sam-determinism-1; DETERMINISM_PREREG.md committed 4c3c8b9 before inference, DETERMINISM_TEST.md sec 7",
+  "decisions": [
+    {
+      "id": "d-2026-08-04-sam-determinism-measured-and-satisfied-for-a-pinned-stack",
+      "ts": "2026-08-04T00:00:00Z",
+      "kind": "instrument-design",
+      "draftedAs": "verdict - DETERMINISM_PREREG.md sec 5 fixed the bar ('PASS = zero differing bytes across (a), (b) and (c)'), the digest definition, and the four possible readings of the concept-order case (d) with their consequences named, all committed as 4c3c8b9 BEFORE the first inference. The bar was met and reading d2 fired. This record transcribes the pre-registered consequence rather than composing a new one.",
+      "scope": "Settles PHASE_0_DECISIONS.md 6.1 CONDITION 2 ONLY, and only within the scope stated in the decision. It does NOT make SAM admissible at runtime: the four conditions are conjunctive, and conditions 1 (no upstream model), 3 (fast enough - no threshold has ever been set) and 4 (plain code exhausted) are untouched and unargued. It does NOT say the masks are correct or good; determinism is not correctness and mask quality is MASK_REVIEW_NOTES.md's business. It does NOT change any code, any constant, or any default: no concept moved, no threshold moved, run_sam.py and config.py are byte-unchanged by this round. It does NOT retire or amend the incidental evidence it agrees with. It creates no obligation on the oracle's dev-time use of SAM, which 6.1 never constrained.",
+      "decision": "SAM'S OUTPUT IS BYTE-IDENTICAL ACROSS RUNS FOR A PINNED STACK; 6.1 CONDITION 2 IS MEASURED AND SATISFIED, WITH SCOPE, AND ONE COSMETIC BOUNDARY. Measured over 12 covers x 12 passes = 144 inferences and 5,148 regions, comparing every region's mask RLE, score, bbox and area on exact IEEE-754 bit patterns (float.hex(), nothing rounded): ZERO DIFFERING BYTES across (a) repeated inference in one process, 24/24 image comparisons; (b) three fresh process restarts each with a cold Metal context, 36/36; (c) three permuted image processing orders, 36/36. Zero regions present in one run and not the other; zero region-count mismatches. Image decoding was checked the same way and is byte-identical too - 0 pixel-hash mismatches across all six processes, including AVIF and extensionless files. (d) PERMUTED CONCEPT ORDER IS A DOCUMENTED BOUNDARY AND IT IS COSMETIC, which is pre-registered reading d2: emit-order digest differs in 29 of 36 comparisons, but the row-keyed digest (concept, instance_idx) and the order-free content digest are IDENTICAL 36/36, with zero regions differing in score, bbox, area or mask RLE and zero blob-length mismatches. instance_idx assignment is stable per concept regardless of prompt position. So under concept permutation the ROW SET is byte-identical and only the FILE's line order moves, because run_sam writes rows in emission order - a proposal must still pin concept order for file-level byte-identity, which config.py already requires by folding it into CONCEPT_SET_HASH. SCOPE IS PART OF THE FINDING AND IS NOT SEVERABLE FROM IT: one model revision (a992e302), one concept set (v2.2, d49a63c4), one runtime (mlx 0.32.0 / mlx-vlm 0.6.8), one machine (Apple M3 Max, macOS 15.7.7). Determinism across machines, GPU families, MLX versions or model revisions was NOT tested and is NOT claimed; floating-point reduction order can differ between GPU families and this round says nothing about that. The condition is satisfied FOR A PINNED DEPLOYMENT, and any proposal that changes a pin owes this measurement again.",
+      "fundedBy": [],
+      "fundedByArtifacts": [
+        "research/v3/oracle/sam/DETERMINISM_PREREG.md",
+        "research/v3/oracle/sam/DETERMINISM_TEST.md",
+        "research/v3/oracle/sam/determinism_probe.py",
+        "research/v3/oracle/sam/analyze_determinism.py",
+        "research/v3/oracle/sam/select_determinism_sample.py",
+        "research/v3/data/sam/determinism-1-sample.json",
+        "research/v3/data/sam/determinism-1-analysis.json",
+        "research/v3/data/sam/determinism-1-a.jsonl",
+        "research/v3/data/sam/determinism-1-b1.jsonl",
+        "research/v3/data/sam/determinism-1-b2.jsonl",
+        "research/v3/data/sam/determinism-1-b3.jsonl",
+        "research/v3/data/sam/determinism-1-c.jsonl",
+        "research/v3/data/sam/determinism-1-d.jsonl"
+      ],
+      "fundingCaveats": [
+        "fundedBy is empty and correctly so. This decision rests on a MACHINE MEASUREMENT, not on human answers: no reviewer judged anything, no warehouse record states it, and `warehouse recheck` has nothing to re-check. What makes it re-checkable is not the warehouse but the reproduction command in DETERMINISM_TEST.md sec 8 - re-run it and the digests either match or they do not.",
+        "DETERMINISM IS NOT ADMISSIBILITY. Anyone reading this record as clearing SAM for runtime is reading it wrong: it clears exactly one of four conjunctive conditions. The predecessor record d-2026-08-04-sam-at-runtime-is-conditionally-admissible warned against reading it backwards; this one carries the mirror-image warning.",
+        "DETERMINISM IS NOT CORRECTNESS. Every pass could have been identically wrong and this round would report the same PASS.",
+        "THE SPEED NUMBERS IN DETERMINISM_TEST.md SEC 5 FUND NOTHING IN THIS RECORD, which is about condition 2 only. But they are NOT neutral: while this round's GPU passes were running the reviewer ruled on condition 3 (d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow, commit 9f23978) that SAM's cost 'counts as slow'. This round independently reproduces the bracket that ruling rests on - min 2.68 s, cold-machine median 2.75 s, 144-inference mean 4.11 s, against the ruling's 'roughly 2.7-4.3 s per image' taken from the five eval-142 runs - on a different sample, a different script and six fresh processes. So the ruling's premise is corroborated, not merely inherited.",
+        "THE COMMISSIONING BRIEF'S FRAME WAS OVERTURNED MID-RUN AND THE REPORT WAS AMENDED, NOT QUIETLY KEPT. This round was asked to project 'one-time-corpus + per-new-file under the precompute architecture'. 9f23978 ruled that runtime is COLD and per-file and that precompute is a development affordance on a known corpus only. DETERMINISM_TEST.md sec 5.1 was rewritten to split the two numbers accordingly: the corpus sweep is dev-time and buys the shipped pipeline nothing, and the per-file number is the WHOLE runtime cost at ~6.2 s cold. The determinism result itself is untouched by the ruling - it is a property of the model, not of the architecture around it.",
+        "The 'cold' model-load numbers are a floor: fresh process and fresh Metal context, but WARM filesystem page cache. Purging the page cache needs `sudo purge`, a machine-wide action an agent does not take."
+      ],
+      "recordedAt": "2026-08-04"
+    },
+    {
+      "id": "d-2026-08-04-sam-cross-run-identity-priors-agree-with-the-dedicated-test",
+      "ts": "2026-08-04T00:00:01Z",
+      "kind": "process",
+      "draftedAs": "analysis - a consistency check between the dedicated test and the two incidental results that existed before it. Written because a DISAGREEMENT would have been the interesting outcome and would have needed a record; agreement needs one too, so that the priors are not quietly re-derived later as if they were independent confirmations.",
+      "scope": "Records how the two pre-existing incidental byte-identity results relate to sam-determinism-1, and corrects one piece of framing that had entered circulation. Retires neither artifact and amends no number in either. Does not upgrade either prior into a determinism test - neither was designed as one.",
+      "decision": "THE TWO INCIDENTAL PRIORS AGREE WITH THE DEDICATED TEST, AND ONE FRAMING IS CORRECTED. (1) FRAMING CORRECTION: the 4,867-region cross-run byte-identity check is v4-VS-v5 (sam-eval-142-v4-nouns vs sam-eval-142-v5-allnouns), NOT v2-vs-v5; the hash boundary it crosses is concept set v2.1 -> v2.2. Source RESIDUAL_V5_NOTES.md sec 12.5. The round that commissioned sam-determinism-1 cited it as v2-vs-v5 and that is wrong. (2) The v4-vs-v5 result - 4,867 regions in v4, 4,867 in v5, 4,867 matched, 0 present in only one run, 0 differing in score, area or mask RLE - AGREES with sam-determinism-1, which reproduces cross-run identity on exact bit patterns rather than stored decimals and adds the two isolations that check could not make: fresh processes and permuted orders. sam-determinism-1 also EXPLAINS why it held: v4-vs-v5 compared 10 shared concepts embedded in a 10-prompt versus a 12-prompt call, which IS condition (d), and (d) is byte-identical at the row grain. (3) The CJK probe's score reproduction (probe 4 vs sam-cjk-probe-7, a day apart, 9 overlapping (image, prompt) cells, 50 regions, 50/50 scores equal at probe 4's stored 4 dp) AGREES, and sam-determinism-1 supplies what it structurally could not: probe 4 stored NO mask_rle, so it was never a mask byte-identity test at all. The masks are now compared and they match. NEITHER PRIOR IS RETIRED and neither should be cited as a determinism test in its own right.",
+      "fundedBy": [],
+      "fundedByArtifacts": [
+        "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md",
+        "research/v3/oracle/sam/DETERMINISM_TEST.md",
+        "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+        "research/v3/data/sam/PROBE4_NOTES.md",
+        "research/v3/oracle/sam/analyze_residual_cuts_v5.py"
+      ],
+      "fundingCaveats": [
+        "fundedBy is empty: this is a reconciliation of machine measurements against each other, and no human answer funds it.",
+        "The v2-vs-v5 mis-citation is corrected here but may exist elsewhere in circulation; this record does not claim to have found every instance."
+      ],
+      "recordedAt": "2026-08-04"
+    }
+  ],
+  "proposedPhase0DecisionsEdit": {
+    "file": "research/v3/PHASE_0_DECISIONS.md",
+    "section": "6.1",
+    "owner": "housekeeping workstream (CONVENTIONS.md path-ownership table) - NOT applied by the SAM workstream",
+    "operation": "replace condition 2 in the numbered list; conditions 1, 3, 4 and all surrounding prose are untouched",
+    "reconciledAgainst": "Written against 6.1 as it stood at 4c3c8b9, then re-checked against 9f23978 and 45e88fb, which landed while this round's GPU passes were running. Those commits add the condition-3 ruling and the cold-runtime subsection BELOW the numbered list and do not touch condition 2, so the replacement applies cleanly to the current file. The proposed text's closing line - that SAM at runtime remains inadmissible until 1, 3 and 4 are argued - is if anything stronger now: condition 3 has been ruled a standing debt rather than left open.",
+    "currentText": "2. **Provably deterministic** — the same file yields **byte-identical masks across runs**. This is a\n   property to be **tested before anything relies on it**, not assumed. Until that test exists and\n   passes, SAM-at-runtime is not admissible on this criterion.",
+    "proposedText": "2. **Provably deterministic — MEASURED AND SATISFIED for a pinned stack** (`sam-determinism-1`,\n   2026-08-04). The same file yields **byte-identical masks across runs**. This was tested before\n   anything relied on it, as this condition required: 12 covers × 12 passes = 144 inferences and\n   5,148 regions, comparing every region's mask RLE, score, bbox and area on exact IEEE-754 bit\n   patterns, with **zero differing bytes** across repeated inference in one process (24/24 image\n   comparisons), fresh process restarts with a cold Metal context (36/36), and permuted image\n   processing order (36/36). Image decoding was checked the same way and is byte-identical too.\n   Evidence: `oracle/sam/DETERMINISM_TEST.md`, `oracle/sam/DETERMINISM_PREREG.md`,\n   `data/sam/determinism-1-analysis.json`.\n\n   **One boundary is documented, and it is cosmetic.** Permuting **concept** order changes the\n   order in which regions are emitted and nothing else: over 36 comparisons the row-keyed digest\n   (`concept`, `instance_idx`) and the order-free content digest are identical **36/36**, with\n   zero regions differing in any field. Since stored rows are keyed on (image, concept, instance),\n   the **row set** is byte-identical under concept permutation while the **file's line order** is\n   not. A proposal must pin the concept order to get file-level byte-identity — which `config.py`\n   already requires by making concept order part of `CONCEPT_SET_HASH`.\n\n   **Scope, which is part of the finding.** This holds for one model revision (`a992e302…`), one\n   concept set (v2.2, `d49a63c4…`), one runtime (mlx 0.32.0 / mlx-vlm 0.6.8) and one machine\n   (Apple M3 Max, macOS 15.7.7). Determinism across machines, GPU families, MLX versions or model\n   revisions was **not** tested and is **not** claimed. The condition is satisfied **for a pinned\n   deployment**, and any proposal that changes a pin owes this measurement again.\n\n   **This satisfies condition 2 only.** The four conditions are conjunctive and SAM at runtime\n   remains inadmissible until 1, 3 and 4 are argued."
+  },
+  "proposedLooseEnds": [
+    {
+      "file": "research/v3/PHASE_0_LOOSE_ENDS.md",
+      "owner": "housekeeping workstream - NOT written by the SAM workstream",
+      "item": "Distinct-file count for a SAM precompute pass is unmeasured",
+      "detail": "The one-time corpus projection in DETERMINISM_TEST.md sec 5.1 (16,216 files, ~19.4 h at 4.3 s/file) counts FILES. music-artworks/ holds multiple _WxH renditions of the same artwork, so the count of distinct files by content hash is lower and the real projection is smaller by an unknown factor. Content hash is the right precompute key precisely because sam-determinism-1 established that identical bytes cannot produce different masks.",
+      "revivedBy": "any proposal that budgets a corpus-wide SAM pass, or any decision that turns on the 19.4 h figure"
+    },
+    {
+      "file": "research/v3/PHASE_0_LOOSE_ENDS.md",
+      "owner": "housekeeping workstream - NOT written by the SAM workstream",
+      "item": "Whether concurrent MLX processes help or thrash is unmeasured",
+      "detail": "Every speed number in DETERMINISM_TEST.md sec 5 is single-process. Whether two concurrent SAM processes would halve the corpus pass or thrash the GPU is unknown, and the standing single-owner GPU rule (CONVENTIONS.md) means no agent may find out casually - the measured consequence of violating it is a poisoned Metal context. This needs an orchestrator-scheduled slot, not an agent's initiative.",
+      "revivedBy": "any plan whose feasibility depends on beating the single-process corpus figure"
+    }
+  ]
+}

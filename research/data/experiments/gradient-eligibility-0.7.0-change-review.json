@@ -1,0 +1,5543 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "gradient-eligibility-change-review-0.1.0",
+  "experimentVersion": "gradient-eligibility-0.7.0-dev",
+  "generatedAt": "2026-07-19T19:50:36.014Z",
+  "summary": {
+    "baselineFlatToCandidateGradient": 0,
+    "totalBaselineGradientToCandidateFlat": 147,
+    "unreviewedBaselineGradientToCandidateFlat": 140,
+    "musicChanges": 132,
+    "holdoutChanges": 8,
+    "previouslyReviewedMusicChangesExcluded": 7,
+    "reviewCases": 50
+  },
+  "entries": [
+    {
+      "familyId": "gc-0ef559842c83cf4ba0fa",
+      "anchor": {
+        "file": "music-artworks/c/c/2/cc266899560d4f4ae2930851448713ce.jpg",
+        "sha256": "8b2295ffb1e0f130f0a06202c5e2a9934ca5a15c99ec97fd922b8ed75db92bac",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            199,
+            187,
+            172
+          ],
+          "hex": "#c7bbac",
+          "generated": false,
+          "sourceDistance": 0.0030193738449901426
+        },
+        "foreground": {
+          "rgb": [
+            33,
+            30,
+            28
+          ],
+          "hex": "#211e1c",
+          "generated": false,
+          "sourceDistance": 0.0038234885358572287
+        },
+        "surface": {
+          "rgb": [
+            199,
+            187,
+            172
+          ],
+          "hex": "#c7bbac",
+          "generated": false,
+          "sourceDistance": 0.0030193738449901426
+        },
+        "accent": {
+          "rgb": [
+            241,
+            241,
+            237
+          ],
+          "hex": "#f1f1ed",
+          "generated": false,
+          "sourceDistance": 0.002174084832319052
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7321537179396324,
+          "coverage": 0.32382892057026474,
+          "continuity": 0.5547347354044712,
+          "coherence": 0.568930298132058
+        },
+        "score": 0.5138804855605633,
+        "metrics": {
+          "foregroundContrast": 8.785318831889649,
+          "foregroundSurfaceContrast": 8.785318831889649,
+          "accentContrast": 1.6658927922783875,
+          "accentSurfaceContrast": 1.6658927922783875,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.0030090802645391414,
+          "meanReconstructionError": 0.11940215477219351
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b2730000631f4a1f3f8a3286f79d",
+      "anchor": {
+        "file": "00/ab67616d0000b2730000631f4a1f3f8a3286f79d.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            5,
+            5,
+            5
+          ],
+          "hex": "#050505",
+          "generated": false,
+          "sourceDistance": 0.0008260249962793373
+        },
+        "foreground": {
+          "rgb": [
+            208,
+            220,
+            223
+          ],
+          "hex": "#d0dcdf",
+          "generated": false,
+          "sourceDistance": 0.0028536828653036497
+        },
+        "surface": {
+          "rgb": [
+            18,
+            95,
+            118
+          ],
+          "hex": "#125f76",
+          "generated": false,
+          "sourceDistance": 0.003264559682273321
+        },
+        "accent": {
+          "rgb": [
+            72,
+            141,
+            161
+          ],
+          "hex": "#488da1",
+          "generated": false,
+          "sourceDistance": 0.009079380343215478
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6648397640306123,
+          "continuity": 1,
+          "coherence": 0.36823988372982486
+        },
+        "score": 0.625761073126791,
+        "metrics": {
+          "foregroundContrast": 14.54337124479984,
+          "foregroundSurfaceContrast": 5.124403012442032,
+          "accentContrast": 5.4351639765359945,
+          "accentSurfaceContrast": 1.915097275979686,
+          "minimumRoleDistance": 0.153949682968868,
+          "meanSourceDistance": 0.0040059119717679465,
+          "meanReconstructionError": 0.06757406901320798
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.3466771690220157,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6648397640306123,
+          "continuity": 1,
+          "coherence": 0.36823988372982486
+        },
+        "colorPathCoverage": 0.6648397640306123,
+        "intermediateCoverage": 0.26054288903061223,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.02223398708813448,
+        "connectedField": {
+          "coverage": 0.6468231823979592,
+          "shareOfColorPath": 0.9729008663329236,
+          "continuity": 1,
+          "localTransitionCoverage": 1.0926513634262824,
+          "abruptTransitionShare": 0.19814584511023178,
+          "directionalOrdering": 0.020861217211727866
+        },
+        "background": {
+          "coverage": 0.3821548150510204,
+          "coherence": 0.5622946544980443,
+          "borderCoverage": 0.1591928251121076,
+          "interiorComponentShare": 0.08552803129074316,
+          "flatness": 0.5958568261086188,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.02214205994897959,
+          "coherence": 0.0333033303330333,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9666966696669667,
+          "flatness": 0.39612591484104975,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.4168766552156403
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-5c87815af95150c28cf6",
+      "anchor": {
+        "file": "music-artworks/5/1/4/514dcef44aceb6e45d81a3e0a8826c0b.jpg",
+        "sha256": "1d5781f7a8e3faaffa0e6ac51a0cb0d607723a5a792538e5e1d3dd07fad33f88",
+        "width": 1240,
+        "height": 1082
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            112,
+            45,
+            43
+          ],
+          "hex": "#702d2b",
+          "generated": false,
+          "sourceDistance": 0.001665692304010248
+        },
+        "foreground": {
+          "rgb": [
+            250,
+            248,
+            238
+          ],
+          "hex": "#faf8ee",
+          "generated": false,
+          "sourceDistance": 0.06846301637232807
+        },
+        "surface": {
+          "rgb": [
+            116,
+            57,
+            58
+          ],
+          "hex": "#74393a",
+          "generated": false,
+          "sourceDistance": 0.00787850067555041
+        },
+        "accent": {
+          "rgb": [
+            12,
+            24,
+            29
+          ],
+          "hex": "#0c181d",
+          "generated": false,
+          "sourceDistance": 0.0006530795805190217
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.757587540092949,
+          "coverage": 0.3442663378545006,
+          "continuity": 0.6660110359479866,
+          "coherence": 0.6880907835781225
+        },
+        "score": 0.5840934672086336,
+        "metrics": {
+          "foregroundContrast": 9.397147094570943,
+          "foregroundSurfaceContrast": 8.257340473499994,
+          "accentContrast": 1.8033821970012631,
+          "accentSurfaceContrast": 2.0523130694849865,
+          "minimumRoleDistance": 0.032720835522107625,
+          "meanSourceDistance": 0.01966507223310194,
+          "meanReconstructionError": 0.05960397365754951
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.032720835522107625,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-5c4932a65d37817645c6",
+      "anchor": {
+        "file": "music-artworks/8/5/5/8558f67edf1afca9eaab6a4a735c0972.jpg",
+        "sha256": "b3b952b4de263d5faf76f43bfbb4085e6077a33f118a7022fadedabce43dd217",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            249,
+            249,
+            249
+          ],
+          "hex": "#f9f9f9",
+          "generated": false,
+          "sourceDistance": 0.00004124562356655484
+        },
+        "foreground": {
+          "rgb": [
+            1,
+            1,
+            1
+          ],
+          "hex": "#010101",
+          "generated": false,
+          "sourceDistance": 0.01385322716234868
+        },
+        "surface": {
+          "rgb": [
+            219,
+            219,
+            221
+          ],
+          "hex": "#dbdbdd",
+          "generated": false,
+          "sourceDistance": 0.0016073546981992951
+        },
+        "accent": {
+          "rgb": [
+            45,
+            46,
+            48
+          ],
+          "hex": "#2d2e30",
+          "generated": false,
+          "sourceDistance": 0.009838520625574323
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5802774234693877,
+          "continuity": 1,
+          "coherence": 0.969128872923215
+        },
+        "score": 0.641615591593462,
+        "metrics": {
+          "foregroundContrast": 19.825777565445,
+          "foregroundSurfaceContrast": 15.097065244352299,
+          "accentContrast": 12.909650909125533,
+          "accentSurfaceContrast": 9.830527020366356,
+          "minimumRoleDistance": 0.09015160391023877,
+          "meanSourceDistance": 0.0063350870274222135,
+          "meanReconstructionError": 0.04475506141252512
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.09015160391023874,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5802774234693877,
+          "continuity": 1,
+          "coherence": 0.969128872923215
+        },
+        "colorPathCoverage": 0.5802774234693877,
+        "intermediateCoverage": 0.17753507653061223,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.020960332486866358,
+        "connectedField": {
+          "coverage": 0.5778260522959183,
+          "shareOfColorPath": 0.9957755186151944,
+          "continuity": 1,
+          "localTransitionCoverage": 0.8863863691235816,
+          "abruptTransitionShare": 0.07594117435547086,
+          "directionalOrdering": 0.024732525305661873
+        },
+        "background": {
+          "coverage": 0.390625,
+          "coherence": 0.9937755102040816,
+          "borderCoverage": 0.9013452914798207,
+          "interiorComponentShare": 0.004744897959183673,
+          "flatness": 0.9154069966509539,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.01211734693877551,
+          "coherence": 0.03289473684210526,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.8060601782274411,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.8592879198185055
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-9177c6e82a046871739b",
+      "anchor": {
+        "file": "music-artworks/a/6/7/a67456132f194b6d7cb3e2b103826ba0.jpg",
+        "sha256": "c917bcb2604239ee61c698a492c60704b4170b925bf57cc3c00044f94227fa1e",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            17,
+            17,
+            17
+          ],
+          "hex": "#111111",
+          "generated": false,
+          "sourceDistance": 0.000697466087930199
+        },
+        "foreground": {
+          "rgb": [
+            219,
+            219,
+            219
+          ],
+          "hex": "#dbdbdb",
+          "generated": false,
+          "sourceDistance": 0.00918305935133435
+        },
+        "surface": {
+          "rgb": [
+            30,
+            30,
+            30
+          ],
+          "hex": "#1e1e1e",
+          "generated": false,
+          "sourceDistance": 0.000024381425967556786
+        },
+        "accent": {
+          "rgb": [
+            140,
+            140,
+            140
+          ],
+          "hex": "#8c8c8c",
+          "generated": false,
+          "sourceDistance": 0.0015489337881631215
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7984218982657441,
+          "coverage": 0.20105229591836735,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.5796673819742489
+        },
+        "score": 0.6002754044949252,
+        "metrics": {
+          "foregroundContrast": 13.638529605492378,
+          "foregroundSurfaceContrast": 12.04095375674511,
+          "accentContrast": 5.615474478445835,
+          "accentSurfaceContrast": 4.957694888891771,
+          "minimumRoleDistance": 0.0573933516984335,
+          "meanSourceDistance": 0.002863460163348807,
+          "meanReconstructionError": 0.059636151801567464
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.0573933516984335,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.7984218982657441,
+          "coverage": 0.20105229591836735,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.5796673819742489
+        },
+        "colorPathCoverage": 0.20105229591836735,
+        "intermediateCoverage": 0.1485969387755102,
+        "colorPathContinuity": 0.7142857142857143,
+        "colorPathDirectionalOrdering": 0.16137538113374883,
+        "connectedField": {
+          "coverage": 0.12725207270408162,
+          "shareOfColorPath": 0.6329302141157811,
+          "continuity": 0.7142857142857143,
+          "localTransitionCoverage": 0.870007830853563,
+          "abruptTransitionShare": 0.32625833838690116,
+          "directionalOrdering": 0.40283097520500055
+        },
+        "background": {
+          "coverage": 0.04647640306122449,
+          "coherence": 0.13850771869639794,
+          "borderCoverage": 0.0257847533632287,
+          "interiorComponentShare": 0.5158662092624356,
+          "flatness": 0.8919998359679159,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.005978954081632653,
+          "coherence": 0.06333333333333334,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9733333333333334,
+          "flatness": 0.9126746067868637,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-a623c624b1aaa281d0c2",
+      "anchor": {
+        "file": "music-artworks/f/9/0/f9008260e33964ccffd9d9a4d3ee969a.png",
+        "sha256": "cb418aac0504aee3bac60e565557ce75274e5a8f49a5f508bb02ba51eb46a81c",
+        "width": 1000,
+        "height": 1000
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            13,
+            2,
+            0
+          ],
+          "hex": "#0d0200",
+          "generated": false,
+          "sourceDistance": 0.028151745410872547
+        },
+        "surface": {
+          "rgb": [
+            220,
+            221,
+            220
+          ],
+          "hex": "#dcdddc",
+          "generated": false,
+          "sourceDistance": 0.003761935590067299
+        },
+        "accent": {
+          "rgb": [
+            219,
+            106,
+            45
+          ],
+          "hex": "#db6a2d",
+          "generated": false,
+          "sourceDistance": 0.0007669372197498866
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.4475845025510204,
+          "continuity": 1,
+          "coherence": 0.4203020134228188
+        },
+        "score": 0.6804401335485502,
+        "metrics": {
+          "foregroundContrast": 20.471898777762583,
+          "foregroundSurfaceContrast": 15.031414413686775,
+          "accentContrast": 3.4361338471602476,
+          "accentSurfaceContrast": 2.522968308814903,
+          "minimumRoleDistance": 0.1035289728260665,
+          "meanSourceDistance": 0.008170156186785888,
+          "meanReconstructionError": 0.022960713433648187
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.10352897282606649,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.4475845025510204,
+          "continuity": 1,
+          "coherence": 0.4203020134228188
+        },
+        "colorPathCoverage": 0.4475845025510204,
+        "intermediateCoverage": 0.04751275510204082,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.003786882853519828,
+        "connectedField": {
+          "coverage": 0.24968112244897958,
+          "shareOfColorPath": 0.5578413037670318,
+          "continuity": 1,
+          "localTransitionCoverage": 0.16147828863346106,
+          "abruptTransitionShare": 0.5199335548172758,
+          "directionalOrdering": 0.0024232462613183723
+        },
+        "background": {
+          "coverage": 0.3917211415816326,
+          "coherence": 0.13497837700330706,
+          "borderCoverage": 0.22085201793721973,
+          "interiorComponentShare": 0.4604426354617146,
+          "flatness": 0.973216392465296,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.00835060586734694,
+          "coherence": 0.026252983293556086,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.954653937947494,
+          "flatness": 0.6799027069184655,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.896140968149752
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-7897da56772587093445",
+      "anchor": {
+        "file": "music-artworks/e/2/8/e28f1b3950fe34a3644198533072c09a.jpg",
+        "sha256": "96ea7071af6961cdc501afb78714bdb16cc49af776b653a2c88e357694dde42f",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            3,
+            8,
+            12
+          ],
+          "hex": "#03080c",
+          "generated": false,
+          "sourceDistance": 0.0006261484097515934
+        },
+        "foreground": {
+          "rgb": [
+            241,
+            233,
+            238
+          ],
+          "hex": "#f1e9ee",
+          "generated": false,
+          "sourceDistance": 0.08075800280763241
+        },
+        "surface": {
+          "rgb": [
+            87,
+            92,
+            123
+          ],
+          "hex": "#575c7b",
+          "generated": false,
+          "sourceDistance": 0.003801280646188356
+        },
+        "accent": {
+          "rgb": [
+            197,
+            73,
+            77
+          ],
+          "hex": "#c5494d",
+          "generated": false,
+          "sourceDistance": 0.01168293236182486
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5838249362244898,
+          "continuity": 1,
+          "coherence": 0.7968026557176553
+        },
+        "score": 0.6575677253567939,
+        "metrics": {
+          "foregroundContrast": 16.888681807420088,
+          "foregroundSurfaceContrast": 5.471658584837551,
+          "accentContrast": 4.247711710584397,
+          "accentSurfaceContrast": 1.3761895991742037,
+          "minimumRoleDistance": 0.2004295436921412,
+          "meanSourceDistance": 0.024217091056349303,
+          "meanReconstructionError": 0.07311308290349043
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.35597786729213393,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5838249362244898,
+          "continuity": 1,
+          "coherence": 0.7968026557176553
+        },
+        "colorPathCoverage": 0.5838249362244898,
+        "intermediateCoverage": 0.22813695790816327,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.09969944426401008,
+        "connectedField": {
+          "coverage": 0.5753148915816326,
+          "shareOfColorPath": 0.985423636239503,
+          "continuity": 1,
+          "localTransitionCoverage": 0.7413309315134929,
+          "abruptTransitionShare": 0.12449372008345948,
+          "directionalOrdering": 0.10681667104061549
+        },
+        "background": {
+          "coverage": 0.3024752869897959,
+          "coherence": 0.4678131383013771,
+          "borderCoverage": 0.22085201793721973,
+          "interiorComponentShare": 0.10344600382157211,
+          "flatness": 0.8222515861708648,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.053212691326530615,
+          "coherence": 0.549063670411985,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.46599734498397405,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.44792446042162193
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-8687e6984d49c1b32f78",
+      "anchor": {
+        "file": "music-artworks/c/e/9/ce9a9d85059e95aeb4085e13afe49c56.png",
+        "sha256": "a530c283cef84812084414b9239ca5eb651ca3eda39bb9805b012b6dc5816c38",
+        "width": 1000,
+        "height": 1000
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            204,
+            210,
+            213
+          ],
+          "hex": "#ccd2d5",
+          "generated": false,
+          "sourceDistance": 0.004637344034836448
+        },
+        "accent": {
+          "rgb": [
+            154,
+            161,
+            162
+          ],
+          "hex": "#9aa1a2",
+          "generated": false,
+          "sourceDistance": 0.005230378558960196
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9628656325610139,
+          "coverage": 0.3663703762755102,
+          "continuity": 1,
+          "coherence": 0.3159057437407953
+        },
+        "score": 0.654679947499025,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 13.746930474439704,
+          "accentContrast": 2.6270755285678726,
+          "accentSurfaceContrast": 1.7197249829678325,
+          "minimumRoleDistance": 0.14020589399523428,
+          "meanSourceDistance": 0.002466932280062616,
+          "meanReconstructionError": 0.045164124908292566
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.14020589399523428,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.9628656325610139,
+          "coverage": 0.3663703762755102,
+          "continuity": 1,
+          "coherence": 0.3159057437407953
+        },
+        "colorPathCoverage": 0.3663703762755102,
+        "intermediateCoverage": 0.08119419642857142,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.00003182501059680654,
+        "connectedField": {
+          "coverage": 0.3141541772959184,
+          "shareOfColorPath": 0.8574770168090083,
+          "continuity": 1,
+          "localTransitionCoverage": 0.2850345746368077,
+          "abruptTransitionShare": 0.46771709513090864,
+          "directionalOrdering": 0.000027907943641457382
+        },
+        "background": {
+          "coverage": 0.2727200255102041,
+          "coherence": 0.19431452791581408,
+          "borderCoverage": 0.22085201793721973,
+          "interiorComponentShare": 0.22296112247880737,
+          "flatness": 0.960448108829621,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.012456154336734694,
+          "coherence": 0.024,
+          "borderCoverage": 0.004484304932735426,
+          "interiorComponentShare": 0.9344,
+          "flatness": 0.5093745450745922,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.44052447600406297
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-c07811015acd7daef60d",
+      "anchor": {
+        "file": "music-artworks/e/c/4/ec432a784c902c729a3e1852c4d70567.png",
+        "sha256": "89d690a20ac6aa5cffd8a2fbc79236a21f15c310e212fbea2cf619cdcb9d5cd4",
+        "width": 1000,
+        "height": 562
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            206,
+            196,
+            193
+          ],
+          "hex": "#cec4c1",
+          "generated": false,
+          "sourceDistance": 0.006107187030117577
+        },
+        "accent": {
+          "rgb": [
+            170,
+            117,
+            88
+          ],
+          "hex": "#aa7558",
+          "generated": false,
+          "sourceDistance": 0.010071054068687347
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.698625283446712,
+          "continuity": 1,
+          "coherence": 0.22110091743119267
+        },
+        "score": 0.6478189263320953,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 12.290384518027174,
+          "accentContrast": 3.892751687041744,
+          "accentSurfaceContrast": 2.278257860330572,
+          "minimumRoleDistance": 0.17282011210503112,
+          "meanSourceDistance": 0.004044561906314687,
+          "meanReconstructionError": 0.02515193992789751
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.17282011210503112,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.698625283446712,
+          "continuity": 1,
+          "coherence": 0.22110091743119267
+        },
+        "colorPathCoverage": 0.698625283446712,
+        "intermediateCoverage": 0.03861961451247165,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.17887535609009741,
+        "connectedField": {
+          "coverage": 0.6828585600907029,
+          "shareOfColorPath": 0.9774317882138148,
+          "continuity": 1,
+          "localTransitionCoverage": 0.15882322419965755,
+          "abruptTransitionShare": 0.24643032988675528,
+          "directionalOrdering": 0.161542585662089
+        },
+        "background": {
+          "coverage": 0.6396683673469388,
+          "coherence": 0.993796388611942,
+          "borderCoverage": 0.8362068965517241,
+          "interiorComponentShare": 0.006203611388058048,
+          "flatness": 0.9912418414669909,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.020337301587301588,
+          "coherence": 0.22822299651567945,
+          "borderCoverage": 0.017241379310344827,
+          "interiorComponentShare": 0.5069686411149826,
+          "flatness": 0.46825441570850224,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.4213487713790403
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-150207433a6cd7dbb1f0",
+      "anchor": {
+        "file": "music-artworks/e/a/7/ea7e2ae9c5d5b74d28a47919c68ed331.jpg",
+        "sha256": "b17f4f3d12a070c487a96d9f015e5c54047e2ef11cdba6677cd5553f8ad9fe27",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            91,
+            60,
+            52
+          ],
+          "hex": "#5b3c34",
+          "generated": false,
+          "sourceDistance": 0.003784046859719612
+        },
+        "foreground": {
+          "rgb": [
+            244,
+            240,
+            241
+          ],
+          "hex": "#f4f0f1",
+          "generated": false,
+          "sourceDistance": 0.019770763254292802
+        },
+        "surface": {
+          "rgb": [
+            91,
+            60,
+            52
+          ],
+          "hex": "#5b3c34",
+          "generated": false,
+          "sourceDistance": 0.003784046859719612
+        },
+        "accent": {
+          "rgb": [
+            4,
+            1,
+            2
+          ],
+          "hex": "#040102",
+          "generated": false,
+          "sourceDistance": 0.005249667523059109
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8234089179608284,
+          "coverage": 0.39849884526558893,
+          "continuity": 0.9445972627491601,
+          "coherence": 0.6378618494063917
+        },
+        "score": 0.5200110694091995,
+        "metrics": {
+          "foregroundContrast": 8.679550345466334,
+          "foregroundSurfaceContrast": 8.679550345466334,
+          "accentContrast": 2.118765335095296,
+          "accentSurfaceContrast": 2.118765335095296,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.008147131124197782,
+          "meanReconstructionError": 0.12556232891517333
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-1a8b573a2977663bd6f4",
+      "anchor": {
+        "file": "music-artworks/a/1/f/a1f89596c0c0f0245566a9cd6bb65963.jpg",
+        "sha256": "524c52e888a516546ad42b04cbfc0d811b8f2976600b471df135a702ce6b6340",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            5,
+            11,
+            8
+          ],
+          "hex": "#050b08",
+          "generated": false,
+          "sourceDistance": 0.0034764356232952587
+        },
+        "foreground": {
+          "rgb": [
+            241,
+            241,
+            242
+          ],
+          "hex": "#f1f1f2",
+          "generated": false,
+          "sourceDistance": 0.005793009720705448
+        },
+        "surface": {
+          "rgb": [
+            9,
+            18,
+            14
+          ],
+          "hex": "#09120e",
+          "generated": false,
+          "sourceDistance": 0.001691465779186885
+        },
+        "accent": {
+          "rgb": [
+            137,
+            142,
+            139
+          ],
+          "hex": "#898e8b",
+          "generated": false,
+          "sourceDistance": 0.00576917556954295
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.774138565935359,
+          "coverage": 0.36429258902791145,
+          "continuity": 0.6913375361582091,
+          "coherence": 0.5206192143593109
+        },
+        "score": 0.68064451513086,
+        "metrics": {
+          "foregroundContrast": 17.587387648975817,
+          "foregroundSurfaceContrast": 16.844532263315926,
+          "accentContrast": 5.960977045476614,
+          "accentSurfaceContrast": 5.709197532202217,
+          "minimumRoleDistance": 0.030824439492202885,
+          "meanSourceDistance": 0.004182521673182635,
+          "meanReconstructionError": 0.05649497026833207
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.030824439492202885,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-0962f913b5ce4a0b971c",
+      "anchor": {
+        "file": "music-artworks/c/a/4/ca4d6d298d1c6cd3443533b3c267782d.jpg",
+        "sha256": "5e23a4602894749db0eb37ce68b09eda739139b6d9222d39e46f72579df81a2c",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            24,
+            32,
+            78
+          ],
+          "hex": "#18204e",
+          "generated": false,
+          "sourceDistance": 0.0009232612777918469
+        },
+        "foreground": {
+          "rgb": [
+            224,
+            224,
+            222
+          ],
+          "hex": "#e0e0de",
+          "generated": false,
+          "sourceDistance": 0.009053105970764603
+        },
+        "surface": {
+          "rgb": [
+            168,
+            42,
+            38
+          ],
+          "hex": "#a82a26",
+          "generated": false,
+          "sourceDistance": 0.004400152452450433
+        },
+        "accent": {
+          "rgb": [
+            240,
+            196,
+            45
+          ],
+          "hex": "#f0c42d",
+          "generated": false,
+          "sourceDistance": 0.002052964992308644
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8921922978782544,
+          "coverage": 0.49307791371538956,
+          "continuity": 0.9703775827748179,
+          "coherence": 0.6341875039381755
+        },
+        "score": 0.7149602086750606,
+        "metrics": {
+          "foregroundContrast": 11.720427678734158,
+          "foregroundSurfaceContrast": 5.253230847451864,
+          "accentContrast": 9.324486284310156,
+          "accentSurfaceContrast": 4.179342284092342,
+          "minimumRoleDistance": 0.17263902210328635,
+          "meanSourceDistance": 0.004107371173328881,
+          "meanReconstructionError": 0.08218732543149287
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.3062090875428601,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.6815845088981054,
+          "coverage": 0.23473373724489796,
+          "continuity": 0.8571428571428571,
+          "coherence": 0.12101910828025478
+        },
+        "colorPathCoverage": 0.23473373724489796,
+        "intermediateCoverage": 0.021902901785714284,
+        "colorPathContinuity": 0.8571428571428571,
+        "colorPathDirectionalOrdering": 0.0011223593856441588,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.18028539540816327,
+          "coherence": 0.3678974132213133,
+          "borderCoverage": 0.03923766816143498,
+          "interiorComponentShare": 0.2123590537254035,
+          "flatness": 0.26145349353976943,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.032545440051020405,
+          "coherence": 0.3288426209430496,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6057664262984329,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.006213851684852362
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-09cc580700e34f496be1",
+      "anchor": {
+        "file": "music-artworks/6/7/1/67117731859c3bf316e140d0aac55d6d.png",
+        "sha256": "5a12ca454476c64bab4b1a8840f49f05632fc9b9bf8b397d696ff5cb61a9bba1",
+        "width": 1000,
+        "height": 562
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.0721099570708693
+        },
+        "surface": {
+          "rgb": [
+            217,
+            218,
+            221
+          ],
+          "hex": "#d9dadd",
+          "generated": false,
+          "sourceDistance": 0.0035494093735945345
+        },
+        "accent": {
+          "rgb": [
+            44,
+            44,
+            52
+          ],
+          "hex": "#2c2c34",
+          "generated": false,
+          "sourceDistance": 0.016249039189201935
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7510274943310657,
+          "continuity": 1,
+          "coherence": 0.23383662408052652
+        },
+        "score": 0.6880749128982451,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 15.022995797386113,
+          "accentContrast": 13.843530740994813,
+          "accentSurfaceContrast": 9.903395435378597,
+          "minimumRoleDistance": 0.11162097919171969,
+          "meanSourceDistance": 0.022977103040029898,
+          "meanReconstructionError": 0.03561895733785606
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.11162097919171969,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7510274943310657,
+          "continuity": 1,
+          "coherence": 0.23383662408052652
+        },
+        "colorPathCoverage": 0.7510274943310657,
+        "intermediateCoverage": 0.09151785714285714,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.03468732393033486,
+        "connectedField": {
+          "coverage": 0.7277140022675737,
+          "shareOfColorPath": 0.9689578713968958,
+          "continuity": 1,
+          "localTransitionCoverage": 0.20312576074784555,
+          "abruptTransitionShare": 0.38274892735611776,
+          "directionalOrdering": 0.026387325039869885
+        },
+        "background": {
+          "coverage": 0.6496244331065759,
+          "coherence": 0.9759476411235343,
+          "borderCoverage": 0.8951149425287356,
+          "interiorComponentShare": 0.024052358876465774,
+          "flatness": 0.9871566305257123,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.009885204081632654,
+          "coherence": 0.043010752688172046,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6800025306827164,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.9611082076507677
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-0c83af85288c21e806d7",
+      "anchor": {
+        "file": "music-artworks/8/3/d/83d50c3bfb85392eb08e63ca4c7592f5.jpg",
+        "sha256": "ea729de2ffcba195f72ce710a04f53321e0beab5f08d50579a3831ec6aa36864",
+        "width": 500,
+        "height": 500
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            252
+          ],
+          "hex": "#fffffc",
+          "generated": false,
+          "sourceDistance": 0.008879275617599615
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            209,
+            213,
+            197
+          ],
+          "hex": "#d1d5c5",
+          "generated": false,
+          "sourceDistance": 0.0016917792946826245
+        },
+        "accent": {
+          "rgb": [
+            176,
+            72,
+            27
+          ],
+          "hex": "#b0481b",
+          "generated": false,
+          "sourceDistance": 0.007511328113135321
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9505636967409237,
+          "coverage": 0.26132015306122447,
+          "continuity": 1,
+          "coherence": 0.850685855633011
+        },
+        "score": 0.759955645001706,
+        "metrics": {
+          "foregroundContrast": 20.961654999335305,
+          "foregroundSurfaceContrast": 14.035005345484128,
+          "accentContrast": 5.532540806940602,
+          "accentSurfaceContrast": 3.7043468085884763,
+          "minimumRoleDistance": 0.1349218264150807,
+          "meanSourceDistance": 0.00452059575635439,
+          "meanReconstructionError": 0.03720902028191183
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.1349218264150807,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.9505636967409237,
+          "coverage": 0.26132015306122447,
+          "continuity": 1,
+          "coherence": 0.850685855633011
+        },
+        "colorPathCoverage": 0.26132015306122447,
+        "intermediateCoverage": 0.08862802933673469,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.04244840044302033,
+        "connectedField": {
+          "coverage": 0.2478874362244898,
+          "shareOfColorPath": 0.9485967053081147,
+          "continuity": 0.7142857142857143,
+          "localTransitionCoverage": 0.5172053384788551,
+          "abruptTransitionShare": 0.14466161414705492,
+          "directionalOrdering": 0.05843638632340614
+        },
+        "background": {
+          "coverage": 0.013572225765306123,
+          "coherence": 0.657856093979442,
+          "borderCoverage": 0.2533632286995516,
+          "interiorComponentShare": 0.013215859030837005,
+          "flatness": 0.892193680070797,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.1591198979591837,
+          "coherence": 0.5060120240480962,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.5776553106212425,
+          "flatness": 0.6961704935532596,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-4efe4946b2ed45dd8843",
+      "anchor": {
+        "file": "music-artworks/b/2/7/b27cec8599979803c98c787a9cc4a558.jpg",
+        "sha256": "4b50b0b2052281f9814c81c946c0851233c49916617be354fa12bc2821479c66",
+        "width": 611,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            3,
+            4,
+            6
+          ],
+          "hex": "#030406",
+          "generated": false,
+          "sourceDistance": 3.0598855293456824e-9
+        },
+        "foreground": {
+          "rgb": [
+            235,
+            235,
+            234
+          ],
+          "hex": "#ebebea",
+          "generated": false,
+          "sourceDistance": 0.0016426715526509093
+        },
+        "surface": {
+          "rgb": [
+            38,
+            37,
+            37
+          ],
+          "hex": "#262525",
+          "generated": false,
+          "sourceDistance": 0.0015487209292502444
+        },
+        "accent": {
+          "rgb": [
+            96,
+            96,
+            96
+          ],
+          "hex": "#606060",
+          "generated": false,
+          "sourceDistance": 0.021061078513612358
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.8679280707610146,
+          "continuity": 1,
+          "coherence": 0.41006600660066006
+        },
+        "score": 0.6434301123008017,
+        "metrics": {
+          "foregroundContrast": 17.193491661262595,
+          "foregroundSurfaceContrast": 12.814413823578336,
+          "accentContrast": 3.2615658198666786,
+          "accentSurfaceContrast": 2.4308648267632322,
+          "minimumRoleDistance": 0.15971211250614376,
+          "meanSourceDistance": 0.006063118513849761,
+          "meanReconstructionError": 0.02335127600723311
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.15971211250614376,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.8679280707610146,
+          "continuity": 1,
+          "coherence": 0.41006600660066006
+        },
+        "colorPathCoverage": 0.8679280707610146,
+        "intermediateCoverage": 0.25283711615487314,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.008532584922917906,
+        "connectedField": {
+          "coverage": 0.8587700267022697,
+          "shareOfColorPath": 0.9894483836077395,
+          "continuity": 1,
+          "localTransitionCoverage": 0.6157022785794102,
+          "abruptTransitionShare": 0.19487945109748736,
+          "directionalOrdering": 0.007872685417508461
+        },
+        "background": {
+          "coverage": 0.561206608811749,
+          "coherence": 0.5259831982752212,
+          "borderCoverage": 0.4208715596330275,
+          "interiorComponentShare": 0.12229574009367333,
+          "flatness": 0.744144368637927,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.053884345794392524,
+          "coherence": 0.26403406891211767,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9682539682539683,
+          "flatness": 0.658687862053033,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.7148483047813371
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-5d89924bfad41d0a9143",
+      "anchor": {
+        "file": "music-artworks/9/5/d/95d9698a579adcf4264ca2c627a77f4d.png",
+        "sha256": "7ca92f66eb40343ff1561b71f388c97544a391360a77fc353b1447ed9f4165f3",
+        "width": 500,
+        "height": 500
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            93,
+            43,
+            33
+          ],
+          "hex": "#5d2b21",
+          "generated": false,
+          "sourceDistance": 0.03244402633292016
+        },
+        "surface": {
+          "rgb": [
+            239,
+            213,
+            210
+          ],
+          "hex": "#efd5d2",
+          "generated": false,
+          "sourceDistance": 0.006958883188689535
+        },
+        "accent": {
+          "rgb": [
+            185,
+            106,
+            89
+          ],
+          "hex": "#b96a59",
+          "generated": false,
+          "sourceDistance": 0.014711803779010475
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7548230229591837,
+          "continuity": 1,
+          "coherence": 0.2950166112956811
+        },
+        "score": 0.6560444906935059,
+        "metrics": {
+          "foregroundContrast": 11.456984353219038,
+          "foregroundSurfaceContrast": 8.248195673526928,
+          "accentContrast": 3.9857840703261056,
+          "accentSurfaceContrast": 2.8694747161140515,
+          "minimumRoleDistance": 0.11034024951664027,
+          "meanSourceDistance": 0.013528679956768498,
+          "meanReconstructionError": 0.022421023179176793
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.11034024951664029,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7548230229591837,
+          "continuity": 1,
+          "coherence": 0.2950166112956811
+        },
+        "colorPathCoverage": 0.7548230229591837,
+        "intermediateCoverage": 0.08998325892857142,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.08551508433042507,
+        "connectedField": {
+          "coverage": 0.7128109056122449,
+          "shareOfColorPath": 0.9443417647990706,
+          "continuity": 1,
+          "localTransitionCoverage": 0.15788737907509925,
+          "abruptTransitionShare": 0.28708496401969447,
+          "directionalOrdering": 0.06338761309246872
+        },
+        "background": {
+          "coverage": 0.6450095663265306,
+          "coherence": 0.9939438882709183,
+          "borderCoverage": 0.8867713004484304,
+          "interiorComponentShare": 0.0060561117290816955,
+          "flatness": 0.9965572215127927,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.019830197704081634,
+          "coherence": 0.07035175879396985,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9748743718592965,
+          "flatness": 0.6169682799140734,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.9099358822041237
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-35dbfaa59c24f7520864",
+      "anchor": {
+        "file": "music-artworks/4/7/8/478b39dc49641edddd1567653f66ed45.jpg",
+        "sha256": "dc5ebe831b3f7dad2fefda11d8d5411b230efa387d8456f5f0d8ebe7b1addc01",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            146,
+            50,
+            44
+          ],
+          "hex": "#92322c",
+          "generated": false,
+          "sourceDistance": 0.0022612785431443978
+        },
+        "foreground": {
+          "rgb": [
+            237,
+            228,
+            220
+          ],
+          "hex": "#ede4dc",
+          "generated": false,
+          "sourceDistance": 0.004252242185706197
+        },
+        "surface": {
+          "rgb": [
+            161,
+            55,
+            41
+          ],
+          "hex": "#a13729",
+          "generated": false,
+          "sourceDistance": 0.003679679732547198
+        },
+        "accent": {
+          "rgb": [
+            238,
+            222,
+            122
+          ],
+          "hex": "#eede7a",
+          "generated": false,
+          "sourceDistance": 0.004449366377882241
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.800797597719078,
+          "coverage": 0.382736608381904,
+          "continuity": 0.828819718517453,
+          "coherence": 0.5325718568441286
+        },
+        "score": 0.5833196658111837,
+        "metrics": {
+          "foregroundContrast": 6.163132153780417,
+          "foregroundSurfaceContrast": 5.407959223239963,
+          "accentContrast": 5.659685981270983,
+          "accentSurfaceContrast": 4.966200665400633,
+          "minimumRoleDistance": 0.03472327742364434,
+          "meanSourceDistance": 0.0036606417098200084,
+          "meanReconstructionError": 0.06494953378394629
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.03472327742364434,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-e81fd9a9e48d8b9d06aa",
+      "anchor": {
+        "file": "music-artworks/4/2/6/426d0bac3f79d691271fd941702b7463.jpg",
+        "sha256": "0ef099954198173aee0b27bf486357909e4879eddc719de923016ab977ffee04",
+        "width": 500,
+        "height": 500
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            59,
+            137,
+            200
+          ],
+          "hex": "#3b89c8",
+          "generated": false,
+          "sourceDistance": 0.006191537775154585
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.009218678699159641
+        },
+        "surface": {
+          "rgb": [
+            133,
+            197,
+            236
+          ],
+          "hex": "#85c5ec",
+          "generated": false,
+          "sourceDistance": 0.003948750227807271
+        },
+        "accent": {
+          "rgb": [
+            227,
+            132,
+            59
+          ],
+          "hex": "#e3843b",
+          "generated": false,
+          "sourceDistance": 0.0077978687305201395
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6312503768552877,
+          "coverage": 0.1742267219387755,
+          "continuity": 1,
+          "coherence": 0.6372727272727273
+        },
+        "score": 0.6433462947754846,
+        "metrics": {
+          "foregroundContrast": 5.59825160515832,
+          "foregroundSurfaceContrast": 11.195035781630791,
+          "accentContrast": 1.3628965349477151,
+          "accentSurfaceContrast": 1.4672704978311173,
+          "minimumRoleDistance": 0.18855494552522503,
+          "meanSourceDistance": 0.00678920885816041,
+          "meanReconstructionError": 0.13112234310895665
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.18855494552522503,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.6312503768552877,
+          "coverage": 0.1742267219387755,
+          "continuity": 1,
+          "coherence": 0.6372727272727273
+        },
+        "colorPathCoverage": 0.1742267219387755,
+        "intermediateCoverage": 0.043845663265306124,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.2475316326748506,
+        "connectedField": {
+          "coverage": 0.0028698979591836736,
+          "shareOfColorPath": 0.016472203157172273,
+          "continuity": 0.5714285714285714,
+          "localTransitionCoverage": 1.0486111111111112,
+          "abruptTransitionShare": 0.14204545454545456,
+          "directionalOrdering": 0.03779523995172193
+        },
+        "background": {
+          "coverage": 0.018036511479591837,
+          "coherence": 0.287292817679558,
+          "borderCoverage": 0.04932735426008968,
+          "interiorComponentShare": 0.14806629834254142,
+          "flatness": 0.46819118480784583,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.11234454719387756,
+          "coherence": 0.5176512329253149,
+          "borderCoverage": 0.03923766816143498,
+          "interiorComponentShare": 0.48039737448997694,
+          "flatness": 0.5045644961612403,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-271e455bdcc7848fa0ce",
+      "anchor": {
+        "file": "music-artworks/d/6/8/d688397df701fa08bcd9cee0c888c410.jpg",
+        "sha256": "2186c45a00329bc817f44b90c27b6abd37f69a473c5f2037f490a7fd863050cc",
+        "width": 3000,
+        "height": 3000
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            13,
+            17,
+            21
+          ],
+          "hex": "#0d1115",
+          "generated": false,
+          "sourceDistance": 0.0006695648994355842
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 0.09489291508760525
+        },
+        "surface": {
+          "rgb": [
+            105,
+            66,
+            58
+          ],
+          "hex": "#69423a",
+          "generated": false,
+          "sourceDistance": 0.007987799742995894
+        },
+        "accent": {
+          "rgb": [
+            205,
+            89,
+            109
+          ],
+          "hex": "#cd596d",
+          "generated": false,
+          "sourceDistance": 0.0009060921954509604
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5326650191326531,
+          "continuity": 1,
+          "coherence": 0.24421855146124524
+        },
+        "score": 0.6800926354199922,
+        "metrics": {
+          "foregroundContrast": 18.950995256956553,
+          "foregroundSurfaceContrast": 8.60290796320885,
+          "accentContrast": 4.733781684548647,
+          "accentSurfaceContrast": 2.1489260905780996,
+          "minimumRoleDistance": 0.2159874007532477,
+          "meanSourceDistance": 0.02611409298137192,
+          "meanReconstructionError": 0.03636045029623312
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.25536384022823083,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5326650191326531,
+          "continuity": 1,
+          "coherence": 0.24421855146124524
+        },
+        "colorPathCoverage": 0.5326650191326531,
+        "intermediateCoverage": 0.07842394770408163,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.054746041827032146,
+        "connectedField": {
+          "coverage": 0.49473852040816324,
+          "shareOfColorPath": 0.9287985931829237,
+          "continuity": 1,
+          "localTransitionCoverage": 1.1565420560747663,
+          "abruptTransitionShare": 0.055281342546890426,
+          "directionalOrdering": 0.051607056503641155
+        },
+        "background": {
+          "coverage": 0.44716597576530615,
+          "coherence": 0.9693363640415386,
+          "borderCoverage": 0.8329596412556054,
+          "interiorComponentShare": 0.03066363595846147,
+          "flatness": 0.8384412098775104,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.007075095663265306,
+          "coherence": 0.04507042253521127,
+          "borderCoverage": 0.0033632286995515697,
+          "interiorComponentShare": 0.9492957746478873,
+          "flatness": 0.07312487102074927,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.7548531605457358
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-8c4d24639a8b544846a9",
+      "anchor": {
+        "file": "music-artworks/7/9/5/7958b3eac53d11b4867567840614e0dc.jpeg",
+        "sha256": "9ab291fd43fb032208a82cae91dbecb77e6cfcbae1705d0fba46fb0792041e0d",
+        "width": 500,
+        "height": 450
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            49,
+            45,
+            108
+          ],
+          "hex": "#312d6c",
+          "generated": false,
+          "sourceDistance": 0.0017799843355157249
+        },
+        "foreground": {
+          "rgb": [
+            254,
+            250,
+            255
+          ],
+          "hex": "#fefaff",
+          "generated": false,
+          "sourceDistance": 0.10958117343710562
+        },
+        "surface": {
+          "rgb": [
+            161,
+            53,
+            38
+          ],
+          "hex": "#a13526",
+          "generated": false,
+          "sourceDistance": 0.01337065032590663
+        },
+        "accent": {
+          "rgb": [
+            0,
+            0,
+            1
+          ],
+          "hex": "#000001",
+          "generated": false,
+          "sourceDistance": 0.021934946052279095
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7959833623580858,
+          "coverage": 0.4033623910336239,
+          "continuity": 0.6362968863454902,
+          "coherence": 0.57304746587706
+        },
+        "score": 0.6723030207769585,
+        "metrics": {
+          "foregroundContrast": 11.80407996727346,
+          "foregroundSurfaceContrast": 6.66059235432054,
+          "accentContrast": 1.7217353127492712,
+          "accentSurfaceContrast": 3.051305384420905,
+          "minimumRoleDistance": 0.25256360966194097,
+          "meanSourceDistance": 0.03666668853770177,
+          "meanReconstructionError": 0.12591471984284258
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.2525636096619409,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.865483429034135,
+          "coverage": 0.07830180339462518,
+          "continuity": 1,
+          "coherence": 0.045951859956236324
+        },
+        "colorPathCoverage": 0.07830180339462518,
+        "intermediateCoverage": 0.010099893917963225,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.7865831374750559,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.045305869872701555,
+          "coherence": 0.9512195121951219,
+          "borderCoverage": 0.16627358490566038,
+          "interiorComponentShare": 0.04878048780487805,
+          "flatness": 0.3181995637556462,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.022896039603960396,
+          "coherence": 0.021235521235521235,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.916988416988417,
+          "flatness": 0.08473911628626807,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-e820b3df344c32557ab2",
+      "anchor": {
+        "file": "music-artworks/5/f/9/5f952abdb560b1c9364c622ee235f120.jpg",
+        "sha256": "857e4fe7cb1d498e235e414a68b4b1afb90922db864c5701540c0ee5e2c2ba4b",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            24,
+            24,
+            24
+          ],
+          "hex": "#181818",
+          "generated": false,
+          "sourceDistance": 0.00012066304965918659
+        },
+        "foreground": {
+          "rgb": [
+            209,
+            209,
+            209
+          ],
+          "hex": "#d1d1d1",
+          "generated": false,
+          "sourceDistance": 0.004372411783485577
+        },
+        "surface": {
+          "rgb": [
+            37,
+            37,
+            37
+          ],
+          "hex": "#252525",
+          "generated": false,
+          "sourceDistance": 0.00008244193377626724
+        },
+        "accent": {
+          "rgb": [
+            103,
+            103,
+            103
+          ],
+          "hex": "#676767",
+          "generated": false,
+          "sourceDistance": 0.013192786845583124
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5631776147959183,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.4135510529197989
+        },
+        "score": 0.6636562628669537,
+        "metrics": {
+          "foregroundContrast": 11.62776391616444,
+          "foregroundSurfaceContrast": 10.037878312002107,
+          "accentContrast": 3.1391948012564566,
+          "accentSurfaceContrast": 2.7099669067822103,
+          "minimumRoleDistance": 0.055443585745501435,
+          "meanSourceDistance": 0.0044420759031260386,
+          "meanReconstructionError": 0.023845699619659832
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.05544358574550144,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5631776147959183,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.4135510529197989
+        },
+        "colorPathCoverage": 0.5631776147959183,
+        "intermediateCoverage": 0.4003308354591837,
+        "colorPathContinuity": 0.7142857142857143,
+        "colorPathDirectionalOrdering": 0.17024300333045586,
+        "connectedField": {
+          "coverage": 0.22325414540816327,
+          "shareOfColorPath": 0.39641871328473355,
+          "continuity": 0.7142857142857143,
+          "localTransitionCoverage": 0.6123906445277629,
+          "abruptTransitionShare": 0.5900561730608342,
+          "directionalOrdering": 0.08391907132725254
+        },
+        "background": {
+          "coverage": 0.10592713647959184,
+          "coherence": 0.023518344308560677,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9433678269049859,
+          "flatness": 0.9143677400156252,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.056919642857142856,
+          "coherence": 0.008753501400560224,
+          "borderCoverage": 0.002242152466367713,
+          "interiorComponentShare": 0.9222689075630253,
+          "flatness": 0.9159133744356495,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b27300001a23d0861b8ae261f7e0",
+      "anchor": {
+        "file": "00/ab67616d0000b27300001a23d0861b8ae261f7e0.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            119,
+            121,
+            135
+          ],
+          "hex": "#777987",
+          "generated": false,
+          "sourceDistance": 0.005631394279484065
+        },
+        "foreground": {
+          "rgb": [
+            2,
+            0,
+            0
+          ],
+          "hex": "#020000",
+          "generated": false,
+          "sourceDistance": 0.019323047651585983
+        },
+        "surface": {
+          "rgb": [
+            55,
+            165,
+            192
+          ],
+          "hex": "#37a5c0",
+          "generated": false,
+          "sourceDistance": 0.004307335488852798
+        },
+        "accent": {
+          "rgb": [
+            255,
+            248,
+            193
+          ],
+          "hex": "#fff8c1",
+          "generated": false,
+          "sourceDistance": 0.08760748240826988
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8784634833221512,
+          "coverage": 0.4603438713255685,
+          "continuity": 1,
+          "coherence": 0.5492608557971589
+        },
+        "score": 0.632128320077326,
+        "metrics": {
+          "foregroundContrast": 4.856654522450252,
+          "foregroundSurfaceContrast": 7.28684388297075,
+          "accentContrast": 3.9943008673945317,
+          "accentSurfaceContrast": 2.66218676881409,
+          "minimumRoleDistance": 0.13322817654433816,
+          "meanSourceDistance": 0.02921731495704818,
+          "meanReconstructionError": 0.13821658717211552
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.13322817654433816,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.8942497274458769,
+          "coverage": 0.045818718112244895,
+          "continuity": 0.9285714285714286,
+          "coherence": 0.1918918918918919
+        },
+        "colorPathCoverage": 0.045818718112244895,
+        "intermediateCoverage": 0.007374043367346939,
+        "colorPathContinuity": 0.9285714285714286,
+        "colorPathDirectionalOrdering": 0.8508821459278844,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.017139668367346938,
+          "coherence": 0.9406976744186046,
+          "borderCoverage": 0.07062780269058296,
+          "interiorComponentShare": 0.037209302325581395,
+          "flatness": 0.4629417064490501,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.02130500637755102,
+          "coherence": 0.1637043966323667,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.4975929166262979,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-6369505abecd3b1f9a24",
+      "anchor": {
+        "file": "music-artworks/e/1/0/e101e04e066a221cd512b36beafd06b9.jpg",
+        "sha256": "cb278599219094ca9077baccb7a81bf23b230a2b255fade1ddb5ada761f8b3bf",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            1,
+            0,
+            17
+          ],
+          "hex": "#010011",
+          "generated": false,
+          "sourceDistance": 0.0003158872748946203
+        },
+        "foreground": {
+          "rgb": [
+            221,
+            181,
+            128
+          ],
+          "hex": "#ddb580",
+          "generated": false,
+          "sourceDistance": 0.007261865844486471
+        },
+        "surface": {
+          "rgb": [
+            0,
+            1,
+            30
+          ],
+          "hex": "#00011e",
+          "generated": false,
+          "sourceDistance": 0.0010787436643468877
+        },
+        "accent": {
+          "rgb": [
+            132,
+            108,
+            87
+          ],
+          "hex": "#846c57",
+          "generated": false,
+          "sourceDistance": 0.011841365003429302
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.756055121349239,
+          "coverage": 0.113944878650761,
+          "continuity": 0.3125656095285282,
+          "coherence": 0.8712758250353629
+        },
+        "score": 0.6208171018445623,
+        "metrics": {
+          "foregroundContrast": 10.893449719939852,
+          "foregroundSurfaceContrast": 10.747531031523657,
+          "accentContrast": 4.22411311980761,
+          "accentSurfaceContrast": 4.167530764170927,
+          "minimumRoleDistance": 0.03379538429053111,
+          "meanSourceDistance": 0.005124465446789321,
+          "meanReconstructionError": 0.045003097822517574
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.03379538429053111,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-18e3170513f3bb41bf6a",
+      "anchor": {
+        "file": "music-artworks/8/5/3/85338aef36ed819353c767c4c50d4107.jpg",
+        "sha256": "ec2ca3bfb122528b912574598d07bbd8c66dcdd6b1ce135ed8ac10666a67fe12",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            133,
+            184,
+            241
+          ],
+          "hex": "#85b8f1",
+          "generated": false,
+          "sourceDistance": 0.004089626024896917
+        },
+        "foreground": {
+          "rgb": [
+            10,
+            8,
+            14
+          ],
+          "hex": "#0a080e",
+          "generated": false,
+          "sourceDistance": 0.0077622797906398274
+        },
+        "surface": {
+          "rgb": [
+            152,
+            164,
+            144
+          ],
+          "hex": "#98a490",
+          "generated": false,
+          "sourceDistance": 0.001768720731620122
+        },
+        "accent": {
+          "rgb": [
+            127,
+            53,
+            40
+          ],
+          "hex": "#7f3528",
+          "generated": false,
+          "sourceDistance": 0.019149858897501457
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6655445542800456,
+          "coverage": 0.2244499362244898,
+          "continuity": 1,
+          "coherence": 0.2785185185185185
+        },
+        "score": 0.635358809221988,
+        "metrics": {
+          "foregroundContrast": 9.605187748282393,
+          "foregroundSurfaceContrast": 7.635803317857384,
+          "accentContrast": 4.145164433968795,
+          "accentSurfaceContrast": 3.295267220947694,
+          "minimumRoleDistance": 0.13400054572518727,
+          "meanSourceDistance": 0.008192621361164582,
+          "meanReconstructionError": 0.06675142776295133
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.13400054572518727,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.6655445542800456,
+          "coverage": 0.2244499362244898,
+          "continuity": 1,
+          "coherence": 0.2785185185185185
+        },
+        "colorPathCoverage": 0.2244499362244898,
+        "intermediateCoverage": 0.06726323341836735,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.890192153371046,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.07499601403061225,
+          "coherence": 0.921073611480202,
+          "borderCoverage": 0.15134529147982062,
+          "interiorComponentShare": 0.017804942864735582,
+          "flatness": 0.5408159169953015,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.08219068877551021,
+          "coherence": 0.1440349175557711,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9466537342386033,
+          "flatness": 0.4683002508696371,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-22925faa447024d48b59",
+      "anchor": {
+        "file": "music-artworks/7/f/3/7f33d6a9b4623083526bc014f25e96b5.jpg",
+        "sha256": "61312ffd0869b6f84d9b93bb49797b0a8453846232640b66ea86a6c9862225e6",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            214,
+            161,
+            40
+          ],
+          "hex": "#d6a128",
+          "generated": false,
+          "sourceDistance": 0.0030142888838991994
+        },
+        "foreground": {
+          "rgb": [
+            63,
+            49,
+            43
+          ],
+          "hex": "#3f312b",
+          "generated": false,
+          "sourceDistance": 0.009841765440925191
+        },
+        "surface": {
+          "rgb": [
+            218,
+            171,
+            41
+          ],
+          "hex": "#daab29",
+          "generated": false,
+          "sourceDistance": 0.0016408369637701144
+        },
+        "accent": {
+          "rgb": [
+            227,
+            231,
+            205
+          ],
+          "hex": "#e3e7cd",
+          "generated": false,
+          "sourceDistance": 0.028022512772427524
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7741174395799839,
+          "coverage": 0.3784237943202823,
+          "continuity": 0.5922078355578636,
+          "coherence": 0.7125159423837201
+        },
+        "score": 0.5719737998039756,
+        "metrics": {
+          "foregroundContrast": 5.332240131562412,
+          "foregroundSurfaceContrast": 5.836791488224461,
+          "accentContrast": 1.8445081038666062,
+          "accentSurfaceContrast": 1.6850627873673627,
+          "minimumRoleDistance": 0.026625175340798397,
+          "meanSourceDistance": 0.010629851015255508,
+          "meanReconstructionError": 0.048360998026595214
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.026625175340798394,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b27300001a3ee120f20345896b12",
+      "anchor": {
+        "file": "00/ab67616d0000b27300001a3ee120f20345896b12.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            75,
+            124,
+            187
+          ],
+          "hex": "#4b7cbb",
+          "generated": false,
+          "sourceDistance": 0.00245845371188264
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": true,
+          "sourceDistance": 0.5215513600433637
+        },
+        "surface": {
+          "rgb": [
+            75,
+            124,
+            187
+          ],
+          "hex": "#4b7cbb",
+          "generated": false,
+          "sourceDistance": 0.00245845371188264
+        },
+        "accent": {
+          "rgb": [
+            216,
+            232,
+            247
+          ],
+          "hex": "#d8e8f7",
+          "generated": false,
+          "sourceDistance": 0.00712460073878739
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8342786346475382,
+          "coverage": 0.48021848243283144,
+          "continuity": 0.4812569694455618,
+          "coherence": 0.7988068380756923
+        },
+        "score": 0.43246286066886364,
+        "metrics": {
+          "foregroundContrast": 4.899803026044878,
+          "foregroundSurfaceContrast": 4.899803026044878,
+          "accentContrast": 3.42983402237609,
+          "accentSurfaceContrast": 3.42983402237609,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.1333982170514791,
+          "meanReconstructionError": 0.09860447719376932
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-1a6b3c2ddc2c0258f96d",
+      "anchor": {
+        "file": "music-artworks/2/a/5/2a50d894d3d62d85288d2bd64bd04e87.jpg",
+        "sha256": "277b9ee767a8d46bd9865b5cbe6076452296daf2ca7dcf5863734bc4da43c717",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            3,
+            0,
+            11
+          ],
+          "hex": "#03000b",
+          "generated": false,
+          "sourceDistance": 0.0039958999211757735
+        },
+        "foreground": {
+          "rgb": [
+            239,
+            240,
+            234
+          ],
+          "hex": "#eff0ea",
+          "generated": false,
+          "sourceDistance": 0.007042957218438474
+        },
+        "surface": {
+          "rgb": [
+            7,
+            1,
+            16
+          ],
+          "hex": "#070110",
+          "generated": false,
+          "sourceDistance": 0.0024764160663321875
+        },
+        "accent": {
+          "rgb": [
+            77,
+            54,
+            54
+          ],
+          "hex": "#4d3636",
+          "generated": false,
+          "sourceDistance": 0.026528482068325757
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6,
+          "coverage": 0.30898657848667577,
+          "continuity": 0.9287150974894363,
+          "coherence": 0.7154570537655446
+        },
+        "score": 0.6315757081272414,
+        "metrics": {
+          "foregroundContrast": 18.164177956983096,
+          "foregroundSurfaceContrast": 17.947925667017547,
+          "accentContrast": 1.8801261861717649,
+          "accentSurfaceContrast": 1.8577424815996826,
+          "minimumRoleDistance": 0.02572079991848448,
+          "meanSourceDistance": 0.010010938818568047,
+          "meanReconstructionError": 0.09813288536875381
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.025720799918484482,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-59f6be8d62cfa727ee07",
+      "anchor": {
+        "file": "music-artworks/3/8/a/38a2dd9e7da08f03e16c851541fe857a.jpg",
+        "sha256": "7377f330716df3e948217100868f4f2bb775434e78afc2bf66247ef500fd78a7",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            3,
+            3,
+            6
+          ],
+          "hex": "#030306",
+          "generated": false,
+          "sourceDistance": 0.0015501339550785043
+        },
+        "foreground": {
+          "rgb": [
+            250,
+            235,
+            249
+          ],
+          "hex": "#faebf9",
+          "generated": false,
+          "sourceDistance": 0.01293378176416793
+        },
+        "surface": {
+          "rgb": [
+            52,
+            37,
+            142
+          ],
+          "hex": "#34258e",
+          "generated": false,
+          "sourceDistance": 0.03146943737439101
+        },
+        "accent": {
+          "rgb": [
+            213,
+            97,
+            125
+          ],
+          "hex": "#d5617d",
+          "generated": false,
+          "sourceDistance": 0.0312999293363049
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7223622047244095,
+          "coverage": 0.34751674107142855,
+          "continuity": 1,
+          "coherence": 0.19967466449776333
+        },
+        "score": 0.6891793675676553,
+        "metrics": {
+          "foregroundContrast": 17.965243367454033,
+          "foregroundSurfaceContrast": 10.168580355140957,
+          "accentContrast": 5.723478667377477,
+          "accentSurfaceContrast": 3.2395694035293654,
+          "minimumRoleDistance": 0.30008290746646404,
+          "meanSourceDistance": 0.019313320607485585,
+          "meanReconstructionError": 0.09307377245114237
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.3000829074664641,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.4648881374892627,
+          "coverage": 0.34751674107142855,
+          "continuity": 1,
+          "coherence": 0.19967466449776333
+        },
+        "colorPathCoverage": 0.34751674107142855,
+        "intermediateCoverage": 0.04900749362244898,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.08409582290063042,
+        "connectedField": {
+          "coverage": 0.1521843112244898,
+          "shareOfColorPath": 0.437919366863566,
+          "continuity": 1,
+          "localTransitionCoverage": 0.5928496595075956,
+          "abruptTransitionShare": 0.04974811083123426,
+          "directionalOrdering": 0.05328324863321288
+        },
+        "background": {
+          "coverage": 0.29310825892857145,
+          "coherence": 0.5058135581695791,
+          "borderCoverage": 0.24663677130044842,
+          "interiorComponentShare": 0.050860134629768135,
+          "flatness": 0.7648652318403869,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.005400988520408163,
+          "coherence": 0.04059040590405904,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.988929889298893,
+          "flatness": 0.143670524842617,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.40991628679759884
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b27300006ca7c0530cf8a60ceb92",
+      "anchor": {
+        "file": "00/ab67616d0000b27300006ca7c0530cf8a60ceb92.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            222,
+            238,
+            254
+          ],
+          "hex": "#deeefe",
+          "generated": false,
+          "sourceDistance": 0.00040805364804972436
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": true,
+          "sourceDistance": 0.594304138889575
+        },
+        "surface": {
+          "rgb": [
+            189,
+            191,
+            249
+          ],
+          "hex": "#bdbff9",
+          "generated": false,
+          "sourceDistance": 0.003377921984590644
+        },
+        "accent": {
+          "rgb": [
+            168,
+            156,
+            239
+          ],
+          "hex": "#a89cef",
+          "generated": false,
+          "sourceDistance": 0.0007047489527695673
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5839445153061225,
+          "continuity": 1,
+          "coherence": 0.4747156605424322
+        },
+        "score": 0.4781729893444745,
+        "metrics": {
+          "foregroundContrast": 17.766884761705597,
+          "foregroundSurfaceContrast": 11.983994694433001,
+          "accentContrast": 2.0500049878315894,
+          "accentSurfaceContrast": 1.3827550089527645,
+          "minimumRoleDistance": 0.09644422565863894,
+          "meanSourceDistance": 0.14969871586874625,
+          "meanReconstructionError": 0.016698650007904096
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.1334401558294086,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5839445153061225,
+          "continuity": 1,
+          "coherence": 0.4747156605424322
+        },
+        "colorPathCoverage": 0.5839445153061225,
+        "intermediateCoverage": 0.11389907525510204,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.03309947035189569,
+        "connectedField": {
+          "coverage": 0.5012356505102041,
+          "shareOfColorPath": 0.8583617747440273,
+          "continuity": 1,
+          "localTransitionCoverage": 0.68,
+          "abruptTransitionShare": 0.04867330477832786,
+          "directionalOrdering": 0.10901780678905562
+        },
+        "background": {
+          "coverage": 0.45645328443877553,
+          "coherence": 0.983932235951622,
+          "borderCoverage": 0.9943946188340808,
+          "interiorComponentShare": 0.016067764048377942,
+          "flatness": 0.8267866668257647,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.013592155612244899,
+          "coherence": 0.09970674486803519,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6811275078721015,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.7366521977259862
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-96759e1930f1f4c142be",
+      "anchor": {
+        "file": "music-artworks/4/b/6/4b6d2e100a22edbcf707024719d6b112.jpg",
+        "sha256": "b879c65f4a126fdd7c63e7ead91f96b5be0a40ffe474384747bca7c5ccd05005",
+        "width": 1000,
+        "height": 662
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            17,
+            17,
+            17
+          ],
+          "hex": "#111111",
+          "generated": false,
+          "sourceDistance": 0.0000027849946530322817
+        },
+        "foreground": {
+          "rgb": [
+            208,
+            208,
+            208
+          ],
+          "hex": "#d0d0d0",
+          "generated": false,
+          "sourceDistance": 0.009762680615435289
+        },
+        "surface": {
+          "rgb": [
+            30,
+            30,
+            30
+          ],
+          "hex": "#1e1e1e",
+          "generated": false,
+          "sourceDistance": 0.0011356845115172716
+        },
+        "accent": {
+          "rgb": [
+            122,
+            122,
+            122
+          ],
+          "hex": "#7a7a7a",
+          "generated": false,
+          "sourceDistance": 0.012394539112410294
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.3970197876447876,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.4278377666578878
+        },
+        "score": 0.6347425938839623,
+        "metrics": {
+          "foregroundContrast": 12.242646197816567,
+          "foregroundSurfaceContrast": 10.808579883034886,
+          "accentContrast": 4.399174671671655,
+          "accentSurfaceContrast": 3.8838687396411906,
+          "minimumRoleDistance": 0.0573933516984335,
+          "meanSourceDistance": 0.005823922308503971,
+          "meanReconstructionError": 0.01882514046920373
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.0573933516984335,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.3970197876447876,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.4278377666578878
+        },
+        "colorPathCoverage": 0.3970197876447876,
+        "intermediateCoverage": 0.2290661196911197,
+        "colorPathContinuity": 0.7142857142857143,
+        "colorPathDirectionalOrdering": 0.03809544062795676,
+        "connectedField": {
+          "coverage": 0.29343629343629346,
+          "shareOfColorPath": 0.7390974016106975,
+          "continuity": 0.7142857142857143,
+          "localTransitionCoverage": 0.7957442434210527,
+          "abruptTransitionShare": 0.24197023110066587,
+          "directionalOrdering": 0.17454711503370426
+        },
+        "background": {
+          "coverage": 0.13211872586872586,
+          "coherence": 0.36004566210045663,
+          "borderCoverage": 0.07162162162162163,
+          "interiorComponentShare": 0.2910958904109589,
+          "flatness": 0.9257776551355572,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.03583494208494208,
+          "coherence": 0.1632996632996633,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9452861952861953,
+          "flatness": 0.9178459755678006,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-30090eb3b8ca12c893c0",
+      "anchor": {
+        "file": "music-artworks/7/b/5/7b51bde9cbaefc73faf8f94402042cce.jpg",
+        "sha256": "0b93435f6328336a300a0f7ce138e3e792fc4a5ed77aa8fc64f82796af65e85b",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            7,
+            3,
+            4
+          ],
+          "hex": "#070304",
+          "generated": false,
+          "sourceDistance": 6.844427370369369e-10
+        },
+        "foreground": {
+          "rgb": [
+            248,
+            237,
+            222
+          ],
+          "hex": "#f8edde",
+          "generated": false,
+          "sourceDistance": 0.013814058039785181
+        },
+        "surface": {
+          "rgb": [
+            108,
+            78,
+            60
+          ],
+          "hex": "#6c4e3c",
+          "generated": false,
+          "sourceDistance": 0.01728875599354695
+        },
+        "accent": {
+          "rgb": [
+            215,
+            205,
+            5
+          ],
+          "hex": "#d7cd05",
+          "generated": false,
+          "sourceDistance": 0.026513207242457305
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.779703220374658,
+          "coverage": 0.6911272321428571,
+          "continuity": 1,
+          "coherence": 0.1299564044010795
+        },
+        "score": 0.6440669780488162,
+        "metrics": {
+          "foregroundContrast": 17.737383843585718,
+          "foregroundSurfaceContrast": 6.502733375351856,
+          "accentContrast": 12.330516740163702,
+          "accentSurfaceContrast": 4.520512351126298,
+          "minimumRoleDistance": 0.19798355729499414,
+          "meanSourceDistance": 0.014404005490058044,
+          "meanReconstructionError": 0.044042703764766294
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.34637849516780395,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.35,
+          "coverage": 0.6911272321428571,
+          "continuity": 1,
+          "coherence": 0.1299564044010795
+        },
+        "colorPathCoverage": 0.6911272321428571,
+        "intermediateCoverage": 0.09600207270408163,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.010762424622856136,
+        "connectedField": {
+          "coverage": 0.672492825255102,
+          "shareOfColorPath": 0.97303766076475,
+          "continuity": 1,
+          "localTransitionCoverage": 0.5468986160092464,
+          "abruptTransitionShare": 0.15114995400183992,
+          "directionalOrdering": 0.021815023902724454
+        },
+        "background": {
+          "coverage": 0.5907206632653061,
+          "coherence": 0.981612685560054,
+          "borderCoverage": 1,
+          "interiorComponentShare": 0.01838731443994602,
+          "flatness": 0.8245489545956629,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.004404496173469388,
+          "coherence": 0.02262443438914027,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.03936155569780453,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.8065613994421921
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-38488dab44660405e82f",
+      "anchor": {
+        "file": "music-artworks/0/b/c/0bc46d524583086d9308a737004d9109.jpg",
+        "sha256": "367e75eaf6979b26571b1a3faae881475f203191e5e3764e7feec88fa92408a9",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            254,
+            254
+          ],
+          "hex": "#fffefe",
+          "generated": false,
+          "sourceDistance": 0.0010673366534326943
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.05218043320031043
+        },
+        "surface": {
+          "rgb": [
+            208,
+            211,
+            214
+          ],
+          "hex": "#d0d3d6",
+          "generated": false,
+          "sourceDistance": 0.004519626355790935
+        },
+        "accent": {
+          "rgb": [
+            150,
+            5,
+            6
+          ],
+          "hex": "#960506",
+          "generated": false,
+          "sourceDistance": 0.0014836975365402625
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.851015842416512,
+          "coverage": 0.373226243622449,
+          "continuity": 1,
+          "coherence": 0.22727272727272727
+        },
+        "score": 0.7216942793612049,
+        "metrics": {
+          "foregroundContrast": 20.859875825348592,
+          "foregroundSurfaceContrast": 13.970693500043883,
+          "accentContrast": 8.986894058516548,
+          "accentSurfaceContrast": 6.018882540821739,
+          "minimumRoleDistance": 0.13252011600790245,
+          "meanSourceDistance": 0.014812773436518581,
+          "meanReconstructionError": 0.08569667644428651
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.13252011600790242,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.851015842416512,
+          "coverage": 0.373226243622449,
+          "continuity": 1,
+          "coherence": 0.22727272727272727
+        },
+        "colorPathCoverage": 0.373226243622449,
+        "intermediateCoverage": 0.036830357142857144,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.028561038818927468,
+        "connectedField": {
+          "coverage": 0.1650988520408163,
+          "shareOfColorPath": 0.44235595664014526,
+          "continuity": 1,
+          "localTransitionCoverage": 0.42370835345243846,
+          "abruptTransitionShare": 0.3386093838326738,
+          "directionalOrdering": 0.18918271143717794
+        },
+        "background": {
+          "coverage": 0.32669005102040816,
+          "coherence": 0.36676427525622257,
+          "borderCoverage": 0.23878923766816143,
+          "interiorComponentShare": 0.03831137140068326,
+          "flatness": 0.8835456611001138,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.009705835459183673,
+          "coherence": 0.11498973305954825,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6141157816181724,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.5063188383785666
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-01fb7ae1535fee775cef",
+      "anchor": {
+        "file": "music-artworks/a/0/2/a0277daa3ba01f09965e7a75ff67d9d6.png",
+        "sha256": "b418e2d959754450e5b9e6cd9b4091cbb69b111b8c2b32f4cf3a4d733cca11d3",
+        "width": 800,
+        "height": 310
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            254,
+            254
+          ],
+          "hex": "#fffefe",
+          "generated": false,
+          "sourceDistance": 0.0010639275491813964
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": true,
+          "sourceDistance": 0.6896289423250065
+        },
+        "surface": {
+          "rgb": [
+            230,
+            230,
+            227
+          ],
+          "hex": "#e6e6e3",
+          "generated": false,
+          "sourceDistance": 0.002151085428307305
+        },
+        "accent": {
+          "rgb": [
+            213,
+            204,
+            50
+          ],
+          "hex": "#d5cc32",
+          "generated": false,
+          "sourceDistance": 0.0885627858114054
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6059626436781609,
+          "continuity": 1,
+          "coherence": 0.32761310452418096
+        },
+        "score": 0.4874105064926749,
+        "metrics": {
+          "foregroundContrast": 20.859875825348592,
+          "foregroundSurfaceContrast": 16.792534837437685,
+          "accentContrast": 1.6671321472477205,
+          "accentSurfaceContrast": 1.3420681357676207,
+          "minimumRoleDistance": 0.07380480038163477,
+          "meanSourceDistance": 0.19535168527847516,
+          "meanReconstructionError": 0.045892477723890886
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.07380480038163477,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6059626436781609,
+          "continuity": 1,
+          "coherence": 0.32761310452418096
+        },
+        "colorPathCoverage": 0.6059626436781609,
+        "intermediateCoverage": 0.09867610837438423,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.004415282892201166,
+        "connectedField": {
+          "coverage": 0.5054392446633826,
+          "shareOfColorPath": 0.8341095774409348,
+          "continuity": 1,
+          "localTransitionCoverage": 0.21918781725888326,
+          "abruptTransitionShare": 0.4642679900744417,
+          "directionalOrdering": 0.010711513632515254
+        },
+        "background": {
+          "coverage": 0.49517651888341546,
+          "coherence": 0.8383419689119171,
+          "borderCoverage": 0.9919093851132686,
+          "interiorComponentShare": 0.1616580310880829,
+          "flatness": 0.8937707035070155,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.012110016420361249,
+          "coherence": 0.1271186440677966,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.8026275686837308,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.8841970664320574
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-4be72e433b3ee72a7df9",
+      "anchor": {
+        "file": "music-artworks/8/5/5/8558929f7738e6a0d8114dd4581edb06.jpg",
+        "sha256": "3a8b38b75709a04cc8db3136d48e0d91c521c6ea1636b5d0ed77373a4eb2e507",
+        "width": 1500,
+        "height": 1500
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            18,
+            18,
+            14
+          ],
+          "hex": "#12120e",
+          "generated": false,
+          "sourceDistance": 0.0016278176656201232
+        },
+        "foreground": {
+          "rgb": [
+            239,
+            240,
+            239
+          ],
+          "hex": "#eff0ef",
+          "generated": false,
+          "sourceDistance": 0.0017338135860250103
+        },
+        "surface": {
+          "rgb": [
+            109,
+            77,
+            68
+          ],
+          "hex": "#6d4d44",
+          "generated": false,
+          "sourceDistance": 0.017946383257429994
+        },
+        "accent": {
+          "rgb": [
+            183,
+            48,
+            49
+          ],
+          "hex": "#b73031",
+          "generated": false,
+          "sourceDistance": 0.0038622307542392595
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7937796373779638,
+          "coverage": 0.7199856505102041,
+          "continuity": 1,
+          "coherence": 0.1603399433427762
+        },
+        "score": 0.7242043623178177,
+        "metrics": {
+          "foregroundContrast": 16.432014778787355,
+          "foregroundSurfaceContrast": 6.575614781440009,
+          "accentContrast": 3.1116027038314757,
+          "accentSurfaceContrast": 1.2451729753612666,
+          "minimumRoleDistance": 0.1435741766230542,
+          "meanSourceDistance": 0.006292561315828596,
+          "meanReconstructionError": 0.03379414641550002
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.2752920800097698,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.35,
+          "coverage": 0.7199856505102041,
+          "continuity": 1,
+          "coherence": 0.1603399433427762
+        },
+        "colorPathCoverage": 0.7199856505102041,
+        "intermediateCoverage": 0.07035235969387756,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.008703866408875962,
+        "connectedField": {
+          "coverage": 0.6781927614795918,
+          "shareOfColorPath": 0.941953163926258,
+          "continuity": 1,
+          "localTransitionCoverage": 0.7672279526286403,
+          "abruptTransitionShare": 0.09101037532205278,
+          "directionalOrdering": 0.008518086609586587
+        },
+        "background": {
+          "coverage": 0.6304408482142857,
+          "coherence": 0.9734770650902539,
+          "borderCoverage": 0.905829596412556,
+          "interiorComponentShare": 0.02652293490974615,
+          "flatness": 0.8907747105454533,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.019192442602040817,
+          "coherence": 0.10072689511941849,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9854620976116303,
+          "flatness": 0.10079900578792156,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.8703473278052091
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-cbb8a3a3b5f1582d3c2d",
+      "anchor": {
+        "file": "music-artworks/4/d/d/4dd574cfd49a37dd40d8e8114e018af5.jpg",
+        "sha256": "a04410d45a62c8ddd5ef8302b70bae013d4752c57a41c7cef113783cd88c767c",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            244,
+            238,
+            228
+          ],
+          "hex": "#f4eee4",
+          "generated": false,
+          "sourceDistance": 0.006270896394048298
+        },
+        "surface": {
+          "rgb": [
+            66,
+            62,
+            34
+          ],
+          "hex": "#423e22",
+          "generated": false,
+          "sourceDistance": 0.0038227600462606205
+        },
+        "accent": {
+          "rgb": [
+            133,
+            122,
+            67
+          ],
+          "hex": "#857a43",
+          "generated": false,
+          "sourceDistance": 0.012078668819342112
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7445790816326531,
+          "continuity": 1,
+          "coherence": 0.2392638036809816
+        },
+        "score": 0.6604616817853697,
+        "metrics": {
+          "foregroundContrast": 18.196720863370565,
+          "foregroundSurfaceContrast": 9.361423178222095,
+          "accentContrast": 4.8621720616165165,
+          "accentSurfaceContrast": 2.5013765159053887,
+          "minimumRoleDistance": 0.21881744738781028,
+          "meanSourceDistance": 0.005543081314912757,
+          "meanReconstructionError": 0.0472518043920376
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.36297377067435665,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7445790816326531,
+          "continuity": 1,
+          "coherence": 0.2392638036809816
+        },
+        "colorPathCoverage": 0.7445790816326531,
+        "intermediateCoverage": 0.22739955357142858,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.04833024915464211,
+        "connectedField": {
+          "coverage": 0.733757174744898,
+          "shareOfColorPath": 0.98546573875803,
+          "continuity": 1,
+          "localTransitionCoverage": 0.4378683760219464,
+          "abruptTransitionShare": 0.37101053452984784,
+          "directionalOrdering": 0.04204317383558379
+        },
+        "background": {
+          "coverage": 0.46853077168367346,
+          "coherence": 0.6296312050703986,
+          "borderCoverage": 0.36210762331838564,
+          "interiorComponentShare": 0.06848441022587094,
+          "flatness": 0.9532062424392024,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.04864875637755102,
+          "coherence": 0.10856206472757067,
+          "borderCoverage": 0.006726457399103139,
+          "interiorComponentShare": 0.7914789020893077,
+          "flatness": 0.5225689212534494,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.7227234675787003
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-966cff16f5be66016967",
+      "anchor": {
+        "file": "music-artworks/5/a/2/5a2dac8218dc346d478d2783b0718b4d.jpg",
+        "sha256": "d570e7b0336a5135e6ae0a01c2aa5887b7eb9a356271d815bb665dd099b2eda7",
+        "width": 1000,
+        "height": 562
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            23,
+            23,
+            23
+          ],
+          "hex": "#171717",
+          "generated": false,
+          "sourceDistance": 0.0007370032026170486
+        },
+        "foreground": {
+          "rgb": [
+            239,
+            239,
+            239
+          ],
+          "hex": "#efefef",
+          "generated": false,
+          "sourceDistance": 0.00006687520372838933
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.002489059887550497
+        },
+        "accent": {
+          "rgb": [
+            160,
+            160,
+            160
+          ],
+          "hex": "#a0a0a0",
+          "generated": false,
+          "sourceDistance": 0.018661276267171636
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5345450680272109,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.36498241717564317
+        },
+        "score": 0.6727134209364074,
+        "metrics": {
+          "foregroundContrast": 15.591368236861879,
+          "foregroundSurfaceContrast": 18.263144269082044,
+          "accentContrast": 6.855821238311226,
+          "accentSurfaceContrast": 8.030651990008787,
+          "minimumRoleDistance": 0.20462652962226385,
+          "meanSourceDistance": 0.005488553640266893,
+          "meanReconstructionError": 0.066429812151521
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.20462652962226385,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5345450680272109,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.36498241717564317
+        },
+        "colorPathCoverage": 0.5345450680272109,
+        "intermediateCoverage": 0.3828656462585034,
+        "colorPathContinuity": 0.7142857142857143,
+        "colorPathDirectionalOrdering": 0.21501485712778914,
+        "connectedField": {
+          "coverage": 0.5017715419501134,
+          "shareOfColorPath": 0.9386889374958574,
+          "continuity": 0.7142857142857143,
+          "localTransitionCoverage": 0.8870216071176388,
+          "abruptTransitionShare": 0.34426058359868456,
+          "directionalOrdering": 0.2062187128909321
+        },
+        "background": {
+          "coverage": 0.1039186507936508,
+          "coherence": 0.16331401295601772,
+          "borderCoverage": 0.033045977011494254,
+          "interiorComponentShare": 0.5178997613365155,
+          "flatness": 0.5827060152695556,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.04776077097505669,
+          "coherence": 0.07344213649851632,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9169139465875371,
+          "flatness": 1,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-a7299da16a5c776df2c6",
+      "anchor": {
+        "file": "music-artworks/a/a/0/aa020da1d70d81ce9bf9b2a282f0fe7a.jpg",
+        "sha256": "79f4585b5f286de68dcf46b0ba79085b1e95657961deb73d073c3af1d56bafa7",
+        "width": 640,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            29,
+            20,
+            19
+          ],
+          "hex": "#1d1413",
+          "generated": false,
+          "sourceDistance": 0.004143377832516603
+        },
+        "surface": {
+          "rgb": [
+            235,
+            228,
+            226
+          ],
+          "hex": "#ebe4e2",
+          "generated": false,
+          "sourceDistance": 0.008139574456877562
+        },
+        "accent": {
+          "rgb": [
+            169,
+            79,
+            99
+          ],
+          "hex": "#a94f63",
+          "generated": false,
+          "sourceDistance": 0.029225472445742244
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6440529336734694,
+          "continuity": 1,
+          "coherence": 0.7805413313825896
+        },
+        "score": 0.6860467239964286,
+        "metrics": {
+          "foregroundContrast": 18.076832401052787,
+          "foregroundSurfaceContrast": 14.399481247253782,
+          "accentContrast": 5.2690124052085014,
+          "accentSurfaceContrast": 4.197142709357014,
+          "minimumRoleDistance": 0.07663285768950996,
+          "meanSourceDistance": 0.010377107815397558,
+          "meanReconstructionError": 0.04452230680496224
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.07663285768950996,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6440529336734694,
+          "continuity": 1,
+          "coherence": 0.7805413313825896
+        },
+        "colorPathCoverage": 0.6440529336734694,
+        "intermediateCoverage": 0.05448820153061224,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.07791793306705491,
+        "connectedField": {
+          "coverage": 0.2657844387755102,
+          "shareOfColorPath": 0.4126748359945538,
+          "continuity": 1,
+          "localTransitionCoverage": 0.12260047990401919,
+          "abruptTransitionShare": 0.1937869822485207,
+          "directionalOrdering": 0.05038054383052732
+        },
+        "background": {
+          "coverage": 0.5855189732142857,
+          "coherence": 0.44392252969808366,
+          "borderCoverage": 0.36434977578475336,
+          "interiorComponentShare": 0.0023486163586235067,
+          "flatness": 0.9839178291690499,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.004045758928571429,
+          "coherence": 0.054187192118226604,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9802955665024631,
+          "flatness": 0.6383724712555763,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.915936725400696
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-514e9ffec779bb95c0a1",
+      "anchor": {
+        "file": "music-artworks/c/a/7/ca72da9db6e9f45c992e638f5603a3b2.png",
+        "sha256": "205200d84433603977492148d7b4442d795262f7e4a07a27a041683288c1b239",
+        "width": 600,
+        "height": 600
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            44,
+            46,
+            43
+          ],
+          "hex": "#2c2e2b",
+          "generated": false,
+          "sourceDistance": 0.004859824347555071
+        },
+        "surface": {
+          "rgb": [
+            215,
+            208,
+            200
+          ],
+          "hex": "#d7d0c8",
+          "generated": false,
+          "sourceDistance": 0.00967590931793072
+        },
+        "accent": {
+          "rgb": [
+            236,
+            161,
+            90
+          ],
+          "hex": "#eca15a",
+          "generated": false,
+          "sourceDistance": 0.017744669204806073
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6274912308673469,
+          "continuity": 1,
+          "coherence": 0.514859068627451
+        },
+        "score": 0.6261272303868615,
+        "metrics": {
+          "foregroundContrast": 13.700630425484759,
+          "foregroundSurfaceContrast": 8.96790475545095,
+          "accentContrast": 2.1402019553818263,
+          "accentSurfaceContrast": 1.4008937324221713,
+          "minimumRoleDistance": 0.1396834907624217,
+          "meanSourceDistance": 0.008070102349186422,
+          "meanReconstructionError": 0.0415649991996636
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.1396834907624217,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6274912308673469,
+          "continuity": 1,
+          "coherence": 0.514859068627451
+        },
+        "colorPathCoverage": 0.6274912308673469,
+        "intermediateCoverage": 0.13010204081632654,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.04080191760295044,
+        "connectedField": {
+          "coverage": 0.45023517219387754,
+          "shareOfColorPath": 0.7175162775925044,
+          "continuity": 1,
+          "localTransitionCoverage": 0.7327696870435129,
+          "abruptTransitionShare": 0.15484760300199113,
+          "directionalOrdering": 0.14007844408116138
+        },
+        "background": {
+          "coverage": 0.48116629464285715,
+          "coherence": 0.5952449985503044,
+          "borderCoverage": 0.39798206278026904,
+          "interiorComponentShare": 0.014538375512570931,
+          "flatness": 0.9074224263821076,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.016222895408163265,
+          "coherence": 0.08476658476658476,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.995085995085995,
+          "flatness": 0.30555092985113397,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.7764776472528517
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b27300003732606221eb423e62d8",
+      "anchor": {
+        "file": "00/ab67616d0000b27300003732606221eb423e62d8.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            8,
+            10,
+            10
+          ],
+          "hex": "#080a0a",
+          "generated": false,
+          "sourceDistance": 0.0036235892703595533
+        },
+        "foreground": {
+          "rgb": [
+            186,
+            187,
+            187
+          ],
+          "hex": "#babbbb",
+          "generated": false,
+          "sourceDistance": 0.005723706628099377
+        },
+        "surface": {
+          "rgb": [
+            43,
+            52,
+            121
+          ],
+          "hex": "#2b3479",
+          "generated": false,
+          "sourceDistance": 0.01519058774780841
+        },
+        "accent": {
+          "rgb": [
+            175,
+            28,
+            8
+          ],
+          "hex": "#af1c08",
+          "generated": false,
+          "sourceDistance": 0.003776838551161452
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6255381058673469,
+          "continuity": 1,
+          "coherence": 0.67876646321876
+        },
+        "score": 0.6703226736872501,
+        "metrics": {
+          "foregroundContrast": 10.314026865973704,
+          "foregroundSurfaceContrast": 5.836076274985526,
+          "accentContrast": 2.828023289893408,
+          "accentSurfaceContrast": 1.6002052197190306,
+          "minimumRoleDistance": 0.24616008748621207,
+          "meanSourceDistance": 0.007078680549357198,
+          "meanReconstructionError": 0.04763890301729854
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.24616008748621207,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6255381058673469,
+          "continuity": 1,
+          "coherence": 0.67876646321876
+        },
+        "colorPathCoverage": 0.6255381058673469,
+        "intermediateCoverage": 0.1861248405612245,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.11877562374850704,
+        "connectedField": {
+          "coverage": 0.5861367984693877,
+          "shareOfColorPath": 0.9370121387835728,
+          "continuity": 1,
+          "localTransitionCoverage": 1.512172730363822,
+          "abruptTransitionShare": 0.03218575905292479,
+          "directionalOrdering": 0.10873820068592736
+        },
+        "background": {
+          "coverage": 0.43518813775510207,
+          "coherence": 0.5687396959150027,
+          "borderCoverage": 0.24887892376681614,
+          "interiorComponentShare": 0.15561458142516946,
+          "flatness": 0.4718796635102107,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.0042251275510204085,
+          "coherence": 0.05188679245283019,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.2558008471849419,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.4205683179598296
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "holdout-ab67616d00001e020000db2029bf51eb7804821f",
+      "anchor": {
+        "file": "00/ab67616d00001e020000db2029bf51eb7804821f.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            77,
+            57,
+            30
+          ],
+          "hex": "#4d391e",
+          "generated": false,
+          "sourceDistance": 0.003252767348366226
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": true,
+          "sourceDistance": 0.37562976141513876
+        },
+        "surface": {
+          "rgb": [
+            4,
+            32,
+            54
+          ],
+          "hex": "#042036",
+          "generated": false,
+          "sourceDistance": 0.011376393360623497
+        },
+        "accent": {
+          "rgb": [
+            16,
+            8,
+            5
+          ],
+          "hex": "#100805",
+          "generated": false,
+          "sourceDistance": 0.013547872888272324
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8642080745211599,
+          "coverage": 0.5102530541012217,
+          "continuity": 0.5703093665030472,
+          "coherence": 0.6672236613993243
+        },
+        "score": 0.37142633573494443,
+        "metrics": {
+          "foregroundContrast": 10.94003804318485,
+          "foregroundSurfaceContrast": 16.60032475840552,
+          "accentContrast": 1.8126850496945757,
+          "accentSurfaceContrast": 1.194605749741721,
+          "minimumRoleDistance": 0.11488378109174459,
+          "meanSourceDistance": 0.1009516987531002,
+          "meanReconstructionError": 0.08617999891588987
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.16184955665241288,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.7182668042286491,
+          "coverage": 0.1327327806122449,
+          "continuity": 1,
+          "coherence": 0.05278678855794751
+        },
+        "colorPathCoverage": 0.1327327806122449,
+        "intermediateCoverage": 0.06758211096938775,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.03851982926679305,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.058713329081632654,
+          "coherence": 0.07535641547861507,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.7118126272912424,
+          "flatness": 0.30315594695923087,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.00643734056122449,
+          "coherence": 0.13003095975232198,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.2957725737059216,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-b99827ae221843eb0578",
+      "anchor": {
+        "file": "music-artworks/4/5/0/4502bc58137f19200a893844e4ea7e1a.jpg",
+        "sha256": "28cfcf1298e92e6f11f85f9ec0ed0ed9a273197131c7805036e0fed2c249fed0",
+        "width": 700,
+        "height": 700
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            90,
+            84,
+            87
+          ],
+          "hex": "#5a5457",
+          "generated": false,
+          "sourceDistance": 0.004582483561915087
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 0.06684908951914159
+        },
+        "surface": {
+          "rgb": [
+            185,
+            70,
+            46
+          ],
+          "hex": "#b9462e",
+          "generated": false,
+          "sourceDistance": 0.002530310413778694
+        },
+        "accent": {
+          "rgb": [
+            19,
+            15,
+            12
+          ],
+          "hex": "#130f0c",
+          "generated": false,
+          "sourceDistance": 0.00034031536331381675
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8874479250529067,
+          "coverage": 0.5063935847420893,
+          "continuity": 0.8297241573344429,
+          "coherence": 0.7262804255454258
+        },
+        "score": 0.6410603380177984,
+        "metrics": {
+          "foregroundContrast": 7.393102765023733,
+          "foregroundSurfaceContrast": 5.278540444823457,
+          "accentContrast": 2.5791460651320652,
+          "accentSurfaceContrast": 3.6123417268171916,
+          "minimumRoleDistance": 0.17560077864325763,
+          "meanSourceDistance": 0.018575549714537298,
+          "meanReconstructionError": 0.09848625113308666
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.17560077864325763,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.7770483920841064,
+          "coverage": 0.12185108418367346,
+          "continuity": 1,
+          "coherence": 0.10966810966810966
+        },
+        "colorPathCoverage": 0.12185108418367346,
+        "intermediateCoverage": 0.027622767857142856,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.616602936692933,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.037388392857142856,
+          "coherence": 0.9211087420042644,
+          "borderCoverage": 0.06838565022421525,
+          "interiorComponentShare": 0.07569296375266525,
+          "flatness": 0.43502371378459603,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.05683992346938776,
+          "coherence": 0.24719495091164095,
+          "borderCoverage": 0.008968609865470852,
+          "interiorComponentShare": 0.4786115007012623,
+          "flatness": 0.44409772337738707,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b273000066a9d9ea3dad3a1cb9d5",
+      "anchor": {
+        "file": "00/ab67616d0000b273000066a9d9ea3dad3a1cb9d5.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            103,
+            31,
+            159
+          ],
+          "hex": "#671f9f",
+          "generated": false,
+          "sourceDistance": 0.0021297999441014614
+        },
+        "foreground": {
+          "rgb": [
+            234,
+            178,
+            237
+          ],
+          "hex": "#eab2ed",
+          "generated": false,
+          "sourceDistance": 0.00656573168860284
+        },
+        "surface": {
+          "rgb": [
+            103,
+            31,
+            159
+          ],
+          "hex": "#671f9f",
+          "generated": false,
+          "sourceDistance": 0.0021297999441014614
+        },
+        "accent": {
+          "rgb": [
+            218,
+            59,
+            207
+          ],
+          "hex": "#da3bcf",
+          "generated": false,
+          "sourceDistance": 0.0010886263131360938
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7377424568965517,
+          "continuity": 0.5822514431857251,
+          "coherence": 0.8517966622511833
+        },
+        "score": 0.48559516457613006,
+        "metrics": {
+          "foregroundContrast": 5.317939422867611,
+          "foregroundSurfaceContrast": 5.317939422867611,
+          "accentContrast": 2.4227128861645744,
+          "accentSurfaceContrast": 2.4227128861645744,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.0029784894724854643,
+          "meanReconstructionError": 0.08207691429104395
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-e66f4724c8aa829ebda1",
+      "anchor": {
+        "file": "music-artworks/3/3/8/338bca5e4068f04d3ac38e7c9e346fb7.jpg",
+        "sha256": "d83715a99960107b9509f102e46027367df65f028d01193d8c3a518d9645a0a9",
+        "width": 1000,
+        "height": 185
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            84,
+            75,
+            74
+          ],
+          "hex": "#544b4a",
+          "generated": false,
+          "sourceDistance": 0.002127476735851109
+        },
+        "foreground": {
+          "rgb": [
+            254,
+            219,
+            174
+          ],
+          "hex": "#fedbae",
+          "generated": false,
+          "sourceDistance": 0.02753356468503485
+        },
+        "surface": {
+          "rgb": [
+            46,
+            34,
+            30
+          ],
+          "hex": "#2e221e",
+          "generated": false,
+          "sourceDistance": 0.013535818212710403
+        },
+        "accent": {
+          "rgb": [
+            192,
+            50,
+            51
+          ],
+          "hex": "#c03233",
+          "generated": false,
+          "sourceDistance": 0.024851602922623985
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7577909273308672,
+          "coverage": 0.20089285714285715,
+          "continuity": 1,
+          "coherence": 0.2887746358183376
+        },
+        "score": 0.6635524103924058,
+        "metrics": {
+          "foregroundContrast": 6.428763922429359,
+          "foregroundSurfaceContrast": 11.701735639295496,
+          "accentContrast": 1.5088315677291626,
+          "accentSurfaceContrast": 2.7463985834338196,
+          "minimumRoleDistance": 0.15677246182212423,
+          "meanSourceDistance": 0.017012115639055088,
+          "meanReconstructionError": 0.08348535441813963
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.15677246182212423,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.7577909273308672,
+          "coverage": 0.20089285714285715,
+          "continuity": 1,
+          "coherence": 0.2887746358183376
+        },
+        "colorPathCoverage": 0.20089285714285715,
+        "intermediateCoverage": 0.12706881533101044,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.0069940696832059435,
+        "connectedField": {
+          "coverage": 0.009037456445993032,
+          "shareOfColorPath": 0.044986449864498644,
+          "continuity": 0.8571428571428571,
+          "localTransitionCoverage": 1.1325301204819278,
+          "abruptTransitionShare": 0.3472222222222222,
+          "directionalOrdering": 0.19393013487132663
+        },
+        "background": {
+          "coverage": 0.05738240418118467,
+          "coherence": 0.42125237191650855,
+          "borderCoverage": 0.026615969581749048,
+          "interiorComponentShare": 0.16318785578747627,
+          "flatness": 0.6015483635736103,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.01644163763066202,
+          "coherence": 0.046357615894039736,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9205298013245033,
+          "flatness": 0.30418813491783936,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-478a901992776512e6a2",
+      "anchor": {
+        "file": "music-artworks/b/2/0/b209b8887e94a75b58b0325ee559ca6e.jpg",
+        "sha256": "968f33334090cb480a353ec8f2f706aac15f9e88f2e0bfc6a7c57dab2af23d00",
+        "width": 1000,
+        "height": 185
+      },
+      "cohort": "music",
+      "selectionTrack": "representative",
+      "palette": {
+        "background": {
+          "rgb": [
+            237,
+            194,
+            32
+          ],
+          "hex": "#edc220",
+          "generated": false,
+          "sourceDistance": 0.0006651390746500706
+        },
+        "foreground": {
+          "rgb": [
+            10,
+            10,
+            7
+          ],
+          "hex": "#0a0a07",
+          "generated": false,
+          "sourceDistance": 0.0052274967330156455
+        },
+        "surface": {
+          "rgb": [
+            210,
+            155,
+            84
+          ],
+          "hex": "#d29b54",
+          "generated": false,
+          "sourceDistance": 0.019575111180215935
+        },
+        "accent": {
+          "rgb": [
+            252,
+            252,
+            247
+          ],
+          "hex": "#fcfcf7",
+          "generated": false,
+          "sourceDistance": 0.006400901547610977
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.30248257839721254,
+          "continuity": 1,
+          "coherence": 0.6431570109151973
+        },
+        "score": 0.6737091974121434,
+        "metrics": {
+          "foregroundContrast": 11.646768867429886,
+          "foregroundSurfaceContrast": 8.077176494432432,
+          "accentContrast": 1.6538776797828085,
+          "accentSurfaceContrast": 2.3847852135841086,
+          "minimumRoleDistance": 0.1232638810581974,
+          "meanSourceDistance": 0.007967162133873157,
+          "meanReconstructionError": 0.06173945103096686
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.1232638810581974,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.30248257839721254,
+          "continuity": 1,
+          "coherence": 0.6431570109151973
+        },
+        "colorPathCoverage": 0.30248257839721254,
+        "intermediateCoverage": 0.12968205574912892,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.006516963647092293,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.16670296167247386,
+          "coherence": 0.457217504898759,
+          "borderCoverage": 0.06273764258555133,
+          "interiorComponentShare": 0.05747877204441541,
+          "flatness": 0.6473952316082585,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.006097560975609756,
+          "coherence": 0.16071428571428573,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.8214285714285714,
+          "flatness": 0.40864781107059145,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.011145279827587954
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-1be7fc4181565d0d02c7",
+      "anchor": {
+        "file": "music-artworks/3/f/8/3f89c27ec3790dc62add7c14b236da55.jpg",
+        "sha256": "0098ae0c55639688d9c3295022bd311b33004c7663f8ca17421bce44f9e9f400",
+        "width": 636,
+        "height": 640
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            35,
+            39,
+            35
+          ],
+          "hex": "#232723",
+          "generated": false,
+          "sourceDistance": 0.0012263114946269979
+        },
+        "foreground": {
+          "rgb": [
+            253,
+            252,
+            236
+          ],
+          "hex": "#fdfcec",
+          "generated": false,
+          "sourceDistance": 0.013062969216215272
+        },
+        "surface": {
+          "rgb": [
+            35,
+            39,
+            35
+          ],
+          "hex": "#232723",
+          "generated": false,
+          "sourceDistance": 0.0012263114946269979
+        },
+        "accent": {
+          "rgb": [
+            88,
+            137,
+            237
+          ],
+          "hex": "#5889ed",
+          "generated": false,
+          "sourceDistance": 0.021279630022244023
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9035892323030907,
+          "coverage": 0.4336989032901296,
+          "continuity": 1,
+          "coherence": 0.6313594632894743
+        },
+        "score": 0.5804754226145592,
+        "metrics": {
+          "foregroundContrast": 14.655671317474066,
+          "foregroundSurfaceContrast": 14.655671317474066,
+          "accentContrast": 4.48510008011012,
+          "accentSurfaceContrast": 4.48510008011012,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.009198805556928324,
+          "meanReconstructionError": 0.11430607569750982
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      },
+      "reason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-815b854e5f768e848241",
+      "anchor": {
+        "file": "music-artworks/2/0/4/2048269b9d3693bd31965a2c7b10e7a7.png",
+        "sha256": "ac5272accb7b90cd2ae0e4045b3189699c829d2551c23c16d503fe5fdcbaab9d",
+        "width": 1000,
+        "height": 562
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            1
+          ],
+          "hex": "#000001",
+          "generated": false,
+          "sourceDistance": 0.022772185888808853
+        },
+        "surface": {
+          "rgb": [
+            197,
+            225,
+            234
+          ],
+          "hex": "#c5e1ea",
+          "generated": false,
+          "sourceDistance": 0.004274717350694647
+        },
+        "accent": {
+          "rgb": [
+            20,
+            38,
+            62
+          ],
+          "hex": "#14263e",
+          "generated": false,
+          "sourceDistance": 0.016098704463023004
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5767077664399093,
+          "continuity": 1,
+          "coherence": 0.2571849668386146
+        },
+        "score": 0.6161685445084717,
+        "metrics": {
+          "foregroundContrast": 20.990799880098688,
+          "foregroundSurfaceContrast": 15.325534360954464,
+          "accentContrast": 15.255531355080674,
+          "accentSurfaceContrast": 11.138173452769246,
+          "minimumRoleDistance": 0.11265003978931545,
+          "meanSourceDistance": 0.010786403557245082,
+          "meanReconstructionError": 0.050403393963378146
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.11265003978931545,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5767077664399093,
+          "continuity": 1,
+          "coherence": 0.2571849668386146
+        },
+        "colorPathCoverage": 0.5767077664399093,
+        "intermediateCoverage": 0.1442389455782313,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.1834584795068315,
+        "connectedField": {
+          "coverage": 0.47076955782312924,
+          "shareOfColorPath": 0.8163052159488849,
+          "continuity": 1,
+          "localTransitionCoverage": 0.3854143147437345,
+          "abruptTransitionShare": 0.21432954894139306,
+          "directionalOrdering": 0.15738500187956497
+        },
+        "background": {
+          "coverage": 0.3944869614512472,
+          "coherence": 0.9382072929764684,
+          "borderCoverage": 0.728448275862069,
+          "interiorComponentShare": 0.061792707023531526,
+          "flatness": 0.9865939302549211,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.03798185941043084,
+          "coherence": 0.06996268656716417,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6123350687472474,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.8129864713832226
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "holdout-ab67616d0000b2730000ee282de52410006b6ff3",
+      "anchor": {
+        "file": "00/ab67616d0000b2730000ee282de52410006b6ff3.jpg"
+      },
+      "cohort": "holdout",
+      "selectionTrack": "holdout",
+      "palette": {
+        "background": {
+          "rgb": [
+            15,
+            14,
+            14
+          ],
+          "hex": "#0f0e0e",
+          "generated": false,
+          "sourceDistance": 0.00027821012948255845
+        },
+        "foreground": {
+          "rgb": [
+            242,
+            243,
+            239
+          ],
+          "hex": "#f2f3ef",
+          "generated": false,
+          "sourceDistance": 0.0024992333790251923
+        },
+        "surface": {
+          "rgb": [
+            146,
+            14,
+            15
+          ],
+          "hex": "#920e0f",
+          "generated": false,
+          "sourceDistance": 0.0014348332446413304
+        },
+        "accent": {
+          "rgb": [
+            231,
+            211,
+            53
+          ],
+          "hex": "#e7d335",
+          "generated": false,
+          "sourceDistance": 0.039730865581621276
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7320762711864407,
+          "coverage": 0.7317841198979592,
+          "continuity": 1,
+          "coherence": 0.1134789557805008
+        },
+        "score": 0.803464751913638,
+        "metrics": {
+          "foregroundContrast": 17.294757011500717,
+          "foregroundSurfaceContrast": 8.221122209638153,
+          "accentContrast": 12.636349971710409,
+          "accentSurfaceContrast": 6.0067324063649545,
+          "minimumRoleDistance": 0.19139550779043954,
+          "meanSourceDistance": 0.010985785583692589,
+          "meanReconstructionError": 0.034816486748954385
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.30284952786433506,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.35,
+          "coverage": 0.7317841198979592,
+          "continuity": 1,
+          "coherence": 0.1134789557805008
+        },
+        "colorPathCoverage": 0.7317841198979592,
+        "intermediateCoverage": 0.1122249681122449,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.03846286630976478,
+        "connectedField": {
+          "coverage": 0.7232142857142857,
+          "shareOfColorPath": 0.9882891225012256,
+          "continuity": 1,
+          "localTransitionCoverage": 0.5671847442680776,
+          "abruptTransitionShare": 0.25618878970763614,
+          "directionalOrdering": 0.036966406881440095
+        },
+        "background": {
+          "coverage": 0.5974569515306123,
+          "coherence": 0.9899926612849423,
+          "borderCoverage": 0.8408071748878924,
+          "interiorComponentShare": 0.009907265327907132,
+          "flatness": 0.7985846592420438,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.02210220025510204,
+          "coherence": 0.14156898106402163,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9990982867448152,
+          "flatness": 0.5293074768989847,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.7683703787281719
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-71ac0e35b83fd14ba7d5",
+      "anchor": {
+        "file": "music-artworks/9/0/f/90f70a09467433bc4c51fdb55ed74041.png",
+        "sha256": "a628086e9bdd040cbcededc8f62a675f130c333084a76b41767ad07687898c85",
+        "width": 495,
+        "height": 495
+      },
+      "cohort": "music",
+      "selectionTrack": "borderline",
+      "palette": {
+        "background": {
+          "rgb": [
+            12,
+            1,
+            15
+          ],
+          "hex": "#0c010f",
+          "generated": false,
+          "sourceDistance": 0.0008821197037571894
+        },
+        "foreground": {
+          "rgb": [
+            184,
+            154,
+            126
+          ],
+          "hex": "#b89a7e",
+          "generated": false,
+          "sourceDistance": 0.0186931800362083
+        },
+        "surface": {
+          "rgb": [
+            92,
+            28,
+            27
+          ],
+          "hex": "#5c1c1b",
+          "generated": false,
+          "sourceDistance": 0.02665606689280391
+        },
+        "accent": {
+          "rgb": [
+            171,
+            34,
+            24
+          ],
+          "hex": "#ab2218",
+          "generated": false,
+          "sourceDistance": 0.00025374363200267606
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7886361398325948,
+          "coverage": 0.5791214923469388,
+          "continuity": 1,
+          "coherence": 0.09686495176848875
+        },
+        "score": 0.606434713297331,
+        "metrics": {
+          "foregroundContrast": 7.7532359460452325,
+          "foregroundSurfaceContrast": 4.863548782432436,
+          "accentContrast": 2.8957705639871847,
+          "accentSurfaceContrast": 1.8164959119898034,
+          "minimumRoleDistance": 0.1743597620746742,
+          "meanSourceDistance": 0.011621277566193019,
+          "meanReconstructionError": 0.017556147222197734
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.2280601891774376,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.35,
+          "coverage": 0.5791214923469388,
+          "continuity": 1,
+          "coherence": 0.09686495176848875
+        },
+        "colorPathCoverage": 0.5791214923469388,
+        "intermediateCoverage": 0.04958545918367347,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.034926267297673286,
+        "connectedField": {
+          "coverage": 0.3576809630102041,
+          "shareOfColorPath": 0.6176268153348475,
+          "continuity": 1,
+          "localTransitionCoverage": 0.5345183038948014,
+          "abruptTransitionShare": 0.15398183261310522,
+          "directionalOrdering": 0.023758176453377185
+        },
+        "background": {
+          "coverage": 0.5224609375,
+          "coherence": 0.4757581537287812,
+          "borderCoverage": 0.1367713004484305,
+          "interiorComponentShare": 0.15742895288956704,
+          "flatness": 0.6336541327915136,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.007075095663265306,
+          "coherence": 0.10704225352112676,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.08454233883220175,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.4230334039433712
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-83a840ce4f86a4b7647e",
+      "anchor": {
+        "file": "music-artworks/1/e/8/1e81245e6d2a18095ab79f8d08896bfa.png",
+        "sha256": "3d623e8420b58282e9991c011ef9482d0abcea4f63aa22d2cce68567b46266be",
+        "width": 1000,
+        "height": 562
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            16,
+            16,
+            20
+          ],
+          "hex": "#101014",
+          "generated": false,
+          "sourceDistance": 0.04662869799168008
+        },
+        "surface": {
+          "rgb": [
+            217,
+            219,
+            216
+          ],
+          "hex": "#d9dbd8",
+          "generated": false,
+          "sourceDistance": 0.013304053454207
+        },
+        "accent": {
+          "rgb": [
+            13,
+            220,
+            180
+          ],
+          "hex": "#0ddcb4",
+          "generated": false,
+          "sourceDistance": 0.026144508164908382
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6223072562358276,
+          "continuity": 1,
+          "coherence": 0.23815620998719592
+        },
+        "score": 0.6669478661118171,
+        "metrics": {
+          "foregroundContrast": 18.98305777592619,
+          "foregroundSurfaceContrast": 13.626692861168749,
+          "accentContrast": 1.7627135057222427,
+          "accentSurfaceContrast": 1.2653364820483504,
+          "minimumRoleDistance": 0.11106924464751118,
+          "meanSourceDistance": 0.02151931653431232,
+          "meanReconstructionError": 0.05974089515567816
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.1110692446475112,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6223072562358276,
+          "continuity": 1,
+          "coherence": 0.23815620998719592
+        },
+        "colorPathCoverage": 0.6223072562358276,
+        "intermediateCoverage": 0.05534297052154195,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.053616603634992856,
+        "connectedField": {
+          "coverage": 0.5742276077097506,
+          "shareOfColorPath": 0.9227396948303348,
+          "continuity": 1,
+          "localTransitionCoverage": 0.1854137101252545,
+          "abruptTransitionShare": 0.24648946840521566,
+          "directionalOrdering": 0.025938148199874306
+        },
+        "background": {
+          "coverage": 0.557468820861678,
+          "coherence": 0.9651709673318927,
+          "borderCoverage": 1,
+          "interiorComponentShare": 0.03482903266810728,
+          "flatness": 0.9862231794461067,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.00949546485260771,
+          "coherence": 0.05223880597014925,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6544463741139264,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.9606423764594824
+      },
+      "reason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-fcdba3c69f6d07af3bfa",
+      "anchor": {
+        "file": "music-artworks/e/3/2/e321d2e002cca9ef54d8b4043ddb4e7c.png",
+        "sha256": "e400ed7616374e35688a0a357efce0101155a7887d621e717f4681817dff4d4c",
+        "width": 800,
+        "height": 310
+      },
+      "cohort": "music",
+      "selectionTrack": "strong",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": true,
+          "sourceDistance": 0.7955183971989114
+        },
+        "surface": {
+          "rgb": [
+            230,
+            230,
+            230
+          ],
+          "hex": "#e6e6e6",
+          "generated": false,
+          "sourceDistance": 0.0021946567469777636
+        },
+        "accent": {
+          "rgb": [
+            217,
+            218,
+            78
+          ],
+          "hex": "#d9da4e",
+          "generated": false,
+          "sourceDistance": 0.02140189503810353
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7361453201970444,
+          "continuity": 1,
+          "coherence": 0.32696390658174096
+        },
+        "score": 0.5270020647739696,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 16.825958806652604,
+          "accentContrast": 1.4905334218587876,
+          "accentSurfaceContrast": 1.1942692360064242,
+          "minimumRoleDistance": 0.07506046011343032,
+          "meanSourceDistance": 0.2047787388776116,
+          "meanReconstructionError": 0.020261663428054695
+        }
+      },
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-0.1.0-dev",
+        "endpointDistance": 0.07506046011343032,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7361453201970444,
+          "continuity": 1,
+          "coherence": 0.32696390658174096
+        },
+        "colorPathCoverage": 0.7361453201970444,
+        "intermediateCoverage": 0.048337438423645324,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.06192447666185306,
+        "connectedField": {
+          "coverage": 0.7247536945812808,
+          "shareOfColorPath": 0.9845253032204099,
+          "continuity": 1,
+          "localTransitionCoverage": 0.12276975361087511,
+          "abruptTransitionShare": 0.36320235034887993,
+          "directionalOrdering": 0.05721636491701215
+        },
+        "background": {
+          "coverage": 0.6798029556650246,
+          "coherence": 0.9981884057971014,
+          "borderCoverage": 1,
+          "interiorComponentShare": 0.0018115942028985507,
+          "flatness": 0.9875715421621322,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.008004926108374385,
+          "coherence": 0.12179487179487179,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6441150751303039,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.9310662884241272
+      },
+      "reason": "flat-background-isolated-surface"
+    }
+  ]
+}

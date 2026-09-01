@@ -1,0 +1,721 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-3-selected-treatment-review-2",
+  "manifestId": "07d0574b5b7f10cf1f674cd05314ec28ec2f92dcfe4fa448736d693ab46c2045",
+  "feedbackSha256": "51adbc498b53c4dfed99569844401094f29032e3e86ad2c6cf058273bd3dc146",
+  "reviewerSummaryVerbatim": [
+    "surface is collapsed *way too often*, this might have biased my review towards palettes with 4 colors. and there weren't enough gradients (but that might be due to the collapsed surfaces)",
+    "because I favored one palette in my review doesn't mean there aren't other valid palettes. And if we were to improve all the proposed alternatives it might make another better that the one i selected even if it went in a completely different direction.",
+    "as a first review, i think the results are promising, but there is still a lot of work to do"
+  ],
+  "limitations": {
+    "reviewedCaseCount": 27,
+    "manifestCaseCount": 28,
+    "missingCaseIds": [
+      "development-14"
+    ],
+    "selectedTreatmentIsNonexclusivePreference": true,
+    "unselectedTreatmentsAreNotNegativeLabels": true
+  },
+  "counts": {
+    "quality": {
+      "acceptable": 8,
+      "strong": 8,
+      "unacceptable": 1,
+      "weak-fallback": 10
+    },
+    "tags": {
+      "incomplete artwork identity": 11,
+      "missing gradient": 7
+    },
+    "winnerOverrides": 15,
+    "winnerStructures": {
+      "four-colors": 1,
+      "three-colors-surface-collapsed": 24,
+      "two-colors": 2
+    },
+    "selectedStructures": {
+      "four-colors": 7,
+      "three-colors-accent-collapsed": 1,
+      "three-colors-surface-collapsed": 17,
+      "two-colors": 2
+    },
+    "slateStructures": {
+      "four-colors": 32,
+      "three-colors-accent-collapsed": 26,
+      "three-colors-surface-collapsed": 115,
+      "two-colors": 40
+    },
+    "winnerSurfaceCollapsed": 26,
+    "selectedSurfaceCollapsed": 19,
+    "slateSurfaceCollapsed": 155,
+    "winnerGradients": 0,
+    "selectedGradients": 0,
+    "slateGradients": 1,
+    "missingGradientTagCount": 7,
+    "incompleteIdentityTagCount": 11,
+    "surfaceCommentCount": 15,
+    "gradientCommentCount": 9,
+    "nonexclusivePreferenceCommentCount": 6
+  },
+  "generalInterpretations": [
+    {
+      "class": "systematic-surface-collapse",
+      "confidence": "high",
+      "trace": [
+        "reviewer summary",
+        "15 comments",
+        "winner/slate/selected collapse counts"
+      ],
+      "developmentAction": "repair distinct-field evidence, ranking, and slate coverage without adding a raw cardinality reward"
+    },
+    {
+      "class": "gradient-under-availability",
+      "confidence": "high",
+      "trace": [
+        "reviewer summary",
+        "7 missing-gradient tags",
+        "9 gradient comments",
+        "retained gradient count"
+      ],
+      "developmentAction": "improve spatial transition hypotheses and guarantee diagnostic slate retention for supported gradients"
+    },
+    {
+      "class": "nonexclusive-valid-directions",
+      "confidence": "high",
+      "trace": [
+        "reviewer summary",
+        "6 comments explicitly allow multiple directions",
+        "15 winner overrides"
+      ],
+      "developmentAction": "preserve multiple field and role directions; collect optional also-valid choices in the next bounded review"
+    },
+    {
+      "class": "identity-role-availability-and-assignment",
+      "confidence": "medium",
+      "trace": [
+        "11 incomplete-identity tags",
+        "foreground and accent comment interpretations"
+      ],
+      "developmentAction": "retain region-level signature and foreground evidence rather than treating selected colors as targets"
+    }
+  ],
+  "responseInterpretations": [
+    {
+      "caseId": "development-01",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:04:10.739Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-02",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "both generated black and generated white could work as the foreground/accent",
+        "submittedAt": "2026-07-26T14:05:27.130Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-03",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "this artwork is made of\n- black text and pink text\n- a very pale photo of a face, with colorful details\n- a rich multicolor background that goes red -> orange -> yellow -> green -> cyan -> dark blue -> pink\n\nthe Yoshi green background works very well, the Magentarama pink accent seems to be a close match for the pink text. But \n- i'm expecting a gradient background, like in the artwork\n- the indigo ink blue foreground does not match the artwork (in the artwork this blue is used as part of the background gradient, and the other available foreground text is black)",
+        "submittedAt": "2026-07-26T14:10:04.025Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-04",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "Campfire Smoke background is a great match for this artwork.\nI'm expecting a surface of a different shade of grey-blue forming a gradient with the background.\nIvory could be a valid accent (it does match the skin of the character in the photo)\nthere is white text and red text, so I would like to see some white (maybe as the foreground)",
+        "submittedAt": "2026-07-26T14:13:32.036Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-05",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "this artwork is made of 5 colors\n- Blackout black background\n- Barolo red secondary background\n- Eggshell white text\n- a Deep Scarlet red and Cantaloupe pink drawing\n\nThis palette works. We could also have had \n- background: Blackout\n- surface: Barolo\n- accent: Deep Scarlet\n- foreground: Eggshell or Cantaloupe\n\nI don't know which one I would have preferred",
+        "submittedAt": "2026-07-26T14:17:40.086Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-06",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "This is almost very good, but there are enough shades of deep blue / purple to offer a surface color different from the background (with which it should form a gradient)\n\nHex Appeal accent and Summer Blue foreground are very good.",
+        "submittedAt": "2026-07-26T14:19:45.604Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-07",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "overall good, but we're missing a surface with some darker shade of blue, and forming a gradient with the black background",
+        "submittedAt": "2026-07-26T14:21:11.394Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-08",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:23:22.023Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-09",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:23:54.926Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-10",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:24:26.097Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-11",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "i'm not entirely sure about the exact surface shade, looking at the artwork it looks like it should be slightly lighter",
+        "submittedAt": "2026-07-26T14:26:21.402Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-12",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "of all the alternatives, this is the palette that is the closest, and it kinda works. But i do think that the background+surface should be Snow white, and the foreground should be Blackout black. (instead of the opposite like it is now)",
+        "submittedAt": "2026-07-26T14:28:55.019Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-13",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "almost all of the proposed alternatives kinda work here. I picked this one because it has both a surface and a background",
+        "submittedAt": "2026-07-26T14:30:47.193Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-15",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "there are enough shades of grey, grey-blue, grey-red in the artwork to provide a 4-color palette, and i think (not sure) this palette should be a gradient\nalso there is a bit of blue and a bit of red in the artwork, which could (not sure) be nice to find in the accent",
+        "submittedAt": "2026-07-26T14:34:50.840Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-16",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "background and foreground are ok\n- surface should be a gradient with a darker shade of blue (but not as dark as the Night blue accent) to represent the artwork's such gradient\n- the Night blue color of the accent doesn't really represent any salient parts of the artwork, it should either be a lighter blue (there is some text of that shade in the artwork) or a bright color (there are many yellow, red, orange dots at the bottom of the artwork)",
+        "submittedAt": "2026-07-26T14:38:06.554Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-17",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "there should be a surface color, there are many to pick from that could be valid (and depending on which one, it could be a gradient)",
+        "submittedAt": "2026-07-26T14:39:54.087Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-18",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:40:32.925Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-19",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "the artwork is made of many pastel colors, and small white text on the bottom right\n- dark foreground and dark accent don't really feel like they belong\n- we should have a surface color, there are plenty to pick from",
+        "submittedAt": "2026-07-26T14:42:01.528Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-20",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:42:33.817Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-21",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "this one is hard to judge.\n- the selected colors are definitely valid (kefir white, Monarch orange, Sea Serpent's Tears blue, Love Vessel pink), I don't know if they are assigned the correct roles or not. I'm not 100% sure the presence of the Monarch is necessary.",
+        "submittedAt": "2026-07-26T14:46:49.019Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-22",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "missing surface color, depending on surface color, may be a gradient",
+        "submittedAt": "2026-07-26T14:47:48.539Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-23",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "the colors match the vibe of the artwork. We have enough colors for a 4-color palette though, so we should not collapse. I'm not sure Churro should be a surface (or should be picked at all), but it does work.",
+        "submittedAt": "2026-07-26T14:49:51.011Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-24",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "artwork includes a red dress, and some neon green text, we're missing part of the identity in this palette",
+        "submittedAt": "2026-07-26T14:50:50.335Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-25",
+      "originalResponse": {
+        "quality": "unacceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "those palettes are bad. foreground should be some orange-gold or white (text on this artwork is pink (like the accent), orange-gold, and white). The surface doesn't feel like it's part of the artwork, but there are many other colors to pick from\n",
+        "submittedAt": "2026-07-26T14:52:28.120Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-bearing-role-candidate-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-26",
+      "originalResponse": {
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient"
+        ],
+        "comment": "we should have a gradient with the surface. There is light grey text in this artwork that could be the foreground. background and accent are good",
+        "submittedAt": "2026-07-26T14:54:26.098Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-hypothesis-or-slate-availability",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "distinct-surface-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "verbatim comment discusses an absent or alternate surface"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-27",
+      "originalResponse": {
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:54:53.582Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-28",
+      "originalResponse": {
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T14:55:22.749Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    }
+  ],
+  "analysisId": "74678029e35e7e01d9cdb6c32e32b1058f672d6591e9e8d1260a023e5c9ab1f7"
+}

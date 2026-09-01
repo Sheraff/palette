@@ -1,0 +1,2116 @@
+{
+	"fixtureVersion": "color-bracketing-1",
+	"batchId": "bracketing-round-1",
+	"seed": 20260802,
+	"generatedBy": "research/v3/src/review-server/bracketing.ts",
+	"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+	"prompts": {
+		"same-color": {
+			"question": "Same color?",
+			"instruction": "Answer whether they register as the same color — not whether you can detect any difference at the seam. If you have to hunt along the boundary to find it, they're the same color. If they'd read as two different colors in a UI, they're different."
+		},
+		"accent-visible": {
+			"question": "Can you clearly see the shapes?",
+			"instruction": "Would these icons work as UI elements? If you have to hunt for them or they strain, answer no."
+		}
+	},
+	"quadrantBoundaries": {
+		"lightness": 0.55,
+		"chroma": 0.05
+	},
+	"prior": {
+		"sameColorBar": 0.012
+	},
+	"items": [
+		{
+			"itemId": "p1-dark-neutral-00",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				21,
+				57,
+				70
+			],
+			"second": [
+				24,
+				56,
+				69
+			],
+			"firstHex": "#153946",
+			"secondHex": "#183845",
+			"truth": {
+				"targetDistance": 0.004,
+				"okLabDistance": 0.003868475330100358,
+				"chromaDistance": 0.003320118069668585,
+				"apcaRaw": 0.7515984261101587,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0007255334139097923,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-01",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				56,
+				38,
+				17
+			],
+			"second": [
+				56,
+				37,
+				19
+			],
+			"firstHex": "#382611",
+			"secondHex": "#382513",
+			"truth": {
+				"targetDistance": 0.004884378493994622,
+				"okLabDistance": 0.004887873703741111,
+				"chromaDistance": 0.004441160466604193,
+				"apcaRaw": 0.5779230267010952,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00042657207438099275,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-02",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				36,
+				46,
+				69
+			],
+			"second": [
+				33,
+				47,
+				70
+			],
+			"firstHex": "#242e45",
+			"secondHex": "#212f46",
+			"truth": {
+				"targetDistance": 0.0059642883181492915,
+				"okLabDistance": 0.005016150669872104,
+				"chromaDistance": 0.004932928587347727,
+				"apcaRaw": -1.1594730265479596,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0003663798679998838,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-03",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				85,
+				66,
+				84
+			],
+			"second": [
+				89,
+				65,
+				84
+			],
+			"firstHex": "#554254",
+			"secondHex": "#594154",
+			"truth": {
+				"targetDistance": 0.007282960398287939,
+				"okLabDistance": 0.007567387262300955,
+				"chromaDistance": 0.007152527922597039,
+				"apcaRaw": -1.684516372151366,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0007729723248221659,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-04",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				100,
+				83,
+				95
+			],
+			"second": [
+				105,
+				83,
+				97
+			],
+			"firstHex": "#64535f",
+			"secondHex": "#695361",
+			"truth": {
+				"targetDistance": 0.008893183785503028,
+				"okLabDistance": 0.009451995692185123,
+				"chromaDistance": 0.007225641382613313,
+				"apcaRaw": -2.3068295221012596,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0031400836092965734,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-05",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				75,
+				107,
+				103
+			],
+			"second": [
+				69,
+				109,
+				109
+			],
+			"firstHex": "#4b6b67",
+			"secondHex": "#456d6d",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.01056477196163102,
+				"chromaDistance": 0.009976690427152648,
+				"apcaRaw": -2.3757097879964633,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00319089134346863,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-06",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				48,
+				45,
+				65
+			],
+			"second": [
+				55,
+				45,
+				63
+			],
+			"firstHex": "#302d41",
+			"secondHex": "#372d3f",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.013132698359562003,
+				"chromaDistance": 0.01141445412754687,
+				"apcaRaw": -1.4341482359065627,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0012967876265373122,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-07",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				82,
+				89,
+				86
+			],
+			"second": [
+				88,
+				85,
+				78
+			],
+			"firstHex": "#525956",
+			"secondHex": "#58554e",
+			"truth": {
+				"targetDistance": 0.01619217633112874,
+				"okLabDistance": 0.01573600322798452,
+				"chromaDistance": 0.014250876505180591,
+				"apcaRaw": 1.5815637867720298,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004505070128869276,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-08",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				60,
+				70,
+				88
+			],
+			"second": [
+				57,
+				76,
+				97
+			],
+			"firstHex": "#3c4658",
+			"secondHex": "#394c61",
+			"truth": {
+				"targetDistance": 0.019772179460683492,
+				"okLabDistance": 0.020531849069523073,
+				"chromaDistance": 0.011774736118384574,
+				"apcaRaw": -3.2032417103581783,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00772511214731781,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-09",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				80,
+				99,
+				91
+			],
+			"second": [
+				89,
+				92,
+				80
+			],
+			"firstHex": "#50635b",
+			"secondHex": "#595c50",
+			"truth": {
+				"targetDistance": 0.024143702034291156,
+				"okLabDistance": 0.023924210805870216,
+				"chromaDistance": 0.020068703253672764,
+				"apcaRaw": 2.4975651022075365,
+				"apcaLc": 0,
+				"deltaApcaY": 0.009694536609401533,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-10",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				19,
+				21,
+				44
+			],
+			"second": [
+				20,
+				19,
+				29
+			],
+			"firstHex": "#13152c",
+			"secondHex": "#14131d",
+			"truth": {
+				"targetDistance": 0.02948174474542648,
+				"okLabDistance": 0.02967467889098515,
+				"chromaDistance": 0.025966915917912895,
+				"apcaRaw": 0.7506689649654806,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0009995974341956127,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-11",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				63,
+				76,
+				55
+			],
+			"second": [
+				43,
+				74,
+				55
+			],
+			"firstHex": "#3f4c37",
+			"secondHex": "#2b4a37",
+			"truth": {
+				"targetDistance": 0.03600000000000001,
+				"okLabDistance": 0.028508998337020537,
+				"chromaDistance": 0.02039523304758139,
+				"apcaRaw": 2.322002759702109,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006880156968432173,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-control-0",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				47,
+				85,
+				75
+			],
+			"second": [
+				47,
+				85,
+				75
+			],
+			"firstHex": "#2f554b",
+			"secondHex": "#2f554b",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.6027027442495216,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-neutral-repeat-0",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				48,
+				45,
+				65
+			],
+			"second": [
+				55,
+				45,
+				63
+			],
+			"firstHex": "#302d41",
+			"secondHex": "#372d3f",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.013132698359562003,
+				"chromaDistance": 0.01141445412754687,
+				"apcaRaw": -1.4341482359065627,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0012967876265373122,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-dark-neutral-06"
+		},
+		{
+			"itemId": "p1-dark-neutral-repeat-1",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				75,
+				107,
+				103
+			],
+			"second": [
+				69,
+				109,
+				109
+			],
+			"firstHex": "#4b6b67",
+			"secondHex": "#456d6d",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.01056477196163102,
+				"chromaDistance": 0.009976690427152648,
+				"apcaRaw": -2.3757097879964633,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00319089134346863,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-dark-neutral-05"
+		},
+		{
+			"itemId": "p1-dark-saturated-00",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				102,
+				87,
+				38
+			],
+			"second": [
+				100,
+				87,
+				39
+			],
+			"firstHex": "#665726",
+			"secondHex": "#645727",
+			"truth": {
+				"targetDistance": 0.004,
+				"okLabDistance": 0.0034240760103591635,
+				"chromaDistance": 0.002756833703946823,
+				"apcaRaw": 0.8925885904326483,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0010465944146489242,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-01",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				59,
+				8,
+				0
+			],
+			"second": [
+				61,
+				7,
+				0
+			],
+			"firstHex": "#3b0800",
+			"secondHex": "#3d0700",
+			"truth": {
+				"targetDistance": 0.004884378493994622,
+				"okLabDistance": 0.004853515813382032,
+				"chromaDistance": 0.0036575361265293455,
+				"apcaRaw": -0.9695893534077743,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0004797301653406954,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-02",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				62,
+				59,
+				161
+			],
+			"second": [
+				59,
+				58,
+				162
+			],
+			"firstHex": "#3e3ba1",
+			"secondHex": "#3b3aa2",
+			"truth": {
+				"targetDistance": 0.0059642883181492915,
+				"okLabDistance": 0.005666146995666779,
+				"chromaDistance": 0.004753270082858487,
+				"apcaRaw": 0.9371188323163092,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0012998942473979869,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-03",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				45,
+				118,
+				71
+			],
+			"second": [
+				49,
+				116,
+				69
+			],
+			"firstHex": "#2d7647",
+			"secondHex": "#317445",
+			"truth": {
+				"targetDistance": 0.007282960398287939,
+				"okLabDistance": 0.006056794458679616,
+				"chromaDistance": 0.004115749174578699,
+				"apcaRaw": 1.3816882480996326,
+				"apcaLc": 0,
+				"deltaApcaY": 0.003994752940419732,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-04",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				163,
+				77,
+				5
+			],
+			"second": [
+				159,
+				79,
+				21
+			],
+			"firstHex": "#a34d05",
+			"secondHex": "#9f4f15",
+			"truth": {
+				"targetDistance": 0.008893183785503028,
+				"okLabDistance": 0.008987146808569962,
+				"chromaDistance": 0.008748114231232612,
+				"apcaRaw": 0.9693430525671337,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0014674668736422009,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-05",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				151,
+				33,
+				96
+			],
+			"second": [
+				155,
+				36,
+				99
+			],
+			"firstHex": "#972160",
+			"secondHex": "#9b2463",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.010674782356975974,
+				"chromaDistance": 0.0013433559319452019,
+				"apcaRaw": -2.767670251097172,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0056742192376643685,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-06",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				139,
+				40,
+				134
+			],
+			"second": [
+				145,
+				39,
+				132
+			],
+			"firstHex": "#8b2886",
+			"secondHex": "#912784",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.0128907252864393,
+				"chromaDistance": 0.010598801090680931,
+				"apcaRaw": -2.503276377320932,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004251102266317974,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-07",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				87,
+				69,
+				128
+			],
+			"second": [
+				89,
+				74,
+				127
+			],
+			"firstHex": "#574580",
+			"secondHex": "#594a7f",
+			"truth": {
+				"targetDistance": 0.01619217633112874,
+				"okLabDistance": 0.015102139542719613,
+				"chromaDistance": 0.009965528336772313,
+				"apcaRaw": -2.8887017376107744,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006320224254278119,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-08",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				52,
+				1,
+				118
+			],
+			"second": [
+				47,
+				12,
+				109
+			],
+			"firstHex": "#340176",
+			"secondHex": "#2f0c6d",
+			"truth": {
+				"targetDistance": 0.019772179460683492,
+				"okLabDistance": 0.01932757992220732,
+				"chromaDistance": 0.017713671056812447,
+				"apcaRaw": 1.2578366924450621,
+				"apcaLc": 0,
+				"deltaApcaY": 0.002512290329107757,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-09",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				40,
+				105,
+				202
+			],
+			"second": [
+				40,
+				113,
+				200
+			],
+			"firstHex": "#2869ca",
+			"secondHex": "#2871c8",
+			"truth": {
+				"targetDistance": 0.024143702034291156,
+				"okLabDistance": 0.022243432204936783,
+				"chromaDistance": 0.015228855761656274,
+				"apcaRaw": -4.230154250798999,
+				"apcaLc": 0,
+				"deltaApcaY": 0.015411661736506793,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-10",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				110,
+				97,
+				160
+			],
+			"second": [
+				118,
+				87,
+				149
+			],
+			"firstHex": "#6e61a0",
+			"secondHex": "#765795",
+			"truth": {
+				"targetDistance": 0.02948174474542648,
+				"okLabDistance": 0.029819408988507958,
+				"chromaDistance": 0.02433536963088319,
+				"apcaRaw": 3.14997142331816,
+				"apcaLc": 0,
+				"deltaApcaY": 0.014673165841206093,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-11",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				5,
+				47,
+				106
+			],
+			"second": [
+				3,
+				34,
+				104
+			],
+			"firstHex": "#052f6a",
+			"secondHex": "#032268",
+			"truth": {
+				"targetDistance": 0.03600000000000001,
+				"okLabDistance": 0.036331726418047654,
+				"chromaDistance": 0.017297849501283644,
+				"apcaRaw": 2.7084173099077917,
+				"apcaLc": 0,
+				"deltaApcaY": 0.007077526022840081,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-control-0",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				42,
+				73,
+				180
+			],
+			"second": [
+				42,
+				73,
+				180
+			],
+			"firstHex": "#2a49b4",
+			"secondHex": "#2a49b4",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.6785614911963593,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-dark-saturated-repeat-0",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				139,
+				40,
+				134
+			],
+			"second": [
+				145,
+				39,
+				132
+			],
+			"firstHex": "#8b2886",
+			"secondHex": "#912784",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.0128907252864393,
+				"chromaDistance": 0.010598801090680931,
+				"apcaRaw": -2.503276377320932,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004251102266317974,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-dark-saturated-06"
+		},
+		{
+			"itemId": "p1-dark-saturated-repeat-1",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				151,
+				33,
+				96
+			],
+			"second": [
+				155,
+				36,
+				99
+			],
+			"firstHex": "#972160",
+			"secondHex": "#9b2463",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.010674782356975974,
+				"chromaDistance": 0.0013433559319452019,
+				"apcaRaw": -2.767670251097172,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0056742192376643685,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-dark-saturated-05"
+		},
+		{
+			"itemId": "p1-light-neutral-00",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				176,
+				171,
+				135
+			],
+			"second": [
+				174,
+				172,
+				137
+			],
+			"firstHex": "#b0ab87",
+			"secondHex": "#aeac89",
+			"truth": {
+				"targetDistance": 0.004,
+				"okLabDistance": 0.0037573065342908977,
+				"chromaDistance": 0.0036529156356910394,
+				"apcaRaw": -2.006527758187186,
+				"apcaLc": 0,
+				"deltaApcaY": 0.002062865053733265,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-01",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				190,
+				206,
+				195
+			],
+			"second": [
+				191,
+				205,
+				197
+			],
+			"firstHex": "#becec3",
+			"secondHex": "#bfcdc5",
+			"truth": {
+				"targetDistance": 0.004884378493994622,
+				"okLabDistance": 0.004706715223915947,
+				"chromaDistance": 0.004640791803820573,
+				"apcaRaw": 0.6888776298947378,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0027050322523012316,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-02",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				156,
+				126,
+				112
+			],
+			"second": [
+				156,
+				124,
+				113
+			],
+			"firstHex": "#9c7e70",
+			"secondHex": "#9c7c71",
+			"truth": {
+				"targetDistance": 0.0059642883181492915,
+				"okLabDistance": 0.006237611847478769,
+				"chromaDistance": 0.004933071578571379,
+				"apcaRaw": 1.3473034699775024,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004745547899365488,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-03",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				121,
+				128,
+				108
+			],
+			"second": [
+				119,
+				128,
+				104
+			],
+			"firstHex": "#79806c",
+			"secondHex": "#778068",
+			"truth": {
+				"targetDistance": 0.007282960398287939,
+				"okLabDistance": 0.006893080875033334,
+				"chromaDistance": 0.00634264194771909,
+				"apcaRaw": 1.038796265361984,
+				"apcaLc": 0,
+				"deltaApcaY": 0.002188588923138557,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-04",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				225,
+				198,
+				205
+			],
+			"second": [
+				224,
+				202,
+				209
+			],
+			"firstHex": "#e1c6cd",
+			"secondHex": "#e0cad1",
+			"truth": {
+				"targetDistance": 0.008893183785503028,
+				"okLabDistance": 0.009895406478346837,
+				"chromaDistance": 0.0058300511004781745,
+				"apcaRaw": -2.966297532887801,
+				"apcaLc": 0,
+				"deltaApcaY": 0.019515573228483296,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-05",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				132,
+				132,
+				136
+			],
+			"second": [
+				126,
+				131,
+				132
+			],
+			"firstHex": "#848488",
+			"secondHex": "#7e8384",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.011287351054502332,
+				"chromaDistance": 0.00738888336784949,
+				"apcaRaw": 1.8205485730688444,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008393320293888284,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-06",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				129,
+				137,
+				123
+			],
+			"second": [
+				127,
+				133,
+				125
+			],
+			"firstHex": "#81897b",
+			"secondHex": "#7f857d",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.013524226332562768,
+				"chromaDistance": 0.00904697464719779,
+				"apcaRaw": 2.2746773122103967,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01208237551255198,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-07",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				192,
+				185,
+				156
+			],
+			"second": [
+				193,
+				188,
+				168
+			],
+			"firstHex": "#c0b99c",
+			"secondHex": "#c1bca8",
+			"truth": {
+				"targetDistance": 0.01619217633112874,
+				"okLabDistance": 0.01589004052181888,
+				"chromaDistance": 0.0123507677733793,
+				"apcaRaw": -3.38070261866673,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01870135226725933,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-08",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				159,
+				160,
+				156
+			],
+			"second": [
+				158,
+				159,
+				169
+			],
+			"firstHex": "#9fa09c",
+			"secondHex": "#9e9fa9",
+			"truth": {
+				"targetDistance": 0.019772179460683492,
+				"okLabDistance": 0.02017973883283244,
+				"chromaDistance": 0.02014943565862374,
+				"apcaRaw": -1.9036551709024674,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00018179631280634823,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-09",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				179,
+				173,
+				191
+			],
+			"second": [
+				170,
+				174,
+				178
+			],
+			"firstHex": "#b3adbf",
+			"secondHex": "#aaaeb2",
+			"truth": {
+				"targetDistance": 0.024143702034291156,
+				"okLabDistance": 0.024486165551166526,
+				"chromaDistance": 0.02260995346785805,
+				"apcaRaw": 1.7950799065625096,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012281168973638956,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-10",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				178,
+				182,
+				169
+			],
+			"second": [
+				195,
+				186,
+				177
+			],
+			"firstHex": "#b2b6a9",
+			"secondHex": "#c3bab1",
+			"truth": {
+				"targetDistance": 0.02948174474542648,
+				"okLabDistance": 0.029051184125307692,
+				"chromaDistance": 0.015757517676280742,
+				"apcaRaw": -5.695750326631488,
+				"apcaLc": 0,
+				"deltaApcaY": 0.042170920173866755,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-11",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				202,
+				195,
+				217
+			],
+			"second": [
+				220,
+				191,
+				219
+			],
+			"firstHex": "#cac3d9",
+			"secondHex": "#dcbfdb",
+			"truth": {
+				"targetDistance": 0.03600000000000001,
+				"okLabDistance": 0.027315715857887356,
+				"chromaDistance": 0.026071155098663257,
+				"apcaRaw": -2.3395292257722398,
+				"apcaLc": 0,
+				"deltaApcaY": 0.010504023730174228,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-control-0",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				228,
+				219,
+				216
+			],
+			"second": [
+				228,
+				219,
+				216
+			],
+			"firstHex": "#e4dbd8",
+			"secondHex": "#e4dbd8",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -0.9503668370720382,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-neutral-repeat-0",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				132,
+				132,
+				136
+			],
+			"second": [
+				126,
+				131,
+				132
+			],
+			"firstHex": "#848488",
+			"secondHex": "#7e8384",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.011287351054502332,
+				"chromaDistance": 0.00738888336784949,
+				"apcaRaw": 1.8205485730688444,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008393320293888284,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-light-neutral-05"
+		},
+		{
+			"itemId": "p1-light-neutral-repeat-1",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				129,
+				137,
+				123
+			],
+			"second": [
+				127,
+				133,
+				125
+			],
+			"firstHex": "#81897b",
+			"secondHex": "#7f857d",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.013524226332562768,
+				"chromaDistance": 0.00904697464719779,
+				"apcaRaw": 2.2746773122103967,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01208237551255198,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-light-neutral-06"
+		},
+		{
+			"itemId": "p1-light-saturated-00",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				201,
+				174,
+				29
+			],
+			"second": [
+				202,
+				173,
+				20
+			],
+			"firstHex": "#c9ae1d",
+			"secondHex": "#caad14",
+			"truth": {
+				"targetDistance": 0.004,
+				"okLabDistance": 0.003148055051297973,
+				"chromaDistance": 0.0028217104668690988,
+				"apcaRaw": 0.877704396318505,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0027171982675635586,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-01",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				68,
+				195,
+				233
+			],
+			"second": [
+				73,
+				195,
+				230
+			],
+			"firstHex": "#44c3e9",
+			"secondHex": "#49c3e6",
+			"truth": {
+				"targetDistance": 0.004884378493994622,
+				"okLabDistance": 0.004898332164880378,
+				"chromaDistance": 0.004897789428152417,
+				"apcaRaw": 0.5977592825973386,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00012522644339613143,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-02",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				58,
+				133,
+				172
+			],
+			"second": [
+				52,
+				134,
+				171
+			],
+			"firstHex": "#3a85ac",
+			"secondHex": "#3486ab",
+			"truth": {
+				"targetDistance": 0.0059642883181492915,
+				"okLabDistance": 0.00539172296741209,
+				"chromaDistance": 0.005391198065382634,
+				"apcaRaw": -2.1008799842034387,
+				"apcaLc": 0,
+				"deltaApcaY": 0.000927455504432656,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-03",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				72,
+				146,
+				63
+			],
+			"second": [
+				74,
+				145,
+				67
+			],
+			"firstHex": "#48923f",
+			"secondHex": "#4a9143",
+			"truth": {
+				"targetDistance": 0.007282960398287939,
+				"okLabDistance": 0.00640302912279953,
+				"chromaDistance": 0.006291193389346448,
+				"apcaRaw": 0.9954337749768954,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0019726403861849706,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-04",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				51,
+				197,
+				187
+			],
+			"second": [
+				62,
+				195,
+				181
+			],
+			"firstHex": "#33c5bb",
+			"secondHex": "#3ec3b5",
+			"truth": {
+				"targetDistance": 0.008893183785503028,
+				"okLabDistance": 0.008852121379683626,
+				"chromaDistance": 0.007628821246322069,
+				"apcaRaw": 1.4736154916598996,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00922218995483659,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-05",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				132,
+				180,
+				100
+			],
+			"second": [
+				130,
+				183,
+				108
+			],
+			"firstHex": "#84b464",
+			"secondHex": "#82b76c",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.0100743129832732,
+				"chromaDistance": 0.0069871862848258125,
+				"apcaRaw": -3.1179806481562293,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01251770307309763,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-06",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				250,
+				162,
+				148
+			],
+			"second": [
+				254,
+				157,
+				140
+			],
+			"firstHex": "#faa294",
+			"secondHex": "#fe9d8c",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.013297624949958143,
+				"chromaDistance": 0.012129674049589938,
+				"apcaRaw": 1.6613389246711483,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012015423969164218,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-07",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				78,
+				128,
+				229
+			],
+			"second": [
+				89,
+				132,
+				228
+			],
+			"firstHex": "#4e80e5",
+			"secondHex": "#5984e4",
+			"truth": {
+				"targetDistance": 0.01619217633112874,
+				"okLabDistance": 0.01682733880060057,
+				"chromaDistance": 0.010629056678833898,
+				"apcaRaw": -3.8308879411425627,
+				"apcaLc": 0,
+				"deltaApcaY": 0.014515710811153909,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-08",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				80,
+				150,
+				58
+			],
+			"second": [
+				97,
+				146,
+				40
+			],
+			"firstHex": "#50963a",
+			"secondHex": "#619228",
+			"truth": {
+				"targetDistance": 0.019772179460683492,
+				"okLabDistance": 0.019580949845932054,
+				"chromaDistance": 0.019359478156284457,
+				"apcaRaw": 1.5003976556456717,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006048291003137557,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-09",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				39,
+				136,
+				156
+			],
+			"second": [
+				12,
+				130,
+				160
+			],
+			"firstHex": "#27889c",
+			"secondHex": "#0c82a0",
+			"truth": {
+				"targetDistance": 0.024143702034291156,
+				"okLabDistance": 0.024125785586510125,
+				"chromaDistance": 0.016232031355024663,
+				"apcaRaw": 3.09164774816262,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017054326453705915,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-10",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				120,
+				228,
+				217
+			],
+			"second": [
+				86,
+				237,
+				231
+			],
+			"firstHex": "#78e4d9",
+			"secondHex": "#56ede7",
+			"truth": {
+				"targetDistance": 0.02948174474542648,
+				"okLabDistance": 0.029848173616320514,
+				"chromaDistance": 0.026291967734093397,
+				"apcaRaw": -4.669465908267819,
+				"apcaLc": 0,
+				"deltaApcaY": 0.041986362944648636,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-11",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				93,
+				143,
+				75
+			],
+			"second": [
+				96,
+				130,
+				69
+			],
+			"firstHex": "#5d8f4b",
+			"secondHex": "#608245",
+			"truth": {
+				"targetDistance": 0.03600000000000001,
+				"okLabDistance": 0.037034985143080464,
+				"chromaDistance": 0.01848511571333673,
+				"apcaRaw": 5.5526759999032445,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0356846118426028,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-control-0",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				138,
+				216,
+				111
+			],
+			"second": [
+				138,
+				216,
+				111
+			],
+			"firstHex": "#8ad86f",
+			"secondHex": "#8ad86f",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.428402442890054,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p1-light-saturated-repeat-0",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				250,
+				162,
+				148
+			],
+			"second": [
+				254,
+				157,
+				140
+			],
+			"firstHex": "#faa294",
+			"secondHex": "#fe9d8c",
+			"truth": {
+				"targetDistance": 0.013260378040757602,
+				"okLabDistance": 0.013297624949958143,
+				"chromaDistance": 0.012129674049589938,
+				"apcaRaw": 1.6613389246711483,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012015423969164218,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-light-saturated-06"
+		},
+		{
+			"itemId": "p1-light-saturated-repeat-1",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				132,
+				180,
+				100
+			],
+			"second": [
+				130,
+				183,
+				108
+			],
+			"firstHex": "#84b464",
+			"secondHex": "#82b76c",
+			"truth": {
+				"targetDistance": 0.010859418906263168,
+				"okLabDistance": 0.0100743129832732,
+				"chromaDistance": 0.0069871862848258125,
+				"apcaRaw": -3.1179806481562293,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01251770307309763,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "p1-light-saturated-05"
+		},
+		{
+			"itemId": "p2-ladder-00",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				217,
+				151,
+				151
+			],
+			"second": [
+				219,
+				151,
+				142
+			],
+			"firstHex": "#d99797",
+			"secondHex": "#db978e",
+			"truth": {
+				"targetDistance": 0.012,
+				"okLabDistance": 0.012669343253595172,
+				"chromaDistance": 0.012669321359753596,
+				"apcaRaw": -1.8531014450808718,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00040017720117302424,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-01",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				79,
+				56,
+				88
+			],
+			"second": [
+				84,
+				55,
+				80
+			],
+			"firstHex": "#4f3858",
+			"secondHex": "#543750",
+			"truth": {
+				"targetDistance": 0.01673940952754905,
+				"okLabDistance": 0.016147684393047222,
+				"chromaDistance": 0.01614529622217141,
+				"apcaRaw": -1.4131597425065583,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00008263369314264607,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-02",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				67,
+				64,
+				32
+			],
+			"second": [
+				69,
+				63,
+				46
+			],
+			"firstHex": "#434020",
+			"secondHex": "#453f2e",
+			"truth": {
+				"targetDistance": 0.023350652610916664,
+				"okLabDistance": 0.02230259929668978,
+				"chromaDistance": 0.02215546300417842,
+				"apcaRaw": -1.4547518449349353,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00035639383161253924,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-03",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				135,
+				91,
+				128
+			],
+			"second": [
+				118,
+				98,
+				133
+			],
+			"firstHex": "#875b80",
+			"secondHex": "#766285",
+			"truth": {
+				"targetDistance": 0.03257301139913888,
+				"okLabDistance": 0.032311590387619694,
+				"chromaDistance": 0.03220309678104584,
+				"apcaRaw": -1.9370719456014847,
+				"apcaLc": 0,
+				"deltaApcaY": 0.000311663672280596,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-04",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				178,
+				179,
+				165
+			],
+			"second": [
+				152,
+				187,
+				153
+			],
+			"firstHex": "#b2b3a5",
+			"secondHex": "#98bb99",
+			"truth": {
+				"targetDistance": 0.04543774811297577,
+				"okLabDistance": 0.046921465281243635,
+				"chromaDistance": 0.046645316796969774,
+				"apcaRaw": -1.838109183057323,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0013243329520055691,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-05",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				183,
+				147,
+				104
+			],
+			"second": [
+				217,
+				131,
+				93
+			],
+			"firstHex": "#b79368",
+			"secondHex": "#d9835d",
+			"truth": {
+				"targetDistance": 0.06338342280606005,
+				"okLabDistance": 0.06338683432954093,
+				"chromaDistance": 0.06300028320540825,
+				"apcaRaw": -1.9711248946476954,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0004261003879810765,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-06",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				147,
+				95,
+				80
+			],
+			"second": [
+				185,
+				67,
+				29
+			],
+			"firstHex": "#935f50",
+			"secondHex": "#b9431d",
+			"truth": {
+				"targetDistance": 0.08841675596736928,
+				"okLabDistance": 0.08803607300830565,
+				"chromaDistance": 0.08796494473869766,
+				"apcaRaw": 0.775890466247061,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0002687741612030503,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-07",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				75,
+				86,
+				60
+			],
+			"second": [
+				0,
+				86,
+				125
+			],
+			"firstHex": "#4b563c",
+			"secondHex": "#00567d",
+			"truth": {
+				"targetDistance": 0.1233370239362634,
+				"okLabDistance": 0.1174298903861867,
+				"chromaDistance": 0.11727548703253317,
+				"apcaRaw": 0.7671516657496777,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0004763231911103921,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-08",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				154,
+				182,
+				164
+			],
+			"second": [
+				221,
+				166,
+				0
+			],
+			"firstHex": "#9ab6a4",
+			"secondHex": "#dda600",
+			"truth": {
+				"targetDistance": 0.17204907946485273,
+				"okLabDistance": 0.14812682160091392,
+				"chromaDistance": 0.14800620551820753,
+				"apcaRaw": 0.678472457007615,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0006434846462983757,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-ladder-09",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				160,
+				161,
+				184
+			],
+			"second": [
+				67,
+				185,
+				24
+			],
+			"firstHex": "#a0a1b8",
+			"secondHex": "#43b918",
+			"truth": {
+				"targetDistance": 0.23999999999999996,
+				"okLabDistance": 0.2418064739794963,
+				"chromaDistance": 0.24061345631729156,
+				"apcaRaw": -1.8886959543279211,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00026551802893787224,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-control-obvious",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				64,
+				66,
+				70
+			],
+			"second": [
+				242,
+				240,
+				236
+			],
+			"firstHex": "#404246",
+			"secondHex": "#f2f0ec",
+			"truth": {
+				"targetDistance": null,
+				"okLabDistance": 0.5770514200964598,
+				"chromaDistance": 0.01304654294592557,
+				"apcaRaw": -90.45435606181704,
+				"apcaLc": -87.75435606181703,
+				"deltaApcaY": 0.8269733367743941,
+				"identical": false
+			},
+			"role": "control-obvious",
+			"repeatOf": null
+		},
+		{
+			"itemId": "p2-control-identical",
+			"part": "accent-visible",
+			"stratum": "accent-equal-luminance",
+			"first": [
+				64,
+				66,
+				70
+			],
+			"second": [
+				64,
+				66,
+				70
+			],
+			"firstHex": "#404246",
+			"secondHex": "#404246",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.4128019477692906,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		}
+	],
+	"serveOrder": [
+		"p1-light-saturated-04",
+		"p1-light-neutral-03",
+		"p1-light-saturated-10",
+		"p1-light-saturated-00",
+		"p1-dark-neutral-06",
+		"p1-dark-saturated-06",
+		"p1-light-neutral-08",
+		"p1-dark-saturated-00",
+		"p1-dark-neutral-control-0",
+		"p1-light-neutral-control-0",
+		"p1-dark-neutral-00",
+		"p1-light-neutral-02",
+		"p1-light-saturated-05",
+		"p1-dark-saturated-control-0",
+		"p1-dark-saturated-08",
+		"p1-light-saturated-09",
+		"p1-light-neutral-04",
+		"p1-dark-neutral-02",
+		"p1-light-neutral-09",
+		"p1-dark-neutral-repeat-0",
+		"p1-light-neutral-00",
+		"p1-dark-neutral-11",
+		"p1-dark-saturated-repeat-1",
+		"p1-dark-saturated-07",
+		"p1-light-saturated-control-0",
+		"p1-light-saturated-02",
+		"p1-light-neutral-11",
+		"p1-dark-saturated-01",
+		"p1-dark-saturated-09",
+		"p1-light-neutral-06",
+		"p1-dark-neutral-08",
+		"p1-dark-neutral-repeat-1",
+		"p1-dark-saturated-11",
+		"p1-dark-neutral-01",
+		"p1-dark-neutral-10",
+		"p1-light-saturated-08",
+		"p1-light-neutral-01",
+		"p1-light-neutral-05",
+		"p1-dark-saturated-04",
+		"p1-dark-saturated-03",
+		"p1-dark-saturated-02",
+		"p1-light-saturated-07",
+		"p1-light-neutral-repeat-1",
+		"p1-light-neutral-repeat-0",
+		"p1-light-saturated-11",
+		"p1-light-saturated-repeat-1",
+		"p1-light-neutral-10",
+		"p1-dark-saturated-10",
+		"p1-dark-saturated-05",
+		"p1-light-saturated-01",
+		"p1-light-saturated-repeat-0",
+		"p1-dark-neutral-07",
+		"p1-light-saturated-03",
+		"p1-dark-neutral-03",
+		"p1-dark-saturated-repeat-0",
+		"p1-light-saturated-06",
+		"p1-light-neutral-07",
+		"p1-dark-neutral-04",
+		"p1-dark-neutral-09",
+		"p1-dark-neutral-05",
+		"p2-ladder-07",
+		"p2-ladder-08",
+		"p2-ladder-04",
+		"p2-ladder-03",
+		"p2-ladder-06",
+		"p2-ladder-05",
+		"p2-ladder-02",
+		"p2-ladder-01",
+		"p2-ladder-00",
+		"p2-control-identical",
+		"p2-control-obvious",
+		"p2-ladder-09"
+	]
+}

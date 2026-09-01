@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Absolute palette review</title>
+		<link rel="stylesheet" href="/corpus.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div>
+				<p class="eyebrow">Stage 2 / current palette</p>
+				<h1>Absolute palette review</h1>
+			</div>
+			<nav aria-label="Research pages">
+				<a href="/curate">Corpus eligibility</a>
+				<a href="/">Comparison review</a>
+			</nav>
+		</header>
+		<main>
+			<section class="intro">
+				<p id="summary">Checking corpus eligibility</p>
+				<p>Evaluate the current palette on its own. No legacy or rejected extraction is shown.</p>
+			</section>
+			<div id="status" class="status-region" role="status" aria-live="polite" aria-atomic="true">Checking absolute review status...</div>
+			<section id="locked" class="locked" hidden>
+				<p class="step-label">Review sealed</p>
+				<h2>Finish source eligibility first.</h2>
+				<p id="locked-detail"></p>
+				<a href="/curate">Continue source screening</a>
+			</section>
+			<section id="absolute-stage" class="absolute-stage" aria-labelledby="absolute-decision-title" hidden>
+				<div class="absolute-pair">
+					<figure id="source-panel" class="absolute-source" aria-busy="true">
+						<img id="source-image" alt="" decoding="async">
+						<figcaption id="source-file"></figcaption>
+					</figure>
+					<section class="palette-panel" aria-label="Current palette output">
+						<div id="theme-preview" class="theme-preview">
+							<div>
+								<p class="preview-kicker">Current extraction</p>
+								<h2>Foreground on background</h2>
+								<p id="accent-copy" class="accent-copy">Accent on background</p>
+							</div>
+							<div id="surface-preview" class="surface-preview">
+								<p class="preview-kicker">Surface role</p>
+								<strong>Foreground on surface</strong>
+							</div>
+						</div>
+						<div id="swatches" class="swatches"></div>
+						<p id="generated-note" class="generated-note" hidden><span aria-hidden="true">*</span> Generated fallback color, not sampled directly from the artwork.</p>
+						<div id="metrics" class="metrics"></div>
+					</section>
+				</div>
+				<div class="absolute-decision">
+					<div>
+						<p class="step-label">Absolute decision</p>
+						<h2 id="absolute-decision-title">Would you ship this palette?</h2>
+					</div>
+					<button id="ship" class="primary-action include" type="button">Yes, shippable</button>
+					<form id="reject-form">
+						<fieldset>
+							<legend>No, identify what needs improvement</legend>
+							<div id="reject-reasons" class="reason-grid compact"></div>
+						</fieldset>
+						<label class="note-field"><span>Note (required when Other is selected)</span><textarea id="note" maxlength="500" rows="2" aria-describedby="note-help"></textarea><small id="note-help">Explain any issue not covered by the listed reasons.</small></label>
+						<button id="reject" class="primary-action veto" type="submit">Mark unshippable</button>
+					</form>
+				</div>
+			</section>
+			<section id="absolute-complete" class="completion" aria-labelledby="absolute-complete-title" hidden>
+				<p class="step-label">Review complete</p>
+				<h2 id="absolute-complete-title">Every palette has an absolute decision.</h2>
+				<p id="absolute-complete-detail"></p>
+			</section>
+			<section id="absolute-blocked" class="locked blocker" aria-labelledby="absolute-blocked-title" hidden>
+				<p class="step-label">Review blocked</p>
+				<h2 id="absolute-blocked-title">No palette is available.</h2>
+				<p id="absolute-blocked-detail"></p>
+			</section>
+			<section id="history-section" class="history-section" hidden>
+				<div class="section-heading"><h2>All reviews</h2><span>Undo makes a palette available for review again.</span></div>
+				<div id="history" class="history" tabindex="0" aria-label="All absolute palette reviews"></div>
+			</section>
+		</main>
+		<script type="module" src="/absolute.js"></script>
+	</body>
+</html>

@@ -1,0 +1,11 @@
+# The dev loop's content-addressed cache. Derived data, never committed: every entry recomputes from
+# the corpus and the candidate's own source, which is exactly the property PHASE_0_LOOSE_ENDS.md C7
+# wishes a committed 1.08 MB measurement cache had.
+#
+# The rule lives HERE, in a self-ignoring directory, rather than in `research/v3/.gitignore` where the
+# embeddings and robustness caches declare theirs. That file had an uncommitted change belonging to
+# another workstream when this landed (2026-08-04), and CONVENTIONS.md's explicit-pathspec rule exists
+# because two agents in one night swept someone else's parked work into their own commit. Folding
+# these two lines in there is a tidy-up for whoever holds that file next; it is not worth a collision.
+*
+!.gitignore

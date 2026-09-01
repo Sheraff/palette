@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.5.0",
+  "implementationHash": "e16910fef65ade0e85308378c37217f57cd1f2821055a9927fa5813253e7fcb4",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "scientificSha256": "49cc6e130bb9609ea19f9adb83c1b68e081ebb2a01eec2df8bc0622817445465",
+  "inputHashes": {
+    "currentAggregateSha256": "11396af3e128a4404c4b4e26e687fc2216e51529411027c6187bddb8ee72cf6b",
+    "predecessorAggregateSha256": "00bdd19de281c74f5293fd7614030594016e68927c80d6601f4890842cd31d4f",
+    "futureSampleSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c",
+    "protocolSha256": "7f5d9f45e058b81456db423ea787d45d707bff5311eef27cd5c4240b59521325"
+  },
+  "futureSample": {
+    "manifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+    "sealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+    "opened": false
+  },
+  "mechanical": {
+    "completeCandidateCount": 30243,
+    "maximumCompleteCandidateCount": 1500,
+    "foregroundPeakUnobservableRejectedOptionCount": 2024,
+    "distinctAccentPeakUnobservableRejectedOptionCount": 17522,
+    "mixedZeroForegroundTreatmentCount": 6,
+    "mixedZeroAccentTreatmentCount": 18,
+    "changedWinnerCaseIds": [
+      "development-24"
+    ],
+    "changedGradientStateCaseIds": [],
+    "changedFieldTreatmentCaseIds": [],
+    "exactRetainedTreatmentCount": 186,
+    "addedCompleteAccentFamilies": {
+      "development-06": [
+        "family-5486"
+      ],
+      "development-15": [
+        "family-3285"
+      ],
+      "development-22": [
+        "family-3725",
+        "family-4607",
+        "family-5026"
+      ]
+    },
+    "removedCompleteAccentFamilies": {}
+  },
+  "mechanismGate": {
+    "pass": true,
+    "scientificOutputChanged": true,
+    "candidateBoundSatisfied": true,
+    "completePathSamplingSatisfied": true,
+    "peakUnobservableAccentFilteringExercised": true,
+    "mixedZeroAccentAdmissionExercised": true
+  },
+  "limitations": [
+    "This bounded development comparison uses no opened or future directional-review output.",
+    "Peak observability is a structural dead-zone rule, not a product accessibility guarantee.",
+    "Gradient and signature top-one ranking remain separate unresolved development questions."
+  ],
+  "phaseDisposition": "0.5.0-contrast-mechanism-passed-ranking-development-required",
+  "analysisId": "dd9985632b8458edcbba5052ea3f31aff41404ecffeffb721fab1c39417f0b13"
+}

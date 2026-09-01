@@ -1,0 +1,128 @@
+=== supervisor: starting worker (restart 0/20) at 2026-08-03T10:44:30Z
+{
+	"arm": "gemma3-27b",
+	"model": "mlx-community/gemma-3-27b-it-8bit",
+	"revision": "524cdc4f56a58ef94949ba65dc63a29c48362b1a",
+	"item_set": "gold30",
+	"items": 30,
+	"variants": [
+		"group-a.v1/A",
+		"group-a.v1/B"
+	],
+	"already_done": 0,
+	"queued": 60,
+	"poisoned_over_attempt_cap": 0,
+	"out": "/Users/Flo/GitHub/palette/research/v3/data/oracle-bakeoff/gemma3-27b.jsonl",
+	"long_edge_cap": 640,
+	"constrained_decoding": true,
+	"constrained_decoding_reason": "grammar verified for this arm"
+}
+loading mlx-community/gemma-3-27b-it-8bit @ 524cdc4f56a5 ...
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Fetching 17 files: 100%|██████████| 17/17 [00:00<00:00, 4478.28it/s]
+model loaded in 6.2s
+canary baseline set: {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[1/60] vvbrown.jpg A ok 11.4s (23.1s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[2/60] vvbrown.jpg B ok 10.9s (17.0s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[3/60] ab67616d00001e02000564718f605c1f326b2ca2 A ok 12.0s (15.3s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[4/60] ab67616d00001e02000564718f605c1f326b2ca2 B ok 13.0s (14.7s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[5/60] ab67616d0000b27300092c140fe03d08e0dc906a A ok 12.2s (14.2s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[6/60] ab67616d0000b27300092c140fe03d08e0dc906a B ok 12.1s (13.9s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[7/60] meteora.jpg A ok 12.9s (13.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[8/60] meteora.jpg B ok 11.6s (13.5s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[9/60] ab67616d00001e020009657a5122a7b3d40458b0 A ok 12.1s (13.3s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[10/60] ab67616d00001e020009657a5122a7b3d40458b0 B ok 12.1s (13.2s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[11/60] ab67616d0000b2730002dfdcde2cb0a75822168c.jpg A ok 12.4s (13.1s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[12/60] ab67616d0000b2730002dfdcde2cb0a75822168c.jpg B ok 11.9s (13.0s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[13/60] ab67616d00001e02000d457f4b8829a59481e78b A ok 12.3s (13.0s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[14/60] ab67616d00001e02000d457f4b8829a59481e78b B ok 12.2s (12.9s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[15/60] ab67616d00001e020003e50500c5d762da89643a.jpg A ok 13.2s (12.9s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[16/60] ab67616d00001e020003e50500c5d762da89643a.jpg B ok 13.1s (13.0s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[17/60] ab67616d0000b2730010def2c33a308e8bd193f8 A ok 14.8s (13.1s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[18/60] ab67616d0000b2730010def2c33a308e8bd193f8 B ok 16.2s (13.2s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[19/60] ab67616d0000b2730012eb9ade9c1bf4a5411c5d A ok 18.7s (13.5s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'distinct_areas', 'enclosure': 'thin_border', 'confidence': 'high', 'ambiguity_note': ''}
+[20/60] ab67616d0000b2730012eb9ade9c1bf4a5411c5d B ok 25.3s (14.1s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thin_border', 'confidence': 'high', 'ambiguity_note': ''}
+GPU FAULT at item 20 (ab67616d0000b273000390c07f75da30b4e8aba8.jpg A): RuntimeError on attempt 1: [METAL] Command buffer execution failed: Caused GPU Timeout Error (00000002:kIOGPUCommandBufferCallbackErrorTimeout).
+halting this process; the supervisor restarts into a fresh Metal context
+{
+	"arm": "gemma3-27b",
+	"item_set": "gold30",
+	"processed_this_process": 20,
+	"elapsed_seconds": 379.9,
+	"seconds_per_inference": 18.99,
+	"run_id": "8a4f2f8b-a1fc-44fa-aa55-e7ea23a8b375",
+	"exit_code": 5
+}
+=== supervisor: GPU FAULT (exit 5). The Metal context died; restarting into a fresh process.
+=== supervisor: worker exited 5; restarting in 10s
+=== supervisor: starting worker (restart 1/20) at 2026-08-03T10:51:11Z
+{
+	"arm": "gemma3-27b",
+	"model": "mlx-community/gemma-3-27b-it-8bit",
+	"revision": "524cdc4f56a58ef94949ba65dc63a29c48362b1a",
+	"item_set": "gold30",
+	"items": 30,
+	"variants": [
+		"group-a.v1/A",
+		"group-a.v1/B"
+	],
+	"already_done": 21,
+	"queued": 40,
+	"poisoned_over_attempt_cap": 0,
+	"out": "/Users/Flo/GitHub/palette/research/v3/data/oracle-bakeoff/gemma3-27b.jsonl",
+	"long_edge_cap": 640,
+	"constrained_decoding": true,
+	"constrained_decoding_reason": "grammar verified for this arm"
+}
+loading mlx-community/gemma-3-27b-it-8bit @ 524cdc4f56a5 ...
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Fetching 17 files: 100%|██████████| 17/17 [00:00<00:00, 4217.38it/s]
+model loaded in 9.7s
+[1/40] ab67616d0000b273000390c07f75da30b4e8aba8.jpg A ok 35.4s (89.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[2/40] ab67616d0000b273000390c07f75da30b4e8aba8.jpg B ok 31.9s (60.8s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[3/40] ab67616d0000b2730007cc8b341c11227aa7b461 A ok 26.8s (49.4s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[4/40] ab67616d0000b2730007cc8b341c11227aa7b461 B ok 23.5s (43.0s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[5/40] ab67616d0000b273000442caec7ec8cb724bf265 A ok 22.2s (38.8s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[6/40] ab67616d0000b273000442caec7ec8cb724bf265 B ok 19.5s (35.6s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[7/40] placebo.jpg A ok 16.4s (32.9s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[8/40] placebo.jpg B ok 16.3s (30.8s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[9/40] ab67616d0000b2730005230fae1822525e5a5ff6 A ok 16.2s (29.2s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[10/40] ab67616d0000b2730005230fae1822525e5a5ff6 B ok 15.6s (27.8s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[11/40] ab67616d00001e0200079d5a7d92f2bff88570db A ok 15.7s (26.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[12/40] ab67616d00001e0200079d5a7d92f2bff88570db B ok 15.4s (25.8s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[13/40] ab67616d00001e020005a54a9ea60f48619788f1 A ok 16.3s (25.1s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[14/40] ab67616d00001e020005a54a9ea60f48619788f1 B ok 16.1s (24.4s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[15/40] ab67616d00001e02000e007955ee2f8b29f5b2b4 A ok 16.1s (23.9s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[16/40] ab67616d00001e02000e007955ee2f8b29f5b2b4 B ok 15.7s (23.4s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[17/40] ab67616d0000b273000a2927c0f27657e4a2aeaa A ok 16.1s (22.9s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'irregular', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[18/40] ab67616d0000b273000a2927c0f27657e4a2aeaa B ok 16.9s (22.6s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[19/40] ab67616d0000b27300075841f68d8cd71db368d8 A ok 20.1s (22.5s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[20/40] ab67616d0000b27300075841f68d8cd71db368d8 B ok 23.6s (22.5s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[21/40] ab67616d0000b2730005a91812c85db291ea5d85 A ok 23.9s (23.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[22/40] ab67616d0000b2730005a91812c85db291ea5d85 B ok 27.3s (23.8s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[23/40] ab67616d0000b2730001c404b8a04a8789db8dab.jpg A ok 24.6s (23.9s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[24/40] ab67616d0000b2730001c404b8a04a8789db8dab.jpg B ok 23.6s (23.9s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[25/40] muse.jpg A ok 21.8s (23.8s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[26/40] muse.jpg B ok 21.7s (23.7s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[27/40] ab67616d0000b27300018a0a56bae40350d9fa8e.jpg A ok 20.2s (23.6s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[28/40] ab67616d0000b27300018a0a56bae40350d9fa8e.jpg B ok 19.4s (23.4s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[29/40] ab67616d0000b273000a24cc32b3d8b6e31bc161 A ok 20.5s (23.3s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[30/40] ab67616d0000b273000a24cc32b3d8b6e31bc161 B ok 18.3s (23.1s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[31/40] ab67616d0000b2730006a059abb2a6b7dd4ad461 A ok 18.2s (23.0s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[32/40] ab67616d0000b2730006a059abb2a6b7dd4ad461 B ok 17.7s (22.8s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[33/40] ab67616d0000b2730000cb591a0d52d8b88692d9.jpg A ok 17.7s (22.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[34/40] ab67616d0000b2730000cb591a0d52d8b88692d9.jpg B ok 18.4s (22.5s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[35/40] ab67616d0000b2730004515066668684295c41a7 A ok 17.8s (22.4s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[36/40] ab67616d0000b2730004515066668684295c41a7 B ok 17.1s (22.3s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[37/40] ab67616d0000b2730008c1c08433aa880aad7f30 A ok 17.6s (22.1s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[38/40] ab67616d0000b2730008c1c08433aa880aad7f30 B ok 17.8s (22.0s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[39/40] ab67616d0000b27300116380305ae5fd3607c43b A ok 17.8s (21.9s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[40/40] ab67616d0000b27300116380305ae5fd3607c43b B ok 17.6s (21.8s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+{
+	"arm": "gemma3-27b",
+	"item_set": "gold30",
+	"processed_this_process": 40,
+	"elapsed_seconds": 872.2,
+	"seconds_per_inference": 21.81,
+	"run_id": "708ff68a-e261-4fed-8f33-2e25b61d65e6",
+	"exit_code": 0
+}
+=== supervisor: worker finished cleanly

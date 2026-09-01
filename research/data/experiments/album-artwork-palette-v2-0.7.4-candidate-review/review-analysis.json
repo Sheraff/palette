@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "album-artwork-palette-v2-0.7.4-candidate-review-analysis-1.0.0",
+  "analysisType": "read-only-predeclared-descriptive",
+  "protocolId": "album-artwork-ui-palette-protocol-v2-0.7.4-candidate-review-1",
+  "reviewVersion": "album-artwork-palette-v2-0.7.4-candidate-review-1.0.0",
+  "manifestContentId": "7fcabe477a5d4e9d05a5fee128ae7faea19b3cbc453f3b2a4d27df794eeec16e",
+  "submissionId": "0cd93b0ee50621d0cd7ab3780162215105db56609e9bbb4f3c00bd4060a2e753",
+  "bindings": {
+    "protocol": {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_4_CANDIDATE_REVIEW.md",
+      "rawSha256": "9ee26ea72dc1260a66ce5f28eaf0c667554f888890fa125831e8060649e7f60f"
+    },
+    "privateManifest": {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-candidate-review/review-manifest.private.json",
+      "contentId": "7fcabe477a5d4e9d05a5fee128ae7faea19b3cbc453f3b2a4d27df794eeec16e",
+      "rawSha256": "fc7fcbb3a8e85bc5228728f66be15ec6d5cc39f211fa53d91b46cf35634fe3e4"
+    },
+    "feedback": {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-candidate-review/review-feedback.json",
+      "submissionId": "0cd93b0ee50621d0cd7ab3780162215105db56609e9bbb4f3c00bd4060a2e753",
+      "rawSha256": "6b3837a075a6a54cc8b18ddd5114b0d63d821391788697bd0c9faa9e74c18894",
+      "submittedAt": "2026-07-27T23:37:00.615Z"
+    },
+    "analysisScript": {
+      "path": "research/analyze-album-artwork-palette-v2-0.7.4-candidate-review.ts",
+      "rawSha256": "4c5e91ced91b62eebb303d3b1dbf4cc36bd2dd38dd87fe2139fb9ef047c8c4f8"
+    }
+  },
+  "denominator": {
+    "expectedItemCount": 2,
+    "receivedItemCount": 2,
+    "complete": true,
+    "caseIds": [
+      "development-18",
+      "development-21"
+    ]
+  },
+  "counts": {
+    "candidateAbsoluteQuality": {
+      "strong": 2,
+      "acceptable": 0,
+      "weak-fallback": 0,
+      "unacceptable": 0,
+      "uncertain": 0
+    },
+    "controlAbsoluteQuality": {
+      "strong": 2,
+      "acceptable": 0,
+      "weak-fallback": 0,
+      "unacceptable": 0,
+      "uncertain": 0
+    },
+    "relativeOutcome": {
+      "candidate-stronger": 0,
+      "baseline-stronger": 0,
+      "similarly-valid": 2,
+      "neither-acceptable": 0,
+      "uncertain": 0
+    },
+    "candidateIssues": {
+      "missing gradient": 0,
+      "extraneous gradient": 0,
+      "incomplete artwork identity": 0
+    },
+    "controlIssues": {
+      "missing gradient": 0,
+      "extraneous gradient": 0,
+      "incomplete artwork identity": 0
+    },
+    "comments": {
+      "empty": 2,
+      "nonEmpty": 0
+    }
+  },
+  "items": [
+    {
+      "order": 0,
+      "caseId": "development-18",
+      "sourceSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "evidence": {
+        "assignmentDigest": "2f720715c64fc7362ae0c5a1046c577102f17729bde849635f59874d34ce2800",
+        "candidateSide": "B",
+        "controlSide": "A",
+        "candidateVersion": "album-artwork-first-principles-0.7.4",
+        "candidateTreatmentKey": "#04002a:#161439:#f5e50c:#fded9f:flat",
+        "candidateTreatmentRecordSha256": "8a7bfd620434ce165869d7d5496ba33f0a3c7132a2ac3b24d8b631a7eb442c71",
+        "controlVersion": "album-artwork-first-principles-0.7.2",
+        "controlTreatmentKey": "#31305c:#040325:#f5e50c:#fded9f:flat",
+        "controlTreatmentRecordSha256": "050771d81b0ab662512033a3fad635a46efeaa9155b5dac0cf4e113354ea92f3"
+      },
+      "blindedResponse": {
+        "qualityA": "strong",
+        "qualityB": "strong",
+        "relative": "similarly-valid",
+        "issuesA": [],
+        "issuesB": [],
+        "comment": ""
+      },
+      "unblindedResult": {
+        "candidateQuality": "strong",
+        "controlQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateIssues": [],
+        "controlIssues": [],
+        "comment": "",
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "technicalInterpretation": null
+    },
+    {
+      "order": 1,
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "evidence": {
+        "assignmentDigest": "02426f1e3b0ae2737fc8c7ecdd25542ca8d23bfefdfd8e6322274a396734b1ba",
+        "candidateSide": "A",
+        "controlSide": "B",
+        "candidateVersion": "album-artwork-first-principles-0.7.4",
+        "candidateTreatmentKey": "#eed0ec:#ed81b2:#510cc9:#b62bba:flat",
+        "candidateTreatmentRecordSha256": "2b5ead17630f0249a08e8f88d585b2a0951d10ea4662b785f1389550ad2179b6",
+        "controlVersion": "album-artwork-first-principles-0.7.2",
+        "controlTreatmentKey": "#df34a7:#8c1cc6:#efd2ee:#e99235:flat",
+        "controlTreatmentRecordSha256": "9ba09cd032a9f964765b1f01b42ac75badc7d27c970fb15a893a63da3d6834a6"
+      },
+      "blindedResponse": {
+        "qualityA": "strong",
+        "qualityB": "strong",
+        "relative": "similarly-valid",
+        "issuesA": [],
+        "issuesB": [],
+        "comment": ""
+      },
+      "unblindedResult": {
+        "candidateQuality": "strong",
+        "controlQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateIssues": [],
+        "controlIssues": [],
+        "comment": "",
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "technicalInterpretation": null
+    }
+  ],
+  "technicalInterpretations": {
+    "status": "not-performed-no-non-empty-comments",
+    "entries": []
+  },
+  "limitations": {
+    "repeatedDevelopmentEvidence": true,
+    "statement": "These are two repeatedly exposed development sources selected because their closed candidate winners changed. The result is not independent generalization, population, protected-sample, fresh directional, or Phase 4 evidence.",
+    "sourceCount": 2,
+    "populationClaim": false,
+    "phase4Claim": false
+  },
+  "descriptiveConclusion": "Both closed 0.7.4 winners and both exact 0.7.2 controls were rated strong; both pairwise judgments were similarly valid; no issue tags or comments were submitted.",
+  "authorization": {
+    "descriptiveAnalysisComplete": true,
+    "decisionAuthority": false,
+    "candidateSupport": false,
+    "candidateFreeze": false,
+    "promotion": false,
+    "phase4": false,
+    "inferenceChange": false,
+    "rankingChange": false,
+    "protectedArtworkAccess": false,
+    "freshOrDirectionalSample": false,
+    "persistence": false,
+    "fullRoster": false,
+    "fullRunGo": false
+  },
+  "nextAuthorizationBoundary": "Any candidate-support decision, candidate freeze, Phase 4 fresh directional review, promotion, persistence, or inference/ranking change requires separate explicit user authorization.",
+  "analysisId": "01aa2c81c2856b10d45a8b66dee2c9f3886d1e41700d8e1ee157e0d2fff0cd7b"
+}

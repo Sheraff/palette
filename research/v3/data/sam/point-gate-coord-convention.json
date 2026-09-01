@@ -1,0 +1,430 @@
+{
+  "generated": "2026-08-03T22:47:55.742Z",
+  "git_head": "e465c293014386f07db70510eee7133fc50e99cf",
+  "model_repo": "mlx-community/sam3.1-bf16",
+  "model_revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
+  "grid": [
+    72,
+    72
+  ],
+  "input_size": 1008,
+  "stride": 14.0,
+  "synthetic_image_size": [
+    640,
+    640
+  ],
+  "device": "cpu",
+  "numpy_vs_mlx_max_abs_diff": 5.960464477539063e-08,
+  "results": {
+    "feature": {
+      "cells_within_1.5": 8,
+      "of": 8,
+      "median_cell_error": 1.0,
+      "max_cell_error": 1.0,
+      "rows": [
+        {
+          "target": [
+            36,
+            36
+          ],
+          "argmax": [
+            36,
+            37
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            36.0,
+            36.0
+          ]
+        },
+        {
+          "target": [
+            0,
+            0
+          ],
+          "argmax": [
+            1,
+            0
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "target": [
+            71,
+            71
+          ],
+          "argmax": [
+            71,
+            71
+          ],
+          "cell_error": 0.0,
+          "cos": 0.991442859172821,
+          "encoder_coords": [
+            71.0,
+            71.0
+          ]
+        },
+        {
+          "target": [
+            10,
+            60
+          ],
+          "argmax": [
+            10,
+            61
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            60.0,
+            10.0
+          ]
+        },
+        {
+          "target": [
+            60,
+            10
+          ],
+          "argmax": [
+            61,
+            10
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            10.0,
+            60.0
+          ]
+        },
+        {
+          "target": [
+            36,
+            5
+          ],
+          "argmax": [
+            36,
+            6
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            5.0,
+            36.0
+          ]
+        },
+        {
+          "target": [
+            5,
+            36
+          ],
+          "argmax": [
+            6,
+            36
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            36.0,
+            5.0
+          ]
+        },
+        {
+          "target": [
+            18,
+            54
+          ],
+          "argmax": [
+            19,
+            54
+          ],
+          "cell_error": 1.0,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            54.0,
+            18.0
+          ]
+        }
+      ]
+    },
+    "input": {
+      "cells_within_1.5": 0,
+      "of": 8,
+      "median_cell_error": 30.09422826735471,
+      "max_cell_error": 63.56099432828282,
+      "rows": [
+        {
+          "target": [
+            36,
+            36
+          ],
+          "argmax": [
+            59,
+            46
+          ],
+          "cell_error": 25.079872407968907,
+          "cos": 0.18071547150611877,
+          "encoder_coords": [
+            511.0,
+            511.0
+          ]
+        },
+        {
+          "target": [
+            0,
+            0
+          ],
+          "argmax": [
+            8,
+            7
+          ],
+          "cell_error": 10.63014581273465,
+          "cos": 0.9930574893951416,
+          "encoder_coords": [
+            7.0,
+            7.0
+          ]
+        },
+        {
+          "target": [
+            71,
+            71
+          ],
+          "argmax": [
+            9,
+            57
+          ],
+          "cell_error": 63.56099432828282,
+          "cos": 0.17346099019050598,
+          "encoder_coords": [
+            1001.0,
+            1001.0
+          ]
+        },
+        {
+          "target": [
+            10,
+            60
+          ],
+          "argmax": [
+            6,
+            33
+          ],
+          "cell_error": 27.294688127912362,
+          "cos": 0.17394733428955078,
+          "encoder_coords": [
+            847.0,
+            147.0
+          ]
+        },
+        {
+          "target": [
+            60,
+            10
+          ],
+          "argmax": [
+            45,
+            67
+          ],
+          "cell_error": 58.9406481131655,
+          "cos": 0.17246297001838684,
+          "encoder_coords": [
+            147.0,
+            847.0
+          ]
+        },
+        {
+          "target": [
+            36,
+            5
+          ],
+          "argmax": [
+            52,
+            24
+          ],
+          "cell_error": 24.839484696748443,
+          "cos": 0.16666290163993835,
+          "encoder_coords": [
+            77.0,
+            511.0
+          ]
+        },
+        {
+          "target": [
+            5,
+            36
+          ],
+          "argmax": [
+            36,
+            47
+          ],
+          "cell_error": 32.89376840679705,
+          "cos": 0.1639668047428131,
+          "encoder_coords": [
+            511.0,
+            77.0
+          ]
+        },
+        {
+          "target": [
+            18,
+            54
+          ],
+          "argmax": [
+            68,
+            48
+          ],
+          "cell_error": 50.35871324805669,
+          "cos": 0.16751199960708618,
+          "encoder_coords": [
+            763.0,
+            259.0
+          ]
+        }
+      ]
+    },
+    "original": {
+      "cells_within_1.5": 0,
+      "of": 8,
+      "median_cell_error": 39.14969230689799,
+      "max_cell_error": 73.55270219373317,
+      "rows": [
+        {
+          "target": [
+            36,
+            36
+          ],
+          "argmax": [
+            62,
+            6
+          ],
+          "cell_error": 39.698866482558415,
+          "cos": 0.20793800055980682,
+          "encoder_coords": [
+            324.444,
+            324.444
+          ]
+        },
+        {
+          "target": [
+            0,
+            0
+          ],
+          "argmax": [
+            5,
+            5
+          ],
+          "cell_error": 7.0710678118654755,
+          "cos": 0.9998937845230103,
+          "encoder_coords": [
+            4.444,
+            4.444
+          ]
+        },
+        {
+          "target": [
+            71,
+            71
+          ],
+          "argmax": [
+            51,
+            41
+          ],
+          "cell_error": 36.05551275463989,
+          "cos": 0.14737875759601593,
+          "encoder_coords": [
+            635.556,
+            635.556
+          ]
+        },
+        {
+          "target": [
+            10,
+            60
+          ],
+          "argmax": [
+            61,
+            7
+          ],
+          "cell_error": 73.55270219373317,
+          "cos": 0.15190434455871582,
+          "encoder_coords": [
+            537.778,
+            93.333
+          ]
+        },
+        {
+          "target": [
+            60,
+            10
+          ],
+          "argmax": [
+            29,
+            49
+          ],
+          "cell_error": 49.8196748283246,
+          "cos": 0.14115583896636963,
+          "encoder_coords": [
+            93.333,
+            537.778
+          ]
+        },
+        {
+          "target": [
+            36,
+            5
+          ],
+          "argmax": [
+            71,
+            47
+          ],
+          "cell_error": 54.67174773134658,
+          "cos": 0.21762973070144653,
+          "encoder_coords": [
+            48.889,
+            324.444
+          ]
+        },
+        {
+          "target": [
+            5,
+            36
+          ],
+          "argmax": [
+            42,
+            47
+          ],
+          "cell_error": 38.600518131237564,
+          "cos": 0.20730186998844147,
+          "encoder_coords": [
+            324.444,
+            48.889
+          ]
+        },
+        {
+          "target": [
+            18,
+            54
+          ],
+          "argmax": [
+            48,
+            36
+          ],
+          "cell_error": 34.9857113690718,
+          "cos": 0.19319772720336914,
+          "encoder_coords": [
+            484.444,
+            164.444
+          ]
+        }
+      ]
+    }
+  },
+  "verdict": "feature",
+  "dense_pe_half_cell_note": "PositionalEmbedding.__call__ builds the dense grid with arange(H)/H \u2014 cell corners \u2014 while upstream SAM uses (arange(H)+0.5)/H \u2014 cell centres. So the dense frame is half a feature cell (7 px of 1008, 0.7%) up-left of where the point frame puts a cell centre. It is a constant, sub-cell offset shared by every cell, it does not affect which convention is correct, and it is far below point-prompt precision. Recorded so the next reader does not mistake the systematic +0/-1 cell bias below for a bug in our conversion."
+}

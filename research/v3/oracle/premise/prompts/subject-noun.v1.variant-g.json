@@ -1,0 +1,52 @@
+{
+	"schema_version": "subject-noun.v1",
+	"prompt_variant": "G",
+	"provenance": "[REVIEWED] The species half of PROBE5_NOTES.md's dual-prompt recommendation, which RESIDUAL_EXPERIMENT_NOTES.md §3 records as the one instrument the v3-dynamic run needed and could not have: `subject_kind` is a closed six-value enum and no field in `group-bcde.v1`, or in any oracle run on disk, carries a free-form noun. This schema asks for exactly that noun and nothing else. It does NOT replace `subject_kind` — the class word stays where it is, and the SAM stage is meant to run both, which is what PROBE5 §Granularity actually recommends: 'the VLM emit BOTH — the specific noun it would use in a caption, and the `subject_kind` class it already emits'.",
+	"question_order": [
+		"main_thing"
+	],
+	"design_notes": [
+		"ONE QUESTION, and that is a cost decision with a name. Per-inference cost on this model is dominated by image encode and prefill (~10.5 s [MEASURED premise-run-1]); decode length is negligible. So the marginal cost of a question is near zero but the marginal cost of a VARIANT is a whole ~25-minute pass over the eval set. The reviewer-authorised budget for this run is ~25 min with a stop-and-report bar at ~40 min, which buys exactly one variant over 142 covers. Hence variant G alone, and hence the honest limit below.",
+		"NO INTER-VARIANT AGREEMENT SIGNAL. Every other prompt set here ships a pair (A/B, C/D, E/F) because ORACLE_QUESTION_SET.md design rule 7 gets uncertainty from disagreement between two phrasings rather than from a self-reported confidence. This set ships ONE variant and therefore has no such signal: a noun from this run is a single reading, not a corroborated one. The derivation that consumes it must not treat a G answer as carrying the same weight as an E==F agreed value, and the SAM-side table records the two provenances separately for that reason. A second variant (H) over the same covers is the cheapest available upgrade and is left as a follow-up, not smuggled in under the budget.",
+		"FREE TEXT, not an enum, and that IS the point. The whole finding of RESIDUAL_EXPERIMENT_NOTES.md §5.2 is that the closed enum's most common answer — `object` — masks nothing at all (0 of 24 covers, 22 returning no region even at the 0.3 capture floor) because it is a grammatical category and not a thing-word. Widening the enum cannot fix that; only an open vocabulary can. The JSON grammar is still applied, but it constrains only the ENVELOPE (one object, one key, a string value) and never the noun. So the answer space is the model's whole vocabulary while the parse stays as safe as every other run here.",
+		"max_tokens is 32, against the module default of 256. A one-or-two-word answer inside a single-key JSON object is ~10 tokens at the pinned tokenizer, so 32 is roughly 3x headroom and still bounds a runaway decode to about a second. It is a cap, not a cost: greedy decoding stops at the grammar's closing brace long before it. The field is read per-variant so no other prompt set's decode budget moves.",
+		"THREE RULES, and each one is a measured failure it is there to prevent. (1) WHOLE, NOT PART — PROBE5's single finding against the design: `eye` scores 0.87-0.92 on eyes that are 0.1% of a frame and 0.42 on a cover that IS an eye, because a part noun makes a part detector, and 'the VLM must be instructed to name the whole depicted thing and never a part of it'. (2) SPECIFIC AS A CAPTION — the species noun is the half that carries the weight: 25 of 27 targets above the calibrated cut at a median 0.858, and where both fire the species beats the class word (castle 0.87 vs building 0.78; church 0.91 vs building 0.86). (3) PLURAL — the standing referent rule ORACLE_QUESTION_SET.md §A.6.0 earned the hard way, carried over verbatim from group-bcde.v1's THE MAIN SUBJECT block so a cover holding a person AND a car is answerable rather than a presupposition failure.",
+		"The plural clause is byte-identical to the shared THE MAIN SUBJECT block of `group-bcde.v1.variant-e.json` and `variant-f.json` ('When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one'), so the noun and the class word are gathered under the same referent rule and can be joined per cover without a referent mismatch. The block's enumeration is NOT copied verbatim: it lists 'a face' as a subject, which is exactly the part noun rule (1) forbids, so `face` is dropped from the enumeration here and the deviation is recorded below.",
+		"AN ESCAPE HATCH IS REQUIRED, because free text has none. A closed enum can offer `not_applicable`; an open string cannot, and a model asked to name a thing on a cover that has no thing will invent one — which in this pipeline means a fabricated SAM prompt and a mask that should not exist, the exact failure mode the residual experiment is most exposed to (`abstract_shape` was deliberately left unprompted in v1 for this reason). So `none` is specified as a literal answer and the derivation treats it as no-noun rather than as a noun.",
+		"NOTHING IS ASKED THAT THE PILOT ALREADY ANSWERS. No `has_dominant_subject` gate, no `subject_kind`, no area band. All three exist for these covers under `group-bcde.v1` with an E/F agreement rate already measured, and re-asking them here would cost the same GPU to produce a second, weaker reading of a question that has one. The gate is applied on the CPU side at derivation time instead, from the pilot's agreed answers.",
+		"NO `confidence` FIELD, same reason as group-bcde.v1: measured degenerate under group-a.v1 (298 of 299 rows said `high`). Uncertainty about a noun here shows up as SAM silence, which PROBE5 already established is a real and separate signal — 'a null means no answer, not the VLM was wrong'."
+	],
+	"deviations": [
+		"FREE-TEXT CANONICAL FIELD. `subject_noun` is the first canonical field in this workstream with no vocabulary at all. `vocabularies` is declared as an empty object rather than omitted, which is load-bearing: common.py falls back to the module-level group-A VOCABULARIES when the key is ABSENT, and an empty object is what turns every enum assertion in `load_prompt_variant` and every vocabulary check in `validate_and_canonicalize` into a no-op for this variant. Validation is therefore structural only — one key, a string value — which is the strongest check that is meaningful over an open vocabulary.",
+		"THE MAIN SUBJECT block is adapted, not shared byte-identically. The plural clause is verbatim; the opening enumeration drops 'a face' because this schema forbids part nouns, and drops the trailing category list's role as an answer menu because this schema wants a specific noun instead of a class. It is therefore NOT declared under `shared_blocks` — an adapted block asserted as shared would be a false provenance claim.",
+		"SINGLE VARIANT, so `prompt_variant` disagreement is structurally unavailable for this schema version. Recorded here rather than only in the design notes because it is the property most likely to be read past: any analysis joining a G noun to an E==F class word is joining a single reading to a corroborated one.",
+		"NO GATE FIELD. `has_dominant_subject` is not asked, so this variant can and will emit a noun on covers the pilot calls `none`. That is deliberate — the gate is applied at derivation time from the pilot's agreed answer — but it means the raw rows are NOT self-gating and must never be read as 'the VLM says there is a subject here'. The `none` escape catches the cases the model itself recognises; the pilot's gate catches the rest.",
+		"`max_tokens` is a new per-variant key. Absent on every existing prompt file, where it falls back to the module constant, so no stored run's decode budget changes."
+	],
+	"canonical_fields": [
+		"subject_noun"
+	],
+	"vocabularies": {},
+	"multi_select_fields": [],
+	"free_text_fields": [
+		"subject_noun"
+	],
+	"max_tokens": 32,
+	"system": "You label album cover artwork for a research dataset. You answer with a noun and nothing else. You never explain, never add fields, never write a sentence.",
+	"prompt": "Look at this album cover.\n\nOne question: name the main thing pictured.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one. A single kind of thing is asked for here.\n\nTHE WHOLE THING, NOT A PART OF IT. Name the thing itself, never a piece of it. On a cover showing a woman the answer is woman, not eye, not hand, not face, not hair. On a cover showing a bird the answer is bird, not wing, not beak, not feather. A part of something is never the answer.\n\nAS SPECIFIC AS A CAPTION. Say what the thing actually is, in the ordinary words someone would use writing a caption for it: dalmatian rather than animal, cognac bottle rather than object, church rather than building, sports car rather than vehicle. Do not answer with a bare category word — animal, object, vehicle, building, structure, thing, subject, item, shape, figure — when a plainer and more specific name exists.\n\nONE OR TWO WORDS. No sentence. No article. Do not describe the colour, the style, the mood or the setting. Use a second word only where it is needed to say what the thing is, as in electric guitar or cassette tape.\n\nNOTHING PICTURED. If there is no thing on this cover at all — only lettering, only a pattern, only a plain or textured field, only a form you could not put a name to — answer with exactly this one word: none\n\n1. main_thing — what is the main thing pictured?\n\nReply with JSON only.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"main_thing": {
+				"type": "string"
+			}
+		},
+		"required": [
+			"main_thing"
+		],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"main_thing": "subject_noun"
+	}
+}

@@ -1,0 +1,136 @@
+{
+	"purpose": "Weight provenance for a bake-off arm (pipeline doc \u00a75.2).",
+	"generated_by": "research/v3/oracle/bakeoff/pin_arms.py",
+	"generated_at": "2026-08-03T08:07:37.499Z",
+	"arm": "qwen3-32b-dense",
+	"model_id": "mlx-community/Qwen3-VL-32B-Instruct-8bit",
+	"model_revision": "14fd4c76af6bd02d1f3dbe5ea7b03da5a1ae25cf",
+	"quantization": "8bit",
+	"architecture": "qwen3_vl",
+	"snapshot_path": "/Users/Flo/.cache/huggingface/hub/models--mlx-community--Qwen3-VL-32B-Instruct-8bit/snapshots/14fd4c76af6bd02d1f3dbe5ea7b03da5a1ae25cf",
+	"total_bytes": 36017170173,
+	"weights_manifest_sha256": "2177ce515e7b6feea4b277354f47ad79037639d888bbcaa046db55e6640fcf66",
+	"hashes_computed": true,
+	"runtime": {
+		"mlx_vlm": "0.6.8",
+		"mlx": "0.32.0",
+		"mlx_metal": "0.32.0",
+		"transformers": "5.14.1",
+		"llguidance": "1.7.6",
+		"pillow": "12.3.0",
+		"pillow_avif_plugin": "1.6.0",
+		"huggingface_hub": "1.26.0"
+	},
+	"files": [
+		{
+			"file": ".gitattributes",
+			"bytes": 1570,
+			"sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+		},
+		{
+			"file": "README.md",
+			"bytes": 603,
+			"sha256": "5b34381acac2f2386d2d2b30135448ccbe388cc794bd10607e5a6f24a86b181f"
+		},
+		{
+			"file": "added_tokens.json",
+			"bytes": 707,
+			"sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+		},
+		{
+			"file": "chat_template.jinja",
+			"bytes": 5292,
+			"sha256": "3636d0f0bd6bef02654cdffdc447b79cb2cef8ab02cc75267345946291a489e4"
+		},
+		{
+			"file": "chat_template.json",
+			"bytes": 5499,
+			"sha256": "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce"
+		},
+		{
+			"file": "config.json",
+			"bytes": 7140,
+			"sha256": "3d4292791a6ef11f1846db6ec72429a2d715373e937f06d71998021fd862c6f4"
+		},
+		{
+			"file": "generation_config.json",
+			"bytes": 269,
+			"sha256": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4"
+		},
+		{
+			"file": "merges.txt",
+			"bytes": 1671853,
+			"sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+		},
+		{
+			"file": "model-00001-of-00007.safetensors",
+			"bytes": 5365181062,
+			"sha256": "524dd28b0257d72579399de209f7efb6e01fd207d3e16707749a7ac627f28efc"
+		},
+		{
+			"file": "model-00002-of-00007.safetensors",
+			"bytes": 5320127458,
+			"sha256": "e94a5a00dc4ecb573ef2a73eae19a9e7bcc398f01f0c4096e11b8d27b5432360"
+		},
+		{
+			"file": "model-00003-of-00007.safetensors",
+			"bytes": 5364692334,
+			"sha256": "27e4f7d54312b13f2f2c8a40a55f4833fcfca176cb9740d89abd0eaaaa87021b"
+		},
+		{
+			"file": "model-00004-of-00007.safetensors",
+			"bytes": 5367663583,
+			"sha256": "6db6c20781f4ef8efa595247b20a3b8604ce4225d662329b457d1e74def1e2c0"
+		},
+		{
+			"file": "model-00005-of-00007.safetensors",
+			"bytes": 5328319803,
+			"sha256": "61200aff567959060eee2250e98421a09e6c2f3ce6210474e64e05d380948f44"
+		},
+		{
+			"file": "model-00006-of-00007.safetensors",
+			"bytes": 5364692424,
+			"sha256": "9c3bd901edc230615c4fdc1d2fb76ae7cc9681b7485bd8360fc4848cc6e2bcc7"
+		},
+		{
+			"file": "model-00007-of-00007.safetensors",
+			"bytes": 3890495601,
+			"sha256": "b56d1d026344b8c94b932438aaafd53f95254bef01733b290eb1051e5ef593fa"
+		},
+		{
+			"file": "model.safetensors.index.json",
+			"bytes": 97831,
+			"sha256": "06c952c569285870b811989b794b9766493e280fb77fbcb957fc4e5fcf25403a"
+		},
+		{
+			"file": "preprocessor_config.json",
+			"bytes": 782,
+			"sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5"
+		},
+		{
+			"file": "special_tokens_map.json",
+			"bytes": 613,
+			"sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+		},
+		{
+			"file": "tokenizer.json",
+			"bytes": 11422654,
+			"sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+		},
+		{
+			"file": "tokenizer_config.json",
+			"bytes": 5445,
+			"sha256": "81ec7bb9530159b326c0bef1d0b6c33d392090524014ea3f0123a3c1eb9c2af5"
+		},
+		{
+			"file": "video_preprocessor_config.json",
+			"bytes": 817,
+			"sha256": "59c5c9eb52182eb14c06ffb10ca9effd29adce5f238a95de23ca14a38dbd2cb1"
+		},
+		{
+			"file": "vocab.json",
+			"bytes": 2776833,
+			"sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+		}
+	]
+}

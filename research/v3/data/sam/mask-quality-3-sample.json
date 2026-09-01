@@ -1,0 +1,2624 @@
+{
+	"manifestVersion": "sam-mask-quality-sample.v1",
+	"batchId": "sam-mask-quality-3-area-guard-and-hard-text",
+	"seed": 20260805,
+	"generatedBy": "research/v3/oracle/sam/review_round_3.py",
+	"builtFrom": [
+		"research/v3/data/sam/sam-eval-142-v3-dynamic.jsonl",
+		"research/v3/data/sam/residual-isolation-analysis.json",
+		"research/v3/data/sam/probe-4-scripts-objects.jsonl",
+		"research/v3/oracle/sam/config.py",
+		"research/v3/oracle/sam/review_round.py"
+	],
+	"sourceRun": "sam-eval-142-v3-dynamic",
+	"conceptSetHash": "9c78298f3c9936781d4922657cae506c72147e13172d2233c801403bb040e5b6",
+	"conceptSetVersion": "v2.1",
+	"renderer": {
+		"pillow": "12.3.0",
+		"minPanelPx": 640,
+		"maxPanelScale": 2,
+		"maskAlpha": 0.5,
+		"bboxWidthPx": 4,
+		"haloWidthPx": 3,
+		"locatorRingMaxExtent": 0.25,
+		"conceptLabels": {
+			"sticker": "sticker",
+			"emblem": "emblem",
+			"dyn-building": "building",
+			"person": "person",
+			"face": "face",
+			"dyn-animal": "animal",
+			"display-text": "main display text",
+			"letter": "letter",
+			"lettering": "lettering",
+			"words": "words"
+		},
+		"conceptColors": {
+			"words": [
+				255,
+				64,
+				64
+			],
+			"letter": [
+				255,
+				160,
+				0
+			],
+			"lettering": [
+				255,
+				232,
+				0
+			],
+			"display-text": [
+				255,
+				96,
+				160
+			],
+			"emblem": [
+				0,
+				200,
+				255
+			],
+			"sticker": [
+				255,
+				0,
+				220
+			],
+			"parental-advisory": [
+				140,
+				255,
+				0
+			],
+			"person": [
+				0,
+				255,
+				120
+			],
+			"face": [
+				120,
+				100,
+				255
+			],
+			"barcode": [
+				255,
+				255,
+				255
+			],
+			"dyn-building": [
+				255,
+				140,
+				60
+			],
+			"dyn-animal": [
+				170,
+				120,
+				255
+			],
+			"dyn-vehicle": [
+				60,
+				220,
+				200
+			],
+			"dyn-watermark": [
+				200,
+				200,
+				120
+			],
+			"dyn-object": [
+				150,
+				150,
+				150
+			]
+		}
+	},
+	"scoreThresholdAtRun": 0.3,
+	"calibratedScoreThreshold": 0.578,
+	"calibratedGroupThresholds": {
+		"text_like": 0.697295
+	},
+	"calibratedMaxAreaFraction": 0.5,
+	"scoreBands": [
+		{
+			"band": "0.30-0.45",
+			"low": 0.3,
+			"high": 0.45
+		},
+		{
+			"band": "0.45-0.60",
+			"low": 0.45,
+			"high": 0.6
+		},
+		{
+			"band": "0.60-0.80",
+			"low": 0.6,
+			"high": 0.8
+		},
+		{
+			"band": "0.80+",
+			"low": 0.8,
+			"high": 1.01
+		}
+	],
+	"conceptGroups": {
+		"text_like": [
+			"words",
+			"letter",
+			"lettering",
+			"display-text"
+		],
+		"mark_like": [
+			"emblem",
+			"sticker",
+			"parental-advisory",
+			"barcode"
+		],
+		"person_like": [
+			"person",
+			"face"
+		],
+		"dynamic_subject": [
+			"dyn-animal",
+			"dyn-building"
+		]
+	},
+	"selection": {
+		"rule": "Two sections, one batch, both about thresholds that were set without a human ever seeing the masks they decide. SECTION A (area guard, loose end A6) is a CENSUS, not a sample: every region in the run covering more than 0.5 of its cover, plus every region between 0.4 and 0.5 as boundary context. The guard was calibrated on a round whose big-area masks contained no `person` at all, yet 5 of the 6 regions it removes corpus-wide are `person` \u2014 a person filling most of a cover is an ordinary artwork, so the guard may be deleting correct masks on a concept its calibration never tested. Each of these masks is asked TWICE: the usual mask question, and the question the guard decision actually needs. SECTION B (hard text, loose end A12) shows BELOW-CUT masks \u2014 up to three per cover, spread over the cover's own range from strongest to weakest \u2014 on the 11 covers where the VLM says there is text and no text_like mask survives the pooled cut. Showing masks the current thresholds throw away is the only way a category-aware cut can be calibrated, because a cut cannot be fitted to regions nobody has graded. The panel names the STORED TAG, not the prompt.",
+		"composition": {
+			"bigArea": {
+				"population": "census, not a sample: every region in the run above the context floor",
+				"guardAreaFraction": 0.5,
+				"contextMinAreaFraction": 0.4,
+				"overGuard": 12,
+				"nearGuardContext": 3,
+				"overGuardByGroup": {
+					"dynamic_subject": 2,
+					"mark_like": 4,
+					"person_like": 6
+				},
+				"drawnByConcept": {
+					"dyn-animal": 1,
+					"dyn-building": 2,
+					"emblem": 1,
+					"face": 1,
+					"person": 7,
+					"sticker": 3
+				},
+				"removedByGuardAlone": 6,
+				"removedByGuardAloneByConcept": {
+					"person": 5,
+					"sticker": 1
+				},
+				"notes": []
+			},
+			"hardText": {
+				"coversInClass": 11,
+				"coversWithMasks": 8,
+				"coversSilent": 3,
+				"silentCovers": [
+					"07/ab67616d0000b2730007960724fb77c8041c6c13",
+					"10/ab67616d0000b27300103a3729bf589e0dc913ab",
+					"images/nobs.jpg"
+				],
+				"perCoverCap": 3,
+				"belowCutOf": 0.697295,
+				"masksPerCover": {
+					"0a/ab67616d0000b273000a24cc32b3d8b6e31bc161": 3,
+					"0f/ab67616d0000b273000f815611cd5966187e2051": 3,
+					"images/placebo.jpg": 3,
+					"13/ab67616d00001e020013bebcaee941ebcc13437c": 3,
+					"09/ab67616d0000b27300092c140fe03d08e0dc906a": 3,
+					"10/ab67616d0000b27300100a3e9c764acf01c16db8": 3,
+					"0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e": 3,
+					"05/ab67616d00001e02000564718f605c1f326b2ca2": 3,
+					"07/ab67616d0000b2730007960724fb77c8041c6c13": 0,
+					"10/ab67616d0000b27300103a3729bf589e0dc913ab": 0,
+					"images/nobs.jpg": 0
+				},
+				"totalBelowCutAvailable": 2997,
+				"notes": [
+					"3 of 11 A12 covers carry NO text_like mask at all, even at the run-time floor of 0.3 \u2014 there is no below-cut mask to show for them, and a category-aware cut cannot recover a region the model never returned. These are the covers that need the CJK-prompt GPU run: 07/ab67616d0000b2730007960724fb77c8041c6c13, 10/ab67616d0000b27300103a3729bf589e0dc913ab, images/nobs.jpg"
+				],
+				"classProvenance": {
+					"source": "research/v3/data/sam/residual-isolation-analysis.json",
+					"textBelowCutCovers": 26,
+					"recoverableAtPooledCut": 15,
+					"hardTextCovers": 11,
+					"rule": "covers the VLM says carry text, on which no text_like mask clears the pooled cut of 0.578 \u2014 `text_below_cut` and not `text_gap_recoverable_at_pooled_cut`"
+				}
+			},
+			"shortfall": 0,
+			"notes": [
+				"3 of 11 A12 covers carry NO text_like mask at all, even at the run-time floor of 0.3 \u2014 there is no below-cut mask to show for them, and a category-aware cut cannot recover a region the model never returned. These are the covers that need the CJK-prompt GPU run: 07/ab67616d0000b2730007960724fb77c8041c6c13, 10/ab67616d0000b27300103a3729bf589e0dc913ab, images/nobs.jpg"
+			]
+		}
+	},
+	"items": [
+		{
+			"itemId": "smq3-02e44b7d907e",
+			"guardItemId": null,
+			"maskRowId": "3d023fc37818:letter:2",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|13/ab67616d00001e020013bebcaee941ebcc13437c",
+			"score": 0.301998,
+			"areaFraction": 0.000222222,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.569845,
+					"y": 0.443162,
+					"w": 0.01943,
+					"h": 0.016669
+				}
+			},
+			"artwork": {
+				"imagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+				"imageId": "ab67616d00001e020013bebcaee941ebcc13437c",
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"collection": "sharded",
+				"sha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-02e44b7d907e.png",
+				"sha256": "be4495ed4326aba44db369a80dd8c87f05da242ccac98e461a4526474c52a2f9",
+				"bytes": 410607,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-042eee63a780",
+			"guardItemId": null,
+			"maskRowId": "3d023fc37818:lettering:0",
+			"section": "hard-text",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|13/ab67616d00001e020013bebcaee941ebcc13437c",
+			"score": 0.53648,
+			"areaFraction": 0.0029,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.418093,
+					"y": 0.439341,
+					"w": 0.182814,
+					"h": 0.04921
+				}
+			},
+			"artwork": {
+				"imagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+				"imageId": "ab67616d00001e020013bebcaee941ebcc13437c",
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"collection": "sharded",
+				"sha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-042eee63a780.png",
+				"sha256": "f13cf35038b0ab5e355753538f697d2f753d560f9f1a944d9293ff828ed8ab8d",
+				"bytes": 423597,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-152657cae25f",
+			"guardItemId": null,
+			"maskRowId": "c8321c5e6b25:letter:14",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"score": 0.420387,
+			"areaFraction": 0.000356445,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+				"instanceIdx": 14,
+				"bbox": {
+					"x": 0.530335,
+					"y": 0.94744,
+					"w": 0.026734,
+					"h": 0.019681
+				}
+			},
+			"artwork": {
+				"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+				"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+				"artworkId": "000a24cc32b3d8b6e31bc161",
+				"collection": "sharded",
+				"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-152657cae25f.png",
+				"sha256": "27399f7a3285221ae71cfec14b60cf029fae6b85ea0ad5e79d4c06553de437b7",
+				"bytes": 314309,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-1c7288530f16",
+			"guardItemId": null,
+			"maskRowId": "3b82cee640a2:letter:3",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|10/ab67616d0000b27300100a3e9c764acf01c16db8",
+			"score": 0.457281,
+			"areaFraction": 0.000239258,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 3,
+				"bbox": {
+					"x": 0.745472,
+					"y": 0.378042,
+					"w": 0.014593,
+					"h": 0.011171
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-1c7288530f16.png",
+				"sha256": "d5592e95c308d46d7dd88dbdec53bc60c2fd5c26f74487ae35192d4a67a64e8c",
+				"bytes": 492264,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-1c98b34a050c",
+			"guardItemId": null,
+			"maskRowId": "09a7609d09d6:letter:1",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"score": 0.388239,
+			"areaFraction": 0.001344444,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.340984,
+					"y": 0.675143,
+					"w": 0.063262,
+					"h": 0.039269
+				}
+			},
+			"artwork": {
+				"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+				"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+				"artworkId": "000564718f605c1f326b2ca2",
+				"collection": "sharded",
+				"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-1c98b34a050c.png",
+				"sha256": "84d565f3cb3dc779ba9b5abf12ef341c0efec93efa77e56d0e89dad4bd44b7be",
+				"bytes": 514989,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-20b9c16d8a1d",
+			"guardItemId": "smq3g-555e0e9ffe50",
+			"maskRowId": "fc36ed741bc8:dyn-building:0",
+			"section": "big-area",
+			"concept": "dyn-building",
+			"conceptPhrase": "building",
+			"conceptGroup": "dynamic_subject",
+			"conceptIsDynamic": true,
+			"selectionRole": "over-guard",
+			"score": 0.335256,
+			"areaFraction": 0.550876465,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|dynamic_subject|over-guard",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.0,
+					"w": 0.990155,
+					"h": 0.952571
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+				"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+				"artworkId": "0008c1c08433aa880aad7f30",
+				"collection": "sharded",
+				"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-20b9c16d8a1d.png",
+				"sha256": "7a2e35eb332f0d270645050d55a13d7770ef3603a3d3d055379765dddbbe1a7c",
+				"bytes": 1150575,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-21fe6816974b",
+			"guardItemId": "smq3g-6a939cd6540c",
+			"maskRowId": "c47cb4c63424:dyn-animal:0",
+			"section": "big-area",
+			"concept": "dyn-animal",
+			"conceptPhrase": "animal",
+			"conceptGroup": "dynamic_subject",
+			"conceptIsDynamic": true,
+			"selectionRole": "near-guard-context",
+			"score": 0.910225,
+			"areaFraction": 0.448781738,
+			"band": "0.80+",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": false,
+			"stratum": "big-area|dynamic_subject|near-guard-context",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "c47cb4c634247f41bfad8eae5a2c9ab6494aab12cb5fa16f357dc8cecd921038",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.058851,
+					"y": 0.029149,
+					"w": 0.865644,
+					"h": 0.970851
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300103a4dcd62e3dd6f76d123",
+				"imageId": "ab67616d0000b27300103a4dcd62e3dd6f76d123",
+				"artworkId": "00103a4dcd62e3dd6f76d123",
+				"collection": "sharded",
+				"sha256": "c47cb4c634247f41bfad8eae5a2c9ab6494aab12cb5fa16f357dc8cecd921038",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-21fe6816974b.png",
+				"sha256": "025f81aa1c8c5c688f387430880be27918ae785bf282d9902b4444609a183613",
+				"bytes": 1088745,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-220ad4152820",
+			"guardItemId": null,
+			"maskRowId": "3b82cee640a2:letter:0",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|10/ab67616d0000b27300100a3e9c764acf01c16db8",
+			"score": 0.504306,
+			"areaFraction": 0.000324707,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.718335,
+					"y": 0.369949,
+					"w": 0.019201,
+					"h": 0.018176
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-220ad4152820.png",
+				"sha256": "771d1478cb7495b61269d7575da6598bbe12d58f777a1808c59265f1154d255c",
+				"bytes": 492385,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-389d5ca26f65",
+			"guardItemId": null,
+			"maskRowId": "e2c28658a90a:letter:8",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"score": 0.316398,
+			"areaFraction": 0.001111111,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+				"instanceIdx": 8,
+				"bbox": {
+					"x": 0.778453,
+					"y": 0.199774,
+					"w": 0.043327,
+					"h": 0.039392
+				}
+			},
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+				"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+				"artworkId": "000ec9e3bb9ee4fc008b018e",
+				"collection": "sharded",
+				"sha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-389d5ca26f65.png",
+				"sha256": "e50850f457d4b56e0a58c4c0f373efb531c0d09822c7006bb1e871ed4f6e8a86",
+				"bytes": 316002,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-3c9f256348f5",
+			"guardItemId": "smq3g-30133cba9c9d",
+			"maskRowId": "89ab247d72c9:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.817568,
+			"areaFraction": 0.533752441,
+			"band": "0.80+",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|person_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "89ab247d72c98acf7ddf1dec87f63d2f156aff6009ab6226b98f35e9929aa731",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.069482,
+					"y": 0.015191,
+					"w": 0.930518,
+					"h": 0.984809
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b273001063830a2e597293293797",
+				"imageId": "ab67616d0000b273001063830a2e597293293797",
+				"artworkId": "001063830a2e597293293797",
+				"collection": "sharded",
+				"sha256": "89ab247d72c98acf7ddf1dec87f63d2f156aff6009ab6226b98f35e9929aa731",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-3c9f256348f5.png",
+				"sha256": "1a02fa4692124d0618f2b0d3440780c3aa1873d43ea0c9acc546991d73a41b9d",
+				"bytes": 303716,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-3ecf811fa66c",
+			"guardItemId": null,
+			"maskRowId": "14ae242448a2:letter:2",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"score": 0.473419,
+			"areaFraction": 0.000222168,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.488572,
+					"y": 0.970626,
+					"w": 0.011343,
+					"h": 0.012188
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+				"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+				"artworkId": "00092c140fe03d08e0dc906a",
+				"collection": "sharded",
+				"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-3ecf811fa66c.png",
+				"sha256": "e47ed6b165024d2a0249ad3e60a6b80012b268804d6fc9f88cc6487db52fbe89",
+				"bytes": 231571,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-3f0b8e3ec9f2",
+			"guardItemId": "smq3g-df9d569c73ee",
+			"maskRowId": "4fa6dcef2404:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "near-guard-context",
+			"score": 0.88893,
+			"areaFraction": 0.470855556,
+			"band": "0.80+",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": false,
+			"stratum": "big-area|person_like|near-guard-context",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "4fa6dcef2404938c7828fc696856d1996b9351851583c4ff836c2ba1d5f4636b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.147534,
+					"y": 0.011307,
+					"w": 0.705854,
+					"h": 0.988693
+				}
+			},
+			"artwork": {
+				"imagePath": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+				"imageId": "ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+				"artworkId": "00015a7a9909e03141e001e3",
+				"collection": "sharded",
+				"sha256": "4fa6dcef2404938c7828fc696856d1996b9351851583c4ff836c2ba1d5f4636b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-3f0b8e3ec9f2.png",
+				"sha256": "2f994854c61c5e037d4f7659f895ec268412e03444c4056ea2cbb633192f6e88",
+				"bytes": 416092,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-43a8f741adf5",
+			"guardItemId": null,
+			"maskRowId": "4312a7e73414:lettering:0",
+			"section": "hard-text",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0f/ab67616d0000b273000f815611cd5966187e2051",
+			"score": 0.567933,
+			"areaFraction": 0.001118164,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.30818,
+					"y": 0.559776,
+					"w": 0.048611,
+					"h": 0.038519
+				}
+			},
+			"artwork": {
+				"imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+				"imageId": "ab67616d0000b273000f815611cd5966187e2051",
+				"artworkId": "000f815611cd5966187e2051",
+				"collection": "sharded",
+				"sha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-43a8f741adf5.png",
+				"sha256": "ffd9528a89ea5f4445cf1a73fdafebc4364caecef328b93f74c2738b22982d99",
+				"bytes": 500398,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-4857b984d4ad",
+			"guardItemId": "smq3g-4159da1b82a3",
+			"maskRowId": "8b4f2aadf3b1:emblem:0",
+			"section": "big-area",
+			"concept": "emblem",
+			"conceptPhrase": "emblem",
+			"conceptGroup": "mark_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.433354,
+			"areaFraction": 0.773156738,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|mark_like|over-guard",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.009798,
+					"w": 0.994636,
+					"h": 0.990202
+				}
+			},
+			"artwork": {
+				"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+				"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+				"artworkId": "000bc98f315aba36374f9f93",
+				"collection": "sharded",
+				"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-4857b984d4ad.png",
+				"sha256": "b7756b61ca68170939803dc9f30389c31e85f639adb9b6eca9801ea19fe2f177",
+				"bytes": 374981,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-4b326f5fb455",
+			"guardItemId": "smq3g-a9f665e9e7f1",
+			"maskRowId": "dca149beb8a5:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.735899,
+			"areaFraction": 0.513039551,
+			"band": "0.60-0.80",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|person_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "dca149beb8a54b73efd7f05c3613eb02c93967169a1dfb5aca4f12777cbcc195",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.009831,
+					"w": 0.930129,
+					"h": 0.990169
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+				"imageId": "ab67616d0000b27300034b60105d8937440211da.jpg",
+				"artworkId": "00034b60105d8937440211da",
+				"collection": "sharded",
+				"sha256": "dca149beb8a54b73efd7f05c3613eb02c93967169a1dfb5aca4f12777cbcc195",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-4b326f5fb455.png",
+				"sha256": "76ee6f00b386fe1370dd1028221bd7cb112d37de6973efa2f1552f94a682b517",
+				"bytes": 772738,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-543b14bf494d",
+			"guardItemId": null,
+			"maskRowId": "c8321c5e6b25:display-text:0",
+			"section": "hard-text",
+			"concept": "display-text",
+			"conceptPhrase": "main display text",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"score": 0.576433,
+			"areaFraction": 0.028657227,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.23756,
+					"y": 0.899407,
+					"w": 0.538638,
+					"h": 0.074106
+				}
+			},
+			"artwork": {
+				"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+				"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+				"artworkId": "000a24cc32b3d8b6e31bc161",
+				"collection": "sharded",
+				"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-543b14bf494d.png",
+				"sha256": "19c58cf758b55d78ff607eda78d1a5af3329caa64b9ba6fef452c84ad01e1440",
+				"bytes": 332522,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-58a40ce824b3",
+			"guardItemId": null,
+			"maskRowId": "5a45dc54f71a:letter:0",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|images/placebo.jpg",
+			"score": 0.548716,
+			"areaFraction": 0.000718878,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.027589,
+					"y": 0.217361,
+					"w": 0.046926,
+					"h": 0.019778
+				}
+			},
+			"artwork": {
+				"imagePath": "images/placebo.jpg",
+				"imageId": "images/placebo.jpg",
+				"artworkId": "placebo",
+				"collection": "other:images",
+				"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"width": 1400,
+				"height": 1400
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-58a40ce824b3.png",
+				"sha256": "c5983ded4c6b57b628adab3e92f707e034b1165be875e00a944d26e108a8e692",
+				"bytes": 2022294,
+				"width": 2814,
+				"height": 1434,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-5b15e1297adc",
+			"guardItemId": "smq3g-5f2b30967576",
+			"maskRowId": "5a45dc54f71a:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.687865,
+			"areaFraction": 0.583729082,
+			"band": "0.60-0.80",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|person_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.111797,
+					"y": 0.008315,
+					"w": 0.888203,
+					"h": 0.991685
+				}
+			},
+			"artwork": {
+				"imagePath": "images/placebo.jpg",
+				"imageId": "images/placebo.jpg",
+				"artworkId": "placebo",
+				"collection": "other:images",
+				"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"width": 1400,
+				"height": 1400
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-5b15e1297adc.png",
+				"sha256": "67f90db882906fb0625536aeb297b4b3478e995ffa04426782395043c84d2257",
+				"bytes": 3270357,
+				"width": 2814,
+				"height": 1434,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-6ca8cbb0de55",
+			"guardItemId": null,
+			"maskRowId": "14ae242448a2:letter:5",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"score": 0.423274,
+			"areaFraction": 0.00013916,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+				"instanceIdx": 5,
+				"bbox": {
+					"x": 0.534121,
+					"y": 0.971225,
+					"w": 0.011419,
+					"h": 0.012247
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+				"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+				"artworkId": "00092c140fe03d08e0dc906a",
+				"collection": "sharded",
+				"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-6ca8cbb0de55.png",
+				"sha256": "c37ef190c3dfe3a117eb35267c9348a188c4c5f3faf1b7fae31540e9148350d7",
+				"bytes": 231541,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-7ffb50f24dc9",
+			"guardItemId": null,
+			"maskRowId": "4312a7e73414:letter:12",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0f/ab67616d0000b273000f815611cd5966187e2051",
+			"score": 0.300371,
+			"areaFraction": 0.000388184,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"instanceIdx": 12,
+				"bbox": {
+					"x": 0.074871,
+					"y": 0.746012,
+					"w": 0.018525,
+					"h": 0.036137
+				}
+			},
+			"artwork": {
+				"imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+				"imageId": "ab67616d0000b273000f815611cd5966187e2051",
+				"artworkId": "000f815611cd5966187e2051",
+				"collection": "sharded",
+				"sha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-7ffb50f24dc9.png",
+				"sha256": "54c8d1d70d4037437c36cda76d433780b4d925682612e9f93198c17f0ea3dde5",
+				"bytes": 498144,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-8c27d5e4ebbe",
+			"guardItemId": null,
+			"maskRowId": "e2c28658a90a:display-text:0",
+			"section": "hard-text",
+			"concept": "display-text",
+			"conceptPhrase": "main display text",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"score": 0.422853,
+			"areaFraction": 0.1079,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.029036,
+					"y": 0.072374,
+					"w": 0.883448,
+					"h": 0.182014
+				}
+			},
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+				"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+				"artworkId": "000ec9e3bb9ee4fc008b018e",
+				"collection": "sharded",
+				"sha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-8c27d5e4ebbe.png",
+				"sha256": "8ee01dd57828cf64f1c9179beb33a7e3251c6fd20be5c523dc7b32424f609e2c",
+				"bytes": 378381,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-8c579a8c2940",
+			"guardItemId": null,
+			"maskRowId": "09a7609d09d6:letter:0",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"score": 0.404235,
+			"areaFraction": 0.000888889,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.146392,
+					"y": 0.665727,
+					"w": 0.096553,
+					"h": 0.054847
+				}
+			},
+			"artwork": {
+				"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+				"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+				"artworkId": "000564718f605c1f326b2ca2",
+				"collection": "sharded",
+				"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-8c579a8c2940.png",
+				"sha256": "4ce6a3a50570071e5635751aa6350c8d9fa8ad5746cc3c2c4147534c15e06325",
+				"bytes": 515857,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-960fe392b967",
+			"guardItemId": "smq3g-66ca0e74b3eb",
+			"maskRowId": "cbff25964afd:sticker:0",
+			"section": "big-area",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "mark_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.374369,
+			"areaFraction": 0.88852,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|mark_like|over-guard",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.004247,
+					"y": 0.014881,
+					"w": 0.995753,
+					"h": 0.985119
+				}
+			},
+			"artwork": {
+				"imagePath": "images/elephunk.jpg",
+				"imageId": "images/elephunk.jpg",
+				"artworkId": "elephunk",
+				"collection": "other:images",
+				"sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+				"width": 500,
+				"height": 500
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-960fe392b967.png",
+				"sha256": "2324a87367b1bcadf4d534655d0bc58bb1f587d1849cf1a264e94da361cebf26",
+				"bytes": 2433467,
+				"width": 2014,
+				"height": 1034,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-a1990059f3ad",
+			"guardItemId": "smq3g-a4f05a64ea87",
+			"maskRowId": "96ce2811c9d8:dyn-building:0",
+			"section": "big-area",
+			"concept": "dyn-building",
+			"conceptPhrase": "building",
+			"conceptGroup": "dynamic_subject",
+			"conceptIsDynamic": true,
+			"selectionRole": "over-guard",
+			"score": 0.362141,
+			"areaFraction": 0.7532,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|dynamic_subject|over-guard",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.012666,
+					"w": 0.991342,
+					"h": 0.987334
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+				"imageId": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+				"artworkId": "000300752f338b6aedff856c",
+				"collection": "sharded",
+				"sha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-a1990059f3ad.png",
+				"sha256": "cd44326415d9ced71e2dc32132149274ea6327baf6dc556f4b6d53c4f7b978d9",
+				"bytes": 686353,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-abd68948659f",
+			"guardItemId": "smq3g-16058ae44f20",
+			"maskRowId": "06c5954c94eb:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "near-guard-context",
+			"score": 0.786897,
+			"areaFraction": 0.459209,
+			"band": "0.60-0.80",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": false,
+			"stratum": "big-area|person_like|near-guard-context",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.033676,
+					"y": 0.004907,
+					"w": 0.959471,
+					"h": 0.995093
+				}
+			},
+			"artwork": {
+				"imagePath": "images/vvbrown.jpg",
+				"imageId": "images/vvbrown.jpg",
+				"artworkId": "vvbrown",
+				"collection": "other:images",
+				"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+				"width": 1000,
+				"height": 1000
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-abd68948659f.png",
+				"sha256": "dc5e1aa9283d41764cd69aa2e51d7660877488f589ea598694c3e1bbdf10e46f",
+				"bytes": 871700,
+				"width": 2014,
+				"height": 1034,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-b852d493f73c",
+			"guardItemId": null,
+			"maskRowId": "3b82cee640a2:letter:6",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|10/ab67616d0000b27300100a3e9c764acf01c16db8",
+			"score": 0.417338,
+			"areaFraction": 0.00015625,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 6,
+				"bbox": {
+					"x": 0.7434,
+					"y": 0.402576,
+					"w": 0.008358,
+					"h": 0.018515
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-b852d493f73c.png",
+				"sha256": "464d16c6f8d7bdf42d843df8f9dc453e0675014e00180ef67e3116c60c8ac054",
+				"bytes": 492395,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-bdbf3db2c056",
+			"guardItemId": null,
+			"maskRowId": "14ae242448a2:words:0",
+			"section": "hard-text",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"score": 0.514847,
+			"areaFraction": 0.001940918,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.442072,
+					"y": 0.970293,
+					"w": 0.129113,
+					"h": 0.014442
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+				"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+				"artworkId": "00092c140fe03d08e0dc906a",
+				"collection": "sharded",
+				"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-bdbf3db2c056.png",
+				"sha256": "3b57311e531624dc7eec5d86051ce9ca2a2b14123d7efe90e228927c035d0acb",
+				"bytes": 235398,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-be75affae53d",
+			"guardItemId": null,
+			"maskRowId": "5a45dc54f71a:letter:21",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|images/placebo.jpg",
+			"score": 0.332929,
+			"areaFraction": 0.000516327,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"instanceIdx": 21,
+				"bbox": {
+					"x": 0.027973,
+					"y": 0.654051,
+					"w": 0.046981,
+					"h": 0.013719
+				}
+			},
+			"artwork": {
+				"imagePath": "images/placebo.jpg",
+				"imageId": "images/placebo.jpg",
+				"artworkId": "placebo",
+				"collection": "other:images",
+				"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"width": 1400,
+				"height": 1400
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-be75affae53d.png",
+				"sha256": "cb4cc26a7d5c4209f7e1d02c691647646af7d72568c27361b3ef67c6e548cd8b",
+				"bytes": 2022177,
+				"width": 2814,
+				"height": 1434,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-caf974fa5186",
+			"guardItemId": "smq3g-2920cd25d4af",
+			"maskRowId": "3b82cee640a2:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.838555,
+			"areaFraction": 0.571188965,
+			"band": "0.80+",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|person_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.006484,
+					"w": 0.889098,
+					"h": 0.993516
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-caf974fa5186.png",
+				"sha256": "5da8d2c9b1924edb5b82dbde0424b9295a82859ea7b097cf934c87f877704e0b",
+				"bytes": 770095,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-ce844dda6150",
+			"guardItemId": null,
+			"maskRowId": "09a7609d09d6:words:1",
+			"section": "hard-text",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"score": 0.381747,
+			"areaFraction": 0.002544444,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.141888,
+					"y": 0.667281,
+					"w": 0.199379,
+					"h": 0.052853
+				}
+			},
+			"artwork": {
+				"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+				"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+				"artworkId": "000564718f605c1f326b2ca2",
+				"collection": "sharded",
+				"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-ce844dda6150.png",
+				"sha256": "ce87c8263e85b788d3b82baa436ce816e1055ff9c706737fcb04298acccb3403",
+				"bytes": 519194,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-cec423f8fae8",
+			"guardItemId": "smq3g-b6f04f0faa9d",
+			"maskRowId": "ff0bc9c4e622:face:0",
+			"section": "big-area",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.426227,
+			"areaFraction": 0.519443359,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|person_like|over-guard",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.044411,
+					"w": 0.99029,
+					"h": 0.876095
+				}
+			},
+			"artwork": {
+				"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+				"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+				"artworkId": "00116380305ae5fd3607c43b",
+				"collection": "sharded",
+				"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-cec423f8fae8.png",
+				"sha256": "45cdefa72bae822d05241eab9439bb04bbd01fa03005123c2af9ce662465129a",
+				"bytes": 1477464,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-cf200381c805",
+			"guardItemId": null,
+			"maskRowId": "3d023fc37818:display-text:0",
+			"section": "hard-text",
+			"concept": "display-text",
+			"conceptPhrase": "main display text",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|13/ab67616d00001e020013bebcaee941ebcc13437c",
+			"score": 0.34747,
+			"areaFraction": 0.003044444,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.410258,
+					"y": 0.437816,
+					"w": 0.189752,
+					"h": 0.050757
+				}
+			},
+			"artwork": {
+				"imagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+				"imageId": "ab67616d00001e020013bebcaee941ebcc13437c",
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"collection": "sharded",
+				"sha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-cf200381c805.png",
+				"sha256": "437060965ca5671aacbe51bfab0fe5b7f95d8c1fd09e28f640aa91aa504534f8",
+				"bytes": 426767,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-d1196208835f",
+			"guardItemId": "smq3g-1f8207eae904",
+			"maskRowId": "8b4f2aadf3b1:sticker:0",
+			"section": "big-area",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "mark_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.678697,
+			"areaFraction": 0.780705566,
+			"band": "0.60-0.80",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|mark_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.008557,
+					"w": 0.996966,
+					"h": 0.991443
+				}
+			},
+			"artwork": {
+				"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+				"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+				"artworkId": "000bc98f315aba36374f9f93",
+				"collection": "sharded",
+				"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-d1196208835f.png",
+				"sha256": "ab33989c59bd2a87172394ebfcaaba22464f0b469f28b05879c78eebf69ba9cb",
+				"bytes": 381031,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-d51f01c4d551",
+			"guardItemId": null,
+			"maskRowId": "e2c28658a90a:letter:3",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"score": 0.349445,
+			"areaFraction": 0.001155556,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+				"instanceIdx": 3,
+				"bbox": {
+					"x": 0.57592,
+					"y": 0.199245,
+					"w": 0.039828,
+					"h": 0.039584
+				}
+			},
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+				"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+				"artworkId": "000ec9e3bb9ee4fc008b018e",
+				"collection": "sharded",
+				"sha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-d51f01c4d551.png",
+				"sha256": "a9e078a94caa7d2f7353c0356deacd59af4cef0d6781d78684c4ec8cd18cac64",
+				"bytes": 316240,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3-db95b5878363",
+			"guardItemId": null,
+			"maskRowId": "4312a7e73414:lettering:10",
+			"section": "hard-text",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0f/ab67616d0000b273000f815611cd5966187e2051",
+			"score": 0.424966,
+			"areaFraction": 0.000871582,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"instanceIdx": 10,
+				"bbox": {
+					"x": 0.250658,
+					"y": 0.571395,
+					"w": 0.050894,
+					"h": 0.031013
+				}
+			},
+			"artwork": {
+				"imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+				"imageId": "ab67616d0000b273000f815611cd5966187e2051",
+				"artworkId": "000f815611cd5966187e2051",
+				"collection": "sharded",
+				"sha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-db95b5878363.png",
+				"sha256": "1ce390d3335b7d0896eb7c79a5aff88554b48f1b446aacfd7ea536d229888a34",
+				"bytes": 500398,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-ef0913831f60",
+			"guardItemId": null,
+			"maskRowId": "c8321c5e6b25:letter:29",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"score": 0.311131,
+			"areaFraction": 0.000458984,
+			"band": "0.30-0.45",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+				"instanceIdx": 29,
+				"bbox": {
+					"x": 0.354373,
+					"y": 0.948193,
+					"w": 0.021133,
+					"h": 0.018135
+				}
+			},
+			"artwork": {
+				"imagePath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+				"imageId": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+				"artworkId": "000a24cc32b3d8b6e31bc161",
+				"collection": "sharded",
+				"sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-ef0913831f60.png",
+				"sha256": "a18269e418c6d0c4e6247a9d0fb128511f5834076470350690a92226ef8171a6",
+				"bytes": 314101,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-f649c43a3581",
+			"guardItemId": null,
+			"maskRowId": "5a45dc54f71a:letter:11",
+			"section": "hard-text",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "hard-text|images/placebo.jpg",
+			"score": 0.488216,
+			"areaFraction": 0.000772959,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.697295,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": false,
+			"stratum": "hard-text|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"instanceIdx": 11,
+				"bbox": {
+					"x": 0.027099,
+					"y": 0.351376,
+					"w": 0.04763,
+					"h": 0.022678
+				}
+			},
+			"artwork": {
+				"imagePath": "images/placebo.jpg",
+				"imageId": "images/placebo.jpg",
+				"artworkId": "placebo",
+				"collection": "other:images",
+				"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"width": 1400,
+				"height": 1400
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-f649c43a3581.png",
+				"sha256": "45282c2add154d319e4059f22643f30854e4b7675d137b10d49746c501915ce5",
+				"bytes": 2022177,
+				"width": 2814,
+				"height": 1434,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-fb9db7bf30d2",
+			"guardItemId": "smq3g-1a3b97b79b3e",
+			"maskRowId": "7f522b435cdc:person:0",
+			"section": "big-area",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.766371,
+			"areaFraction": 0.682094727,
+			"band": "0.60-0.80",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": true,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|person_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "7f522b435cdc09cda04d4889195f11728085eefebe707bcb2ba1d5afde158322",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.010733,
+					"w": 0.993774,
+					"h": 0.989267
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+				"imageId": "ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+				"artworkId": "00034b1c66ddd55a5337f66a",
+				"collection": "sharded",
+				"sha256": "7f522b435cdc09cda04d4889195f11728085eefebe707bcb2ba1d5afde158322",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-fb9db7bf30d2.png",
+				"sha256": "322e4246a906e3c0c2fa83130e378b2ee8a0a7661ae05fbee2cb1421502e4a0b",
+				"bytes": 969517,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3-fbaf34201348",
+			"guardItemId": "smq3g-bee5f792de25",
+			"maskRowId": "ecf1191eb98a:sticker:0",
+			"section": "big-area",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "mark_like",
+			"conceptIsDynamic": false,
+			"selectionRole": "over-guard",
+			"score": 0.511598,
+			"areaFraction": 0.940615234,
+			"band": "0.45-0.60",
+			"calibratedCutForConcept": 0.578,
+			"clearsScoreCut": false,
+			"removedByAreaGuard": true,
+			"stratum": "big-area|mark_like|over-guard",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142-v3-dynamic",
+				"runId": "a58650c9e3234c7a812c5008259512c4",
+				"schemaVersion": "sam-regions-dynamic.v1",
+				"imageSha256": "ecf1191eb98aa2bb6b04b8fceb4be93029c7bd0b6b9a650c1bfc8d41f8b4a029",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.003547,
+					"y": 0.011377,
+					"w": 0.996453,
+					"h": 0.988623
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"imageId": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"artworkId": "000955ccfc1e8da97a09b32d",
+				"collection": "sharded",
+				"sha256": "ecf1191eb98aa2bb6b04b8fceb4be93029c7bd0b6b9a650c1bfc8d41f8b4a029",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3/smq3-fbaf34201348.png",
+				"sha256": "fd1e6cf6ffce6e5daabd4549b30576cd6c7861c9dec20ed612b8ba8e73278be4",
+				"bytes": 392915,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		}
+	],
+	"guardSection": {
+		"questionKey": "big_area_is_real_subject",
+		"rule": "Every section-A mask, asked the question the area-guard decision needs: is this a real subject filling the frame, or a mask thrown over the whole picture? The mask question alone cannot decide it \u2014 a mask can be a correct `person` and still be the whole cover, and that is precisely the case the guard was added for.",
+		"decisionRule": {
+			"unitOfDecision": "concept group (person_like / mark_like / text_like / dynamic_subject)",
+			"countsToward": "over-guard",
+			"contextOnly": "near-guard-context",
+			"primaryTreatment": "the middle answer is excluded from both sides; the denominator is decided answers only",
+			"minimumDecided": 3,
+			"exemptIf": "the group's `real-subject` share of decided answers is >= 0.70 \u2014 the guard is then scoped OFF for that group (max_area_fraction=None), because it is deleting masks the reviewer calls real subjects filling the frame",
+			"keepIf": "the group's `real-subject` share is <= 0.30 \u2014 the guard stays ON for that group, which is what round 1 already found for the mark-shaped concepts it did test at big area",
+			"undecidedIf": "the share falls between 0.30 and 0.70, or fewer than 3 answers are decided \u2014 the guard stays ON unchanged and the group is recorded as unresolved. A round that cannot separate must say so rather than move a constant on a coin flip.",
+			"crossCheck": "an item answered `yes` to the mask question and `whole-image` to the guard question is a contradiction and is reported per item, never averaged away: it means the mask is a correct instance of the concept AND covers the whole picture, which is the case the guard exists for.",
+			"notAdopted": "no threshold in config.py is edited by this round. The outcome is a proposal to the reviewer, and per-group scoping is a change to `passes_calibrated_cut`'s contract, not a number."
+		},
+		"items": [
+			{
+				"itemId": "smq3g-16058ae44f20",
+				"maskRowId": "06c5954c94eb:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "near-guard-context",
+				"stratum": "big-area|person_like|near-guard-context",
+				"artwork": {
+					"imagePath": "images/vvbrown.jpg",
+					"imageId": "images/vvbrown.jpg",
+					"artworkId": "vvbrown",
+					"collection": "other:images",
+					"sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+					"width": 1000,
+					"height": 1000
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-abd68948659f.png",
+					"sha256": "dc5e1aa9283d41764cd69aa2e51d7660877488f589ea598694c3e1bbdf10e46f",
+					"bytes": 871700,
+					"width": 2014,
+					"height": 1034,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-1a3b97b79b3e",
+				"maskRowId": "7f522b435cdc:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|person_like|over-guard",
+				"artwork": {
+					"imagePath": "03/ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+					"imageId": "ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+					"artworkId": "00034b1c66ddd55a5337f66a",
+					"collection": "sharded",
+					"sha256": "7f522b435cdc09cda04d4889195f11728085eefebe707bcb2ba1d5afde158322",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-fb9db7bf30d2.png",
+					"sha256": "322e4246a906e3c0c2fa83130e378b2ee8a0a7661ae05fbee2cb1421502e4a0b",
+					"bytes": 969517,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-1f8207eae904",
+				"maskRowId": "8b4f2aadf3b1:sticker:0",
+				"concept": "sticker",
+				"conceptPhrase": "sticker",
+				"conceptGroup": "mark_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|mark_like|over-guard",
+				"artwork": {
+					"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+					"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+					"artworkId": "000bc98f315aba36374f9f93",
+					"collection": "sharded",
+					"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-d1196208835f.png",
+					"sha256": "ab33989c59bd2a87172394ebfcaaba22464f0b469f28b05879c78eebf69ba9cb",
+					"bytes": 381031,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-2920cd25d4af",
+				"maskRowId": "3b82cee640a2:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|person_like|over-guard",
+				"artwork": {
+					"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+					"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+					"artworkId": "00100a3e9c764acf01c16db8",
+					"collection": "sharded",
+					"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-caf974fa5186.png",
+					"sha256": "5da8d2c9b1924edb5b82dbde0424b9295a82859ea7b097cf934c87f877704e0b",
+					"bytes": 770095,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-30133cba9c9d",
+				"maskRowId": "89ab247d72c9:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|person_like|over-guard",
+				"artwork": {
+					"imagePath": "10/ab67616d0000b273001063830a2e597293293797",
+					"imageId": "ab67616d0000b273001063830a2e597293293797",
+					"artworkId": "001063830a2e597293293797",
+					"collection": "sharded",
+					"sha256": "89ab247d72c98acf7ddf1dec87f63d2f156aff6009ab6226b98f35e9929aa731",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-3c9f256348f5.png",
+					"sha256": "1a02fa4692124d0618f2b0d3440780c3aa1873d43ea0c9acc546991d73a41b9d",
+					"bytes": 303716,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-4159da1b82a3",
+				"maskRowId": "8b4f2aadf3b1:emblem:0",
+				"concept": "emblem",
+				"conceptPhrase": "emblem",
+				"conceptGroup": "mark_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|mark_like|over-guard",
+				"artwork": {
+					"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+					"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+					"artworkId": "000bc98f315aba36374f9f93",
+					"collection": "sharded",
+					"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-4857b984d4ad.png",
+					"sha256": "b7756b61ca68170939803dc9f30389c31e85f639adb9b6eca9801ea19fe2f177",
+					"bytes": 374981,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-555e0e9ffe50",
+				"maskRowId": "fc36ed741bc8:dyn-building:0",
+				"concept": "dyn-building",
+				"conceptPhrase": "building",
+				"conceptGroup": "dynamic_subject",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|dynamic_subject|over-guard",
+				"artwork": {
+					"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+					"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+					"artworkId": "0008c1c08433aa880aad7f30",
+					"collection": "sharded",
+					"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-20b9c16d8a1d.png",
+					"sha256": "7a2e35eb332f0d270645050d55a13d7770ef3603a3d3d055379765dddbbe1a7c",
+					"bytes": 1150575,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-5f2b30967576",
+				"maskRowId": "5a45dc54f71a:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|person_like|over-guard",
+				"artwork": {
+					"imagePath": "images/placebo.jpg",
+					"imageId": "images/placebo.jpg",
+					"artworkId": "placebo",
+					"collection": "other:images",
+					"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+					"width": 1400,
+					"height": 1400
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-5b15e1297adc.png",
+					"sha256": "67f90db882906fb0625536aeb297b4b3478e995ffa04426782395043c84d2257",
+					"bytes": 3270357,
+					"width": 2814,
+					"height": 1434,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-66ca0e74b3eb",
+				"maskRowId": "cbff25964afd:sticker:0",
+				"concept": "sticker",
+				"conceptPhrase": "sticker",
+				"conceptGroup": "mark_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|mark_like|over-guard",
+				"artwork": {
+					"imagePath": "images/elephunk.jpg",
+					"imageId": "images/elephunk.jpg",
+					"artworkId": "elephunk",
+					"collection": "other:images",
+					"sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+					"width": 500,
+					"height": 500
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-960fe392b967.png",
+					"sha256": "2324a87367b1bcadf4d534655d0bc58bb1f587d1849cf1a264e94da361cebf26",
+					"bytes": 2433467,
+					"width": 2014,
+					"height": 1034,
+					"scale": 2
+				}
+			},
+			{
+				"itemId": "smq3g-6a939cd6540c",
+				"maskRowId": "c47cb4c63424:dyn-animal:0",
+				"concept": "dyn-animal",
+				"conceptPhrase": "animal",
+				"conceptGroup": "dynamic_subject",
+				"selectionRole": "near-guard-context",
+				"stratum": "big-area|dynamic_subject|near-guard-context",
+				"artwork": {
+					"imagePath": "10/ab67616d0000b27300103a4dcd62e3dd6f76d123",
+					"imageId": "ab67616d0000b27300103a4dcd62e3dd6f76d123",
+					"artworkId": "00103a4dcd62e3dd6f76d123",
+					"collection": "sharded",
+					"sha256": "c47cb4c634247f41bfad8eae5a2c9ab6494aab12cb5fa16f357dc8cecd921038",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-21fe6816974b.png",
+					"sha256": "025f81aa1c8c5c688f387430880be27918ae785bf282d9902b4444609a183613",
+					"bytes": 1088745,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-a4f05a64ea87",
+				"maskRowId": "96ce2811c9d8:dyn-building:0",
+				"concept": "dyn-building",
+				"conceptPhrase": "building",
+				"conceptGroup": "dynamic_subject",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|dynamic_subject|over-guard",
+				"artwork": {
+					"imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+					"imageId": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+					"artworkId": "000300752f338b6aedff856c",
+					"collection": "sharded",
+					"sha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+					"width": 300,
+					"height": 300
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-a1990059f3ad.png",
+					"sha256": "cd44326415d9ced71e2dc32132149274ea6327baf6dc556f4b6d53c4f7b978d9",
+					"bytes": 686353,
+					"width": 1214,
+					"height": 634,
+					"scale": 2
+				}
+			},
+			{
+				"itemId": "smq3g-a9f665e9e7f1",
+				"maskRowId": "dca149beb8a5:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|person_like|over-guard",
+				"artwork": {
+					"imagePath": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+					"imageId": "ab67616d0000b27300034b60105d8937440211da.jpg",
+					"artworkId": "00034b60105d8937440211da",
+					"collection": "sharded",
+					"sha256": "dca149beb8a54b73efd7f05c3613eb02c93967169a1dfb5aca4f12777cbcc195",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-4b326f5fb455.png",
+					"sha256": "76ee6f00b386fe1370dd1028221bd7cb112d37de6973efa2f1552f94a682b517",
+					"bytes": 772738,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-b6f04f0faa9d",
+				"maskRowId": "ff0bc9c4e622:face:0",
+				"concept": "face",
+				"conceptPhrase": "face",
+				"conceptGroup": "person_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|person_like|over-guard",
+				"artwork": {
+					"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+					"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+					"artworkId": "00116380305ae5fd3607c43b",
+					"collection": "sharded",
+					"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-cec423f8fae8.png",
+					"sha256": "45cdefa72bae822d05241eab9439bb04bbd01fa03005123c2af9ce662465129a",
+					"bytes": 1477464,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-bee5f792de25",
+				"maskRowId": "ecf1191eb98a:sticker:0",
+				"concept": "sticker",
+				"conceptPhrase": "sticker",
+				"conceptGroup": "mark_like",
+				"selectionRole": "over-guard",
+				"stratum": "big-area|mark_like|over-guard",
+				"artwork": {
+					"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+					"imageId": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+					"artworkId": "000955ccfc1e8da97a09b32d",
+					"collection": "sharded",
+					"sha256": "ecf1191eb98aa2bb6b04b8fceb4be93029c7bd0b6b9a650c1bfc8d41f8b4a029",
+					"width": 640,
+					"height": 640
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-fbaf34201348.png",
+					"sha256": "fd1e6cf6ffce6e5daabd4549b30576cd6c7861c9dec20ed612b8ba8e73278be4",
+					"bytes": 392915,
+					"width": 1294,
+					"height": 674,
+					"scale": 1
+				}
+			},
+			{
+				"itemId": "smq3g-df9d569c73ee",
+				"maskRowId": "4fa6dcef2404:person:0",
+				"concept": "person",
+				"conceptPhrase": "person",
+				"conceptGroup": "person_like",
+				"selectionRole": "near-guard-context",
+				"stratum": "big-area|person_like|near-guard-context",
+				"artwork": {
+					"imagePath": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+					"imageId": "ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+					"artworkId": "00015a7a9909e03141e001e3",
+					"collection": "sharded",
+					"sha256": "4fa6dcef2404938c7828fc696856d1996b9351851583c4ff836c2ba1d5f4636b",
+					"width": 300,
+					"height": 300
+				},
+				"overlay": {
+					"path": "research/v3/data/sam/review-overlays-3/smq3-3f0b8e3ec9f2.png",
+					"sha256": "2f994854c61c5e037d4f7659f895ec268412e03444c4056ea2cbb633192f6e88",
+					"bytes": 416092,
+					"width": 1214,
+					"height": 634,
+					"scale": 2
+				}
+			}
+		]
+	},
+	"hardTextDecisionRule": {
+		"method": "sweep a candidate cut over the observed scores of the graded below-cut masks, primary treatment (middle answer excluded both sides), maximising Youden J \u2014 the same sweep that produced the pooled cut and the text_like group cut.",
+		"gates": "adopt a LOWERED text_like cut only if it clears the gates already written into the analysis: separation from the incumbent >= 0.05, J gain >= 0.05, and at least 5 decided answers.",
+		"expectedOutcome": "genuinely open. If the reviewer accepts most of these below-cut masks, the text_like cut of 0.697295 is too high and is discarding correct text; if the reviewer rejects them, the cut is doing its job and the A12 recovery has to come from a CJK-specific concept with its own threshold, not from moving a general one.",
+		"limit": "these are Latin-glyph concepts firing weakly on hard covers. They calibrate the text_like cut. They are NOT evidence about a CJK concept \u2014 see gpuGap."
+	},
+	"gpuGap": {
+		"whatIsMissing": "the CJK-prompt masks themselves. `chinese characters` and `kanji` are not in config.CONCEPT_PROMPTS, so no eval run contains them; probe 4 ran them but its rows store only score, bbox and area_fraction with NO mask_rle, so nothing on disk can be rendered as an overlay. Two of probe 4's four CJK covers are also absent from the eval set entirely.",
+		"whyItMatters": "A12 asks where a category-aware cut for CJK should go. The masks this round CAN show are the incumbent Latin-glyph concepts firing weakly on hard covers, which calibrates the text_like cut but says nothing about a CJK concept \u2014 the evidence that `chinese characters` is 4/4 with perfect precision at a top score of 0.472 has never been seen by a human.",
+		"exactRunNeeded": {
+			"script": "research/v3/oracle/sam/probe_scripts_objects.py (or a run_sam.py pass with these prompts)",
+			"prompts": [
+				"chinese characters",
+				"kanji",
+				"words"
+			],
+			"promptsNote": "`words` is the incumbent control \u2014 it is what the current set would have caught",
+			"covers": "the 4 probe-4 CJK covers + the A12 covers that carry no text_like mask at all",
+			"mustStore": "mask_rle per instance, at the run-time floor SCORE_THRESHOLD = 0.3",
+			"estimatedGpu": "~7 covers x 3 prompts. Probe 4 measured 16 covers x 14 phrasings at 51.6 s of inference, so this is on the order of 5-15 s of inference and well under a minute wall."
+		},
+		"probe4CjkCovers": [
+			{
+				"imagePath": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"imageSha256": "ec1d748a16aae69c7d1fad1b8528423a79174cb7770df399a7c35f8e5cdb3102",
+				"imageKind": "cjk-chinese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.3945,
+					"kanji": 0.0,
+					"hanzi": 0.0,
+					"calligraphy": 0.0
+				}
+			},
+			{
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"imageKind": "cjk-japanese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.472,
+					"kanji": 0.6048,
+					"hanzi": 0.0,
+					"calligraphy": 0.3858
+				}
+			},
+			{
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"imageKind": "cjk-japanese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.3774,
+					"kanji": 0.6418,
+					"hanzi": 0.3243,
+					"calligraphy": 0.0
+				}
+			},
+			{
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"imageKind": "cjk-chinese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.3927,
+					"kanji": 0.3669,
+					"hanzi": 0.0,
+					"calligraphy": 0.4154
+				}
+			}
+		]
+	}
+}

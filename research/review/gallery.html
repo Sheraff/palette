@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Palette corpus gallery</title>
+		<link rel="stylesheet" href="/gallery.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div>
+				<p class="eyebrow">Current research output</p>
+				<h1>Corpus palette atlas</h1>
+			</div>
+			<nav aria-label="Research pages">
+				<a href="/">Review</a>
+			</nav>
+		</header>
+		<main>
+			<section class="intro" aria-labelledby="gallery-summary">
+				<div>
+					<p id="gallery-summary">Loading generated corpus results</p>
+					<div class="filters" aria-label="Corpus cohort filter">
+						<button type="button" data-cohort="all" class="selected">All</button>
+						<button type="button" data-cohort="development">Development</button>
+						<button type="button" data-cohort="holdout">Holdout</button>
+					</div>
+				</div>
+				<p>Each artwork is paired with the current spatial palette and the same UI treatment used during blinded review.</p>
+			</section>
+			<section id="gallery" class="gallery" aria-live="polite"></section>
+		</main>
+		<script type="module" src="/gallery.js"></script>
+	</body>
+</html>

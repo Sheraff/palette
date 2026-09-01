@@ -1,0 +1,117 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "endorsement-recheck-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "endorsement-recheck.v1",
+	"seed": 20260804,
+	"generatedBy": "research/v3/src/review-server/endorsement-recheck.ts",
+	"builtFrom": [
+		"research/v3/data/legacy/endorsements.json",
+		"research/v3/data/decisions/decisions.json"
+	],
+	"selection": {
+		"rule": "The two endorsed palettes that d-2026-08-04-reviewer-metric-follows-the-pair measured as newly failing the roles matrix under the metric ruling of 2026-08-04, one per violation code. The third newly-failing palette is known-bad and needs no ruling; the 11 advisory reconstructed-gradient failures are a separate question and are not in this round.",
+		"counts": {
+			"endorsements": 2,
+			"questions": 2
+		}
+	},
+	"questions": [
+		{
+			"key": "endorsement_recheck_e7c9419abc1df0dd",
+			"kind": "enum",
+			"question": "Does this endorsement stand, or was the rule right?",
+			"instruction": "Answer about THIS palette on THIS artwork, as rendered — not about the rule in general. You endorsed this palette; nothing about it has changed. Only the rule that judges it has. Keep the endorsement if you would still be happy to get this result, and the rule has to bend for it. Say the rule is right if, seeing it again, this one was marginal and you can live with losing it.",
+			"preamble": "The foreground (Polar Bear in a Blizzard, #efe1ee) and the accent (Toile, #d5d5f1) are now closer than the new separation floor: OKLab distance 0.0504 against a floor of 0.07444. Nothing about this palette changed. Until 2026-08-04 this pair was only checked against the same-colour bar (0.0163), which it clears easily. The ruling of 2026-08-04 moved the foreground-accent pair onto colour distance at an elevated bar — and the number that bar borrowed, 0.07444, was measured on a different question (\"are the icons clearly visible on this background?\", for an accent sitting on a field). Nobody has ever been shown a foreground and an accent side by side and asked how far apart they must be to read as two roles.",
+			"framing": "PHASE_0_DECISIONS.md §4: an invariant that blocks an endorsed palette is demoted — the reviewer outranks the rule. Keeping the endorsement means the rule gets an exception or a recalibration. Neither answer is the safe one, and neither is a vote about the other item.",
+			"answers": [
+				{
+					"key": "keep_the_endorsement",
+					"label": "keep the endorsement",
+					"gloss": "This palette is fine. The rule gets an exception or a recalibration.",
+					"hotkey": "1"
+				},
+				{
+					"key": "the_rule_is_right",
+					"label": "the rule is right",
+					"gloss": "Seeing it again, this palette was marginal. The rule stands and this endorsement goes.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "endorsement_recheck_22e959d5164750bd",
+			"kind": "enum",
+			"question": "Does this endorsement stand, or was the rule right?",
+			"instruction": "Answer about THIS palette on THIS artwork, as rendered — not about the rule in general. You endorsed this palette; nothing about it has changed. Only the rule that judges it has. Keep the endorsement if you would still be happy to get this result, and the rule has to bend for it. Say the rule is right if, seeing it again, this one was marginal and you can live with losing it.",
+			"preamble": "The accent (Sunshine, #fac751) has almost no luminance contrast against the surface (Beige, #d5cebe): |raw APCA| 0.47 against a floor of 2.5. On the public Lc scale it reads 0.0 — the scale saying it cannot see any contrast at all. This accent used to escape that floor on colour distance, and it is still 0.121 from the surface in OKLab — but the escape now requires 0.14591. The ruling of 2026-08-04 held that a *detection* distance (\"can you see the difference?\") is the wrong instrument for an escape from a contrast floor, so the escape moved to a functional distance 1.96x larger. That number is itself an uncalibrated placeholder — the geometric midpoint of two rungs of an old ladder — awaiting a functional-visibility round.",
+			"framing": "PHASE_0_DECISIONS.md §4: an invariant that blocks an endorsed palette is demoted — the reviewer outranks the rule. Keeping the endorsement means the rule gets an exception or a recalibration. Neither answer is the safe one, and neither is a vote about the other item.",
+			"answers": [
+				{
+					"key": "keep_the_endorsement",
+					"label": "keep the endorsement",
+					"gloss": "This palette is fine. The rule gets an exception or a recalibration.",
+					"hotkey": "1"
+				},
+				{
+					"key": "the_rule_is_right",
+					"label": "the rule is right",
+					"gloss": "Seeing it again, this palette was marginal. The rule stands and this endorsement goes.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "recheck-e7c9419abc1df0dd",
+			"questionKey": "endorsement_recheck_e7c9419abc1df0dd",
+			"imagePath": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"imageId": "ab67616d0000b27300092c140fe03d08e0dc906a",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e7c9419abc1df0dd",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "I3.foreground-accent-not-separated"
+		},
+		{
+			"itemId": "recheck-22e959d5164750bd",
+			"questionKey": "endorsement_recheck_22e959d5164750bd",
+			"imagePath": "13/ab67616d0000b2730013e7782db25f28b59084ec",
+			"sha256": "f7e7ef7b8f20c96baded61acd37a65b52afedbab86a67d9f6c28571859210fd7",
+			"imageId": "ab67616d0000b2730013e7782db25f28b59084ec",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "22e959d5164750bd",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "I4.below-contrast-floor"
+		}
+	],
+	"serveOrder": [
+		"recheck-e7c9419abc1df0dd",
+		"recheck-22e959d5164750bd"
+	]
+}

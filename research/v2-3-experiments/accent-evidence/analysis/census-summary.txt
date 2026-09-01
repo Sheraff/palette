@@ -1,0 +1,5 @@
+census ae-off-census vs ae-on-census
+  coverage: ae-off-census 7550, ae-on-census 7550, compared 7550 (extraction errors skipped: 0)
+  moved: 2106/7550 (27.9 %)
+  roles moved: {"background":955,"surface":1126,"foreground":656,"accent":1428}
+  accent-only movers: 581   gradient decision flips: 9

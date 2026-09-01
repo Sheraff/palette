@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.0-identity-obligation-review-v1",
+  "manifestId": "56587cd633b8cc7995d96dcf56f71f71d6133ea618b0e3bd04d895edcf249d8d",
+  "candidateVersion": "album-artwork-first-principles-0.7.0",
+  "implementationHash": "82487ab0e22ba6e5863c310001153652f9fbe113eaef3ec98470845b17051594",
+  "scientificSha256": "d05f05c56aab803ed4b8b00c327e5af6bf908f154b84ada76b562fc4419f4881",
+  "predecessorVersion": "album-artwork-first-principles-0.6.0",
+  "predecessorImplementationHash": "3f25579340ec3dea5efaa0d8aeeceb35483610b7519fa8892a5b99a96261f315",
+  "predecessorScientificSha256": "f0437a4ab86f321d3723e30527ff455222ed6e5590e891e3f590ab1b920e7d52",
+  "inputHashes": {
+    "manifestSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b",
+    "preparationSha256": "cc5afca23ca6d1d1a4ac964745698fb45d2dd40bfaa0697ae6bf4ea1b18bbb93",
+    "feedbackSha256": "70adcd339ec32578dbbac4b97ae3e3ed028b89c73ce637d729e5b762f1391b63",
+    "interpretationId": "5512ad0a0e3227b438c413324ebf4d891a5057d8d65316921a2e96478c74bd2f"
+  },
+  "reviewedCaseCount": 12,
+  "candidateQualityCounts": {
+    "acceptable": 6,
+    "strong": 2,
+    "unacceptable": 2,
+    "weak-fallback": 2
+  },
+  "predecessorQualityCounts": {
+    "acceptable": 5,
+    "strong": 6,
+    "weak-fallback": 1
+  },
+  "candidatePositiveCount": 8,
+  "predecessorPositiveCount": 11,
+  "relativeCounts": {
+    "candidate-stronger": 1,
+    "neither-acceptable": 1,
+    "predecessor-stronger": 5,
+    "similarly-valid": 5
+  },
+  "candidateIncompleteIdentityTagCount": 2,
+  "predecessorIncompleteIdentityTagCount": 2,
+  "caseResults": [
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "predecessorQuality": "acceptable",
+      "relativeOutcome": "candidate-stronger",
+      "candidateTags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "predecessorTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "Option A has the correct color for the foreground and an acceptable color for the background. However, we need this to be a gradient. The artwork itself has a background made of many gradients, so it is necessary that we have a gradient for this palette ",
+      "commentSha256": "02588b5c6b08b1e021bc288ad8288db5c512666826a954ca3c245a63bad984ea",
+      "submittedAt": "2026-07-27T13:45:25.362Z"
+    },
+    {
+      "caseId": "development-14",
+      "sourceSha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+      "candidateSide": "B",
+      "candidateQuality": "unacceptable",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "predecessor-stronger",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "",
+      "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "submittedAt": "2026-07-27T13:45:43.356Z"
+    },
+    {
+      "caseId": "development-08",
+      "sourceSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+      "candidateSide": "A",
+      "candidateQuality": "unacceptable",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "predecessor-stronger",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "",
+      "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "submittedAt": "2026-07-27T13:45:54.802Z"
+    },
+    {
+      "caseId": "development-28",
+      "sourceSha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "predecessor-stronger",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "",
+      "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "submittedAt": "2026-07-27T13:46:06.979Z"
+    },
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "candidateSide": "A",
+      "candidateQuality": "weak-fallback",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "predecessor-stronger",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "",
+      "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "submittedAt": "2026-07-27T13:46:18.504Z"
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "predecessorQuality": "acceptable",
+      "relativeOutcome": "similarly-valid",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "Option B has a very nice selection of colors. We're just missing a surface, there are plenty of pastel colors in the artwork that could work",
+      "commentSha256": "85c8de44f13e756e5fede3683d39378a4bbe3f899b07eed43abe422736c98a90",
+      "submittedAt": "2026-07-27T13:47:19.833Z"
+    },
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "similarly-valid",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "",
+      "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "submittedAt": "2026-07-27T13:47:47.762Z"
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "predecessorQuality": "acceptable",
+      "relativeOutcome": "predecessor-stronger",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "I really like the choice of colors for option B. However, the accent is pretty hard to distinguish over the background ",
+      "commentSha256": "91e5f3e8c60d795f7e42b8fcb652ad35ed2eaa50a498af6d1e921da4dd5a6072",
+      "submittedAt": "2026-07-27T13:48:35.801Z"
+    },
+    {
+      "caseId": "development-12",
+      "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+      "candidateSide": "A",
+      "candidateQuality": "weak-fallback",
+      "predecessorQuality": "weak-fallback",
+      "relativeOutcome": "neither-acceptable",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "predecessorTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "Option A is missing the blacks. Option B is missing the bright yellow. so neither is acceptable ",
+      "commentSha256": "e487b02fa795ec376cd82f59cdfcd72d6c270f5398c1f0e691e883aabb5dda42",
+      "submittedAt": "2026-07-27T13:49:17.771Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "similarly-valid",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "",
+      "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "submittedAt": "2026-07-27T13:49:27.189Z"
+    },
+    {
+      "caseId": "development-26",
+      "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "predecessorQuality": "acceptable",
+      "relativeOutcome": "similarly-valid",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "Options would work better if the foreground was lighter than the background. This is what the artwork does, and if we want to capture the spirit of the artwork, this is what we need to obtain as well ",
+      "commentSha256": "269400c88b9408fcb4793a24339d6aefe05e331715dfa68e5d52795fc1455086",
+      "submittedAt": "2026-07-27T13:50:06.578Z"
+    },
+    {
+      "caseId": "development-13",
+      "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "predecessorQuality": "acceptable",
+      "relativeOutcome": "similarly-valid",
+      "candidateTags": [],
+      "predecessorTags": [],
+      "comment": "A slight gradient would be nice here for either candidate ",
+      "commentSha256": "acf653baa4dd39501e16b9aaa69c221cf5101d0c99e43e84cd243e1ac1e84e3b",
+      "submittedAt": "2026-07-27T13:50:34.081Z"
+    }
+  ],
+  "gate": {
+    "absoluteQuality": {
+      "pass": false,
+      "candidatePositiveCount": 8,
+      "required": 9
+    },
+    "relativeImprovement": {
+      "pass": false,
+      "candidateStronger": 1,
+      "predecessorStronger": 5
+    },
+    "incompleteIdentityReduction": {
+      "pass": false,
+      "candidate": 2,
+      "predecessor": 2
+    },
+    "noRepeatedNewSystemicFailureClass": {
+      "pass": false,
+      "repeatedClasses": [
+        "identity-obligation-coverage-precedence-regression"
+      ]
+    }
+  },
+  "gatePass": false,
+  "disposition": "identity-obligation-mechanics-passed-human-development-gate-failed-revise-architecture",
+  "authorization": {
+    "futureSample": false,
+    "phase5": false,
+    "promotion": false,
+    "persistence": false,
+    "fullRoster": false
+  },
+  "analysisId": "d01d301c880fd2bc9b9fe6035dc6667f42ffa7af54a4c7c9f7c107f8fffa043a"
+}

@@ -1,0 +1,35 @@
+diff --git a/research/v2-3/src/internal/base-scoring.ts b/research/v2-3/src/internal/base-scoring.ts
+index b1c9e32..9a3f9fe 100644
+--- a/research/v2-3/src/internal/base-scoring.ts
++++ b/research/v2-3/src/internal/base-scoring.ts
+@@ -344,6 +344,19 @@ function identityEvaluation(
+ 	// family the treatment actually made its foreground.
+ 	const foregroundEvidenceOf = (familyId: string): number => requiredRole(familyId)?.foregroundEvidence ?? 0
+ 	const placedForegroundEvidence = foregroundEvidenceOf(treatment.familyRoles.foreground)
++	// EXPERIMENT (track G, env-gated): weight a *foreground* placement by the family's rank in
++	// field-conditional foreground evidence among the obligated families, instead of by its
++	// generic obligation priority. Ties fall back to obligation priority, then family id.
++	const foregroundRankWeight = new Map<string, number>()
++	if (process.env.TRACK_G_FOREGROUND_RANK === "1" ||
++		(process.env.TRACK_G_FOREGROUND_RANK === "2" && !identityBearingAccent) ||
++		(process.env.TRACK_G_FOREGROUND_RANK === "3" && !treatment.collapse.accent && !identityBearingAccent)) {
++		const ordered = [...obligations].sort((first, second) =>
++			compareDescending(foregroundEvidenceOf(first.familyId), foregroundEvidenceOf(second.familyId)) ||
++			first.priority - second.priority ||
++			compareAscii(first.familyId, second.familyId))
++		ordered.forEach((obligation, rank) => foregroundRankWeight.set(obligation.familyId, priorityWeight(rank)))
++	}
+ 	const demotesBetterText = (familyId: string): boolean =>
+ 		foregroundEvidenceOf(familyId) > placedForegroundEvidence +
+ 			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityForegroundClaimMargin
+@@ -356,7 +369,9 @@ function identityEvaluation(
+ 		value: number,
+ 		color: OKLab,
+ 	): void => {
+-		const weight = priorityWeight(obligations.find((obligation) => obligation.familyId === familyId)!.priority)
++		const weight = role === "foreground" && foregroundRankWeight.has(familyId)
++			? foregroundRankWeight.get(familyId)!
++			: priorityWeight(obligations.find((obligation) => obligation.familyId === familyId)!.priority)
+ 		numerator += weight * value
+ 		// The foreground is the reading surface, not where an artwork's color identity lives: every
+ 		// treatment human review has preferred carries its chromatic identity in the field and the

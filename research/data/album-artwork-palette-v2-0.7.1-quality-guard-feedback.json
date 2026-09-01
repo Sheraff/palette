@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+  "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf",
+  "entries": [
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T14:36:38.859Z"
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "qualityA": "weak-fallback",
+      "qualityB": "unacceptable",
+      "comparison": "a-stronger",
+      "tagsA": [
+        "incomplete artwork identity"
+      ],
+      "tagsB": [
+        "incomplete artwork identity"
+      ],
+      "comment": "still the same comment as for the last few times this artwork has been shown in review:\n- the foreground should be black like the title of the album on the artwork. Luna can work as a weak fallback.\n- Magentarama is an excellent accent\n- the background should be a gradient between 2 major hues like it is in the artwork (orange-red to green; or green to cyan-blue; or cyan-green to dark blue). Those are some of the strongest gradients in all of our datasets\n\ni know this artwork is exceptionally tricky, this is why it is in this dataset",
+      "submittedAt": "2026-07-27T14:41:23.499Z"
+    },
+    {
+      "caseId": "development-17",
+      "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T14:41:23.325Z"
+    }
+  ]
+}

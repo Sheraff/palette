@@ -1,0 +1,378 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "album-artwork-palette-v2-0.7.5-known-failure-audit-1.0.0",
+  "analysisType": "read-only-current-domain-custody",
+  "status": "closed-diagnostic-audit-no-counterfactual-candidate-output",
+  "roster": {
+    "path": "research/data/album-artwork-palette-v2-0.7.5-known-bad-roster.json",
+    "rosterId": "0ce0465834d82b1a72e931eab21e5a4b318eac14919c4bb07b59e5e7e5653c6f",
+    "rawSha256": "6ab3c41f60b35bc87a53ee8da887dc7daa1d76cba0774ff15bfb0a858b6248b3"
+  },
+  "bindings": [
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_4_CANDIDATE_REVIEW_POSTMORTEM.md",
+      "rawSha256": "3b90ae073ccdd06593f92c0e87d5d69434f54beeb8d98b1d1ae5d5e24f7a1acf"
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-0.7.5-known-bad-roster.json",
+      "rawSha256": "6ab3c41f60b35bc87a53ee8da887dc7daa1d76cba0774ff15bfb0a858b6248b3"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.3-development/sources/development-03.json",
+      "rawSha256": "3afa3657504c59b81edb51fd161bc40e8aae16f5bdccdef753425545816a66e8"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.3-development/sources/development-16.json",
+      "rawSha256": "bb9eec75b27d05392d3d279dbe791e2d32c2edbc92248973e2fbd35e48921a98"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-03.json",
+      "rawSha256": "50940af1cc7219a5c47a2b57fb2f8fa16fb03d709390c7425dab78604cbbc565"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-12.json",
+      "rawSha256": "2fd1a63bca5838bbbc0fb6655700532955454fd21d201b06975903bf1d1e0ffd"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-13.json",
+      "rawSha256": "a9123c773adda850a1d1ef02a3f8598e01b79cf768401fed720d0f35f5a68654"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-15.json",
+      "rawSha256": "000bca4ed0509fe3ef284e1d08db0b4a8e42c753f8df619ed3f6d0727f5e7307"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-16.json",
+      "rawSha256": "e24ebb710242867bf9f25fb86fab95aabc8b586278b76a45aa12f38ee1b6d5e5"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-19.json",
+      "rawSha256": "1095579cfe397e6605f6edd285325354f1c4810b5248cc0bafb584370bf712d0"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-26.json",
+      "rawSha256": "3f55e259020da7945a490c8afaa51c37fa08a3071deda3158f6edeb27f707cf0"
+    }
+  ],
+  "classifications": [
+    {
+      "caseId": "development-03",
+      "severity": "severe-phase-4-blocker",
+      "custodyCounts": {
+        "domain": 1500,
+        "ordinaryGlobalFrontier": 156,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 17,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "reviewedAlternative": {
+        "key": "#3fa72a:#3fa72a:#030102:#d02981:flat",
+        "quality": "acceptable",
+        "issues": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "location": {
+          "stage": "public-slate",
+          "domainIndex": 706,
+          "frontierIndex": 47,
+          "slateIndex": 1
+        }
+      },
+      "witnesses": {
+        "incumbentFieldWithRequestedRoles": {
+          "key": "#1c026d:#22438a:#030102:#d02981:gradient",
+          "location": {
+            "stage": "complete-candidate-domain",
+            "domainIndex": 1,
+            "frontierIndex": -1,
+            "slateIndex": -1
+          },
+          "reviewed": false
+        },
+        "diagnosticGradient": {
+          "hypothesisId": "gradient:field-domain-0:linear:diagonal-down:family-3302:family-6753:#301684:#4bb15b",
+          "treatmentKey": "#301684:#4bb15b:#030102:#d02981:gradient",
+          "sourceConnected": true,
+          "controlProposed": false,
+          "legalCompleteTreatmentConstructedInWidenedFamilyArm": true,
+          "current074Location": {
+            "stage": "absent",
+            "domainIndex": -1,
+            "frontierIndex": -1,
+            "slateIndex": -1
+          },
+          "reviewed": false
+        }
+      },
+      "earliestDemonstratedFailure": {
+        "class": "discovery-semantic-failure",
+        "custodyStage": "field-hypothesis-proposal",
+        "confidence": "high",
+        "rationale": "A source-connected broad gradient and legal complete treatment exist in the prior widened-family diagnostic arm but the field hypothesis is never proposed to the selected 0.7.4 retention boundary."
+      }
+    },
+    {
+      "caseId": "development-12",
+      "severity": "severe-phase-4-blocker",
+      "custodyCounts": {
+        "domain": 1500,
+        "ordinaryGlobalFrontier": 23,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 89,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "reviewedAlternative": {
+        "key": "#fffffe:#fffffe:#9e961a:#e6e622:flat",
+        "quality": "weak-fallback",
+        "issues": [
+          "incomplete artwork identity"
+        ],
+        "location": {
+          "stage": "public-slate",
+          "domainIndex": 71,
+          "frontierIndex": -1,
+          "slateIndex": 2
+        }
+      },
+      "witnesses": {
+        "exactBlackForegroundYellowAccent": {
+          "key": "#fffffe:#fffffe:#080808:#e6e622:flat",
+          "location": {
+            "stage": "complete-candidate-domain",
+            "domainIndex": 86,
+            "frontierIndex": -1,
+            "slateIndex": -1
+          },
+          "identityBestCarrier": true,
+          "failedQualityGuardBlocks": [
+            "accentUtility"
+          ],
+          "reviewed": false
+        }
+      },
+      "earliestDemonstratedFailure": {
+        "class": "unresolved",
+        "custodyStage": "after-complete-treatment-construction",
+        "confidence": "bounded",
+        "rationale": "The source-connected directions already coexist in a legal complete treatment, disproving role-availability and joint-construction loss. Its visible quality is unreviewed, so ordinary/guard loss cannot be called ranking failure."
+      }
+    },
+    {
+      "caseId": "development-13",
+      "severity": "accepted-isolated-limitation",
+      "custodyCounts": {
+        "domain": 1500,
+        "ordinaryGlobalFrontier": 220,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 489,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "witnesses": {
+        "unreviewedGradient": {
+          "key": "#796c7e:#d2d1df:#3b303e:#544959:gradient",
+          "location": {
+            "stage": "public-slate",
+            "domainIndex": 111,
+            "frontierIndex": 26,
+            "slateIndex": 4
+          },
+          "reviewed": false
+        }
+      },
+      "earliestDemonstratedFailure": {
+        "class": "accepted-isolated-limitation",
+        "custodyStage": null,
+        "confidence": "high",
+        "rationale": "The winner is acceptable, the gradient request was optional, and gradient treatments already reach the public slate."
+      }
+    },
+    {
+      "caseId": "development-15",
+      "severity": "accepted-isolated-limitation",
+      "custodyCounts": {
+        "domain": 1500,
+        "ordinaryGlobalFrontier": 230,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 167,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "witnesses": {},
+      "earliestDemonstratedFailure": {
+        "class": "accepted-isolated-limitation",
+        "custodyStage": null,
+        "confidence": "high",
+        "rationale": "The exact winner is acceptable and the only later criticism is explicitly uncertain with no issue tags."
+      }
+    },
+    {
+      "caseId": "development-16",
+      "severity": "confirmed-non-blocking-systemic-diagnostic",
+      "custodyCounts": {
+        "domain": 1500,
+        "ordinaryGlobalFrontier": 182,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 201,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "witnesses": {
+        "current074GradientTreatmentCount": 0,
+        "priorRecallArmGradientHypothesisCounts": {
+          "all-existing-representative-strategies": 0,
+          "all-retained-representative-cross-pairs": 0,
+          "widened-field-hypothesis-retention": 0,
+          "widened-family-lane-retention": 0
+        }
+      },
+      "earliestDemonstratedFailure": {
+        "class": "discovery-semantic-failure",
+        "custodyStage": "field-hypothesis-proposal",
+        "confidence": "high",
+        "rationale": "No gradient hypothesis exists in the selected registry or any predeclared 0.7.3 recall arm, and every 0.7.4 complete treatment is flat."
+      }
+    },
+    {
+      "caseId": "development-19",
+      "severity": "confirmed-non-blocking-systemic-diagnostic",
+      "custodyCounts": {
+        "domain": 1140,
+        "ordinaryGlobalFrontier": 182,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 121,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "witnesses": {
+        "reviewedStrongPreferredTreatment": {
+          "key": "#bfb2c4:#9c99c4:#6c678f:#d8cbdd:flat",
+          "location": {
+            "stage": "ordinary-global-frontier",
+            "domainIndex": 21,
+            "frontierIndex": 4,
+            "slateIndex": -1
+          }
+        }
+      },
+      "earliestDemonstratedFailure": {
+        "class": "ranking-or-retention-failure",
+        "custodyStage": "public-slate-retention",
+        "confidence": "high",
+        "rationale": "The exact historically strong and preferred treatment reaches the ordinary global frontier but is omitted from the public slate.",
+        "mechanismEligibility": "insufficient-alone-because-the-strong-treatment-is-not-already-in-the-public-slate"
+      }
+    },
+    {
+      "caseId": "development-26",
+      "severity": "confirmed-non-blocking-systemic-diagnostic",
+      "custodyCounts": {
+        "domain": 1500,
+        "ordinaryGlobalFrontier": 173,
+        "publicSlate": 8
+      },
+      "winner": {
+        "stage": "winner",
+        "domainIndex": 131,
+        "frontierIndex": 0,
+        "slateIndex": 0
+      },
+      "witnesses": {
+        "unreviewedLightForegroundTreatment": {
+          "key": "#bab7b2:#d2cfca:#d7d6d1:#080808:gradient",
+          "location": {
+            "stage": "ordinary-global-frontier",
+            "domainIndex": 1272,
+            "frontierIndex": 170,
+            "slateIndex": -1
+          },
+          "reviewed": false
+        }
+      },
+      "earliestDemonstratedFailure": {
+        "class": "unresolved",
+        "custodyStage": "after-ordinary-global-frontier",
+        "confidence": "bounded",
+        "rationale": "A legal source-connected light-foreground treatment reaches the frontier, but it is unreviewed and therefore cannot establish ranking failure."
+      }
+    }
+  ],
+  "mechanismSelection": {
+    "rule": "earliest-demonstrated-custody-loss-then-minimum-architectural-scope-over-repeated-severe-cases",
+    "severeCaseIds": [
+      "development-03",
+      "development-12"
+    ],
+    "selectedFailureClass": null,
+    "selectedMechanism": null,
+    "repeatedSevereFailureClassSupported": false,
+    "disposition": "end-0.7.5-as-diagnostic-audit",
+    "reason": [
+      "development-03 is a discovery-semantic failure at field-hypothesis proposal",
+      "development-12 remains unresolved after legal complete-treatment construction because its relevant alternatives are unreviewed",
+      "no ranking, role-attribution, field-structure, joint-construction, discovery-semantic, or representative-collapse mechanism is demonstrated across both severe blockers"
+    ],
+    "mechanismAssessments": {
+      "deterministicRankingCorrection": "not-supported-repeated-strong-public-slate-alternatives-absent",
+      "roleSpecificIdentityAttribution": "disproved-for-development-12-and-not-earliest-for-development-03",
+      "multiHueOrPiecewiseFieldStructure": "not-demonstrated-across-severe-cases",
+      "mechanismAwareJointConstruction": "disproved-for-development-12-and-not-earliest-for-development-03",
+      "discoverySemanticFollowUp": "supported-for-development-03-and-development-16-but-not-development-12-and-no-common-one-factor-boundary-proven",
+      "representativeOrCollapseFollowUp": "not-demonstrated-across-severe-cases"
+    }
+  },
+  "nextBoundedDiagnosticReview": {
+    "status": "predeclared-not-authorized",
+    "purpose": "determine whether the best source-independently ordered unreviewed retained alternative closes development-12 or exposes a later selector failure",
+    "caseId": "development-12",
+    "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+    "control": {
+      "key": "#fffffe:#fffffe:#080808:#584c1c:flat",
+      "quality": "weak-fallback",
+      "reviewed": true
+    },
+    "alternative": {
+      "key": "#fffffe:#fffffe:#e6e622:#584c1c:flat",
+      "publicSlateIndex": 1,
+      "reviewed": false,
+      "selectionRule": "first-deterministically-ordered-unreviewed-public-slate-alternative-after-current-winner"
+    },
+    "maximumItemCount": 1,
+    "blindedPairwiseComparisonRequired": true,
+    "openingOrPreparingReviewAuthorized": false
+  },
+  "authorization": {
+    "knownFailureAuditComplete": true,
+    "oneFactorProtocolAuthorizedByEvidence": false,
+    "candidateImplementation": false,
+    "counterfactualCandidateOutput": false,
+    "humanReview": false,
+    "protectedOrFreshArtworkAccess": false,
+    "phase4": false,
+    "promotion": false,
+    "defaultExtractorChange": false,
+    "persistence": false
+  },
+  "analysisId": "1fb095ab8d331694eaf09ab5405532961ca3e4845142ddc92b14f88bc5f54ae1"
+}

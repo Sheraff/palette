@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-review-v1",
+  "manifestId": "b795cf08eb7bf9e3a91751b633107cf759cc3dcb5dfaff7711ffda147eff1e01",
+  "entries": [
+    {
+      "caseId": "phase4-01-522ec8a241ae",
+      "sourceSha256": "28f9510d7f84801be3ef873617bd42388a1d88ce0fa7c82a78ce1750b6c47e3e",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T06:58:54.090Z"
+    },
+    {
+      "caseId": "phase4-02-6e0bea36fbd2",
+      "sourceSha256": "347efe08c1c9fc478356318563b53cbd9e4b55df8b50f8b707f015851b17f55d",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T06:59:45.282Z"
+    },
+    {
+      "caseId": "phase4-03-70ceed4c0383",
+      "sourceSha256": "7cfa0f1c1b35625a6c35e6ec48d5e4b8d767d6f75e6a79b5302ee72cdf28c4ad",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T07:00:07.012Z"
+    },
+    {
+      "caseId": "phase4-04-7cf39a15255b",
+      "sourceSha256": "8bf9fd2f6abdf6ee9b9ccd808abdd9b3d2475abf89cb6854d47acc7d13ba80a0",
+      "qualityA": "weak-fallback",
+      "qualityB": "weak-fallback",
+      "comparison": "similarly-valid",
+      "tagsA": [
+        "incomplete artwork identity"
+      ],
+      "tagsB": [
+        "incomplete artwork identity"
+      ],
+      "comment": "There is some red and orange hues in the artwork that are not reflected in these palettes ",
+      "submittedAt": "2026-07-27T07:01:14.420Z"
+    },
+    {
+      "caseId": "phase4-05-8ce8b005da2c",
+      "sourceSha256": "5441d52e60c1fd01388bfb6933b62ac75e71e9e24b1f535a6c66c555cdd51c02",
+      "qualityA": "unacceptable",
+      "qualityB": "acceptable",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "The issue with candidate A is that the foreground is barely readable on top of the surface, and the accent is hard to distinguish in the middle of the gradient between background surface ",
+      "submittedAt": "2026-07-27T07:04:10.174Z"
+    },
+    {
+      "caseId": "phase4-06-8d6cb6d5290d",
+      "sourceSha256": "43985495b51ddd618f26b28c9e0c43e95be845038aae836d12096c6aa6fdc67d",
+      "qualityA": "unacceptable",
+      "qualityB": "unacceptable",
+      "comparison": "neither-acceptable",
+      "tagsA": [
+        "incomplete artwork identity"
+      ],
+      "tagsB": [],
+      "comment": "The artwork has a purplish gradient background, the color of a sunset and some nice gold and yellow colors on top for the album's title and the person's hat.\nOption A is basically black and white so it is missing a lot the artworks identity.\nOption B is making a gradient between the purple of the artworks background and the yellow of the artworks foreground and this does not work. They do not have a gradient in the artwork, and the middle colors don't really work ",
+      "submittedAt": "2026-07-27T07:06:12.487Z"
+    },
+    {
+      "caseId": "phase4-07-aad2dd34c47d",
+      "sourceSha256": "03aa6e5678067c3d85186f6cc6c6a608cd4a3ac182a3777bf72144fdc9b5891c",
+      "qualityA": "acceptable",
+      "qualityB": "acceptable",
+      "comparison": "b-stronger",
+      "tagsA": [
+        "incomplete artwork identity"
+      ],
+      "tagsB": [
+        "missing gradient"
+      ],
+      "comment": "Option A feels too black and white, the red of the accent isn't red enough compared to what we see in the artwork \nOption B is almost very good, but it would be nicer if it had a background to surface gradient like option A ",
+      "submittedAt": "2026-07-27T07:07:28.045Z"
+    },
+    {
+      "caseId": "phase4-08-bdd706faa249",
+      "sourceSha256": "2426fbf241c0f8b96a0ac2b8183f782f48e83a7725b2a1cb3854031b1a0b4a73",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T07:07:55.602Z"
+    },
+    {
+      "caseId": "phase4-09-c81cb07acb2b",
+      "sourceSha256": "4617556951304c596abe236321842be5c32e48d39d510a5eacddcf7797e25729",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T07:08:23.980Z"
+    },
+    {
+      "caseId": "phase4-10-c99d23baffde",
+      "sourceSha256": "c0f935ea9cef7ec98eb06e502445e5eac6197d0137c31d1c5a5f41f4a8f20a10",
+      "qualityA": "strong",
+      "qualityB": "acceptable",
+      "comparison": "a-stronger",
+      "tagsA": [],
+      "tagsB": [
+        "incomplete artwork identity"
+      ],
+      "comment": "",
+      "submittedAt": "2026-07-27T07:08:46.740Z"
+    },
+    {
+      "caseId": "phase4-11-daa1e5610dc4",
+      "sourceSha256": "1a602bce91717dd3eab48a546bb74670b8f2078d8938fdd260f97895c197869a",
+      "qualityA": "acceptable",
+      "qualityB": "acceptable",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "The artwork itself is pretty awful So we shouldn't put too much weight on that particular treatment ",
+      "submittedAt": "2026-07-27T07:09:50.183Z"
+    },
+    {
+      "caseId": "phase4-12-f3b73f94f3e3",
+      "sourceSha256": "9761fbb47b62eff8f6d7cf2607b70751d2e407f44503e7bd7ce45af5e185f20a",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "a-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T07:10:09.215Z"
+    }
+  ]
+}

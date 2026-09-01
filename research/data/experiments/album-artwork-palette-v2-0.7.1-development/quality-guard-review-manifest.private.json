@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+  "presentationVersion": "album-artwork-palette-v2-phase-4-presentation-v1",
+  "cases": [
+    {
+      "caseId": "development-04",
+      "order": 0,
+      "source": {
+        "file": "images/placebo.jpg",
+        "sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+        "bytes": 210759
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#86a5aa",
+              "nearestName": "Storm's Coming",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#547677",
+              "nearestName": "Grey Teal",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fbfdfa",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#b2bcb4",
+              "nearestName": "Silver",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#6c8a8a",
+              "nearestName": "Campfire Smoke",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#86a5aa",
+              "nearestName": "Storm's Coming",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fbfdfa",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#455b59",
+              "nearestName": "Blue Steel",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-03",
+      "order": 1,
+      "source": {
+        "file": "images/birdsofprey.jpg",
+        "sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+        "bytes": 136233
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#1c026d",
+              "nearestName": "Black Rice",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#22438a",
+              "nearestName": "First Mate",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#e0cdc7",
+              "nearestName": "Luna",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d02981",
+              "nearestName": "Magentarama",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#1c026d",
+              "nearestName": "Black Rice",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#144184",
+              "nearestName": "Heritage Blue",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#bcddb0",
+              "nearestName": "Celadon Cream",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d02981",
+              "nearestName": "Magentarama",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "development-17",
+      "order": 2,
+      "source": {
+        "file": "images/havana.jpg",
+        "sha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+        "bytes": 258556
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#375c77",
+              "nearestName": "Blue Slate",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#243a51",
+              "nearestName": "Gunmetal",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f1e9bb",
+              "nearestName": "Cream",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#eed076",
+              "nearestName": "Venus",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#375c77",
+              "nearestName": "Blue Slate",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#243a51",
+              "nearestName": "Gunmetal",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#eed076",
+              "nearestName": "Venus",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#ee655f",
+              "nearestName": "Pulp",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    }
+  ],
+  "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf"
+}

@@ -1,0 +1,95 @@
+{
+	"schema_version": "group-a.v2",
+	"prompt_variant": "D",
+	"provenance": "[REVIEWED] Question set: research/v3/ORACLE_QUESTION_SET.md v2, group A. Vocabularies byte-identical to group-a.v1 (variants A and B); criterion text and canonical examples from §A.2, precedence rule from §A.1, both quoted verbatim. Deviations listed below.",
+	"design_notes": [
+		"Group-a.v2 = the corrected ground_type criterion under the FROZEN group-a.v1 vocabulary. The vocabulary split proposed in ORACLE_QUESTION_SET.md §A.5 is deliberately NOT implemented here: two changes at once cannot be attributed, and C/D establish the baseline any split would have to beat.",
+		"Question order is variant B's: enclosure, then texture, then the critical ground question, then shading. B's order matched the reviewer's exact ground_type answer on 16/30 contested artworks against variant A's 7/30 [MEASURED disambiguation-1]. Under constrained decoding the JSON property order IS the generation order, so the model has committed to two cheap facts about the image before it answers the hard one.",
+		"The enum option order inside every question is also variant B's, held constant on purpose. C/D-vs-B is therefore not confounded by option order; what changed against B is the criterion text, the precedence rule, the confidence trigger, and the stems.",
+		"C and D differ from each other in stem prose and JSON key names only. Question order, option order, vocabulary, the THE TEST block and the WHICH ANSWERS ARE FOR WHAT block are byte-identical between them. So C-vs-D isolates wording, and C/D-vs-B tests whether B's ordering result survives two fresh wordings (ORACLE_QUESTION_SET.md design rule 6 is wording-confounded until it does).",
+		"Placement note: both shared blocks sit at the top of the prompt, before question 1, rather than inline at the ground question the way variant B carried its one-surface rule. They are long and both later questions lean on them. This is part of what changed against B; the ORDER THAT MATTERS is the JSON property order, which is generation order under constrained decoding, and that is B's exactly.",
+		"The THE TEST block and the WHICH ANSWERS ARE FOR WHAT block are quoted verbatim from ORACLE_QUESTION_SET.md v2 §A.2 and §A.1, which is the same text the human review form must carry. The two instruments quote one sentence, not two paraphrases of it.",
+		"Greedy decoding, so prompt variation remains the only source of a disagreement signal (pipeline §3).",
+		"Variant D's wording family is motional: it calls the region the backdrop and asks which way the colour travels. Its second question presupposes unevenness and asks what accounts for it, reaching the same vocabulary from the other side. Keys: border / grain / field / falloff / certainty."
+	],
+	"deviations": [
+		"Identical to variants A and B: `not_applicable` is added to the shading vocabulary because a fixed JSON schema cannot make a field conditional without a union, and the analysis treats `not_applicable` and a missing answer identically.",
+		"`note` is the question set's `ambiguity_note`. HUMAN AUDIT ONLY, never read by code (pipeline §0). Required by the schema, capped at 120 characters so decode cost stays bounded.",
+		"New in group-a.v2: the `confidence` stem carries an operational trigger (\"answer low whenever a second answer is defensible\"). Under group-a.v1 the field was degenerate: 298 of 299 parsed rows said `high` [MEASURED premise-run-1]. The vocabulary is unchanged; only the instruction for choosing among its values is new. `confidence` is generated last under constrained decoding and is not part of the primary comparison."
+	],
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Here is an album cover.\n\nAnswer four questions about the BACKDROP: the big regions everything else sits on top of. Ignore small elements. Ignore the subject matter. Ignore whether you like it.\n\nTHE TEST. The ground reads either as ONE CONTINUOUS COLOUR PROGRESSION or as DISCRETE COLOUR AREAS. Whether it is one physical surface is a strong hint, but it is neither required nor decisive.\nCanonical case 1, the painted wall. A wall painted in bands that melt into each other is one continuous progression (shaded_field). The same wall painted in crisp bands is discrete areas (multiple_distinct_fields). Same wall, same paint, different answer.\nCanonical case 2, the blurry meeting line. One flat area meeting one shaded area along a blurry line is still discrete areas (multiple_distinct_fields). A single surface that is flat across part of itself and shaded across another part is one continuous progression (shaded_field). How soft the join looks is never the test.\nIf it is genuinely a coin flip, answer with your first read. Do not deliberate.\n\nWHICH ANSWERS ARE FOR WHAT. flat_field, shaded_field and multiple_distinct_fields answer the test above; use one of them whenever the ground can be read at all. full_scene, pattern_or_texture and none_discernible are only for grounds where the test cannot be applied: a depicted space with no readable overall colour behaviour, a motif or material that IS the ground, or nothing readable at all. A photograph of a place whose ground still reads as one progression or as discrete areas takes the test answer, not full_scene.\n\n1. border - does a frame, rule or block of colour ring the artwork?\n   thick_frame_or_bars - a broad frame, or filled bars along an edge, wide enough to read as its own region\n   none - nothing rings it; the image reaches every edge\n   thin_border - a slim line or narrow frame\n\n2. grain - the backdrop is not one flat colour everywhere. What accounts for that?\n   distinct_areas - it is split into separate blocks of colour, not a material effect\n   one_textured_material - a single material shows through everywhere: grain, noise, paper, canvas, brush, halftone\n   smooth - nothing accounts for it; the backdrop is even\n\n3. field - run THE TEST on the backdrop and give its answer.\n   multiple_distinct_fields - discrete colour areas sitting next to one another, however the edge between them looks\n   shaded_field - the colour travels continuously across the whole backdrop\n   flat_field - a single evenly filled colour, going nowhere\n   pattern_or_texture - a repeated motif or material standing in for the backdrop\n   full_scene - a place is shown and its backdrop has no colour behaviour you can read\n   none_discernible - you cannot make out any backdrop\n\n4. falloff - answer this only if you chose shaded_field. Which way does the colour travel?\n   radial_or_vignette - out from a centre, or down into the corners\n   not_applicable - shaded_field was not your answer\n   irregular - no regular direction to it\n   linear - side to side, or top to bottom, in a straight run\n\nLast:\n   certainty - high, medium or low for all four answers together. Say low whenever a second answer is defensible.\n   note - empty string if certainty is high; otherwise one short sentence on what is unclear\n\nAnswer in JSON and nothing else.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"border": {
+				"type": "string",
+				"enum": [
+					"thick_frame_or_bars",
+					"none",
+					"thin_border"
+				]
+			},
+			"grain": {
+				"type": "string",
+				"enum": [
+					"distinct_areas",
+					"one_textured_material",
+					"smooth"
+				]
+			},
+			"field": {
+				"type": "string",
+				"enum": [
+					"multiple_distinct_fields",
+					"shaded_field",
+					"flat_field",
+					"pattern_or_texture",
+					"full_scene",
+					"none_discernible"
+				]
+			},
+			"falloff": {
+				"type": "string",
+				"enum": [
+					"radial_or_vignette",
+					"not_applicable",
+					"irregular",
+					"linear"
+				]
+			},
+			"certainty": {
+				"type": "string",
+				"enum": [
+					"high",
+					"medium",
+					"low"
+				]
+			},
+			"note": {
+				"type": "string",
+				"maxLength": 120
+			}
+		},
+		"required": [
+			"border",
+			"grain",
+			"field",
+			"falloff",
+			"certainty",
+			"note"
+		],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"border": "enclosure",
+		"grain": "field_texture",
+		"field": "ground_type",
+		"falloff": "shading_geometry",
+		"certainty": "confidence",
+		"note": "ambiguity_note"
+	},
+	"free_text_fields": [
+		"note"
+	]
+}

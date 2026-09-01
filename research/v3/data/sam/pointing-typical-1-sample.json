@@ -1,0 +1,1390 @@
+{
+	"manifestVersion": "pointing-round-sample.v1",
+	"batchId": "pointing-typical-1",
+	"seed": 20260805,
+	"generatedBy": "research/v3/oracle/sam/pointing_typical_round.py",
+	"builtFrom": [
+		"research/v3/oracle/sam/POINTING_TYPICAL_PREREG.md",
+		"research/v3/data/sam/pointing-typical-1-run.json"
+	],
+	"sourceRun": "research/v3/data/sam/pointing-typical-1-run.json",
+	"prereg": "research/v3/oracle/sam/POINTING_TYPICAL_PREREG.md",
+	"implements": "POINTING_PROBE_NOTES.md \u00a713.8 as refined by \u00a714.7",
+	"draw": {
+		"frame": "research/v3/data/oracle-premise/eval-set.json (included entries)",
+		"frame_size": 142,
+		"excluded_ids": [
+			"0000269ead63cf2376a6b67d",
+			"00014fb430dd1b693e653121",
+			"0002dfdcde2cb0a75822168c",
+			"000300752f338b6aedff856c",
+			"00066a61bbcbeadd632f7f38",
+			"00075841f68d8cd71db368d8",
+			"000bc98f315aba36374f9f93",
+			"000c4d52300a016ee65f1622",
+			"000f0a78a1791248aec707e3",
+			"000fa9b53f161dc999ef557d",
+			"artofficial",
+			"disney",
+			"elephunk",
+			"krafty",
+			"skap"
+		],
+		"excluded_hit_in_frame": [
+			"0000269ead63cf2376a6b67d",
+			"00014fb430dd1b693e653121",
+			"0002dfdcde2cb0a75822168c",
+			"000300752f338b6aedff856c",
+			"00066a61bbcbeadd632f7f38",
+			"00075841f68d8cd71db368d8",
+			"000bc98f315aba36374f9f93",
+			"000c4d52300a016ee65f1622",
+			"000f0a78a1791248aec707e3",
+			"000fa9b53f161dc999ef557d",
+			"artofficial",
+			"disney",
+			"elephunk",
+			"krafty",
+			"skap"
+		],
+		"eligible_size": 127,
+		"seed": 20260804,
+		"method": "eligible artwork ids sorted ascending, random.Random(SEED).shuffle, first 16 sampled, next 4 held as reserves in order",
+		"sample": [
+			"06/ab67616d00001e0200060491ade88c8893373d9f",
+			"12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"03/ab67616d0000b27300034b60105d8937440211da.jpg",
+			"04/ab67616d0000b2730004515066668684295c41a7",
+			"09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+			"07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+			"12/ab67616d00001e0200124d0597059e8987bc4577",
+			"11/ab67616d00001e0200117a3fb2444ed7e04c4721",
+			"10/ab67616d0000b273001063830a2e597293293797",
+			"00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"10/ab67616d0000b27300103a3729bf589e0dc913ab",
+			"05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+			"14/ab67616d00001e020014adcd67767097b6fb42e0",
+			"05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"08/ab67616d00001e0200083a2d455755e4c1116825"
+		],
+		"reserves": [
+			"0e/ab67616d00001e02000e229142cb6dbae156341c",
+			"00/ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+			"images/infected.jpg",
+			"09/ab67616d0000b2730009d178a401f9433fdddff2"
+		]
+	},
+	"substitutions": [],
+	"pointer": {
+		"name": "molmopoint-8b-8bit",
+		"repo": "mlx-community/MolmoPoint-8B-8bit",
+		"revision": "e295e68b2ee56c2d9a912453b5130633bd35aa4b",
+		"cap_px": 640,
+		"max_tokens": 256,
+		"phrasing_key": "plain",
+		"phrasing": "point to the background",
+		"shipped_temperature": 0.0,
+		"sample_temperature": 0.7,
+		"sample_top_p": 0.95,
+		"min_distinct_points": 3,
+		"max_draws": 5,
+		"deviation": "PREREG \u00a73 \u2014 draws 2+ are temperature samples because the shipped pointer path is temperature 0 and repeating it would record one point three times"
+	},
+	"sam": {
+		"repo": "mlx-community/sam3.1-bf16",
+		"revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
+		"coord_space": "feature",
+		"default_selection": "containing",
+		"ground_min_area": 0.05,
+		"ground_max_area": 0.85,
+		"weights_sha256_verified_this_run": true,
+		"load_seconds_wall": 1.8,
+		"load_seconds_reported": 0.2
+	},
+	"policies": [
+		"containing",
+		"ground",
+		"union"
+	],
+	"tileOrder": [
+		"pt1-34c92044f311",
+		"pt1-064c4177b3f1",
+		"pt1-6d64fad75bba",
+		"pt1-3f3b04126ecb",
+		"pt1-f2a4fb8545d1",
+		"pt1-8c14d9749966",
+		"pt1-cca4426afce4",
+		"pt1-7a7d951cc2b2",
+		"pt1-5d7c80c182e3",
+		"pt1-189bd382f6d6",
+		"pt1-e5225940c2c1",
+		"pt1-c1c2823baa67",
+		"pt1-fd1fb569af78",
+		"pt1-7bb197c449e5",
+		"pt1-8aee36f8b237",
+		"pt1-b794f9224409",
+		"pt1-6dc87377f298",
+		"pt1-a49bdb9d1ee8",
+		"pt1-bf9da750d451",
+		"pt1-9c6a23581c22",
+		"pt1-f8ee43b406d6",
+		"pt1-6c6316a4218a",
+		"pt1-941bd2f1724b",
+		"pt1-c325340b2a8f",
+		"pt1-39a902542259",
+		"pt1-49b67cfb121e",
+		"pt1-5d710ff33e4d",
+		"pt1-59b607e9e40d",
+		"pt1-3cb1cb465069",
+		"pt1-486052324575",
+		"pt1-54677f71feb1",
+		"pt1-12d826da8ab2",
+		"pt1-be223549712e",
+		"pt1-238b32427542",
+		"pt1-564938e1c432",
+		"pt1-0ab3741ca497",
+		"pt1-b8363058773e",
+		"pt1-ca257e3f8175",
+		"pt1-cebfd9778f29",
+		"pt1-40416feb9ac4",
+		"pt1-93c75731c68a",
+		"pt1-c0caeed0167b",
+		"pt1-0c212ae3034a",
+		"pt1-4df140ef7816",
+		"pt1-3355adf25ddb",
+		"pt1-83500bd872b7",
+		"pt1-8e5fe6ba9d91",
+		"pt1-00bd5c2e9798"
+	],
+	"preRegisteredBar": {
+		"source": "research/v3/oracle/sam/POINTING_TYPICAL_PREREG.md \u00a76",
+		"fixedBefore": "the GPU run \u2014 committed in e4e1553 before any inference",
+		"B1_dotRightMin": 12,
+		"B2_dotRightAndWashRightMinPerPolicy": 8,
+		"of": 16,
+		"B3_rule": "route carries forward only if B1 holds AND at least one policy clears B2",
+		"B4_defaultMoves": "challenger clears B2, beats containing by >=3 covers of 16, and breaks at most 1 cover containing got both-right",
+		"coverDotVerdict": "majority of the cover's three tile answers; a tie is dot-wrong",
+		"comparisonBias": "pointing-ground-1's 7/8 and 3/8 were answered leniently and are ceilings; this round is answered strictly, so the comparison is biased AGAINST this round and a tie reads as an improvement"
+	},
+	"panelRenderer": {
+		"importedFrom": "research/v3/oracle/sam/pointing_round_1.py:panel",
+		"panelPx": 480,
+		"gutterPx": 12,
+		"maskRgb": [
+			255,
+			64,
+			160
+		],
+		"maskAlpha": 0.45,
+		"dotRgb": [
+			60,
+			255,
+			140
+		],
+		"captions": "none \u2014 no caption, no area number, no phrasing, no model name, and no policy name appears on any panel"
+	},
+	"items": [
+		{
+			"itemId": "pt1-59b607e9e40d",
+			"coverId": "00060491ade88c8893373d9f",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.3845,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "06/ab67616d00001e0200060491ade88c8893373d9f",
+				"artworkId": "00060491ade88c8893373d9f",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-59b607e9e40d.png",
+				"sha256": "613cf26e7d0ae28cd48d974aaf697e13a0c2f85662f42d5179ce774b51d4196e",
+				"bytes": 626263,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-238b32427542",
+			"coverId": "00060491ade88c8893373d9f",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.3845,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "06/ab67616d00001e0200060491ade88c8893373d9f",
+				"artworkId": "00060491ade88c8893373d9f",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-238b32427542.png",
+				"sha256": "613cf26e7d0ae28cd48d974aaf697e13a0c2f85662f42d5179ce774b51d4196e",
+				"bytes": 626263,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-5d710ff33e4d",
+			"coverId": "00060491ade88c8893373d9f",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.5584,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "06/ab67616d00001e0200060491ade88c8893373d9f",
+				"artworkId": "00060491ade88c8893373d9f",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-5d710ff33e4d.png",
+				"sha256": "3642eb42f5a09cabcf9e2ce7a886c302bdada9b4705f483882cba33e83f13118",
+				"bytes": 648139,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-564938e1c432",
+			"coverId": "0012eb9ade9c1bf4a5411c5d",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.8458,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+				"artworkId": "0012eb9ade9c1bf4a5411c5d",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-564938e1c432.png",
+				"sha256": "afde544b329557c664f38aa45d65333c6d5476d8734e52e6c120bc0b5bc8e111",
+				"bytes": 648639,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-40416feb9ac4",
+			"coverId": "0012eb9ade9c1bf4a5411c5d",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.8458,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+				"artworkId": "0012eb9ade9c1bf4a5411c5d",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-40416feb9ac4.png",
+				"sha256": "afde544b329557c664f38aa45d65333c6d5476d8734e52e6c120bc0b5bc8e111",
+				"bytes": 648639,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-f2a4fb8545d1",
+			"coverId": "0012eb9ade9c1bf4a5411c5d",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.8157,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+				"artworkId": "0012eb9ade9c1bf4a5411c5d",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-f2a4fb8545d1.png",
+				"sha256": "a2c057a225bedef01a025f119912534f2d7280e923dceb446e788a39063af58f",
+				"bytes": 654124,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-cca4426afce4",
+			"coverId": "00034b60105d8937440211da",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.2453,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+				"artworkId": "00034b60105d8937440211da",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-cca4426afce4.png",
+				"sha256": "8c59edce9222ed979ddfeaedf34b5baaee8a96b74456ff8de4146b8df5cb3991",
+				"bytes": 563194,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-e5225940c2c1",
+			"coverId": "00034b60105d8937440211da",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.6472,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+				"artworkId": "00034b60105d8937440211da",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-e5225940c2c1.png",
+				"sha256": "6eb6c71c4b15ee03423c861eb6e52a38be865d1e77255907d0313fef7a7f5b4f",
+				"bytes": 688536,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-83500bd872b7",
+			"coverId": "00034b60105d8937440211da",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.6379,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+				"artworkId": "00034b60105d8937440211da",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-83500bd872b7.png",
+				"sha256": "e0963e66638da62e81cdbcc1d62c414a070b32248f0d3d92be7794d566784984",
+				"bytes": 700711,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-8aee36f8b237",
+			"coverId": "0004515066668684295c41a7",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.7135,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+				"artworkId": "0004515066668684295c41a7",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-8aee36f8b237.png",
+				"sha256": "ec567378f3c8fbd2b1964ddd4afd89f70d23e4490faea6f188223af07528ebe9",
+				"bytes": 949618,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-3355adf25ddb",
+			"coverId": "0004515066668684295c41a7",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.7135,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+				"artworkId": "0004515066668684295c41a7",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-3355adf25ddb.png",
+				"sha256": "ec567378f3c8fbd2b1964ddd4afd89f70d23e4490faea6f188223af07528ebe9",
+				"bytes": 949618,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-93c75731c68a",
+			"coverId": "0004515066668684295c41a7",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.5818,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "04/ab67616d0000b2730004515066668684295c41a7",
+				"artworkId": "0004515066668684295c41a7",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-93c75731c68a.png",
+				"sha256": "1eb4314b0f6695d2d26bf9e45afcdd9ce2b45628a7ca2a863bb9b73676524a9e",
+				"bytes": 936429,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-bf9da750d451",
+			"coverId": "000955ccfc1e8da97a09b32d",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.4387,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"artworkId": "000955ccfc1e8da97a09b32d",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-bf9da750d451.png",
+				"sha256": "35ad71427ae52a3b558290b80445b9197de5bcb46f1d789437bb1f94a7af5b98",
+				"bytes": 429016,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-c1c2823baa67",
+			"coverId": "000955ccfc1e8da97a09b32d",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.4387,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"artworkId": "000955ccfc1e8da97a09b32d",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-c1c2823baa67.png",
+				"sha256": "35ad71427ae52a3b558290b80445b9197de5bcb46f1d789437bb1f94a7af5b98",
+				"bytes": 429016,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-6c6316a4218a",
+			"coverId": "000955ccfc1e8da97a09b32d",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.579,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"artworkId": "000955ccfc1e8da97a09b32d",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-6c6316a4218a.png",
+				"sha256": "3d1dd739c31d30f3a16d2daff09de9a98fe52c9b058f66641be0a6980c081e08",
+				"bytes": 440946,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-3cb1cb465069",
+			"coverId": "0007cc8b341c11227aa7b461",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.635,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"artworkId": "0007cc8b341c11227aa7b461",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-3cb1cb465069.png",
+				"sha256": "9f3b2a68c53b50d0853a5ce795f62e3855bb742d45a5dc1b1f9a93543bc2b3f3",
+				"bytes": 667657,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-6dc87377f298",
+			"coverId": "0007cc8b341c11227aa7b461",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7205,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"artworkId": "0007cc8b341c11227aa7b461",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-6dc87377f298.png",
+				"sha256": "202c6b65449b4356ae01479a9a113f36d13c5b2b61de289e23549d0f708142f8",
+				"bytes": 707122,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-941bd2f1724b",
+			"coverId": "0007cc8b341c11227aa7b461",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7679,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"artworkId": "0007cc8b341c11227aa7b461",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-941bd2f1724b.png",
+				"sha256": "d0972bd0280bce8f6dafa2bf5656638caa073059a7dbe813eb7b025e743ac656",
+				"bytes": 718781,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-c0caeed0167b",
+			"coverId": "0010b864b2a925ec6bfaa30e",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.3399,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+				"artworkId": "0010b864b2a925ec6bfaa30e",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-c0caeed0167b.png",
+				"sha256": "12fcac525bd84ddf952d3cb55613d5178033c1bd32b07ac51438cd917c9e712a",
+				"bytes": 648068,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-34c92044f311",
+			"coverId": "0010b864b2a925ec6bfaa30e",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.3399,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+				"artworkId": "0010b864b2a925ec6bfaa30e",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-34c92044f311.png",
+				"sha256": "12fcac525bd84ddf952d3cb55613d5178033c1bd32b07ac51438cd917c9e712a",
+				"bytes": 648068,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-12d826da8ab2",
+			"coverId": "0010b864b2a925ec6bfaa30e",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.3281,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+				"artworkId": "0010b864b2a925ec6bfaa30e",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-12d826da8ab2.png",
+				"sha256": "8f10b230165b1c278e521d378a9ae549308055240c3e24461221032e86bfa551",
+				"bytes": 647979,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-be223549712e",
+			"coverId": "00124d0597059e8987bc4577",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.3735,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "12/ab67616d00001e0200124d0597059e8987bc4577",
+				"artworkId": "00124d0597059e8987bc4577",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-be223549712e.png",
+				"sha256": "0bfffd57c5964f3c6411eb19cbe2478b305b41530ae0acb7b2e6f6c8ce7b5f69",
+				"bytes": 530701,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-189bd382f6d6",
+			"coverId": "00124d0597059e8987bc4577",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.3735,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "12/ab67616d00001e0200124d0597059e8987bc4577",
+				"artworkId": "00124d0597059e8987bc4577",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-189bd382f6d6.png",
+				"sha256": "0bfffd57c5964f3c6411eb19cbe2478b305b41530ae0acb7b2e6f6c8ce7b5f69",
+				"bytes": 530701,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-b8363058773e",
+			"coverId": "00124d0597059e8987bc4577",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.3441,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "12/ab67616d00001e0200124d0597059e8987bc4577",
+				"artworkId": "00124d0597059e8987bc4577",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-b8363058773e.png",
+				"sha256": "77f47359c0c8d36750973ac9a8cf5f66b7963d3cd8004005b35bb2ca73945257",
+				"bytes": 480993,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-6d64fad75bba",
+			"coverId": "00117a3fb2444ed7e04c4721",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.0186,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "11/ab67616d00001e0200117a3fb2444ed7e04c4721",
+				"artworkId": "00117a3fb2444ed7e04c4721",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-6d64fad75bba.png",
+				"sha256": "3ad3ec110c0bd7e4fdb06883352845e97620478f247f1c2d6ada891a619e4308",
+				"bytes": 419075,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-0ab3741ca497",
+			"coverId": "00117a3fb2444ed7e04c4721",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.5351,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "11/ab67616d00001e0200117a3fb2444ed7e04c4721",
+				"artworkId": "00117a3fb2444ed7e04c4721",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-0ab3741ca497.png",
+				"sha256": "a9f48a86408a9b05a2dfa79e42c6f735edef05b9936a3caed8bce38bb2dfafe3",
+				"bytes": 756088,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-5d7c80c182e3",
+			"coverId": "00117a3fb2444ed7e04c4721",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.2137,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "11/ab67616d00001e0200117a3fb2444ed7e04c4721",
+				"artworkId": "00117a3fb2444ed7e04c4721",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-5d7c80c182e3.png",
+				"sha256": "a8c4eb31ae620b5faa131f861dd5a4d3a8f4369e82332edf4fa3628f95d33555",
+				"bytes": 609613,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-a49bdb9d1ee8",
+			"coverId": "001063830a2e597293293797",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.9573,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "10/ab67616d0000b273001063830a2e597293293797",
+				"artworkId": "001063830a2e597293293797",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-a49bdb9d1ee8.png",
+				"sha256": "0795744c11dd01b18c3493057c6e2251073616b57b37020157811bd842225dae",
+				"bytes": 326441,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-0c212ae3034a",
+			"coverId": "001063830a2e597293293797",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.4819,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "10/ab67616d0000b273001063830a2e597293293797",
+				"artworkId": "001063830a2e597293293797",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-0c212ae3034a.png",
+				"sha256": "371a7d171058e461aa589d4fd17e26d0160a264e0679e58709eb0bc999e224dd",
+				"bytes": 591764,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-49b67cfb121e",
+			"coverId": "001063830a2e597293293797",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7999,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "10/ab67616d0000b273001063830a2e597293293797",
+				"artworkId": "001063830a2e597293293797",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-49b67cfb121e.png",
+				"sha256": "069d695e4864f74e56f2b0d79db336b5259bc5de2b5f97c8091e692427d50d73",
+				"bytes": 595358,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-064c4177b3f1",
+			"coverId": "0000cb591a0d52d8b88692d9",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 1,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.1724,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+				"artworkId": "0000cb591a0d52d8b88692d9",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-064c4177b3f1.png",
+				"sha256": "5c87b83b6140d3c97f5fe2383b51caac5dcdd08c45fa83aaa970af0d14077ef9",
+				"bytes": 804583,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-7bb197c449e5",
+			"coverId": "0000cb591a0d52d8b88692d9",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 1,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.1724,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": true,
+			"artwork": {
+				"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+				"artworkId": "0000cb591a0d52d8b88692d9",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-7bb197c449e5.png",
+				"sha256": "5c87b83b6140d3c97f5fe2383b51caac5dcdd08c45fa83aaa970af0d14077ef9",
+				"bytes": 804583,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-00bd5c2e9798",
+			"coverId": "0000cb591a0d52d8b88692d9",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 1,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.1724,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+				"artworkId": "0000cb591a0d52d8b88692d9",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-00bd5c2e9798.png",
+				"sha256": "5c87b83b6140d3c97f5fe2383b51caac5dcdd08c45fa83aaa970af0d14077ef9",
+				"bytes": 804583,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-9c6a23581c22",
+			"coverId": "00103a3729bf589e0dc913ab",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.2071,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300103a3729bf589e0dc913ab",
+				"artworkId": "00103a3729bf589e0dc913ab",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-9c6a23581c22.png",
+				"sha256": "38fa2f5b22c34f7ceb7d8ba2b63df4a17f3feaf5a3c7f6136fa98b56d1b6685a",
+				"bytes": 681312,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-4df140ef7816",
+			"coverId": "00103a3729bf589e0dc913ab",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300103a3729bf589e0dc913ab",
+				"artworkId": "00103a3729bf589e0dc913ab",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-4df140ef7816.png",
+				"sha256": "cfdf2b2692253b31258f0bcb169b68bccbfab1a15e0eec55fde2be3f6a743d0d",
+				"bytes": 847401,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-b794f9224409",
+			"coverId": "00103a3729bf589e0dc913ab",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.5899,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300103a3729bf589e0dc913ab",
+				"artworkId": "00103a3729bf589e0dc913ab",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-b794f9224409.png",
+				"sha256": "4f1c450c2fd1d951a89ed1f72d9b4f612b8d7997bf108ace5dad9719fb08c27c",
+				"bytes": 830263,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-cebfd9778f29",
+			"coverId": "0005597105ba1e2d38f62cfc",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.4323,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+				"artworkId": "0005597105ba1e2d38f62cfc",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-cebfd9778f29.png",
+				"sha256": "2a5fadf7033e6344e76b8e0b50246e5f379b58e9ce2ac227578698fb80879840",
+				"bytes": 660398,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-fd1fb569af78",
+			"coverId": "0005597105ba1e2d38f62cfc",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.7761,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+				"artworkId": "0005597105ba1e2d38f62cfc",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-fd1fb569af78.png",
+				"sha256": "090a96c63c5b1ae637abeffe6e6d3a9ae847a23c231fc31e6f0ec5a9b8f642dd",
+				"bytes": 684563,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-f8ee43b406d6",
+			"coverId": "0005597105ba1e2d38f62cfc",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 2,
+			"pointsShortfall": true,
+			"maskAreaFraction": 0.8088,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+				"artworkId": "0005597105ba1e2d38f62cfc",
+				"collection": "sharded",
+				"width": 640,
+				"height": 640
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-f8ee43b406d6.png",
+				"sha256": "5e52d18359b1c47630019eec53d8399545a76d14a0d7eba80a6b1d0b7b48c117",
+				"bytes": 691600,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-54677f71feb1",
+			"coverId": "0014adcd67767097b6fb42e0",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.8635,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "14/ab67616d00001e020014adcd67767097b6fb42e0",
+				"artworkId": "0014adcd67767097b6fb42e0",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-54677f71feb1.png",
+				"sha256": "6d5d51248212811570cb86c98a273563df4416f5858cc5304188773e82175f55",
+				"bytes": 814910,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-8c14d9749966",
+			"coverId": "0014adcd67767097b6fb42e0",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.6069,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "14/ab67616d00001e020014adcd67767097b6fb42e0",
+				"artworkId": "0014adcd67767097b6fb42e0",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-8c14d9749966.png",
+				"sha256": "ba62fb3186610903dea75828ad260b2faf5f6b22c9c22539799e02add5427eb8",
+				"bytes": 780035,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-c325340b2a8f",
+			"coverId": "0014adcd67767097b6fb42e0",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7805,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "14/ab67616d00001e020014adcd67767097b6fb42e0",
+				"artworkId": "0014adcd67767097b6fb42e0",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-c325340b2a8f.png",
+				"sha256": "e91263c3a47677bf777d3f6bdb0b55f0832bc8739454bdf59068447986939508",
+				"bytes": 834315,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-ca257e3f8175",
+			"coverId": "000564718f605c1f326b2ca2",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.6776,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+				"artworkId": "000564718f605c1f326b2ca2",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-ca257e3f8175.png",
+				"sha256": "81662b0bfab22d8e6d90c1b17b37fb4ec471afd0fe672f000b5e2d040daa7c12",
+				"bytes": 689710,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-7a7d951cc2b2",
+			"coverId": "000564718f605c1f326b2ca2",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7136,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+				"artworkId": "000564718f605c1f326b2ca2",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-7a7d951cc2b2.png",
+				"sha256": "883fd3ea1073f8d519d35d39a9dabd0f1c0a1f952458bb69b1be5a0be7be55c5",
+				"bytes": 691211,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-3f3b04126ecb",
+			"coverId": "000564718f605c1f326b2ca2",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7715,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+				"artworkId": "000564718f605c1f326b2ca2",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-3f3b04126ecb.png",
+				"sha256": "9cd20dcb50691a9f2bff58f485366e74605ffeb53e5dcb58e5ec411b243e088e",
+				"bytes": 699157,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-39a902542259",
+			"coverId": "00083a2d455755e4c1116825",
+			"policy": "containing",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.686,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+				"artworkId": "00083a2d455755e4c1116825",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-39a902542259.png",
+				"sha256": "26493d471cafa44ae7bcf78c017f3f273c4def81c0f255a915724ecc1d1bed45",
+				"bytes": 687088,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-8e5fe6ba9d91",
+			"coverId": "00083a2d455755e4c1116825",
+			"policy": "ground",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.7317,
+			"maskStrategy": null,
+			"sameCandidateAsContaining": false,
+			"artwork": {
+				"imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+				"artworkId": "00083a2d455755e4c1116825",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-8e5fe6ba9d91.png",
+				"sha256": "3c071edcfb5eb6c691e5d23371957d0dce80b5af5a4cb2d589e6612123f5e375",
+				"bytes": 696123,
+				"width": 972,
+				"height": 480
+			}
+		},
+		{
+			"itemId": "pt1-486052324575",
+			"coverId": "00083a2d455755e4c1116825",
+			"policy": "union",
+			"stratum": "typical",
+			"nDistinctPoints": 3,
+			"pointsShortfall": false,
+			"maskAreaFraction": 0.6592,
+			"maskStrategy": "union",
+			"sameCandidateAsContaining": null,
+			"artwork": {
+				"imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+				"artworkId": "00083a2d455755e4c1116825",
+				"collection": "sharded",
+				"width": 300,
+				"height": 300
+			},
+			"panel": {
+				"path": "research/v3/data/sam/review-panels-typical-1/pt1-486052324575.png",
+				"sha256": "03bcd3ca91ba733924c3f8048a2671c3bcc7fa1021d2444f13e0a31045bfa698",
+				"bytes": 673472,
+				"width": 972,
+				"height": 480
+			}
+		}
+	]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.6.0",
+  "implementationHash": "3f25579340ec3dea5efaa0d8aeeceb35483610b7519fa8892a5b99a96261f315",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "scientificSha256": "f0437a4ab86f321d3723e30527ff455222ed6e5590e891e3f590ab1b920e7d52",
+  "inputHashes": {
+    "currentAggregateSha256": "44fc6ab503208e1be29f697cb5acb0477d2a88092bd192b0068d1f9fde1bdef1",
+    "predecessorAggregateSha256": "ac8b958107ec31cafcb77bcd5c7054661e7ce12cf97459741b2585a829f9e560",
+    "futureSample03Sha256": "690e85ace6377fd154db1124754dfb7d876c64a3c063f8b567e0e219d88f0183",
+    "protocolSha256": "1f433d97aa34d7b08961588be00c921827ffab2db0b59100f48dd9dd54f335e0"
+  },
+  "futureSample03": {
+    "manifestId": "bee665792a4ddfaeb3541aa5e58181c8f3a0685836b13475643d9deccace4060",
+    "sealCommitment": "139d9c9fe72838c9618f0cb575cda34d1b7b54c8e83a9d1446034c76b35b75ba",
+    "opened": false
+  },
+  "mechanical": {
+    "changedWinnerCaseIds": [
+      "development-06",
+      "development-22"
+    ],
+    "primaryMismatchCaseIds": [],
+    "countMismatchCaseIds": [],
+    "fieldHypothesisMismatchCaseIds": [],
+    "invalidChallengerCaseIds": [],
+    "retainedSlateMismatchCaseIds": [],
+    "selectedChallengerCount": 2,
+    "maximumProjectedAttemptCount": 5,
+    "changedWinnerEvidence": {
+      "development-06": {
+        "predecessorId": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+        "challengerId": "gradient:field-domain-0:radial-upper-center:center-out:family-3745:family-2863:#2f3788:#2d2554|47,55,136|45,37,84|86,216,250|226,72,82|gradient",
+        "predecessorGradient": false,
+        "challengerGradient": true,
+        "foreground": "#56d8fa",
+        "accent": "#e24852",
+        "trace": {
+          "triggerEligible": true,
+          "reason": "challenger-selected",
+          "acceptedGradientVariantCount": 5,
+          "existingExactOverlayGradientCount": 5,
+          "projectedAttemptCount": 0,
+          "projectedLegalCount": 0,
+          "selectedChallengerId": "gradient:field-domain-0:radial-upper-center:center-out:family-3745:family-2863:#2f3788:#2d2554|47,55,136|45,37,84|86,216,250|226,72,82|gradient",
+          "selectedSource": "existing-complete",
+          "primaryFoundationEvidenceLevel": 19,
+          "challengerFoundationEvidenceLevel": 18,
+          "replacedPrimaryWinner": true
+        }
+      },
+      "development-22": {
+        "predecessorId": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+        "challengerId": "gradient:field-domain-232:radial-center:center-out:family-1101:family-2843:#010d1d:#102037|3,2,8|7,36,66|190,214,226|83,157,184|gradient",
+        "predecessorGradient": false,
+        "challengerGradient": true,
+        "foreground": "#bed6e2",
+        "accent": "#539db8",
+        "trace": {
+          "triggerEligible": true,
+          "reason": "challenger-selected",
+          "acceptedGradientVariantCount": 6,
+          "existingExactOverlayGradientCount": 6,
+          "projectedAttemptCount": 0,
+          "projectedLegalCount": 0,
+          "selectedChallengerId": "gradient:field-domain-232:radial-center:center-out:family-1101:family-2843:#010d1d:#102037|3,2,8|7,36,66|190,214,226|83,157,184|gradient",
+          "selectedSource": "existing-complete",
+          "primaryFoundationEvidenceLevel": 19,
+          "challengerFoundationEvidenceLevel": 18,
+          "replacedPrimaryWinner": true
+        }
+      }
+    }
+  },
+  "mechanismGate": {
+    "pass": true,
+    "scientificOutputChanged": true,
+    "exactChangedSet": true,
+    "exactFlatControls": true,
+    "existingGradientWinnersUnchanged": true,
+    "primarySearchUnchanged": true,
+    "allChangedWinnersValid": true,
+    "projectionBoundSatisfied": true,
+    "candidateAndSlateBoundsSatisfied": true
+  },
+  "phaseDisposition": "0.6.0-gradient-challenger-mechanism-passed-two-case-human-delta-required",
+  "analysisId": "42a4c5f0721311d20bfc763e58fc64c871df1802ea23728a346841de3ea9e76d"
+}

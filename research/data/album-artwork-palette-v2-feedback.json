@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 2,
+  "reviewVersion": "album-artwork-palette-v2-phase-3-selected-treatment-review-2",
+  "manifestId": "07d0574b5b7f10cf1f674cd05314ec28ec2f92dcfe4fa448736d693ab46c2045",
+  "entries": [
+    {
+      "caseId": "development-01",
+      "sourceSha256": "79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+      "selectedTreatmentId": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:04:10.739Z"
+    },
+    {
+      "caseId": "development-02",
+      "sourceSha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "selectedTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "both generated black and generated white could work as the foreground/accent",
+      "submittedAt": "2026-07-26T14:05:27.130Z"
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "selectedTreatmentId": "one:family-6753|63,167,42|63,167,42|20,25,117|208,41,129|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "comment": "this artwork is made of\n- black text and pink text\n- a very pale photo of a face, with colorful details\n- a rich multicolor background that goes red -> orange -> yellow -> green -> cyan -> dark blue -> pink\n\nthe Yoshi green background works very well, the Magentarama pink accent seems to be a close match for the pink text. But \n- i'm expecting a gradient background, like in the artwork\n- the indigo ink blue foreground does not match the artwork (in the artwork this blue is used as part of the background gradient, and the other available foreground text is black)",
+      "submittedAt": "2026-07-26T14:10:04.025Z"
+    },
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "selectedTreatmentId": "one:family-6813|108,138,138|108,138,138|17,19,18|237,223,197|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "comment": "Campfire Smoke background is a great match for this artwork.\nI'm expecting a surface of a different shade of grey-blue forming a gradient with the background.\nIvory could be a valid accent (it does match the skin of the character in the photo)\nthere is white text and red text, so I would like to see some white (maybe as the foreground)",
+      "submittedAt": "2026-07-26T14:13:32.036Z"
+    },
+    {
+      "caseId": "development-05",
+      "sourceSha256": "6dfd27c93891e02bccb9597196bca250807177c210e3e660f6fb66257cd2c1ef",
+      "selectedTreatmentId": "flat:family-1543:family-4694|11,9,10|137,21,34|244,233,231|234,143,116|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "this artwork is made of 5 colors\n- Blackout black background\n- Barolo red secondary background\n- Eggshell white text\n- a Deep Scarlet red and Cantaloupe pink drawing\n\nThis palette works. We could also have had \n- background: Blackout\n- surface: Barolo\n- accent: Deep Scarlet\n- foreground: Eggshell or Cantaloupe\n\nI don't know which one I would have preferred",
+      "submittedAt": "2026-07-26T14:17:40.086Z"
+    },
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "selectedTreatmentId": "one:family-3745|50,46,107|50,46,107|73,183,246|226,72,82|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "comment": "This is almost very good, but there are enough shades of deep blue / purple to offer a surface color different from the background (with which it should form a gradient)\n\nHex Appeal accent and Summer Blue foreground are very good.",
+      "submittedAt": "2026-07-26T14:19:45.604Z"
+    },
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "selectedTreatmentId": "one:family-220|0,0,0|0,0,0|237,246,251|134,209,238|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "comment": "overall good, but we're missing a surface with some darker shade of blue, and forming a gradient with the black background",
+      "submittedAt": "2026-07-26T14:21:11.394Z"
+    },
+    {
+      "caseId": "development-08",
+      "sourceSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+      "selectedTreatmentId": "one:family-6792|87,144,153|87,144,153|252,253,209|2,40,51|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:23:22.023Z"
+    },
+    {
+      "caseId": "development-09",
+      "sourceSha256": "67f6c4f58c00ac4299d5517ba541410eddd0901e34d753c2536229b2c13cd3c3",
+      "selectedTreatmentId": "one:family-4253|131,8,10|131,8,10|248,238,179|13,11,14|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:23:54.926Z"
+    },
+    {
+      "caseId": "development-10",
+      "sourceSha256": "681a2c4a00cdee770a08049034023bb45309455ab8bf796571fcc6bb3b3a5f9e",
+      "selectedTreatmentId": "one:family-8560|199,191,54|199,191,54|2,12,3|252,253,245|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:24:26.097Z"
+    },
+    {
+      "caseId": "development-11",
+      "sourceSha256": "b62f5cdd35099615d788a6548f62aa8edb0aea93661d336cb856f6c30ee9c9da",
+      "selectedTreatmentId": "flat:family-7717:family-5513|181,158,142|128,90,51|237,235,210|221,20,52|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "i'm not entirely sure about the exact surface shade, looking at the artwork it looks like it should be slightly lighter",
+      "submittedAt": "2026-07-26T14:26:21.402Z"
+    },
+    {
+      "caseId": "development-12",
+      "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+      "selectedTreatmentId": "one:family-1543|8,8,8|8,8,8|255,255,255|230,230,34|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "of all the alternatives, this is the palette that is the closest, and it kinda works. But i do think that the background+surface should be Snow white, and the foreground should be Blackout black. (instead of the opposite like it is now)",
+      "submittedAt": "2026-07-26T14:28:55.019Z"
+    },
+    {
+      "caseId": "development-13",
+      "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+      "selectedTreatmentId": "flat:family-6393:family-9921|129,116,134|221,221,231|7,0,4|59,48,62|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "almost all of the proposed alternatives kinda work here. I picked this one because it has both a surface and a background",
+      "submittedAt": "2026-07-26T14:30:47.193Z"
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "selectedTreatmentId": "one:family-2403|21,25,34|21,25,34|204,211,217|128,139,145|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "comment": "there are enough shades of grey, grey-blue, grey-red in the artwork to provide a 4-color palette, and i think (not sure) this palette should be a gradient\nalso there is a bit of blue and a bit of red in the artwork, which could (not sure) be nice to find in the accent",
+      "submittedAt": "2026-07-26T14:34:50.840Z"
+    },
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "selectedTreatmentId": "one:family-5489|68,100,139|68,100,139|251,252,247|16,13,40|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "comment": "background and foreground are ok\n- surface should be a gradient with a darker shade of blue (but not as dark as the Night blue accent) to represent the artwork's such gradient\n- the Night blue color of the accent doesn't really represent any salient parts of the artwork, it should either be a lighter blue (there is some text of that shade in the artwork) or a bright color (there are many yellow, red, orange dots at the bottom of the artwork)",
+      "submittedAt": "2026-07-26T14:38:06.554Z"
+    },
+    {
+      "caseId": "development-17",
+      "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+      "selectedTreatmentId": "one:family-5048|51,88,117|51,88,117|241,233,187|238,101,95|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "there should be a surface color, there are many to pick from that could be valid (and depending on which one, it could be a gradient)",
+      "submittedAt": "2026-07-26T14:39:54.087Z"
+    },
+    {
+      "caseId": "development-18",
+      "sourceSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "selectedTreatmentId": "flat:family-1540:family-3746|4,3,37|49,48,92|240,187,55|253,237,159|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:40:32.925Z"
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "selectedTreatmentId": "one:family-8598|191,178,196|191,178,196|5,31,108|28,0,49|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "the artwork is made of many pastel colors, and small white text on the bottom right\n- dark foreground and dark accent don't really feel like they belong\n- we should have a surface color, there are plenty to pick from",
+      "submittedAt": "2026-07-26T14:42:01.528Z"
+    },
+    {
+      "caseId": "development-20",
+      "sourceSha256": "d07c8ca590c619cccdbeea00aef8e25a700b859d3f9a01b8cabf03dd2dc22aa9",
+      "selectedTreatmentId": "one:family-1102|7,3,2|7,3,2|250,250,250|181,181,181|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:42:33.817Z"
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "selectedTreatmentId": "flat:family-6938:family-4645|224,51,167|81,12,201|239,210,238|233,146,53|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "this one is hard to judge.\n- the selected colors are definitely valid (kefir white, Monarch orange, Sea Serpent's Tears blue, Love Vessel pink), I don't know if they are assigned the correct roles or not. I'm not 100% sure the presence of the Monarch is necessary.",
+      "submittedAt": "2026-07-26T14:46:49.019Z"
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "selectedTreatmentId": "one:family-1101|3,2,8|3,2,8|190,214,226|113,183,209|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "missing surface color, depending on surface color, may be a gradient",
+      "submittedAt": "2026-07-26T14:47:48.539Z"
+    },
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "selectedTreatmentId": "flat:family-2844:family-5975|20,44,46|159,89,53|235,227,180|235,227,180|flat",
+      "quality": "acceptable",
+      "tags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "the colors match the vibe of the artwork. We have enough colors for a 4-color palette though, so we should not collapse. I'm not sure Churro should be a surface (or should be picked at all), but it does work.",
+      "submittedAt": "2026-07-26T14:49:51.011Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "selectedTreatmentId": "one:family-9043|249,183,61|249,183,61|38,20,0|145,118,15|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "artwork includes a red dress, and some neon green text, we're missing part of the identity in this palette",
+      "submittedAt": "2026-07-26T14:50:50.335Z"
+    },
+    {
+      "caseId": "development-25",
+      "sourceSha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+      "selectedTreatmentId": "flat:family-220:family-2005|0,0,0|41,1,2|247,180,138|250,9,238|flat",
+      "quality": "unacceptable",
+      "tags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "those palettes are bad. foreground should be some orange-gold or white (text on this artwork is pink (like the accent), orange-gold, and white). The surface doesn't feel like it's part of the artwork, but there are many other colors to pick from\n",
+      "submittedAt": "2026-07-26T14:52:28.120Z"
+    },
+    {
+      "caseId": "development-26",
+      "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+      "selectedTreatmentId": "one:family-8599|186,183,178|186,183,178|8,8,8|57,54,49|flat",
+      "quality": "weak-fallback",
+      "tags": [
+        "missing gradient"
+      ],
+      "comment": "we should have a gradient with the surface. There is light grey text in this artwork that could be the foreground. background and accent are good",
+      "submittedAt": "2026-07-26T14:54:26.098Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "selectedTreatmentId": "flat:family-3748:family-1543|55,55,55|9,9,9|247,247,247|151,151,151|flat",
+      "quality": "strong",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:54:53.582Z"
+    },
+    {
+      "caseId": "development-28",
+      "sourceSha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+      "selectedTreatmentId": "one:family-8157|171,170,175|171,170,175|9,8,14|0,0,0|flat",
+      "quality": "acceptable",
+      "tags": [],
+      "comment": "",
+      "submittedAt": "2026-07-26T14:55:22.749Z"
+    }
+  ]
+}

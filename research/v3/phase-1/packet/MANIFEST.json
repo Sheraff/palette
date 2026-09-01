@@ -1,0 +1,266 @@
+{
+	"packet": "phase-1/packet",
+	"description": "The Phase 1 author packet. You receive exactly this directory and read nothing outside it.",
+	"commit": "71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2",
+	"builtOn": "2026-08-04",
+	"notes": [
+		"Every file carries a prepended provenance header (an HTML comment). `kind` describes the body below that header: `verbatim-whole-file`, `verbatim-extract`, or `assembled` (a stub written for this packet, reproducing nothing from the document it stands in for).",
+		"MANIFEST.json is not listed among its own files.",
+		"PHASE_1_AUTHOR_BRIEF.md §3.1 points at `src/contract/PERCEPTION_VERDICT.md`; in this packet that file is at `catalog/src/contract/PERCEPTION_VERDICT.md`.",
+		"`mayContainCampaignConclusions` marks a file that states measured results or failure analysis, per the brief's §7. `trim` records which sources were withheld or truncated, by category, hash and size only. `keptDespiteFlag` records which flagged files were delivered anyway."
+	],
+	"selfCheck": {
+		"auditedFor": "content disclosure — whether any field in this file describes what a withheld document says, or describes the design of the exercise this packet belongs to",
+		"date": "2026-08-04",
+		"check": "String-match of this file against every disclosure marker enumerated in the Phase 1 confinement audit, plus a scan for terms that would describe how this packet was produced rather than what it contains. Zero matches required.",
+		"rule": "A manifest inside a packet describes files, never findings, and never the experiment."
+	},
+	"files": [
+		{
+			"path": "PHASE_1_AUTHOR_BRIEF.md",
+			"sourcePath": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 29760,
+			"sha256": "dc5f84a2661453bbded60047d1305d74a89c507aeef8f3175e568ffaddf189fb",
+			"sourceBytes": 29492,
+			"sourceSha256": "d287c3f75a753970d04528dc9a5342b6ea459b3006a4570d90a890f9f3385dcd",
+			"mayContainCampaignConclusions": true,
+			"note": "States measured results and failure analysis. Delivered in full: this is the packet's governing document and it is frozen."
+		},
+		{
+			"path": "PHASE_0_DECISIONS.md",
+			"sourcePath": "research/v3/PHASE_0_DECISIONS.md",
+			"kind": "verbatim-extract",
+			"bytes": 47798,
+			"sha256": "80b4291870ef654b91c4ed66f8f9a995bea70f66524b96324ef3d54aa0708080",
+			"sourceBytes": 62118,
+			"sourceSha256": "b8b3c1febd393065adbd4e23cad906d65989ca92438a83890233c77127f08dd0",
+			"mayContainCampaignConclusions": true,
+			"note": "States measured results. Delivered as §§1-6; later sections withheld — see `trim`."
+		},
+		{
+			"path": "catalog/src/devloop/README.md",
+			"sourcePath": "research/v3/src/devloop/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 13742,
+			"sha256": "c56eea22614deffaa4632e826c23544d76ab7010a1e250d79b3d84ab528a0aa5",
+			"sourceBytes": 13476,
+			"sourceSha256": "ea44e28e9235c4492bfc0c6c7ca80089cf80575ff4abff9f455f6793b0cbda38",
+			"mayContainCampaignConclusions": false
+		},
+		{
+			"path": "catalog/src/robustness/README.md",
+			"sourcePath": "research/v3/src/robustness/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 11401,
+			"sha256": "60e026f858f9a2347fbe67db22d74296fc90d669683d661dffadab2800e4f85f",
+			"sourceBytes": 11132,
+			"sourceSha256": "99ad9c1cfe167c00303e60f2ba97fd5a543b9d8f797a4641e862c3dfaca06487",
+			"mayContainCampaignConclusions": true,
+			"note": "States measured results. Delivered in full — see `keptDespiteFlag`."
+		},
+		{
+			"path": "catalog/src/stats/README.md",
+			"sourcePath": "research/v3/src/stats/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 8866,
+			"sha256": "ba00cffbe7bd95386d34827cb35963159af757157bc243c11be6e50b209c5735",
+			"sourceBytes": 8602,
+			"sourceSha256": "e42fc89f427420e8843c9ece7f4f7184795b6b9e50110cab9da1213f2952cb39",
+			"mayContainCampaignConclusions": true,
+			"note": "Its worked example is drawn from a real study rather than invented. Delivered in full — see `keptDespiteFlag`."
+		},
+		{
+			"path": "catalog/src/adjudication/README.md",
+			"sourcePath": "research/v3/src/adjudication/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 15144,
+			"sha256": "2ecddc20f3c7385dc1ddf59bea5789a2dfc378380aefd7975644db4d2809ab2e",
+			"sourceBytes": 14873,
+			"sourceSha256": "98a33f75c8025eb5ad43cf8d8bd3f1d3e096ded756fe25369bf5bc06fe949c85",
+			"mayContainCampaignConclusions": true,
+			"note": "States counts describing the evidence store's current contents. Delivered in full — see `keptDespiteFlag`."
+		},
+		{
+			"path": "catalog/src/honesty/README.md",
+			"sourcePath": "research/v3/src/honesty/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 7362,
+			"sha256": "e7355f2ec692f3574f17c2060874e7746a351dcb4775066aa3f1536e81e29099",
+			"sourceBytes": 7096,
+			"sourceSha256": "d7a7c7b68aabdb45effd7d9f0e767c16e77936b4e7d7aeab38c74953bda8f1f3",
+			"mayContainCampaignConclusions": true,
+			"note": "States measured results. Delivered in full — see `keptDespiteFlag`."
+		},
+		{
+			"path": "catalog/src/contract/PERCEPTION_VERDICT.md",
+			"sourcePath": "research/v3/src/contract/PERCEPTION_VERDICT.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 26372,
+			"sha256": "134c00a1bbff7d6ca242c9ec75361eb7ae7bf141716f70f7327d0fccc815fc08",
+			"sourceBytes": 25294,
+			"sourceSha256": "e1f23f8bca84b3eb39ce7b76d009071e49d22066a5541eb64eee6d515b5b6edd",
+			"mayContainCampaignConclusions": true,
+			"note": "A measurement result by nature, plus contract-internal constants. Delivered in full: PHASE_1_AUTHOR_BRIEF.md §3.1 names it canonical text and §3.1 is normative."
+		},
+		{
+			"path": "catalog/REVIEW_UI.md",
+			"sourcePath": "research/v3/REVIEW_UI.md",
+			"kind": "assembled",
+			"bytes": 2926,
+			"sha256": "dc972788460112c13a8b741908334f8c502a26cbdabc563825b215a01f5093db",
+			"sourceBytes": 21246,
+			"sourceSha256": "db28e3fa8db1ae75a9e2030c3bbc2bfd5ea7ef391b64762e1e99adb5a582fa42",
+			"mayContainCampaignConclusions": false,
+			"stubFor": "research/v3/REVIEW_UI.md"
+		},
+		{
+			"path": "catalog/src/review-server/README.md",
+			"sourcePath": "research/v3/src/review-server/README.md",
+			"kind": "assembled",
+			"bytes": 2971,
+			"sha256": "040f6e32e382147aba212b4cd5160f940b0cce9803ca529acfed6551a1d28151",
+			"sourceBytes": 72706,
+			"sourceSha256": "d36fdf6ff391eea504cbfa5b6cc8e50620c3c197bfa77ff5e27cf42c78410087",
+			"mayContainCampaignConclusions": false,
+			"stubFor": "research/v3/src/review-server/README.md"
+		},
+		{
+			"path": "catalog/ORACLE_QUESTION_SET.md",
+			"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+			"kind": "assembled",
+			"bytes": 3295,
+			"sha256": "23791fdf73fd18b9adb746193117a470d4e8197e814554da150e05e9f0ad3f5f",
+			"sourceBytes": 80966,
+			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
+			"mayContainCampaignConclusions": false,
+			"stubFor": "research/v3/ORACLE_QUESTION_SET.md"
+		},
+		{
+			"path": "catalog/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+			"sourcePath": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+			"kind": "assembled",
+			"bytes": 2874,
+			"sha256": "4fbcea9d81e55ac6f45ab67df80fecc2a656932a380579ebe1b4e5022cce8311",
+			"sourceBytes": 53251,
+			"sourceSha256": "0659f162c4afd4001de3f8619e8b72e59f2ba8ad62543793af96683510e2d981",
+			"mayContainCampaignConclusions": false,
+			"stubFor": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md"
+		},
+		{
+			"path": "catalog/ORACLE_QUESTION_INVENTORY.md",
+			"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+			"kind": "verbatim-extract",
+			"bytes": 11210,
+			"sha256": "f13b5f0d554c492dcd84b1cc641768a7914e7cdca4a4659c4f108b1514331b7d",
+			"sourceBytes": 80966,
+			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
+			"mayContainCampaignConclusions": false,
+			"extractedFrom": "research/v3/ORACLE_QUESTION_SET.md"
+		}
+	],
+	"trim": [
+		{
+			"sourcePath": "research/v3/PHASE_0_DECISIONS.md",
+			"packetPath": "PHASE_0_DECISIONS.md",
+			"action": "truncated",
+			"removed": "§7, §7.1 and §8: source lines 604 to 807.",
+			"reason": "Instrument results and an open-items ledger. The brief's §3 table makes §§1-5 normative and cites §6/§6.1; §7 onward is outside the scope that table assigns to this file, and PHASE_1_AUTHOR_BRIEF.md §7 withholds the instruments' conclusions.",
+			"danglingCrossReference": "One kept line now points at withheld text: §6's \"What is still open: which model runs the bulk pass. See §8.\" (source line 513). The body is verbatim so it was not edited; the provenance header at the top of the packet copy states that §7, §7.1 and §8 are withheld and how to ask for them, which is where a reader who follows that pointer lands.",
+			"sourceSha256": "b8b3c1febd393065adbd4e23cad906d65989ca92438a83890233c77127f08dd0",
+			"sourceBytes": 62118
+		},
+		{
+			"sourcePath": "research/v3/REVIEW_UI.md",
+			"packetPath": "catalog/REVIEW_UI.md",
+			"action": "replaced-by-stub",
+			"removed": "the whole document",
+			"reason": "States measured results and failure analysis for the human review channel. Also outside an author's scope: the §5 catalog row is the whole of what this instrument requires an author to know.",
+			"sourceSha256": "db28e3fa8db1ae75a9e2030c3bbc2bfd5ea7ef391b64762e1e99adb5a582fa42",
+			"sourceBytes": 21246
+		},
+		{
+			"sourcePath": "research/v3/src/review-server/README.md",
+			"packetPath": "catalog/src/review-server/README.md",
+			"action": "replaced-by-stub",
+			"removed": "the whole document",
+			"reason": "States measured results and failure analysis for the review channel implementation. Also outside an author's scope: the §5 catalog row is the whole of what this instrument requires an author to know.",
+			"sourceSha256": "d36fdf6ff391eea504cbfa5b6cc8e50620c3c197bfa77ff5e27cf42c78410087",
+			"sourceBytes": 72706
+		},
+		{
+			"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+			"packetPath": "catalog/ORACLE_QUESTION_SET.md",
+			"action": "replaced-by-stub",
+			"removed": "the whole document",
+			"reason": "States measured accuracy figures, agreement statistics and replication outcomes for its own questions. PARTIALLY RESTORED: catalog/ORACLE_QUESTION_INVENTORY.md carries the question ids, vocabularies and wording extracted from this document, with everything on the what-it-found side removed — see oracleQuestionInventory.",
+			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
+			"sourceBytes": 80966
+		},
+		{
+			"sourcePath": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+			"packetPath": "catalog/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+			"action": "replaced-by-stub",
+			"removed": "the whole document",
+			"reason": "States measured corpus-survey results alongside pipeline architecture. Withheld with its companion so that the oracle is described to an author by its §5 catalog row and the question inventory rather than by half of its documentation.",
+			"sourceSha256": "0659f162c4afd4001de3f8619e8b72e59f2ba8ad62543793af96683510e2d981",
+			"sourceBytes": 53251
+		}
+	],
+	"oracleQuestionInventory": {
+		"packetPath": "catalog/ORACLE_QUESTION_INVENTORY.md",
+		"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+		"why": "The §5 catalog row describes the oracle as 'a VLM question set' without saying what it asks. Which questions exist is on the WHAT IT MEASURES side of the brief's own line, so a bare stub withheld something the brief promised. This file restores that and nothing else.",
+		"questionsRetainedWithWording": 28,
+		"retainedByGroup": {
+			"A single-question": 4,
+			"A probes": 6,
+			"B": 3,
+			"C": 2,
+			"D": 5,
+			"E": 3,
+			"F": 3,
+			"Meta": 2
+		},
+		"questionsListedByIdOnly": 4,
+		"idOnly": [
+			"ground_type",
+			"field_texture",
+			"shading_geometry",
+			"shading_direction"
+		],
+		"idOnlyReason": "For these four the source does not state a vocabulary or wording that can be lifted out on its own, so only the id is carried.",
+		"stripped": "Everything on the what-it-found side of the source, plus its change history and its appendices. One further column of every group table was dropped whole rather than filtered, because some of its cells sat on the what-it-found side and cutting was safer than judging cell by cell.",
+		"method": "Built by programmatic extraction from the source at build time, never retyped: every table cell and quoted block is asserted to be a byte-exact substring of ORACLE_QUESTION_SET.md, and a length tripwire rejects any single extracted run over 2,500 bytes, which caught one anchor collision before it shipped.",
+		"verbatimQuotedRuns": 67
+	},
+	"keptDespiteFlag": {
+		"rule": "These files are flagged `mayContainCampaignConclusions: true` and delivered in full anyway. The asymmetry against `trim` is deliberate and is recorded here so it is on the record rather than looking like an oversight.",
+		"files": [
+			"PHASE_1_AUTHOR_BRIEF.md",
+			"PHASE_0_DECISIONS.md",
+			"catalog/src/robustness/README.md",
+			"catalog/src/honesty/README.md",
+			"catalog/src/stats/README.md",
+			"catalog/src/adjudication/README.md",
+			"catalog/src/contract/PERCEPTION_VERDICT.md"
+		],
+		"reason": "Each states material that PHASE_1_AUTHOR_BRIEF.md already carries, and the brief is delivered whole and is frozen. Withholding these would remove nothing an author can read in the brief itself, so it would be theatre rather than a blind. PERCEPTION_VERDICT.md is the same case: §3.1 covers the same ground and names the file as its canonical text."
+	},
+	"catalogEntriesWithNoDoc": [
+		{
+			"catalogEntry": "Contract invariants (`src/contract/`)",
+			"briefSection": "PHASE_1_AUTHOR_BRIEF.md §5",
+			"sourcePath": "research/v3/src/contract/",
+			"status": "no README exists",
+			"note": "The §5 row is labelled `built` but names no README; it points at `import` from `src/contract/` and `tests/contract-*.test.ts`. The directory holds BELONGS_STUDY.md, PERCEPTION_MODEL_STUDY.md and PERCEPTION_VERDICT.md; none is a README and none was substituted for one. PERCEPTION_VERDICT.md is in the packet on a separate ground — §3.1 names it canonical — not as a stand-in for the missing README."
+		},
+		{
+			"catalogEntry": "Warehouse (`src/warehouse/`)",
+			"briefSection": "PHASE_1_AUTHOR_BRIEF.md §5",
+			"sourcePath": "research/v3/src/warehouse/",
+			"status": "no README exists",
+			"note": "The §5 row is labelled `built` but names no README; it points at the CLI only. The directory contains no markdown at all. Nothing was substituted."
+		}
+	]
+}

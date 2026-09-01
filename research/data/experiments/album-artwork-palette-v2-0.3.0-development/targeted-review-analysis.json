@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-pareto-mechanism-review-v1",
+  "manifestId": "a31eb91d0eeda12ff8fee857b5ba25790c1499191b77c9f851f61464fc397bbb",
+  "manifestSha256": "b361e83fcb879de01bb1d40721467f0a0ab7ea7638ba67e5fa2ba7738dcf2d3e",
+  "feedbackSha256": "36eac381c05c3a58be1f9b865bda2a021af53bf9024708fd61ab93deab01cf31",
+  "storeIntegrity": {
+    "manifestCaseCount": 4,
+    "storedEntryCount": 4,
+    "uniqueCaseCount": 4,
+    "lastWriteWins": true
+  },
+  "counts": {
+    "caseCount": 4,
+    "completedResponseCount": 4,
+    "caseWithPositiveCount": 3,
+    "totalPositiveMarks": 5,
+    "paretoTopPositiveCount": 1,
+    "legacyScalarTopPositiveCount": 2,
+    "alternativePositiveCount": 2,
+    "noneConfidentlyValidCount": 1,
+    "uncertainCount": 0
+  },
+  "presentationProcessFeedbackVerbatim": [
+    "the color names should also have a small sample of that color next to them to make it easier to see what they are referring to"
+  ],
+  "mechanismGate": {
+    "pass": false,
+    "reasons": [
+      "Pareto top was independently positive on only 1 of 4 targeted cases.",
+      "One of four cases had no confidently valid displayed direction.",
+      "Positive alternatives show top-one mismatch, while the explicit surface comment also identifies a candidate-direction gap."
+    ]
+  },
+  "nextGeneralChanges": [
+    "Include UI utility in the non-compensatory leximin core rather than using it only after core ties.",
+    "Retain high-ranked signature-lane family directions through per-field accent proposal caps.",
+    "Keep the broad 12-artwork top-one review blocked until a new targeted mechanism gate passes.",
+    "Show a color sample beside every human-facing color name."
+  ],
+  "responseInterpretations": [
+    {
+      "caseId": "development-20",
+      "originalResponse": {
+        "caseId": "development-20",
+        "sourceSha256": "d07c8ca590c619cccdbeea00aef8e25a700b859d3f9a01b8cabf03dd2dc22aa9",
+        "validOptionIds": [
+          "B",
+          "C",
+          "D"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T17:55:44.646Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-alternative",
+          "positive": false
+        },
+        {
+          "optionId": "B",
+          "role": "legacy-scalar-top",
+          "positive": true
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": true
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-alternative",
+          "positive": true
+        }
+      ],
+      "inferredClasses": [],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-23",
+      "originalResponse": {
+        "caseId": "development-23",
+        "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+        "validOptionIds": [
+          "D"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "there are enough colors to find a good surface (but the Umbra surface of the other candidates doesn't fit the artwork)",
+        "submittedAt": "2026-07-26T17:56:49.537Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "legacy-scalar-top",
+          "positive": false
+        },
+        {
+          "optionId": "B",
+          "role": "pareto-top",
+          "positive": false
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-alternative",
+          "positive": false
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-alternative",
+          "positive": true
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "surface-direction-availability-or-ranking",
+          "confidence": "high",
+          "evidence": "Only a collapsed-surface alternative was positive; the reviewer explicitly reported that displayed distinct surfaces did not fit despite sufficient artwork colors."
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-24",
+      "originalResponse": {
+        "caseId": "development-24",
+        "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+        "validOptionIds": [],
+        "noneConfidentlyValid": true,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T17:57:01.768Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "legacy-scalar-top",
+          "positive": false
+        },
+        {
+          "optionId": "B",
+          "role": "pareto-alternative",
+          "positive": false
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": false
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-alternative",
+          "positive": false
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "complete-treatment-domain-insufficient",
+          "confidence": "medium",
+          "evidence": "No displayed direction was confidently valid; no comment identifies a narrower mechanism."
+        }
+      ],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-27",
+      "originalResponse": {
+        "caseId": "development-27",
+        "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+        "validOptionIds": [
+          "B"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T17:57:44.180Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-top",
+          "positive": false
+        },
+        {
+          "optionId": "B",
+          "role": "legacy-scalar-top",
+          "positive": true
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-alternative",
+          "positive": false
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-alternative",
+          "positive": false
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "top-one-ui-utility-underweighting",
+          "confidence": "high",
+          "evidence": "The legacy scalar top was the sole positive; its UI utility was 0.427 versus 0.152 for the Pareto top, while UI utility was excluded from leximin core blocks."
+        }
+      ],
+      "interpretationUncertain": false
+    }
+  ]
+}

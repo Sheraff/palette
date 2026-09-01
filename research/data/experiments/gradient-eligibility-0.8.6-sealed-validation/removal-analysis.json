@@ -1,0 +1,1340 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-eligibility-sealed-validation-analysis-0.1.0",
+  "generatedAt": "2026-07-20T11:24:08.305Z",
+  "manifestId": "c0fffc6201ce82b005175b54e033bf97a1bea2da9fdcf723c88ce279881c2957",
+  "candidateVersion": "gradient-eligibility-0.8.6-dev",
+  "promotionEligible": false,
+  "promotionFailure": "At least one sealed changed case decisively requires the rejected gradient treatment for the reviewed endpoint pair.",
+  "reviewInterpretation": {
+    "schemaVersion": 1,
+    "recordedAt": "2026-07-20T11:15:00Z",
+    "decisionScope": "exact-selected-background-surface-pair",
+    "unansweredMeaning": "unreviewed",
+    "explicitNoVisibleDifferenceMeaning": "treatments-visually-identical",
+    "note": "Every judgment applies only to the exact displayed background-surface pair. Unanswered entries remain unreviewed; selected-colors-not-identifiable is an explicit stored response."
+  },
+  "provenance": {
+    "manifestSha256": "dbb12a404cdc558b49ad090e84ae216ef98a1ef75a02f8aa63921efc67c1e290",
+    "evaluationSha256": "eb9610f63259de167b02b2d644c37854ebedab5913596f4e776ce5685a1adb42",
+    "reviewSha256": "59c3423c2b46ba03ee8b8ae9e443eb5b2df3b177ccca4f374aa98aed428ee3fa",
+    "htmlSha256": "9bae10fba8ae5c472fd5e3e236cbba26f9469e1313fefa88ce68d6e4c6b65800",
+    "feedbackSha256": "3ccbd67ef8298cd1afc27188c494f2a3d1572ea4111a75f45239f1dae8f207ad",
+    "interpretationSha256": "cf368bf55db4c4ac5767fa59b6ecd209bae04a3038c502145647b9193f78f55c"
+  },
+  "summary": {
+    "reviewCases": 14,
+    "changedCases": 14,
+    "retainedCases": 0,
+    "submitted": 14,
+    "unreviewed": 0,
+    "selectedColorsNotIdentifiable": 1,
+    "noVisibleDifference": 2,
+    "judgments": {
+      "should-be-gradient": 2,
+      "should-not-be-gradient": 4,
+      "either-way": 5,
+      "no-visible-difference": 2,
+      "selected-colors-not-identifiable": 1
+    },
+    "strictFalseRejections": 2,
+    "retainedDecisive": 0,
+    "retainedFlat": 0,
+    "retainedFlatRate": null,
+    "retainedRulePassed": false,
+    "byCandidateReason": {
+      "eligible": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0,
+        "unreviewed": 0
+      },
+      "insufficient-spatial-continuity": {
+        "should-be-gradient": 1,
+        "should-not-be-gradient": 4,
+        "either-way": 1,
+        "no-visible-difference": 2,
+        "selected-colors-not-identifiable": 1,
+        "unreviewed": 0
+      },
+      "flat-background-isolated-surface": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 3,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0,
+        "unreviewed": 0
+      },
+      "insufficient-progressive-field-support": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 1,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0,
+        "unreviewed": 0
+      },
+      "unsupported-disconnected-color-path": {
+        "should-be-gradient": 1,
+        "should-not-be-gradient": 0,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0,
+        "unreviewed": 0
+      },
+      "fragmented-connected-color-path": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0,
+        "unreviewed": 0
+      },
+      "separate-border-connected-flat-fields": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0,
+        "unreviewed": 0
+      }
+    }
+  },
+  "sealedFalseRejections": [
+    {
+      "familyId": "gv-175abbc6434137b08ab8",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068387f0da195c45c23476",
+        "sha256": "7b9365fc797db19771206f68b00b81f05eabc59fd0edbbcb239fca96da19eba0",
+        "width": 300,
+        "height": 300,
+        "bytes": 24449
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            16,
+            16,
+            16
+          ],
+          "hex": "#101010",
+          "generated": false,
+          "sourceDistance": 0.0006306545958960079
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:03.077Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.1730423075928248,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.40419722576530615,
+          "continuity": 0.5714285714285714,
+          "coherence": 0.40575479566305256
+        },
+        "colorPathCoverage": 0.40419722576530615,
+        "intermediateCoverage": 0.23895886479591838,
+        "colorPathContinuity": 0.5714285714285714,
+        "colorPathDirectionalOrdering": 0.017948715028949232,
+        "connectedField": {
+          "coverage": 0.2059749681122449,
+          "shareOfColorPath": 0.5095902568906858,
+          "continuity": 0.5714285714285714,
+          "localTransitionCoverage": 0.7896468311562651,
+          "abruptTransitionShare": 0.18634097706879363,
+          "directionalOrdering": 0.41214555593322494
+        },
+        "background": {
+          "coverage": 0.08486128826530612,
+          "coherence": 0.2069046500704556,
+          "borderCoverage": 0.08408071748878924,
+          "interiorComponentShare": 0.32832315641146076,
+          "flatness": 1,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.08037707270408163,
+          "coherence": 0.16786511281924127,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.8477560128936276,
+          "flatness": 0.6529043927633263,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-2f9abd3d883f74b0f820",
+      "anchor": {
+        "file": "06/ab67616d00001e020006873de000f1e0a7e7d1f2",
+        "sha256": "7f28b62a1fddcad382caa5bb5aea4820b2ac96d6eb8523ca75d0a9bb21d159eb",
+        "width": 300,
+        "height": 300,
+        "bytes": 47690
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            39,
+            39,
+            4
+          ],
+          "hex": "#272704",
+          "generated": false,
+          "sourceDistance": 0.0030852284182315594
+        },
+        "surface": {
+          "rgb": [
+            17,
+            56,
+            2
+          ],
+          "hex": "#113802",
+          "generated": false,
+          "sourceDistance": 0.0038044322637654023
+        }
+      },
+      "candidateReason": "unsupported-disconnected-color-path",
+      "candidateEligible": false,
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:24.377Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.06377147092218223,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.7893478367664146,
+          "coverage": 0.07387994260204081,
+          "continuity": 1,
+          "coherence": 0.2020069808027923
+        },
+        "colorPathCoverage": 0.07387994260204081,
+        "intermediateCoverage": 0.04567920918367347,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.776381742178661,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.015166613520408163,
+          "coherence": 0.4296977660972405,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9632063074901446,
+          "flatness": 0.6296932140957044,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.013034119897959183,
+          "coherence": 0.021406727828746176,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9128440366972477,
+          "flatness": 0.6804601671629763,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    }
+  ],
+  "entries": [
+    {
+      "familyId": "gv-175abbc6434137b08ab8",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068387f0da195c45c23476",
+        "sha256": "7b9365fc797db19771206f68b00b81f05eabc59fd0edbbcb239fca96da19eba0",
+        "width": 300,
+        "height": 300,
+        "bytes": 24449
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            16,
+            16,
+            16
+          ],
+          "hex": "#101010",
+          "generated": false,
+          "sourceDistance": 0.0006306545958960079
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:03.077Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.1730423075928248,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.40419722576530615,
+          "continuity": 0.5714285714285714,
+          "coherence": 0.40575479566305256
+        },
+        "colorPathCoverage": 0.40419722576530615,
+        "intermediateCoverage": 0.23895886479591838,
+        "colorPathContinuity": 0.5714285714285714,
+        "colorPathDirectionalOrdering": 0.017948715028949232,
+        "connectedField": {
+          "coverage": 0.2059749681122449,
+          "shareOfColorPath": 0.5095902568906858,
+          "continuity": 0.5714285714285714,
+          "localTransitionCoverage": 0.7896468311562651,
+          "abruptTransitionShare": 0.18634097706879363,
+          "directionalOrdering": 0.41214555593322494
+        },
+        "background": {
+          "coverage": 0.08486128826530612,
+          "coherence": 0.2069046500704556,
+          "borderCoverage": 0.08408071748878924,
+          "interiorComponentShare": 0.32832315641146076,
+          "flatness": 1,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.08037707270408163,
+          "coherence": 0.16786511281924127,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.8477560128936276,
+          "flatness": 0.6529043927633263,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-5b6b0f5e53e45c878ad7",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064fddf48a67a4b5ecbbde",
+        "sha256": "4bd8e1907a323f00ada01989c37eb728bcde00a42861d75afeb871e6d376f5ea",
+        "width": 640,
+        "height": 640,
+        "bytes": 114566
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            72,
+            56,
+            46
+          ],
+          "hex": "#48382e",
+          "generated": false,
+          "sourceDistance": 0.005905951155886936
+        },
+        "surface": {
+          "rgb": [
+            138,
+            72,
+            86
+          ],
+          "hex": "#8a4856",
+          "generated": false,
+          "sourceDistance": 0.01670761886361328
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:13.925Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.1505511226975653,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.8992007829999378,
+          "coverage": 0.041493941326530615,
+          "continuity": 1,
+          "coherence": 0.0900562851782364
+        },
+        "colorPathCoverage": 0.041493941326530615,
+        "intermediateCoverage": 0.010622608418367346,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.3684645553029325,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.026426977040816327,
+          "coherence": 0.5950226244343891,
+          "borderCoverage": 0.01905829596412556,
+          "interiorComponentShare": 0.30165912518853694,
+          "flatness": 0.5235266282594297,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.004444355867346939,
+          "coherence": 0.1031390134529148,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9865470852017937,
+          "flatness": 0.27818932915472183,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-84bc70429932efdcb0d2",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065ade0fa8586d337725c9",
+        "sha256": "63ee5a4d71dc4efe08adb63475d06e56b41c9ef63c8633ed82f91d8498f7b6c2",
+        "width": 640,
+        "height": 640,
+        "bytes": 104275
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            44,
+            79,
+            124
+          ],
+          "hex": "#2c4f7c",
+          "generated": false,
+          "sourceDistance": 0.003829352884419044
+        },
+        "surface": {
+          "rgb": [
+            36,
+            14,
+            27
+          ],
+          "hex": "#240e1b",
+          "generated": false,
+          "sourceDistance": 0.0103280493381883
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:24.216Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.24060563790622735,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.7053704307529368,
+          "coverage": 0.1504504145408163,
+          "continuity": 1,
+          "coherence": 0.19896030245746693
+        },
+        "colorPathCoverage": 0.1504504145408163,
+        "intermediateCoverage": 0.04217155612244898,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.5611837498868697,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.06957509566326531,
+          "coherence": 0.6763105127470639,
+          "borderCoverage": 0.10426008968609865,
+          "interiorComponentShare": 0.31710111715840733,
+          "flatness": 0.41578382321380913,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.03870376275510204,
+          "coherence": 0.08444902162718847,
+          "borderCoverage": 0.01569506726457399,
+          "interiorComponentShare": 0.825437693099897,
+          "flatness": 0.17553162529691513,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-de1dd853048e7b6ce024",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d76a60adb07632a1a3bd",
+        "sha256": "e19a1c1ab0833fc88a1ead8a0c39263bf2236bcbf8898eaa66addb91063398a1",
+        "width": 640,
+        "height": 640,
+        "bytes": 151455
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            186,
+            192,
+            176
+          ],
+          "hex": "#bac0b0",
+          "generated": false,
+          "sourceDistance": 0.0013835244150634729
+        },
+        "surface": {
+          "rgb": [
+            186,
+            192,
+            176
+          ],
+          "hex": "#bac0b0",
+          "generated": false,
+          "sourceDistance": 0.0013835244150634729
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "no-visible-difference",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:28.915Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-cf1d71c01e9d12b97041",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069ba24213c4ab4e15f0a7",
+        "sha256": "563cc718bbf16a61b3a1c3eec31710a22d4edbf8def413ba79a7d240777ae1dd",
+        "width": 640,
+        "height": 640,
+        "bytes": 140374
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            27,
+            26,
+            24
+          ],
+          "hex": "#1b1a18",
+          "generated": false,
+          "sourceDistance": 0.008791529428911564
+        },
+        "surface": {
+          "rgb": [
+            27,
+            26,
+            24
+          ],
+          "hex": "#1b1a18",
+          "generated": false,
+          "sourceDistance": 0.008791529428911564
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "no-visible-difference",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:32.916Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 1,
+          "coverage": 0,
+          "continuity": 0,
+          "coherence": 0
+        },
+        "colorPathCoverage": 0,
+        "intermediateCoverage": 0,
+        "colorPathContinuity": 0,
+        "colorPathDirectionalOrdering": 0,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0,
+          "coherence": 0,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0,
+          "flatness": 0,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-b428294567669afb3c2a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006565e0bb81e72af35635f",
+        "sha256": "7fcac6dce989211b1203442a53c928c9522d3a754c8badd0515eaf30789df377",
+        "width": 640,
+        "height": 640,
+        "bytes": 82719
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            17,
+            21,
+            47
+          ],
+          "hex": "#11152f",
+          "generated": false,
+          "sourceDistance": 0.0016037129529185366
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:21:42.162Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.21406883663282178,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.799599740827182,
+          "coverage": 0.34817442602040816,
+          "continuity": 0.7857142857142857,
+          "coherence": 0.4372340425531915
+        },
+        "colorPathCoverage": 0.34817442602040816,
+        "intermediateCoverage": 0.03746811224489796,
+        "colorPathContinuity": 0.7857142857142857,
+        "colorPathDirectionalOrdering": 0.06945589930623274,
+        "connectedField": {
+          "coverage": 0.17759486607142858,
+          "shareOfColorPath": 0.5100744132799084,
+          "continuity": 0.7142857142857143,
+          "localTransitionCoverage": 0.499943889574683,
+          "abruptTransitionShare": 0.09211330751986957,
+          "directionalOrdering": 0.6965698011605386
+        },
+        "background": {
+          "coverage": 0.19184470663265307,
+          "coherence": 0.5035321005609806,
+          "borderCoverage": 0.2982062780269058,
+          "interiorComponentShare": 0,
+          "flatness": 1,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.11886160714285714,
+          "coherence": 0.3378604963112005,
+          "borderCoverage": 0.028026905829596414,
+          "interiorComponentShare": 0.4295774647887324,
+          "flatness": 0.2597381387351332,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.021817290334913128
+      }
+    },
+    {
+      "familyId": "gv-28d5ac2191512acb8df3",
+      "anchor": {
+        "file": "06/ab67616d00001e020006cb7b23dfb0c212f2c842",
+        "sha256": "e1a126fcb25ce1b8da0ebb79010d9611ed720d0737dcd59258db131dc7e310ae",
+        "width": 300,
+        "height": 300,
+        "bytes": 60518
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            233,
+            228,
+            227
+          ],
+          "hex": "#e9e4e3",
+          "generated": false,
+          "sourceDistance": 0.0022551196822946733
+        },
+        "surface": {
+          "rgb": [
+            211,
+            174,
+            120
+          ],
+          "hex": "#d3ae78",
+          "generated": false,
+          "sourceDistance": 0.007050762935157644
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:09.248Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.17046041418116323,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 0.688192370471534,
+          "coverage": 0.21376753826530612,
+          "continuity": 1,
+          "coherence": 0.2665457842248413
+        },
+        "colorPathCoverage": 0.21376753826530612,
+        "intermediateCoverage": 0.08793048469387756,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.011249655051125641,
+        "connectedField": {
+          "coverage": 0.0037468112244897957,
+          "shareOfColorPath": 0.01752750326309901,
+          "continuity": 0.9285714285714286,
+          "localTransitionCoverage": 1.175531914893617,
+          "abruptTransitionShare": 0.2533783783783784,
+          "directionalOrdering": 0.6805922337685218
+        },
+        "background": {
+          "coverage": 0.11377949617346939,
+          "coherence": 0.2699246803293046,
+          "borderCoverage": 0.20291479820627803,
+          "interiorComponentShare": 0.35260115606936415,
+          "flatness": 0.5941108390738679,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.012057557397959183,
+          "coherence": 0.11570247933884298,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.11334669241969186,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-815417defcd26ed2fff9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006245876858fb505b1cbbd",
+        "sha256": "5bb4eaac338c730cc7e717c5b4c8cc8d90c0d21548259271710982f748eda3d7",
+        "width": 640,
+        "height": 640,
+        "bytes": 72483
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe",
+          "generated": false,
+          "sourceDistance": 0.00006938609891182783
+        },
+        "surface": {
+          "rgb": [
+            219,
+            219,
+            219
+          ],
+          "hex": "#dbdbdb",
+          "generated": false,
+          "sourceDistance": 0.009015782192788651
+        }
+      },
+      "candidateReason": "insufficient-progressive-field-support",
+      "candidateEligible": false,
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:14.399Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.10559384526910905,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5361726721938775,
+          "continuity": 1,
+          "coherence": 0.7567709702866159
+        },
+        "colorPathCoverage": 0.5361726721938775,
+        "intermediateCoverage": 0.07579320790816327,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.2131925875582804,
+        "connectedField": {
+          "coverage": 0.5344587053571429,
+          "shareOfColorPath": 0.9968033304835892,
+          "continuity": 1,
+          "localTransitionCoverage": 0.2999589812432412,
+          "abruptTransitionShare": 0.1356114334837739,
+          "directionalOrdering": 0.2129753176049399
+        },
+        "background": {
+          "coverage": 0.4524473852040816,
+          "coherence": 0.9934807505946612,
+          "borderCoverage": 0.968609865470852,
+          "interiorComponentShare": 0.006519249405338737,
+          "flatness": 0.8700792224187474,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.007932079081632654,
+          "coherence": 0.3743718592964824,
+          "borderCoverage": 0.0033632286995515697,
+          "interiorComponentShare": 0.6256281407035176,
+          "flatness": 0.7647907219954563,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.42841377411301806
+      }
+    },
+    {
+      "familyId": "gv-2f9abd3d883f74b0f820",
+      "anchor": {
+        "file": "06/ab67616d00001e020006873de000f1e0a7e7d1f2",
+        "sha256": "7f28b62a1fddcad382caa5bb5aea4820b2ac96d6eb8523ca75d0a9bb21d159eb",
+        "width": 300,
+        "height": 300,
+        "bytes": 47690
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            39,
+            39,
+            4
+          ],
+          "hex": "#272704",
+          "generated": false,
+          "sourceDistance": 0.0030852284182315594
+        },
+        "surface": {
+          "rgb": [
+            17,
+            56,
+            2
+          ],
+          "hex": "#113802",
+          "generated": false,
+          "sourceDistance": 0.0038044322637654023
+        }
+      },
+      "candidateReason": "unsupported-disconnected-color-path",
+      "candidateEligible": false,
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:24.377Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.06377147092218223,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.7893478367664146,
+          "coverage": 0.07387994260204081,
+          "continuity": 1,
+          "coherence": 0.2020069808027923
+        },
+        "colorPathCoverage": 0.07387994260204081,
+        "intermediateCoverage": 0.04567920918367347,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.776381742178661,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.015166613520408163,
+          "coherence": 0.4296977660972405,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9632063074901446,
+          "flatness": 0.6296932140957044,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.013034119897959183,
+          "coherence": 0.021406727828746176,
+          "borderCoverage": 0,
+          "interiorComponentShare": 0.9128440366972477,
+          "flatness": 0.6804601671629763,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-9ca99e552f83b732d729",
+      "anchor": {
+        "file": "06/ab67616d0000b273000647728cdc057fd3e1c66b",
+        "sha256": "cb157f52cea2a2b20f0ee402d6b6ffd009e2836a40dcc0cfbaab9b6761e44018",
+        "width": 640,
+        "height": 640,
+        "bytes": 93428
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            8,
+            3,
+            9
+          ],
+          "hex": "#080309",
+          "generated": false,
+          "sourceDistance": 1.7439043189361257e-9
+        },
+        "surface": {
+          "rgb": [
+            76,
+            57,
+            30
+          ],
+          "hex": "#4c391e",
+          "generated": false,
+          "sourceDistance": 0.006261664199930136
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface",
+      "candidateEligible": false,
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:29.547Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.2528778335503288,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.8072385204081632,
+          "continuity": 1,
+          "coherence": 0.26511766458147157
+        },
+        "colorPathCoverage": 0.8072385204081632,
+        "intermediateCoverage": 0.13380899234693877,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.011125129420731105,
+        "connectedField": {
+          "coverage": 0.7817083864795918,
+          "shareOfColorPath": 0.9683734939759037,
+          "continuity": 1,
+          "localTransitionCoverage": 0.28661754582770316,
+          "abruptTransitionShare": 0.3022591857000993,
+          "directionalOrdering": 0.004153559079046804
+        },
+        "background": {
+          "coverage": 0.6573660714285714,
+          "coherence": 0.916535289837497,
+          "borderCoverage": 1,
+          "interiorComponentShare": 0.08346471016250304,
+          "flatness": 0.9541098102480089,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.016063456632653062,
+          "coherence": 0.01488833746898263,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.1782331272709654,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.9501468587832457
+      }
+    },
+    {
+      "familyId": "gv-35c84b242c47dd41b4b3",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c72047cc3c0c52ecfd5e",
+        "sha256": "fb597eb9cd6d1f296b92a1810d25aec4c50b687f018a534f6601164b8195522a",
+        "width": 640,
+        "height": 640,
+        "bytes": 115050
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            199,
+            173,
+            146
+          ],
+          "hex": "#c7ad92",
+          "generated": false,
+          "sourceDistance": 0.022359590984871523
+        },
+        "surface": {
+          "rgb": [
+            217,
+            185,
+            106
+          ],
+          "hex": "#d9b96a",
+          "generated": false,
+          "sourceDistance": 0.004517592424578655
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "selected-colors-not-identifiable",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:38.327Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.07079045938774843,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.9098782165456273,
+          "coverage": 0.03768734056122449,
+          "continuity": 0.5714285714285714,
+          "coherence": 0.46146146146146144
+        },
+        "colorPathCoverage": 0.03768734056122449,
+        "intermediateCoverage": 0.019909917091836735,
+        "colorPathContinuity": 0.5714285714285714,
+        "colorPathDirectionalOrdering": 0.5227521531702509,
+        "connectedField": {
+          "coverage": 0,
+          "shareOfColorPath": 0,
+          "continuity": 0,
+          "localTransitionCoverage": 0,
+          "abruptTransitionShare": 0,
+          "directionalOrdering": 0
+        },
+        "background": {
+          "coverage": 0.00005978954081632653,
+          "coherence": 0.6666666666666666,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.7675583702820509,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.017717633928571428,
+          "coherence": 0.3858267716535433,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.5902834551935522,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-b05a06bb774a153cebd1",
+      "anchor": {
+        "file": "06/ab67616d00001e020006dc81aa7aac8b586f2a5b",
+        "sha256": "15cb47aa762d4b33d583eebfd06366e7e261868281ad5540b7f3b6f96673f091",
+        "width": 300,
+        "height": 300,
+        "bytes": 24473
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            63,
+            29,
+            64
+          ],
+          "hex": "#3f1d40",
+          "generated": false,
+          "sourceDistance": 0.0019188243214642987
+        },
+        "surface": {
+          "rgb": [
+            31,
+            29,
+            33
+          ],
+          "hex": "#1f1d21",
+          "generated": false,
+          "sourceDistance": 0.0027751078976792336
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity",
+      "candidateEligible": false,
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:22:43.542Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.08993222110474525,
+        "pairSpecific": {
+          "isGradient": false,
+          "confidence": 0.6219696974782736,
+          "coverage": 0.21169483418367346,
+          "continuity": 1,
+          "coherence": 0.14080656185919344
+        },
+        "colorPathCoverage": 0.21169483418367346,
+        "intermediateCoverage": 0.058314732142857144,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.18081265038978073,
+        "connectedField": {
+          "coverage": 0.010503029336734694,
+          "shareOfColorPath": 0.04961400866126906,
+          "continuity": 1,
+          "localTransitionCoverage": 1.256166982922201,
+          "abruptTransitionShare": 0.2528216704288939,
+          "directionalOrdering": 0.21075981701169563
+        },
+        "background": {
+          "coverage": 0.0677016900510204,
+          "coherence": 0.3214601118634089,
+          "borderCoverage": 0.034753363228699555,
+          "interiorComponentShare": 0.48984397998233736,
+          "flatness": 0.6738212505341756,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.08567841198979592,
+          "coherence": 0.23005350081414283,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.6086532350744362,
+          "isolated": true
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0
+      }
+    },
+    {
+      "familyId": "gv-87bb75de62f75ff02fec",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006173a4c5fef787115c65b",
+        "sha256": "f8319ee3aa807c4c43e8a262c3f2e291cc54dbc93abbc9d53f812983bca3b146",
+        "width": 640,
+        "height": 640,
+        "bytes": 81425
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            8,
+            8,
+            12
+          ],
+          "hex": "#08080c",
+          "generated": false,
+          "sourceDistance": 0.00199483002532172
+        },
+        "surface": {
+          "rgb": [
+            2,
+            28,
+            68
+          ],
+          "hex": "#021c44",
+          "generated": false,
+          "sourceDistance": 0.010207890372490551
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface",
+      "candidateEligible": false,
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:23:20.403Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.12385631003502837,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6174864477040817,
+          "continuity": 1,
+          "coherence": 0.46623760286980376
+        },
+        "colorPathCoverage": 0.6174864477040817,
+        "intermediateCoverage": 0.18889508928571427,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.011219181716516327,
+        "connectedField": {
+          "coverage": 0.6068439094387755,
+          "shareOfColorPath": 0.9827647419552658,
+          "continuity": 1,
+          "localTransitionCoverage": 1.2921606620907091,
+          "abruptTransitionShare": 0.028686399881501963,
+          "directionalOrdering": 0.011476097020095269
+        },
+        "background": {
+          "coverage": 0.41884566326530615,
+          "coherence": 0.9833460220784165,
+          "borderCoverage": 0.8721973094170403,
+          "interiorComponentShare": 0.012561857632280167,
+          "flatness": 0.7363650757809974,
+          "dominantFlat": false
+        },
+        "surface": {
+          "coverage": 0.009745695153061224,
+          "coherence": 0.1329243353783231,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.48080942498430723,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.727914478729125
+      }
+    },
+    {
+      "familyId": "gv-28653d2d4f6d72c29fea",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fcb8e052340382c89d77",
+        "sha256": "f06e0508af041c04494ed538d193b2a432d0db01976db35b25cc1c9fb87293fa",
+        "width": 640,
+        "height": 640,
+        "bytes": 82366
+      },
+      "endpoints": {
+        "background": {
+          "rgb": [
+            62,
+            62,
+            62
+          ],
+          "hex": "#3e3e3e",
+          "generated": false,
+          "sourceDistance": 6.6034148704652296e-9
+        },
+        "surface": {
+          "rgb": [
+            33,
+            30,
+            29
+          ],
+          "hex": "#211e1d",
+          "generated": false,
+          "sourceDistance": 0.012040874502819652
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface",
+      "candidateEligible": false,
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T11:23:36.224Z",
+      "evidence": {
+        "experimentVersion": "gradient-eligibility-evidence-0.2.0-dev",
+        "endpointDistance": 0.12594364090872967,
+        "pairSpecific": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6809231505102041,
+          "continuity": 1,
+          "coherence": 0.9578869047619047
+        },
+        "colorPathCoverage": 0.6809231505102041,
+        "intermediateCoverage": 0.13392857142857142,
+        "colorPathContinuity": 1,
+        "colorPathDirectionalOrdering": 0.0025304339194760182,
+        "connectedField": {
+          "coverage": 0.6697026466836735,
+          "shareOfColorPath": 0.9835216296903354,
+          "continuity": 1,
+          "localTransitionCoverage": 0.3759485760199982,
+          "abruptTransitionShare": 0.026883376983515637,
+          "directionalOrdering": 0.0024788093091461963
+        },
+        "background": {
+          "coverage": 0.5419523278061225,
+          "coherence": 0.9916522634501526,
+          "borderCoverage": 1,
+          "interiorComponentShare": 0.008347736549847388,
+          "flatness": 0.9613460721521908,
+          "dominantFlat": true
+        },
+        "surface": {
+          "coverage": 0.005042251275510204,
+          "coherence": 0.09486166007905138,
+          "borderCoverage": 0,
+          "interiorComponentShare": 1,
+          "flatness": 0.5963494158659307,
+          "isolated": false
+        },
+        "flatBackgroundIsolatedSurfaceRisk": 0.9589630785592288
+      }
+    }
+  ]
+}

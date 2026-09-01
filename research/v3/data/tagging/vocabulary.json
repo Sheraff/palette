@@ -1,0 +1,868 @@
+{
+	"version": "2.1.0",
+	"updated": "2026-08-03",
+	"rule": "SYMMETRIC-VOCABULARY: for every expressible complaint, its opposite must exist. Every tag names exactly one other tag as its opposite; the relation is an involution within one axis. This is what closes v2-3's instrument-bias gap (REVIEW_UI.md §4): the UI could not record a gradient objection, so all 14 gradient notes asked for MORE gradient and three arms were misdirected. In v2 this rule is SCOPED rather than weakened: it binds every judgment axis unchanged, and descriptive axes carry the coverage law in \"symmetryScoping\" instead.",
+	"symmetryScoping": "SYMMETRY IS SCOPED, NOT WEAKENED. Every axis declares a kind. On a \"judgment\" axis — anything asserting that something should have been otherwise — the involution rule applies unchanged: every tag names exactly one opposite, mutually, on the same axis, and the axis holds an even number of tags. On a \"descriptive\" axis — observations of what an instrument was seen to do, which have alternatives but no opposites (\"DINOv2 focused on the layout\" is not a complaint and inventing its negation would produce a tag nobody would ever file) — the involution is replaced by a law of the same shape minus self-inversion: every tag names at least one \"counterpart\" (the observation you would have filed had the instrument done otherwise), every tag must itself be named as some other tag's counterpart, so the alternative reading is expressible in both directions, and the axis must carry at least one positive-valence and at least one negative-valence tag, so that no axis can record only an instrument misbehaving. A descriptive axis may never carry a complaint: a tag that says something should have been otherwise belongs on a judgment axis and owes an opposite. The exemption is from self-inversion (and with it injectivity) only, and the linter checks it rather than trusting review discipline.",
+	"epistemics": "Tags are an index over the reviewer's free text, never a replacement for it. The raw text is authoritative. Derived tag records can be dropped and rebuilt from the raw text at any time.",
+	"scopes": [
+		{
+			"id": "pairwise-item",
+			"about": "One review item: the pair that was shown, or either palette in it. A pairwise-item statement is meaningless away from that item — it is a claim about what was published there, not about the artwork or about the rules."
+		},
+		{
+			"id": "artwork",
+			"about": "This artwork, and any palette that could be derived from it. Survives the item it was said on: \"this cover supports both a flat and a gradient reading\" stays true of the next batch."
+		},
+		{
+			"id": "instrument",
+			"about": "A tool we judge with or judge through: an embedding model, a segmenter, the VLM oracle, the review rendering, the tagging agent itself. Not about any one artwork, though it is usually observed on one."
+		},
+		{
+			"id": "criterion",
+			"about": "The definitions, labels and tests by which judgments are made — the question set, the category words, the rulings that settle borderline cases. Binds no artwork and no instrument run."
+		}
+	],
+	"axes": [
+		{
+			"id": "gradient",
+			"title": "Gradient direction",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Whether a gradient should exist at all, how many stops it has, how loud it is, and how closely its path follows the artwork. Positions run 0 (the background endpoint, the one the display mapping reserves room for) to 1."
+		},
+		{
+			"id": "coverage",
+			"title": "Color coverage",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Which colors reached the palette, and where the palette sits as a whole in lightness, chroma and hue relative to the artwork. Role-agnostic: about the set of published colors, not about who got which job."
+		},
+		{
+			"id": "role",
+			"title": "Role assignment",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Which color got which job (background / surface / foreground / accent), and whether each role's color is the right kind of color for that job. v2-3: 16% of corrections were pure role permutations — the same colors, reshuffled."
+		},
+		{
+			"id": "contrast",
+			"title": "Contrast",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Luminance and legibility relations between published colors: foreground against background/surface/ramp, accent against the same, surface against background. Both directions — too little and too much."
+		},
+		{
+			"id": "collapse",
+			"title": "Collapse",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Roles merging or staying apart. surface→background and accent→foreground are the two sanctioned collapses (PHASE_0_DECISIONS.md §4, invariant 3); this axis records the reviewer disagreeing with the call in either direction."
+		},
+		{
+			"id": "identity",
+			"title": "Identity",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Whether the palette reads as belonging to this artwork. Covers identity coverage (v2-3's single most frequent complaint class, 27 notes), signature colors, and the whole-palette 'does this feel like the cover' judgment."
+		},
+		{
+			"id": "provenance",
+			"title": "Provenance and overlay",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Where a published color came from inside the image: material field, or an overlay (text, logo, watermark, sticker), a border/letterbox artifact, or noise. Both directions — wrongly included and wrongly excluded."
+		},
+		{
+			"id": "meta",
+			"title": "Comparison and process",
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that \"this pair told us nothing\" is as expressible as \"A won\". SCOPE DECISION (v2): meta is pairwise-item scoped. A meta tag is a claim about one review item and the two palettes shown in it, and it does not survive the item — \"both of these are fine\" is meta/both-sides-good, while \"both a flat and a gradient palette are defensible for this artwork\" is criterion/both-readings-defensible at artwork scope. The two tagger tags override to instrument scope: they are about the tagging agent, which is itself an instrument, not about the pair."
+		},
+		{
+			"id": "instrument-behavior",
+			"title": "Instrument behaviour",
+			"kind": "descriptive",
+			"scope": "instrument",
+			"about": "What a model or tool was observed to do: what it keyed on, what it grouped together, where it surprised us. Purely descriptive — a tag here says what happened, never that it should have happened otherwise. A complaint about an instrument belongs on instrument-fitness, which is a judgment axis and owes opposites. This is the only kind of axis exempt from the involution rule, and it pays for the exemption with the coverage law (counterparts in both directions, and both valences present)."
+		},
+		{
+			"id": "instrument-fitness",
+			"title": "Instrument fitness",
+			"kind": "judgment",
+			"scope": "instrument",
+			"about": "Judgments about the instruments themselves, including the rendering the reviewer judges through. Two families: is this instrument good enough for the job, and does the review view help or hinder the judgment it is asking for. The review UI is an instrument like any other, and a review instrument that misleads is the exact failure mode v2-3 shipped."
+		},
+		{
+			"id": "concept",
+			"title": "Concept and label",
+			"kind": "judgment",
+			"scope": "criterion",
+			"about": "The words the question set uses against the things a detector actually finds. Records the right-detection/wrong-word case, a category word that admits too much or too little, and a word that conflates two things or splits one. About naming; how a call is decided is the criterion axis."
+		},
+		{
+			"id": "criterion",
+			"title": "Criterion rulings",
+			"kind": "judgment",
+			"scope": "criterion",
+			"about": "Rulings about how a judgment is to be made, and about how many answers a case admits. A ruling is not a complaint about a palette: it fixes (or declines to fix) the test that later palettes will be judged by. Multi-validity lives here too — \"both answers are defensible for this artwork\" is an artwork-scoped statement and overrides the axis scope."
+		}
+	],
+	"tags": [
+		{
+			"id": "gradient/should-be-gradient",
+			"axis": "gradient",
+			"opposite": "gradient/should-be-flat",
+			"definition": "A gradient background was called for and a flat one was published.",
+			"example": "this cover is a sky, it needs the ramp — flat blue kills it"
+		},
+		{
+			"id": "gradient/should-be-flat",
+			"axis": "gradient",
+			"opposite": "gradient/should-be-gradient",
+			"definition": "A flat background was called for and a gradient was published.",
+			"example": "why is this a gradient at all? the sleeve is one solid colour"
+		},
+		{
+			"id": "gradient/too-few-stops",
+			"axis": "gradient",
+			"opposite": "gradient/too-many-stops",
+			"definition": "The ramp needs another stop; the straight path between the current endpoints passes somewhere it should not.",
+			"example": "it goes through a muddy grey halfway down, it needs a stop in the middle"
+		},
+		{
+			"id": "gradient/too-many-stops",
+			"axis": "gradient",
+			"opposite": "gradient/too-few-stops",
+			"definition": "Stops that buy nothing; the flatter path was already fine, and the extra curvature costs banding.",
+			"example": "three stops is fussy here, two would look the same"
+		},
+		{
+			"id": "gradient/ramp-too-subtle",
+			"axis": "gradient",
+			"opposite": "gradient/ramp-too-contrasty",
+			"definition": "The endpoints are so close that the gradient does no visible work.",
+			"example": "I can't actually see any gradient, it may as well be flat"
+		},
+		{
+			"id": "gradient/ramp-too-contrasty",
+			"axis": "gradient",
+			"opposite": "gradient/ramp-too-subtle",
+			"definition": "The endpoints are far enough apart that the ramp is louder than the artwork it came from.",
+			"example": "it goes from near-black to near-white, way more dramatic than the cover"
+		},
+		{
+			"id": "gradient/ramp-off-artwork",
+			"axis": "gradient",
+			"opposite": "gradient/ramp-over-literal",
+			"definition": "The rendered ramp passes through colors the artwork does not contain (pathology P1).",
+			"example": "halfway down it turns pink and there is no pink anywhere in this image"
+		},
+		{
+			"id": "gradient/ramp-over-literal",
+			"axis": "gradient",
+			"opposite": "gradient/ramp-off-artwork",
+			"definition": "The ramp reproduces the artwork's own composition instead of serving as a background behind it.",
+			"example": "this is just the picture again, the background should be a calmer version of it"
+		},
+		{
+			"id": "gradient/wrong-start-color",
+			"axis": "gradient",
+			"opposite": "gradient/wrong-end-color",
+			"definition": "The stop at position 0 — the background endpoint — is the wrong color.",
+			"example": "the top of the ramp should be the deep navy, not that grey"
+		},
+		{
+			"id": "gradient/wrong-end-color",
+			"axis": "gradient",
+			"opposite": "gradient/wrong-start-color",
+			"definition": "The stop at position 1 — the far endpoint — is the wrong color.",
+			"example": "the bottom should fade into the black of the sleeve, not into brown"
+		},
+		{
+			"id": "gradient/midpoint-too-early",
+			"axis": "gradient",
+			"opposite": "gradient/midpoint-too-late",
+			"definition": "An intermediate stop sits too close to position 0; the first leg of the ramp is over too quickly. Successor to v2-3's one-way `wrong-midpoint` tag.",
+			"example": "the change happens right at the top, it should hold the dark longer"
+		},
+		{
+			"id": "gradient/midpoint-too-late",
+			"axis": "gradient",
+			"opposite": "gradient/midpoint-too-early",
+			"definition": "An intermediate stop sits too close to position 1; the ramp holds its first color too long and then rushes.",
+			"example": "it stays dark almost all the way down and then changes all at once"
+		},
+		{
+			"id": "coverage/missing-color",
+			"axis": "coverage",
+			"opposite": "coverage/alien-color",
+			"definition": "A color that is plainly present and important in the artwork appears in no published role or stop.",
+			"example": "there is a big green field in this cover and nothing in the palette is green"
+		},
+		{
+			"id": "coverage/alien-color",
+			"axis": "coverage",
+			"opposite": "coverage/missing-color",
+			"definition": "A published color does not read as being in the artwork, or comes from a region too small to speak for it.",
+			"example": "where did that purple come from? I can't find it in the image"
+		},
+		{
+			"id": "coverage/too-desaturated",
+			"axis": "coverage",
+			"opposite": "coverage/too-saturated",
+			"definition": "The palette is less chromatic than the artwork — vivid material rendered as near-neutrals.",
+			"example": "the cover is bright orange and the palette is all beige"
+		},
+		{
+			"id": "coverage/too-saturated",
+			"axis": "coverage",
+			"opposite": "coverage/too-desaturated",
+			"definition": "The palette is more chromatic than the artwork — muted material rendered as vivid colors.",
+			"example": "this is a soft grey photograph and the palette is shouting teal"
+		},
+		{
+			"id": "coverage/too-dark",
+			"axis": "coverage",
+			"opposite": "coverage/too-light",
+			"definition": "The palette as a whole sits darker than the artwork reads.",
+			"example": "the sleeve is a bright daylight shot and this palette is nearly black"
+		},
+		{
+			"id": "coverage/too-light",
+			"axis": "coverage",
+			"opposite": "coverage/too-dark",
+			"definition": "The palette as a whole sits lighter than the artwork reads.",
+			"example": "this is a night scene, the background shouldn't be this pale"
+		},
+		{
+			"id": "coverage/too-monochrome",
+			"axis": "coverage",
+			"opposite": "coverage/too-varied",
+			"definition": "The palette flattens a genuinely multi-hue artwork into a single hue family.",
+			"example": "everything here is a shade of the same blue and the cover has three clear colours"
+		},
+		{
+			"id": "coverage/too-varied",
+			"axis": "coverage",
+			"opposite": "coverage/too-monochrome",
+			"definition": "The palette spans more hue directions than the artwork has; the roles do not look like they belong together.",
+			"example": "red, green and blue all at once — this looks like a harlequin, the cover is basically one hue"
+		},
+		{
+			"id": "coverage/hue-too-cool",
+			"axis": "coverage",
+			"opposite": "coverage/hue-too-warm",
+			"definition": "The published colors are shifted cool relative to the artwork's own hue.",
+			"example": "that cream has gone blue-grey, it should still feel warm"
+		},
+		{
+			"id": "coverage/hue-too-warm",
+			"axis": "coverage",
+			"opposite": "coverage/hue-too-cool",
+			"definition": "The published colors are shifted warm relative to the artwork's own hue.",
+			"example": "the blue reads purple here, the cover's blue is colder than that"
+		},
+		{
+			"id": "role/wrong-role-assignment",
+			"axis": "role",
+			"opposite": "role/wrong-color-selection",
+			"definition": "The colors are right but the jobs are shuffled — a permutation would fix it.",
+			"example": "these are the right four colours, the accent and the foreground are just swapped"
+		},
+		{
+			"id": "role/wrong-color-selection",
+			"axis": "role",
+			"opposite": "role/wrong-role-assignment",
+			"definition": "The role structure is right but at least one role picked the wrong color; no permutation fixes it.",
+			"example": "the layout of roles is fine, the accent is simply the wrong colour — no rearrangement helps"
+		},
+		{
+			"id": "role/accent-should-be-chromatic",
+			"axis": "role",
+			"opposite": "role/accent-should-be-neutral",
+			"definition": "A neutral was published as the accent where the artwork's chromatic pop should have taken the role.",
+			"example": "the accent is grey — the whole point of this cover is the red stripe"
+		},
+		{
+			"id": "role/accent-should-be-neutral",
+			"axis": "role",
+			"opposite": "role/accent-should-be-chromatic",
+			"definition": "A chromatic color was published as the accent where a neutral was the right call.",
+			"example": "forcing a colour in as the accent looks wrong, the off-white would have been right"
+		},
+		{
+			"id": "role/accent-too-recessive",
+			"axis": "role",
+			"opposite": "role/accent-too-prominent",
+			"definition": "The accent does not carry enough weight to function as an accent (a color judgment, not a contrast measurement).",
+			"example": "the accent is there but it never catches the eye, it just sits behind everything"
+		},
+		{
+			"id": "role/accent-too-prominent",
+			"axis": "role",
+			"opposite": "role/accent-too-recessive",
+			"definition": "The accent dominates the mock UI and competes with the foreground for attention.",
+			"example": "the accent is screaming, it pulls attention away from the track title"
+		},
+		{
+			"id": "role/foreground-should-be-tinted",
+			"axis": "role",
+			"opposite": "role/foreground-should-be-neutral",
+			"definition": "A plain white/black foreground was published where a color taken from the artwork was wanted.",
+			"example": "plain white is lazy here, the cream from the lettering would be much better"
+		},
+		{
+			"id": "role/foreground-should-be-neutral",
+			"axis": "role",
+			"opposite": "role/foreground-should-be-tinted",
+			"definition": "A tinted foreground was published where a plain white/black was wanted.",
+			"example": "the tinted text looks dirty, just use white"
+		},
+		{
+			"id": "role/surface-should-be-chromatic",
+			"axis": "role",
+			"opposite": "role/surface-should-be-neutral",
+			"definition": "A neutral was published as the surface where a chromatic supporting color from the artwork was wanted. v2-3 traced 14 warehouse complaints to a constructor that could never route a chromatic color into the surface lane.",
+			"example": "the panel should be that sailor blue, not another grey"
+		},
+		{
+			"id": "role/surface-should-be-neutral",
+			"axis": "role",
+			"opposite": "role/surface-should-be-chromatic",
+			"definition": "A chromatic color was published as the surface where a neutral supporting color was wanted.",
+			"example": "the coloured panel is too much, a plain dark grey would sit better under the artwork"
+		},
+		{
+			"id": "contrast/text-too-low",
+			"axis": "contrast",
+			"opposite": "contrast/text-too-high",
+			"definition": "The foreground is too close in luminance to the background or the surface to read comfortably.",
+			"example": "I can barely read the title against that background"
+		},
+		{
+			"id": "contrast/text-too-high",
+			"axis": "contrast",
+			"opposite": "contrast/text-too-low",
+			"definition": "The foreground is pushed so far from the background that it looks harsh or unrelated to the artwork.",
+			"example": "pure white on near-black is brutal, this cover is much softer than that"
+		},
+		{
+			"id": "contrast/accent-too-low",
+			"axis": "contrast",
+			"opposite": "contrast/accent-too-high",
+			"definition": "The accent is too close to the background or surface to be seen as a distinct element.",
+			"example": "the accent dot basically disappears into the panel"
+		},
+		{
+			"id": "contrast/accent-too-high",
+			"axis": "contrast",
+			"opposite": "contrast/accent-too-low",
+			"definition": "The accent is pushed so far from its ground that it looks pasted on.",
+			"example": "the accent is so much brighter than everything else it looks like a different app"
+		},
+		{
+			"id": "contrast/surface-too-close-to-background",
+			"axis": "contrast",
+			"opposite": "contrast/surface-too-separated-from-background",
+			"definition": "The surface does not lift off the background enough to read as a panel.",
+			"example": "I can't tell where the card ends and the background starts"
+		},
+		{
+			"id": "contrast/surface-too-separated-from-background",
+			"axis": "contrast",
+			"opposite": "contrast/surface-too-close-to-background",
+			"definition": "The surface stands so far off the background that it reads as a second, competing background.",
+			"example": "the panel is a completely different colour from the background, it fights it"
+		},
+		{
+			"id": "contrast/text-unreadable-over-ramp",
+			"axis": "contrast",
+			"opposite": "contrast/ramp-flattened-for-text",
+			"definition": "The foreground drops below legibility over part of the gradient (pathology P2, the indistinct fraction).",
+			"example": "the text is fine at the top and vanishes at the bottom of the gradient"
+		},
+		{
+			"id": "contrast/ramp-flattened-for-text",
+			"axis": "contrast",
+			"opposite": "contrast/text-unreadable-over-ramp",
+			"definition": "The gradient looks squeezed or lightened to protect legibility, at the cost of matching the artwork.",
+			"example": "the ramp has clearly been pulled apart to keep the text readable and now it doesn't match the cover"
+		},
+		{
+			"id": "collapse/accent-should-collapse",
+			"axis": "collapse",
+			"opposite": "collapse/accent-should-not-collapse",
+			"definition": "A separate accent was published where the artwork has none; it should have collapsed onto the foreground.",
+			"example": "there is no accent colour in this cover, inventing one makes it worse"
+		},
+		{
+			"id": "collapse/accent-should-not-collapse",
+			"axis": "collapse",
+			"opposite": "collapse/accent-should-collapse",
+			"definition": "The accent was collapsed onto the foreground although the artwork clearly has an accent color.",
+			"example": "the accent has been dropped and this cover has an obvious yellow to use"
+		},
+		{
+			"id": "collapse/surface-should-collapse",
+			"axis": "collapse",
+			"opposite": "collapse/surface-should-not-collapse",
+			"definition": "A separate surface was published where the artwork supports only one field; it should have collapsed onto the background.",
+			"example": "there's only one ground in this image, the second panel colour is made up"
+		},
+		{
+			"id": "collapse/surface-should-not-collapse",
+			"axis": "collapse",
+			"opposite": "collapse/surface-should-collapse",
+			"definition": "The surface was collapsed onto the background although the artwork has a second usable field.",
+			"example": "the surface got dropped but there is a clear second area it could have used"
+		},
+		{
+			"id": "collapse/roles-too-alike",
+			"axis": "collapse",
+			"opposite": "collapse/roles-too-distinct",
+			"definition": "Two roles are near-identical without being an honest collapse — the almost-but-not-quite case.",
+			"example": "these two are so close it looks like a bug, either make them the same or make them different"
+		},
+		{
+			"id": "collapse/roles-too-distinct",
+			"axis": "collapse",
+			"opposite": "collapse/roles-too-alike",
+			"definition": "Roles are pushed apart to look different where the artwork wanted them alike.",
+			"example": "these two should just be the same colour, the difference is invented"
+		},
+		{
+			"id": "identity/coverage-shortfall",
+			"axis": "identity",
+			"opposite": "identity/coverage-overreach",
+			"definition": "A major hue direction of the artwork — large mass, real visual weight — reaches no published color (pathology P5).",
+			"example": "the whole bottom half of the cover is that rust colour and the palette ignores it completely"
+		},
+		{
+			"id": "identity/coverage-overreach",
+			"axis": "identity",
+			"opposite": "identity/coverage-shortfall",
+			"definition": "The palette forces in a minor or incidental hue direction that the artwork does not read as having.",
+			"example": "it has gone hunting for a second colour and picked up something nobody would notice"
+		},
+		{
+			"id": "identity/signature-color-missing",
+			"axis": "identity",
+			"opposite": "identity/signature-color-overweighted",
+			"definition": "The one color the artwork is recognised by reached no published role.",
+			"example": "this record is *the* pink one and there is no pink here at all"
+		},
+		{
+			"id": "identity/signature-color-overweighted",
+			"axis": "identity",
+			"opposite": "identity/signature-color-missing",
+			"definition": "The signature color took over roles it should not own, crowding out the rest of the artwork.",
+			"example": "the pink is everywhere now — background, surface and accent — it's too much"
+		},
+		{
+			"id": "identity/wrong-mood",
+			"axis": "identity",
+			"opposite": "identity/too-literal",
+			"definition": "Each color is defensible but the palette as a whole does not feel like this artwork.",
+			"example": "every colour is technically in there but it doesn't feel like this record at all"
+		},
+		{
+			"id": "identity/too-literal",
+			"axis": "identity",
+			"opposite": "identity/wrong-mood",
+			"definition": "The palette is a faithful sample of the artwork's pixels and works badly as a UI because of it.",
+			"example": "it has copied the image honestly and the result is unusable as an interface"
+		},
+		{
+			"id": "provenance/overlay-color-published",
+			"axis": "provenance",
+			"opposite": "provenance/overlay-color-ignored",
+			"definition": "A published color was taken from an overlay — title text, a logo, a parental-advisory sticker — rather than from the artwork's material.",
+			"example": "that red is the explicit-lyrics sticker, it isn't part of the artwork"
+		},
+		{
+			"id": "provenance/overlay-color-ignored",
+			"axis": "provenance",
+			"opposite": "provenance/overlay-color-published",
+			"definition": "An overlay carries the artwork's identity — the band's logo color, the title's color — and was excluded anyway.",
+			"example": "the lettering colour *is* the identity of this sleeve and it's nowhere in the palette"
+		},
+		{
+			"id": "provenance/border-artifact-published",
+			"axis": "provenance",
+			"opposite": "provenance/edge-content-ignored",
+			"definition": "A published color came from a letterbox bar, frame, scan margin or padding rather than from the image.",
+			"example": "that black is just the letterbox bars at the top and bottom"
+		},
+		{
+			"id": "provenance/edge-content-ignored",
+			"axis": "provenance",
+			"opposite": "provenance/border-artifact-published",
+			"definition": "Real content living at the edge of the image was dismissed as border and lost.",
+			"example": "the coloured band down the side is part of the design, not a frame"
+		},
+		{
+			"id": "provenance/noise-color-published",
+			"axis": "provenance",
+			"opposite": "provenance/small-region-ignored",
+			"definition": "A published color came from compression artifacts, sensor noise or a stray speck.",
+			"example": "that colour only exists in the JPEG mush around the edge of the text"
+		},
+		{
+			"id": "provenance/small-region-ignored",
+			"axis": "provenance",
+			"opposite": "provenance/noise-color-published",
+			"definition": "A small but visually load-bearing region was dismissed as too small to count.",
+			"example": "it's a tiny patch but it's the only bright thing in the whole cover and it matters"
+		},
+		{
+			"id": "meta/both-sides-good",
+			"axis": "meta",
+			"opposite": "meta/both-sides-bad",
+			"definition": "Both palettes in the pair are acceptable; the preference is a matter of taste, not of quality.",
+			"example": "honestly either of these would be fine, I just slightly prefer the left one"
+		},
+		{
+			"id": "meta/both-sides-bad",
+			"axis": "meta",
+			"opposite": "meta/both-sides-good",
+			"definition": "Neither palette in the pair works; the preference records the lesser failure.",
+			"example": "both of these are wrong, I picked the one that is less wrong"
+		},
+		{
+			"id": "meta/sides-indistinguishable",
+			"axis": "meta",
+			"opposite": "meta/sides-incomparable",
+			"definition": "The two sides look the same to the reviewer; the comparison carries no information.",
+			"example": "I genuinely cannot see a difference between these two"
+		},
+		{
+			"id": "meta/sides-incomparable",
+			"axis": "meta",
+			"opposite": "meta/sides-indistinguishable",
+			"definition": "The two sides differ on so many axes at once that the comparison isolates nothing.",
+			"example": "these two are completely different palettes, I can't tell what I'm actually comparing"
+		},
+		{
+			"id": "meta/improvement",
+			"axis": "meta",
+			"opposite": "meta/regression",
+			"definition": "The reviewer says this is better than something they saw before.",
+			"example": "this is much better than what this cover used to give"
+		},
+		{
+			"id": "meta/regression",
+			"axis": "meta",
+			"opposite": "meta/improvement",
+			"definition": "The reviewer says this is worse than something they saw before.",
+			"example": "this used to be right and now it isn't"
+		},
+		{
+			"id": "meta/tagger-unsure",
+			"axis": "meta",
+			"opposite": "meta/tagger-confident",
+			"scope": "instrument",
+			"definition": "Filed by the tagging agent on its own work: this text is ambiguous and a human should check the mapping. Never filed from the reviewer's words.",
+			"example": "(agent-only) the comment says 'too flat' and could mean the gradient or the contrast"
+		},
+		{
+			"id": "meta/tagger-confident",
+			"axis": "meta",
+			"opposite": "meta/tagger-unsure",
+			"scope": "instrument",
+			"definition": "The tagging agent's default state — never filed explicitly. Exists so that 'unsure' is one end of a pair rather than a one-way marker.",
+			"example": "(agent-only, never filed) the comment maps cleanly onto one tag"
+		},
+		{
+			"id": "instrument-behavior/attends-to-appearance",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/attends-to-semantics",
+				"instrument-behavior/attends-to-outside-identity"
+			],
+			"valence": "neutral",
+			"definition": "The instrument was observed keying on how the image looks — layout, colour, texture, the shape of the lettering.",
+			"example": "for krafty, DINOv2 focused on the layout and flowers"
+		},
+		{
+			"id": "instrument-behavior/attends-to-semantics",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/attends-to-appearance"
+			],
+			"valence": "neutral",
+			"definition": "The instrument was observed keying on what is depicted, grouping across visual styles.",
+			"example": "a photo of a boat, a painting of a boat, an origami boat — it put all the boats together"
+		},
+		{
+			"id": "instrument-behavior/attends-to-outside-identity",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/attends-to-appearance",
+				"instrument-behavior/attends-to-semantics"
+			],
+			"valence": "negative",
+			"definition": "The instrument was observed keying on who the artwork belongs to — the artist, the band logo, the lettering of the name — rather than on the picture. A cue we did not ask for, so the result may not generalise.",
+			"example": "it matches by artist, not by image; the covers don't look much alike"
+		},
+		{
+			"id": "instrument-behavior/generalizes-beyond-expectation",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/misses-expected-case"
+			],
+			"valence": "positive",
+			"definition": "The instrument handled a case we had no reason to expect it to handle.",
+			"example": "a chinese character was recognized as a word — not incorrect, just interesting"
+		},
+		{
+			"id": "instrument-behavior/misses-expected-case",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/generalizes-beyond-expectation"
+			],
+			"valence": "negative",
+			"definition": "The instrument failed on a case we did expect it to handle.",
+			"example": "it finds the logo on the obvious ones and misses it whenever the sleeve is dark"
+		},
+		{
+			"id": "instrument-behavior/instruments-differ",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/instruments-agree"
+			],
+			"valence": "neutral",
+			"definition": "Two instruments given the same input were observed behaving differently.",
+			"example": "DINOv2 and DINOv3 pick out different things on the same cover"
+		},
+		{
+			"id": "instrument-behavior/instruments-agree",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/instruments-differ"
+			],
+			"valence": "positive",
+			"definition": "Two or more instruments given the same input were observed behaving the same way.",
+			"example": "all three models put the same five covers at the top of the list"
+		},
+		{
+			"id": "instrument-fitness/display-confusing",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-clarifying",
+			"definition": "The rendering the reviewer judges through got in the way of the judgment it was asking for.",
+			"example": "I couldn't tell which of the overlays I was supposed to be looking at"
+		},
+		{
+			"id": "instrument-fitness/display-clarifying",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-confusing",
+			"definition": "The rendering the reviewer judges through made the thing being judged easier to see.",
+			"example": "the three-layer rendering was helpful, I could see exactly what the mask covered"
+		},
+		{
+			"id": "instrument-fitness/display-too-busy",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-too-sparse",
+			"definition": "The review view puts more on screen at once than the judgment needs.",
+			"example": "there is too much on screen at once, the boxes and the rings fight each other"
+		},
+		{
+			"id": "instrument-fitness/display-too-sparse",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-too-busy",
+			"definition": "The review view withholds something the judgment needs.",
+			"example": "I need the artwork next to it, I can't judge this on its own"
+		},
+		{
+			"id": "instrument-fitness/needs-onboarding",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/self-explanatory",
+			"definition": "The instrument works once understood, but the first encounter with it has to be explained.",
+			"example": "i just got confused the first time, after that it was fine"
+		},
+		{
+			"id": "instrument-fitness/self-explanatory",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/needs-onboarding",
+			"definition": "The instrument needed no explaining; it read correctly on first sight.",
+			"example": "I knew what I was looking at straight away, nobody had to tell me"
+		},
+		{
+			"id": "instrument-fitness/fit-for-purpose",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/unfit-for-purpose",
+			"definition": "The reviewer judges this instrument good enough for the job we want it to do.",
+			"example": "I think the DINO models are better, they're the ones to use"
+		},
+		{
+			"id": "instrument-fitness/unfit-for-purpose",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/fit-for-purpose",
+			"definition": "The reviewer judges this instrument not good enough for the job we want it to do.",
+			"example": "this one is not doing the job, I wouldn't trust it for this"
+		},
+		{
+			"id": "instrument-fitness/candidates-separable",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/candidates-indistinguishable",
+			"definition": "The reviewer can tell two candidate instruments apart on the evidence shown, and says which one wins.",
+			"example": "the difference between these two models is obvious, the second one is clearly better"
+		},
+		{
+			"id": "instrument-fitness/candidates-indistinguishable",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/candidates-separable",
+			"definition": "The reviewer cannot tell two candidate instruments apart on the evidence shown, so the choice between them is unfunded.",
+			"example": "I wouldn't know which one of the 2"
+		},
+		{
+			"id": "instrument-fitness/disagrees-defensibly",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/disagrees-indefensibly",
+			"definition": "The instrument answered differently from the reviewer and the reviewer can see why: the disagreement is a difference of reading, not an error.",
+			"example": "where I voted differently from the oracle, I could see its point of view"
+		},
+		{
+			"id": "instrument-fitness/disagrees-indefensibly",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/disagrees-defensibly",
+			"definition": "The instrument answered differently from the reviewer and the answer is not one a careful reader could have reached.",
+			"example": "it says there are two fields and there is plainly only one — that is not a matter of opinion"
+		},
+		{
+			"id": "concept/detection-right-label-wrong",
+			"axis": "concept",
+			"opposite": "concept/label-right-detection-wrong",
+			"definition": "The right thing was found, and the category word put on it is not the word the reviewer would use for it.",
+			"example": "i did not count 'parental advisory' marks as 'stickers' but the model seemed to"
+		},
+		{
+			"id": "concept/label-right-detection-wrong",
+			"axis": "concept",
+			"opposite": "concept/detection-right-label-wrong",
+			"definition": "The category word is the right one to be asking about; the region found under it is not what the word names.",
+			"example": "it says 'logo' and it has outlined the singer's face"
+		},
+		{
+			"id": "concept/label-too-broad",
+			"axis": "concept",
+			"opposite": "concept/label-too-narrow",
+			"definition": "The category word admits cases we did not mean it to cover.",
+			"example": "'face' is catching a graffiti of a face and a sculpted bust as well"
+		},
+		{
+			"id": "concept/label-too-narrow",
+			"axis": "concept",
+			"opposite": "concept/label-too-broad",
+			"definition": "The category word excludes cases we did mean it to cover.",
+			"example": "'sticker' ought to cover the price tag too, and it doesn't"
+		},
+		{
+			"id": "concept/label-conflates",
+			"axis": "concept",
+			"opposite": "concept/label-splits",
+			"definition": "One category word covers two things the work needs to keep apart.",
+			"example": "'album-title' doesn't separate the title from the artist name — it is just the main text"
+		},
+		{
+			"id": "concept/label-splits",
+			"axis": "concept",
+			"opposite": "concept/label-conflates",
+			"definition": "Two category words separate one thing that reads as a single thing, and the reviewer has to guess which to use.",
+			"example": "'border' and 'frame' are the same thing here, splitting them just makes me guess"
+		},
+		{
+			"id": "criterion/ruling-given",
+			"axis": "criterion",
+			"opposite": "criterion/underdetermined",
+			"definition": "The reviewer fixes how a case like this is to be judged from now on — a standing answer, not a one-off call.",
+			"example": "the test is surface identity, never boundary softness"
+		},
+		{
+			"id": "criterion/underdetermined",
+			"axis": "criterion",
+			"opposite": "criterion/ruling-given",
+			"definition": "The existing criterion does not decide this case, and the reviewer says so rather than deciding it.",
+			"example": "sometimes 'logo' could be part of the artwork itself, or some sort of added branding"
+		},
+		{
+			"id": "criterion/option-set-gap",
+			"axis": "criterion",
+			"opposite": "criterion/option-set-sufficient",
+			"definition": "The answer options offered for a question do not cover a case that actually occurs: the case is real and none of the available words fit it. A statement about the option set, not about whether the case has been decided — a ruling usually opens with one of these and then closes it.",
+			"example": "there's no option for one flat field and one shaded field with a blurry line between them"
+		},
+		{
+			"id": "criterion/option-set-sufficient",
+			"axis": "criterion",
+			"opposite": "criterion/option-set-gap",
+			"definition": "The answer options do cover the case; what was missing was the rule for choosing between them, not a new option.",
+			"example": "shaded_field already covers that wall, nothing new needs adding"
+		},
+		{
+			"id": "criterion/criterion-narrowed",
+			"axis": "criterion",
+			"opposite": "criterion/criterion-widened",
+			"definition": "The ruling shrinks what counts: a property that seemed to decide the call is declared not to.",
+			"example": "a soft join does not make it two fields — that was never the test"
+		},
+		{
+			"id": "criterion/criterion-widened",
+			"axis": "criterion",
+			"opposite": "criterion/criterion-narrowed",
+			"definition": "The ruling enlarges what counts: a property that seemed required is demoted to a hint, or another reading is admitted.",
+			"example": "surface identity is a strong prior, neither necessary nor sufficient"
+		},
+		{
+			"id": "criterion/forced-choice-required",
+			"axis": "criterion",
+			"opposite": "criterion/abstention-allowed",
+			"definition": "A genuinely ambiguous case must still be answered, because the human answer has to be symmetric with the instrument's.",
+			"example": "answer it on the gut read — the model doesn't get to abstain either"
+		},
+		{
+			"id": "criterion/abstention-allowed",
+			"axis": "criterion",
+			"opposite": "criterion/forced-choice-required",
+			"definition": "A genuinely ambiguous case is better left unanswered than forced.",
+			"example": "if you can't tell, don't guess — an empty answer is more useful than a coin flip"
+		},
+		{
+			"id": "criterion/both-readings-defensible",
+			"axis": "criterion",
+			"opposite": "criterion/one-reading-only",
+			"scope": "artwork",
+			"definition": "Two opposite answers are both defensible for this artwork; which one is published is a choice, not a correctness question. Artwork-scoped: unlike meta/both-sides-good it outlives the item it was said on.",
+			"example": "an artwork can support a valid flat palette and a valid gradient palette"
+		},
+		{
+			"id": "criterion/one-reading-only",
+			"axis": "criterion",
+			"opposite": "criterion/both-readings-defensible",
+			"scope": "artwork",
+			"definition": "Only one answer is defensible for this artwork; the other is wrong rather than a matter of taste.",
+			"example": "there is no reading of this cover where that call is defensible"
+		},
+		{
+			"id": "criterion/unfair-comparison-basis",
+			"axis": "criterion",
+			"opposite": "criterion/fair-comparison-basis",
+			"definition": "The property being compared on is contaminated by choices made downstream of the thing under test, so a difference on it does not mean what it looks like it means.",
+			"example": "the flat/gradient flag depends on which colours got picked, it isn't a property of the artwork"
+		},
+		{
+			"id": "criterion/fair-comparison-basis",
+			"axis": "criterion",
+			"opposite": "criterion/unfair-comparison-basis",
+			"definition": "The property being compared on does isolate the thing under test, so a difference on it can be read at face value.",
+			"example": "this measure only moves when the thing we changed moves, so the comparison is clean"
+		}
+	]
+}

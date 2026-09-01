@@ -1,0 +1,35 @@
+Track L ordering variants — REJECTED, kept only so the measurements can be reproduced.
+
+Apply to research/v2-3/src/internal/palette-core.ts inside
+`buildIdentityObligationSelection`, replacing the `ranked.sort(...)` call, then run with
+TRACK_L_ORDERING=min | family | ceiling.
+
+  min      variant (b): order by min(region level, family level), region level as tie-break
+  family   variant (a): order by family level, region level as tie-break
+  ceiling  measurement probe only: force the most chromatic family to priority 0
+
+--- replace ---
+	ranked.sort((first, second) =>
+		compareNumbersDescending(first.regionEvidenceLevel, second.regionEvidenceLevel) ||
+		compareNumbersDescending(evidenceLevel(signatureRoleScore(first.family)), evidenceLevel(signatureRoleScore(second.family))) ||
+		compareNumbersDescending(first.connectedPopulationFraction, second.connectedPopulationFraction) ||
+		compareAscii(first.family.id, second.family.id))
+
+--- with ---
+	const orderingLevel = process.env.TRACK_L_ORDERING === "min"
+		? (candidate: typeof ranked[number]): number =>
+			Math.min(candidate.regionEvidenceLevel, evidenceLevel(signatureRoleScore(candidate.family)))
+		: process.env.TRACK_L_ORDERING === "family"
+		? (candidate: typeof ranked[number]): number => evidenceLevel(signatureRoleScore(candidate.family))
+		: process.env.TRACK_L_ORDERING === "ceiling"
+		? (candidate: typeof ranked[number]): number => Math.round(candidate.family.chroma * 1000)
+		: (candidate: typeof ranked[number]): number => candidate.regionEvidenceLevel
+	ranked.sort((first, second) =>
+		compareNumbersDescending(orderingLevel(first), orderingLevel(second)) ||
+		compareNumbersDescending(first.regionEvidenceLevel, second.regionEvidenceLevel) ||
+		compareNumbersDescending(evidenceLevel(signatureRoleScore(first.family)), evidenceLevel(signatureRoleScore(second.family))) ||
+		compareNumbersDescending(first.connectedPopulationFraction, second.connectedPopulationFraction) ||
+		compareAscii(first.family.id, second.family.id))
+
+With TRACK_L_ORDERING unset the comparator is byte-identical to trunk, which is how the
+baseline sweep in data/trunk-548c2d1.json was produced from the same working tree.

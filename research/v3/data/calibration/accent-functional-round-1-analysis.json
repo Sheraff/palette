@@ -1,0 +1,245 @@
+{
+	"schema": "accent-functional-round-1-analysis/v1",
+	"batchId": "accent-functional-1",
+	"analyzedAt": "2026-08-04T07:11:14.424Z",
+	"analyzer": "research/v3/data/calibration/analyze-accent-functional-round-1.ts",
+	"fixture": "/Users/Flo/GitHub/palette/research/v3/data/calibration/accent-functional-round-1.json",
+	"preregistration": "research/v3/data/calibration/accent-functional-round-1-preregistration.md",
+	"warehouse": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"criterion": "functional-visibility — does this work as an accent at a glance; explicitly NOT the detection criterion of bracketing round 1 part 2 (\"are the icons clearly visible on this background\")",
+	"question": "Does this work as an accent at a glance?",
+	"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+	"verdict": "contradicts-retraction",
+	"verdictReason": "the fitted threshold 0.04554 is below 0.08804, the rung the reviewer retracted as \"hardly perceptible\". Adopting it would contradict an answer already given; the likely cause is that the wording did not land, and the repair is a re-worded round.",
+	"proposal": null,
+	"validityGates": {
+		"controls": {
+			"passed": 4,
+			"answered": 4,
+			"failed": [],
+			"required": 4,
+			"checks": [
+				{
+					"itemId": "af-control-obvious-0",
+					"role": "control-obvious",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "af-control-identical-0",
+					"role": "control-identical",
+					"expected": false,
+					"answered": true,
+					"answer": false,
+					"passed": true
+				},
+				{
+					"itemId": "af-control-obvious-1",
+					"role": "control-obvious",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "af-control-identical-1",
+					"role": "control-identical",
+					"expected": false,
+					"answered": true,
+					"answer": false,
+					"passed": true
+				}
+			]
+		},
+		"repeats": {
+			"repeats": 4,
+			"bothAnswered": 4,
+			"agreed": 4,
+			"agreement": 1,
+			"required": 3
+		},
+		"coverage": {
+			"answered": 31,
+			"fitted": 31,
+			"required": 28
+		}
+	},
+	"primary": {
+		"n": 31,
+		"yesCount": 28,
+		"intercept": 8.529982471663088,
+		"slope": 2.7612684425687064,
+		"threshold": 0.04554048155433334,
+		"fittedThreshold": 0.04554048155433334,
+		"confidenceInterval": {
+			"low": 0.018262126642323052,
+			"high": 0.11356483835755272
+		},
+		"separated": false,
+		"separationInterval": null,
+		"converged": true,
+		"note": null,
+		"population": "role == ladder (27 constructed + 4 anchor replays)"
+	},
+	"criterionGap": {
+		"detectionThreshold": 0.07444,
+		"functionalThreshold": 0.04554,
+		"gap": -0.0289,
+		"gapIsPositive": false,
+		"anchors": [
+			{
+				"itemId": "af-anchor-p2-ladder-05",
+				"replays": "p2-ladder-05",
+				"okLabDistance": 0.06339,
+				"detectionAnswer": false,
+				"functionalAnswer": false,
+				"flippedYesToNo": false
+			},
+			{
+				"itemId": "af-anchor-p2-ladder-06",
+				"replays": "p2-ladder-06",
+				"okLabDistance": 0.08804,
+				"detectionAnswer": true,
+				"functionalAnswer": true,
+				"flippedYesToNo": false
+			},
+			{
+				"itemId": "af-anchor-p2-ladder-08",
+				"replays": "p2-ladder-08",
+				"okLabDistance": 0.14813,
+				"detectionAnswer": true,
+				"functionalAnswer": true,
+				"flippedYesToNo": false
+			},
+			{
+				"itemId": "af-anchor-p2-ladder-09",
+				"replays": "p2-ladder-09",
+				"okLabDistance": 0.24181,
+				"detectionAnswer": true,
+				"functionalAnswer": true,
+				"flippedYesToNo": false
+			}
+		],
+		"flippedYesToNo": 0
+	},
+	"exploratory": {
+		"bandFits": [
+			{
+				"band": "dark",
+				"n": 9,
+				"yesCount": 9,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "every one of the 9 answers was \"yes\" — the threshold is somewhere below 0.28867, outside the range shown"
+			},
+			{
+				"band": "light",
+				"n": 9,
+				"yesCount": 8,
+				"intercept": 1.9949703234777703,
+				"slope": -0.0410039770816808,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": "the answers do not run the expected way — pairs further apart were called \"visible\" no more often than close ones, so no threshold is reported from the curve"
+			},
+			{
+				"band": "mid",
+				"n": 9,
+				"yesCount": 8,
+				"intercept": 51.11204584120499,
+				"slope": 18.88545115383088,
+				"threshold": 0.06663719681195228,
+				"fittedThreshold": 0.06677514144388327,
+				"confidenceInterval": {
+					"low": 0.05418037902515911,
+					"high": 0.0822976803610045
+				},
+				"separated": true,
+				"separationInterval": {
+					"low": 0.060565940487832544,
+					"high": 0.07331704854557562
+				},
+				"converged": true,
+				"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap"
+			}
+		],
+		"hueFits": [
+			{
+				"hueThird": 0,
+				"n": 9,
+				"yesCount": 9,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "every one of the 9 answers was \"yes\" — the threshold is somewhere below 0.30218, outside the range shown"
+			},
+			{
+				"hueThird": 1,
+				"n": 9,
+				"yesCount": 8,
+				"intercept": 60.65428401340061,
+				"slope": 22.293142984247478,
+				"threshold": 0.06671674956584193,
+				"fittedThreshold": 0.06582473134617553,
+				"confidenceInterval": {
+					"low": 0.05507483729775415,
+					"high": 0.0786728653118122
+				},
+				"separated": true,
+				"separationInterval": {
+					"low": 0.060565940487832544,
+					"high": 0.07349220761337776
+				},
+				"converged": true,
+				"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap"
+			},
+			{
+				"hueThird": 2,
+				"n": 9,
+				"yesCount": 8,
+				"intercept": 5.361168438088297,
+				"slope": 1.735897161558324,
+				"threshold": 0.04557419504340493,
+				"fittedThreshold": 0.04557419504340493,
+				"confidenceInterval": {
+					"low": 0.0006729339125616675,
+					"high": 3.0864951447427282
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null
+			}
+		],
+		"disagreeingStrata": []
+	},
+	"answerHygiene": {
+		"otherLabelSchema": 812,
+		"otherBatch": 286,
+		"unknownItem": 0,
+		"questionKeyMismatch": 0,
+		"nonBooleanAnswer": 0,
+		"retracted": 0,
+		"superseded": 0
+	},
+	"fundedBy": [
+		"research/v3/data/calibration/accent-functional-round-1-preregistration.md"
+	]
+}

@@ -1,0 +1,85 @@
+{
+ "schemaVersion": 1,
+ "label": "vivid-series-vivid",
+ "algorithm": "v2-3",
+ "algorithmIdentity": "v2-3",
+ "image": "ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+ "imagePath": "02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+ "sourceSha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+ "byteCount": 187378,
+ "extraction": {
+  "algorithm": "v2-3",
+  "width": 640,
+  "height": 640,
+  "winner": {
+   "background": {
+    "rgb": [
+     254,
+     254,
+     254
+    ],
+    "oklab": [
+     0.997025191783905,
+     8.071221468952672e-11,
+     3.7163026433972846e-8
+    ],
+    "hex": "#fefefe",
+    "generated": false
+   },
+   "surface": {
+    "rgb": [
+     254,
+     254,
+     254
+    ],
+    "oklab": [
+     0.997025191783905,
+     8.071221468952672e-11,
+     3.7163026433972846e-8
+    ],
+    "hex": "#fefefe",
+    "generated": false
+   },
+   "foreground": {
+    "rgb": [
+     10,
+     9,
+     25
+    ],
+    "oklab": [
+     0.15130913257598877,
+     0.008468279615044594,
+     -0.03267872333526611
+    ],
+    "hex": "#0a0919",
+    "generated": false
+   },
+   "accent": {
+    "rgb": [
+     234,
+     100,
+     187
+    ],
+    "oklab": [
+     0.6958531737327576,
+     0.18289417028427124,
+     -0.054477985948324203
+    ],
+    "hex": "#ea64bb",
+    "generated": false
+   },
+   "gradient": false,
+   "collapse": {
+    "surface": true,
+    "accent": false
+   }
+  },
+  "researchRender": {
+   "schemaVersion": 1,
+   "field": {
+    "kind": "solid",
+    "role": "background"
+   }
+  }
+ }
+}

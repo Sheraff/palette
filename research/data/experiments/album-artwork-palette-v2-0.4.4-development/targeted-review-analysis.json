@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-distinct-accent-observability-review-v9",
+  "manifestId": "e916919776ada301b149eb6c4dd359d1a143709e9d7db76636b6767d23e172de",
+  "candidateVersion": "album-artwork-first-principles-0.4.4",
+  "implementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+  "scientificSha256": "be484fa948c0a625cc1e7f56b698bcea3b8652296e7408871d582932cf87dbd3",
+  "inputHashes": {
+    "manifestSha256": "86242519077ba7545d0ec1ea97b67ca4552b26d505ded0fd3c21d06f8e492799",
+    "feedbackSha256": "d88342e89e6ea0c07e6dfb35c7bb0d25561488a94a8a73e18e116e163e813afb",
+    "developmentAnalysisSha256": "042cbf3a37579d42b2dacf7edce4804ed4ea486edc10720d42ef91da1032cf96"
+  },
+  "storeIntegrity": {
+    "manifestCaseCount": 1,
+    "storedEntryCount": 1,
+    "uniqueCaseCount": 1,
+    "preferencesReferenceOnlyPositiveOptions": true
+  },
+  "interpretationPolicy": {
+    "selected": "independently usable positive direction, moderated by its verbatim comment",
+    "unselected": "unlabeled, not a negative example",
+    "structuredResponseOverridesContradictoryComment": true,
+    "commentsEnterInference": false
+  },
+  "counts": {
+    "caseCount": 1,
+    "completedResponseCount": 1,
+    "currentTopPositiveCount": 1,
+    "predecessorTopPositiveCount": 0,
+    "legacyScalarTopPositiveCount": 1,
+    "totalPositiveMarks": 2,
+    "preferredResponseCount": 0
+  },
+  "mechanismGate": {
+    "pass": true,
+    "reason": "The distinct-accent-observable current top is independently valid; the dead-zone predecessor is unselected."
+  },
+  "responseInterpretation": {
+    "caseId": "development-14",
+    "validOptionIds": [
+      "A",
+      "C"
+    ],
+    "preferredOptionId": null,
+    "comment": "Option D is not valid because the background and surface are different colors but cannot be visually distinguished, so they should be collapsed. However, because they cannot be visually distinguished, option D is visually valid ",
+    "interpretationUncertain": true,
+    "options": [
+      {
+        "optionId": "A",
+        "currentParetoTop": false,
+        "predecessorParetoTop": false,
+        "currentLegacyScalarTop": true,
+        "independentlyValid": true,
+        "preferred": false
+      },
+      {
+        "optionId": "B",
+        "currentParetoTop": false,
+        "predecessorParetoTop": true,
+        "currentLegacyScalarTop": false,
+        "independentlyValid": false,
+        "preferred": false
+      },
+      {
+        "optionId": "C",
+        "currentParetoTop": true,
+        "predecessorParetoTop": false,
+        "currentLegacyScalarTop": false,
+        "independentlyValid": true,
+        "preferred": false
+      },
+      {
+        "optionId": "D",
+        "currentParetoTop": false,
+        "predecessorParetoTop": false,
+        "currentLegacyScalarTop": false,
+        "independentlyValid": false,
+        "preferred": false
+      }
+    ]
+  },
+  "phaseDisposition": "distinct-accent-observability-gate-passed-absolute-quality-delta-review-authorized",
+  "freshSampleOpened": false,
+  "nextStep": "Run a development-only absolute-quality delta review for changed broad tops; do not open the fresh sample."
+}

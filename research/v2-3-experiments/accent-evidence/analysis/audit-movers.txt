@@ -1,0 +1,623 @@
+
+====================================================================================================
+ab67616d00001e020002881a851f1e14c374562b.jpg   moved: background+surface+accent
+  OFF (trunk) #403b63 #cd4269 #fbfdfa #23a4ba grad=false
+  ON  (arm)   #262340 #54495a #fbfdfa #d0456e grad=false
+  warehouse: 2 record(s)
+   - line 49 review-8-fresh           strong         NO PREFERENCE
+       trunk-dca4       #262340 #54495a #fbfdfa #f1c153 grad=false
+       v2-2             #262340 #54495a #fbfdfa #f1c153 grad=false
+       note: The surface color feels dull, almost grayish, when the artwork is so very colorful 
+   - line 163 review-24-coverage       strong         A=x-coverage-alternative
+       x-coverage-alternative #262642 #754577 #fbfdfa #d0456e grad=false <-- preferred
+       x-coverage-incumbent #262340 #54495a #fbfdfa #23a4ba grad=false
+
+====================================================================================================
+ab67616d00001e020002881a851f1e14c374562b   moved: background+surface+accent
+  OFF (trunk) #403b63 #cd4269 #fbfdfa #23a4ba grad=false
+  ON  (arm)   #262340 #54495a #fbfdfa #d0456e grad=false
+  warehouse: 2 record(s)
+   - line 49 review-8-fresh           strong         NO PREFERENCE
+       trunk-dca4       #262340 #54495a #fbfdfa #f1c153 grad=false
+       v2-2             #262340 #54495a #fbfdfa #f1c153 grad=false
+       note: The surface color feels dull, almost grayish, when the artwork is so very colorful 
+   - line 163 review-24-coverage       strong         A=x-coverage-alternative
+       x-coverage-alternative #262642 #754577 #fbfdfa #d0456e grad=false <-- preferred
+       x-coverage-incumbent #262340 #54495a #fbfdfa #23a4ba grad=false
+
+====================================================================================================
+ab67616d00001e020003e50500c5d762da89643a.jpg   moved: background+surface
+  OFF (trunk) #050a06 #121e10 #cfd4c0 #758151 grad=false
+  ON  (arm)   #060a06 #152312 #cfd4c0 #758151 grad=false
+  warehouse: 4 record(s)
+   - line 36 review-6-fresh           strong         NO PREFERENCE
+       trunk-d-c3       #050a06 #21331b #cfd4c0 #51613a grad=false
+       v2-2             #050a06 #121e10 #cfd4c0 #a8b087 grad=false
+       note: This is already good, but if we want to try and improve it there is some gold-orange writing in the top left corner that could make for a good accent 
+   - line 74 review-11-seams-diversity acceptable     NO PREFERENCE
+       trunk-c5         #050a06 #21331b #cfd4c0 #51613a grad=false
+       trunk-a5         #050a06 #121e10 #cfd4c0 #51613a grad=false
+       note: (maybe) could be gradient (maybe) accent could be the orange-gold color that's in the top left corner text
+   - line 188 batch-27                 acceptable     NO PREFERENCE
+       as-on            #050a06 #121e10 #cfd4c0 #758151 grad=false
+       as-off           #050a06 #21331b #cfd4c0 #51613a grad=false
+       corrections: {"background":"#050a06","surface":"#121e10","foreground":"#758151","accent":"#cfd4c0"}
+       note: It's too bad we're not picking up the orange-gold colors in the top left corner. This is the band's name on this awkward. It would make for a great accent.
+   - line 195 batch-28                 strong         A=cr-alt
+       cr-alt           #050a06 #21331b #b67e1f #496036 grad=false <-- preferred
+       cr-trunk         #050a06 #121e10 #cfd4c0 #758151 grad=false
+       corrections: {"background":"#050a06","surface":"#cfd4c0","foreground":"#b67e1f","accent":"#496036"}
+
+====================================================================================================
+ab67616d00001e020003e50500c5d762da89643a   moved: background+surface
+  OFF (trunk) #050a06 #121e10 #cfd4c0 #758151 grad=false
+  ON  (arm)   #060a06 #152312 #cfd4c0 #758151 grad=false
+  warehouse: 4 record(s)
+   - line 36 review-6-fresh           strong         NO PREFERENCE
+       trunk-d-c3       #050a06 #21331b #cfd4c0 #51613a grad=false
+       v2-2             #050a06 #121e10 #cfd4c0 #a8b087 grad=false
+       note: This is already good, but if we want to try and improve it there is some gold-orange writing in the top left corner that could make for a good accent 
+   - line 74 review-11-seams-diversity acceptable     NO PREFERENCE
+       trunk-c5         #050a06 #21331b #cfd4c0 #51613a grad=false
+       trunk-a5         #050a06 #121e10 #cfd4c0 #51613a grad=false
+       note: (maybe) could be gradient (maybe) accent could be the orange-gold color that's in the top left corner text
+   - line 188 batch-27                 acceptable     NO PREFERENCE
+       as-on            #050a06 #121e10 #cfd4c0 #758151 grad=false
+       as-off           #050a06 #21331b #cfd4c0 #51613a grad=false
+       corrections: {"background":"#050a06","surface":"#121e10","foreground":"#758151","accent":"#cfd4c0"}
+       note: It's too bad we're not picking up the orange-gold colors in the top left corner. This is the band's name on this awkward. It would make for a great accent.
+   - line 195 batch-28                 strong         A=cr-alt
+       cr-alt           #050a06 #21331b #b67e1f #496036 grad=false <-- preferred
+       cr-trunk         #050a06 #121e10 #cfd4c0 #758151 grad=false
+       corrections: {"background":"#050a06","surface":"#cfd4c0","foreground":"#b67e1f","accent":"#496036"}
+
+====================================================================================================
+ab67616d00001e0200044a28a45b7b23d4be2f79   moved: accent
+  OFF (trunk) #beb4b5 #dfdde0 #3a2828 #cc9a8f grad=true
+  ON  (arm)   #beb4b5 #dfdde0 #3a2828 #ac766a grad=true
+  warehouse: 1 record(s)
+   - line 100 review-15-white-fg-fresh strong         NO PREFERENCE
+       trunk-h5         #beb4b5 #dfdde0 #3a2828 #cc9a8f grad=true
+       v2-2             #beb4b5 #dfdde0 #3a2828 #84554f grad=true
+
+====================================================================================================
+ab67616d00001e0200060491ade88c8893373d9f   moved: foreground+accent
+  OFF (trunk) #a07f5e #6a770e #120f16 #c7c3c0 grad=false
+  ON  (arm)   #a07f5e #6a770e #c7c3c0 #04e3d1 grad=false
+  warehouse: 1 record(s)
+   - line 358 ae-batch                 strong         B=ae-on
+       ae-off           #a07f5e #6a770e #120f16 #c7c3c0 grad=false
+       ae-on            #a07f5e #6a770e #c7c3c0 #04e3d1 grad=false <-- preferred
+
+====================================================================================================
+ab67616d00001e02000a8aa1dafa651976a7bb44   moved: background+surface
+  OFF (trunk) #100702 #291107 #fbf809 #fa8a02 grad=true
+  ON  (arm)   #040301 #491600 #fbf809 #fa8a02 grad=true
+  warehouse: 6 record(s)
+   - line 115 review-17-vivid-series   strong         A=vivid-series-vivid
+       vivid-series-vivid #040301 #491600 #fa8a02 #fbf809 grad=true <-- preferred
+       vivid-series-incumbent #040301 #491600 #fa8a02 #8f3908 grad=true
+   - line 147 review-21-nomination     strong         A=r-batch-b
+       r-batch-b        #040301 #491600 #fa8a02 #fbf809 grad=true <-- preferred
+       r-batch-a        #040301 #491600 #fa8a02 #8f3908 grad=true
+   - line 221 batch-30                 strong         A=sk-on
+       sk-on            #100702 #291107 #fbf809 #fa8a02 grad=true <-- preferred
+       sk-off           #040301 #491600 #fa8a02 #8f3908 grad=true
+   - line 240 batch-31                 acceptable     A=ra-on
+       ra-on            #040301 #491600 #fa8a02 #8f3908 grad=true <-- preferred
+       ra-off           #100702 #291107 #fbf809 #fa8a02 grad=true
+       corrections: {"background":"#040301","surface":"#491600","foreground":"#fa8a02","accent":"#f0d202"}
+       note: good foreground color, but weak accent
+   - line 282 sr-batch                 strong         B=sr-off
+       sr-ask           #100702 #291107 #fbf809 #f0d202 grad=true
+       sr-off           #100702 #291107 #fbf809 #fa8a02 grad=true <-- preferred
+   - line 329 batch-ma-revival         acceptable     A=ma-on
+       ma-on            #100702 #291107 #fa8a02 #8f3908 grad=true <-- preferred
+       ma-off           #100702 #291107 #fbf809 #fa8a02 grad=true
+       note: Option B would be better if the yellow was for the accent and Elden Ring orange was for the foreground but without this flip then it's option A that is better because Elden Ring Orange at least has the right role
+
+====================================================================================================
+ab67616d00001e02000b096f0b03b7745c8e8aab   moved: accent
+  OFF (trunk) #083808 #001802 #f8fdf7 #54995a grad=true
+  ON  (arm)   #083808 #001802 #f8fdf7 #1eb721 grad=true
+  warehouse: 2 record(s)
+   - line 117 review-17-vivid-series   strong         NO PREFERENCE
+       vivid-series-incumbent #083808 #001802 #f8fdf7 #54995a grad=true
+       vivid-series-vivid #083808 #001802 #f8fdf7 #17d21f grad=true
+   - line 360 rw-batch-vividness       strong         B=m-vivid-max
+       trunk            #083808 #001802 #f8fdf7 #54995a grad=true
+       m-vivid-max      #083808 #001802 #f8fdf7 #1eb721 grad=true <-- preferred
+
+====================================================================================================
+ab67616d00001e02000b5fe0db38c29686e103dc   moved: accent
+  OFF (trunk) #f3f3f3 #f3f3f3 #012943 #010101 grad=false
+  ON  (arm)   #f3f3f3 #f3f3f3 #012943 #0171bb grad=false
+  warehouse: 2 record(s)
+   - line 253 batch-32                 unacceptable   NO PREFERENCE
+       ra2-off          #f3f3f3 #f3f3f3 #010101 #012943 grad=false
+       ra2-on           #f3f3f3 #f3f3f3 #012943 #045187 grad=false
+       corrections: {"background":"#010101","surface":"#014d7f","foreground":"#f3f3f3","accent":"#fe1518"}
+       note: These proposed palettes don't really match the artwork. The artwork has a mostly dark background, fully black on the outside and a dark blue to blue gradient in the middle. It also has white drawings and a bright red symbol. I think the confusion might come from the fact that on top of the white drawing there is black text. So it looks like the foreground should be some sort of black or dark blue.  I think a better palette would actually use a white as the foreground. The red symbol's color could be used as the accent, and then background and surface could be black and blue, possibly with a gradient   At the very least, if we keep this white background, we need to have the accent represent the red symbol's color because right now the palettes look pretty much just black and white with a slight blue tint, which doesn't fit this artwork 
+   - line 263 batch-33                 weak-fallback  NO PREFERENCE
+       ra3-off          #f3f3f3 #f3f3f3 #010101 #012943 grad=false
+       ra3-on           #f3f3f3 #f3f3f3 #012943 #010101 grad=false
+
+====================================================================================================
+ab67616d00001e02000b87c4345d251dd50300f8   moved: background+surface
+  OFF (trunk) #efcf92 #cca467 #00093c #b68646 grad=false
+  ON  (arm)   #efcc8a #cca363 #00093c #b68646 grad=false
+  warehouse: 1 record(s)
+   - line 116 review-17-vivid-series   acceptable     B=vivid-series-vivid
+       vivid-series-incumbent #efcf92 #cca467 #00093c #b68646 grad=false
+       vivid-series-vivid #efcf92 #cca467 #00093c #9e0d2e grad=false <-- preferred
+       note: There are some pretty nice hues around green and blue that could also work nicely as the foreground. The currently selected logbook foreground does work and it is visible in the artwork but visually it has pretty much the same value as the other lighter blue-green hues and so those might have a bigger impact in how much we feel like the palette reflects the artwork 
+
+====================================================================================================
+ab67616d00001e02000c4d52300a016ee65f1622   moved: surface+accent
+  OFF (trunk) #0c070b #300c16 #c6a37b #b67161 grad=false
+  ON  (arm)   #0c070b #481f25 #c6a37b #aa4483 grad=false
+  warehouse: 2 record(s)
+   - line 202 calib-batch-1a           strong         NO PREFERENCE
+       calib-1b         #0c070b #300c16 #c6a37b #b67161 grad=false
+       calib-1          #0c070b #300c16 #c6a37b #b67161 grad=false
+       corrections: {"background":"#0c070b","surface":"#712553","foreground":"#b67161","accent":"#d479bf"}
+       note: This palette feels a bit muted compared to the artwork that contains very rich purples and gold beige colors 
+   - line 352 ae-batch                 acceptable     A=ae-on
+       ae-on            #0c070b #481f25 #c6a37b #aa4483 grad=false <-- preferred
+       ae-off           #0c070b #300c16 #c6a37b #b67161 grad=false
+
+====================================================================================================
+ab67616d00001e02000dc6372be4c9ffc89fc9df   moved: accent
+  OFF (trunk) #1a1303 #6d5d2c #c8b58b #988044 grad=true
+  ON  (arm)   #1a1303 #6d5d2c #c8b58b #cc141e grad=true
+  warehouse: 1 record(s)
+   - line 203 calib-batch-1a           acceptable     NO PREFERENCE
+       calib-1b         #1a1303 #6d5d2c #c8b58b #988044 grad=true
+       calib-1          #1a1303 #6d5d2c #c8b58b #988044 grad=true
+       note: Main focus area of this artwork is a bright red title with black subtitle written on top of subway tiles with grime leaking on top, and rust colored decorations. The proposed palette seems to be representing what is outside of this main focus area, the olive / muddy colors of a subway track. So technically it does match part of the artwork, but not the right parts.
+
+====================================================================================================
+ab67616d00001e02000f0a78a1791248aec707e3   moved: background+surface+foreground+accent
+  OFF (trunk) #f3eb7c #fbfef7 #010101 #7c1608 grad=false
+  ON  (arm)   #110c09 #f3ec7c #fbfef7 #fa1903 grad=false
+  warehouse: 1 record(s)
+   - line 357 ae-batch                 strong         A=ae-on
+       ae-on            #110c09 #f3ec7c #fbfef7 #fa1903 grad=false <-- preferred
+       ae-off           #f3eb7c #fbfef7 #010101 #7c1608 grad=false
+
+====================================================================================================
+ab67616d00001e02000f723f36271de0ed3aa893   moved: accent
+  OFF (trunk) #2a0c54 #09060d #f7f2f9 #8b65b0 grad=true
+  ON  (arm)   #2a0c54 #09060d #f7f2f9 #8827c4 grad=true
+  warehouse: 2 record(s)
+   - line 114 review-17-vivid-series   strong         NO PREFERENCE
+       vivid-series-vivid #2a0c54 #09060d #f7f2f9 #8827c4 grad=true
+       vivid-series-incumbent #2a0c54 #09060d #f7f2f9 #8b65b0 grad=true
+   - line 334 rw-batch-roleflip        strong         B=trunk
+       w-rank           #2a0c54 #09060d #8b65b0 #f7f2f9 grad=true
+       trunk            #2a0c54 #09060d #f7f2f9 #8b65b0 grad=true <-- preferred
+
+====================================================================================================
+ab67616d00001e02000f9f4ba3750dc73886b2ad   moved: background+surface+foreground+accent
+  OFF (trunk) #21356a #4d4b59 #f1faf9 #eed32e grad=false
+  ON  (arm)   #f1faf9 #eed32e #21356a #040f2b grad=false
+  warehouse: 1 record(s)
+   - line 204 calib-batch-1a           weak-fallback  NO PREFERENCE
+       calib-1          #21356a #4d4b59 #f1faf9 #eed32e grad=false
+       calib-1b         #21356a #4d4b59 #f1faf9 #eed32e grad=false
+       note: The surface doesn't feel like it comes from this artwork, i don't know where Liver grey is represented. This is also a pretty bad quality artwork, i'm almost tempted to drop it.
+
+====================================================================================================
+ab67616d00001e02001031d1e10290f8e446bd68   moved: foreground+accent
+  OFF (trunk) #0c070b #25160f #faf3ed #e48068 grad=true
+  ON  (arm)   #0c070b #25160f #e7a37e #b62d1a grad=true
+  warehouse: 2 record(s)
+   - line 127 review-18-vivid-boundary strong         NO PREFERENCE
+       vivid-series-2-vivid #0c070b #25160f #faf3ed #f3a630 grad=true
+       vivid-series-2-incumbent #0c070b #25160f #faf3ed #e7a37e grad=true
+   - line 181 batch-26                 strong         NO PREFERENCE
+       x2-coverage      #0c070b #25160f #faf3ed #e48068 grad=true
+       x2-off           #0c070b #25160f #faf3ed #e7a37e grad=true
+
+====================================================================================================
+ab67616d00001e0200106c3252a4c133c0abde36   moved: foreground
+  OFF (trunk) #000000 #000000 #b6b6b6 #fbfbfb grad=false
+  ON  (arm)   #000000 #000000 #fbfbfb #fbfbfb grad=false
+  warehouse: 1 record(s)
+   - line 206 calib-batch-1a           strong         NO PREFERENCE
+       calib-1          #000000 #000000 #b6b6b6 #fbfbfb grad=false
+       calib-1b         #000000 #000000 #b6b6b6 #fbfbfb grad=false
+
+====================================================================================================
+ab67616d0000b27300009f60aeb150a5db45b47b.jpg   moved: accent
+  OFF (trunk) #1c1012 #392628 #faf9f7 #965f4b grad=true
+  ON  (arm)   #1c1012 #392628 #faf9f7 #f9b296 grad=true
+  warehouse: 3 record(s)
+   - line 83 review-13-fresh          acceptable     NO PREFERENCE
+       trunk-h          #1d171b #253032 #faf9f7 #b8a79f grad=true
+       v2-2             #1c1012 #392628 #faf9f7 #b8a79f grad=true
+       note: There are some pink peach and green little drawings that could be used as the accent, but these palettes do work 
+   - line 183 batch-26                 strong         NO PREFERENCE
+       x2-coverage      #1c1012 #392628 #faf9f7 #965f4b grad=true
+       x2-off           #1d171b #253032 #faf9f7 #b8a79f grad=true
+   - line 361 rw-batch-vividness       acceptable     A=m-vivid-max
+       m-vivid-max      #1c1012 #392628 #faf9f7 #f9b296 grad=true <-- preferred
+       trunk            #1c1012 #392628 #faf9f7 #965f4b grad=true
+
+====================================================================================================
+ab67616d0000b27300009f60aeb150a5db45b47b   moved: accent
+  OFF (trunk) #1c1012 #392628 #faf9f7 #965f4b grad=true
+  ON  (arm)   #1c1012 #392628 #faf9f7 #f9b296 grad=true
+  warehouse: 3 record(s)
+   - line 83 review-13-fresh          acceptable     NO PREFERENCE
+       trunk-h          #1d171b #253032 #faf9f7 #b8a79f grad=true
+       v2-2             #1c1012 #392628 #faf9f7 #b8a79f grad=true
+       note: There are some pink peach and green little drawings that could be used as the accent, but these palettes do work 
+   - line 183 batch-26                 strong         NO PREFERENCE
+       x2-coverage      #1c1012 #392628 #faf9f7 #965f4b grad=true
+       x2-off           #1d171b #253032 #faf9f7 #b8a79f grad=true
+   - line 361 rw-batch-vividness       acceptable     A=m-vivid-max
+       m-vivid-max      #1c1012 #392628 #faf9f7 #f9b296 grad=true <-- preferred
+       trunk            #1c1012 #392628 #faf9f7 #965f4b grad=true
+
+====================================================================================================
+ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg   moved: background+surface+foreground+accent
+  OFF (trunk) #fefefe #fefefe #0a0919 #12356d grad=false
+  ON  (arm)   #0b0715 #12356d #fefefe #eb64c0 grad=false
+  warehouse: 1 record(s)
+   - line 119 review-17-vivid-series   strong         B=vivid-series-vivid
+       vivid-series-incumbent #fefefe #fefefe #0a0919 #12356d grad=false
+       vivid-series-vivid #fefefe #fefefe #0a0919 #ea64bb grad=false <-- preferred
+
+====================================================================================================
+ab67616d0000b273000323957b88112ca49b8ee0.jpg   moved: foreground+accent
+  OFF (trunk) #e1ded5 #663f30 #19100b #2e2017 grad=true
+  ON  (arm)   #e1ded5 #663f30 #2b2118 #895138 grad=true
+  warehouse: 2 record(s)
+   - line 150 review-22-floors         strong         B=q2-after
+       q2-before        #dbd7cc #733c28 #dad6cb #2b2118 grad=true
+       q2-after         #e1ded5 #663f30 #19100b #2e2017 grad=true <-- preferred
+   - line 304 batch-36                 strong         B=cc-on
+       cc-off           #e1ded5 #663f30 #19100b #2e2017 grad=true
+       cc-on            #dad6cb #dad6cb #2b2118 #763f2a grad=false <-- preferred
+
+====================================================================================================
+ab67616d0000b27300040defaf772cad7a1738ce   moved: background+surface
+  OFF (trunk) #1e1e28 #3f3148 #c4b3a9 #eda9f2 grad=true
+  ON  (arm)   #26202e #3b3247 #c4b3a9 #eda9f2 grad=true
+  warehouse: 1 record(s)
+   - line 213 calib-batch-1b           strong         NO PREFERENCE
+       calib-1          #1e1e28 #3f3148 #c4b3a9 #eda9f2 grad=true
+       calib-1b         #1e1e28 #3f3148 #c4b3a9 #eda9f2 grad=true
+
+====================================================================================================
+ab67616d0000b2730005597105ba1e2d38f62cfc   moved: foreground
+  OFF (trunk) #1b161a #382926 #7e5b55 #eaac87 grad=true
+  ON  (arm)   #1b161a #382926 #ae785e #eaac87 grad=true
+  warehouse: 1 record(s)
+   - line 214 calib-batch-1b           strong         NO PREFERENCE
+       calib-1b         #1b161a #382926 #7e5b55 #eaac87 grad=true
+       calib-1          #1b161a #382926 #7e5b55 #eaac87 grad=true
+
+====================================================================================================
+ab67616d0000b2730005a91812c85db291ea5d85   moved: surface
+  OFF (trunk) #1f6998 #123146 #f9fcf3 #f0d732 grad=false
+  ON  (arm)   #1f6998 #0c5381 #f9fcf3 #f0d732 grad=false
+  warehouse: 5 record(s)
+   - line 58 review-9-fresh           strong         NO PREFERENCE
+       v2-2             #1f6998 #0c5381 #f9fcf3 #f0d732 grad=false
+       trunk-dca4       #1f6998 #123146 #f9fcf3 #f0d732 grad=false
+   - line 131 review-20-fg-boundary    strong         B=fg-boundary-alt
+       fg-boundary-current #1f6998 #123146 #f9fcf3 #f0d732 grad=false
+       fg-boundary-alt  #1f6998 #123146 #f0d732 #e88220 grad=false <-- preferred
+       corrections: {"background":"#1f6998","surface":"#0b4f7e","foreground":"#f0d732","accent":"#e88220"}
+   - line 245 batch-31                 strong         NO PREFERENCE
+       ra-off           #1f6998 #123146 #f9fcf3 #f0d732 grad=false
+       ra-on            #1f6998 #123146 #f0d732 #e88220 grad=false
+   - line 323 batch-ma-revival         strong         NO PREFERENCE
+       ma-on            #1f6998 #123146 #f0d732 #e88220 grad=false
+       ma-off           #1f6998 #123146 #f9fcf3 #f0d732 grad=false
+   - line 355 ae-batch                 strong         B=ae-on
+       ae-off           #1f6998 #123146 #f9fcf3 #f0d732 grad=false
+       ae-on            #1f6998 #0c5381 #f9fcf3 #f0d732 grad=false <-- preferred
+
+====================================================================================================
+ab67616d0000b2730007cc8b341c11227aa7b461   moved: accent
+  OFF (trunk) #5d856b #99bece #fbfbfb #242426 grad=true
+  ON  (arm)   #5d856b #99bece #fbfbfb #1f3a29 grad=true
+  warehouse: 7 record(s)
+   - line 87 review-13-fresh          weak-fallback  NO PREFERENCE
+       trunk-h          #5d856b #99bece #242426 #fbfbfb grad=true
+       v2-2             #5d856b #99bece #242426 #fbfbfb grad=true
+       note: There are some issues here. I don't know how important they are, but first of all, the foreground should be white. This is what the main text of the artwork is, and there is a full white drawing in front, so it really feels like the foreground should be white. Then the accent should be marmalade orange, this is really what the artwork is representing with the album title being orange. And then I'm not sure we should have a gradient between cashmere green and ghost blue. In the artwork, this is the sky and the grass, and visually it doesn't feel like there's a gradient between both because they are just different areas, different surfaces 
+   - line 96 review-15-white-fg-fresh strong         A=trunk-h5
+       trunk-h5         #5d856b #99bece #fbfbfb #242426 grad=true <-- preferred
+       trunk-h          #5d856b #99bece #242426 #fbfbfb grad=true
+       corrections: {"background":"#5d856b","surface":"#99bece","foreground":"#fbfbfb","accent":"#f06d13"}
+       note: This is pretty good. I think the only remaining issue with that palette is that the accent should be the color of the orange album title, which is pretty close to marmalade orange 
+   - line 250 conversational           null           NO PREFERENCE
+       note: Flo on the sky-and-grass gradient question (0007cc8b, review-87 vs review-96 tension): 'I rated it strong later because you told me there was no mathematical way to determine that they are 2 distinct objects/surfaces. Visually it looks aesthetically pleasing so i don't mind the gradient, but for fidelity to the artwork i wasn't sure. I'm still unsure, I would have to see it in a review (and even still I might rate them equally strong).' AUTHORITATIVE READING: the two verdicts are not contradictory — the artwork is genuinely ambivalent; 'equally strong' is a live outcome. The no-mathematical-way claim is now corpus-confirmed (gradient-spatial arm: boundary complexity AUC 0.464, below chance). Implication for gradient arms: distinct-areas-vs-shading neutrality stakes are SOFT on aesthetically-pleasing cases; the hard cases remain the explicit wishes and the endorsed-gradient regression.
+   - line 279 sr-batch                 strong         A=sr-ask
+       sr-ask           #5d856b #99bece #fbfbfb #f06d13 grad=true <-- preferred
+       sr-off           #5d856b #99bece #fbfbfb #242426 grad=true
+   - line 341 batch-39-ordering        strong         A=co-on-ae
+       co-on-ae         #5d856b #99bece #fbfbfb #ee7326 grad=true <-- preferred
+       co-off-ae        #5d856b #99bece #fbfbfb #1f3a29 grad=true
+   - line 354 ae-batch                 acceptable     NO PREFERENCE
+       ae-on            #5d856b #99bece #fbfbfb #1f3a29 grad=true
+       ae-off           #5d856b #99bece #fbfbfb #242426 grad=true
+   - line 359 rw-batch-vividness       strong         A=m-vivid-max
+       m-vivid-max      #5d856b #99bece #fbfbfb #ee7326 grad=true <-- preferred
+       trunk            #5d856b #99bece #fbfbfb #242426 grad=true
+
+====================================================================================================
+ab67616d0000b27300083cc5b8d8d2e7ca7147cd   moved: foreground+accent
+  OFF (trunk) #700e63 #fac1c7 #371432 #180a21 grad=true
+  ON  (arm)   #700e63 #fac1c7 #180a21 #871b3f grad=true
+  warehouse: 2 record(s)
+   - line 224 conversational           strong         NO PREFERENCE
+       note: Calibration round 2 (served but batch submission did not reach the warehouse; verdict relayed in conversation): Flo: 'I was genuinely impressed by [these four] — those are truly hard hard artworks, and the palettes seem very faithful to the vibe.'
+   - line 232 calib-batch-2            strong         NO PREFERENCE
+       calib-2          #700e63 #fac1c7 #371432 #180a21 grad=true
+       calib-2b         #700e63 #fac1c7 #371432 #180a21 grad=true
+
+====================================================================================================
+ab67616d0000b2730009d178a401f9433fdddff2   moved: surface
+  OFF (trunk) #000000 #c42a42 #fafafa #15a6a9 grad=false
+  ON  (arm)   #000000 #ed3358 #fafafa #15a6a9 grad=false
+  warehouse: 8 record(s)
+   - line 40 review-6-fresh           acceptable     A=v2-2
+       v2-2             #000000 #21203f #f5f7f4 #15a6a9 grad=false <-- preferred
+       trunk-d-c3       #000000 #21203f #15a6a9 #fbdd41 grad=false
+       note: The surface color is a bit weak. The result would be stronger if it was carpaccio red or punch red. I see those colors get picked up in the roll correction swatches 
+   - line 67 review-10-marks-midpoints acceptable     NO PREFERENCE
+       trunk-a5         #000000 #21203f #f5f7f4 #15a6a9 grad=false
+       trunk-e          #000000 #21203f #f5f7f4 #15a6a9 grad=false
+       note: It works, but I think it would be stronger with a red surface. We have a few valid reds in the roll corrections. So that would be Carpaccio, maybe Arcane Red, Punch would work, Aubergine maybe as well 
+   - line 132 review-20-fg-boundary    acceptable     B=fg-boundary-alt
+       fg-boundary-current #000000 #21203f #f5f7f4 #15a6a9 grad=false
+       fg-boundary-alt  #000000 #21203f #15a6a9 #f5f7f4 grad=false <-- preferred
+       corrections: {"background":"#000000","surface":"#21203f","foreground":"#15a6a9","accent":"#e83463"}
+       note: There is a lot of red shades in this artwork. Since we have a white accent, we might as well replace it with one of the red shades 
+   - line 161 review-24-coverage       strong         B=x-coverage-alternative
+       x-coverage-incumbent #000000 #21203f #f5f7f4 #15a6a9 grad=false
+       x-coverage-alternative #000000 #c42a42 #fafafa #15a6a9 grad=false <-- preferred
+   - line 246 batch-31                 strong         A=ra-off
+       ra-off           #000000 #c42a42 #fafafa #15a6a9 grad=false <-- preferred
+       ra-on            #000000 #ed3358 #fbde38 #15a6a9 grad=false
+       note: there is a nice gradient in the artwork that goes from Night Violet -> Cherry Cola -> Embarrassed, it would be pretty amazing to get it on this artwork
+   - line 277 batch-34                 strong         B=gf-on
+       gf-off           #000000 #c42a42 #fafafa #15a6a9 grad=false
+       gf-on            #000000 #aa375e #f5f7f4 #15a6a9 grad=true <-- preferred
+   - line 326 batch-ma-revival         acceptable     A=ma-off
+       ma-off           #000000 #c42a42 #fafafa #15a6a9 grad=false <-- preferred
+       ma-on            #000000 #ed3358 #fbde38 #15a6a9 grad=false
+       note: this artwork should have a gradient (but not black-to-red gradient, we would need a different background and probably different surface too)
+   - line 356 ae-batch                 acceptable     NO PREFERENCE
+       ae-off           #000000 #c42a42 #fafafa #15a6a9 grad=false
+       ae-on            #000000 #ed3358 #fafafa #15a6a9 grad=false
+
+====================================================================================================
+ab67616d0000b273000a2927c0f27657e4a2aeaa   moved: background+surface+foreground+accent
+  OFF (trunk) #000102 #380703 #d50306 #7e0202 grad=true
+  ON  (arm)   #010101 #1c0001 #696363 #d50306 grad=true
+  warehouse: 4 record(s)
+   - line 225 conversational           strong         NO PREFERENCE
+       note: Calibration round 2 (served but batch submission did not reach the warehouse; verdict relayed in conversation): Flo: 'I was genuinely impressed by [these four] — those are truly hard hard artworks, and the palettes seem very faithful to the vibe.'
+   - line 233 calib-batch-2            strong         NO PREFERENCE
+       calib-2          #000102 #380703 #d50306 #7e0202 grad=true
+       calib-2b         #000102 #380703 #d50306 #7e0202 grad=true
+   - line 237 conversational           null           NO PREFERENCE
+       corrections: {"accent":"#706c6d"}
+       note: Follow-up on the calibration-2 strong ({bg #000102, surface #380703, fg #d50306, accent #7e0202}, all reds): 'could also have been nice with a Slate #706c6d accent, so it's not full red'. An alternative sample, not a downgrade — the all-red palette stays strong. Evidence for a mild hue-diversity preference on the accent when fg already carries the identity hue (adjacent to the skap one-hue-one-direction principle: the two reds are one direction; a neutral accent diversifies without stealing identity).
+   - line 238 conversational           null           NO PREFERENCE
+       note: Sharpening the Slate-accent sample: 'in this case Slate #706c6d almost acts as a true *accent* since the entire palette is red.' Principle: accent-ness is CONTEXTUAL to the palette, not absolute — the accent role is what stands apart from the palette's dominant hue field. In a monochromatic (all-red) palette a neutral is the true accent; in a neutral-heavy palette a chromatic color is. Current machinery scores accent chroma/identity absolutely; it has no notion of within-palette distinctiveness as the accent's job.
+
+====================================================================================================
+ab67616d0000b273000d5cdbc67ed815efc360ad   moved: foreground+accent
+  OFF (trunk) #000000 #000000 #f7de67 #f22632 grad=false
+  ON  (arm)   #000000 #000000 #c7c6c1 #cd1227 grad=false
+  warehouse: 7 record(s)
+   - line 136 review-19-fresh          strong         B=v2-2
+       trunk-k2         #000000 #000000 #c7c6c1 #cd1227 grad=false
+       v2-2             #000000 #000000 #f7de67 #f22632 grad=false <-- preferred
+   - line 178 review-25-decisions      acceptable     NO PREFERENCE
+       w-batch-after    #000000 #000000 #f7de67 #c7c6c1 grad=false
+       w-batch-before   #000000 #000000 #c7c6c1 #cd1227 grad=false
+       corrections: {"background":"#000000","surface":"#000000","foreground":"#f1b73c","accent":"#cd1227"}
+       note: The Dim grey feels too neutral for this artwork, it is not the focus of it. The gold and red are the important ones.
+   - line 187 batch-27                 acceptable     NO PREFERENCE
+       as-on            #000000 #000000 #c7c6c1 #f22632 grad=false
+       as-off           #000000 #000000 #c7c6c1 #cd1227 grad=false
+       corrections: {"background":"#000000","surface":"#000000","foreground":"#cd972b","accent":"#cd1227"}
+   - line 190 batch-27                 strong         NO PREFERENCE
+       sq-b             #000000 #000000 #f0bb47 #cd1227 grad=false
+       sq-a             #000000 #000000 #f1b73c #cd1227 grad=false
+   - line 192 batch-28                 strong         A=cr-m1
+       cr-m1            #000000 #000000 #f7de67 #f22632 grad=false <-- preferred
+       cr-trunk         #000000 #000000 #c7c6c1 #f22632 grad=false
+   - line 193 batch-28                 strong         NO PREFERENCE
+       cr-alt           #000000 #000000 #e4b144 #f22632 grad=false
+       cr-m1            #000000 #000000 #f7de67 #f22632 grad=false
+   - line 350 ae-batch                 strong         B=ae-off
+       ae-on            #000000 #000000 #c7c6c1 #cd1227 grad=false
+       ae-off           #000000 #000000 #f7de67 #f22632 grad=false <-- preferred
+       corrections: {"background":"#000000","surface":"#000000","foreground":"#cd972b","accent":"#f22632"}
+       note: both Fire Hydrant and Red accents work. But the foreground is better on option B
+
+====================================================================================================
+ab67616d0000b273000e91d6c3b44e900d334a78   moved: foreground+accent
+  OFF (trunk) #383838 #1a1a1c #e1ddda #fbf072 grad=true
+  ON  (arm)   #383838 #1a1a1c #fbf072 #f94d37 grad=true
+  warehouse: 4 record(s)
+   - line 121 review-18-vivid-boundary acceptable     NO PREFERENCE
+       vivid-series-2-vivid #383838 #1a1a1c #e1ddda #fb7739 grad=true
+       vivid-series-2-incumbent #383838 #1a1a1c #e1ddda #fbf072 grad=true
+       corrections: {"background":"#393939","surface":"#7b7b7b","foreground":"#fbf072","accent":"#fb7739"}
+       note: Both the tangerine orange and the lemon chiffon yellow should be on the palette 
+   - line 134 review-20-fg-boundary    strong         A=fg-boundary-alt
+       fg-boundary-alt  #383838 #1a1a1c #fbf072 #f94d37 grad=true <-- preferred
+       fg-boundary-current #383838 #1a1a1c #e1ddda #fbf072 grad=true
+   - line 321 batch-ma-revival         strong         A=ma-on
+       ma-on            #383838 #1a1a1c #fbf072 #f94d37 grad=true <-- preferred
+       ma-off           #383838 #1a1a1c #e1ddda #fbf072 grad=true
+   - line 351 ae-batch                 strong         A=ae-on
+       ae-on            #383838 #1a1a1c #fbf072 #f94d37 grad=true <-- preferred
+       ae-off           #383838 #1a1a1c #e1ddda #fbf072 grad=true
+
+====================================================================================================
+ab67616d0000b27300100a3e9c764acf01c16db8   moved: accent
+  OFF (trunk) #80bbf7 #b6debc #090810 #4c4859 grad=true
+  ON  (arm)   #80bbf7 #b6debc #090810 #917a8e grad=true
+  warehouse: 1 record(s)
+   - line 63 review-9-fresh           acceptable     NO PREFERENCE
+       trunk-dca4       #80bbf7 #b6debc #090810 #4c4859 grad=true
+       v2-2             #80bbf7 #b6debc #090810 #4c4859 grad=true
+
+====================================================================================================
+ab67616d0000b27300103a3729bf589e0dc913ab   moved: background+surface+foreground+accent
+  OFF (trunk) #1d2226 #563e24 #c0b98b #f9f9ef grad=false
+  ON  (arm)   #1c252a #553e1f #d2d4d3 #fb870c grad=false
+  warehouse: 3 record(s)
+   - line 167 review-24-coverage       acceptable     NO PREFERENCE
+       x-coverage-incumbent #8ba3ad #a8bbc1 #1d2226 #f9f9ef grad=false
+       x-coverage-alternative #1c252a #553e1f #c0b98b #f9f9ef grad=false
+       corrections: {"background":"#a8bbc1","surface":"#1c252a","foreground":"#e36808","accent":"#b29b3e"}
+   - line 185 batch-26                 acceptable     NO PREFERENCE
+       x2-off           #8ba3ad #a8bbc1 #1d2226 #f9f9ef grad=false
+       x2-coverage      #1d2226 #563e24 #c0b98b #f9f9ef grad=false
+   - line 353 ae-batch                 strong         B=ae-on
+       ae-off           #1d2226 #563e24 #c0b98b #f9f9ef grad=false
+       ae-on            #1c252a #553e1f #d2d4d3 #fb870c grad=false <-- preferred
+
+====================================================================================================
+ab67616d0000b273001102263870e8b11c13ec31   moved: foreground+accent
+  OFF (trunk) #8e8580 #d7ae8e #081c23 #6a5c5b grad=true
+  ON  (arm)   #8e8580 #d7ae8e #020a0d #3f322c grad=true
+  warehouse: 3 record(s)
+   - line 90 review-13-fresh          strong         NO PREFERENCE
+       trunk-h          #8e8580 #d7ae8e #020a0d #3f322c grad=true
+       v2-2             #8e8580 #d7ae8e #081c23 #6a5c5b grad=true
+   - line 94 review-14-b2             strong         NO PREFERENCE
+       trunk-b7         #8e8580 #d7ae8e #081c23 #6a5c5b grad=true
+       trunk-h          #8e8580 #d7ae8e #020a0d #3f322c grad=true
+   - line 346 batch-39-ordering        strong         B=co-off
+       co-cmpfirst      #8e8580 #d7ae8e #3f322c #715d5c grad=true
+       co-off           #8e8580 #d7ae8e #081c23 #6a5c5b grad=true <-- preferred
+
+====================================================================================================
+ab67616d0000b2730011c1dcb3a4a0cd92bdf203   moved: foreground+accent
+  OFF (trunk) #0c0807 #221713 #ecde95 #f7f7f7 grad=false
+  ON  (arm)   #0c0807 #221713 #f7f7f7 #db9885 grad=false
+  warehouse: 3 record(s)
+   - line 260 batch-32                 acceptable     B=ra2-off
+       ra2-on           #0c0807 #221713 #ecde95 #dc9581 grad=false
+       ra2-off          #0c0807 #221713 #f7f7f7 #ecde95 grad=false <-- preferred
+   - line 270 batch-33                 acceptable     NO PREFERENCE
+       ra3-on           #0c0807 #221713 #ecde95 #f7f7f7 grad=false
+       ra3-off          #0c0807 #221713 #f7f7f7 #ecde95 grad=false
+   - line 325 batch-ma-revival         strong         NO PREFERENCE
+       ma-on            #0c0807 #221713 #ecde95 #dc9581 grad=false
+       ma-off           #0c0807 #221713 #ecde95 #f7f7f7 grad=false
+
+====================================================================================================
+ab67616d0000b2730012eb9ade9c1bf4a5411c5d   moved: surface+foreground
+  OFF (trunk) #040205 #20365f #e9e9eb #96d1a5 grad=false
+  ON  (arm)   #040205 #60202e #eaeaea #96d1a5 grad=false
+  warehouse: 2 record(s)
+   - line 168 review-24-coverage       acceptable     NO PREFERENCE
+       x-coverage-alternative #040205 #60202e #395a7d #9bd2aa grad=false
+       x-coverage-incumbent #040205 #1a272f #e9e9eb #96d1a5 grad=false
+       corrections: {"background":"#040205","surface":"#60202e","foreground":"#e9e9eb","accent":"#9bd2aa"}
+   - line 186 batch-26                 acceptable     A=x2-coverage
+       x2-coverage      #040205 #20365f #e9e9eb #96d1a5 grad=false <-- preferred
+       x2-off           #040205 #1a272f #e9e9eb #96d1a5 grad=false
+
+====================================================================================================
+doja.jpg   moved: surface+accent
+  OFF (trunk) #fd75b5 #fd3d86 #fff6fc #fda8cf grad=true
+  ON  (arm)   #fd75b5 #f79e80 #fff6fc #ce5e52 grad=true
+  warehouse: 4 record(s)
+   - line 20 review-4-ranking         strong         A=trunk-d-a2
+       trunk-d-a2       #fd75b5 #fd3d86 #fff6fc #fda8cf grad=true <-- preferred
+       v2-2             #fd75b5 #f79e80 #fff6fc #ce5e52 grad=true
+   - line 28 review-5-midpoints-alternatives unacceptable   A=trunk-dc-b2
+       trunk-dc-b2      #fd75b5 #f79e80 #fff6fc #ce5e52 grad=true <-- preferred
+       trunk-d-c3       #fd75b5 #f79e80 #fff6fc #ce5e52 grad=true
+       note: The midpoint makes option A nicer but that might be mainly due to the fact that there should not be a gradient between pink and the Bisque skin color. This is not representative of the artwork and so introducing a midpoint that increases the pinkness maybe is just better because it hides some of the gradient to skin color 
+   - line 68 review-10-marks-midpoints strong         NO PREFERENCE
+       trunk-b4         #fd75b5 #fd3d86 #fff6fc #fda8cf grad=true
+       trunk-a5         #fd75b5 #fd3d86 #fff6fc #fda8cf grad=true
+       note: Option A has a richer gradient, which is very nice, but the accent is a little bit harder to distinguish, which is not a huge deal. It won't be used for text, it will be used for icons or UI stuff. But yeah, that's why I can't decide between option A and B 
+   - line 81 review-12-midpoints      strong         B=trunk-b6
+       trunk-b6t2       #fd75b5 #f79e80 #fff6fc #ce5e52 grad=true
+       trunk-b6         #fd75b5 #fd3d86 #fff6fc #fda8cf grad=true <-- preferred
+       note: Option B is stronger because option A does a gradient between pink and Bisque skin color which does not represent this artwork 
+
+====================================================================================================
+havana.jpg   moved: foreground+accent
+  OFF (trunk) #375c77 #243a51 #e1824a #eed076 grad=true
+  ON  (arm)   #375c77 #243a51 #eed076 #ee655f grad=true
+  warehouse: 3 record(s)
+   - line 8 review-2-gradients       strong         A=track-b
+       track-b          #375c77 #243a51 #f1e9bb #eed076 grad=true <-- preferred
+       v2-2             #375c77 #243a51 #e1824a #eed076 grad=true
+   - line 172 review-25-decisions      strong         A=w-batch-after
+       w-batch-after    #375c77 #243a51 #eed076 #ee655f grad=true <-- preferred
+       w-batch-before   #375c77 #243a51 #e1824a #eed076 grad=true
+   - line 320 batch-ma-revival         strong         B=ma-on
+       ma-off           #375c77 #243a51 #e1824a #eed076 grad=true
+       ma-on            #375c77 #243a51 #eed076 #ee655f grad=true <-- preferred
+
+====================================================================================================
+horrorwood.jpg   moved: background+surface+accent
+  OFF (trunk) #141b25 #36444f #ccd3d9 #808b91 grad=false
+  ON  (arm)   #151922 #667481 #ccd3d9 #27598e grad=false
+  warehouse: 1 record(s)
+   - line 76 review-11-seams-diversity acceptable     NO PREFERENCE
+       trunk-f          #141b25 #36444f #ccd3d9 #808b91 grad=false
+       trunk-e2         #141b25 #36444f #ccd3d9 #808b91 grad=false
+
+====================================================================================================
+horsley.jpg   moved: background+surface+foreground+accent
+  OFF (trunk) #bd7042 #d6a944 #0f0f0f #f2eec1 grad=true
+  ON  (arm)   #c99242 #cc615b #f2eec1 #daad46 grad=true
+  warehouse: 1 record(s)
+   - line 46 review-7-identity-confirm strong         B=v2-2
+       trunk-dca4       #b8753e #c99242 #0f0f0f #f2eec1 grad=true
+       v2-2             #bd7042 #d6a944 #0f0f0f #f2eec1 grad=true <-- preferred
+       note: Option B works better because it encompasses a greater surface of the gradient 
+
+====================================================================================================
+nobs.jpg   moved: background+surface
+  OFF (trunk) #f6ffff #f2f626 #a1162d #0695fd grad=false
+  ON  (arm)   #f7ffff #f7f61f #a1162d #0695fd grad=false
+  warehouse: 5 record(s)
+   - line 45 review-7-identity-confirm strong         NO PREFERENCE
+       trunk-dca4       #f6ffff #f6ffff #a1162d #0695fd grad=false
+       trunk-c4b        #f6ffff #f2f626 #a1162d #0695fd grad=false
+       note: I think they both work equally. I do have a personal preference for option A but I don't think I have any good argument here option B works just as well 
+   - line 109 review-16-frames-accents strong         NO PREFERENCE
+       trunk-j          #f6ffff #f2f626 #a1162d #0695fd grad=false
+       trunk-k          #f6ffff #f2f626 #a1162d #0695fd grad=false
+   - line 148 review-21-nomination     strong         A=r-batch-a
+       r-batch-a        #f6ffff #f2f626 #a1162d #0695fd grad=false <-- preferred
+       r-batch-b        #f6ffff #f6ffff #a1162d #0695fd grad=false
+   - line 248 batch-31                 strong         A=ra-off
+       ra-off           #f6ffff #f2f626 #a1162d #0695fd grad=false <-- preferred
+       ra-on            #f6ffff #f6ffff #0695fd #f4d002 grad=false
+   - line 327 batch-ma-revival         strong         B=ma-off
+       ma-on            #f6ffff #f6ffff #b75dfb #0695fd grad=false
+       ma-off           #f6ffff #f2f626 #a1162d #0695fd grad=false <-- preferred
+
+====================================================================================================
+vvbrown.jpg   moved: background+surface
+  OFF (trunk) #ffffff #ffffff #080808 #e6e622 grad=false
+  ON  (arm)   #fffffe #fffffe #080808 #e6e622 grad=false
+  warehouse: 2 record(s)
+   - line 32 review-5-midpoints-alternatives strong         B=c-alt-r4
+       trunk-d-c3       #ffffff #ffffff #080808 #584c1c grad=false
+       c-alt-r4         #ffffff #ffffff #080808 #e6e622 grad=false <-- preferred
+   - line 156 review-23-fg-movers      strong         NO PREFERENCE
+       o2-before        #ffffff #ffffff #080808 #e6e622 grad=false
+       o2-after         #080808 #584c1c #ffffff #e6e622 grad=false

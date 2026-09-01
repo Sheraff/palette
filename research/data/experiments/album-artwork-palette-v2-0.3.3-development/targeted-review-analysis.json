@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-pareto-mechanism-review-v4",
+  "manifestId": "177ce08df7a470804a78d95dcfff918bfc6e949529e9ebbff587cdffbdde8bda",
+  "manifestSha256": "a1f05b15e484fcd550a09faab34eecee5c60878103d5381e06067cc2dda52786",
+  "feedbackSha256": "1655d8be2dc4acdf41438e6af791a6dc5c5b53bf187271923a8402ad0296cdd1",
+  "storeIntegrity": {
+    "manifestCaseCount": 4,
+    "storedEntryCount": 4,
+    "uniqueCaseCount": 4,
+    "lastWriteWins": true
+  },
+  "reviewerInterpretationConstraintVerbatim": "valid palette does not mean perfect",
+  "interpretationPolicy": {
+    "selected": "independently usable positive direction, moderated by its verbatim comment",
+    "unselected": "unlabeled, not a negative example",
+    "perfectOrProductionReadyInferredFromSelection": false
+  },
+  "counts": {
+    "caseCount": 4,
+    "completedResponseCount": 4,
+    "caseWithPositiveCount": 4,
+    "currentCandidatePositiveCaseCount": 4,
+    "totalPositiveMarks": 9,
+    "paretoTopPositiveCount": 1,
+    "legacyScalarTopPositiveCount": 2,
+    "paretoAlternativePositiveCount": 6,
+    "predecessorControlOnlyPositiveCount": 0,
+    "predecessorPositiveControlSelectedCount": 1,
+    "noneConfidentlyValidCount": 0,
+    "uncertainCount": 0
+  },
+  "mechanismSubGates": {
+    "blackBlueGradientAvailability": {
+      "pass": true,
+      "reason": "Current black-to-blue gradient directions are positively marked, subject to the verbatim field-role orientation defect."
+    },
+    "currentCandidateCoverage": {
+      "pass": true,
+      "reason": "A current candidate direction is positively marked on 4 of 4 cases."
+    },
+    "deterministicTopOne": {
+      "pass": false,
+      "reason": "Pareto top is positively marked on 1 of 4 cases."
+    },
+    "gradientFieldRoleOrientation": {
+      "pass": false,
+      "reason": "The development-07 comment says the selected gradients reverse the artwork-matching black background and blue surface roles."
+    }
+  },
+  "mechanismGate": {
+    "pass": false,
+    "reasons": [
+      "Black-to-blue gradient availability is repaired: two current gradient directions are qualified positives on development-07.",
+      "A current candidate direction is positively marked on all 4 cases, but development-24 selects only its retained flat Pareto alternative rather than a shown current gradient direction.",
+      "Pareto top is positively marked on only 1 of 4 cases; deterministic top-one selection remains unresolved.",
+      "The selected development-07 gradients retain an explicit background/surface orientation defect."
+    ]
+  },
+  "nextGeneralChanges": [
+    "Keep the broad 12-artwork absolute-quality review blocked; targeted validity is not absolute quality.",
+    "Preserve the repaired paired-corridor availability and existing stripe/object-lighting rejection while orienting gradient field roles from broad spatial ownership.",
+    "Keep materially distinct flat and gradient directions in retained and targeted slates when both survive Pareto filtering; development-24 confirms that its retained flat direction remains the positive one.",
+    "Revisit deterministic top-one ranking using only the qualified-positive evidence and verbatim defects; do not treat unselected options as negatives."
+  ],
+  "responseInterpretations": [
+    {
+      "caseId": "development-24",
+      "originalResponse": {
+        "caseId": "development-24",
+        "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+        "validOptionIds": [
+          "D"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T19:27:26.763Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "legacy-scalar-top",
+          "positive": false,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#dd8722",
+          "surfaceHex": "#f9b73d"
+        },
+        {
+          "optionId": "B",
+          "role": "pareto-alternative",
+          "positive": false,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#c05819",
+          "surfaceHex": "#ed9e27"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": false,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#c97c24",
+          "surfaceHex": "#ed9f23"
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-alternative",
+          "positive": true,
+          "predecessorPositiveControl": true,
+          "gradient": false,
+          "backgroundHex": "#91760f",
+          "surfaceHex": "#b56317"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "top-one-ranking-not-resolved",
+          "confidence": "medium",
+          "evidence": "Current Pareto alternatives were selected while neither current top direction was selected; omissions remain unlabeled rather than negative."
+        }
+      ],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-07",
+      "originalResponse": {
+        "caseId": "development-07",
+        "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+        "validOptionIds": [
+          "B",
+          "D"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "Option B is the best, but both D and B have the issue that to match the artwork, the background should be the black one and the surface the blue",
+        "submittedAt": "2026-07-26T19:29:31.566Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-alternative",
+          "positive": false,
+          "predecessorPositiveControl": true,
+          "gradient": false,
+          "backgroundHex": "#000000",
+          "surfaceHex": "#0468a6"
+        },
+        {
+          "optionId": "B",
+          "role": "pareto-alternative",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#026faa",
+          "surfaceHex": "#000000"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": false,
+          "predecessorPositiveControl": false,
+          "gradient": false,
+          "backgroundHex": "#000000",
+          "surfaceHex": "#000000"
+        },
+        {
+          "optionId": "D",
+          "role": "legacy-scalar-top",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#026faa",
+          "surfaceHex": "#000000"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "gradient-field-role-orientation",
+          "confidence": "high",
+          "evidence": "Reviewer verbatim: Option B is the best, but both D and B have the issue that to match the artwork, the background should be the black one and the surface the blue"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-27",
+      "originalResponse": {
+        "caseId": "development-27",
+        "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+        "validOptionIds": [
+          "A",
+          "B"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T19:29:58.061Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-alternative",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#4d4d4d",
+          "surfaceHex": "#090909"
+        },
+        {
+          "optionId": "B",
+          "role": "pareto-alternative",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#4d4d4d",
+          "surfaceHex": "#373737"
+        },
+        {
+          "optionId": "C",
+          "role": "legacy-scalar-top",
+          "positive": false,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#585858",
+          "surfaceHex": "#292929"
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-top",
+          "positive": false,
+          "predecessorPositiveControl": false,
+          "gradient": false,
+          "backgroundHex": "#373737",
+          "surfaceHex": "#090909"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "top-one-ranking-not-resolved",
+          "confidence": "medium",
+          "evidence": "Current Pareto alternatives were selected while neither current top direction was selected; omissions remain unlabeled rather than negative."
+        }
+      ],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-28",
+      "originalResponse": {
+        "caseId": "development-28",
+        "sourceSha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+        "validOptionIds": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T19:30:16.425Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-top",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": false,
+          "backgroundHex": "#abaaaf",
+          "surfaceHex": "#939196"
+        },
+        {
+          "optionId": "B",
+          "role": "legacy-scalar-top",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": true,
+          "backgroundHex": "#b3b2b7",
+          "surfaceHex": "#938f90"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-alternative",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": false,
+          "backgroundHex": "#abaaaf",
+          "surfaceHex": "#7b7a80"
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-alternative",
+          "positive": true,
+          "predecessorPositiveControl": false,
+          "gradient": false,
+          "backgroundHex": "#aaa8ab",
+          "surfaceHex": "#c5c3c6"
+        }
+      ],
+      "inferredClasses": [],
+      "interpretationUncertain": false
+    }
+  ]
+}

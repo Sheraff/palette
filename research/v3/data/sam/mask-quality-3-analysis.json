@@ -1,0 +1,1008 @@
+{
+	"analysisVersion": "sam-mask-quality-3-analysis.v1",
+	"batchId": "sam-mask-quality-3-area-guard-and-hard-text",
+	"generatedBy": "research/v3/oracle/sam/analyze-mask-quality-3.ts",
+	"generatedAt": "2026-08-03T22:48:13.993Z",
+	"builtFrom": [
+		"research/v3/data/sam/mask-quality-3-sample.json",
+		"research/v3/data/sam/sam-mask-quality-3-area-guard-and-hard-text.json",
+		"research/v3/data/warehouse/warehouse.jsonl"
+	],
+	"preRegistration": {
+		"source": "mask-quality-3-sample.json guardSection.decisionRule + hardTextDecisionRule",
+		"problems": [],
+		"ok": true
+	},
+	"answersRead": {
+		"total": 54,
+		"skipped": {
+			"otherBatch": 913,
+			"machineAuthored": 0,
+			"retracted": 0,
+			"superseded": 0,
+			"nonString": 0
+		}
+	},
+	"areaGuard": {
+		"questionKey": "big_area_is_real_subject",
+		"unitOfDecision": "concept group",
+		"bands": {
+			"exemptAt": 0.7,
+			"keepAt": 0.3,
+			"minimumDecided": 3
+		},
+		"incumbentMaxAreaFraction": 0.5,
+		"groups": [
+			{
+				"group": "dynamic_subject",
+				"overGuard": 2,
+				"answered": 2,
+				"real": 2,
+				"loose": 0,
+				"whole": 0,
+				"decided": 2,
+				"realShare": 1,
+				"verdict": "undecided",
+				"reason": "only 2 decided answer(s) among 2 over-guard item(s); the rule needs 3. Guard stays ON unchanged.",
+				"maskAnswers": {
+					"yes": 2
+				},
+				"contextItems": 1,
+				"contextRealShare": 1,
+				"distinctCovers": 2
+			},
+			{
+				"group": "mark_like",
+				"overGuard": 4,
+				"answered": 4,
+				"real": 2,
+				"loose": 0,
+				"whole": 2,
+				"decided": 4,
+				"realShare": 0.5,
+				"verdict": "undecided",
+				"reason": "real-subject share 0.500 falls between 0.3 and 0.7. Guard stays ON unchanged; the group is recorded unresolved.",
+				"maskAnswers": {
+					"yes": 1,
+					"no": 3
+				},
+				"contextItems": 0,
+				"contextRealShare": null,
+				"distinctCovers": 3
+			},
+			{
+				"group": "person_like",
+				"overGuard": 6,
+				"answered": 6,
+				"real": 6,
+				"loose": 0,
+				"whole": 0,
+				"decided": 6,
+				"realShare": 1,
+				"verdict": "exempt",
+				"reason": "real-subject share 1.000 >= 0.7: the guard is deleting masks the reviewer calls real subjects filling the frame. Scope the guard OFF for this group.",
+				"maskAnswers": {
+					"yes": 5,
+					"no": 1
+				},
+				"contextItems": 2,
+				"contextRealShare": 1,
+				"distinctCovers": 6
+			},
+			{
+				"group": "text_like",
+				"overGuard": 0,
+				"answered": 0,
+				"real": 0,
+				"loose": 0,
+				"whole": 0,
+				"decided": 0,
+				"realShare": null,
+				"verdict": "not-tested",
+				"reason": "no region of this group is anywhere near the guard in the whole run, so the census drew none. The round says nothing about it and the guard stays ON unchanged.",
+				"maskAnswers": {},
+				"contextItems": 0,
+				"contextRealShare": null,
+				"distinctCovers": 0
+			}
+		],
+		"contradictions": [],
+		"removedByGuardAlone": [
+			{
+				"itemId": "smq3-3c9f256348f5",
+				"maskRowId": "89ab247d72c9:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"score": 0.817568,
+				"areaFraction": 0.533752441,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "10/ab67616d0000b273001063830a2e597293293797"
+			},
+			{
+				"itemId": "smq3-4b326f5fb455",
+				"maskRowId": "dca149beb8a5:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"score": 0.735899,
+				"areaFraction": 0.513039551,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "03/ab67616d0000b27300034b60105d8937440211da.jpg"
+			},
+			{
+				"itemId": "smq3-5b15e1297adc",
+				"maskRowId": "5a45dc54f71a:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"score": 0.687865,
+				"areaFraction": 0.583729082,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "images/placebo.jpg"
+			},
+			{
+				"itemId": "smq3-caf974fa5186",
+				"maskRowId": "3b82cee640a2:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"score": 0.838555,
+				"areaFraction": 0.571188965,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+			},
+			{
+				"itemId": "smq3-d1196208835f",
+				"maskRowId": "8b4f2aadf3b1:sticker:0",
+				"concept": "sticker",
+				"group": "mark_like",
+				"score": 0.678697,
+				"areaFraction": 0.780705566,
+				"maskAnswer": "no",
+				"guardAnswer": "real-subject",
+				"artworkPath": "0b/ab67616d0000b273000bc98f315aba36374f9f93"
+			},
+			{
+				"itemId": "smq3-fb9db7bf30d2",
+				"maskRowId": "7f522b435cdc:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"score": 0.766371,
+				"areaFraction": 0.682094727,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "03/ab67616d0000b27300034b1c66ddd55a5337f66a.jpg"
+			}
+		],
+		"items": [
+			{
+				"itemId": "smq3-20b9c16d8a1d",
+				"guardItemId": "smq3g-555e0e9ffe50",
+				"maskRowId": "fc36ed741bc8:dyn-building:0",
+				"concept": "dyn-building",
+				"group": "dynamic_subject",
+				"selectionRole": "over-guard",
+				"score": 0.335256,
+				"areaFraction": 0.550876465,
+				"clearsScoreCut": false,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": false,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "08/ab67616d0000b2730008c1c08433aa880aad7f30"
+			},
+			{
+				"itemId": "smq3-21fe6816974b",
+				"guardItemId": "smq3g-6a939cd6540c",
+				"maskRowId": "c47cb4c63424:dyn-animal:0",
+				"concept": "dyn-animal",
+				"group": "dynamic_subject",
+				"selectionRole": "near-guard-context",
+				"score": 0.910225,
+				"areaFraction": 0.448781738,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": false,
+				"removedByGuardAlone": false,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "10/ab67616d0000b27300103a4dcd62e3dd6f76d123"
+			},
+			{
+				"itemId": "smq3-3c9f256348f5",
+				"guardItemId": "smq3g-30133cba9c9d",
+				"maskRowId": "89ab247d72c9:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "over-guard",
+				"score": 0.817568,
+				"areaFraction": 0.533752441,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": true,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "10/ab67616d0000b273001063830a2e597293293797"
+			},
+			{
+				"itemId": "smq3-3f0b8e3ec9f2",
+				"guardItemId": "smq3g-df9d569c73ee",
+				"maskRowId": "4fa6dcef2404:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "near-guard-context",
+				"score": 0.88893,
+				"areaFraction": 0.470855556,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": false,
+				"removedByGuardAlone": false,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg"
+			},
+			{
+				"itemId": "smq3-4857b984d4ad",
+				"guardItemId": "smq3g-4159da1b82a3",
+				"maskRowId": "8b4f2aadf3b1:emblem:0",
+				"concept": "emblem",
+				"group": "mark_like",
+				"selectionRole": "over-guard",
+				"score": 0.433354,
+				"areaFraction": 0.773156738,
+				"clearsScoreCut": false,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": false,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "0b/ab67616d0000b273000bc98f315aba36374f9f93"
+			},
+			{
+				"itemId": "smq3-4b326f5fb455",
+				"guardItemId": "smq3g-a9f665e9e7f1",
+				"maskRowId": "dca149beb8a5:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "over-guard",
+				"score": 0.735899,
+				"areaFraction": 0.513039551,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": true,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "03/ab67616d0000b27300034b60105d8937440211da.jpg"
+			},
+			{
+				"itemId": "smq3-5b15e1297adc",
+				"guardItemId": "smq3g-5f2b30967576",
+				"maskRowId": "5a45dc54f71a:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "over-guard",
+				"score": 0.687865,
+				"areaFraction": 0.583729082,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": true,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "images/placebo.jpg"
+			},
+			{
+				"itemId": "smq3-960fe392b967",
+				"guardItemId": "smq3g-66ca0e74b3eb",
+				"maskRowId": "cbff25964afd:sticker:0",
+				"concept": "sticker",
+				"group": "mark_like",
+				"selectionRole": "over-guard",
+				"score": 0.374369,
+				"areaFraction": 0.88852,
+				"clearsScoreCut": false,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": false,
+				"maskAnswer": "no",
+				"guardAnswer": "whole-image",
+				"artworkPath": "images/elephunk.jpg"
+			},
+			{
+				"itemId": "smq3-a1990059f3ad",
+				"guardItemId": "smq3g-a4f05a64ea87",
+				"maskRowId": "96ce2811c9d8:dyn-building:0",
+				"concept": "dyn-building",
+				"group": "dynamic_subject",
+				"selectionRole": "over-guard",
+				"score": 0.362141,
+				"areaFraction": 0.7532,
+				"clearsScoreCut": false,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": false,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg"
+			},
+			{
+				"itemId": "smq3-abd68948659f",
+				"guardItemId": "smq3g-16058ae44f20",
+				"maskRowId": "06c5954c94eb:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "near-guard-context",
+				"score": 0.786897,
+				"areaFraction": 0.459209,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": false,
+				"removedByGuardAlone": false,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "images/vvbrown.jpg"
+			},
+			{
+				"itemId": "smq3-caf974fa5186",
+				"guardItemId": "smq3g-2920cd25d4af",
+				"maskRowId": "3b82cee640a2:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "over-guard",
+				"score": 0.838555,
+				"areaFraction": 0.571188965,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": true,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+			},
+			{
+				"itemId": "smq3-cec423f8fae8",
+				"guardItemId": "smq3g-b6f04f0faa9d",
+				"maskRowId": "ff0bc9c4e622:face:0",
+				"concept": "face",
+				"group": "person_like",
+				"selectionRole": "over-guard",
+				"score": 0.426227,
+				"areaFraction": 0.519443359,
+				"clearsScoreCut": false,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": false,
+				"maskAnswer": "no",
+				"guardAnswer": "real-subject",
+				"artworkPath": "11/ab67616d0000b27300116380305ae5fd3607c43b"
+			},
+			{
+				"itemId": "smq3-d1196208835f",
+				"guardItemId": "smq3g-1f8207eae904",
+				"maskRowId": "8b4f2aadf3b1:sticker:0",
+				"concept": "sticker",
+				"group": "mark_like",
+				"selectionRole": "over-guard",
+				"score": 0.678697,
+				"areaFraction": 0.780705566,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": true,
+				"maskAnswer": "no",
+				"guardAnswer": "real-subject",
+				"artworkPath": "0b/ab67616d0000b273000bc98f315aba36374f9f93"
+			},
+			{
+				"itemId": "smq3-fb9db7bf30d2",
+				"guardItemId": "smq3g-1a3b97b79b3e",
+				"maskRowId": "7f522b435cdc:person:0",
+				"concept": "person",
+				"group": "person_like",
+				"selectionRole": "over-guard",
+				"score": 0.766371,
+				"areaFraction": 0.682094727,
+				"clearsScoreCut": true,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": true,
+				"maskAnswer": "yes",
+				"guardAnswer": "real-subject",
+				"artworkPath": "03/ab67616d0000b27300034b1c66ddd55a5337f66a.jpg"
+			},
+			{
+				"itemId": "smq3-fbaf34201348",
+				"guardItemId": "smq3g-bee5f792de25",
+				"maskRowId": "ecf1191eb98a:sticker:0",
+				"concept": "sticker",
+				"group": "mark_like",
+				"selectionRole": "over-guard",
+				"score": 0.511598,
+				"areaFraction": 0.940615234,
+				"clearsScoreCut": false,
+				"removedByAreaGuard": true,
+				"removedByGuardAlone": false,
+				"maskAnswer": "no",
+				"guardAnswer": "whole-image",
+				"artworkPath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d"
+			}
+		]
+	},
+	"hardText": {
+		"graded": 24,
+		"counts": {
+			"yes": 22,
+			"no": 1,
+			"partly": 1,
+			"decided": 23
+		},
+		"acceptRate": 0.9565217391304348,
+		"incumbentTextLikeCut": 0.697295,
+		"pooledCut": 0.578,
+		"runFloor": 0.3,
+		"scoreSpan": {
+			"yes": {
+				"n": 22,
+				"min": 0.301998,
+				"max": 0.576433
+			},
+			"no": {
+				"n": 1,
+				"min": 0.300371,
+				"max": 0.300371
+			},
+			"separable": true
+		},
+		"distribution": {
+			"aboveIncumbentImpossible": 0,
+			"abovePooled": 0,
+			"belowPooled": 24,
+			"yesAbovePooled": 0,
+			"yesBelowPooled": 22,
+			"noAbovePooled": 0,
+			"noBelowPooled": 1
+		},
+		"areaProfile": {
+			"min": 0.00013916,
+			"median": 0.000871582,
+			"max": 0.1079,
+			"underOnePercent": 22,
+			"underOneTenthPercent": 14,
+			"total": 24
+		},
+		"perConcept": {
+			"letter": {
+				"yes": 14,
+				"no": 1,
+				"partly": 1
+			},
+			"lettering": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"display-text": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"words": {
+				"yes": 2,
+				"no": 0,
+				"partly": 0
+			}
+		},
+		"perSelectionRole": {
+			"hard-text|13/ab67616d00001e020013bebcaee941ebcc13437c": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"hard-text|0a/ab67616d0000b273000a24cc32b3d8b6e31bc161": {
+				"yes": 2,
+				"no": 0,
+				"partly": 1
+			},
+			"hard-text|10/ab67616d0000b27300100a3e9c764acf01c16db8": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"hard-text|05/ab67616d00001e02000564718f605c1f326b2ca2": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"hard-text|0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"hard-text|09/ab67616d0000b27300092c140fe03d08e0dc906a": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			},
+			"hard-text|0f/ab67616d0000b273000f815611cd5966187e2051": {
+				"yes": 2,
+				"no": 1,
+				"partly": 0
+			},
+			"hard-text|images/placebo.jpg": {
+				"yes": 3,
+				"no": 0,
+				"partly": 0
+			}
+		},
+		"sweepBest": {
+			"threshold": 0.301998,
+			"keptTruePositive": 22,
+			"droppedFalseNegative": 0,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": 1,
+			"recall": 1,
+			"specificity": 1,
+			"youdenJ": 1,
+			"f1": 1,
+			"accuracy": 1,
+			"partlyKept": 1,
+			"partlyDropped": 0
+		},
+		"atIncumbent": {
+			"threshold": 0.697295,
+			"keptTruePositive": 0,
+			"droppedFalseNegative": 22,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": null,
+			"recall": 0,
+			"specificity": 1,
+			"youdenJ": 0,
+			"f1": null,
+			"accuracy": 0.043478260869565216,
+			"partlyKept": 0,
+			"partlyDropped": 1
+		},
+		"atPooled": {
+			"threshold": 0.578,
+			"keptTruePositive": 0,
+			"droppedFalseNegative": 22,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": null,
+			"recall": 0,
+			"specificity": 1,
+			"youdenJ": 0,
+			"f1": null,
+			"accuracy": 0.043478260869565216,
+			"partlyKept": 0,
+			"partlyDropped": 1
+		},
+		"gates": {
+			"separation": {
+				"value": 0.395297,
+				"required": 0.05,
+				"passes": true
+			},
+			"jGain": {
+				"value": 1,
+				"required": 0.05,
+				"passes": true
+			},
+			"decided": {
+				"value": 23,
+				"required": 5,
+				"passes": true
+			}
+		},
+		"adoptLoweredCut": true,
+		"rows": [
+			{
+				"itemId": "smq3-02e44b7d907e",
+				"maskRowId": "3d023fc37818:letter:2",
+				"concept": "letter",
+				"score": 0.301998,
+				"areaFraction": 0.000222222,
+				"answer": "yes",
+				"artworkPath": "13/ab67616d00001e020013bebcaee941ebcc13437c"
+			},
+			{
+				"itemId": "smq3-042eee63a780",
+				"maskRowId": "3d023fc37818:lettering:0",
+				"concept": "lettering",
+				"score": 0.53648,
+				"areaFraction": 0.0029,
+				"answer": "yes",
+				"artworkPath": "13/ab67616d00001e020013bebcaee941ebcc13437c"
+			},
+			{
+				"itemId": "smq3-152657cae25f",
+				"maskRowId": "c8321c5e6b25:letter:14",
+				"concept": "letter",
+				"score": 0.420387,
+				"areaFraction": 0.000356445,
+				"answer": "partly",
+				"artworkPath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161"
+			},
+			{
+				"itemId": "smq3-1c7288530f16",
+				"maskRowId": "3b82cee640a2:letter:3",
+				"concept": "letter",
+				"score": 0.457281,
+				"areaFraction": 0.000239258,
+				"answer": "yes",
+				"artworkPath": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+			},
+			{
+				"itemId": "smq3-1c98b34a050c",
+				"maskRowId": "09a7609d09d6:letter:1",
+				"concept": "letter",
+				"score": 0.388239,
+				"areaFraction": 0.001344444,
+				"answer": "yes",
+				"artworkPath": "05/ab67616d00001e02000564718f605c1f326b2ca2"
+			},
+			{
+				"itemId": "smq3-220ad4152820",
+				"maskRowId": "3b82cee640a2:letter:0",
+				"concept": "letter",
+				"score": 0.504306,
+				"areaFraction": 0.000324707,
+				"answer": "yes",
+				"artworkPath": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+			},
+			{
+				"itemId": "smq3-389d5ca26f65",
+				"maskRowId": "e2c28658a90a:letter:8",
+				"concept": "letter",
+				"score": 0.316398,
+				"areaFraction": 0.001111111,
+				"answer": "yes",
+				"artworkPath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e"
+			},
+			{
+				"itemId": "smq3-3ecf811fa66c",
+				"maskRowId": "14ae242448a2:letter:2",
+				"concept": "letter",
+				"score": 0.473419,
+				"areaFraction": 0.000222168,
+				"answer": "yes",
+				"artworkPath": "09/ab67616d0000b27300092c140fe03d08e0dc906a"
+			},
+			{
+				"itemId": "smq3-43a8f741adf5",
+				"maskRowId": "4312a7e73414:lettering:0",
+				"concept": "lettering",
+				"score": 0.567933,
+				"areaFraction": 0.001118164,
+				"answer": "yes",
+				"artworkPath": "0f/ab67616d0000b273000f815611cd5966187e2051"
+			},
+			{
+				"itemId": "smq3-543b14bf494d",
+				"maskRowId": "c8321c5e6b25:display-text:0",
+				"concept": "display-text",
+				"score": 0.576433,
+				"areaFraction": 0.028657227,
+				"answer": "yes",
+				"artworkPath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161"
+			},
+			{
+				"itemId": "smq3-58a40ce824b3",
+				"maskRowId": "5a45dc54f71a:letter:0",
+				"concept": "letter",
+				"score": 0.548716,
+				"areaFraction": 0.000718878,
+				"answer": "yes",
+				"artworkPath": "images/placebo.jpg"
+			},
+			{
+				"itemId": "smq3-6ca8cbb0de55",
+				"maskRowId": "14ae242448a2:letter:5",
+				"concept": "letter",
+				"score": 0.423274,
+				"areaFraction": 0.00013916,
+				"answer": "yes",
+				"artworkPath": "09/ab67616d0000b27300092c140fe03d08e0dc906a"
+			},
+			{
+				"itemId": "smq3-7ffb50f24dc9",
+				"maskRowId": "4312a7e73414:letter:12",
+				"concept": "letter",
+				"score": 0.300371,
+				"areaFraction": 0.000388184,
+				"answer": "no",
+				"artworkPath": "0f/ab67616d0000b273000f815611cd5966187e2051"
+			},
+			{
+				"itemId": "smq3-8c27d5e4ebbe",
+				"maskRowId": "e2c28658a90a:display-text:0",
+				"concept": "display-text",
+				"score": 0.422853,
+				"areaFraction": 0.1079,
+				"answer": "yes",
+				"artworkPath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e"
+			},
+			{
+				"itemId": "smq3-8c579a8c2940",
+				"maskRowId": "09a7609d09d6:letter:0",
+				"concept": "letter",
+				"score": 0.404235,
+				"areaFraction": 0.000888889,
+				"answer": "yes",
+				"artworkPath": "05/ab67616d00001e02000564718f605c1f326b2ca2"
+			},
+			{
+				"itemId": "smq3-b852d493f73c",
+				"maskRowId": "3b82cee640a2:letter:6",
+				"concept": "letter",
+				"score": 0.417338,
+				"areaFraction": 0.00015625,
+				"answer": "yes",
+				"artworkPath": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+			},
+			{
+				"itemId": "smq3-bdbf3db2c056",
+				"maskRowId": "14ae242448a2:words:0",
+				"concept": "words",
+				"score": 0.514847,
+				"areaFraction": 0.001940918,
+				"answer": "yes",
+				"artworkPath": "09/ab67616d0000b27300092c140fe03d08e0dc906a"
+			},
+			{
+				"itemId": "smq3-be75affae53d",
+				"maskRowId": "5a45dc54f71a:letter:21",
+				"concept": "letter",
+				"score": 0.332929,
+				"areaFraction": 0.000516327,
+				"answer": "yes",
+				"artworkPath": "images/placebo.jpg"
+			},
+			{
+				"itemId": "smq3-ce844dda6150",
+				"maskRowId": "09a7609d09d6:words:1",
+				"concept": "words",
+				"score": 0.381747,
+				"areaFraction": 0.002544444,
+				"answer": "yes",
+				"artworkPath": "05/ab67616d00001e02000564718f605c1f326b2ca2"
+			},
+			{
+				"itemId": "smq3-cf200381c805",
+				"maskRowId": "3d023fc37818:display-text:0",
+				"concept": "display-text",
+				"score": 0.34747,
+				"areaFraction": 0.003044444,
+				"answer": "yes",
+				"artworkPath": "13/ab67616d00001e020013bebcaee941ebcc13437c"
+			},
+			{
+				"itemId": "smq3-d51f01c4d551",
+				"maskRowId": "e2c28658a90a:letter:3",
+				"concept": "letter",
+				"score": 0.349445,
+				"areaFraction": 0.001155556,
+				"answer": "yes",
+				"artworkPath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e"
+			},
+			{
+				"itemId": "smq3-db95b5878363",
+				"maskRowId": "4312a7e73414:lettering:10",
+				"concept": "lettering",
+				"score": 0.424966,
+				"areaFraction": 0.000871582,
+				"answer": "yes",
+				"artworkPath": "0f/ab67616d0000b273000f815611cd5966187e2051"
+			},
+			{
+				"itemId": "smq3-ef0913831f60",
+				"maskRowId": "c8321c5e6b25:letter:29",
+				"concept": "letter",
+				"score": 0.311131,
+				"areaFraction": 0.000458984,
+				"answer": "yes",
+				"artworkPath": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161"
+			},
+			{
+				"itemId": "smq3-f649c43a3581",
+				"maskRowId": "5a45dc54f71a:letter:11",
+				"concept": "letter",
+				"score": 0.488216,
+				"areaFraction": 0.000772959,
+				"answer": "yes",
+				"artworkPath": "images/placebo.jpg"
+			}
+		]
+	},
+	"hardTextPooledSensitivity": {
+		"available": true,
+		"round1Rows": 31,
+		"round3Rows": 24,
+		"overlapDropped": 0,
+		"total": 55,
+		"decided": 54,
+		"negatives": 9,
+		"scoreRange": {
+			"min": 0.300371,
+			"max": 0.927775
+		},
+		"incumbent": 0.697295,
+		"sweepBest": {
+			"threshold": 0.514847,
+			"keptTruePositive": 21,
+			"droppedFalseNegative": 24,
+			"keptFalsePositive": 2,
+			"droppedTrueNegative": 7,
+			"precision": 0.9130434782608695,
+			"recall": 0.4666666666666667,
+			"specificity": 0.7777777777777778,
+			"youdenJ": 0.24444444444444446,
+			"f1": 0.6176470588235294,
+			"accuracy": 0.5185185185185185,
+			"partlyKept": 0,
+			"partlyDropped": 1
+		},
+		"atIncumbent": {
+			"threshold": 0.697295,
+			"keptTruePositive": 11,
+			"droppedFalseNegative": 34,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 9,
+			"precision": 1,
+			"recall": 0.24444444444444444,
+			"specificity": 1,
+			"youdenJ": 0.24444444444444446,
+			"f1": 0.39285714285714285,
+			"accuracy": 0.37037037037037035,
+			"partlyKept": 0,
+			"partlyDropped": 1
+		},
+		"separation": 0.18244799999999994,
+		"jGain": 0,
+		"gates": {
+			"separation": {
+				"value": 0.18244799999999994,
+				"required": 0.05,
+				"passes": true
+			},
+			"jGain": {
+				"value": 0,
+				"required": 0.05,
+				"passes": false
+			},
+			"decided": {
+				"value": 54,
+				"required": 5,
+				"passes": true
+			}
+		}
+	},
+	"gpuGap": {
+		"whatIsMissing": "the CJK-prompt masks themselves. `chinese characters` and `kanji` are not in config.CONCEPT_PROMPTS, so no eval run contains them; probe 4 ran them but its rows store only score, bbox and area_fraction with NO mask_rle, so nothing on disk can be rendered as an overlay. Two of probe 4's four CJK covers are also absent from the eval set entirely.",
+		"whyItMatters": "A12 asks where a category-aware cut for CJK should go. The masks this round CAN show are the incumbent Latin-glyph concepts firing weakly on hard covers, which calibrates the text_like cut but says nothing about a CJK concept — the evidence that `chinese characters` is 4/4 with perfect precision at a top score of 0.472 has never been seen by a human.",
+		"exactRunNeeded": {
+			"script": "research/v3/oracle/sam/probe_scripts_objects.py (or a run_sam.py pass with these prompts)",
+			"prompts": [
+				"chinese characters",
+				"kanji",
+				"words"
+			],
+			"promptsNote": "`words` is the incumbent control — it is what the current set would have caught",
+			"covers": "the 4 probe-4 CJK covers + the A12 covers that carry no text_like mask at all",
+			"mustStore": "mask_rle per instance, at the run-time floor SCORE_THRESHOLD = 0.3",
+			"estimatedGpu": "~7 covers x 3 prompts. Probe 4 measured 16 covers x 14 phrasings at 51.6 s of inference, so this is on the order of 5-15 s of inference and well under a minute wall."
+		},
+		"probe4CjkCovers": [
+			{
+				"imagePath": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"imageSha256": "ec1d748a16aae69c7d1fad1b8528423a79174cb7770df399a7c35f8e5cdb3102",
+				"imageKind": "cjk-chinese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.3945,
+					"kanji": 0,
+					"hanzi": 0,
+					"calligraphy": 0
+				}
+			},
+			{
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"imageKind": "cjk-japanese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.472,
+					"kanji": 0.6048,
+					"hanzi": 0,
+					"calligraphy": 0.3858
+				}
+			},
+			{
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"imageKind": "cjk-japanese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.3774,
+					"kanji": 0.6418,
+					"hanzi": 0.3243,
+					"calligraphy": 0
+				}
+			},
+			{
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"imageKind": "cjk-chinese",
+				"bestByCjkPhrasing": {
+					"chinese characters": 0.3927,
+					"kanji": 0.3669,
+					"hanzi": 0,
+					"calligraphy": 0.4154
+				}
+			}
+		]
+	},
+	"proposals": [
+		{
+			"id": "d-2026-08-04-sam-area-guard-scoped-off-for-person-like",
+			"kind": "instrument-calibration",
+			"status": "PROPOSED — not appended to decisions.json, not applied to config.py",
+			"closes": "PHASE_0_LOOSE_ENDS.md A6 (the area guard's group scoping)",
+			"decision": "The area guard is scoped OFF for person_like and stays ON for every other group. The census asked all 6 person_like regions over the guard whether they are a real thing filling the cover; all 6 came back real-subject (share 1.000, >= 0.7), none whole-image, none loose. 5 of the 6 also clear the score cut, which is exactly the set the guard deletes on its own corpus-wide, and the reviewer called all 5 correct person masks.",
+			"fundedBy": [
+				"o-msdt2ow5-d232a4de",
+				"o-msdt22q6-f8bf5a44",
+				"o-msdt2qm4-9398afc7",
+				"o-msdt2pge-53cd4f94",
+				"o-msdt2fvv-66800aeb",
+				"o-msdt2ii9-1bbc0781",
+				"o-msdt0ri9-09964ff8",
+				"o-msdt0to8-b8e589c3",
+				"o-msdt0vhz-54af2148",
+				"o-msdt0pi0-f85ba25d",
+				"o-msdt0x1y-1a0f4cd6",
+				"o-msdt0sum-30cb76a3"
+			],
+			"mustNotBeReadAs": [
+				"NOT a claim that the guard was wrong. Round 1's single in-sample win was the mark_like sticker 8b4f2aadf3b1:sticker:0, and mark_like keeps the guard, so that win is preserved intact.",
+				"NOT a corpus-wide exemption. text_like has no region anywhere near the guard and was never tested; mark_like and dynamic_subject came back unresolved and keep the guard unchanged."
+			]
+		},
+		{
+			"id": "d-2026-08-04-sam-area-guard-unresolved-for-mark-like-and-dynamic-subject",
+			"kind": "deliberately-open",
+			"status": "PROPOSED — records a non-move",
+			"decision": "mark_like (real-subject share 0.500 on 4 decided) and dynamic_subject (2 decided, below the pre-registered minimum of 3) both fall in the undecided band. The guard stays ON for both, unchanged, and both are recorded unresolved rather than moved. A round that cannot separate must say so.",
+			"fundedBy": [
+				"o-msdt2kg8-9ae765ab",
+				"o-msdt2nsj-96990f8b",
+				"o-msdt2cjy-c8b224b9",
+				"o-msdt1u2v-e3c8eef8"
+			],
+			"note": "dynamic_subject's exemption would be inert today in any case: both its over-guard regions score 0.362 and 0.335, below the pooled cut of 0.578, so the score cut removes them whatever the guard does."
+		},
+		{
+			"id": "d-2026-08-04-sam-text-like-cut-discards-correct-text-on-a12-covers",
+			"kind": "measurement",
+			"status": "PROPOSED — funds a finding, NOT a new constant",
+			"decision": "On the A12 hard-text class the text_like cut of 0.697295 discards correct text: 22 of 23 decided below-cut masks are correct, an accept rate of 95.7%, and every one of the 24 graded masks scores at or below 0.576 — below the pooled cut of 0.578 as well as the group cut. Both cuts keep 0 of 24. The reviewer's yes/no boundary does not sit near either cut; it sits at the run-time floor.",
+			"fundedBy": [
+				"o-msdszmja-cab07e29",
+				"o-msdszrn5-0c7c19dd",
+				"o-msdsz94g-fccf47a7",
+				"o-msdsyyiq-a65a2736",
+				"o-msdszk9e-73674f36",
+				"o-msdsyqdt-32e4381c",
+				"o-msdszneu-c428b0d6",
+				"o-msdszd59-5c2a9224",
+				"o-msdszpuf-e3708c34",
+				"o-msdszv2m-35570690",
+				"o-msdszasy-0441744c",
+				"o-msdsyzsu-b68181b9",
+				"o-msdsyvoj-2b95c7aa",
+				"o-msdszyci-77f843ae",
+				"o-msdszi3z-38ee0fd3",
+				"o-msdszglk-9ba1b4c6",
+				"o-msdsymdz-56a565c3",
+				"o-msdsyx0v-03819cc5",
+				"o-msdsynst-498d8c8c",
+				"o-msdszz6u-1d07541b",
+				"o-msdszbst-5d59c25a",
+				"o-msdszpbf-411e05d7",
+				"o-msdszeo8-40b96d0a",
+				"o-msdsz1ty-d72d7110"
+			],
+			"doesNotFund": "A lowered text_like constant. The pre-registered gates all PASS on the section-B sample, but that sample is truncated at the cut by construction and holds exactly one negative answer, so its \"optimum\" of 0.301998 at J 1.000 measures where the sample was cut, not where the boundary is. Pooling round 1's 31 unconditioned text_like rows back in restores the keep side and the J gain falls to 0.0000 — the J-gain gate FAILS. Moving the global cut down to 0.514847 would buy recall (24.4% -> 46.7%) at a precision cost (100.0% -> 91.3%) for no J gain at all.",
+			"recommends": "A per-cover rescue rule rather than a lower global cut — on a cover where NO text_like mask clears the cut, admit that cover's strongest text_like mask down to a floor — fitted on a round that samples both sides of the boundary on hard covers. Not fundable from this round."
+		}
+	]
+}

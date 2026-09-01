@@ -1,0 +1,484 @@
+/*
+ * Structure and DOM conventions taken from research/album-artwork-palette-v2-0.7.7-quick-review/app.js
+ * (blinded A/B review item, treatment panel, assessment block); the treatment field, role legend, named
+ * colors, and gradient-midpoint custody rendering are taken from
+ * research/album-artwork-palette-v2-phase-3-showcase/app.js.
+ */
+
+const PREFERENCES = [
+	["A", "A is stronger"],
+	["B", "B is stronger"],
+	["equal", "Equally good"],
+]
+const VERDICT_LABELS = {
+	"strong": "Strong",
+	"acceptable": "Acceptable",
+	"weak-fallback": "Weak fallback",
+	"unacceptable": "Unacceptable",
+}
+
+const GRADIENT_VERDICT_LABELS = {
+	"as-preferred": "Right as shown (on my preferred side)",
+	"should-be-gradient": "Should be a gradient",
+	"should-be-flat": "Should be flat",
+	"either-works": "Either works here",
+}
+
+const root = document.querySelector("#review")
+const progress = document.querySelector("#progress")
+const batchName = document.querySelector("#batch-name")
+const submitButton = document.querySelector("#submit")
+const submitStatus = document.querySelector("#submit-status")
+
+let payload = null
+/** Per-item review state, keyed by batch index. */
+const state = []
+
+function create(tag, properties = {}) {
+	const element = document.createElement(tag)
+	for (const [key, value] of Object.entries(properties)) {
+		if (key === "text") element.textContent = value
+		else if (key === "className") element.className = value
+		else element.setAttribute(key, value)
+	}
+	return element
+}
+
+function treatmentFieldCss(palette) {
+	if (!palette.gradient) return palette.background.hex
+	// Reviewer-specified stops (batch-34, 2026-08-01): the background stays pure longer so the
+	// gradient reads against a real ground — 35% pure background on a 2-stop, 10% on a 3-stop
+	// (whose midpoint lands at 55%).
+	return palette.midpoint
+		? `linear-gradient(135deg in oklab, ${palette.background.hex} 10%, ${palette.midpoint} 55%, ${palette.surface.hex} 100%)`
+		: `linear-gradient(135deg in oklab, ${palette.background.hex} 35%, ${palette.surface.hex} 100%)`
+}
+
+function roleStatus(role, palette) {
+	const values = []
+	if (role === "background") values.push("primary field")
+	if (role === "foreground") values.push("required text role")
+	if (role === "surface") values.push(palette.collapse.surface ? "collapsed to background" : "distinct surface")
+	if (role === "accent") values.push(palette.collapse.accent ? "collapsed to foreground" : "distinct accent")
+	if (palette[role].generated) values.push("generated*")
+	return values.join(" / ")
+}
+
+function artworkTitle(file) {
+	return file.split("/").at(-1).replace(/\.[^.]+$/u, "").replaceAll("-", " ")
+}
+
+function renderRoleLegend(palette, label) {
+	const legend = create("dl", { className: "role-legend", "aria-label": `${label} role colors` })
+	for (const role of payload.roles) {
+		const color = palette[role]
+		const entry = create("div", { className: "role-entry" })
+		entry.append(create("dt", { text: role }))
+		const description = create("dd", { className: "role-color" })
+		const swatch = create("span", { className: "swatch", "aria-hidden": "true" })
+		swatch.style.backgroundColor = color.hex
+		const text = create("span")
+		text.append(create("strong", { text: color.name }), create("code", { text: color.hex }))
+		description.append(swatch, text)
+		entry.append(description, create("dd", { className: "role-status", text: roleStatus(role, palette) }))
+		legend.append(entry)
+	}
+	return legend
+}
+
+function renderMidpoint(palette) {
+	if (!palette.midpoint) return null
+	const custody = create("div", { className: "midpoint-custody" })
+	const swatch = create("span", { className: "swatch", "aria-hidden": "true" })
+	swatch.style.backgroundColor = palette.midpoint
+	const color = create("span", { className: "midpoint-color" })
+	color.append(create("strong", { text: palette.midpointName }), create("code", { text: palette.midpoint }))
+	custody.append(
+		swatch,
+		create("strong", { text: "Gradient midpoint" }),
+		color,
+		create("span", { text: "50% / exact source-supported render / not a role" }),
+	)
+	return custody
+}
+
+function renderPalettePanel(item, palette, label, prefix, extraClass = "") {
+	const panel = create("article", { className: `option-panel${extraClass}`, "aria-label": label })
+	const heading = create("header", { className: "option-heading" })
+	const cardinality = new Set(payload.roles.map((role) => palette[role].hex)).size
+	const renderMode = palette.midpoint ? "3-stop gradient" : palette.gradient ? "Gradient" : "Flat field"
+	heading.append(
+		create("strong", { text: label }),
+		create("span", { text: `${prefix ? `${prefix} / ` : ""}${renderMode} / ${cardinality} colors` }),
+	)
+	panel.append(heading)
+
+	const preview = create("section", { className: "palette-preview" })
+	for (const role of payload.roles) preview.style.setProperty(`--${role}`, palette[role].hex)
+	preview.style.background = treatmentFieldCss(palette)
+	preview.append(create("img", {
+		className: "artwork",
+		src: item.media,
+		alt: `${artworkTitle(item.image)} album artwork`,
+		loading: "lazy",
+	}))
+	const copy = create("div", { className: "background-copy" })
+	copy.append(
+		create("p", { className: "accent-copy", text: "Now playing" }),
+		create("h3", { text: "The artwork carries the listening view." }),
+		create("p", { text: "One coupled field, foreground, surface, and accent treatment." }),
+	)
+	preview.append(copy)
+	const surface = create("div", { className: "surface-card" })
+	surface.append(
+		create("p", { className: "accent-copy", text: "Surface role" }),
+		create("strong", { text: "Foreground remains part of the same palette." }),
+	)
+	preview.append(surface)
+	panel.append(preview, renderRoleLegend(palette, label))
+	const midpoint = renderMidpoint(palette)
+	if (midpoint) panel.append(midpoint)
+	return panel
+}
+
+function renderTreatment(item, side) {
+	return renderPalettePanel(
+		item,
+		item[side],
+		item.identical ? "Single palette" : `Option ${side}`,
+		item.identical ? "Identical on both sides" : null,
+	)
+}
+
+function control(label, node, hint) {
+	const block = create("div", { className: "control" })
+	block.append(create("p", { className: "control-label", text: label }))
+	if (hint) block.append(create("p", { className: "control-hint", text: hint }))
+	block.append(node)
+	return block
+}
+
+function decision(options, isSelected, onSelect) {
+	const row = create("div", { className: "decision" })
+	for (const [value, label] of options) {
+		const button = create("button", {
+			type: "button",
+			text: label,
+			className: isSelected(value) ? "selected" : "",
+		})
+		button.addEventListener("click", () => {
+			onSelect(value)
+			render()
+		})
+		row.append(button)
+	}
+	return row
+}
+
+function correctedCount(index) {
+	return payload.roles.filter((role) => typeof state[index].corrections[role] === "string").length
+}
+
+/** Fill every role from one of the treatments on screen, so the reviewer only re-clicks what they disagree with. */
+function seedCorrections(item, index, side) {
+	const palette = item[side]
+	for (const role of payload.roles) state[index].corrections[role] = palette[role].hex
+	state[index].seededFrom = side
+}
+
+/**
+ * The treatment the assembled palette is shown against: gradient shape and any role left unset come from
+ * the side the reviewer started from (or the side they prefer), so the preview is the item's own treatment
+ * with the chosen colors substituted rather than a new invention.
+ */
+function correctionBase(item, index) {
+	const side = state[index].seededFrom
+		?? (state[index].preference === "B" ? "B" : "A")
+	return item[item.identical ? "A" : side]
+}
+
+function assembledPalette(item, index) {
+	const base = correctionBase(item, index)
+	const palette = { gradient: base.gradient, midpoint: base.midpoint, collapse: base.collapse }
+	for (const role of payload.roles) {
+		const hex = state[index].corrections[role]
+		palette[role] = hex ? { hex, name: swatchName(item, hex), generated: false } : base[role]
+	}
+	return palette
+}
+
+function swatchName(item, hex) {
+	return item.swatches.find((swatch) => swatch.hex === hex)?.name ?? hex
+}
+
+function corrections(item, index) {
+	const block = create("div")
+
+	const shortcuts = create("div", { className: "decision correction-shortcuts" })
+	const seeds = item.identical ? [["A", "Start from this palette"]] : [["A", "Start from A"], ["B", "Start from B"]]
+	for (const [side, text] of seeds) {
+		const button = create("button", { type: "button", text })
+		button.addEventListener("click", () => {
+			seedCorrections(item, index, side)
+			render()
+		})
+		shortcuts.append(button)
+	}
+	const clearAll = create("button", { type: "button", text: "Clear all" })
+	clearAll.addEventListener("click", () => {
+		state[index].corrections = {}
+		render()
+	})
+	shortcuts.append(clearAll)
+
+	const summary = create("div", { className: "correction-summary" })
+	const count = correctedCount(index)
+	for (const role of payload.roles) {
+		const hex = state[index].corrections[role]
+		const entry = create("span", { className: "correction-slot", title: `${role}: ${hex ?? "not set"}` })
+		const chip = create("span", { className: `swatch${hex ? "" : " empty"}`, "aria-hidden": "true" })
+		if (hex) chip.style.backgroundColor = hex
+		entry.append(chip, create("code", { text: hex ?? "-" }))
+		summary.append(entry)
+	}
+	summary.append(create("span", {
+		className: "role-status",
+		text: count === 0 ? "skipped" : count === payload.roles.length ? "complete" : `${count} of ${payload.roles.length} roles set`,
+	}))
+	shortcuts.append(summary)
+	block.append(shortcuts)
+
+	// Chips on the left, a live mock of the palette being assembled on the right: nothing gets endorsed
+	// without seeing it rendered, and a mis-click is visible immediately.
+	const workspace = create("div", { className: "correction-workspace" })
+	const rows = create("div", { className: "correction-rows" })
+	const previewColumn = create("div", { className: "correction-preview" })
+	if (count > 0) {
+		previewColumn.append(renderPalettePanel(
+			item,
+			assembledPalette(item, index),
+			"Your palette",
+			`${count} of ${payload.roles.length} roles yours`,
+			" preview-panel",
+		))
+		previewColumn.append(create("p", {
+			className: "correction-note role-status",
+			text: `Gradient shape and unset roles come from option ${state[index].seededFrom
+				?? (state[index].preference === "B" ? "B" : "A")}.`,
+		}))
+	} else {
+		previewColumn.append(create("p", {
+			className: "correction-note role-status",
+			text: "Set any role to preview the palette here before endorsing it.",
+		}))
+	}
+
+	for (const role of payload.roles) {
+		const row = create("div", { className: "correction" })
+		row.append(create("span", { className: "role-status", text: role }))
+		const strip = create("div", { className: "swatch-strip" })
+		for (const swatch of item.swatches) {
+			const chosen = state[index].corrections[role] === swatch.hex
+			const button = create("button", {
+				type: "button",
+				className: `swatch-choice${swatch.source === "palette" ? " proposed" : ""}${chosen ? " selected" : ""}`,
+				title: swatch.source === "image"
+					? `${swatch.name} ${swatch.hex} / ${(swatch.share * 100).toFixed(1)}% of pixels`
+					: `${swatch.name} ${swatch.hex} / proposed by a treatment`,
+			})
+			const chip = create("span", { className: "swatch", "aria-hidden": "true" })
+			chip.style.backgroundColor = swatch.hex
+			button.append(chip, create("strong", { text: swatch.name }), create("code", { text: swatch.hex }))
+			button.addEventListener("click", () => {
+				if (chosen) delete state[index].corrections[role]
+				else state[index].corrections[role] = swatch.hex
+				render()
+			})
+			strip.append(button)
+		}
+		const clear = create("button", { type: "button", className: "swatch-clear", text: "Clear" })
+		clear.addEventListener("click", () => {
+			delete state[index].corrections[role]
+			render()
+		})
+		strip.append(clear)
+		row.append(strip)
+		rows.append(row)
+	}
+	rows.append(create("p", {
+		className: "correction-note role-status",
+		text: "Solid: sampled from the artwork / dashed: proposed by a treatment."
+			+ " Several palettes may be equally valid — one you would ship is enough.",
+	}))
+	workspace.append(rows, previewColumn)
+	block.append(workspace)
+	return block
+}
+
+function assessment(item, index) {
+	const section = create("section", { className: "assessment" })
+	const answered = state[index].preference !== null && state[index].verdict !== null
+
+	if (!item.identical) {
+		section.append(control("Preference", decision(
+			PREFERENCES,
+			(value) => state[index].preference === value,
+			(value) => { state[index].preference = value },
+		)))
+	}
+	const verdictLabel = item.identical
+		? "Absolute verdict for this palette"
+		: state[index].preference === "equal"
+			? "Absolute verdict (both sides)"
+			: `Absolute verdict for ${state[index].preference ? `option ${state[index].preference}` : "the preferred side"}`
+	section.append(control(verdictLabel, decision(
+		payload.verdicts.map((value) => [value, VERDICT_LABELS[value] ?? value]),
+		(value) => state[index].verdict === value,
+		(value) => { state[index].verdict = value },
+	)))
+	// The gradient decision has never had its own channel: every gradient opinion so far lives in
+	// free text, so the warehouse cannot distinguish "should be flat" from silence. Optional — skip
+	// it whenever the field treatment isn't what you're judging.
+	section.append(control("Field treatment (optional — the gradient/flat decision itself)", decision(
+		payload.gradientVerdicts.map((value) => [value, GRADIENT_VERDICT_LABELS[value] ?? value]),
+		(value) => state[index].gradientVerdict === value,
+		(value) => { state[index].gradientVerdict = state[index].gradientVerdict === value ? null : value },
+	)))
+
+	// Words first: what the reviewer says in their own terms outranks any structured field we invented.
+	const comment = create("textarea", {
+		className: "comment primary",
+		maxlength: "4000",
+		placeholder: "In your words: what works, what does not, and why. This is the most useful thing here.",
+	})
+	comment.value = state[index].notes
+	comment.addEventListener("input", () => { state[index].notes = comment.value })
+	section.append(control("Notes", comment))
+
+	// One endorsable palette, explicitly not "the" answer: several may be equally valid, and the point is
+	// to learn whether such a palette is reachable at all, not to fix a single ground truth.
+	section.append(control(
+		"One palette you'd endorse (optional — there may be several valid answers)",
+		corrections(item, index),
+		"A sample, not the answer. Pick one palette you would ship for this artwork; if two or three would all"
+			+ " work, any one of them is a useful answer. Leaving it empty is not disagreement.",
+	))
+
+	section.append(control("Error tags (optional)", decision(
+		payload.starterTags.map((tag) => [tag, tag]),
+		(value) => state[index].tags.includes(value),
+		(value) => {
+			state[index].tags = state[index].tags.includes(value)
+				? state[index].tags.filter((tag) => tag !== value)
+				: [...state[index].tags, value]
+		},
+	)))
+
+	const corrected = correctedCount(index)
+	section.append(create("p", {
+		className: "status",
+		text: `${answered ? "Answered" : "Not reviewed"} / endorsed palette: `
+			+ (corrected === 0 ? "skipped" : `${corrected} of ${payload.roles.length} roles`),
+	}))
+	return section
+}
+
+function render() {
+	const textareas = [...root.querySelectorAll("textarea")]
+	const focusedIndex = textareas.indexOf(document.activeElement)
+	const selection = focusedIndex >= 0
+		? [document.activeElement.selectionStart, document.activeElement.selectionEnd]
+		: null
+	root.replaceChildren()
+	for (const [index, item] of payload.items.entries()) {
+		const reviewItem = create("section", { className: "review-item", "data-id": item.image })
+		const heading = create("header", { className: "item-heading" })
+		heading.append(
+			create("p", {
+				className: "eyebrow",
+				text: item.identical
+					? `Item ${String(index + 1).padStart(2, "0")} / ${payload.items.length} / identical output`
+					: `Comparison ${String(index + 1).padStart(2, "0")} / ${payload.items.length}`,
+			}),
+			create("h2", { text: artworkTitle(item.image) }),
+		)
+		if (item.identical) {
+			heading.append(create("p", {
+				className: "identity-note",
+				text: "Both candidates produced the same treatment. Judge this single palette on its own merits.",
+			}))
+		}
+		const pair = create("div", { className: item.identical ? "preview-pair single" : "preview-pair" })
+		if (item.identical) pair.append(renderTreatment(item, "A"))
+		else pair.append(renderTreatment(item, "A"), renderTreatment(item, "B"))
+		reviewItem.append(heading, pair, assessment(item, index))
+		root.append(reviewItem)
+	}
+	if (focusedIndex >= 0) {
+		const textarea = root.querySelectorAll("textarea")[focusedIndex]
+		textarea.focus()
+		textarea.setSelectionRange(selection[0], selection[1])
+	}
+	const answered = state.filter((entry) => entry.preference !== null && entry.verdict !== null).length
+	progress.textContent = `${answered} / ${state.length} answered`
+	submitButton.disabled = answered !== state.length
+	if (!submitButton.disabled && submitStatus.dataset.state !== "submitted") {
+		submitStatus.textContent = "Ready to submit."
+	}
+}
+
+async function submit() {
+	submitButton.disabled = true
+	submitStatus.textContent = "Submitting..."
+	try {
+		const response = await fetch("/api/submit", {
+			method: "POST",
+			headers: { "content-type": "application/json" },
+			body: JSON.stringify({
+				batch: payload.batch,
+				items: payload.items.map((item, index) => ({
+					image: item.image,
+					preference: state[index].preference,
+					verdict: state[index].verdict,
+					gradientVerdict: state[index].gradientVerdict,
+					corrections: state[index].corrections,
+					tags: state[index].tags,
+					notes: state[index].notes,
+				})),
+			}),
+		})
+		const body = await response.json()
+		if (!response.ok) throw new Error(body.error ?? `HTTP ${response.status}`)
+		submitStatus.dataset.state = "submitted"
+		submitStatus.textContent = `Appended ${body.appended} record(s) to ${body.warehouse}. You can close this tab.`
+	} catch (error) {
+		submitStatus.textContent = `Submission failed: ${error.message}`
+		submitButton.disabled = false
+	}
+}
+
+submitButton.addEventListener("click", () => { submit() })
+
+fetch("/api/batch", { cache: "no-store" })
+	.then((response) => response.json())
+	.then((value) => {
+		payload = value
+		batchName.textContent = `Batch ${payload.batch}`
+		for (const item of payload.items) {
+			// An identical pair carries no side preference: it is recorded as equal / comparison "identical".
+			state.push({
+				preference: item.identical ? "equal" : null,
+				verdict: null,
+				gradientVerdict: null,
+				corrections: {},
+				seededFrom: null,
+				tags: [],
+				notes: "",
+			})
+		}
+		render()
+	})
+	.catch((error) => {
+		progress.textContent = "Review failed to load"
+		root.textContent = error instanceof Error ? error.message : "Request failed"
+	})

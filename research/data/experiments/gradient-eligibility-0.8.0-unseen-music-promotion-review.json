@@ -1,0 +1,5403 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "gradient-eligibility-unseen-music-promotion-review-0.1.0",
+  "experimentVersion": "gradient-eligibility-0.8.0-dev",
+  "generatedAt": "2026-07-19T21:49:21.598Z",
+  "provenance": {
+    "developmentSha256": "82190fef1aef68ad569832887d4e97bfd55356f087066b5225c570ccd19ca647",
+    "pilotSha256": "e5dbd20c17aefdbd9474ed22dea62e09969e5ceebf1fb848dd1ee05af2672632",
+    "changeReviewSha256": "e5d65bc5ba6d53d21e8e716cb2026d185c7c1bec3014c758494efe8632a1e136"
+  },
+  "summary": {
+    "canonicalMusicGradients": 1327,
+    "candidateChanges": 121,
+    "pilotCasesDisplayed": 24,
+    "comparisonMusicCasesDisplayed": 42,
+    "previouslyDisplayedCurrentChanges": 43,
+    "unseenCurrentChanges": 78
+  },
+  "entries": [
+    {
+      "familyId": "gc-d82fd4926e7ad3dd602a",
+      "anchor": {
+        "file": "music-artworks/4/c/4/4c4ae8877ba7ee9748267e8c10224734.jpg",
+        "sha256": "30aae6f1804c55278a6a8219f41bdcaa9c1ce0f46f9e3f4810014d2df017378a",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            206,
+            184,
+            173
+          ],
+          "hex": "#ceb8ad",
+          "generated": false,
+          "sourceDistance": 0.01826302995801982
+        },
+        "surface": {
+          "rgb": [
+            69,
+            35,
+            32
+          ],
+          "hex": "#452320",
+          "generated": false,
+          "sourceDistance": 0.024222120735330376
+        },
+        "accent": {
+          "rgb": [
+            192,
+            34,
+            44
+          ],
+          "hex": "#c0222c",
+          "generated": false,
+          "sourceDistance": 0.0045565250757656816
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.666015625,
+          "continuity": 1,
+          "coherence": 0.23043084486997023
+        },
+        "score": 0.6284203983404261,
+        "metrics": {
+          "foregroundContrast": 11.083984244787294,
+          "foregroundSurfaceContrast": 7.319488093677126,
+          "accentContrast": 3.5064743201032775,
+          "accentSurfaceContrast": 2.315556975719345,
+          "minimumRoleDistance": 0.26261152463424076,
+          "meanSourceDistance": 0.01176041894227897,
+          "meanReconstructionError": 0.04599191806419984
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-b27ef9508ba4c78d1ca7",
+      "anchor": {
+        "file": "music-artworks/f/d/b/fdb75687145f4455c12a499d14044911.png",
+        "sha256": "d304991e5420b6c1b4ece0de5196d574502c3cb69d3549c1ee81976db3b8c202",
+        "width": 400,
+        "height": 155
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe",
+          "generated": false,
+          "sourceDistance": 0.0007036769114221468
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.004800329783133102
+        },
+        "surface": {
+          "rgb": [
+            229,
+            229,
+            229
+          ],
+          "hex": "#e5e5e5",
+          "generated": false,
+          "sourceDistance": 0.00826668412564347
+        },
+        "accent": {
+          "rgb": [
+            53,
+            53,
+            53
+          ],
+          "hex": "#353535",
+          "generated": false,
+          "sourceDistance": 0.006028352637032002
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5850266830870279,
+          "continuity": 1,
+          "coherence": 0.2859304084720121
+        },
+        "score": 0.7135652503319558,
+        "metrics": {
+          "foregroundContrast": 20.822041942276595,
+          "foregroundSurfaceContrast": 16.67075583052387,
+          "accentContrast": 12.162220856465348,
+          "accentSurfaceContrast": 9.73744144868774,
+          "minimumRoleDistance": 0.075119174395405,
+          "meanSourceDistance": 0.00494976086430768,
+          "meanReconstructionError": 0.04320799586864691
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-f76a002f2c7ff73e0fe4",
+      "anchor": {
+        "file": "music-artworks/9/4/a/94a8738763fed7e11b0cf3ac50033e22.png",
+        "sha256": "2272cc881a3fcc2469823985ddb93f3d44b6813ae143f8032b6621f82dddfa57",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            3,
+            3,
+            13
+          ],
+          "hex": "#03030d",
+          "generated": false,
+          "sourceDistance": 0.0027344380599398717
+        },
+        "surface": {
+          "rgb": [
+            233,
+            231,
+            222
+          ],
+          "hex": "#e9e7de",
+          "generated": false,
+          "sourceDistance": 0.004360084004284742
+        },
+        "accent": {
+          "rgb": [
+            244,
+            94,
+            17
+          ],
+          "hex": "#f45e11",
+          "generated": false,
+          "sourceDistance": 0.030038877081914234
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7397250566893424,
+          "continuity": 1,
+          "coherence": 0.44614209320091675
+        },
+        "score": 0.7077853988037414,
+        "metrics": {
+          "foregroundContrast": 20.53371161642233,
+          "foregroundSurfaceContrast": 16.573519857986888,
+          "accentContrast": 3.252891421283992,
+          "accentSurfaceContrast": 2.6255292551887273,
+          "minimumRoleDistance": 0.07397938492621883,
+          "meanSourceDistance": 0.009283351418148168,
+          "meanReconstructionError": 0.028832102378039046
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-704ccb2ddb671a54dc1d",
+      "anchor": {
+        "file": "music-artworks/c/4/f/c4f5e8637499546d41176767c609a5a1.jpg",
+        "sha256": "71506cca7aa81d168b156991930aa8668639b1b618cd2286ac5514c6f55440f5",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            168,
+            157,
+            153
+          ],
+          "hex": "#a89d99",
+          "generated": false,
+          "sourceDistance": 0.0065693118369521105
+        },
+        "foreground": {
+          "rgb": [
+            44,
+            36,
+            30
+          ],
+          "hex": "#2c241e",
+          "generated": false,
+          "sourceDistance": 0.00933843661971178
+        },
+        "surface": {
+          "rgb": [
+            230,
+            180,
+            86
+          ],
+          "hex": "#e6b456",
+          "generated": false,
+          "sourceDistance": 0.008768894927640726
+        },
+        "accent": {
+          "rgb": [
+            244,
+            234,
+            218
+          ],
+          "hex": "#f4eada",
+          "generated": false,
+          "sourceDistance": 0.04188754401807051
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9080992928008735,
+          "coverage": 0.5164609053497943,
+          "continuity": 0.9657665905601753,
+          "coherence": 0.6104627901012132
+        },
+        "score": 0.5949771905175246,
+        "metrics": {
+          "foregroundContrast": 5.766782090027189,
+          "foregroundSurfaceContrast": 8.001406855313258,
+          "accentContrast": 2.218007457116816,
+          "accentSurfaceContrast": 1.5985645912698985,
+          "minimumRoleDistance": 0.14787251226155382,
+          "meanSourceDistance": 0.016641046850593783,
+          "meanReconstructionError": 0.08019994752001114
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-5e63a52879b83725f6b0",
+      "anchor": {
+        "file": "music-artworks/9/d/d/9ddc0284e0359243e7a1d64ee37690eb.png",
+        "sha256": "3ac15bd3aee89ed5cc438eb561533426336c7f53cf410efd35b9fc991fdf385a",
+        "width": 400,
+        "height": 155
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.0022146138476162435
+        },
+        "surface": {
+          "rgb": [
+            214,
+            206,
+            209
+          ],
+          "hex": "#d6ced1",
+          "generated": false,
+          "sourceDistance": 0.017980402854980437
+        },
+        "accent": {
+          "rgb": [
+            212,
+            63,
+            25
+          ],
+          "hex": "#d43f19",
+          "generated": false,
+          "sourceDistance": 0.0029964792823063673
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.4813731527093596,
+          "continuity": 1,
+          "coherence": 0.33175355450236965
+        },
+        "score": 0.7847603980151425,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 13.60844085828216,
+          "accentContrast": 4.641448254182018,
+          "accentSurfaceContrast": 3.0077559078006177,
+          "minimumRoleDistance": 0.1416380245991444,
+          "meanSourceDistance": 0.005797875627839217,
+          "meanReconstructionError": 0.03874848732378105
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-650ecae62a01ae5618ff",
+      "anchor": {
+        "file": "music-artworks/5/0/7/50720642103812f3fe0e4298e46d69f2.jpg",
+        "sha256": "94a16efdb44fb11cc7220f92921dfa29c97bd66900e8ca67511979ae67bfbc76",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            16,
+            16,
+            16
+          ],
+          "hex": "#101010",
+          "generated": false,
+          "sourceDistance": 0.001029411706680195
+        },
+        "foreground": {
+          "rgb": [
+            189,
+            189,
+            189
+          ],
+          "hex": "#bdbdbd",
+          "generated": false,
+          "sourceDistance": 0.0023766300142228376
+        },
+        "surface": {
+          "rgb": [
+            5,
+            5,
+            5
+          ],
+          "hex": "#050505",
+          "generated": false,
+          "sourceDistance": 0.00000799507660688426
+        },
+        "accent": {
+          "rgb": [
+            249,
+            249,
+            249
+          ],
+          "hex": "#f9f9f9",
+          "generated": false,
+          "sourceDistance": 0.062349039724870645
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.75946290819857,
+          "coverage": 0.22092235331632654,
+          "continuity": 0.6428571428571429,
+          "coherence": 0.3900092263081587
+        },
+        "score": 0.6633210364667372,
+        "metrics": {
+          "foregroundContrast": 10.128052910717665,
+          "foregroundSurfaceContrast": 10.848349730092881,
+          "accentContrast": 18.073199077018803,
+          "accentSurfaceContrast": 19.358546608856418,
+          "minimumRoleDistance": 0.05812403199451749,
+          "meanSourceDistance": 0.01644076913059514,
+          "meanReconstructionError": 0.07327774617127943
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-a58ee7df432f3071851a",
+      "anchor": {
+        "file": "music-artworks/3/3/e/33e4d569845448ae8e337903533c91b0.png",
+        "sha256": "3559b78ce0b3bbcbdba3c4b2a307fc56931789ca4183887a2387fed7457ddfe3",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            19,
+            13,
+            25
+          ],
+          "hex": "#130d19",
+          "generated": false,
+          "sourceDistance": 0.005944902477077543
+        },
+        "surface": {
+          "rgb": [
+            203,
+            209,
+            205
+          ],
+          "hex": "#cbd1cd",
+          "generated": false,
+          "sourceDistance": 0.009789737477405804
+        },
+        "accent": {
+          "rgb": [
+            37,
+            132,
+            169
+          ],
+          "hex": "#2584a9",
+          "generated": false,
+          "sourceDistance": 0.0017048179656469391
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.8530683106575964,
+          "continuity": 1,
+          "coherence": 0.6280213027447767
+        },
+        "score": 0.635699920130629,
+        "metrics": {
+          "foregroundContrast": 19.103128144712723,
+          "foregroundSurfaceContrast": 12.317918345619109,
+          "accentContrast": 4.240639624284465,
+          "accentSurfaceContrast": 2.734413559362032,
+          "minimumRoleDistance": 0.14536331599597216,
+          "meanSourceDistance": 0.004359866111646027,
+          "meanReconstructionError": 0.01953746218455772
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-e65c5b36131a81805e78",
+      "anchor": {
+        "file": "music-artworks/0/9/4/09499192caeebc5fa6df41da4862088c.png",
+        "sha256": "03fbb13281aa84a0cd2b598eeb76362c08a525af9f7b9e96c61dd768d0c04799",
+        "width": 953,
+        "height": 953
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            131,
+            188,
+            218
+          ],
+          "hex": "#83bcda",
+          "generated": false,
+          "sourceDistance": 0.0010175098038767954
+        },
+        "foreground": {
+          "rgb": [
+            23,
+            13,
+            13
+          ],
+          "hex": "#170d0d",
+          "generated": false,
+          "sourceDistance": 0.0065346944923024095
+        },
+        "surface": {
+          "rgb": [
+            198,
+            83,
+            136
+          ],
+          "hex": "#c65388",
+          "generated": false,
+          "sourceDistance": 0.005339674990952353
+        },
+        "accent": {
+          "rgb": [
+            235,
+            208,
+            110
+          ],
+          "hex": "#ebd06e",
+          "generated": false,
+          "sourceDistance": 0.01116324587131573
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7889555365548495,
+          "coverage": 0.3901601830663616,
+          "continuity": 0.658434084083964,
+          "coherence": 0.538283833951543
+        },
+        "score": 0.6732337674693826,
+        "metrics": {
+          "foregroundContrast": 9.247698217391347,
+          "foregroundSurfaceContrast": 4.540745598297429,
+          "accentContrast": 1.354861516820746,
+          "accentSurfaceContrast": 2.7593156592197725,
+          "minimumRoleDistance": 0.20538799998925084,
+          "meanSourceDistance": 0.006013781289611822,
+          "meanReconstructionError": 0.14755182877723552
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-493ed1dd7e966bd11e3b",
+      "anchor": {
+        "file": "music-artworks/f/4/3/f435380a9f77fff2446ed4cf0a6a9ebe.jpg",
+        "sha256": "636e48bd3d895d44e185056f6a40058a881ad84e2c50a7cdea5a85b4d82d8781",
+        "width": 640,
+        "height": 577
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            40,
+            37,
+            89
+          ],
+          "hex": "#282559",
+          "generated": false,
+          "sourceDistance": 0.0020176813662196257
+        },
+        "foreground": {
+          "rgb": [
+            222,
+            229,
+            240
+          ],
+          "hex": "#dee5f0",
+          "generated": false,
+          "sourceDistance": 0.005211281238286865
+        },
+        "surface": {
+          "rgb": [
+            78,
+            14,
+            51
+          ],
+          "hex": "#4e0e33",
+          "generated": false,
+          "sourceDistance": 0.0022301958383100385
+        },
+        "accent": {
+          "rgb": [
+            234,
+            195,
+            32
+          ],
+          "hex": "#eac320",
+          "generated": false,
+          "sourceDistance": 0.03695941658139056
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8320612266035747,
+          "coverage": 0.36557142857142855,
+          "continuity": 1,
+          "coherence": 0.5387417026894974
+        },
+        "score": 0.7221264043829424,
+        "metrics": {
+          "foregroundContrast": 11.054534015277481,
+          "foregroundSurfaceContrast": 11.55191322573675,
+          "accentContrast": 8.221833472431065,
+          "accentSurfaceContrast": 8.59176033098465,
+          "minimumRoleDistance": 0.10827581566458208,
+          "meanSourceDistance": 0.011604643756051773,
+          "meanReconstructionError": 0.1484873782795297
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-86b26f1752219e036431",
+      "anchor": {
+        "file": "music-artworks/2/4/2/2420834ddc63af19d25041223ac500be.jpg",
+        "sha256": "7be33e541c1c1eebe6ba0acfdfe3a7578d013cdf8ba8e5cf68ce1de90689fd45",
+        "width": 535,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            78,
+            54,
+            45
+          ],
+          "hex": "#4e362d",
+          "generated": false,
+          "sourceDistance": 0.0037092642748000407
+        },
+        "foreground": {
+          "rgb": [
+            204,
+            173,
+            141
+          ],
+          "hex": "#ccad8d",
+          "generated": false,
+          "sourceDistance": 0.02304095934262827
+        },
+        "surface": {
+          "rgb": [
+            78,
+            54,
+            45
+          ],
+          "hex": "#4e362d",
+          "generated": false,
+          "sourceDistance": 0.0037092642748000407
+        },
+        "accent": {
+          "rgb": [
+            160,
+            32,
+            37
+          ],
+          "hex": "#a02025",
+          "generated": false,
+          "sourceDistance": 0.009019693862823492
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7665599288049542,
+          "coverage": 0.35173501577287064,
+          "continuity": 0.703454177639448,
+          "coherence": 0.6629519198724062
+        },
+        "score": 0.48894469817592323,
+        "metrics": {
+          "foregroundContrast": 5.255106247155288,
+          "foregroundSurfaceContrast": 5.255106247155288,
+          "accentContrast": 1.4437876321282417,
+          "accentSurfaceContrast": 1.4437876321282417,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.00986979543876296,
+          "meanReconstructionError": 0.09849392819152353
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-e1d1ad63d53e02cfaee4",
+      "anchor": {
+        "file": "music-artworks/d/f/4/df4452315d98b1298eb97fd728ce345c.jpg",
+        "sha256": "7176ecc4fee6908fb73bc96b1a831dbd91fcc2f8e3345b846f3c44b5344cd7ec",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            144,
+            151,
+            166
+          ],
+          "hex": "#9097a6",
+          "generated": false,
+          "sourceDistance": 0.0035310236135117643
+        },
+        "foreground": {
+          "rgb": [
+            13,
+            17,
+            12
+          ],
+          "hex": "#0d110c",
+          "generated": false,
+          "sourceDistance": 0.008633223706920391
+        },
+        "surface": {
+          "rgb": [
+            193,
+            163,
+            134
+          ],
+          "hex": "#c1a386",
+          "generated": false,
+          "sourceDistance": 0.02651620851218087
+        },
+        "accent": {
+          "rgb": [
+            210,
+            211,
+            208
+          ],
+          "hex": "#d2d3d0",
+          "generated": false,
+          "sourceDistance": 0.013391294181061369
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8258542497851029,
+          "coverage": 0.46174142480211083,
+          "continuity": 0.5263525242362533,
+          "coherence": 0.6881894510446995
+        },
+        "score": 0.5596483452777312,
+        "metrics": {
+          "foregroundContrast": 6.496578022453596,
+          "foregroundSurfaceContrast": 8.02702928752197,
+          "accentContrast": 1.9501020084866467,
+          "accentSurfaceContrast": 1.5782912203361372,
+          "minimumRoleDistance": 0.09630111524799112,
+          "meanSourceDistance": 0.013017937503418599,
+          "meanReconstructionError": 0.1155823230451396
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-ff69cba31fe91d2c7edf",
+      "anchor": {
+        "file": "music-artworks/4/6/4/464e51c66a8db84deae876e034efe06c.jpg",
+        "sha256": "aa68343d76df60ee77a8769c21f63ebfe3f42eec76af57bf9303d6fa5599282f",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            189,
+            188,
+            180
+          ],
+          "hex": "#bdbcb4",
+          "generated": false,
+          "sourceDistance": 0.0042361626499852305
+        },
+        "foreground": {
+          "rgb": [
+            74,
+            68,
+            75
+          ],
+          "hex": "#4a444b",
+          "generated": false,
+          "sourceDistance": 0.009212883452563443
+        },
+        "surface": {
+          "rgb": [
+            189,
+            188,
+            180
+          ],
+          "hex": "#bdbcb4",
+          "generated": false,
+          "sourceDistance": 0.0042361626499852305
+        },
+        "accent": {
+          "rgb": [
+            245,
+            244,
+            245
+          ],
+          "hex": "#f5f4f5",
+          "generated": false,
+          "sourceDistance": 0.007239445100525211
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8681994034165853,
+          "coverage": 0.47461394478240526,
+          "continuity": 0.8596964206890169,
+          "coherence": 0.6682748154609779
+        },
+        "score": 0.5074017739953303,
+        "metrics": {
+          "foregroundContrast": 4.963065104653299,
+          "foregroundSurfaceContrast": 4.963065104653299,
+          "accentContrast": 1.7375721068990755,
+          "accentSurfaceContrast": 1.7375721068990755,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.006231163463264779,
+          "meanReconstructionError": 0.13544214361886728
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-1f806de69fc3dce2df71",
+      "anchor": {
+        "file": "music-artworks/3/b/6/3b64bbc01e8083fd8aae480d878a7248.jpg",
+        "sha256": "88d5f37142729005f9a9818764999d0b6abfa47673dec30bd8a058b0c97fe0b0",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            28,
+            30,
+            33
+          ],
+          "hex": "#1c1e21",
+          "generated": false,
+          "sourceDistance": 0.0018351168455033532
+        },
+        "foreground": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe",
+          "generated": false,
+          "sourceDistance": 0.0018261944986981452
+        },
+        "surface": {
+          "rgb": [
+            11,
+            11,
+            11
+          ],
+          "hex": "#0b0b0b",
+          "generated": false,
+          "sourceDistance": 0.006909746776099495
+        },
+        "accent": {
+          "rgb": [
+            169,
+            168,
+            170
+          ],
+          "hex": "#a9a8aa",
+          "generated": false,
+          "sourceDistance": 0.011296209846313377
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6860365227625582,
+          "coverage": 0.2613240418118467,
+          "continuity": 1,
+          "coherence": 0.2299794661190965
+        },
+        "score": 0.7378202094323629,
+        "metrics": {
+          "foregroundContrast": 16.564268643436204,
+          "foregroundSurfaceContrast": 19.515833262754573,
+          "accentContrast": 7.055043573678969,
+          "accentSurfaceContrast": 8.312172243109949,
+          "minimumRoleDistance": 0.0848474351038043,
+          "meanSourceDistance": 0.005466816991653592,
+          "meanReconstructionError": 0.04682739399454051
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-45a9bff1cf256bf240f9",
+      "anchor": {
+        "file": "music-artworks/1/6/c/16c319f175aad9f27bfcc402d203902f.jpg",
+        "sha256": "ba7608181dd3cd0960a505d61cbf2f04866987f8bb6a327c3bd28ebb6c584d3e",
+        "width": 996,
+        "height": 1000
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            168,
+            34,
+            89
+          ],
+          "hex": "#a82259",
+          "generated": false,
+          "sourceDistance": 0.0023767323224714817
+        },
+        "foreground": {
+          "rgb": [
+            222,
+            192,
+            162
+          ],
+          "hex": "#dec0a2",
+          "generated": false,
+          "sourceDistance": 0.015670991266747918
+        },
+        "surface": {
+          "rgb": [
+            133,
+            62,
+            47
+          ],
+          "hex": "#853e2f",
+          "generated": false,
+          "sourceDistance": 0.016374230639213522
+        },
+        "accent": {
+          "rgb": [
+            251,
+            149,
+            23
+          ],
+          "hex": "#fb9517",
+          "generated": false,
+          "sourceDistance": 0.025676459228511028
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7929522370484727,
+          "coverage": 0.34067114093959733,
+          "continuity": 1,
+          "coherence": 0.5466921926162043
+        },
+        "score": 0.6388707677113834,
+        "metrics": {
+          "foregroundContrast": 4.005061547512999,
+          "foregroundSurfaceContrast": 4.461198879561009,
+          "accentContrast": 3.0984532366086333,
+          "accentSurfaceContrast": 3.4513367506459662,
+          "minimumRoleDistance": 0.10800526804232259,
+          "meanSourceDistance": 0.015024603364235988,
+          "meanReconstructionError": 0.11829152106451805
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-9297a77f9fcda136e154",
+      "anchor": {
+        "file": "music-artworks/8/1/0/8106ad91338c74eb3d6ec02eaa6ecf7f.jpg",
+        "sha256": "f05fe333bac8ee05f47c95430ac7d774de442d49aeb5a5c37d5c537874dec1be",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            5,
+            10,
+            13
+          ],
+          "hex": "#050a0d",
+          "generated": false,
+          "sourceDistance": 0.0009819605984161402
+        },
+        "foreground": {
+          "rgb": [
+            86,
+            150,
+            178
+          ],
+          "hex": "#5696b2",
+          "generated": false,
+          "sourceDistance": 0.014329627068981854
+        },
+        "surface": {
+          "rgb": [
+            5,
+            10,
+            13
+          ],
+          "hex": "#050a0d",
+          "generated": false,
+          "sourceDistance": 0.0009819605984161402
+        },
+        "accent": {
+          "rgb": [
+            175,
+            26,
+            24
+          ],
+          "hex": "#af1a18",
+          "generated": false,
+          "sourceDistance": 0.03120538721137221
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8315744639259327,
+          "coverage": 0.461082910321489,
+          "continuity": 0.5881642670089041,
+          "coherence": 0.687316019939241
+        },
+        "score": 0.6058602912903501,
+        "metrics": {
+          "foregroundContrast": 6.063474397698709,
+          "foregroundSurfaceContrast": 6.063474397698709,
+          "accentContrast": 2.826364088219293,
+          "accentSurfaceContrast": 2.826364088219293,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.011874733869296586,
+          "meanReconstructionError": 0.08846175685475408
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-3a052b272a830f23251b",
+      "anchor": {
+        "file": "music-artworks/b/4/d/b4d173038246d4a0e104ac78d152b7dc.jpg",
+        "sha256": "14c55b2af4f01aa1e14a1bf6c3734b4e73cacd9e9af20d212d47d680b54f4cea",
+        "width": 1500,
+        "height": 1500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            182,
+            52,
+            41
+          ],
+          "hex": "#b63429",
+          "generated": false,
+          "sourceDistance": 0.002465801911421265
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": true,
+          "sourceDistance": 0.23786422197307536
+        },
+        "surface": {
+          "rgb": [
+            50,
+            71,
+            100
+          ],
+          "hex": "#324764",
+          "generated": false,
+          "sourceDistance": 0.0038519421116541327
+        },
+        "accent": {
+          "rgb": [
+            56,
+            142,
+            177
+          ],
+          "hex": "#388eb1",
+          "generated": false,
+          "sourceDistance": 0.006167453296710329
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.4291493941326531,
+          "continuity": 1,
+          "coherence": 0.29990387696251203
+        },
+        "score": 0.3426797769700666,
+        "metrics": {
+          "foregroundContrast": 5.9791032267463295,
+          "foregroundSurfaceContrast": 9.455467566830848,
+          "accentContrast": 1.614988795895474,
+          "accentSurfaceContrast": 2.553973999324084,
+          "minimumRoleDistance": 0.22273707251794753,
+          "meanSourceDistance": 0.06258735482321527,
+          "meanReconstructionError": 0.04447022564818279
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-28d33becea9860c61f0d",
+      "anchor": {
+        "file": "music-artworks/0/c/a/0ca0ad6f37045842244655d29e29b225.jpg",
+        "sha256": "bb764d870820df33ea9328098957b3897c576ee6093fc8243cacb6ba3f89ae33",
+        "width": 1200,
+        "height": 1198
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            12,
+            23,
+            27
+          ],
+          "hex": "#0c171b",
+          "generated": false,
+          "sourceDistance": 2.6195210786779287e-9
+        },
+        "foreground": {
+          "rgb": [
+            248,
+            250,
+            250
+          ],
+          "hex": "#f8fafa",
+          "generated": false,
+          "sourceDistance": 0.006809502018568294
+        },
+        "surface": {
+          "rgb": [
+            53,
+            93,
+            148
+          ],
+          "hex": "#355d94",
+          "generated": false,
+          "sourceDistance": 0.0017467029348929622
+        },
+        "accent": {
+          "rgb": [
+            255,
+            90,
+            97
+          ],
+          "hex": "#ff5a61",
+          "generated": false,
+          "sourceDistance": 2.5727843885280144e-8
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.816793002915452,
+          "coverage": 0.6827354260089686,
+          "continuity": 1,
+          "coherence": 0.14347181008902077
+        },
+        "score": 0.7633791866589474,
+        "metrics": {
+          "foregroundContrast": 17.37058807617903,
+          "foregroundSurfaceContrast": 6.374439606726176,
+          "accentContrast": 5.967916529035278,
+          "accentSurfaceContrast": 2.1900308340445274,
+          "minimumRoleDistance": 0.2928977188525827,
+          "meanSourceDistance": 0.002139058325206555,
+          "meanReconstructionError": 0.04047923488808746
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-243c5cbf486d072edd20",
+      "anchor": {
+        "file": "music-artworks/c/9/a/c9a26580286d868b865616efb391fa29.jpg",
+        "sha256": "be873c4b6650d8d6c02f1f6ac3b8ef7b7965cda4cbcddad424b4c7296b26adee",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            248,
+            244,
+            248
+          ],
+          "hex": "#f8f4f8",
+          "generated": false,
+          "sourceDistance": 0.0005490904359468989
+        },
+        "foreground": {
+          "rgb": [
+            12,
+            3,
+            2
+          ],
+          "hex": "#0c0302",
+          "generated": false,
+          "sourceDistance": 0.0033450658477066323
+        },
+        "surface": {
+          "rgb": [
+            228,
+            189,
+            184
+          ],
+          "hex": "#e4bdb8",
+          "generated": false,
+          "sourceDistance": 0.0043874509337101485
+        },
+        "accent": {
+          "rgb": [
+            152,
+            110,
+            106
+          ],
+          "hex": "#986e6a",
+          "generated": false,
+          "sourceDistance": 0.03441160527571911
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.48427535076530615,
+          "continuity": 1,
+          "coherence": 0.5713506139154161
+        },
+        "score": 0.5770434734396289,
+        "metrics": {
+          "foregroundContrast": 18.733744106543558,
+          "foregroundSurfaceContrast": 11.917986481283057,
+          "accentContrast": 4.0403749327684375,
+          "accentSurfaceContrast": 2.5703956216221426,
+          "minimumRoleDistance": 0.14672596593519802,
+          "meanSourceDistance": 0.010673303123270698,
+          "meanReconstructionError": 0.047725790864428554
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-fa10b70677f24b779885",
+      "anchor": {
+        "file": "music-artworks/d/6/b/d6b8d1b72142c3a6bc0047d45501661b.jpg",
+        "sha256": "1d0db271f823f9c8aa3e032bd5fa2a28639e5284847b305794ffa25323be7b58",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            15,
+            15,
+            15
+          ],
+          "hex": "#0f0f0f",
+          "generated": false,
+          "sourceDistance": 0.000701006876696914
+        },
+        "foreground": {
+          "rgb": [
+            247,
+            247,
+            247
+          ],
+          "hex": "#f7f7f7",
+          "generated": false,
+          "sourceDistance": 0.05467814603183311
+        },
+        "surface": {
+          "rgb": [
+            5,
+            5,
+            5
+          ],
+          "hex": "#050505",
+          "generated": false,
+          "sourceDistance": 0.00043044996774266347
+        },
+        "accent": {
+          "rgb": [
+            150,
+            150,
+            150
+          ],
+          "hex": "#969696",
+          "generated": false,
+          "sourceDistance": 0.00045311416439652895
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.4314014668367347,
+          "continuity": 0.5714285714285714,
+          "coherence": 0.5984533776442769
+        },
+        "score": 0.6514983325863504,
+        "metrics": {
+          "foregroundContrast": 17.89275956577005,
+          "foregroundSurfaceContrast": 19.02476423733972,
+          "accentContrast": 6.480596154275034,
+          "accentSurfaceContrast": 6.8905980376754075,
+          "minimumRoleDistance": 0.05349784830241099,
+          "meanSourceDistance": 0.014065679260167304,
+          "meanReconstructionError": 0.0550397195293608
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-c53577f5f61ee432ac28",
+      "anchor": {
+        "file": "music-artworks/9/1/1/91168c9cb1165e4930f68f127d22b2f8.jpg",
+        "sha256": "e9ff73ac2be666252c191f813b39b6ad4240636631c495d9ff441e52e5915da7",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            44,
+            46,
+            42
+          ],
+          "hex": "#2c2e2a",
+          "generated": false,
+          "sourceDistance": 0.005337480186617142
+        },
+        "surface": {
+          "rgb": [
+            215,
+            209,
+            200
+          ],
+          "hex": "#d7d1c8",
+          "generated": false,
+          "sourceDistance": 0.011151305437305255
+        },
+        "accent": {
+          "rgb": [
+            232,
+            161,
+            86
+          ],
+          "hex": "#e8a156",
+          "generated": false,
+          "sourceDistance": 0.022873922226685255
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.583366549744898,
+          "continuity": 1,
+          "coherence": 0.521671388101983
+        },
+        "score": 0.6218209746624982,
+        "metrics": {
+          "foregroundContrast": 13.713604875541717,
+          "foregroundSurfaceContrast": 9.040286800113147,
+          "accentContrast": 2.173128871539324,
+          "accentSurfaceContrast": 1.4325706793083959,
+          "minimumRoleDistance": 0.137744698078393,
+          "meanSourceDistance": 0.009840678594265368,
+          "meanReconstructionError": 0.0463153135154694
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-505d69463f44cb17f112",
+      "anchor": {
+        "file": "music-artworks/3/3/7/3371386f78d43f51cba69dd1294f41e1.png",
+        "sha256": "65eb037a73d62082e696c2bd94f6053344fbd5f16d9203de74d13a713e82ffec",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            3,
+            2,
+            15
+          ],
+          "hex": "#03020f",
+          "generated": false,
+          "sourceDistance": 0.008411779355373373
+        },
+        "surface": {
+          "rgb": [
+            226,
+            204,
+            191
+          ],
+          "hex": "#e2ccbf",
+          "generated": false,
+          "sourceDistance": 0.009461031884194802
+        },
+        "accent": {
+          "rgb": [
+            60,
+            61,
+            69
+          ],
+          "hex": "#3c3d45",
+          "generated": false,
+          "sourceDistance": 0.011800993413029412
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5429886798469388,
+          "continuity": 1,
+          "coherence": 0.7543387193297427
+        },
+        "score": 0.5521498797152316,
+        "metrics": {
+          "foregroundContrast": 20.599281942326897,
+          "foregroundSurfaceContrast": 13.363258443429611,
+          "accentContrast": 10.793788775766345,
+          "accentSurfaceContrast": 7.002194998747709,
+          "minimumRoleDistance": 0.14336560321049877,
+          "meanSourceDistance": 0.007418452794762852,
+          "meanReconstructionError": 0.04664060673537821
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-28ada28e24c37fa63d4a",
+      "anchor": {
+        "file": "music-artworks/2/9/7/2972aaf2f91a38bbb933a7d659559516.jpg",
+        "sha256": "565e09bc99a1c13d1f1bb3329ae5cfc0ea070e5a4978a23b8affcd36f61db76d",
+        "width": 1000,
+        "height": 1000
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            33,
+            36,
+            73
+          ],
+          "hex": "#212449",
+          "generated": false,
+          "sourceDistance": 0.007835556971712242
+        },
+        "foreground": {
+          "rgb": [
+            248,
+            250,
+            251
+          ],
+          "hex": "#f8fafb",
+          "generated": false,
+          "sourceDistance": 0.0701878234842656
+        },
+        "surface": {
+          "rgb": [
+            172,
+            64,
+            31
+          ],
+          "hex": "#ac401f",
+          "generated": false,
+          "sourceDistance": 0.003979850787624715
+        },
+        "accent": {
+          "rgb": [
+            94,
+            37,
+            37
+          ],
+          "hex": "#5e2525",
+          "generated": false,
+          "sourceDistance": 0.024984522351712897
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7788203272236649,
+          "coverage": 0.4062725958062184,
+          "continuity": 0.44429510159311936,
+          "coherence": 0.7182422656307988
+        },
+        "score": 0.7217732620660846,
+        "metrics": {
+          "foregroundContrast": 14.19345245712465,
+          "foregroundSurfaceContrast": 5.719123707027633,
+          "accentContrast": 1.2505285287869767,
+          "accentSurfaceContrast": 1.9845632865113614,
+          "minimumRoleDistance": 0.1386083839644731,
+          "meanSourceDistance": 0.026746938398828864,
+          "meanReconstructionError": 0.10251852139534107
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-71c375695b2211baafe4",
+      "anchor": {
+        "file": "music-artworks/c/2/2/c22bf73f6460997a56ee22d1f98f684f.png",
+        "sha256": "5b7cf5e4a524819dced3367188879b68f8685b3cc13d9429cbb18f16fc26f970",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe",
+          "generated": false,
+          "sourceDistance": 0.0001009014639331421
+        },
+        "foreground": {
+          "rgb": [
+            50,
+            22,
+            61
+          ],
+          "hex": "#32163d",
+          "generated": false,
+          "sourceDistance": 0.026932257242015013
+        },
+        "surface": {
+          "rgb": [
+            224,
+            205,
+            191
+          ],
+          "hex": "#e0cdbf",
+          "generated": false,
+          "sourceDistance": 0.011633000210042634
+        },
+        "accent": {
+          "rgb": [
+            134,
+            90,
+            94
+          ],
+          "hex": "#865a5e",
+          "generated": false,
+          "sourceDistance": 0.012805171969920827
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6477465986394558,
+          "continuity": 1,
+          "coherence": 0.5353982300884956
+        },
+        "score": 0.6094390454878567,
+        "metrics": {
+          "foregroundContrast": 15.80096742223873,
+          "foregroundSurfaceContrast": 10.36167482085619,
+          "accentContrast": 5.723859385530545,
+          "accentSurfaceContrast": 3.7534897761829695,
+          "minimumRoleDistance": 0.13983565905713674,
+          "meanSourceDistance": 0.012867832721477904,
+          "meanReconstructionError": 0.03645522720962766
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-9292cbcd9f5fdc8ea2eb",
+      "anchor": {
+        "file": "music-artworks/e/2/0/e20395f585b3e41dbbf98a3674f45bb1.jpg",
+        "sha256": "55c63e116026b75db8f04ef873b62cd61aef356c0cbb9defdf762814f5e87381",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            37,
+            38,
+            29
+          ],
+          "hex": "#25261d",
+          "generated": false,
+          "sourceDistance": 0.0005179962093840048
+        },
+        "foreground": {
+          "rgb": [
+            242,
+            251,
+            252
+          ],
+          "hex": "#f2fbfc",
+          "generated": false,
+          "sourceDistance": 0.007641292849852451
+        },
+        "surface": {
+          "rgb": [
+            180,
+            54,
+            29
+          ],
+          "hex": "#b4361d",
+          "generated": false,
+          "sourceDistance": 0.002869099225553041
+        },
+        "accent": {
+          "rgb": [
+            178,
+            176,
+            27
+          ],
+          "hex": "#b2b01b",
+          "generated": false,
+          "sourceDistance": 0.0019992810992048313
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5076729910714286,
+          "continuity": 1,
+          "coherence": 0.3356437103672025
+        },
+        "score": 0.6790896146946958,
+        "metrics": {
+          "foregroundContrast": 14.545173373031313,
+          "foregroundSurfaceContrast": 5.73137869151789,
+          "accentContrast": 6.638485802282124,
+          "accentSurfaceContrast": 2.6158282954323027,
+          "minimumRoleDistance": 0.29081295432460214,
+          "meanSourceDistance": 0.003256917345998582,
+          "meanReconstructionError": 0.06211966404123922
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-207995e0f946409c97c7",
+      "anchor": {
+        "file": "music-artworks/c/f/b/cfb56ea3f8a122d0452f897bc70aa624.jpg",
+        "sha256": "76f9ca83d23b425c25d540d5dcb7cffb21923085c0293b9a985e7badc673479a",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            113,
+            42,
+            45
+          ],
+          "hex": "#712a2d",
+          "generated": false,
+          "sourceDistance": 0.004556004478627676
+        },
+        "foreground": {
+          "rgb": [
+            245,
+            226,
+            210
+          ],
+          "hex": "#f5e2d2",
+          "generated": false,
+          "sourceDistance": 0.007614048370910668
+        },
+        "surface": {
+          "rgb": [
+            60,
+            72,
+            117
+          ],
+          "hex": "#3c4875",
+          "generated": false,
+          "sourceDistance": 0.014923517300166788
+        },
+        "accent": {
+          "rgb": [
+            187,
+            135,
+            117
+          ],
+          "hex": "#bb8775",
+          "generated": false,
+          "sourceDistance": 0.009973325967552531
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7340155900291504,
+          "coverage": 0.33566646378575776,
+          "continuity": 0.4904906537911993,
+          "coherence": 0.7356212782325456
+        },
+        "score": 0.5744797740124354,
+        "metrics": {
+          "foregroundContrast": 8.058856766229052,
+          "foregroundSurfaceContrast": 7.025264376950168,
+          "accentContrast": 3.300189549190156,
+          "accentSurfaceContrast": 2.8769222173379756,
+          "minimumRoleDistance": 0.1473830878309564,
+          "meanSourceDistance": 0.009266724029314416,
+          "meanReconstructionError": 0.08405334361629252
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-7d6164edb9961330078c",
+      "anchor": {
+        "file": "music-artworks/1/a/1/1a16b0f79b42da600bbb604ce6f86936.jpg",
+        "sha256": "0a2580426e41e5bb1405ea4fbca2621174b38c5f27a409259af42c7606965daa",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            253,
+            254,
+            254
+          ],
+          "hex": "#fdfefe",
+          "generated": false,
+          "sourceDistance": 0.0010381858632050568
+        },
+        "foreground": {
+          "rgb": [
+            15,
+            14,
+            10
+          ],
+          "hex": "#0f0e0a",
+          "generated": false,
+          "sourceDistance": 0.00789629923685767
+        },
+        "surface": {
+          "rgb": [
+            217,
+            222,
+            214
+          ],
+          "hex": "#d9ded6",
+          "generated": false,
+          "sourceDistance": 0.027641052888547783
+        },
+        "accent": {
+          "rgb": [
+            27,
+            53,
+            5
+          ],
+          "hex": "#1b3505",
+          "generated": false,
+          "sourceDistance": 0.060171192875192625
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6656141114982579,
+          "continuity": 1,
+          "coherence": 0.40431266846361186
+        },
+        "score": 0.6080284073198197,
+        "metrics": {
+          "foregroundContrast": 19.11192583445944,
+          "foregroundSurfaceContrast": 14.1330792290398,
+          "accentContrast": 13.34014015429348,
+          "accentSurfaceContrast": 9.86490107591282,
+          "minimumRoleDistance": 0.10242627381095971,
+          "meanSourceDistance": 0.024186682715950786,
+          "meanReconstructionError": 0.05364226481871716
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-26d58fa04f48eb7b9fed",
+      "anchor": {
+        "file": "music-artworks/5/b/8/5b8f9545652a142ca93a5ba2258916dd.jpg",
+        "sha256": "937fc5494475c21255f2aa54936e853c9a0ac4af90bcee34a5cac5dd3b5491db",
+        "width": 640,
+        "height": 633
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            10,
+            15,
+            18
+          ],
+          "hex": "#0a0f12",
+          "generated": false,
+          "sourceDistance": 0.0005094450938273486
+        },
+        "foreground": {
+          "rgb": [
+            249,
+            248,
+            249
+          ],
+          "hex": "#f9f8f9",
+          "generated": false,
+          "sourceDistance": 0.004031097651635166
+        },
+        "surface": {
+          "rgb": [
+            134,
+            38,
+            47
+          ],
+          "hex": "#86262f",
+          "generated": false,
+          "sourceDistance": 0.004280757804890261
+        },
+        "accent": {
+          "rgb": [
+            197,
+            46,
+            62
+          ],
+          "hex": "#c52e3e",
+          "generated": false,
+          "sourceDistance": 0.013386016968666689
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6720962033462033,
+          "continuity": 1,
+          "coherence": 0.29724260055653934
+        },
+        "score": 0.7212883051372478,
+        "metrics": {
+          "foregroundContrast": 18.1865723293524,
+          "foregroundSurfaceContrast": 8.500500607822653,
+          "accentContrast": 3.5179146193222124,
+          "accentSurfaceContrast": 1.6442919984186768,
+          "minimumRoleDistance": 0.13531244264502204,
+          "meanSourceDistance": 0.005551829379754866,
+          "meanReconstructionError": 0.040771203036464455
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-9eeb06282fc02111229f",
+      "anchor": {
+        "file": "music-artworks/0/6/b/06beec93b37e8fa2c6b4f7a61ed50208.jpg",
+        "sha256": "d454bcb19728dfce8ed2e438510e0fd23e8072784fc58ba1d21299b811509229",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            186,
+            175,
+            172
+          ],
+          "hex": "#baafac",
+          "generated": false,
+          "sourceDistance": 0.0028140916882686724
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.039262968017008314
+        },
+        "surface": {
+          "rgb": [
+            154,
+            102,
+            203
+          ],
+          "hex": "#9a66cb",
+          "generated": false,
+          "sourceDistance": 0.020331073403876018
+        },
+        "accent": {
+          "rgb": [
+            18,
+            21,
+            125
+          ],
+          "hex": "#12157d",
+          "generated": false,
+          "sourceDistance": 0.027924144424020705
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.843895866612138,
+          "coverage": 0.4308043554618897,
+          "continuity": 0.923328177888152,
+          "coherence": 0.6502178454374945
+        },
+        "score": 0.7367654162059667,
+        "metrics": {
+          "foregroundContrast": 9.815521050989075,
+          "foregroundSurfaceContrast": 5.136912779051352,
+          "accentContrast": 6.868229798431444,
+          "accentSurfaceContrast": 3.5944599617020425,
+          "minimumRoleDistance": 0.21911053568129452,
+          "meanSourceDistance": 0.02258306938329343,
+          "meanReconstructionError": 0.10488819500034953
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-a3cb33f2b2d6e1288001",
+      "anchor": {
+        "file": "music-artworks/9/4/6/946c7be190b2b8a6c17a93fcc128be1a.png",
+        "sha256": "1921ede6a551a17fb7963404b58e21d9b75e817f62efecfd33e8de0d9b3e4bcd",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            27,
+            11,
+            4
+          ],
+          "hex": "#1b0b04",
+          "generated": false,
+          "sourceDistance": 0.02839397941692473
+        },
+        "surface": {
+          "rgb": [
+            234,
+            215,
+            207
+          ],
+          "hex": "#ead7cf",
+          "generated": false,
+          "sourceDistance": 0.005133273768134822
+        },
+        "accent": {
+          "rgb": [
+            12,
+            128,
+            130
+          ],
+          "hex": "#0c8082",
+          "generated": false,
+          "sourceDistance": 0.01638318015431048
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7548894557823129,
+          "continuity": 1,
+          "coherence": 0.4801216089803555
+        },
+        "score": 0.6190662673146862,
+        "metrics": {
+          "foregroundContrast": 19.156662783538096,
+          "foregroundSurfaceContrast": 13.792486427343581,
+          "accentContrast": 4.745073981118882,
+          "accentSurfaceContrast": 3.4163762875005244,
+          "minimumRoleDistance": 0.11018144403033653,
+          "meanSourceDistance": 0.012477609966455964,
+          "meanReconstructionError": 0.025939455218426062
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-69aca0f5131e097ac7ac",
+      "anchor": {
+        "file": "music-artworks/c/f/c/cfc3e418a0aee2f984c05c79b390730f.jpg",
+        "sha256": "c706524132757ddfdb15d371aa57841851dae5cfae415f8d999858a97f7990b5",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            202,
+            197,
+            195
+          ],
+          "hex": "#cac5c3",
+          "generated": false,
+          "sourceDistance": 0.003304250438508812
+        },
+        "foreground": {
+          "rgb": [
+            57,
+            38,
+            33
+          ],
+          "hex": "#392621",
+          "generated": false,
+          "sourceDistance": 0.013891244460001645
+        },
+        "surface": {
+          "rgb": [
+            212,
+            140,
+            37
+          ],
+          "hex": "#d48c25",
+          "generated": false,
+          "sourceDistance": 0.005803343460923409
+        },
+        "accent": {
+          "rgb": [
+            185,
+            42,
+            39
+          ],
+          "hex": "#b92a27",
+          "generated": false,
+          "sourceDistance": 0.005794862597795964
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7641490845404896,
+          "coverage": 0.34944649446494463,
+          "continuity": 0.695365384150283,
+          "coherence": 0.7337603532959958
+        },
+        "score": 0.6073894505188353,
+        "metrics": {
+          "foregroundContrast": 8.33968468736576,
+          "foregroundSurfaceContrast": 5.143545761936864,
+          "accentContrast": 3.588845524829786,
+          "accentSurfaceContrast": 2.2134399418540918,
+          "minimumRoleDistance": 0.18635996983491024,
+          "meanSourceDistance": 0.007198425239307457,
+          "meanReconstructionError": 0.09682983886486647
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-5f749e5d138c93168c5a",
+      "anchor": {
+        "file": "music-artworks/0/e/5/0e55e3cd92ccfb480eb73023854c1b05.png",
+        "sha256": "a8bf5cf7d4f95553d9a2e124bc9eedb4af21229208a0604c127361ac1e540afe",
+        "width": 1000,
+        "height": 1000
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.0030554189850455524
+        },
+        "surface": {
+          "rgb": [
+            218,
+            218,
+            219
+          ],
+          "hex": "#dadadb",
+          "generated": false,
+          "sourceDistance": 0.004818375967699372
+        },
+        "accent": {
+          "rgb": [
+            149,
+            149,
+            151
+          ],
+          "hex": "#959597",
+          "generated": false,
+          "sourceDistance": 0.003825411936105749
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.45976163903061223,
+          "continuity": 1,
+          "coherence": 0.37194818136522173
+        },
+        "score": 0.6560660445409946,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 15.032541332871844,
+          "accentContrast": 2.9898499830746643,
+          "accentSurfaceContrast": 2.140240164269337,
+          "minimumRoleDistance": 0.11135143524941098,
+          "meanSourceDistance": 0.002924803353826124,
+          "meanReconstructionError": 0.07906427741232641
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-f0045085eb24f0d25d24",
+      "anchor": {
+        "file": "music-artworks/6/c/7/6c7d124ddba9fddbd4aab4fa22e19749.jpg",
+        "sha256": "dcf56d24d8f3711dffb090b0ddafad1aa87d448ca6234abbea0cd6107480ee88",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            13,
+            9,
+            6
+          ],
+          "hex": "#0d0906",
+          "generated": false,
+          "sourceDistance": 0.0024707294972541303
+        },
+        "foreground": {
+          "rgb": [
+            241,
+            240,
+            231
+          ],
+          "hex": "#f1f0e7",
+          "generated": false,
+          "sourceDistance": 0.0030368268286327994
+        },
+        "surface": {
+          "rgb": [
+            13,
+            9,
+            6
+          ],
+          "hex": "#0d0906",
+          "generated": false,
+          "sourceDistance": 0.0024707294972541303
+        },
+        "accent": {
+          "rgb": [
+            185,
+            166,
+            131
+          ],
+          "hex": "#b9a683",
+          "generated": false,
+          "sourceDistance": 0.020512177978433795
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8719839288961574,
+          "coverage": 0.48866498740554154,
+          "continuity": 0.7991843771227825,
+          "coherence": 0.5480028232070069
+        },
+        "score": 0.5246378808999889,
+        "metrics": {
+          "foregroundContrast": 17.338295330429087,
+          "foregroundSurfaceContrast": 17.338295330429087,
+          "accentContrast": 8.353735962345537,
+          "accentSurfaceContrast": 8.353735962345537,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.007122615950393714,
+          "meanReconstructionError": 0.12052242936914677
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-570ba487ea931f99fc2e",
+      "anchor": {
+        "file": "music-artworks/8/0/0/800409bd8b403aa26490d22b31c1a304.jpg",
+        "sha256": "1da26538e20a1429c7a72ff08190ec69b7c0749e679648bf6c4f9f3246086839",
+        "width": 1000,
+        "height": 751
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            26,
+            22,
+            19
+          ],
+          "hex": "#1a1613",
+          "generated": false,
+          "sourceDistance": 0.0021518534591026244
+        },
+        "foreground": {
+          "rgb": [
+            238,
+            241,
+            238
+          ],
+          "hex": "#eef1ee",
+          "generated": false,
+          "sourceDistance": 0.005794140242577102
+        },
+        "surface": {
+          "rgb": [
+            26,
+            22,
+            19
+          ],
+          "hex": "#1a1613",
+          "generated": false,
+          "sourceDistance": 0.0021518534591026244
+        },
+        "accent": {
+          "rgb": [
+            188,
+            190,
+            183
+          ],
+          "hex": "#bcbeb7",
+          "generated": false,
+          "sourceDistance": 0.01663018195613334
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8175003172906825,
+          "coverage": 0.3999701403404001,
+          "continuity": 0.8752121905240241,
+          "coherence": 0.6416007090729787
+        },
+        "score": 0.5885293105381755,
+        "metrics": {
+          "foregroundContrast": 15.796867260359166,
+          "foregroundSurfaceContrast": 15.796867260359166,
+          "accentContrast": 9.57754850544689,
+          "accentSurfaceContrast": 9.57754850544689,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.006682007279228923,
+          "meanReconstructionError": 0.12628502621647528
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-583a7f4b2375592af971",
+      "anchor": {
+        "file": "music-artworks/d/9/1/d91ff34a795d7d6073ed1f1540adf7c6.jpg",
+        "sha256": "3a6398d1020b8956ccda8db168481d1bcc83863eb2e1f61384ca8ecd13a89142",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            218,
+            65,
+            120
+          ],
+          "hex": "#da4178",
+          "generated": false,
+          "sourceDistance": 0.01197243813552647
+        },
+        "foreground": {
+          "rgb": [
+            16,
+            19,
+            41
+          ],
+          "hex": "#101329",
+          "generated": false,
+          "sourceDistance": 0.009629590168380449
+        },
+        "surface": {
+          "rgb": [
+            0,
+            178,
+            255
+          ],
+          "hex": "#00b2ff",
+          "generated": false,
+          "sourceDistance": 0.003871211351133751
+        },
+        "accent": {
+          "rgb": [
+            111,
+            49,
+            74
+          ],
+          "hex": "#6f314a",
+          "generated": false,
+          "sourceDistance": 0.018068655730453943
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6,
+          "coverage": 0.18292682926829268,
+          "continuity": 0.9285714285714286,
+          "coherence": 0.4245810055865922
+        },
+        "score": 0.6721131978322599,
+        "metrics": {
+          "foregroundContrast": 4.36577563620662,
+          "foregroundSurfaceContrast": 7.681449681171989,
+          "accentContrast": 2.262046280557513,
+          "accentSurfaceContrast": 3.980001751918349,
+          "minimumRoleDistance": 0.22899149994348492,
+          "meanSourceDistance": 0.010885473846373653,
+          "meanReconstructionError": 0.10640530274119833
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-e51faf6caed9d322972e",
+      "anchor": {
+        "file": "music-artworks/3/c/b/3cb4b5aaa14c850ab9583613b1eedb5e.jpg",
+        "sha256": "a9bb026a8e452c24d952c4523ed6776c9494d2daf5c415e234c9376339f83b0d",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            10,
+            11,
+            13
+          ],
+          "hex": "#0a0b0d",
+          "generated": false,
+          "sourceDistance": 4.467119759450511e-9
+        },
+        "foreground": {
+          "rgb": [
+            246,
+            240,
+            231
+          ],
+          "hex": "#f6f0e7",
+          "generated": false,
+          "sourceDistance": 0.005870876186385784
+        },
+        "surface": {
+          "rgb": [
+            38,
+            36,
+            39
+          ],
+          "hex": "#262427",
+          "generated": false,
+          "sourceDistance": 0.009025892463389047
+        },
+        "accent": {
+          "rgb": [
+            215,
+            135,
+            99
+          ],
+          "hex": "#d78763",
+          "generated": false,
+          "sourceDistance": 0.024519113134969985
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6925821109693877,
+          "continuity": 1,
+          "coherence": 0.3379755777575941
+        },
+        "score": 0.6563440967675006,
+        "metrics": {
+          "foregroundContrast": 17.379280133797394,
+          "foregroundSurfaceContrast": 13.589205811270022,
+          "accentContrast": 7.064756788881434,
+          "accentSurfaceContrast": 5.524074258057307,
+          "minimumRoleDistance": 0.11443979103903514,
+          "meanSourceDistance": 0.009853971562966144,
+          "meanReconstructionError": 0.03144138448341842
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-287e98990cb50f624089",
+      "anchor": {
+        "file": "music-artworks/d/9/7/d97ed5fe30069d6c99e6420f0168b5fb.jpg",
+        "sha256": "a206358b6d95218dd1986754f276189489946e8295802109fdc92a0d9df25a03",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            175,
+            169,
+            164
+          ],
+          "hex": "#afa9a4",
+          "generated": false,
+          "sourceDistance": 0.002256218313409058
+        },
+        "foreground": {
+          "rgb": [
+            57,
+            40,
+            32
+          ],
+          "hex": "#392820",
+          "generated": false,
+          "sourceDistance": 0.0019460384119487117
+        },
+        "surface": {
+          "rgb": [
+            249,
+            197,
+            163
+          ],
+          "hex": "#f9c5a3",
+          "generated": false,
+          "sourceDistance": 0.005848854205799308
+        },
+        "accent": {
+          "rgb": [
+            113,
+            62,
+            40
+          ],
+          "hex": "#713e28",
+          "generated": false,
+          "sourceDistance": 0.0018161614099216333
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6,
+          "coverage": 0.09976881377551021,
+          "continuity": 1,
+          "coherence": 0.3326612903225806
+        },
+        "score": 0.528829465466714,
+        "metrics": {
+          "foregroundContrast": 6.029349522353791,
+          "foregroundSurfaceContrast": 9.038850603284414,
+          "accentContrast": 3.7302527965385375,
+          "accentSurfaceContrast": 5.592178329584202,
+          "minimumRoleDistance": 0.13662149842765636,
+          "meanSourceDistance": 0.0029668180852696776,
+          "meanReconstructionError": 0.08103783141563542
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-cfdc34df9ee880385a58",
+      "anchor": {
+        "file": "music-artworks/a/4/4/a44df5f39b76bbb0c20c762e9ad4e09c.jpg",
+        "sha256": "8252c25239efb92703716ad7c928ec8304ae4aa6d2e49dd509f93e1e73c8c6b7",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            228,
+            246,
+            230
+          ],
+          "hex": "#e4f6e6",
+          "generated": false,
+          "sourceDistance": 0.003728974412520248
+        },
+        "foreground": {
+          "rgb": [
+            61,
+            73,
+            55
+          ],
+          "hex": "#3d4937",
+          "generated": false,
+          "sourceDistance": 0.010060786031024227
+        },
+        "surface": {
+          "rgb": [
+            245,
+            253,
+            146
+          ],
+          "hex": "#f5fd92",
+          "generated": false,
+          "sourceDistance": 0.002242677260103522
+        },
+        "accent": {
+          "rgb": [
+            247,
+            83,
+            72
+          ],
+          "hex": "#f75348",
+          "generated": false,
+          "sourceDistance": 0.003948532926182672
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.840033074150784,
+          "coverage": 0.4066326530612245,
+          "continuity": 1,
+          "coherence": 0.5003795526039776
+        },
+        "score": 0.7053240581067894,
+        "metrics": {
+          "foregroundContrast": 8.439997873686032,
+          "foregroundSurfaceContrast": 8.768074220547867,
+          "accentContrast": 2.962869346308957,
+          "accentSurfaceContrast": 3.078040862453123,
+          "minimumRoleDistance": 0.10971810577063074,
+          "meanSourceDistance": 0.004995242657457667,
+          "meanReconstructionError": 0.08228218842828285
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-d49a85764f06dc71f532",
+      "anchor": {
+        "file": "music-artworks/c/d/f/cdfacd35aa441555ef047165ef7362d0.jpg",
+        "sha256": "e8afec6695011c9a0a651cf4f144585ae4b25483d7daebbb81d73d3d3ec19e65",
+        "width": 1425,
+        "height": 1425
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            8,
+            10,
+            7
+          ],
+          "hex": "#080a07",
+          "generated": false,
+          "sourceDistance": 0.0007994711623232554
+        },
+        "foreground": {
+          "rgb": [
+            209,
+            181,
+            169
+          ],
+          "hex": "#d1b5a9",
+          "generated": false,
+          "sourceDistance": 0.007612322973404693
+        },
+        "surface": {
+          "rgb": [
+            92,
+            11,
+            12
+          ],
+          "hex": "#5c0b0c",
+          "generated": false,
+          "sourceDistance": 0.024464840214021746
+        },
+        "accent": {
+          "rgb": [
+            156,
+            34,
+            45
+          ],
+          "hex": "#9c222d",
+          "generated": false,
+          "sourceDistance": 0.014112675116735356
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8206879456241654,
+          "coverage": 0.4329452852153667,
+          "continuity": 0.6762624597340874,
+          "coherence": 0.7071425653335152
+        },
+        "score": 0.6215515690717653,
+        "metrics": {
+          "foregroundContrast": 10.307938824402607,
+          "foregroundSurfaceContrast": 7.222674221445959,
+          "accentContrast": 2.536207029505161,
+          "accentSurfaceContrast": 1.7770960270826581,
+          "minimumRoleDistance": 0.15650428915032183,
+          "meanSourceDistance": 0.011747327366621263,
+          "meanReconstructionError": 0.08162188377622061
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-becd57b4018a2d5046c3",
+      "anchor": {
+        "file": "music-artworks/e/7/5/e7540fff60e0049f2516e5e8fa6d0540.jpg",
+        "sha256": "60f866b97bf6b826a189b84d78f95458806275fdbe9b955e68ad5961c1ecd6be",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            40,
+            46,
+            42
+          ],
+          "hex": "#282e2a",
+          "generated": false,
+          "sourceDistance": 0.005056390195074161
+        },
+        "foreground": {
+          "rgb": [
+            241,
+            239,
+            235
+          ],
+          "hex": "#f1efeb",
+          "generated": false,
+          "sourceDistance": 0.010440576411449158
+        },
+        "surface": {
+          "rgb": [
+            121,
+            63,
+            77
+          ],
+          "hex": "#793f4d",
+          "generated": false,
+          "sourceDistance": 0.048787246272669615
+        },
+        "accent": {
+          "rgb": [
+            212,
+            22,
+            131
+          ],
+          "hex": "#d41683",
+          "generated": false,
+          "sourceDistance": 0.06457999804880732
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8607035314614849,
+          "coverage": 0.46784042336657844,
+          "continuity": 0.8321523510488008,
+          "coherence": 0.6530108662210555
+        },
+        "score": 0.6551065667679024,
+        "metrics": {
+          "foregroundContrast": 12.074568219339225,
+          "foregroundSurfaceContrast": 6.949942259278095,
+          "accentContrast": 2.80095015161523,
+          "accentSurfaceContrast": 1.6121853362560543,
+          "minimumRoleDistance": 0.1760063563532859,
+          "meanSourceDistance": 0.03221605273200007,
+          "meanReconstructionError": 0.15484756195403426
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-3917c87379b628ce8d13",
+      "anchor": {
+        "file": "music-artworks/0/d/3/0d3ae28c0251d8a6c95a278f8ea51c5f.png",
+        "sha256": "fe41fd9464fe91e26fcb19f0ee2a29fc1d551cfef008dc1f1d54b2becc56961e",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            52,
+            38,
+            32
+          ],
+          "hex": "#342620",
+          "generated": false,
+          "sourceDistance": 0.19656466306100195
+        },
+        "surface": {
+          "rgb": [
+            240,
+            212,
+            203
+          ],
+          "hex": "#f0d4cb",
+          "generated": false,
+          "sourceDistance": 0.0037388698704941435
+        },
+        "accent": {
+          "rgb": [
+            238,
+            157,
+            111
+          ],
+          "hex": "#ee9d6f",
+          "generated": false,
+          "sourceDistance": 0.016024832731163532
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.8088506235827665,
+          "continuity": 1,
+          "coherence": 0.8438083385189795
+        },
+        "score": 0.6462793299318581,
+        "metrics": {
+          "foregroundContrast": 14.541777580003526,
+          "foregroundSurfaceContrast": 10.376462496933227,
+          "accentContrast": 2.1676845709481865,
+          "accentSurfaceContrast": 1.5467777258919673,
+          "minimumRoleDistance": 0.11435822190695737,
+          "meanSourceDistance": 0.054082093047278366,
+          "meanReconstructionError": 0.017537015462326774
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-2a3d7e3b9686c69d8142",
+      "anchor": {
+        "file": "music-artworks/e/c/d/ecd147cfb04db6fe53061c4c1ea53a66.jpeg",
+        "sha256": "4bc6a503187cf3c68687659d07e9ca25930a7ff383e18a9f07e06cd302e2a6a7",
+        "width": 350,
+        "height": 350
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            249,
+            15,
+            120
+          ],
+          "hex": "#f90f78",
+          "generated": false,
+          "sourceDistance": 0.0007306183943662568
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": true,
+          "sourceDistance": 0.24133870945682967
+        },
+        "surface": {
+          "rgb": [
+            173,
+            176,
+            60
+          ],
+          "hex": "#adb03c",
+          "generated": false,
+          "sourceDistance": 0.014756730235754772
+        },
+        "accent": {
+          "rgb": [
+            108,
+            172,
+            13
+          ],
+          "hex": "#6cac0d",
+          "generated": false,
+          "sourceDistance": 0.005182634688427757
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8364651904392186,
+          "coverage": 0.35680272108843536,
+          "continuity": 1,
+          "coherence": 0.5915024802406217
+        },
+        "score": 0.43946011278698227,
+        "metrics": {
+          "foregroundContrast": 5.367490131979588,
+          "foregroundSurfaceContrast": 9.052229812222805,
+          "accentContrast": 1.4055825116423082,
+          "accentSurfaceContrast": 1.1998528055926412,
+          "minimumRoleDistance": 0.09297597374370843,
+          "meanSourceDistance": 0.06550217319384462,
+          "meanReconstructionError": 0.059382781252841424
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-eeedb25cd171a46887a3",
+      "anchor": {
+        "file": "music-artworks/1/6/2/162407e9c0d0e291e2cf6134825abf96.jpeg",
+        "sha256": "b28a96e42b7f1041e1c77c3359ea55cae67124200a4f579f5758394a6550b5d3",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            22,
+            57,
+            124
+          ],
+          "hex": "#16397c",
+          "generated": false,
+          "sourceDistance": 0.004247746359177532
+        },
+        "foreground": {
+          "rgb": [
+            225,
+            226,
+            230
+          ],
+          "hex": "#e1e2e6",
+          "generated": false,
+          "sourceDistance": 0.03709260277517196
+        },
+        "surface": {
+          "rgb": [
+            161,
+            53,
+            36
+          ],
+          "hex": "#a13524",
+          "generated": false,
+          "sourceDistance": 0.0032961797772747096
+        },
+        "accent": {
+          "rgb": [
+            56,
+            136,
+            210
+          ],
+          "hex": "#3888d2",
+          "generated": false,
+          "sourceDistance": 0.003302232913222194
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7403041322067336,
+          "coverage": 0.3239952718676123,
+          "continuity": 0.6350744189940503,
+          "coherence": 0.6042815911193178
+        },
+        "score": 0.6402803803178381,
+        "metrics": {
+          "foregroundContrast": 8.491718044377665,
+          "foregroundSurfaceContrast": 5.318687779571571,
+          "accentContrast": 2.9420044510455945,
+          "accentSurfaceContrast": 1.8426899055582273,
+          "minimumRoleDistance": 0.252801681693493,
+          "meanSourceDistance": 0.011984690456211599,
+          "meanReconstructionError": 0.05814460882716933
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-99c7263a9999a34e8462",
+      "anchor": {
+        "file": "music-artworks/b/9/7/b97c570e4e5f18aef4e7b82efc7243a9.jpg",
+        "sha256": "bb6d93afeec2cd5d5ff17811003f7ee81c999eaf00f87a1aacf472281910e309",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            199,
+            12,
+            26
+          ],
+          "hex": "#c70c1a",
+          "generated": false,
+          "sourceDistance": 0.00045460927291705833
+        },
+        "foreground": {
+          "rgb": [
+            229,
+            247,
+            48
+          ],
+          "hex": "#e5f730",
+          "generated": false,
+          "sourceDistance": 0.042647319120156714
+        },
+        "surface": {
+          "rgb": [
+            87,
+            40,
+            11
+          ],
+          "hex": "#57280b",
+          "generated": false,
+          "sourceDistance": 0.05477962851052862
+        },
+        "accent": {
+          "rgb": [
+            77,
+            174,
+            53
+          ],
+          "hex": "#4dae35",
+          "generated": false,
+          "sourceDistance": 0.03866913394424697
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7995514174367164,
+          "coverage": 0.3384615384615385,
+          "continuity": 1,
+          "coherence": 0.5232037467224793
+        },
+        "score": 0.6684507030503087,
+        "metrics": {
+          "foregroundContrast": 5.056908920195895,
+          "foregroundSurfaceContrast": 10.31665785053872,
+          "accentContrast": 2.122865678946486,
+          "accentSurfaceContrast": 4.330882603971059,
+          "minimumRoleDistance": 0.2339291596064327,
+          "meanSourceDistance": 0.034137672711962344,
+          "meanReconstructionError": 0.07327490120060685
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-986fb5d2af045f6802c6",
+      "anchor": {
+        "file": "music-artworks/c/f/3/cf3e0680f7fe406db0e6f954563e7e36.jpg",
+        "sha256": "9dfc1bed61c7af9e4e3f6b5e26dc4fda87a10b610b8ce588eb2b7fa1db7e3db4",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            202,
+            213,
+            223
+          ],
+          "hex": "#cad5df",
+          "generated": false,
+          "sourceDistance": 0.002459428510383688
+        },
+        "foreground": {
+          "rgb": [
+            20,
+            14,
+            17
+          ],
+          "hex": "#140e11",
+          "generated": false,
+          "sourceDistance": 0.014838149868098382
+        },
+        "surface": {
+          "rgb": [
+            219,
+            182,
+            149
+          ],
+          "hex": "#dbb695",
+          "generated": false,
+          "sourceDistance": 0.0016187497261381954
+        },
+        "accent": {
+          "rgb": [
+            103,
+            81,
+            78
+          ],
+          "hex": "#67514e",
+          "generated": false,
+          "sourceDistance": 0.021692406037692027
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6931042416966786,
+          "coverage": 0.25758219954648526,
+          "continuity": 1,
+          "coherence": 0.2673202614379085
+        },
+        "score": 0.6691633327246085,
+        "metrics": {
+          "foregroundContrast": 12.805618926362191,
+          "foregroundSurfaceContrast": 10.118693001257878,
+          "accentContrast": 4.921804421659987,
+          "accentSurfaceContrast": 3.889091830812332,
+          "minimumRoleDistance": 0.1044753066203037,
+          "meanSourceDistance": 0.010152183535578074,
+          "meanReconstructionError": 0.04121851509433103
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-df23791ec2dbb0bff0e0",
+      "anchor": {
+        "file": "music-artworks/a/8/7/a872b00760da7dd5e81dbfbd4b05ed67.jpg",
+        "sha256": "c6da6e5920fb1ec865f03d45678474b018d10c8de72c4b9f71b3a5e256bc2a6c",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            28,
+            39,
+            50
+          ],
+          "hex": "#1c2732",
+          "generated": false,
+          "sourceDistance": 0.0013027851317566252
+        },
+        "foreground": {
+          "rgb": [
+            247,
+            251,
+            253
+          ],
+          "hex": "#f7fbfd",
+          "generated": false,
+          "sourceDistance": 0.0035442327681535993
+        },
+        "surface": {
+          "rgb": [
+            44,
+            9,
+            7
+          ],
+          "hex": "#2c0907",
+          "generated": false,
+          "sourceDistance": 0.003098561067112277
+        },
+        "accent": {
+          "rgb": [
+            187,
+            164,
+            158
+          ],
+          "hex": "#bba49e",
+          "generated": false,
+          "sourceDistance": 0.005405887623229061
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8096332341675947,
+          "coverage": 0.4349736379613357,
+          "continuity": 0.5515168759465972,
+          "coherence": 0.7089264134166429
+        },
+        "score": 0.6007430657959258,
+        "metrics": {
+          "foregroundContrast": 14.55793887301712,
+          "foregroundSurfaceContrast": 17.552572487836926,
+          "accentContrast": 6.435194218442608,
+          "accentSurfaceContrast": 7.758942661991911,
+          "minimumRoleDistance": 0.1029377381409019,
+          "meanSourceDistance": 0.0033378666475628906,
+          "meanReconstructionError": 0.06732360465912197
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-c6723bb4a94b29df14fb",
+      "anchor": {
+        "file": "music-artworks/7/d/c/7dc7b92314fd11778ec87924b83de1fe.png",
+        "sha256": "862ac18507d0215c94047b1ce5da054fae455516ff5df6af17bb8139c7289bc6",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            18,
+            16,
+            22
+          ],
+          "hex": "#121016",
+          "generated": false,
+          "sourceDistance": 0.00034508031465756926
+        },
+        "surface": {
+          "rgb": [
+            206,
+            198,
+            189
+          ],
+          "hex": "#cec6bd",
+          "generated": false,
+          "sourceDistance": 0.020508936861923965
+        },
+        "accent": {
+          "rgb": [
+            175,
+            131,
+            95
+          ],
+          "hex": "#af835f",
+          "generated": false,
+          "sourceDistance": 0.033911031519321067
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5043934240362812,
+          "continuity": 1,
+          "coherence": 0.3756260434056761
+        },
+        "score": 0.6029390522188504,
+        "metrics": {
+          "foregroundContrast": 18.89472101835105,
+          "foregroundSurfaceContrast": 11.190011908627907,
+          "accentContrast": 3.3683229772794774,
+          "accentSurfaceContrast": 1.9948203623252925,
+          "minimumRoleDistance": 0.17018002663464896,
+          "meanSourceDistance": 0.013691263805589104,
+          "meanReconstructionError": 0.03583223368018049
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-153228af03b3c2c732b0",
+      "anchor": {
+        "file": "music-artworks/f/f/a/ffa6fd8e637107d4d83bf0ddc54e5adb.jpg",
+        "sha256": "3b8a0c4eef5c3ab4aba3b21f5119b387f3c3fd3f1a36a0b2d7d16cac527efa28",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            5,
+            10,
+            12
+          ],
+          "hex": "#050a0c",
+          "generated": false,
+          "sourceDistance": 0.0021164700167727274
+        },
+        "foreground": {
+          "rgb": [
+            249,
+            246,
+            249
+          ],
+          "hex": "#f9f6f9",
+          "generated": false,
+          "sourceDistance": 0.0029551067497897393
+        },
+        "surface": {
+          "rgb": [
+            89,
+            62,
+            127
+          ],
+          "hex": "#593e7f",
+          "generated": false,
+          "sourceDistance": 0.017399891701300376
+        },
+        "accent": {
+          "rgb": [
+            234,
+            106,
+            49
+          ],
+          "hex": "#ea6a31",
+          "generated": false,
+          "sourceDistance": 0.0031259706920619313
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.775400666315974,
+          "coverage": 0.7396962691326531,
+          "continuity": 1,
+          "coherence": 0.19472775772791465
+        },
+        "score": 0.7847581658901999,
+        "metrics": {
+          "foregroundContrast": 18.554365449575485,
+          "foregroundSurfaceContrast": 8.08921357524471,
+          "accentContrast": 6.259082955194516,
+          "accentSurfaceContrast": 2.7287949537989005,
+          "minimumRoleDistance": 0.3046291155525544,
+          "meanSourceDistance": 0.006399359789981194,
+          "meanReconstructionError": 0.040091962645840015
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-7c4215186db3661a630a",
+      "anchor": {
+        "file": "music-artworks/e/e/b/eebcd3fea64563c8687fd474dab2491e.jpg",
+        "sha256": "1e1ab2b1ae559e4382f5ff2fde82f78535ac503297dc1e61182706f89a702555",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            184,
+            140,
+            18
+          ],
+          "hex": "#b88c12",
+          "generated": false,
+          "sourceDistance": 0.0005674536769564572
+        },
+        "foreground": {
+          "rgb": [
+            11,
+            9,
+            12
+          ],
+          "hex": "#0b090c",
+          "generated": false,
+          "sourceDistance": 0.002223363303785558
+        },
+        "surface": {
+          "rgb": [
+            167,
+            122,
+            67
+          ],
+          "hex": "#a77a43",
+          "generated": false,
+          "sourceDistance": 0.021688086153256892
+        },
+        "accent": {
+          "rgb": [
+            110,
+            65,
+            47
+          ],
+          "hex": "#6e412f",
+          "generated": false,
+          "sourceDistance": 0.008105818010600431
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.5633756812384043,
+          "coverage": 0.14821827168367346,
+          "continuity": 0.7857142857142857,
+          "coherence": 0.7642045454545454
+        },
+        "score": 0.5628026222266813,
+        "metrics": {
+          "foregroundContrast": 6.421644243491567,
+          "foregroundSurfaceContrast": 5.202996672883713,
+          "accentContrast": 2.763244226103771,
+          "accentSurfaceContrast": 2.238858144369257,
+          "minimumRoleDistance": 0.07186402978346776,
+          "meanSourceDistance": 0.008146180286149834,
+          "meanReconstructionError": 0.07698258481248263
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-ee8dc2cd9020ee6301ec",
+      "anchor": {
+        "file": "music-artworks/7/4/3/743f03d6dcbf1e4addb3e729e6629fbb.jpg",
+        "sha256": "cc1b041c21b250a4442f56c191b6ee0c657fc490ffd5ea297168180b9e7edc43",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            21,
+            21,
+            21
+          ],
+          "hex": "#151515",
+          "generated": false,
+          "sourceDistance": 0.00007764149781738624
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            244,
+            220
+          ],
+          "hex": "#fff4dc",
+          "generated": false,
+          "sourceDistance": 0.010653993366715452
+        },
+        "surface": {
+          "rgb": [
+            113,
+            24,
+            24
+          ],
+          "hex": "#711818",
+          "generated": false,
+          "sourceDistance": 0.003270203029376921
+        },
+        "accent": {
+          "rgb": [
+            242,
+            34,
+            31
+          ],
+          "hex": "#f2221f",
+          "generated": false,
+          "sourceDistance": 0.0026521485874555725
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7581113256113257,
+          "coverage": 0.6419005102040817,
+          "continuity": 1,
+          "coherence": 0.036543715846994534
+        },
+        "score": 0.6787771510979677,
+        "metrics": {
+          "foregroundContrast": 16.71831174372552,
+          "foregroundSurfaceContrast": 10.4148908446793,
+          "accentContrast": 4.368809097236383,
+          "accentSurfaceContrast": 2.7216067367589023,
+          "minimumRoleDistance": 0.20792065600805762,
+          "meanSourceDistance": 0.004163496620341333,
+          "meanReconstructionError": 0.04098550010647762
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-2a95a949944cceda2702",
+      "anchor": {
+        "file": "music-artworks/3/d/1/3d175c1cfb0e4b32691be02da98b34b6.png",
+        "sha256": "e338d2f7480171f2d33f0e2a11c44e0cfcfb4bf895e69781be30859e18ff504d",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            28,
+            29,
+            31
+          ],
+          "hex": "#1c1d1f",
+          "generated": false,
+          "sourceDistance": 0.010606239930277426
+        },
+        "surface": {
+          "rgb": [
+            208,
+            210,
+            209
+          ],
+          "hex": "#d0d2d1",
+          "generated": false,
+          "sourceDistance": 0.004486074756999398
+        },
+        "accent": {
+          "rgb": [
+            77,
+            80,
+            131
+          ],
+          "hex": "#4d5083",
+          "generated": false,
+          "sourceDistance": 0.022289454351350945
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.7548540249433107,
+          "continuity": 1,
+          "coherence": 0.3642297650130548
+        },
+        "score": 0.6287483443911644,
+        "metrics": {
+          "foregroundContrast": 16.868729900721565,
+          "foregroundSurfaceContrast": 11.102280377249597,
+          "accentContrast": 7.524834307738523,
+          "accentSurfaceContrast": 4.952525813652774,
+          "minimumRoleDistance": 0.13809638292841528,
+          "meanSourceDistance": 0.009345443891270398,
+          "meanReconstructionError": 0.02481699330131369
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-a044d22de282dac69d34",
+      "anchor": {
+        "file": "music-artworks/a/7/0/a707cfc0f073afb18bdbc6bda8b7786c.jpeg",
+        "sha256": "29a9018d7cc9d0785a0dda8d4406dcbfa79d49c41a8ab1cae2da3e50f72a6369",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            184,
+            220,
+            202
+          ],
+          "hex": "#b8dcca",
+          "generated": false,
+          "sourceDistance": 0.0018886251857446546
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.01189262176868325
+        },
+        "surface": {
+          "rgb": [
+            251,
+            228,
+            142
+          ],
+          "hex": "#fbe48e",
+          "generated": false,
+          "sourceDistance": 0.0006286436733323235
+        },
+        "accent": {
+          "rgb": [
+            174,
+            161,
+            51
+          ],
+          "hex": "#aea133",
+          "generated": false,
+          "sourceDistance": 0.02612928991207346
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7144894177110412,
+          "coverage": 0.2642299107142857,
+          "continuity": 1,
+          "coherence": 0.2591106653293213
+        },
+        "score": 0.757042593756882,
+        "metrics": {
+          "foregroundContrast": 14.128202856076935,
+          "foregroundSurfaceContrast": 16.589805747082558,
+          "accentContrast": 1.7781422679851038,
+          "accentSurfaceContrast": 2.0879537983036056,
+          "minimumRoleDistance": 0.11601574970159316,
+          "meanSourceDistance": 0.010134795134958421,
+          "meanReconstructionError": 0.06360098969879863
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-c011d5e13802e540e9e0",
+      "anchor": {
+        "file": "music-artworks/a/8/a/a8af60e070de9c050519de3bba83437a.jpg",
+        "sha256": "67bb51ab615c13337984cde94a3e24ea64dea8c305a6f296b85fa7884bd67cc8",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            52,
+            50,
+            118
+          ],
+          "hex": "#343276",
+          "generated": false,
+          "sourceDistance": 0.0039076317551077775
+        },
+        "foreground": {
+          "rgb": [
+            251,
+            251,
+            251
+          ],
+          "hex": "#fbfbfb",
+          "generated": false,
+          "sourceDistance": 0.07922689872021786
+        },
+        "surface": {
+          "rgb": [
+            198,
+            73,
+            47
+          ],
+          "hex": "#c6492f",
+          "generated": false,
+          "sourceDistance": 0.008057359622944365
+        },
+        "accent": {
+          "rgb": [
+            2,
+            0,
+            0
+          ],
+          "hex": "#020000",
+          "generated": false,
+          "sourceDistance": 0.024462242477188298
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8168398997917987,
+          "coverage": 0.4314169847328244,
+          "continuity": 0.6484801047882162,
+          "coherence": 0.5939438920854345
+        },
+        "score": 0.7001893764888166,
+        "metrics": {
+          "foregroundContrast": 10.888039153999474,
+          "foregroundSurfaceContrast": 4.617228358254378,
+          "accentContrast": 1.859056300344394,
+          "accentSurfaceContrast": 4.383902249810274,
+          "minimumRoleDistance": 0.31598716473777827,
+          "meanSourceDistance": 0.028913533143864575,
+          "meanReconstructionError": 0.11261558576695409
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-346d2ec44f1d3e654401",
+      "anchor": {
+        "file": "music-artworks/4/f/d/4fd2dc03b3b38076f88fa29393e4368d.png",
+        "sha256": "10d6ac4efc5d2b172f0c7e0881f7595b09a3d0a68a616a662509813a3237ae13",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.07824975865003861
+        },
+        "surface": {
+          "rgb": [
+            214,
+            213,
+            214
+          ],
+          "hex": "#d6d5d6",
+          "generated": false,
+          "sourceDistance": 0.01766622168881868
+        },
+        "accent": {
+          "rgb": [
+            119,
+            73,
+            44
+          ],
+          "hex": "#77492c",
+          "generated": false,
+          "sourceDistance": 0.022838498638938755
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6882794784580499,
+          "continuity": 1,
+          "coherence": 0.34017595307917886
+        },
+        "score": 0.6775567450020729,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 14.347936136660607,
+          "accentContrast": 7.570909876611632,
+          "accentSurfaceContrast": 5.1727110193350825,
+          "minimumRoleDistance": 0.12591794711239818,
+          "meanSourceDistance": 0.029688621376062464,
+          "meanReconstructionError": 0.0407450882309124
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-7a256b92f3f40f5341e0",
+      "anchor": {
+        "file": "music-artworks/8/5/2/8524e6a5986a318c88fa0b5bb925be3a.jpg",
+        "sha256": "44625b3239fe7943c09bc24bf519126c4b41d2eeb949d8287283c11f53525415",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            21,
+            16,
+            10
+          ],
+          "hex": "#15100a",
+          "generated": false,
+          "sourceDistance": 0.0007276160989997246
+        },
+        "foreground": {
+          "rgb": [
+            253,
+            254,
+            239
+          ],
+          "hex": "#fdfeef",
+          "generated": false,
+          "sourceDistance": 0.015177152744798703
+        },
+        "surface": {
+          "rgb": [
+            88,
+            63,
+            43
+          ],
+          "hex": "#583f2b",
+          "generated": false,
+          "sourceDistance": 0.008072487594112276
+        },
+        "accent": {
+          "rgb": [
+            188,
+            123,
+            75
+          ],
+          "hex": "#bc7b4b",
+          "generated": false,
+          "sourceDistance": 0.01669170358648483
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6405652104591837,
+          "continuity": 1,
+          "coherence": 0.38491275728763974
+        },
+        "score": 0.6391363258746805,
+        "metrics": {
+          "foregroundContrast": 18.551807263874913,
+          "foregroundSurfaceContrast": 9.53322301503517,
+          "accentContrast": 5.469324147337926,
+          "accentSurfaceContrast": 2.8105233143306703,
+          "minimumRoleDistance": 0.21552381495028614,
+          "meanSourceDistance": 0.010167240006098883,
+          "meanReconstructionError": 0.039360642692318676
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-5c652abcf3d7654058bf",
+      "anchor": {
+        "file": "music-artworks/f/0/d/f0d09c3931aac06cab151647a8934d54.jpg",
+        "sha256": "5323377419464e1766173b8c177cce0e2705e903f9a53ac659b49a987ab244f7",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            253,
+            253,
+            245
+          ],
+          "hex": "#fdfdf5",
+          "generated": false,
+          "sourceDistance": 0.004572812898428804
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "accent": {
+          "rgb": [
+            183,
+            127,
+            80
+          ],
+          "hex": "#b77f50",
+          "generated": false,
+          "sourceDistance": 0.009647803851445882
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9245586530467665,
+          "coverage": 0.4893048128342246,
+          "continuity": 1,
+          "coherence": 0.5260881185808804
+        },
+        "score": 0.5419964023098972,
+        "metrics": {
+          "foregroundContrast": 20.54515566517102,
+          "foregroundSurfaceContrast": 20.54515566517102,
+          "accentContrast": 6.165042096206073,
+          "accentSurfaceContrast": 6.165042096206073,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.0035551541874686717,
+          "meanReconstructionError": 0.12615988120261415
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-162975c51548ebd28674",
+      "anchor": {
+        "file": "music-artworks/a/3/8/a387a07165e4bff1a8e6f80145e77687.png",
+        "sha256": "997e31b882d298d495dc0cd14e69f3c719bdd2a9475d5fa4825ea4d78f7e6e03",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            14,
+            17,
+            11
+          ],
+          "hex": "#0e110b",
+          "generated": false,
+          "sourceDistance": 0.006364708376556363
+        },
+        "surface": {
+          "rgb": [
+            222,
+            207,
+            193
+          ],
+          "hex": "#decfc1",
+          "generated": false,
+          "sourceDistance": 0.018973613362990582
+        },
+        "accent": {
+          "rgb": [
+            131,
+            80,
+            54
+          ],
+          "hex": "#835036",
+          "generated": false,
+          "sourceDistance": 0.012328383478535578
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5215441645408163,
+          "continuity": 1,
+          "coherence": 0.29292929292929293
+        },
+        "score": 0.652413542481425,
+        "metrics": {
+          "foregroundContrast": 19.027179611562882,
+          "foregroundSurfaceContrast": 12.504571506000255,
+          "accentContrast": 6.633412065678782,
+          "accentSurfaceContrast": 4.359446707153457,
+          "minimumRoleDistance": 0.13941423397439373,
+          "meanSourceDistance": 0.009416677936134085,
+          "meanReconstructionError": 0.04971229735521489
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-d1e1b4b57aed7b0417a2",
+      "anchor": {
+        "file": "music-artworks/a/7/0/a70b8c388cec9b8c1ea46b51e13d2f8d.png",
+        "sha256": "46ae2260dd778e59a123633f73ce01153df077df56fe2ad03fa5c82755d75672",
+        "width": 1000,
+        "height": 1000
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.0022456985927702183
+        },
+        "surface": {
+          "rgb": [
+            217,
+            219,
+            221
+          ],
+          "hex": "#d9dbdd",
+          "generated": false,
+          "sourceDistance": 0.001046689861109223
+        },
+        "accent": {
+          "rgb": [
+            170,
+            167,
+            170
+          ],
+          "hex": "#aaa7aa",
+          "generated": false,
+          "sourceDistance": 0.011184490864199816
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.92779685612515,
+          "coverage": 0.34745695153061223,
+          "continuity": 1,
+          "coherence": 0.4523580365736285
+        },
+        "score": 0.651289442041445,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 15.127041490747555,
+          "accentContrast": 2.3817214299410967,
+          "accentSurfaceContrast": 1.715638042386741,
+          "minimumRoleDistance": 0.10959904853060305,
+          "meanSourceDistance": 0.0036192214611332697,
+          "meanReconstructionError": 0.05930719173677827
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-4585193868728a429423",
+      "anchor": {
+        "file": "music-artworks/9/d/b/9dbaa2124943b368112cee411ef5efa9.jpg",
+        "sha256": "c1a9a0cdd3990638009178cf167fd12a5ee5efc95458f1477d5f8543b87e36f5",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            29,
+            29,
+            29
+          ],
+          "hex": "#1d1d1d",
+          "generated": false,
+          "sourceDistance": 0.0003672664955922114
+        },
+        "foreground": {
+          "rgb": [
+            208,
+            208,
+            208
+          ],
+          "hex": "#d0d0d0",
+          "generated": false,
+          "sourceDistance": 0.0010048086883419633
+        },
+        "surface": {
+          "rgb": [
+            17,
+            17,
+            17
+          ],
+          "hex": "#111111",
+          "generated": false,
+          "sourceDistance": 0.0001001939296349786
+        },
+        "accent": {
+          "rgb": [
+            69,
+            69,
+            69
+          ],
+          "hex": "#454545",
+          "generated": false,
+          "sourceDistance": 0.0018430177219153645
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9358756915963642,
+          "coverage": 0.25460379464285715,
+          "continuity": 0.6428571428571429,
+          "coherence": 0.6219187594028469
+        },
+        "score": 0.6421458813172183,
+        "metrics": {
+          "foregroundContrast": 10.929451222956288,
+          "foregroundSurfaceContrast": 12.242646197816567,
+          "accentContrast": 1.7581861018630023,
+          "accentSurfaceContrast": 1.9694356062284342,
+          "minimumRoleDistance": 0.05311269490933463,
+          "meanSourceDistance": 0.0008288217088711294,
+          "meanReconstructionError": 0.05364258777165365
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-96e0b3baa7c5661f632e",
+      "anchor": {
+        "file": "music-artworks/0/c/8/0c8b883f786a065793c6128a06d64b20.jpg",
+        "sha256": "de9ab145831529d4464482563be7005fb0d352f5a3487b0377141c0d169942cb",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            2,
+            25,
+            31
+          ],
+          "hex": "#02191f",
+          "generated": false,
+          "sourceDistance": 6.328068105439717e-10
+        },
+        "foreground": {
+          "rgb": [
+            170,
+            203,
+            225
+          ],
+          "hex": "#aacbe1",
+          "generated": false,
+          "sourceDistance": 0.04881612302246304
+        },
+        "surface": {
+          "rgb": [
+            39,
+            76,
+            138
+          ],
+          "hex": "#274c8a",
+          "generated": false,
+          "sourceDistance": 0.0025655068011422913
+        },
+        "accent": {
+          "rgb": [
+            231,
+            175,
+            75
+          ],
+          "hex": "#e7af4b",
+          "generated": false,
+          "sourceDistance": 0.011246264654566433
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8781647130560581,
+          "coverage": 0.33531967474489793,
+          "continuity": 1,
+          "coherence": 0.3274415817855003
+        },
+        "score": 0.6612620655053218,
+        "metrics": {
+          "foregroundContrast": 10.62392585179062,
+          "foregroundSurfaceContrast": 4.96125381823527,
+          "accentContrast": 9.153777399159118,
+          "accentSurfaceContrast": 4.274711034923074,
+          "minimumRoleDistance": 0.18076062798641923,
+          "meanSourceDistance": 0.015656973777744644,
+          "meanReconstructionError": 0.059048170338855725
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-83e925c92ebfe92e3f13",
+      "anchor": {
+        "file": "music-artworks/d/3/4/d34a37734fcbdb85fbd71093fecd96bc.jpg",
+        "sha256": "040dd78ea9548bd448104284a4881cf525c823e6f6a93612598ba1304966fb75",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            252,
+            252,
+            252
+          ],
+          "hex": "#fcfcfc",
+          "generated": false,
+          "sourceDistance": 0.00010772847587968267
+        },
+        "foreground": {
+          "rgb": [
+            9,
+            8,
+            14
+          ],
+          "hex": "#09080e",
+          "generated": false,
+          "sourceDistance": 0.007811478619833141
+        },
+        "surface": {
+          "rgb": [
+            224,
+            205,
+            196
+          ],
+          "hex": "#e0cdc4",
+          "generated": false,
+          "sourceDistance": 0.01223014715511586
+        },
+        "accent": {
+          "rgb": [
+            121,
+            53,
+            51
+          ],
+          "hex": "#793533",
+          "generated": false,
+          "sourceDistance": 0.027356146795141364
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.54823606271777,
+          "continuity": 1,
+          "coherence": 0.34972677595628415
+        },
+        "score": 0.6203040717357058,
+        "metrics": {
+          "foregroundContrast": 19.444384814235313,
+          "foregroundSurfaceContrast": 13.013417288212944,
+          "accentContrast": 8.636545050166225,
+          "accentSurfaceContrast": 5.780124480152295,
+          "minimumRoleDistance": 0.1319385132385833,
+          "meanSourceDistance": 0.011876375261492513,
+          "meanReconstructionError": 0.047511615618510104
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-8ddfbe94710de922b63d",
+      "anchor": {
+        "file": "music-artworks/6/a/4/6a49fe83b89d06568c7a43757c973315.jpg",
+        "sha256": "c3d264b946f758e8ae177880c1144d388fee89c8ffab66c32ad6449efa9c9232",
+        "width": 600,
+        "height": 600
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            16,
+            5,
+            65
+          ],
+          "hex": "#100541",
+          "generated": false,
+          "sourceDistance": 4.734923728353105e-9
+        },
+        "foreground": {
+          "rgb": [
+            244,
+            240,
+            237
+          ],
+          "hex": "#f4f0ed",
+          "generated": false,
+          "sourceDistance": 0.010744709589752413
+        },
+        "surface": {
+          "rgb": [
+            102,
+            108,
+            71
+          ],
+          "hex": "#666c47",
+          "generated": false,
+          "sourceDistance": 0.008788140636418751
+        },
+        "accent": {
+          "rgb": [
+            189,
+            213,
+            67
+          ],
+          "hex": "#bdd543",
+          "generated": false,
+          "sourceDistance": 0.006445235493826863
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6821315192743764,
+          "coverage": 0.8376514668367347,
+          "continuity": 1,
+          "coherence": 0.1049230032713636
+        },
+        "score": 0.7088321044208155,
+        "metrics": {
+          "foregroundContrast": 16.546756672664085,
+          "foregroundSurfaceContrast": 4.876005914220062,
+          "accentContrast": 11.394380116358814,
+          "accentSurfaceContrast": 3.357701206063113,
+          "minimumRoleDistance": 0.20949685737771012,
+          "meanSourceDistance": 0.006494522613730439,
+          "meanReconstructionError": 0.045082247460979705
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-27681b9400a9bd8f76fa",
+      "anchor": {
+        "file": "music-artworks/0/d/2/0d2fb5e044948cf03eb43ae8eab6feea.png",
+        "sha256": "6ba452882cf84ca9379705bebe1b9b4aed10cbdaa0a7f69a51077c8a361d2dc6",
+        "width": 1000,
+        "height": 1000
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            54,
+            149,
+            214
+          ],
+          "hex": "#3695d6",
+          "generated": false,
+          "sourceDistance": 0.0012601898657814276
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.005161050654773308
+        },
+        "surface": {
+          "rgb": [
+            120,
+            148,
+            131
+          ],
+          "hex": "#789483",
+          "generated": false,
+          "sourceDistance": 0.0026777040636111566
+        },
+        "accent": {
+          "rgb": [
+            238,
+            230,
+            204
+          ],
+          "hex": "#eee6cc",
+          "generated": false,
+          "sourceDistance": 0.04818287057599274
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.688204665471261,
+          "coverage": 0.23260124362244897,
+          "continuity": 1,
+          "coherence": 0.3446054750402576
+        },
+        "score": 0.6700967213879996,
+        "metrics": {
+          "foregroundContrast": 6.426840297075644,
+          "foregroundSurfaceContrast": 6.362314470670248,
+          "accentContrast": 2.6180953949058816,
+          "accentSurfaceContrast": 2.6446478027982043,
+          "minimumRoleDistance": 0.13322632023440714,
+          "meanSourceDistance": 0.014320453790039659,
+          "meanReconstructionError": 0.08511535214229606
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-124d4bedc9681e7ae618",
+      "anchor": {
+        "file": "music-artworks/5/9/7/5970d9369f086bd1bac0a093910f7ff8.png",
+        "sha256": "becffe62604bf7a55ffb5f3a05b1717d6fd36e5b19e031a9f759ccb36e6d8571",
+        "width": 500,
+        "height": 500
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            43,
+            35,
+            33
+          ],
+          "hex": "#2b2321",
+          "generated": false,
+          "sourceDistance": 0.002515387658916978
+        },
+        "surface": {
+          "rgb": [
+            226,
+            204,
+            199
+          ],
+          "hex": "#e2ccc7",
+          "generated": false,
+          "sourceDistance": 0.017800672845332065
+        },
+        "accent": {
+          "rgb": [
+            169,
+            86,
+            61
+          ],
+          "hex": "#a9563d",
+          "generated": false,
+          "sourceDistance": 0.021740435021500436
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5210459183673469,
+          "continuity": 1,
+          "coherence": 0.3986527862829149
+        },
+        "score": 0.643170096181941,
+        "metrics": {
+          "foregroundContrast": 15.383577970584726,
+          "foregroundSurfaceContrast": 10.03273053631656,
+          "accentContrast": 5.140125914577355,
+          "accentSurfaceContrast": 3.3522434327241335,
+          "minimumRoleDistance": 0.14035077224369585,
+          "meanSourceDistance": 0.010514125513050825,
+          "meanReconstructionError": 0.03746284400015556
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-06c6b4fe11e8f16fbb3c",
+      "anchor": {
+        "file": "music-artworks/c/4/6/c4658237617690eb75928ad3f162f5e2.jpg",
+        "sha256": "c42ff6c1f95d143583f26afefce01f014971f5f7e6a27e2be90c0e0f4893d6aa",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            89,
+            121,
+            110
+          ],
+          "hex": "#59796e",
+          "generated": false,
+          "sourceDistance": 0.007067812234619259
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "surface": {
+          "rgb": [
+            136,
+            92,
+            67
+          ],
+          "hex": "#885c43",
+          "generated": false,
+          "sourceDistance": 0.005865577665545345
+        },
+        "accent": {
+          "rgb": [
+            79,
+            41,
+            25
+          ],
+          "hex": "#4f2919",
+          "generated": false,
+          "sourceDistance": 0.007510819338708126
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.7299238018714391,
+          "coverage": 0.321573398215734,
+          "continuity": 0.5482242312042528,
+          "coherence": 0.6625703500228121
+        },
+        "score": 0.5065410584550889,
+        "metrics": {
+          "foregroundContrast": 4.38487607602511,
+          "foregroundSurfaceContrast": 3.6587560457944788,
+          "accentContrast": 2.6356715358156437,
+          "accentSurfaceContrast": 2.1992136149798647,
+          "minimumRoleDistance": 0.10162869506183325,
+          "meanSourceDistance": 0.005111052309718182,
+          "meanReconstructionError": 0.08550209958056605
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-5374888f033daf7fe838",
+      "anchor": {
+        "file": "music-artworks/e/d/8/ed8508fa0b16aee25500f4ca520cfc65.jpg",
+        "sha256": "640758d75332b7f365e5a5385d8be6e1187a8735c22001d40319ea3328a692c7",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            206,
+            207,
+            203
+          ],
+          "hex": "#cecfcb",
+          "generated": false,
+          "sourceDistance": 0.0008402604012721362
+        },
+        "foreground": {
+          "rgb": [
+            15,
+            7,
+            5
+          ],
+          "hex": "#0f0705",
+          "generated": false,
+          "sourceDistance": 0.013172207624193594
+        },
+        "surface": {
+          "rgb": [
+            222,
+            178,
+            153
+          ],
+          "hex": "#deb299",
+          "generated": false,
+          "sourceDistance": 0.02137161816694219
+        },
+        "accent": {
+          "rgb": [
+            66,
+            49,
+            43
+          ],
+          "hex": "#42312b",
+          "generated": false,
+          "sourceDistance": 0.042731240924894706
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8338896404726219,
+          "coverage": 0.34527439024390244,
+          "continuity": 0.7142857142857143,
+          "coherence": 0.4934823091247672
+        },
+        "score": 0.615117294227086,
+        "metrics": {
+          "foregroundContrast": 12.738075456928879,
+          "foregroundSurfaceContrast": 10.384760530183465,
+          "accentContrast": 7.862227922530702,
+          "accentSurfaceContrast": 6.409708788841495,
+          "minimumRoleDistance": 0.0819491215364732,
+          "meanSourceDistance": 0.019528831779325656,
+          "meanReconstructionError": 0.05030967084417111
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-15a1a79ee427004b55f5",
+      "anchor": {
+        "file": "music-artworks/5/e/3/5e3c81ab00ed5fac2296dda9ae7a3069.jpg",
+        "sha256": "a32495cc1a1cc4e26b7cac7599d06693cf40918bb44626a982725aba96462755",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            160,
+            6,
+            30
+          ],
+          "hex": "#a0061e",
+          "generated": false,
+          "sourceDistance": 0.00041748245153950804
+        },
+        "foreground": {
+          "rgb": [
+            222,
+            220,
+            220
+          ],
+          "hex": "#dedcdc",
+          "generated": false,
+          "sourceDistance": 0.025111658927794732
+        },
+        "surface": {
+          "rgb": [
+            124,
+            25,
+            30
+          ],
+          "hex": "#7c191e",
+          "generated": false,
+          "sourceDistance": 0.020976411702170225
+        },
+        "accent": {
+          "rgb": [
+            202,
+            131,
+            84
+          ],
+          "hex": "#ca8354",
+          "generated": false,
+          "sourceDistance": 0.04552081513724077
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.5547452479145303,
+          "coverage": 0.11246412627551021,
+          "continuity": 1,
+          "coherence": 0.545002760905577
+        },
+        "score": 0.6599100945215802,
+        "metrics": {
+          "foregroundContrast": 6.054961792893264,
+          "foregroundSurfaceContrast": 7.631790106633809,
+          "accentContrast": 2.7114833001049767,
+          "accentSurfaceContrast": 3.417605615337156,
+          "minimumRoleDistance": 0.07532630026181306,
+          "meanSourceDistance": 0.023006592054686307,
+          "meanReconstructionError": 0.1315907862588763
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-ab23c7c7e654cb131ec8",
+      "anchor": {
+        "file": "music-artworks/d/5/7/d578b35a33434e5f4e8c69241bff8121.jpg",
+        "sha256": "dfacbcc7bbc97e1c4e57b72cdc3bc87a8788e9530d0757862f302e54df104796",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            248,
+            248,
+            248
+          ],
+          "hex": "#f8f8f8",
+          "generated": false,
+          "sourceDistance": 0.00008382447401678045
+        },
+        "foreground": {
+          "rgb": [
+            9,
+            9,
+            9
+          ],
+          "hex": "#090909",
+          "generated": false,
+          "sourceDistance": 0.00372272176136926
+        },
+        "surface": {
+          "rgb": [
+            199,
+            199,
+            199
+          ],
+          "hex": "#c7c7c7",
+          "generated": false,
+          "sourceDistance": 0.010752290714662667
+        },
+        "accent": {
+          "rgb": [
+            52,
+            52,
+            52
+          ],
+          "hex": "#343434",
+          "generated": false,
+          "sourceDistance": 0.001437725153444037
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.5228993941326531,
+          "continuity": 1,
+          "coherence": 0.35179856115107916
+        },
+        "score": 0.6039601787593643,
+        "metrics": {
+          "foregroundContrast": 18.749346693014207,
+          "foregroundSurfaceContrast": 11.778955063345254,
+          "accentContrast": 11.722646350146846,
+          "accentSurfaceContrast": 7.364551247714417,
+          "minimumRoleDistance": 0.14944987872630433,
+          "meanSourceDistance": 0.003999140525873186,
+          "meanReconstructionError": 0.04570970576958103
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-0668e407b74dc7cfc60f",
+      "anchor": {
+        "file": "music-artworks/1/3/0/1300e94dfbef46e4ac196ebcf8cd5b79.jpg",
+        "sha256": "17bec1c2a697ed79a25a12967aaef1683dfa8979b0312b62b4d7b9bac857247f",
+        "width": 450,
+        "height": 590
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            17,
+            15,
+            18
+          ],
+          "hex": "#110f12",
+          "generated": false,
+          "sourceDistance": 0.0015214292470052948
+        },
+        "foreground": {
+          "rgb": [
+            221,
+            247,
+            245
+          ],
+          "hex": "#ddf7f5",
+          "generated": false,
+          "sourceDistance": 0.005964765852868237
+        },
+        "surface": {
+          "rgb": [
+            39,
+            54,
+            151
+          ],
+          "hex": "#273697",
+          "generated": false,
+          "sourceDistance": 0.020804667396839196
+        },
+        "accent": {
+          "rgb": [
+            39,
+            116,
+            182
+          ],
+          "hex": "#2774b6",
+          "generated": false,
+          "sourceDistance": 0.03204580957816256
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.6397809161687489,
+          "coverage": 0.58296783625731,
+          "continuity": 1,
+          "coherence": 0.10209205020920502
+        },
+        "score": 0.6514439906609297,
+        "metrics": {
+          "foregroundContrast": 16.983632886384818,
+          "foregroundSurfaceContrast": 9.072781903300378,
+          "accentContrast": 3.8694797581585108,
+          "accentSurfaceContrast": 2.067104615358924,
+          "minimumRoleDistance": 0.16981927520816206,
+          "meanSourceDistance": 0.015084168018718822,
+          "meanReconstructionError": 0.04085400771715133
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-966c0226b7f4412fe292",
+      "anchor": {
+        "file": "music-artworks/4/a/2/4a29622aa2be1efdab5fd0de6e1bcd07.jpg",
+        "sha256": "8f60572772155112e09b268e753b35dff3855d31e0eedb8a1edead95051b3c02",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            25,
+            25,
+            25
+          ],
+          "hex": "#191919",
+          "generated": false,
+          "sourceDistance": 0.00043602603775233533
+        },
+        "foreground": {
+          "rgb": [
+            198,
+            198,
+            198
+          ],
+          "hex": "#c6c6c6",
+          "generated": false,
+          "sourceDistance": 0.0003417304631774256
+        },
+        "surface": {
+          "rgb": [
+            37,
+            37,
+            37
+          ],
+          "hex": "#252525",
+          "generated": false,
+          "sourceDistance": 0.0014898021220046697
+        },
+        "accent": {
+          "rgb": [
+            86,
+            86,
+            86
+          ],
+          "hex": "#565656",
+          "generated": false,
+          "sourceDistance": 0.001699565935724846
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.3407007334183674,
+          "continuity": 0.6428571428571429,
+          "coherence": 0.30837350072861786
+        },
+        "score": 0.570526707334289,
+        "metrics": {
+          "foregroundContrast": 10.293017009494559,
+          "foregroundSurfaceContrast": 8.973861756252282,
+          "accentContrast": 2.3954461959402957,
+          "accentSurfaceContrast": 2.0884453010307626,
+          "minimumRoleDistance": 0.05105716518092527,
+          "meanSourceDistance": 0.0009917811396648192,
+          "meanReconstructionError": 0.049552269490659474
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-391e9a10355f70d58bd3",
+      "anchor": {
+        "file": "music-artworks/5/9/5/595465410f5d2de04dc66b7b003ea4f8.jpg",
+        "sha256": "f50436e9be8bb33dbf9874a6c4171e5644602603a40c6cb8e62decc38e2e1647",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            30,
+            30,
+            30
+          ],
+          "hex": "#1e1e1e",
+          "generated": false,
+          "sourceDistance": 0.0004698827789653418
+        },
+        "surface": {
+          "rgb": [
+            219,
+            219,
+            219
+          ],
+          "hex": "#dbdbdb",
+          "generated": false,
+          "sourceDistance": 0.007615548999550642
+        },
+        "accent": {
+          "rgb": [
+            86,
+            86,
+            86
+          ],
+          "hex": "#565656",
+          "generated": false,
+          "sourceDistance": 0.004141633688157234
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.4543407206632653,
+          "continuity": 1,
+          "coherence": 0.5729591836734694
+        },
+        "score": 0.571565213186239,
+        "metrics": {
+          "foregroundContrast": 16.67115667431794,
+          "foregroundSurfaceContrast": 12.04095375674511,
+          "accentContrast": 7.339631010223789,
+          "accentSurfaceContrast": 5.301141325233975,
+          "minimumRoleDistance": 0.10856865358789287,
+          "meanSourceDistance": 0.0030567679982817595,
+          "meanReconstructionError": 0.025450468048070447
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-42ac1be69ec27494f920",
+      "anchor": {
+        "file": "music-artworks/3/0/9/309315403808dbc876a74239b6ffa480.jpg",
+        "sha256": "0fc567a7973124ef4914ec434c48571208fe24fa3410ce9ca5baa3adab0bd686",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            67,
+            60,
+            52
+          ],
+          "hex": "#433c34",
+          "generated": false,
+          "sourceDistance": 0.0014850508185393365
+        },
+        "foreground": {
+          "rgb": [
+            253,
+            253,
+            252
+          ],
+          "hex": "#fdfdfc",
+          "generated": false,
+          "sourceDistance": 0.05690467744541308
+        },
+        "surface": {
+          "rgb": [
+            48,
+            34,
+            25
+          ],
+          "hex": "#302219",
+          "generated": false,
+          "sourceDistance": 0.009923805027549784
+        },
+        "accent": {
+          "rgb": [
+            2,
+            0,
+            0
+          ],
+          "hex": "#020000",
+          "generated": false,
+          "sourceDistance": 0.0216262100877514
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.5572346609876828,
+          "coverage": 0.16228874362244897,
+          "continuity": 1,
+          "coherence": 0.23959172710179963
+        },
+        "score": 0.6671289874960316,
+        "metrics": {
+          "foregroundContrast": 10.66495347024594,
+          "foregroundSurfaceContrast": 15.076312167890396,
+          "accentContrast": 1.9296077972131793,
+          "accentSurfaceContrast": 1.3650007471277994,
+          "minimumRoleDistance": 0.09544141331211647,
+          "meanSourceDistance": 0.0224849358448134,
+          "meanReconstructionError": 0.10208344169659286
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-718d5381f5b0571b2e3a",
+      "anchor": {
+        "file": "music-artworks/e/6/b/e6be76262660a500d0eec52b7013ddda.jpg",
+        "sha256": "bbf42a6ce3cee3326caecaa1e7288606029488f1ed6544d014253bbdc347423e",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            149,
+            128,
+            87
+          ],
+          "hex": "#958057",
+          "generated": false,
+          "sourceDistance": 0.003149062880422408
+        },
+        "foreground": {
+          "rgb": [
+            5,
+            1,
+            0
+          ],
+          "hex": "#050100",
+          "generated": false,
+          "sourceDistance": 0.020658214974331162
+        },
+        "surface": {
+          "rgb": [
+            211,
+            139,
+            115
+          ],
+          "hex": "#d38b73",
+          "generated": false,
+          "sourceDistance": 0.015108427624709451
+        },
+        "accent": {
+          "rgb": [
+            252,
+            253,
+            253
+          ],
+          "hex": "#fcfdfd",
+          "generated": false,
+          "sourceDistance": 0.10676765869230792
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8639761483001981,
+          "coverage": 0.4554306088864509,
+          "continuity": 0.9517472207968247,
+          "coherence": 0.5125228444773829
+        },
+        "score": 0.6027958627949112,
+        "metrics": {
+          "foregroundContrast": 5.444434117607563,
+          "foregroundSurfaceContrast": 7.628043314960388,
+          "accentContrast": 3.744649132717528,
+          "accentSurfaceContrast": 2.6727031631627214,
+          "minimumRoleDistance": 0.11613796177091995,
+          "meanSourceDistance": 0.036420841042942735,
+          "meanReconstructionError": 0.11691870502812779
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-52ded5912abd38b54518",
+      "anchor": {
+        "file": "music-artworks/5/c/8/5c81543674fd8d6c94c924c3a25f69db.jpg",
+        "sha256": "9ba984bf8dd55d4677d496eff2d017daa430be41b1a2e12f838f72f4b7ac4fe8",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            25,
+            25,
+            25
+          ],
+          "hex": "#191919",
+          "generated": false,
+          "sourceDistance": 1.328631538122238e-9
+        },
+        "surface": {
+          "rgb": [
+            208,
+            208,
+            208
+          ],
+          "hex": "#d0d0d0",
+          "generated": false,
+          "sourceDistance": 0.002833653983843167
+        },
+        "accent": {
+          "rgb": [
+            78,
+            78,
+            78
+          ],
+          "hex": "#4e4e4e",
+          "generated": false,
+          "sourceDistance": 0.0051022322403853106
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.9878983347949835,
+          "coverage": 0.4123485331632653,
+          "continuity": 1,
+          "coherence": 0.26422372227579555
+        },
+        "score": 0.6052029132194219,
+        "metrics": {
+          "foregroundContrast": 17.581691183046004,
+          "foregroundSurfaceContrast": 11.398915944659707,
+          "accentContrast": 8.321090665764155,
+          "accentSurfaceContrast": 5.394897002764055,
+          "minimumRoleDistance": 0.14239482814551027,
+          "meanSourceDistance": 0.0019839735198284593,
+          "meanReconstructionError": 0.04908564427256507
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-9bc0602d7eb2388910e3",
+      "anchor": {
+        "file": "music-artworks/6/6/9/669c35d590b0de4dfaf7e9f091de7428.jpg",
+        "sha256": "595c54344658e326704a9f49021caadf9253e65c05f936cf90d2f0746fcaa702",
+        "width": 640,
+        "height": 640
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            146,
+            126,
+            118
+          ],
+          "hex": "#927e76",
+          "generated": false,
+          "sourceDistance": 0.002426056519784438
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.04798945226812876
+        },
+        "surface": {
+          "rgb": [
+            239,
+            202,
+            175
+          ],
+          "hex": "#efcaaf",
+          "generated": false,
+          "sourceDistance": 0.05110707970751412
+        },
+        "accent": {
+          "rgb": [
+            254,
+            253,
+            252
+          ],
+          "hex": "#fefdfc",
+          "generated": false,
+          "sourceDistance": 0.06109984914771793
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.3170838647959184,
+          "continuity": 1,
+          "coherence": 0.3840019935210566
+        },
+        "score": 0.7002567518816987,
+        "metrics": {
+          "foregroundContrast": 5.468141401269389,
+          "foregroundSurfaceContrast": 13.737385449227517,
+          "accentContrast": 3.780065560014568,
+          "accentSurfaceContrast": 1.5046482509079293,
+          "minimumRoleDistance": 0.14136974114257989,
+          "meanSourceDistance": 0.04065560941078632,
+          "meanReconstructionError": 0.11045623705185414
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-8f4798a04779a4040a10",
+      "anchor": {
+        "file": "music-artworks/4/d/f/4df7fe5978cfe9fb8a0feaae3d5a5de1.jpg",
+        "sha256": "c07989db45a642857aee20d5f35765ed48305ecc78d7fb144f8f480315e7b6e3",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            8,
+            4,
+            10
+          ],
+          "hex": "#08040a",
+          "generated": false,
+          "sourceDistance": 0.0012613787511480104
+        },
+        "foreground": {
+          "rgb": [
+            253,
+            249,
+            243
+          ],
+          "hex": "#fdf9f3",
+          "generated": false,
+          "sourceDistance": 0.04883394855086386
+        },
+        "surface": {
+          "rgb": [
+            49,
+            43,
+            50
+          ],
+          "hex": "#312b32",
+          "generated": false,
+          "sourceDistance": 0.015156086062477071
+        },
+        "accent": {
+          "rgb": [
+            172,
+            125,
+            120
+          ],
+          "hex": "#ac7d78",
+          "generated": false,
+          "sourceDistance": 0.018726033851778078
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6127054988662132,
+          "continuity": 1,
+          "coherence": 0.3479427549194991
+        },
+        "score": 0.6571731688890352,
+        "metrics": {
+          "foregroundContrast": 19.398811618171752,
+          "foregroundSurfaceContrast": 13.152664520286796,
+          "accentContrast": 5.773606234939089,
+          "accentSurfaceContrast": 3.914585458897652,
+          "minimumRoleDistance": 0.17918748313781666,
+          "meanSourceDistance": 0.020994361804066757,
+          "meanReconstructionError": 0.04063201272596041
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-7b17a8e020fdd29c4226",
+      "anchor": {
+        "file": "music-artworks/d/9/c/d9c74f48421f9426de6a9a70f0d15d4d.jpg",
+        "sha256": "4ec2a3fad33587695f1c901ccbc9f343f26e7d90146b33b6d33c735a1ca25fd4",
+        "width": 700,
+        "height": 700
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            121,
+            133,
+            138
+          ],
+          "hex": "#79858a",
+          "generated": false,
+          "sourceDistance": 0.0017215201279188064
+        },
+        "foreground": {
+          "rgb": [
+            11,
+            8,
+            12
+          ],
+          "hex": "#0b080c",
+          "generated": false,
+          "sourceDistance": 0.0031154930501871734
+        },
+        "surface": {
+          "rgb": [
+            226,
+            176,
+            148
+          ],
+          "hex": "#e2b094",
+          "generated": false,
+          "sourceDistance": 0.008503744046513727
+        },
+        "accent": {
+          "rgb": [
+            245,
+            239,
+            210
+          ],
+          "hex": "#f5efd2",
+          "generated": false,
+          "sourceDistance": 0.06609812527502097
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.744812121875074,
+          "coverage": 0.33407738095238093,
+          "continuity": 0.609579552084073,
+          "coherence": 0.5974057989271844
+        },
+        "score": 0.6386724744236123,
+        "metrics": {
+          "foregroundContrast": 5.250067428287356,
+          "foregroundSurfaceContrast": 10.311866525863906,
+          "accentContrast": 3.280891728128533,
+          "accentSurfaceContrast": 1.6703962133704946,
+          "minimumRoleDistance": 0.16211789571748877,
+          "meanSourceDistance": 0.01985972062491017,
+          "meanReconstructionError": 0.09449427704876198
+        }
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    },
+    {
+      "familyId": "gc-ad2317d82b5b3cd8cb83",
+      "anchor": {
+        "file": "music-artworks/9/6/6/96675c7bd077e483c456f3489190a906.png",
+        "sha256": "b6aa31ec640a52b8abd10b615622ac8d614867aff06986ddda4dca5484442f02",
+        "width": 1000,
+        "height": 562
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff",
+          "generated": false,
+          "sourceDistance": 6.526453821820232e-9
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0.03160242858882909
+        },
+        "surface": {
+          "rgb": [
+            252,
+            194,
+            165
+          ],
+          "hex": "#fcc2a5",
+          "generated": false,
+          "sourceDistance": 0.011762761270044164
+        },
+        "accent": {
+          "rgb": [
+            221,
+            65,
+            29
+          ],
+          "hex": "#dd411d",
+          "generated": false,
+          "sourceDistance": 0.0005409271863716956
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.6290391156462585,
+          "continuity": 1,
+          "coherence": 0.2601220188574598
+        },
+        "score": 0.7717672714896046,
+        "metrics": {
+          "foregroundContrast": 21,
+          "foregroundSurfaceContrast": 13.3991264912021,
+          "accentContrast": 4.3314233611960145,
+          "accentSurfaceContrast": 2.7636804525530074,
+          "minimumRoleDistance": 0.16085187367837211,
+          "meanSourceDistance": 0.010976530892924692,
+          "meanReconstructionError": 0.04609679216023679
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    },
+    {
+      "familyId": "gc-3640e1c6358c3666fad3",
+      "anchor": {
+        "file": "music-artworks/8/e/3/8e3942b03721502e96d1f4b012f435a6.jpg",
+        "sha256": "9f3745e9dc8623047d0363b9c56c31ba4c3d0e629297e26bc2cfc733ee2fdfca",
+        "width": 1000,
+        "height": 185
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            249,
+            247,
+            248
+          ],
+          "hex": "#f9f7f8",
+          "generated": false,
+          "sourceDistance": 0.17366734729411615
+        },
+        "surface": {
+          "rgb": [
+            71,
+            14,
+            24
+          ],
+          "hex": "#470e18",
+          "generated": false,
+          "sourceDistance": 0.02811984841762374
+        },
+        "accent": {
+          "rgb": [
+            233,
+            102,
+            110
+          ],
+          "hex": "#e9666e",
+          "generated": false,
+          "sourceDistance": 0.01071279140395363
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 0.8119381787802841,
+          "coverage": 0.7152656794425087,
+          "continuity": 1,
+          "coherence": 0.13708086785009863
+        },
+        "score": 0.707630512540786,
+        "metrics": {
+          "foregroundContrast": 19.68771530428482,
+          "foregroundSurfaceContrast": 14.649433033358475,
+          "accentContrast": 6.590433910162777,
+          "accentSurfaceContrast": 4.903876287092197,
+          "minimumRoleDistance": 0.28221890915388054,
+          "meanSourceDistance": 0.05312499677892338,
+          "meanReconstructionError": 0.04748910713786285
+        }
+      },
+      "candidateReason": "flat-background-isolated-surface"
+    }
+  ]
+}

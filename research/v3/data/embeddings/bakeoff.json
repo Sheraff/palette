@@ -1,0 +1,1306 @@
+{
+  "written_at": "2026-08-02T21:45:46Z",
+  "task": "image-to-image retrieval of the same artwork at a different rendition, pooled over all files of both collections",
+  "method": {
+    "metric": "rank of the true counterpart by cosine similarity (vectors are L2-normalized, so cosine is a dot product)",
+    "candidate_pool": "every embedded file of both collections",
+    "excluded_from_pool_per_pair": "the query itself, and any other rendition of the same artwork, which are also correct answers",
+    "tie_handling": "rank = 1 + count of strictly greater similarities, so exact ties are scored optimistically",
+    "tiers_from": "measured header dimensions in the id index, never filenames",
+    "resolution_confound": "settled 2026-08-02: raising DINOv2 from 224 px to 392 px LOWERED R@1 from 0.7892 to 0.7544 (McNemar p=2e-81, n=24648), so the arms' differing input resolutions do not explain the ranking; the lowest-resolution arm led"
+  },
+  "ground_truth": {
+    "sharded": {
+      "files": 7550,
+      "off_pattern_files": 0,
+      "off_pattern_examples": [],
+      "distinct_artworks": 6906,
+      "multi_rendition_artworks": 644,
+      "files_in_multi_rendition_artworks": 1288,
+      "group_size_histogram": {
+        "2": 644
+      },
+      "rendition_prefixes": {
+        "ab67616d0000b273": 4631,
+        "ab67616d00001e02": 2914,
+        "00007e976f2fb181": 1,
+        "000160b135e062f2": 1,
+        "00037fb01997da07": 1,
+        "0003aafee0584e79": 1,
+        "000b929b57ea9b0c": 1
+      },
+      "dominant_prefixes": [
+        "ab67616d0000b273",
+        "ab67616d00001e02"
+      ],
+      "singleton_prefix_files": 5,
+      "cross_prefix_pair_groups": 644,
+      "note": "every multi-rendition group is cross-prefix, i.e. one 300 px and one 640 px rendition; no artwork was fetched twice at the same size"
+    },
+    "music_artworks": {
+      "files": 8595,
+      "off_pattern_files": 0,
+      "off_pattern_examples": [],
+      "distinct_artworks": 4088,
+      "multi_rendition_artworks": 1348,
+      "files_in_multi_rendition_artworks": 5855,
+      "group_size_histogram": {
+        "2": 166,
+        "3": 227,
+        "4": 468,
+        "5": 211,
+        "6": 141,
+        "7": 67,
+        "8": 40,
+        "9": 11,
+        "10": 8,
+        "11": 7,
+        "12": 2
+      }
+    }
+  },
+  "arms": {
+    "siglip2-so400m": {
+      "arm": "siglip2-so400m",
+      "pool_size": 16145,
+      "per_collection_vectors": {
+        "sharded": {
+          "vectors": 7550,
+          "dim": 1152,
+          "offset": 0
+        },
+        "music_artworks": {
+          "vectors": 8595,
+          "dim": 1152,
+          "offset": 7550
+        }
+      },
+      "missing_files": 0,
+      "dropped_pairs_for_missing_members": 0,
+      "overall": {
+        "pairs": 24648,
+        "mean_rank": 3.073555663745537,
+        "median_rank": 1.0,
+        "p90_rank": 4.0,
+        "worst_rank": 5791,
+        "mean_similarity": 0.9259620635772982,
+        "recall@1": 0.6765660499837715,
+        "recall@5": 0.9381694255111976,
+        "recall@10": 0.9786595261278805
+      },
+      "by_collection": {
+        "sharded": {
+          "pairs": 1288,
+          "mean_rank": 1.0031055900621118,
+          "median_rank": 1.0,
+          "p90_rank": 1.0,
+          "worst_rank": 4,
+          "mean_similarity": 0.9225388915272232,
+          "recall@1": 0.9984472049689441,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "by_query_tier": {
+            "300px": {
+              "pairs": 644,
+              "mean_rank": 1.0015527950310559,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9225388915272232,
+              "recall@1": 0.9984472049689441,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            },
+            "640px": {
+              "pairs": 644,
+              "mean_rank": 1.0046583850931676,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 4,
+              "mean_similarity": 0.9225388915272232,
+              "recall@1": 0.9984472049689441,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            }
+          }
+        },
+        "music_artworks": {
+          "pairs": 23360,
+          "mean_rank": 3.1877140410958904,
+          "median_rank": 1.0,
+          "p90_rank": 4.0,
+          "worst_rank": 5791,
+          "mean_similarity": 0.9261508069677304,
+          "recall@1": 0.658818493150685,
+          "recall@5": 0.9347602739726028,
+          "recall@10": 0.9774828767123288,
+          "by_query_tier": {
+            "151-300px": {
+              "pairs": 989,
+              "mean_rank": 1.468149646107179,
+              "median_rank": 1.0,
+              "p90_rank": 2.0,
+              "worst_rank": 105,
+              "mean_similarity": 0.9341046918631806,
+              "recall@1": 0.8776541961577351,
+              "recall@5": 0.9817997977755308,
+              "recall@10": 0.9949443882709808
+            },
+            "301-640px": {
+              "pairs": 13450,
+              "mean_rank": 2.114423791821561,
+              "median_rank": 1.0,
+              "p90_rank": 4.0,
+              "worst_rank": 430,
+              "mean_similarity": 0.9418979463789986,
+              "recall@1": 0.6718959107806691,
+              "recall@5": 0.9581412639405205,
+              "recall@10": 0.9927881040892194
+            },
+            "641-1024px": {
+              "pairs": 3437,
+              "mean_rank": 3.1451847541460576,
+              "median_rank": 1.0,
+              "p90_rank": 6.0,
+              "worst_rank": 138,
+              "mean_similarity": 0.918777301920546,
+              "recall@1": 0.6799534477742217,
+              "recall@5": 0.899330811754437,
+              "recall@10": 0.9563572883328484
+            },
+            "<=150px": {
+              "pairs": 5291,
+              "mean_rank": 6.303912303912304,
+              "median_rank": 1.0,
+              "p90_rank": 6.0,
+              "worst_rank": 5791,
+              "mean_similarity": 0.8888455753492241,
+              "recall@1": 0.5707805707805708,
+              "recall@5": 0.8907578907578908,
+              "recall@10": 0.9487809487809488
+            },
+            ">1024px": {
+              "pairs": 193,
+              "mean_rank": 2.1243523316062176,
+              "median_rank": 1.0,
+              "p90_rank": 5.0,
+              "worst_rank": 14,
+              "mean_similarity": 0.9420021028098665,
+              "recall@1": 0.6632124352331606,
+              "recall@5": 0.9015544041450777,
+              "recall@10": 0.9844559585492227
+            }
+          }
+        }
+      },
+      "seconds": 5.6,
+      "worst_examples": [
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3.jpeg",
+          "rank": 5791,
+          "similarity": 0.5554047226905823
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/6/e/3/6e3ac541454eb28b21b35a3a77950aee_112x112.avif",
+          "target": "music-artworks/6/e/3/6e3ac541454eb28b21b35a3a77950aee_483x483.avif",
+          "rank": 1061,
+          "similarity": 0.5385903120040894
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/6/e/3/6e3ac541454eb28b21b35a3a77950aee_112x112.avif",
+          "target": "music-artworks/6/e/3/6e3ac541454eb28b21b35a3a77950aee.jpg",
+          "rank": 878,
+          "similarity": 0.5442314147949219
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/b/4/8/b4876ffba0ece1a54bacc0e7a9986b27_147x147.avif",
+          "target": "music-artworks/b/4/8/b4876ffba0ece1a54bacc0e7a9986b27.jpg",
+          "rank": 710,
+          "similarity": 0.6006659269332886
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_1079x1079.avif",
+          "rank": 664,
+          "similarity": 0.6659510135650635
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_482x482.avif",
+          "rank": 664,
+          "similarity": 0.6659510135650635
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_483x483.avif",
+          "rank": 664,
+          "similarity": 0.6659510135650635
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_1082x1082.avif",
+          "rank": 592,
+          "similarity": 0.6699037551879883
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/9/f/2/9f2b7cf9cb761fd58aa2b0ab1a206b82_147x147.avif",
+          "target": "music-artworks/9/f/2/9f2b7cf9cb761fd58aa2b0ab1a206b82_483x483.avif",
+          "rank": 448,
+          "similarity": 0.6639003753662109
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/9/f/2/9f2b7cf9cb761fd58aa2b0ab1a206b82_147x147.avif",
+          "target": "music-artworks/9/f/2/9f2b7cf9cb761fd58aa2b0ab1a206b82_1082x1082.avif",
+          "rank": 441,
+          "similarity": 0.6642827987670898
+        }
+      ]
+    },
+    "dinov2-vitl14": {
+      "arm": "dinov2-vitl14",
+      "pool_size": 16145,
+      "per_collection_vectors": {
+        "sharded": {
+          "vectors": 7550,
+          "dim": 1024,
+          "offset": 0
+        },
+        "music_artworks": {
+          "vectors": 8595,
+          "dim": 1024,
+          "offset": 7550
+        }
+      },
+      "missing_files": 0,
+      "dropped_pairs_for_missing_members": 0,
+      "overall": {
+        "pairs": 24648,
+        "mean_rank": 1.4972411554690035,
+        "median_rank": 1.0,
+        "p90_rank": 3.0,
+        "worst_rank": 64,
+        "mean_similarity": 0.959288792285061,
+        "recall@1": 0.7892323920804933,
+        "recall@5": 0.9787406686140864,
+        "recall@10": 0.9976874391431353
+      },
+      "by_collection": {
+        "sharded": {
+          "pairs": 1288,
+          "mean_rank": 1.0015527950310559,
+          "median_rank": 1.0,
+          "p90_rank": 1.0,
+          "worst_rank": 2,
+          "mean_similarity": 0.9928546197110821,
+          "recall@1": 0.9984472049689441,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "by_query_tier": {
+            "300px": {
+              "pairs": 644,
+              "mean_rank": 1.0015527950310559,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9928546197110821,
+              "recall@1": 0.9984472049689441,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            },
+            "640px": {
+              "pairs": 644,
+              "mean_rank": 1.0015527950310559,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9928546197110821,
+              "recall@1": 0.9984472049689441,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            }
+          }
+        },
+        "music_artworks": {
+          "pairs": 23360,
+          "mean_rank": 1.524571917808219,
+          "median_rank": 1.0,
+          "p90_rank": 3.0,
+          "worst_rank": 64,
+          "mean_similarity": 0.9574380737180783,
+          "recall@1": 0.7776969178082191,
+          "recall@5": 0.977568493150685,
+          "recall@10": 0.9975599315068493,
+          "by_query_tier": {
+            "151-300px": {
+              "pairs": 989,
+              "mean_rank": 1.2082912032355915,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 12,
+              "mean_similarity": 0.9656448927759762,
+              "recall@1": 0.9373104145601617,
+              "recall@5": 0.9838220424671386,
+              "recall@10": 0.9979777553083923
+            },
+            "301-640px": {
+              "pairs": 13450,
+              "mean_rank": 1.5741263940520447,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 55,
+              "mean_similarity": 0.9668834800591699,
+              "recall@1": 0.7481040892193308,
+              "recall@5": 0.9792565055762081,
+              "recall@10": 0.9977695167286246
+            },
+            "641-1024px": {
+              "pairs": 3437,
+              "mean_rank": 1.3922025021821356,
+              "median_rank": 1.0,
+              "p90_rank": 2.0,
+              "worst_rank": 64,
+              "mean_similarity": 0.9667452809801621,
+              "recall@1": 0.8754727960430608,
+              "recall@5": 0.9770148385219668,
+              "recall@10": 0.9970904858888565
+            },
+            "<=150px": {
+              "pairs": 5291,
+              "mean_rank": 1.5203175203175203,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 15,
+              "mean_similarity": 0.9255407421772748,
+              "recall@1": 0.762048762048762,
+              "recall@5": 0.9746739746739747,
+              "recall@10": 0.997920997920998
+            },
+            ">1024px": {
+              "pairs": 193,
+              "mean_rank": 2.1658031088082903,
+              "median_rank": 1.0,
+              "p90_rank": 5.0,
+              "worst_rank": 14,
+              "mean_similarity": 0.9658455891930378,
+              "recall@1": 0.7098445595854922,
+              "recall@5": 0.917098445595855,
+              "recall@10": 0.9792746113989638
+            }
+          }
+        }
+      },
+      "seconds": 5.3,
+      "worst_examples": [
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58.jpg",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 64,
+          "similarity": 0.4413219690322876
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_333x333.avif",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 55,
+          "similarity": 0.44897180795669556
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_1082x1082.avif",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 53,
+          "similarity": 0.44880008697509766
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_483x483.avif",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 47,
+          "similarity": 0.44813457131385803
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_368x368.avif",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 40,
+          "similarity": 0.45172280073165894
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e.jpg",
+          "target": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e_147x147.avif",
+          "rank": 17,
+          "similarity": 0.8046450614929199
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d.jpeg",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8402659296989441
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_1082x1082.avif",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8501309156417847
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_483x483.avif",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8570406436920166
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_824x824.avif",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8501309156417847
+        }
+      ]
+    },
+    "pe-core-l14": {
+      "arm": "pe-core-l14",
+      "pool_size": 16145,
+      "per_collection_vectors": {
+        "sharded": {
+          "vectors": 7550,
+          "dim": 1024,
+          "offset": 0
+        },
+        "music_artworks": {
+          "vectors": 8595,
+          "dim": 1024,
+          "offset": 7550
+        }
+      },
+      "missing_files": 0,
+      "dropped_pairs_for_missing_members": 0,
+      "overall": {
+        "pairs": 24648,
+        "mean_rank": 1.5195553391755923,
+        "median_rank": 1.0,
+        "p90_rank": 3.0,
+        "worst_rank": 70,
+        "mean_similarity": 0.9544753053868525,
+        "recall@1": 0.788664394677053,
+        "recall@5": 0.9720464135021097,
+        "recall@10": 0.997078870496592
+      },
+      "by_collection": {
+        "sharded": {
+          "pairs": 1288,
+          "mean_rank": 1.0,
+          "median_rank": 1.0,
+          "p90_rank": 1.0,
+          "worst_rank": 1,
+          "mean_similarity": 0.9738609989792664,
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "by_query_tier": {
+            "300px": {
+              "pairs": 644,
+              "mean_rank": 1.0,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 1,
+              "mean_similarity": 0.9738609989792664,
+              "recall@1": 1.0,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            },
+            "640px": {
+              "pairs": 644,
+              "mean_rank": 1.0,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 1,
+              "mean_similarity": 0.9738609989792664,
+              "recall@1": 1.0,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            }
+          }
+        },
+        "music_artworks": {
+          "pairs": 23360,
+          "mean_rank": 1.5482020547945206,
+          "median_rank": 1.0,
+          "p90_rank": 3.0,
+          "worst_rank": 70,
+          "mean_similarity": 0.9534064366648051,
+          "recall@1": 0.7770119863013699,
+          "recall@5": 0.9705051369863014,
+          "recall@10": 0.9969178082191781,
+          "by_query_tier": {
+            "151-300px": {
+              "pairs": 989,
+              "mean_rank": 1.256825075834176,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 18,
+              "mean_similarity": 0.9595980305522228,
+              "recall@1": 0.9140546006066734,
+              "recall@5": 0.980788675429727,
+              "recall@10": 0.9979777553083923
+            },
+            "301-640px": {
+              "pairs": 13450,
+              "mean_rank": 1.5202973977695167,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 46,
+              "mean_similarity": 0.9662822132128323,
+              "recall@1": 0.7737546468401487,
+              "recall@5": 0.9766542750929368,
+              "recall@10": 0.9976951672862453
+            },
+            "641-1024px": {
+              "pairs": 3437,
+              "mean_rank": 1.5365144020948502,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 70,
+              "mean_similarity": 0.938059796071656,
+              "recall@1": 0.8321210357870236,
+              "recall@5": 0.9627582193773639,
+              "recall@10": 0.9965085830666278
+            },
+            "<=150px": {
+              "pairs": 5291,
+              "mean_rank": 1.6596106596106597,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 58,
+              "mean_similarity": 0.9292284237529622,
+              "recall@1": 0.725949725949726,
+              "recall@5": 0.9604989604989606,
+              "recall@10": 0.9952749952749953
+            },
+            ">1024px": {
+              "pairs": 193,
+              "mean_rank": 2.139896373056995,
+              "median_rank": 1.0,
+              "p90_rank": 5.0,
+              "worst_rank": 15,
+              "mean_similarity": 0.9605027532948114,
+              "recall@1": 0.7202072538860104,
+              "recall@5": 0.9015544041450777,
+              "recall@10": 0.9896373056994818
+            }
+          }
+        }
+      },
+      "seconds": 5.4,
+      "worst_examples": [
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006.jpg",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_112x112.avif",
+          "rank": 70,
+          "similarity": 0.6936287879943848
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3.jpeg",
+          "rank": 58,
+          "similarity": 0.5478034019470215
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_1082x1082.avif",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_112x112.avif",
+          "rank": 48,
+          "similarity": 0.711255669593811
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_483x483.avif",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_112x112.avif",
+          "rank": 46,
+          "similarity": 0.7204055786132812
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_368x368.avif",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_112x112.avif",
+          "rank": 45,
+          "similarity": 0.7273445129394531
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_482x482.avif",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_112x112.avif",
+          "rank": 40,
+          "similarity": 0.7255375981330872
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/c/b/6/cb6f77678192be26f91d90cfd20b4566.jpg",
+          "target": "music-artworks/c/b/6/cb6f77678192be26f91d90cfd20b4566_147x147.avif",
+          "rank": 31,
+          "similarity": 0.6061245203018188
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006.jpg",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_147x147.avif",
+          "rank": 30,
+          "similarity": 0.733443021774292
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3.jpeg",
+          "target": "music-artworks/e/6/4/e64715abc9340b12e99cb5aab3ea6ba3_147x147.avif",
+          "rank": 18,
+          "similarity": 0.5478034019470215
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_1082x1082.avif",
+          "target": "music-artworks/f/2/1/f2181134e291af336392fc7b3045c006_147x147.avif",
+          "rank": 18,
+          "similarity": 0.7479710578918457
+        }
+      ]
+    },
+    "dinov3-vitl16": {
+      "arm": "dinov3-vitl16",
+      "pool_size": 16145,
+      "per_collection_vectors": {
+        "sharded": {
+          "vectors": 7550,
+          "dim": 1024,
+          "offset": 0
+        },
+        "music_artworks": {
+          "vectors": 8595,
+          "dim": 1024,
+          "offset": 7550
+        }
+      },
+      "missing_files": 0,
+      "dropped_pairs_for_missing_members": 0,
+      "overall": {
+        "pairs": 24648,
+        "mean_rank": 1.550673482635508,
+        "median_rank": 1.0,
+        "p90_rank": 3.0,
+        "worst_rank": 17,
+        "mean_similarity": 0.9505039918194418,
+        "recall@1": 0.7710970464135021,
+        "recall@5": 0.975576111652061,
+        "recall@10": 0.9980931515741642
+      },
+      "by_collection": {
+        "sharded": {
+          "pairs": 1288,
+          "mean_rank": 1.000776397515528,
+          "median_rank": 1.0,
+          "p90_rank": 1.0,
+          "worst_rank": 2,
+          "mean_similarity": 0.9800319958547627,
+          "recall@1": 0.9992236024844721,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "by_query_tier": {
+            "300px": {
+              "pairs": 644,
+              "mean_rank": 1.0,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 1,
+              "mean_similarity": 0.9800319958547627,
+              "recall@1": 1.0,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            },
+            "640px": {
+              "pairs": 644,
+              "mean_rank": 1.0015527950310559,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9800319958547627,
+              "recall@1": 0.9984472049689441,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            }
+          }
+        },
+        "music_artworks": {
+          "pairs": 23360,
+          "mean_rank": 1.5809931506849315,
+          "median_rank": 1.0,
+          "p90_rank": 3.0,
+          "worst_rank": 17,
+          "mean_similarity": 0.9488759066654395,
+          "recall@1": 0.7585188356164384,
+          "recall@5": 0.9742294520547945,
+          "recall@10": 0.9979880136986301,
+          "by_query_tier": {
+            "151-300px": {
+              "pairs": 989,
+              "mean_rank": 1.179979777553084,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 12,
+              "mean_similarity": 0.9591087988220885,
+              "recall@1": 0.9443882709807887,
+              "recall@5": 0.9858442871587462,
+              "recall@10": 0.9949443882709808
+            },
+            "301-640px": {
+              "pairs": 13450,
+              "mean_rank": 1.6181412639405204,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 16,
+              "mean_similarity": 0.9613041779542945,
+              "recall@1": 0.7366542750929368,
+              "recall@5": 0.977174721189591,
+              "recall@10": 0.9981412639405205
+            },
+            "641-1024px": {
+              "pairs": 3437,
+              "mean_rank": 1.4180971777713123,
+              "median_rank": 1.0,
+              "p90_rank": 2.0,
+              "worst_rank": 14,
+              "mean_similarity": 0.9588340464843925,
+              "recall@1": 0.8667442537096305,
+              "recall@5": 0.9700320046552225,
+              "recall@10": 0.9976723887110852
+            },
+            "<=150px": {
+              "pairs": 5291,
+              "mean_rank": 1.6456246456246457,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 17,
+              "mean_similarity": 0.9088634654268428,
+              "recall@1": 0.7113967113967113,
+              "recall@5": 0.9701379701379701,
+              "recall@10": 0.9986769986769987
+            },
+            ">1024px": {
+              "pairs": 193,
+              "mean_rank": 2.1761658031088085,
+              "median_rank": 1.0,
+              "p90_rank": 5.800000000000011,
+              "worst_rank": 12,
+              "mean_similarity": 0.9499076209537723,
+              "recall@1": 0.694300518134715,
+              "recall@5": 0.8963730569948186,
+              "recall@10": 0.9896373056994818
+            }
+          }
+        }
+      },
+      "seconds": 6.3,
+      "worst_examples": [
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d.jpg",
+          "rank": 17,
+          "similarity": 0.7757502794265747
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_483x483.avif",
+          "rank": 17,
+          "similarity": 0.7758291959762573
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d.jpg",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "rank": 16,
+          "similarity": 0.7757502794265747
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_1082x1082.avif",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "rank": 16,
+          "similarity": 0.7803149819374084
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_1082x1082.avif",
+          "rank": 15,
+          "similarity": 0.7803149819374084
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_483x483.avif",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "rank": 15,
+          "similarity": 0.7758291959762573
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e.jpg",
+          "target": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e_147x147.avif",
+          "rank": 14,
+          "similarity": 0.8542200922966003
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/c/1/fc13cb0ed856f466c7428c8cd6f04482.jpg",
+          "target": "music-artworks/f/c/1/fc13cb0ed856f466c7428c8cd6f04482_147x147.avif",
+          "rank": 14,
+          "similarity": 0.8917005062103271
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/c/1/fc13cb0ed856f466c7428c8cd6f04482_1082x1082.avif",
+          "target": "music-artworks/f/c/1/fc13cb0ed856f466c7428c8cd6f04482_147x147.avif",
+          "rank": 14,
+          "similarity": 0.8866697549819946
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_368x368.avif",
+          "target": "music-artworks/0/9/4/09420c1b5f64ce0d2b65a1036fa11f4d_147x147.avif",
+          "rank": 13,
+          "similarity": 0.8534905910491943
+        }
+      ]
+    },
+    "dinov2-vitl14-392": {
+      "arm": "dinov2-vitl14-392",
+      "pool_size": 16145,
+      "per_collection_vectors": {
+        "sharded": {
+          "vectors": 7550,
+          "dim": 1024,
+          "offset": 0
+        },
+        "music_artworks": {
+          "vectors": 8595,
+          "dim": 1024,
+          "offset": 7550
+        }
+      },
+      "missing_files": 0,
+      "dropped_pairs_for_missing_members": 0,
+      "overall": {
+        "pairs": 24648,
+        "mean_rank": 1.625,
+        "median_rank": 1.0,
+        "p90_rank": 3.0,
+        "worst_rank": 58,
+        "mean_similarity": 0.9536170850095909,
+        "recall@1": 0.7543816942551119,
+        "recall@5": 0.9718841285296982,
+        "recall@10": 0.9969165855241805
+      },
+      "by_collection": {
+        "sharded": {
+          "pairs": 1288,
+          "mean_rank": 1.0031055900621118,
+          "median_rank": 1.0,
+          "p90_rank": 1.0,
+          "worst_rank": 2,
+          "mean_similarity": 0.9785541292303097,
+          "recall@1": 0.9968944099378882,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "by_query_tier": {
+            "300px": {
+              "pairs": 644,
+              "mean_rank": 1.0031055900621118,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9785541292303097,
+              "recall@1": 0.9968944099378882,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            },
+            "640px": {
+              "pairs": 644,
+              "mean_rank": 1.0031055900621118,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9785541292303097,
+              "recall@1": 0.9968944099378882,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            }
+          }
+        },
+        "music_artworks": {
+          "pairs": 23360,
+          "mean_rank": 1.6592893835616438,
+          "median_rank": 1.0,
+          "p90_rank": 3.0,
+          "worst_rank": 58,
+          "mean_similarity": 0.9522421315439964,
+          "recall@1": 0.7410102739726028,
+          "recall@5": 0.9703339041095891,
+          "recall@10": 0.9967465753424658,
+          "by_query_tier": {
+            "151-300px": {
+              "pairs": 989,
+              "mean_rank": 1.256825075834176,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 13,
+              "mean_similarity": 0.962632274241973,
+              "recall@1": 0.917087967644085,
+              "recall@5": 0.9777553083923155,
+              "recall@10": 0.9969666329625885
+            },
+            "301-640px": {
+              "pairs": 13450,
+              "mean_rank": 1.7070631970260224,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 58,
+              "mean_similarity": 0.9631736920956785,
+              "recall@1": 0.7144981412639405,
+              "recall@5": 0.9738289962825278,
+              "recall@10": 0.9970260223048327
+            },
+            "641-1024px": {
+              "pairs": 3437,
+              "mean_rank": 1.4885074192609835,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 23,
+              "mean_similarity": 0.9602833954719807,
+              "recall@1": 0.8489962176316556,
+              "recall@5": 0.9671224905440792,
+              "recall@10": 0.9970904858888565
+            },
+            "<=150px": {
+              "pairs": 5291,
+              "mean_rank": 1.7011907011907013,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 17,
+              "mean_similarity": 0.917175759255965,
+              "recall@1": 0.707049707049707,
+              "recall@5": 0.9652239652239653,
+              "recall@10": 0.9964089964089964
+            },
+            ">1024px": {
+              "pairs": 193,
+              "mean_rank": 2.284974093264249,
+              "median_rank": 1.0,
+              "p90_rank": 6.0,
+              "worst_rank": 14,
+              "mean_similarity": 0.9553147279536786,
+              "recall@1": 0.694300518134715,
+              "recall@5": 0.8860103626943006,
+              "recall@10": 0.9792746113989638
+            }
+          }
+        }
+      },
+      "seconds": 6.5,
+      "worst_examples": [
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_1082x1082.avif",
+          "target": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_147x147.avif",
+          "rank": 58,
+          "similarity": 0.44014209508895874
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a.jpg",
+          "target": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_147x147.avif",
+          "rank": 48,
+          "similarity": 0.4425851106643677
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/d/9/fd9b5bf444155d8b4b7c57a74d77c2e3.jpg",
+          "target": "music-artworks/f/d/9/fd9b5bf444155d8b4b7c57a74d77c2e3_112x112.avif",
+          "rank": 48,
+          "similarity": 0.455044686794281
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/d/9/fd9b5bf444155d8b4b7c57a74d77c2e3_1082x1082.avif",
+          "target": "music-artworks/f/d/9/fd9b5bf444155d8b4b7c57a74d77c2e3_112x112.avif",
+          "rank": 31,
+          "similarity": 0.47185641527175903
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_482x482.avif",
+          "target": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_147x147.avif",
+          "rank": 25,
+          "similarity": 0.47853097319602966
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_483x483.avif",
+          "target": "music-artworks/5/5/6/5569d61c5e691a1a408c072e4a53d37a_147x147.avif",
+          "rank": 24,
+          "similarity": 0.49413925409317017
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e.jpg",
+          "target": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e_147x147.avif",
+          "rank": 23,
+          "similarity": 0.6137243509292603
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58.jpg",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 23,
+          "similarity": 0.4787038564682007
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_1082x1082.avif",
+          "target": "music-artworks/a/c/1/ac1476cdd0648bd6285809c518139e58_112x112.avif",
+          "rank": 23,
+          "similarity": 0.4793252944946289
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/f/d/9/fd9b5bf444155d8b4b7c57a74d77c2e3_1079x1079.avif",
+          "target": "music-artworks/f/d/9/fd9b5bf444155d8b4b7c57a74d77c2e3_112x112.avif",
+          "rank": 23,
+          "similarity": 0.48785704374313354
+        }
+      ]
+    },
+    "dinov3-vith16plus": {
+      "arm": "dinov3-vith16plus",
+      "pool_size": 16145,
+      "per_collection_vectors": {
+        "sharded": {
+          "vectors": 7550,
+          "dim": 1280,
+          "offset": 0
+        },
+        "music_artworks": {
+          "vectors": 8595,
+          "dim": 1280,
+          "offset": 7550
+        }
+      },
+      "missing_files": 0,
+      "dropped_pairs_for_missing_members": 0,
+      "overall": {
+        "pairs": 24648,
+        "mean_rank": 1.5773693605972088,
+        "median_rank": 1.0,
+        "p90_rank": 3.0,
+        "worst_rank": 29,
+        "mean_similarity": 0.9515764248841229,
+        "recall@1": 0.7642810775722169,
+        "recall@5": 0.973385264524505,
+        "recall@10": 0.9966731580655631
+      },
+      "by_collection": {
+        "sharded": {
+          "pairs": 1288,
+          "mean_rank": 1.000776397515528,
+          "median_rank": 1.0,
+          "p90_rank": 1.0,
+          "worst_rank": 2,
+          "mean_similarity": 0.9752867563355784,
+          "recall@1": 0.9992236024844721,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "by_query_tier": {
+            "300px": {
+              "pairs": 644,
+              "mean_rank": 1.0015527950310559,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 2,
+              "mean_similarity": 0.9752867563355784,
+              "recall@1": 0.9984472049689441,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            },
+            "640px": {
+              "pairs": 644,
+              "mean_rank": 1.0,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 1,
+              "mean_similarity": 0.9752867563355784,
+              "recall@1": 1.0,
+              "recall@5": 1.0,
+              "recall@10": 1.0
+            }
+          }
+        },
+        "music_artworks": {
+          "pairs": 23360,
+          "mean_rank": 1.6091609589041096,
+          "median_rank": 1.0,
+          "p90_rank": 3.0,
+          "worst_rank": 29,
+          "mean_similarity": 0.9502691086636831,
+          "recall@1": 0.7513270547945206,
+          "recall@5": 0.9719178082191781,
+          "recall@10": 0.9964897260273973,
+          "by_query_tier": {
+            "151-300px": {
+              "pairs": 989,
+              "mean_rank": 1.2386248736097067,
+              "median_rank": 1.0,
+              "p90_rank": 1.0,
+              "worst_rank": 12,
+              "mean_similarity": 0.9610775557880575,
+              "recall@1": 0.916076845298281,
+              "recall@5": 0.9817997977755308,
+              "recall@10": 0.9949443882709808
+            },
+            "301-640px": {
+              "pairs": 13450,
+              "mean_rank": 1.6336802973977695,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 17,
+              "mean_similarity": 0.9627871370935972,
+              "recall@1": 0.7304089219330855,
+              "recall@5": 0.9754646840148699,
+              "recall@10": 0.9969516728624536
+            },
+            "641-1024px": {
+              "pairs": 3437,
+              "mean_rank": 1.4352633110270585,
+              "median_rank": 1.0,
+              "p90_rank": 2.0,
+              "worst_rank": 14,
+              "mean_similarity": 0.9588087514836253,
+              "recall@1": 0.8600523712540006,
+              "recall@5": 0.9694501018329938,
+              "recall@10": 0.9967995344777422
+            },
+            "<=150px": {
+              "pairs": 5291,
+              "mean_rank": 1.7113967113967115,
+              "median_rank": 1.0,
+              "p90_rank": 3.0,
+              "worst_rank": 29,
+              "mean_similarity": 0.910692471836943,
+              "recall@1": 0.7044037044037044,
+              "recall@5": 0.965034965034965,
+              "recall@10": 0.996030996030996
+            },
+            ">1024px": {
+              "pairs": 193,
+              "mean_rank": 2.093264248704663,
+              "median_rank": 1.0,
+              "p90_rank": 5.0,
+              "worst_rank": 12,
+              "mean_similarity": 0.9554100231185478,
+              "recall@1": 0.7150259067357513,
+              "recall@5": 0.9067357512953368,
+              "recall@10": 0.9792746113989638
+            }
+          }
+        }
+      },
+      "seconds": 7.0,
+      "worst_examples": [
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/c/b/ecbd4b7ff56e8407691f38f616068a17_147x147.avif",
+          "target": "music-artworks/e/c/b/ecbd4b7ff56e8407691f38f616068a17_483x483.avif",
+          "rank": 29,
+          "similarity": 0.33784571290016174
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/c/b/ecbd4b7ff56e8407691f38f616068a17_147x147.avif",
+          "target": "music-artworks/e/c/b/ecbd4b7ff56e8407691f38f616068a17.jpg",
+          "rank": 23,
+          "similarity": 0.34370285272598267
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/e/c/b/ecbd4b7ff56e8407691f38f616068a17_147x147.avif",
+          "target": "music-artworks/e/c/b/ecbd4b7ff56e8407691f38f616068a17_368x368.avif",
+          "rank": 20,
+          "similarity": 0.3453931212425232
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e.jpg",
+          "target": "music-artworks/6/b/6/6b6cdd17dbd83524349d35494fa65b7e_147x147.avif",
+          "rank": 17,
+          "similarity": 0.9346631765365601
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d.jpeg",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.807122528553009
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_1082x1082.avif",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8129603862762451
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_483x483.avif",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8079342842102051
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_824x824.avif",
+          "target": "music-artworks/5/1/0/510e51b8f848b7f537d685cb5a333e0d_112x112.avif",
+          "rank": 16,
+          "similarity": 0.8129603862762451
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/1/1/0119c5e4b1688c501ada3fe666a12e8e.jpg",
+          "target": "music-artworks/0/1/1/0119c5e4b1688c501ada3fe666a12e8e_112x112.avif",
+          "rank": 15,
+          "similarity": 0.8231785297393799
+        },
+        {
+          "collection": "music_artworks",
+          "query": "music-artworks/0/1/1/0119c5e4b1688c501ada3fe666a12e8e_1082x1082.avif",
+          "target": "music-artworks/0/1/1/0119c5e4b1688c501ada3fe666a12e8e_112x112.avif",
+          "rank": 15,
+          "similarity": 0.8221924901008606
+        }
+      ]
+    }
+  }
+}

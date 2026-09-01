@@ -1,0 +1,419 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "cascade-ground-truth-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "group-a.v2",
+	"seed": 20260803,
+	"generatedBy": "research/v3/src/review-server/oracle-validation.ts",
+	"builtFrom": [
+		"research/v3/data/oracle-premise/premise-run-cd.jsonl",
+		"research/v3/data/oracle-premise/b-unmapped-class-analysis.json",
+		"research/v3/data/oracle-premise/eval-set.json",
+		"research/v3/ORACLE_QUESTION_SET.md"
+	],
+	"selection": {
+		"rule": "Every artwork in the premise evaluation set's primary population (included, and its accepted palettes agreeing on the gradient boolean) where prompt variant D answered multiple_distinct_fields — 19 artworks, of which the 8 the vocabulary-gated cascade policy would commit are a strict subset. The policy takes D's answer on the covers where B abstains, and its entire evidential basis is scored against the published accepted-palette gradient flag: 0 of the 19, and 0 of the 8, carry a reviewer ground_type answer with a usable binary (reviews/phase-0-adversarial/cascade-basis.md §2). The flag is not a usable stand-in — it agrees with the reviewer on 14 of 24 gold-30 items, kappa 0.0625 — so this round is the primary judge answering, for the exact answer value and the exact wording the policy names. No model answer, no flag and no bucket is written beside any item. WORDING: the stem, the six answer keys, their labels and their hotkeys are byte-identical to premise-disambiguation-1; the criterion above the question is ORACLE_QUESTION_SET.md §A.2 quoted, which is the corrected wording the reviewer signed off on 2026-08-03 and the wording group-a.v2 (variant D) was run under. The disambiguation round's own instruction is NOT reused: it is the v1 criterion, which §A.2 supersedes, and answers under the two wordings are not comparable in either direction.",
+		"counts": {
+			"d_rows": 142,
+			"d_answered_multiple_distinct_fields": 20,
+			"excluded_not_in_primary_population": 1,
+			"corpus_wide_multiple_distinct_fields": 19,
+			"policy_slice": 8,
+			"policy_slice_inside_the_corpus_wide_set": 8,
+			"selected": 19
+		}
+	},
+	"questions": [
+		{
+			"key": "ground_type",
+			"kind": "enum",
+			"question": "The GROUND is the large area behind and around any subject, text or figures. What is it made of?",
+			"instruction": "If it is genuinely a coin flip, answer with your first read. Do not deliberate.",
+			"preamble": "THE TEST. Does the ground read as one continuous colour progression, or as discrete colour areas? Whether it is one physical surface is a strong hint, but it is neither required nor decisive.\n\nCanonical case 1 — the painted wall. A wall painted in bands that melt into each other is one continuous progression (shaded_field) — this is the contract's genuine three-stop gradient case. The same wall painted in crisp bands is discrete areas (multiple_distinct_fields). Same wall, same paint, different answer.\n\nCanonical case 2 — the blurry meeting line. One flat area meeting one shaded area along a blurry line is still discrete areas (multiple_distinct_fields). A single surface that is flat across part of itself and shaded across another part is one continuous progression (shaded_field). How soft the join looks is never the test.",
+			"answers": [
+				{
+					"key": "flat_field",
+					"label": "flat field",
+					"gloss": "one area, essentially one colour, no progression across it",
+					"hotkey": "1"
+				},
+				{
+					"key": "shaded_field",
+					"label": "shaded field",
+					"gloss": "one continuous colour progression across the ground — light, shadow, glow, fade, or colours melting into one another",
+					"hotkey": "2"
+				},
+				{
+					"key": "multiple_distinct_fields",
+					"label": "multiple distinct fields",
+					"gloss": "discrete colour areas — two or more, each its own colour, however hard or soft the join between them looks",
+					"hotkey": "3"
+				},
+				{
+					"key": "full_scene",
+					"label": "full scene",
+					"gloss": "a depicted space whose ground has no readable overall colour behaviour — not merely \"this is a photograph of a place\"",
+					"hotkey": "4"
+				},
+				{
+					"key": "pattern_or_texture",
+					"label": "pattern or texture",
+					"gloss": "a repeating motif or a material surface that is the ground, with no overall progression and no discrete colour areas",
+					"hotkey": "5"
+				},
+				{
+					"key": "none_discernible",
+					"label": "none discernible",
+					"gloss": "no ground can be made out at all",
+					"hotkey": "6"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "cg-0473407d713f",
+			"questionKey": "ground_type",
+			"imagePath": "12/ab67616d00001e0200124d0597059e8987bc4577",
+			"sha256": "0473407d713fd4c4544191bf7c4238b04f05b474873d069e8d409924b0ea4e68",
+			"imageId": "ab67616d00001e0200124d0597059e8987bc4577",
+			"artworkId": "00124d0597059e8987bc4577",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "ad404608d50bf3de",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-0eb0e60d862f",
+			"questionKey": "ground_type",
+			"imagePath": "images/skap.jpg",
+			"sha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+			"imageId": "skap.jpg",
+			"artworkId": "skap",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "c1bc2c67aa8cb3c9",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 894
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "cg-29f1763b1608",
+			"questionKey": "ground_type",
+			"imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+			"sha256": "29f1763b1608c0adc395996bfdca56075b8b2ae6a8a4e05909453f8aaf179a7c",
+			"imageId": "ab67616d00001e0200083a2d455755e4c1116825",
+			"artworkId": "00083a2d455755e4c1116825",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "627c5ca8764ccfc3",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-303e5c49d86b",
+			"questionKey": "ground_type",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "356f54b1a8a324a1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-3afaf90cd911",
+			"questionKey": "ground_type",
+			"imagePath": "images/krafty.jpg",
+			"sha256": "3afaf90cd911c134fe26708b3da3fdad181eb38cd8455a8a4538de88a4894091",
+			"imageId": "krafty.jpg",
+			"artworkId": "krafty",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "60f5c265fd622fa6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-3bda1f6ebf2e",
+			"questionKey": "ground_type",
+			"imagePath": "0c/ab67616d00001e02000c4d52300a016ee65f1622",
+			"sha256": "3bda1f6ebf2e36e3d1281731bfa0b8ccd62a3e589d03a7b83424df6e2f65552c",
+			"imageId": "ab67616d00001e02000c4d52300a016ee65f1622",
+			"artworkId": "000c4d52300a016ee65f1622",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "45ca4d306f8322e0",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-47ff62e4f8bf",
+			"questionKey": "ground_type",
+			"imagePath": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+			"sha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+			"imageId": "ab67616d00001e02000e229142cb6dbae156341c",
+			"artworkId": "000e229142cb6dbae156341c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8b794c1fa9d1095d",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-5da9408e8e01",
+			"questionKey": "ground_type",
+			"imagePath": "0f/ab67616d0000b273000fa9b53f161dc999ef557d",
+			"sha256": "5da9408e8e01c391c1b9fe4d0496929ed18e3199bfaeca4d63151cf690404079",
+			"imageId": "ab67616d0000b273000fa9b53f161dc999ef557d",
+			"artworkId": "000fa9b53f161dc999ef557d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b68d53f7902d9a6f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-834de9d0d1cf",
+			"questionKey": "ground_type",
+			"imagePath": "07/ab67616d0000b2730007d42f64cb70acce41c71d",
+			"sha256": "834de9d0d1cf7c9a0d49bfff03afa83b60a5c8f01559b34cbd50c300dc8a2566",
+			"imageId": "ab67616d0000b2730007d42f64cb70acce41c71d",
+			"artworkId": "0007d42f64cb70acce41c71d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2bf67801b20ae3eb",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-8aeb184764d9",
+			"questionKey": "ground_type",
+			"imagePath": "images/disney.avif",
+			"sha256": "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b",
+			"imageId": "disney.avif",
+			"artworkId": "disney",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "2adbee46fba41f28",
+				"longEdgePx": 483,
+				"width": 483,
+				"height": 483
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-8b4f2aadf3b1",
+			"questionKey": "ground_type",
+			"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+			"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+			"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+			"artworkId": "000bc98f315aba36374f9f93",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "caee702440943be6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-96ce2811c9d8",
+			"questionKey": "ground_type",
+			"imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"sha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+			"imageId": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"artworkId": "000300752f338b6aedff856c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "9dbd7a9f92886c36",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-9f0f531571fe",
+			"questionKey": "ground_type",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-c5b20159f95c",
+			"questionKey": "ground_type",
+			"imagePath": "images/artofficial.jpg",
+			"sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+			"imageId": "artofficial.jpg",
+			"artworkId": "artofficial",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e68508919438842e",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640"
+		},
+		{
+			"itemId": "cg-c6d19597ab9d",
+			"questionKey": "ground_type",
+			"imagePath": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+			"sha256": "c6d19597ab9d71847da3dc53ae70d7526d61ea14bb08ffdcac3bd475d768eace",
+			"imageId": "ab67616d00001e0200066a61bbcbeadd632f7f38",
+			"artworkId": "00066a61bbcbeadd632f7f38",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "de9c4881d5db4be9",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-c775bbb468a2",
+			"questionKey": "ground_type",
+			"imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"sha256": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+			"imageId": "ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+			"artworkId": "0000269ead63cf2376a6b67d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "8bb5a54ee855eda3",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-cbff25964afd",
+			"questionKey": "ground_type",
+			"imagePath": "images/elephunk.jpg",
+			"sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+			"imageId": "elephunk.jpg",
+			"artworkId": "elephunk",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "61617f15b3056fb2",
+				"longEdgePx": 500,
+				"width": 500,
+				"height": 500
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "cg-eb8b829680d8",
+			"questionKey": "ground_type",
+			"imagePath": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+			"sha256": "eb8b829680d8b55a6bb2d77ff982dc225b32db097c04734f3c006c9f36f0cd41",
+			"imageId": "ab67616d00001e02000f0a78a1791248aec707e3",
+			"artworkId": "000f0a78a1791248aec707e3",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "118d9702fa075c8a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "cg-fee5aa90e94c",
+			"questionKey": "ground_type",
+			"imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+			"sha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+			"imageId": "ab67616d0000b27300014fb430dd1b693e653121.jpg",
+			"artworkId": "00014fb430dd1b693e653121",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "71bacc05c36195d2",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		}
+	],
+	"serveOrder": [
+		"cg-c775bbb468a2",
+		"cg-c5b20159f95c",
+		"cg-fee5aa90e94c",
+		"cg-c6d19597ab9d",
+		"cg-96ce2811c9d8",
+		"cg-3afaf90cd911",
+		"cg-303e5c49d86b",
+		"cg-0eb0e60d862f",
+		"cg-834de9d0d1cf",
+		"cg-eb8b829680d8",
+		"cg-9f0f531571fe",
+		"cg-0473407d713f",
+		"cg-cbff25964afd",
+		"cg-5da9408e8e01",
+		"cg-8b4f2aadf3b1",
+		"cg-29f1763b1608",
+		"cg-8aeb184764d9",
+		"cg-3bda1f6ebf2e",
+		"cg-47ff62e4f8bf"
+	]
+}

@@ -1,0 +1,949 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "dropped-colors-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "dropped-colors.v1",
+	"seed": 20260804,
+	"generatedBy": "research/v3/src/review-server/dropped-colors.ts",
+	"builtFrom": [
+		"research/v3/data/contract/belongs-study.json",
+		"research/v3/data/legacy/endorsements.json",
+		"research/v3/reviews/toolbox-review/bias-audit.md"
+	],
+	"selection": {
+		"rule": "Endorsed colours that STILL fail invariant 2's population floor after B1's same-colour-bar fix — 53 distinct (artwork, colour) units, measured by research/v3/data/contract/belongs-study.json. 20 are asked about here, taken as an even stride across the margin-sorted list (both endpoints included) rather than the worst 20: sampling only the deepest failures would answer whether extreme cases are bad, not where belonging stops, and would bias the round toward 'does not belong'. Colours whose only endorsement is a partial palette are excluded first (see excludedForPartialPalette): the question is whether a colour belongs in this artwork's PALETTE, and a mock drawn from one role has no background, surface or foreground to judge it against. Every displayed number is re-derived from the artwork's pixels at build time and the builder refuses to build a colour that no longer fails.",
+		"counts": {
+			"residualFailures": 53,
+			"askable": 52,
+			"excludedForPartialPalette": 1,
+			"asked": 20,
+			"questions": 20
+		}
+	},
+	"questions": [
+		{
+			"key": "dropped_color_829eb70bd92575e6_44252a",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the foreground — Dark Cocoa, #44252a. It covers 0.0066% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Liver (#534a4f, 1.8% of the artwork), 0.119 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_0193dbdddc8de533_9f022f",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the foreground and accent — Lifeline, #9f022f. It covers 0.013% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Haunted Library (#430f1d, 1.4% of the artwork), 0.207 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_0a4880fd107f1ea1_b46f6a",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Nipple, #b46f6a. It covers 0.017% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pebble (#8f8588, 1.2% of the artwork), 0.078 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_829eb70bd92575e6_784144",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Cherrywood, #784144. It covers 0.021% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Liver (#534a4f, 1.8% of the artwork), 0.069 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_7290b14e20b3ef06_3f322c",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Walnut, #3f322c. It covers 0.032% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Gunmetal (#273a43, 1.6% of the artwork), 0.051 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_e3d27b2eca8f6e5b_8827c4",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Van de Graaff, #8827c4. It covers 0.036% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Royal Robe (#6f3ea1, 2.0% of the artwork), 0.077 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_3d40402fc5ceb6a0_672a4c",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Heartless, #672a4c. It covers 0.041% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Smoky Mauve (#57384d, 1.1% of the artwork), 0.045 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_921047b2563ef619_1f3835",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the background — Blackboard, #1f3835. It covers 0.044% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Thicket (#273f3d, 50.0% of the artwork), 0.029 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_6a69bd0792a13148_417779",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Ming, #417779. It covers 0.046% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Ash (#717278, 2.3% of the artwork), 0.060 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_e4a83d5aea066526_11010b",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the background — Ebony, #11010b. It covers 0.050% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Ink (#09040a, 6.2% of the artwork), 0.028 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_49f50bee9f39fc6e_f168a0",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Serenade, #f168a0. It covers 0.054% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Nougat (#a98878, 2.0% of the artwork), 0.160 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_4791ac96cb9a5f19_887b8d",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the foreground — Whale, #887b8d. It covers 0.057% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pink Lavender (#c297bb, 7.4% of the artwork), 0.133 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_921047b2563ef619_a15852",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Terra Blush, #a15852. It covers 0.058% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Batman (#5b6968, 1.9% of the artwork), 0.119 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_e4cca43ae5f9f8eb_466291",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Faded Sapphire, #466291. It covers 0.060% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Heather (#615e66, 1.1% of the artwork), 0.075 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_631a7449b0753ce1_916244",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Pecan, #916244. It covers 0.065% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Field Drab (#625741, 1.0% of the artwork), 0.091 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_742b8a94ed6cde6c_ee231f",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Scarlet Blaze, #ee231f. It covers 0.070% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pebble (#87868c, 1.1% of the artwork), 0.235 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_9a09b5f9c9d81dd3_fcd552",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Banana, #fcd552. It covers 0.076% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Bronze Umber (#6d470d, 1.8% of the artwork), 0.458 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_541381a040d65fe5_b62d1a",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Roasted Pepper, #b62d1a. It covers 0.080% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Pulp (#e76d63, 2.1% of the artwork), 0.169 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_c65c797e0907eaa5_f7f7f5",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the accent — Snow, #f7f7f5. It covers 0.088% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Greige (#bebbb5, 2.6% of the artwork), 0.184 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "dropped_color_e873a1cba8760d4e_ececee",
+			"kind": "enum",
+			"question": "Does this colour belong in this artwork's palette?",
+			"instruction": "Answer about THIS colour in THIS palette on THIS artwork, as rendered — not about the rule in general, and not about whether the palette as a whole is good. The question is not whether the colour is in the artwork: every colour here is an exact pixel of it. The question is whether it feels like it belongs — whether a designer looking at this cover would accept this colour as one of its colours. Answer 'belongs' if you would still be happy to get this colour here. Answer 'does not belong' if, seeing it again, it reads as arbitrary or imported.",
+			"preamble": "The rule would drop the foreground — Linen, #ececee. It covers 0.098% of the artwork counting every pixel within the same-colour bar, against a floor of 0.100%; the nearest substantial colour mode of the artwork is Smoky Iris (#535478, 1.3% of the artwork), 0.487 away in OKLab.",
+			"framing": "Every colour in this round is one you already endorsed, and one that invariant 2's population floor would refuse to publish even after the same-colour-bar fix. src/contract/BELONGS_STUDY.md measured that no pixel feature tried tells endorsed colours apart from known-bad ones, so it could not recommend a calibrated threshold — the campaign has no colour-level 'does not belong' label to calibrate against. These answers are that label. 'Belongs' is evidence the floor should be demoted to advisory; 'does not belong' is evidence it is catching something real.",
+			"answers": [
+				{
+					"key": "belongs",
+					"label": "belongs",
+					"gloss": "This colour is one of this artwork's colours. Dropping it would be a loss.",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_belong",
+					"label": "does not belong",
+					"gloss": "Seeing it again, this colour reads as arbitrary or imported. The rule would be right to drop it.",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "dropped-829eb70bd92575e6-44252a",
+			"questionKey": "dropped_color_829eb70bd92575e6_44252a",
+			"imagePath": "09/ab67616d0000b2730009448702be55dfc86fde67",
+			"sha256": "a7206ff9631b4b550ef8f74d479b188212ea0f4c4ef4f02653ae2a39b9ca0ac8",
+			"imageId": "ab67616d0000b2730009448702be55dfc86fde67",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "829eb70bd92575e6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "foreground"
+		},
+		{
+			"itemId": "dropped-0193dbdddc8de533-9f022f",
+			"questionKey": "dropped_color_0193dbdddc8de533_9f022f",
+			"imagePath": "00/ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+			"sha256": "87b55fdf0b83e273067806c9edb76f9850b871abe95eb5ee1109c04377e80796",
+			"imageId": "ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "0193dbdddc8de533",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "foreground+accent"
+		},
+		{
+			"itemId": "dropped-0a4880fd107f1ea1-b46f6a",
+			"questionKey": "dropped_color_0a4880fd107f1ea1_b46f6a",
+			"imagePath": "09/ab67616d0000b2730009448702be55dfc86fde67",
+			"sha256": "a7206ff9631b4b550ef8f74d479b188212ea0f4c4ef4f02653ae2a39b9ca0ac8",
+			"imageId": "ab67616d0000b2730009448702be55dfc86fde67",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "0a4880fd107f1ea1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-829eb70bd92575e6-784144",
+			"questionKey": "dropped_color_829eb70bd92575e6_784144",
+			"imagePath": "09/ab67616d0000b2730009448702be55dfc86fde67",
+			"sha256": "a7206ff9631b4b550ef8f74d479b188212ea0f4c4ef4f02653ae2a39b9ca0ac8",
+			"imageId": "ab67616d0000b2730009448702be55dfc86fde67",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "829eb70bd92575e6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-7290b14e20b3ef06-3f322c",
+			"questionKey": "dropped_color_7290b14e20b3ef06_3f322c",
+			"imagePath": "11/ab67616d0000b273001102263870e8b11c13ec31",
+			"sha256": "d7f5458eef305217cccdff86f228ca638178c8d713d1df5a48cc9c3d2a9548a6",
+			"imageId": "ab67616d0000b273001102263870e8b11c13ec31",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "7290b14e20b3ef06",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-e3d27b2eca8f6e5b-8827c4",
+			"questionKey": "dropped_color_e3d27b2eca8f6e5b_8827c4",
+			"imagePath": "0f/ab67616d00001e02000f723f36271de0ed3aa893",
+			"sha256": "15119b41b440ad3b55f8b8b41bda765f906247f41adf07e3091e86edd3389b6a",
+			"imageId": "ab67616d00001e02000f723f36271de0ed3aa893",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e3d27b2eca8f6e5b",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-3d40402fc5ceb6a0-672a4c",
+			"questionKey": "dropped_color_3d40402fc5ceb6a0_672a4c",
+			"imagePath": "06/ab67616d00001e020006bcb4b80e6d6c49820121",
+			"sha256": "c0dd6fb340b6c30112c945e1dae2b6a375fb83e84aaf5a6d63c68313327f33ba",
+			"imageId": "ab67616d00001e020006bcb4b80e6d6c49820121",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "3d40402fc5ceb6a0",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-921047b2563ef619-1f3835",
+			"questionKey": "dropped_color_921047b2563ef619_1f3835",
+			"imagePath": "13/ab67616d0000b2730013095d1c1a5350d21f448d",
+			"sha256": "aa737c9107f27cb4297c3659cd159b5986d42d871630502879cbb9507d8e65d4",
+			"imageId": "ab67616d0000b2730013095d1c1a5350d21f448d",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "921047b2563ef619",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "background"
+		},
+		{
+			"itemId": "dropped-6a69bd0792a13148-417779",
+			"questionKey": "dropped_color_6a69bd0792a13148_417779",
+			"imagePath": "0a/ab67616d00001e02000acce65f2cf84ea8655e1c",
+			"sha256": "59ede92fd699b801c16019d96bc2b07e3b6279e243d3cf04c5af3d2669921999",
+			"imageId": "ab67616d00001e02000acce65f2cf84ea8655e1c",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "6a69bd0792a13148",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-e4a83d5aea066526-11010b",
+			"questionKey": "dropped_color_e4a83d5aea066526_11010b",
+			"imagePath": "10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+			"sha256": "873f991e7862fed87e79dc43bca36e72c5f49e27270651f303f8a2390cbd75c2",
+			"imageId": "ab67616d00001e020010b864b2a925ec6bfaa30e",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e4a83d5aea066526",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "background"
+		},
+		{
+			"itemId": "dropped-49f50bee9f39fc6e-f168a0",
+			"questionKey": "dropped_color_49f50bee9f39fc6e_f168a0",
+			"imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+			"sha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+			"imageId": "ab67616d0000b273000f815611cd5966187e2051",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "49f50bee9f39fc6e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-4791ac96cb9a5f19-887b8d",
+			"questionKey": "dropped_color_4791ac96cb9a5f19_887b8d",
+			"imagePath": "01/ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+			"sha256": "edae061633702f5e33a877a85550fc30e249dfb29209631c63f2f4223e69012f",
+			"imageId": "ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "4791ac96cb9a5f19",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "foreground"
+		},
+		{
+			"itemId": "dropped-921047b2563ef619-a15852",
+			"questionKey": "dropped_color_921047b2563ef619_a15852",
+			"imagePath": "13/ab67616d0000b2730013095d1c1a5350d21f448d",
+			"sha256": "aa737c9107f27cb4297c3659cd159b5986d42d871630502879cbb9507d8e65d4",
+			"imageId": "ab67616d0000b2730013095d1c1a5350d21f448d",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "921047b2563ef619",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-e4cca43ae5f9f8eb-466291",
+			"questionKey": "dropped_color_e4cca43ae5f9f8eb_466291",
+			"imagePath": "08/ab67616d00001e020008dbb4f7769b5d7eac35e7",
+			"sha256": "53e2b188135ab66f4c43eaf3f07f5b2b9be8ec36382ab5d5ef46a6a7ae08a2a9",
+			"imageId": "ab67616d00001e020008dbb4f7769b5d7eac35e7",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e4cca43ae5f9f8eb",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-631a7449b0753ce1-916244",
+			"questionKey": "dropped_color_631a7449b0753ce1_916244",
+			"imagePath": "0e/ab67616d0000b273000e5109c484324cc95a2222",
+			"sha256": "7f77866cd6012c2c5d38f735b87b5e77dba01a1d24641c980d314a5282874660",
+			"imageId": "ab67616d0000b273000e5109c484324cc95a2222",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "631a7449b0753ce1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-742b8a94ed6cde6c-ee231f",
+			"questionKey": "dropped_color_742b8a94ed6cde6c_ee231f",
+			"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "742b8a94ed6cde6c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-9a09b5f9c9d81dd3-fcd552",
+			"questionKey": "dropped_color_9a09b5f9c9d81dd3_fcd552",
+			"imagePath": "0d/ab67616d0000b273000d8049603d6ab7f5d759bb",
+			"sha256": "37a5ba436fd2b1246bd13286253e7cf83a8bd97ea879de28a2171ed1e21f3e66",
+			"imageId": "ab67616d0000b273000d8049603d6ab7f5d759bb",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "9a09b5f9c9d81dd3",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-541381a040d65fe5-b62d1a",
+			"questionKey": "dropped_color_541381a040d65fe5_b62d1a",
+			"imagePath": "10/ab67616d00001e02001031d1e10290f8e446bd68",
+			"sha256": "5745aa64a3d311817ba2043166e1e4494dceff9a63d3704e714d5364952d8587",
+			"imageId": "ab67616d00001e02001031d1e10290f8e446bd68",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "541381a040d65fe5",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-c65c797e0907eaa5-f7f7f5",
+			"questionKey": "dropped_color_c65c797e0907eaa5_f7f7f5",
+			"imagePath": "0a/ab67616d0000b273000a392cb5a08d9801562845",
+			"sha256": "96cacfc4b0d9e31826382f58d4320c9a4613cc03bc8d5ae1121ac551392698ae",
+			"imageId": "ab67616d0000b273000a392cb5a08d9801562845",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "c65c797e0907eaa5",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "accent"
+		},
+		{
+			"itemId": "dropped-e873a1cba8760d4e-ececee",
+			"questionKey": "dropped_color_e873a1cba8760d4e_ececee",
+			"imagePath": "07/ab67616d0000b2730007447dce968ba3a4066044",
+			"sha256": "dcae765bccc77600c0a4bebfce054444127a1b2b6432c88fcb1011b0126a2bc0",
+			"imageId": "ab67616d0000b2730007447dce968ba3a4066044",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e873a1cba8760d4e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "foreground"
+		}
+	],
+	"serveOrder": [
+		"dropped-829eb70bd92575e6-44252a",
+		"dropped-0193dbdddc8de533-9f022f",
+		"dropped-0a4880fd107f1ea1-b46f6a",
+		"dropped-829eb70bd92575e6-784144",
+		"dropped-7290b14e20b3ef06-3f322c",
+		"dropped-e3d27b2eca8f6e5b-8827c4",
+		"dropped-3d40402fc5ceb6a0-672a4c",
+		"dropped-921047b2563ef619-1f3835",
+		"dropped-6a69bd0792a13148-417779",
+		"dropped-e4a83d5aea066526-11010b",
+		"dropped-49f50bee9f39fc6e-f168a0",
+		"dropped-4791ac96cb9a5f19-887b8d",
+		"dropped-921047b2563ef619-a15852",
+		"dropped-e4cca43ae5f9f8eb-466291",
+		"dropped-631a7449b0753ce1-916244",
+		"dropped-742b8a94ed6cde6c-ee231f",
+		"dropped-9a09b5f9c9d81dd3-fcd552",
+		"dropped-541381a040d65fe5-b62d1a",
+		"dropped-c65c797e0907eaa5-f7f7f5",
+		"dropped-e873a1cba8760d4e-ececee"
+	]
+}

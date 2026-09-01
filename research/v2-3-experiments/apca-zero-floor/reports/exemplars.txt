@@ -1,0 +1,51 @@
+
+07d4cb — the founding case; review preferred the WIDE guard's answer here
+07/ab67616d0000b2730007d4cb364e04df68f6e2c1
+  trunk (defect)           bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient midpoint=#089be0
+                           fg reads on surface: raw   2.68   on background: raw  47.43   on midpoint: raw    41.60
+  fg-surface               bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat midpoint=none
+                           fg reads on surface: raw  28.57   on background: raw  47.43   on midpoint: raw      n/a   [repick]
+  fg-surface-accent-ok     bg=#058cde surface=#d2e0eb fg=#fbb89d accent=#fed700 gradient midpoint=#089be0
+                           fg reads on surface: raw  13.18   on background: raw  36.27   on midpoint: raw    30.44   [swap]
+  fg-both                  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat midpoint=none
+                           fg reads on surface: raw  28.57   on background: raw  47.43   on midpoint: raw      n/a   [repick]
+  fg-both-accent-ok        bg=#058cde surface=#d2e0eb fg=#fbb89d accent=#fed700 gradient midpoint=#089be0
+                           fg reads on surface: raw  13.18   on background: raw  36.27   on midpoint: raw    30.44   [swap]
+  accent-only              bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient midpoint=#089be0
+                           fg reads on surface: raw   2.68   on background: raw  47.43   on midpoint: raw    41.60   [untouched]
+  all-four                 bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat midpoint=none
+                           fg reads on surface: raw  28.57   on background: raw  47.43   on midpoint: raw      n/a   [repick]
+
+099b3a — the save; review then caught the repaired fg matching the MIDPOINT
+09/ab67616d00001e0200099b3aaf316149051a4578
+  trunk (defect)           bg=#b5b5b5 surface=#151515 fg=#000000 accent=#e1e1e1 gradient midpoint=#e0e0e0
+                           fg reads on surface: raw   1.43   on background: raw  66.66   on midpoint: raw    90.51
+  fg-surface               bg=#b5b5b5 surface=#151515 fg=#929292 accent=#e1e1e1 gradient midpoint=#e0e0e0
+                           fg reads on surface: raw  45.48   on background: raw  18.76   on midpoint: raw    42.61   [slate]
+  fg-surface-accent-ok     bg=#b5b5b5 surface=#151515 fg=#929292 accent=#e1e1e1 gradient midpoint=#e0e0e0
+                           fg reads on surface: raw  45.48   on background: raw  18.76   on midpoint: raw    42.61   [slate]
+  fg-both                  bg=#b5b5b5 surface=#151515 fg=#7a7a7a accent=#e1e1e1 gradient midpoint=#e0e0e0
+                           fg reads on surface: raw  33.82   on background: raw  30.34   on midpoint: raw    54.19   [slate]
+  fg-both-accent-ok        bg=#b5b5b5 surface=#151515 fg=#7a7a7a accent=#e1e1e1 gradient midpoint=#e0e0e0
+                           fg reads on surface: raw  33.82   on background: raw  30.34   on midpoint: raw    54.19   [slate]
+  accent-only              bg=#b5b5b5 surface=#151515 fg=#000000 accent=#000000 gradient midpoint=#e0e0e0
+                           fg reads on surface: raw   1.43   on background: raw  66.66   on midpoint: raw    90.51   [slate]
+  all-four                 bg=#b5b5b5 surface=#151515 fg=#7a7a7a accent=#7a7a7a gradient midpoint=#e0e0e0
+                           fg reads on surface: raw  33.82   on background: raw  30.34   on midpoint: raw    54.19   [slate]
+
+0ed8ed — the milder midpoint case review flagged alongside it
+0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a
+  trunk (defect)           bg=#f8f8fa surface=#282c2d fg=#2b2f38 accent=#606658 gradient midpoint=#f0eff5
+                           fg reads on surface: raw   1.85   on background: raw  98.45   on midpoint: raw    93.42
+  fg-surface               bg=#f8f8fa surface=#282c2d fg=#a29ca0 accent=#606658 gradient midpoint=#f0eff5
+                           fg reads on surface: raw  48.20   on background: raw  50.88   on midpoint: raw    45.86   [slate]
+  fg-surface-accent-ok     bg=#f8f8fa surface=#282c2d fg=#606658 accent=#2b2f38 gradient midpoint=#f0eff5
+                           fg reads on surface: raw  20.73   on background: raw  78.30   on midpoint: raw    73.27   [swap]
+  fg-both                  bg=#f8f8fa surface=#282c2d fg=#a29ca0 accent=#606658 gradient midpoint=#f0eff5
+                           fg reads on surface: raw  48.20   on background: raw  50.88   on midpoint: raw    45.86   [slate]
+  fg-both-accent-ok        bg=#f8f8fa surface=#282c2d fg=#606658 accent=#2b2f38 gradient midpoint=#f0eff5
+                           fg reads on surface: raw  20.73   on background: raw  78.30   on midpoint: raw    73.27   [swap]
+  accent-only              bg=#f8f8fa surface=#282c2d fg=#2b2f38 accent=#606658 gradient midpoint=#f0eff5
+                           fg reads on surface: raw   1.85   on background: raw  98.45   on midpoint: raw    93.42   [untouched]
+  all-four                 bg=#f8f8fa surface=#282c2d fg=#a7ae78 accent=#606658 gradient midpoint=#f0eff5
+                           fg reads on surface: raw  54.51   on background: raw  44.76   on midpoint: raw    39.74   [slate]

@@ -1,0 +1,2650 @@
+{
+	"manifestVersion": "sam-mask-quality-sample.v1",
+	"batchId": "sam-mask-quality-1",
+	"seed": 20260803,
+	"generatedBy": "research/v3/oracle/sam/review_round.py",
+	"builtFrom": [
+		"research/v3/data/sam/sam-eval-142.jsonl",
+		"research/v3/oracle/sam/config.py",
+		"research/v3/oracle/sam/overlay.py"
+	],
+	"sourceRun": "sam-eval-142",
+	"renderer": {
+		"pillow": "12.3.0",
+		"minPanelPx": 640,
+		"maxPanelScale": 2,
+		"maskAlpha": 0.5,
+		"bboxWidthPx": 4,
+		"haloWidthPx": 3,
+		"locatorRingMaxExtent": 0.25,
+		"conceptColors": {
+			"words": [
+				255,
+				64,
+				64
+			],
+			"letter": [
+				255,
+				160,
+				0
+			],
+			"lettering": [
+				255,
+				232,
+				0
+			],
+			"album-title": [
+				255,
+				96,
+				160
+			],
+			"logo": [
+				0,
+				200,
+				255
+			],
+			"sticker": [
+				255,
+				0,
+				220
+			],
+			"person": [
+				0,
+				255,
+				120
+			],
+			"face": [
+				120,
+				100,
+				255
+			]
+		}
+	},
+	"scoreThresholdAtRun": 0.3,
+	"scoreBands": [
+		{
+			"band": "0.30-0.45",
+			"low": 0.3,
+			"high": 0.45
+		},
+		{
+			"band": "0.45-0.60",
+			"low": 0.45,
+			"high": 0.6
+		},
+		{
+			"band": "0.60-0.80",
+			"low": 0.6,
+			"high": 0.8
+		},
+		{
+			"band": "0.80+",
+			"low": 0.8,
+			"high": 1.01
+		}
+	],
+	"conceptGroups": {
+		"text_like": [
+			"words",
+			"letter",
+			"lettering",
+			"album-title",
+			"logo",
+			"sticker"
+		],
+		"person_like": [
+			"person",
+			"face"
+		]
+	},
+	"selection": {
+		"rule": "A stratified sample of the eval-142 region rows. Every row whose mask covers more than 0.5 of the image while scoring below 0.5 is force-included (the hallucination signature); the rest of the budget is split evenly over the eight score-band x concept-group cells, and inside each cell round-robin over the concepts present, with at most 2 masks from any one artwork. Even rather than proportional, because the population is dominated by one concept in one band and the threshold has to be drawn in the cells the population is thinnest in.",
+		"composition": {
+			"targetSampleSize": 60,
+			"forcedSuspicious": 3,
+			"cellPopulations": {
+				"person_like|0.30-0.45": 134,
+				"person_like|0.45-0.60": 95,
+				"person_like|0.60-0.80": 144,
+				"person_like|0.80+": 156,
+				"text_like|0.30-0.45": 1401,
+				"text_like|0.45-0.60": 1011,
+				"text_like|0.60-0.80": 1532,
+				"text_like|0.80+": 377
+			},
+			"cellQuotas": {
+				"person_like|0.30-0.45": 7,
+				"person_like|0.45-0.60": 7,
+				"person_like|0.60-0.80": 7,
+				"person_like|0.80+": 7,
+				"text_like|0.30-0.45": 7,
+				"text_like|0.45-0.60": 7,
+				"text_like|0.60-0.80": 8,
+				"text_like|0.80+": 7
+			},
+			"cellShortfall": 0
+		}
+	},
+	"items": [
+		{
+			"itemId": "smq-01231204d94c",
+			"maskRowId": "26fb272d7128:person:0",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.722029,
+			"areaFraction": 0.046243878,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.328167,
+					"y": 0.231243,
+					"w": 0.395374,
+					"h": 0.361203
+				}
+			},
+			"artwork": {
+				"imagePath": "images/once.jpg",
+				"imageId": "images/once.jpg",
+				"artworkId": "once",
+				"collection": "other:images",
+				"sha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+				"width": 1000,
+				"height": 980
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-01231204d94c.png",
+				"sha256": "2d5c0e561f21380afd83df972bfd9aa84a5d35a562ef91aef64e2715c7b5f56d",
+				"bytes": 994460,
+				"width": 2014,
+				"height": 1014,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-033cc8100e36",
+			"maskRowId": "fee5aa90e94c:person:1",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.382957,
+			"areaFraction": 0.050085449,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.0,
+					"w": 0.287889,
+					"h": 0.406738
+				}
+			},
+			"artwork": {
+				"imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+				"imageId": "ab67616d0000b27300014fb430dd1b693e653121.jpg",
+				"artworkId": "00014fb430dd1b693e653121",
+				"collection": "sharded",
+				"sha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-033cc8100e36.png",
+				"sha256": "bed9dd2074522e174011d31c7b0de66b41d0751ae31b2f0b8b20b987ca508929",
+				"bytes": 596200,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-06eaf8de2d68",
+			"maskRowId": "a7792253cec6:lettering:1",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"score": 0.643816,
+			"areaFraction": 0.001313477,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "a7792253cec609f9f15a147ee77b6aacd3c0e590f1ae0318e19c2c392e9e827c",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.26611,
+					"y": 0.379698,
+					"w": 0.082627,
+					"h": 0.047101
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b27300099f4221cf6ed5f2440904",
+				"imageId": "ab67616d0000b27300099f4221cf6ed5f2440904",
+				"artworkId": "00099f4221cf6ed5f2440904",
+				"collection": "sharded",
+				"sha256": "a7792253cec609f9f15a147ee77b6aacd3c0e590f1ae0318e19c2c392e9e827c",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-06eaf8de2d68.png",
+				"sha256": "90b169eff9a6872178082f8f32916a5727775d09fe8351f5bacad34ed180c176",
+				"bytes": 342667,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-158efa2b9de2",
+			"maskRowId": "4c926a8c067f:logo:0",
+			"concept": "logo",
+			"conceptPhrase": "logo",
+			"conceptGroup": "text_like",
+			"score": 0.828883,
+			"areaFraction": 0.005166667,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "4c926a8c067fc5f03b1b2bdfb7701b6e0fa93d814e4d948917ae1365f5346e6f",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.020911,
+					"y": 0.906792,
+					"w": 0.096588,
+					"h": 0.078785
+				}
+			},
+			"artwork": {
+				"imagePath": "00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+				"imageId": "ab67616d00001e020000e692a330542f8ed14132.jpg",
+				"artworkId": "0000e692a330542f8ed14132",
+				"collection": "sharded",
+				"sha256": "4c926a8c067fc5f03b1b2bdfb7701b6e0fa93d814e4d948917ae1365f5346e6f",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-158efa2b9de2.png",
+				"sha256": "8293c8ff96e2a4d3e832bd64d8edaf3b17c5560c77566f7a62b1b46680ecae40",
+				"bytes": 326862,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-18196ecad244",
+			"maskRowId": "494beb233bec:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.870374,
+			"areaFraction": 0.009094238,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "494beb233becabbba6e229340d5e29f85ceb6ff291e781e29c27777b2509da8f",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.428442,
+					"y": 0.196762,
+					"w": 0.116019,
+					"h": 0.137319
+				}
+			},
+			"artwork": {
+				"imagePath": "14/ab67616d0000b2730014cb7f2229ff8195e3ba04",
+				"imageId": "ab67616d0000b2730014cb7f2229ff8195e3ba04",
+				"artworkId": "0014cb7f2229ff8195e3ba04",
+				"collection": "sharded",
+				"sha256": "494beb233becabbba6e229340d5e29f85ceb6ff291e781e29c27777b2509da8f",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-18196ecad244.png",
+				"sha256": "d1d4cf7d1a6b2d9d5b5a9583d8418163babd105779f8fb29c7565438a87bcf58",
+				"bytes": 420395,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-19ae08b778ea",
+			"maskRowId": "37a5ba436fd2:words:0",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"score": 0.325296,
+			"areaFraction": 0.010236816,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "37a5ba436fd2b1246bd13286253e7cf83a8bd97ea879de28a2171ed1e21f3e66",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.816207,
+					"y": 0.892946,
+					"w": 0.172806,
+					"h": 0.083312
+				}
+			},
+			"artwork": {
+				"imagePath": "0d/ab67616d0000b273000d8049603d6ab7f5d759bb",
+				"imageId": "ab67616d0000b273000d8049603d6ab7f5d759bb",
+				"artworkId": "000d8049603d6ab7f5d759bb",
+				"collection": "sharded",
+				"sha256": "37a5ba436fd2b1246bd13286253e7cf83a8bd97ea879de28a2171ed1e21f3e66",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-19ae08b778ea.png",
+				"sha256": "a86e4a2cd15ea920ab2d5704159a61b42363224fcc38452d69a9ea2711b93a45",
+				"bytes": 387711,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-1a10ac841b22",
+			"maskRowId": "6bb34f32c249:person:0",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.912367,
+			"areaFraction": 0.302222222,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "6bb34f32c249994e145d6161c9b18c835b9984f9969d9e44f21431e27da43312",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.046053,
+					"y": 0.115586,
+					"w": 0.833735,
+					"h": 0.884414
+				}
+			},
+			"artwork": {
+				"imagePath": "04/ab67616d00001e0200044a28a45b7b23d4be2f79",
+				"imageId": "ab67616d00001e0200044a28a45b7b23d4be2f79",
+				"artworkId": "00044a28a45b7b23d4be2f79",
+				"collection": "sharded",
+				"sha256": "6bb34f32c249994e145d6161c9b18c835b9984f9969d9e44f21431e27da43312",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-1a10ac841b22.png",
+				"sha256": "4d95e77e9362be343359987b18a7fbe590dc9434ed6d8ed41f3a5550fc0f2dee",
+				"bytes": 514954,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-1fcb30509f89",
+			"maskRowId": "c775bbb468a2:album-title:0",
+			"concept": "album-title",
+			"conceptPhrase": "album title",
+			"conceptGroup": "text_like",
+			"score": 0.697295,
+			"areaFraction": 0.072155556,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.105935,
+					"y": 0.75289,
+					"w": 0.787178,
+					"h": 0.134824
+				}
+			},
+			"artwork": {
+				"imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+				"imageId": "ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+				"artworkId": "0000269ead63cf2376a6b67d",
+				"collection": "sharded",
+				"sha256": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-1fcb30509f89.png",
+				"sha256": "527a9e7831f927d5f24d80270907e35d1293fc751f9a62af7c92450b2ebac3d3",
+				"bytes": 364843,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-2189545128f2",
+			"maskRowId": "47ff62e4f8bf:person:3",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.580005,
+			"areaFraction": 0.018566667,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+				"instanceIdx": 3,
+				"bbox": {
+					"x": 0.784973,
+					"y": 0.338606,
+					"w": 0.201701,
+					"h": 0.223597
+				}
+			},
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+				"imageId": "ab67616d00001e02000e229142cb6dbae156341c",
+				"artworkId": "000e229142cb6dbae156341c",
+				"collection": "sharded",
+				"sha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-2189545128f2.png",
+				"sha256": "496743e4712d9e3bc2cc12c11e9714371eabfba61aafeec988beb1eb438b7d70",
+				"bytes": 694419,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-21eac5b9abb6",
+			"maskRowId": "2e4a6d27cee4:album-title:0",
+			"concept": "album-title",
+			"conceptPhrase": "album title",
+			"conceptGroup": "text_like",
+			"score": 0.446872,
+			"areaFraction": 0.090932617,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "2e4a6d27cee4b46cdba4a2e5f0a26f71d373b6284855d4a4500a0a08732dda28",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.001565,
+					"y": 0.061165,
+					"w": 0.983629,
+					"h": 0.328772
+				}
+			},
+			"artwork": {
+				"imagePath": "01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+				"imageId": "ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+				"artworkId": "00015083990110d3b1a4ea8a",
+				"collection": "sharded",
+				"sha256": "2e4a6d27cee4b46cdba4a2e5f0a26f71d373b6284855d4a4500a0a08732dda28",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-21eac5b9abb6.png",
+				"sha256": "928b0ab23bc7e90114e18c3803777c30bce7f03d89319d5fba0778d31cf04d0d",
+				"bytes": 952466,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-2254fbda98ea",
+			"maskRowId": "4976d6ce6dae:person:1",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.855496,
+			"areaFraction": 0.16095459,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "4976d6ce6daea3cb34dabee77145a503eba9364d37ba107ac1d627bef8077647",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.405248,
+					"y": 0.30245,
+					"w": 0.594752,
+					"h": 0.69755
+				}
+			},
+			"artwork": {
+				"imagePath": "00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg",
+				"imageId": "ab67616d0000b27300009f60aeb150a5db45b47b.jpg",
+				"artworkId": "00009f60aeb150a5db45b47b",
+				"collection": "sharded",
+				"sha256": "4976d6ce6daea3cb34dabee77145a503eba9364d37ba107ac1d627bef8077647",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-2254fbda98ea.png",
+				"sha256": "ded3009b1ae82536a9823959d16f9ff4a8f42a1e9074aed081995deb075838d6",
+				"bytes": 560468,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-28aebf6c3ef9",
+			"maskRowId": "082b0cbb9585:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.363605,
+			"areaFraction": 0.066987305,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "082b0cbb95852a1d871360e0b3672d5acde9be62765a100c751f9482101f5853",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.472237,
+					"y": 0.304184,
+					"w": 0.415392,
+					"h": 0.560922
+				}
+			},
+			"artwork": {
+				"imagePath": "images/greenday.jpg",
+				"imageId": "images/greenday.jpg",
+				"artworkId": "greenday",
+				"collection": "other:images",
+				"sha256": "082b0cbb95852a1d871360e0b3672d5acde9be62765a100c751f9482101f5853",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-28aebf6c3ef9.png",
+				"sha256": "9f739117dcb66fd4f1aedaefe04852033bbb521a5efdf42e8cd950e4faece641",
+				"bytes": 273796,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-3abd9f4254b3",
+			"maskRowId": "057be6b5a937:face:3",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.452754,
+			"areaFraction": 0.002514286,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+				"instanceIdx": 3,
+				"bbox": {
+					"x": 0.297541,
+					"y": 0.148353,
+					"w": 0.071718,
+					"h": 0.06318
+				}
+			},
+			"artwork": {
+				"imagePath": "images/knuckles.jpg",
+				"imageId": "images/knuckles.jpg",
+				"artworkId": "knuckles",
+				"collection": "other:images",
+				"sha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+				"width": 350,
+				"height": 350
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-3abd9f4254b3.png",
+				"sha256": "f7ffda1d6dbb0d76fe9070c7cb5ca8adcc39fe44cd07584b772cda306b74952b",
+				"bytes": 1085056,
+				"width": 1414,
+				"height": 734,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-41e01a752f33",
+			"maskRowId": "154a2b6e57e9:lettering:1",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"score": 0.613032,
+			"areaFraction": 0.002880859,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "154a2b6e57e94635025e7d6288f3312577dcc94e292893d2dc5c6116d38c4dd5",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.872513,
+					"y": 0.030523,
+					"w": 0.123958,
+					"h": 0.032214
+				}
+			},
+			"artwork": {
+				"imagePath": "0d/ab67616d0000b273000dd322ab822869dc34b72a",
+				"imageId": "ab67616d0000b273000dd322ab822869dc34b72a",
+				"artworkId": "000dd322ab822869dc34b72a",
+				"collection": "sharded",
+				"sha256": "154a2b6e57e94635025e7d6288f3312577dcc94e292893d2dc5c6116d38c4dd5",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-41e01a752f33.png",
+				"sha256": "d70c93dd76e6a452c61a4c2693cdfadc70241981d9b37c00ddbf2541fe9b366a",
+				"bytes": 813211,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-44a7be63c974",
+			"maskRowId": "8efa4c384ea9:album-title:0",
+			"concept": "album-title",
+			"conceptPhrase": "album title",
+			"conceptGroup": "text_like",
+			"score": 0.811206,
+			"areaFraction": 0.021623535,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.012876,
+					"y": 0.856949,
+					"w": 0.41386,
+					"h": 0.117127
+				}
+			},
+			"artwork": {
+				"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+				"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+				"artworkId": "000a2927c0f27657e4a2aeaa",
+				"collection": "sharded",
+				"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-44a7be63c974.png",
+				"sha256": "c835a27a3c2d684efc6e867d3b1f1b1389e697938b6079950f347b97313caa8a",
+				"bytes": 399267,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-49490a502b47",
+			"maskRowId": "dca149beb8a5:sticker:0",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.355767,
+			"areaFraction": 0.014472656,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "dca149beb8a54b73efd7f05c3613eb02c93967169a1dfb5aca4f12777cbcc195",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.811961,
+					"y": 0.8847,
+					"w": 0.184618,
+					"h": 0.106093
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+				"imageId": "ab67616d0000b27300034b60105d8937440211da.jpg",
+				"artworkId": "00034b60105d8937440211da",
+				"collection": "sharded",
+				"sha256": "dca149beb8a54b73efd7f05c3613eb02c93967169a1dfb5aca4f12777cbcc195",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-49490a502b47.png",
+				"sha256": "d247a9e1d55856a4312f21c8499ce8e45e8a4acaa03bc77ea5b8b16cbda03d18",
+				"bytes": 557898,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-4e80b979dcab",
+			"maskRowId": "29f1763b1608:face:2",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.465488,
+			"areaFraction": 0.016122222,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "29f1763b1608c0adc395996bfdca56075b8b2ae6a8a4e05909453f8aaf179a7c",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.762131,
+					"w": 0.215452,
+					"h": 0.149842
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+				"imageId": "ab67616d00001e0200083a2d455755e4c1116825",
+				"artworkId": "00083a2d455755e4c1116825",
+				"collection": "sharded",
+				"sha256": "29f1763b1608c0adc395996bfdca56075b8b2ae6a8a4e05909453f8aaf179a7c",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-4e80b979dcab.png",
+				"sha256": "fe452ebab2954f87400c40969840214e5d3acabec18fc4918296ddb13ee3f0c7",
+				"bytes": 538312,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-4eb945a4188b",
+			"maskRowId": "eeef27ece2ed:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.608137,
+			"areaFraction": 0.002807617,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.397546,
+					"y": 0.325534,
+					"w": 0.080267,
+					"h": 0.069107
+				}
+			},
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+				"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+				"artworkId": "0007960724fb77c8041c6c13",
+				"collection": "sharded",
+				"sha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-4eb945a4188b.png",
+				"sha256": "3da21e4afb60fe6e16dc7acff8b295e0f0fef30fbffdf6041dc62ddbb475a831",
+				"bytes": 718735,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-500277358c1a",
+			"maskRowId": "303e5c49d86b:sticker:0",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.757405,
+			"areaFraction": 0.279262695,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.162797,
+					"y": 0.21136,
+					"w": 0.67325,
+					"h": 0.64113
+				}
+			},
+			"artwork": {
+				"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"artworkId": "0002dfdcde2cb0a75822168c",
+				"collection": "sharded",
+				"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-500277358c1a.png",
+				"sha256": "5290912b913bf743b28f4d9b619e6dd880cf9bb2b506bc0010f7e8392e52d389",
+				"bytes": 980205,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-52ebdab02dab",
+			"maskRowId": "ecf1191eb98a:sticker:0",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.511598,
+			"areaFraction": 0.940615234,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "ecf1191eb98aa2bb6b04b8fceb4be93029c7bd0b6b9a650c1bfc8d41f8b4a029",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.003547,
+					"y": 0.011377,
+					"w": 0.996453,
+					"h": 0.988623
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"imageId": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+				"artworkId": "000955ccfc1e8da97a09b32d",
+				"collection": "sharded",
+				"sha256": "ecf1191eb98aa2bb6b04b8fceb4be93029c7bd0b6b9a650c1bfc8d41f8b4a029",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-52ebdab02dab.png",
+				"sha256": "fd1e6cf6ffce6e5daabd4549b30576cd6c7861c9dec20ed612b8ba8e73278be4",
+				"bytes": 392915,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-5378c95d6657",
+			"maskRowId": "d2a2b519a6ee:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.456953,
+			"areaFraction": 0.006062012,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "d2a2b519a6eee73a8caf8d0b65d4c3f9effd3eb3f396ac91388b46457132eada",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.279543,
+					"y": 0.455987,
+					"w": 0.119692,
+					"h": 0.09733
+				}
+			},
+			"artwork": {
+				"imagePath": "04/ab67616d0000b27300040defaf772cad7a1738ce",
+				"imageId": "ab67616d0000b27300040defaf772cad7a1738ce",
+				"artworkId": "00040defaf772cad7a1738ce",
+				"collection": "sharded",
+				"sha256": "d2a2b519a6eee73a8caf8d0b65d4c3f9effd3eb3f396ac91388b46457132eada",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-5378c95d6657.png",
+				"sha256": "f3cf6c17fff17562ce81209895ad02011a270ccef9dc3855a9e37003ca2ab4b1",
+				"bytes": 729504,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-542f2ccd1a53",
+			"maskRowId": "d0d5e570f961:face:2",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.558887,
+			"areaFraction": 0.008095139,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "d0d5e570f961094da6d2a0744660bddd1811eb8116d176dcc0750c55651d723c",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.378496,
+					"y": 0.412603,
+					"w": 0.140111,
+					"h": 0.148246
+				}
+			},
+			"artwork": {
+				"imagePath": "images/nobs.jpg",
+				"imageId": "images/nobs.jpg",
+				"artworkId": "nobs",
+				"collection": "other:images",
+				"sha256": "d0d5e570f961094da6d2a0744660bddd1811eb8116d176dcc0750c55651d723c",
+				"width": 1200,
+				"height": 1200
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-542f2ccd1a53.png",
+				"sha256": "22bf1ab638fa3866ab7d08d3041bf4f613ad356e0615817bfba36093952da2c6",
+				"bytes": 1443269,
+				"width": 2414,
+				"height": 1234,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-55ade5e3773f",
+			"maskRowId": "0eb0e60d862f:lettering:31",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"score": 0.386262,
+			"areaFraction": 0.000391499,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+				"instanceIdx": 31,
+				"bbox": {
+					"x": 0.264681,
+					"y": 0.917174,
+					"w": 0.021384,
+					"h": 0.027052
+				}
+			},
+			"artwork": {
+				"imagePath": "images/skap.jpg",
+				"imageId": "images/skap.jpg",
+				"artworkId": "skap",
+				"collection": "other:images",
+				"sha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+				"width": 1000,
+				"height": 894
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-55ade5e3773f.png",
+				"sha256": "378d406d57847a5b5f12b76c90916ea9043e4deb27c218f21b12160741b13663",
+				"bytes": 1432602,
+				"width": 2014,
+				"height": 928,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-5902bad58a63",
+			"maskRowId": "0eb0e60d862f:face:3",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.425531,
+			"areaFraction": 0.002901566,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+				"instanceIdx": 3,
+				"bbox": {
+					"x": 0.567004,
+					"y": 0.482367,
+					"w": 0.075671,
+					"h": 0.073937
+				}
+			},
+			"artwork": {
+				"imagePath": "images/skap.jpg",
+				"imageId": "images/skap.jpg",
+				"artworkId": "skap",
+				"collection": "other:images",
+				"sha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+				"width": 1000,
+				"height": 894
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-5902bad58a63.png",
+				"sha256": "9e203c7e74a996a66bc050d8be962f69fe58c83e34eafa64dca329c738e3d0f0",
+				"bytes": 1445001,
+				"width": 2014,
+				"height": 928,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-5e6ba271106d",
+			"maskRowId": "ff0bc9c4e622:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.426227,
+			"areaFraction": 0.519443359,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.044411,
+					"w": 0.99029,
+					"h": 0.876095
+				}
+			},
+			"artwork": {
+				"imagePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+				"imageId": "ab67616d0000b27300116380305ae5fd3607c43b",
+				"artworkId": "00116380305ae5fd3607c43b",
+				"collection": "sharded",
+				"sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-5e6ba271106d.png",
+				"sha256": "45cdefa72bae822d05241eab9439bb04bbd01fa03005123c2af9ce662465129a",
+				"bytes": 1477464,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-685f1df5cc1a",
+			"maskRowId": "4a0733948730:letter:34",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"score": 0.485087,
+			"areaFraction": 0.001132812,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "4a07339487309ff7d9effdb9bd83eddd59e1be3bb736bf86c02feec38196be0a",
+				"instanceIdx": 34,
+				"bbox": {
+					"x": 0.109213,
+					"y": 0.710301,
+					"w": 0.06091,
+					"h": 0.033407
+				}
+			},
+			"artwork": {
+				"imagePath": "0e/ab67616d0000b273000e440b3d59e91eb43040ee",
+				"imageId": "ab67616d0000b273000e440b3d59e91eb43040ee",
+				"artworkId": "000e440b3d59e91eb43040ee",
+				"collection": "sharded",
+				"sha256": "4a07339487309ff7d9effdb9bd83eddd59e1be3bb736bf86c02feec38196be0a",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-685f1df5cc1a.png",
+				"sha256": "3430efe4c2882cc11ae41bb6eab20bdc2ed118e5a84e72ef504e99be1f26001d",
+				"bytes": 821507,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-697cd6859d60",
+			"maskRowId": "d77179df37b3:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.872228,
+			"areaFraction": 0.046455556,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "d77179df37b33f95c44e8803577f6d745cf66af4850e990c5409418b7b569096",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.249797,
+					"y": 0.145794,
+					"w": 0.26869,
+					"h": 0.326787
+				}
+			},
+			"artwork": {
+				"imagePath": "05/ab67616d00001e020005fa7c7e0e067474967e41",
+				"imageId": "ab67616d00001e020005fa7c7e0e067474967e41",
+				"artworkId": "0005fa7c7e0e067474967e41",
+				"collection": "sharded",
+				"sha256": "d77179df37b33f95c44e8803577f6d745cf66af4850e990c5409418b7b569096",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-697cd6859d60.png",
+				"sha256": "c1a9500110bfcd2824697156eeac90caae83a6bb00a3feb55dcf0f00c8ad85d4",
+				"bytes": 452073,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-6a7cc69c55e5",
+			"maskRowId": "61c43a39a8ba:person:20",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.762635,
+			"areaFraction": 0.007111111,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+				"instanceIdx": 20,
+				"bbox": {
+					"x": 0.302526,
+					"y": 0.667644,
+					"w": 0.073282,
+					"h": 0.202985
+				}
+			},
+			"artwork": {
+				"imagePath": "06/ab67616d00001e020006eb2197bdb0a7b9392108",
+				"imageId": "ab67616d00001e020006eb2197bdb0a7b9392108",
+				"artworkId": "0006eb2197bdb0a7b9392108",
+				"collection": "sharded",
+				"sha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-6a7cc69c55e5.png",
+				"sha256": "8d4d0ac4347b6bce3a78fc19a981f3f15130e2db7424142b29894a4e57f8cd27",
+				"bytes": 584666,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-7338ee61f7cb",
+			"maskRowId": "26b991b5d5b9:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.867086,
+			"areaFraction": 0.080011,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.291579,
+					"y": 0.358752,
+					"w": 0.414967,
+					"h": 0.44435
+				}
+			},
+			"artwork": {
+				"imagePath": "images/birdsofprey.jpg",
+				"imageId": "images/birdsofprey.jpg",
+				"artworkId": "birdsofprey",
+				"collection": "other:images",
+				"sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+				"width": 1000,
+				"height": 1000
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-7338ee61f7cb.png",
+				"sha256": "c42b57f777a69b4b406a242cd31fcaa099fc8b057371f923c67f819d4f1bab03",
+				"bytes": 1366356,
+				"width": 2014,
+				"height": 1034,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-743b616c77bd",
+			"maskRowId": "3a8a1ad98c04:logo:0",
+			"concept": "logo",
+			"conceptPhrase": "logo",
+			"conceptGroup": "text_like",
+			"score": 0.383101,
+			"areaFraction": 0.050161133,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "3a8a1ad98c04701b2985adb0bf673ed4c351a284ce339472a95efb557236dbcd",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.666729,
+					"y": 0.534025,
+					"w": 0.302661,
+					"h": 0.255916
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b2730003580bd2766859c4d81e13.jpg",
+				"imageId": "ab67616d0000b2730003580bd2766859c4d81e13.jpg",
+				"artworkId": "0003580bd2766859c4d81e13",
+				"collection": "sharded",
+				"sha256": "3a8a1ad98c04701b2985adb0bf673ed4c351a284ce339472a95efb557236dbcd",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-743b616c77bd.png",
+				"sha256": "b778e119b62fc01e12c5ed9bfc83933221d8e660ab1dc80e480ec1bcfbe1df92",
+				"bytes": 628456,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-750f0b3d2da7",
+			"maskRowId": "9f0f531571fe:letter:10",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"score": 0.748027,
+			"areaFraction": 0.003664551,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+				"instanceIdx": 10,
+				"bbox": {
+					"x": 0.609199,
+					"y": 0.397361,
+					"w": 0.086423,
+					"h": 0.089779
+				}
+			},
+			"artwork": {
+				"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+				"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+				"artworkId": "00075841f68d8cd71db368d8",
+				"collection": "sharded",
+				"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-750f0b3d2da7.png",
+				"sha256": "239457db86856b741ba5b7816cc2d6fb6021a14f73b5fa29aa2ca17b3f2514dc",
+				"bytes": 651850,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-7e11673fa0ed",
+			"maskRowId": "c5b20159f95c:person:14",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.337966,
+			"areaFraction": 0.000279,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+				"instanceIdx": 14,
+				"bbox": {
+					"x": 0.622333,
+					"y": 0.550585,
+					"w": 0.008927,
+					"h": 0.028397
+				}
+			},
+			"artwork": {
+				"imagePath": "images/artofficial.jpg",
+				"imageId": "images/artofficial.jpg",
+				"artworkId": "artofficial",
+				"collection": "other:images",
+				"sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+				"width": 1000,
+				"height": 1000
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-7e11673fa0ed.png",
+				"sha256": "42ee233a25747dc0d13fea29fa881fa9854ecb6118210e8e66681e8fea3d5a67",
+				"bytes": 2246795,
+				"width": 2014,
+				"height": 1034,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-84ba52d3e064",
+			"maskRowId": "6bb34f32c249:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.870777,
+			"areaFraction": 0.039122222,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "6bb34f32c249994e145d6161c9b18c835b9984f9969d9e44f21431e27da43312",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.400187,
+					"y": 0.152837,
+					"w": 0.261609,
+					"h": 0.277197
+				}
+			},
+			"artwork": {
+				"imagePath": "04/ab67616d00001e0200044a28a45b7b23d4be2f79",
+				"imageId": "ab67616d00001e0200044a28a45b7b23d4be2f79",
+				"artworkId": "00044a28a45b7b23d4be2f79",
+				"collection": "sharded",
+				"sha256": "6bb34f32c249994e145d6161c9b18c835b9984f9969d9e44f21431e27da43312",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-84ba52d3e064.png",
+				"sha256": "b42794e00f681744bab5f29b92776a66ffcca1ac632ec3b5567513dd68c907ba",
+				"bytes": 424777,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-86746e8d7f85",
+			"maskRowId": "47ff62e4f8bf:person:0",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.907319,
+			"areaFraction": 0.028566667,
+			"band": "0.80+",
+			"stratum": "person_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.372226,
+					"w": 0.170974,
+					"h": 0.374647
+				}
+			},
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+				"imageId": "ab67616d00001e02000e229142cb6dbae156341c",
+				"artworkId": "000e229142cb6dbae156341c",
+				"collection": "sharded",
+				"sha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-86746e8d7f85.png",
+				"sha256": "ee6a3a7d4b56d17f3be81cc0ccfd2ae86fae9f98841d7704b5b20c7a7f56fe3c",
+				"bytes": 688317,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-868b0ba4f4bf",
+			"maskRowId": "0298c3007670:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.322491,
+			"areaFraction": 0.116088867,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "0298c3007670023f8c34c0264cfc54dbf617b7c4bbf906e4580f49ee8b478f7d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.134437,
+					"y": 0.156235,
+					"w": 0.739139,
+					"h": 0.536739
+				}
+			},
+			"artwork": {
+				"imagePath": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
+				"imageId": "ab67616d0000b27300139c3eeb59e40dba08f5a1",
+				"artworkId": "00139c3eeb59e40dba08f5a1",
+				"collection": "sharded",
+				"sha256": "0298c3007670023f8c34c0264cfc54dbf617b7c4bbf906e4580f49ee8b478f7d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-868b0ba4f4bf.png",
+				"sha256": "79b5347b3a0deb4cdfc110c7025a8c593e5836791d978989ed79300980ac74e5",
+				"bytes": 414464,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-86ce20871c79",
+			"maskRowId": "c1ed7ef0e2d6:words:0",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"score": 0.703968,
+			"areaFraction": 0.010554199,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.688291,
+					"y": 0.932574,
+					"w": 0.311709,
+					"h": 0.045414
+				}
+			},
+			"artwork": {
+				"imagePath": "images/muse.jpg",
+				"imageId": "images/muse.jpg",
+				"artworkId": "muse",
+				"collection": "other:images",
+				"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-86ce20871c79.png",
+				"sha256": "49cf3176836e610d0ca45e475169078bc959ce289f4a9d634633db4621adb03d",
+				"bytes": 472895,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-91ae38966eb8",
+			"maskRowId": "e2783ef2ee0c:words:2",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"score": 0.551383,
+			"areaFraction": 0.004121094,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.206734,
+					"y": 0.764539,
+					"w": 0.101597,
+					"h": 0.094546
+				}
+			},
+			"artwork": {
+				"imagePath": "06/ab67616d0000b2730006c5d727b329e4477f4a81",
+				"imageId": "ab67616d0000b2730006c5d727b329e4477f4a81",
+				"artworkId": "0006c5d727b329e4477f4a81",
+				"collection": "sharded",
+				"sha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-91ae38966eb8.png",
+				"sha256": "9afb92e830daa2d260ec26a3c0482f5695bd0dfa978911925f42056b647dac71",
+				"bytes": 708011,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-981e1d9f4a04",
+			"maskRowId": "37a9174a754c:logo:0",
+			"concept": "logo",
+			"conceptPhrase": "logo",
+			"conceptGroup": "text_like",
+			"score": 0.627041,
+			"areaFraction": 0.073422222,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "37a9174a754c2b0441e00b354fdb3d870100158ccdf8e75eb26cac06835ad82d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.158261,
+					"y": 0.436934,
+					"w": 0.689829,
+					"h": 0.158786
+				}
+			},
+			"artwork": {
+				"imagePath": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+				"imageId": "ab67616d00001e02000a8aa1dafa651976a7bb44",
+				"artworkId": "000a8aa1dafa651976a7bb44",
+				"collection": "sharded",
+				"sha256": "37a9174a754c2b0441e00b354fdb3d870100158ccdf8e75eb26cac06835ad82d",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-981e1d9f4a04.png",
+				"sha256": "9f7b52819461eeb0f5b8107c6474f4c14ed736bfffe096dac2e954454bd4fcbb",
+				"bytes": 252577,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-9a9d25625470",
+			"maskRowId": "cbff25964afd:sticker:0",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.374369,
+			"areaFraction": 0.88852,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.004247,
+					"y": 0.014881,
+					"w": 0.995753,
+					"h": 0.985119
+				}
+			},
+			"artwork": {
+				"imagePath": "images/elephunk.jpg",
+				"imageId": "images/elephunk.jpg",
+				"artworkId": "elephunk",
+				"collection": "other:images",
+				"sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+				"width": 500,
+				"height": 500
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-9a9d25625470.png",
+				"sha256": "2324a87367b1bcadf4d534655d0bc58bb1f587d1849cf1a264e94da361cebf26",
+				"bytes": 2433467,
+				"width": 2014,
+				"height": 1034,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-9ab050239dee",
+			"maskRowId": "f0703ac121ea:person:5",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.577937,
+			"areaFraction": 0.001467285,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+				"instanceIdx": 5,
+				"bbox": {
+					"x": 0.095515,
+					"y": 0.66495,
+					"w": 0.041102,
+					"h": 0.075627
+				}
+			},
+			"artwork": {
+				"imagePath": "02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+				"imageId": "ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+				"artworkId": "0002dc280ccc28cadb7d4ae4",
+				"collection": "sharded",
+				"sha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-9ab050239dee.png",
+				"sha256": "4da7365fbe77f89d0789a837cb4e591c0efe8734794df30e1711f30bc089c791",
+				"bytes": 688535,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-a67d8d365618",
+			"maskRowId": "f0703ac121ea:person:2",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.771318,
+			"areaFraction": 0.002685547,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.757315,
+					"y": 0.687699,
+					"w": 0.048362,
+					"h": 0.112196
+				}
+			},
+			"artwork": {
+				"imagePath": "02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+				"imageId": "ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+				"artworkId": "0002dc280ccc28cadb7d4ae4",
+				"collection": "sharded",
+				"sha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-a67d8d365618.png",
+				"sha256": "ac450467d47513c25d642475f2dd7cf226ee0bd99b9c88865ae2d1b23c532637",
+				"bytes": 693992,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-a864bc99659c",
+			"maskRowId": "4dc30c99f155:words:0",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"score": 0.803123,
+			"areaFraction": 0.019934082,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.247364,
+					"y": 0.59608,
+					"w": 0.513066,
+					"h": 0.119587
+				}
+			},
+			"artwork": {
+				"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+				"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+				"artworkId": "0012eb9ade9c1bf4a5411c5d",
+				"collection": "sharded",
+				"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-a864bc99659c.png",
+				"sha256": "752c3ff376bc8e3a65b001c1a695cf45b1fd3e5f4e5f27d1e91bd6d5b0c148e2",
+				"bytes": 485424,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-a97c1365278b",
+			"maskRowId": "33d63ad96631:sticker:2",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.475475,
+			"areaFraction": 0.001377778,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.62087,
+					"y": 0.739802,
+					"w": 0.101295,
+					"h": 0.015844
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+				"imageId": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+				"artworkId": "0003e50500c5d762da89643a",
+				"collection": "sharded",
+				"sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-a97c1365278b.png",
+				"sha256": "ccec4768bea4fff33ebca3c6bfb4792fe9c53cd527a9b2e60bd63830f0091758",
+				"bytes": 367006,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-ab999303e354",
+			"maskRowId": "d7f5458eef30:lettering:1",
+			"concept": "lettering",
+			"conceptPhrase": "lettering",
+			"conceptGroup": "text_like",
+			"score": 0.527469,
+			"areaFraction": 0.000830078,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "d7f5458eef305217cccdff86f228ca638178c8d713d1df5a48cc9c3d2a9548a6",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.438252,
+					"y": 0.259118,
+					"w": 0.080241,
+					"h": 0.012199
+				}
+			},
+			"artwork": {
+				"imagePath": "11/ab67616d0000b273001102263870e8b11c13ec31",
+				"imageId": "ab67616d0000b273001102263870e8b11c13ec31",
+				"artworkId": "001102263870e8b11c13ec31",
+				"collection": "sharded",
+				"sha256": "d7f5458eef305217cccdff86f228ca638178c8d713d1df5a48cc9c3d2a9548a6",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-ab999303e354.png",
+				"sha256": "3c17c7cc234c893b9fcbc1ac15c1f16e15e290da38b2dc838f812b00b085780b",
+				"bytes": 309053,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-af2f86fff787",
+			"maskRowId": "555179423572:letter:7",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"score": 0.851817,
+			"areaFraction": 0.01479248,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+				"instanceIdx": 7,
+				"bbox": {
+					"x": 0.321044,
+					"y": 0.505954,
+					"w": 0.156172,
+					"h": 0.154222
+				}
+			},
+			"artwork": {
+				"imagePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+				"imageId": "ab67616d0000b273000442caec7ec8cb724bf265",
+				"artworkId": "000442caec7ec8cb724bf265",
+				"collection": "sharded",
+				"sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-af2f86fff787.png",
+				"sha256": "f4712714ae2777380eae73f7942036cf06a45dd510f2e4bd672f714e5bdd74b1",
+				"bytes": 850919,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-b7f5a1d64170",
+			"maskRowId": "15119b41b440:sticker:1",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.391192,
+			"areaFraction": 0.0072,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "15119b41b440ad3b55f8b8b41bda765f906247f41adf07e3091e86edd3389b6a",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.051979,
+					"y": 0.896798,
+					"w": 0.142862,
+					"h": 0.066405
+				}
+			},
+			"artwork": {
+				"imagePath": "0f/ab67616d00001e02000f723f36271de0ed3aa893",
+				"imageId": "ab67616d00001e02000f723f36271de0ed3aa893",
+				"artworkId": "000f723f36271de0ed3aa893",
+				"collection": "sharded",
+				"sha256": "15119b41b440ad3b55f8b8b41bda765f906247f41adf07e3091e86edd3389b6a",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-b7f5a1d64170.png",
+				"sha256": "891862c8eb3386db39ff067f2763cc4aec2f6b1dd133cefefe40adb20c956d7e",
+				"bytes": 473700,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-bd1ab2e45a76",
+			"maskRowId": "4f1b075b8003:logo:1",
+			"concept": "logo",
+			"conceptPhrase": "logo",
+			"conceptGroup": "text_like",
+			"score": 0.58627,
+			"areaFraction": 0.0183,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "4f1b075b80032b3785835112ea3900809046b01e7fc72c7744fe0db62979620d",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.810845,
+					"y": 0.562765,
+					"w": 0.189155,
+					"h": 0.182959
+				}
+			},
+			"artwork": {
+				"imagePath": "14/ab67616d00001e020014adcd67767097b6fb42e0",
+				"imageId": "ab67616d00001e020014adcd67767097b6fb42e0",
+				"artworkId": "0014adcd67767097b6fb42e0",
+				"collection": "sharded",
+				"sha256": "4f1b075b80032b3785835112ea3900809046b01e7fc72c7744fe0db62979620d",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-bd1ab2e45a76.png",
+				"sha256": "78ee428f7d4ff99e19063a30240361f3d92e9482ace479a967b76b1682b824ab",
+				"bytes": 636091,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-c0cccbbd2fb1",
+			"maskRowId": "dce13d6d78bc:face:1",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.709832,
+			"areaFraction": 0.000759277,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "dce13d6d78bc6b9cfeb3a927617e5a9ffe24fc97595470eee4d494d2bd2cda16",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.213941,
+					"y": 0.331187,
+					"w": 0.035015,
+					"h": 0.033204
+				}
+			},
+			"artwork": {
+				"imagePath": "09/ab67616d0000b27300093ce40fe3f073dcd87ab5",
+				"imageId": "ab67616d0000b27300093ce40fe3f073dcd87ab5",
+				"artworkId": "00093ce40fe3f073dcd87ab5",
+				"collection": "sharded",
+				"sha256": "dce13d6d78bc6b9cfeb3a927617e5a9ffe24fc97595470eee4d494d2bd2cda16",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-c0cccbbd2fb1.png",
+				"sha256": "90b6665f55e324560325a4299c1a8cbf8f7365c4bf047dcc0960a2b2d233e3bd",
+				"bytes": 363679,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-ca560d2ea968",
+			"maskRowId": "61c43a39a8ba:person:43",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.366805,
+			"areaFraction": 0.003222222,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+				"instanceIdx": 43,
+				"bbox": {
+					"x": 0.347288,
+					"y": 0.222204,
+					"w": 0.051027,
+					"h": 0.169946
+				}
+			},
+			"artwork": {
+				"imagePath": "06/ab67616d00001e020006eb2197bdb0a7b9392108",
+				"imageId": "ab67616d00001e020006eb2197bdb0a7b9392108",
+				"artworkId": "0006eb2197bdb0a7b9392108",
+				"collection": "sharded",
+				"sha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-ca560d2ea968.png",
+				"sha256": "6306caf2f515eea640ea381d12b615672f35425379945469fd9975bb98c41ae0",
+				"bytes": 585708,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-cb795f7ffd13",
+			"maskRowId": "d0d5e570f961:face:16",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.347664,
+			"areaFraction": 0.0086375,
+			"band": "0.30-0.45",
+			"stratum": "person_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "d0d5e570f961094da6d2a0744660bddd1811eb8116d176dcc0750c55651d723c",
+				"instanceIdx": 16,
+				"bbox": {
+					"x": 0.189079,
+					"y": 0.371308,
+					"w": 0.11889,
+					"h": 0.152318
+				}
+			},
+			"artwork": {
+				"imagePath": "images/nobs.jpg",
+				"imageId": "images/nobs.jpg",
+				"artworkId": "nobs",
+				"collection": "other:images",
+				"sha256": "d0d5e570f961094da6d2a0744660bddd1811eb8116d176dcc0750c55651d723c",
+				"width": 1200,
+				"height": 1200
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-cb795f7ffd13.png",
+				"sha256": "183aa0b8487e614dc0d11e2e2caebaebaa5d084a8bf8b8bd30c5857192441ec8",
+				"bytes": 1436264,
+				"width": 2414,
+				"height": 1234,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-ceb9fc9191d8",
+			"maskRowId": "f7e7ef7b8f20:album-title:1",
+			"concept": "album-title",
+			"conceptPhrase": "album title",
+			"conceptGroup": "text_like",
+			"score": 0.458323,
+			"areaFraction": 0.032729492,
+			"band": "0.45-0.60",
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "f7e7ef7b8f20c96baded61acd37a65b52afedbab86a67d9f6c28571859210fd7",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.129615,
+					"y": 0.543807,
+					"w": 0.746081,
+					"h": 0.215813
+				}
+			},
+			"artwork": {
+				"imagePath": "13/ab67616d0000b2730013e7782db25f28b59084ec",
+				"imageId": "ab67616d0000b2730013e7782db25f28b59084ec",
+				"artworkId": "0013e7782db25f28b59084ec",
+				"collection": "sharded",
+				"sha256": "f7e7ef7b8f20c96baded61acd37a65b52afedbab86a67d9f6c28571859210fd7",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-ceb9fc9191d8.png",
+				"sha256": "257493312f5742a424077294576f493018d56416dd6a5d4f7d0589e1ff98285f",
+				"bytes": 594423,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-d7bc3035a4cd",
+			"maskRowId": "fee5aa90e94c:letter:48",
+			"concept": "letter",
+			"conceptPhrase": "letter",
+			"conceptGroup": "text_like",
+			"score": 0.364411,
+			"areaFraction": 9.5215e-05,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+				"instanceIdx": 48,
+				"bbox": {
+					"x": 0.47271,
+					"y": 0.045963,
+					"w": 0.007336,
+					"h": 0.004716
+				}
+			},
+			"artwork": {
+				"imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+				"imageId": "ab67616d0000b27300014fb430dd1b693e653121.jpg",
+				"artworkId": "00014fb430dd1b693e653121",
+				"collection": "sharded",
+				"sha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-d7bc3035a4cd.png",
+				"sha256": "4d6f10c33b0701138dd431ad69b0c8f3307030fdd4a961ab7e830ac82a143791",
+				"bytes": 572308,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-df59a784ce46",
+			"maskRowId": "fbd59ef74993:face:0",
+			"concept": "face",
+			"conceptPhrase": "face",
+			"conceptGroup": "person_like",
+			"score": 0.657802,
+			"areaFraction": 0.000473633,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "fbd59ef749935555ccbca1184067d480aebc224d1557c46c51286d2559312bae",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.582509,
+					"y": 0.357313,
+					"w": 0.027031,
+					"h": 0.024931
+				}
+			},
+			"artwork": {
+				"imagePath": "05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+				"imageId": "ab67616d0000b2730005597105ba1e2d38f62cfc",
+				"artworkId": "0005597105ba1e2d38f62cfc",
+				"collection": "sharded",
+				"sha256": "fbd59ef749935555ccbca1184067d480aebc224d1557c46c51286d2559312bae",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-df59a784ce46.png",
+				"sha256": "a9b9ed3038bee52af9088933d67ddd11a73d2385a54269789dd85f331040b08c",
+				"bytes": 607640,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-e1cbd3c62d73",
+			"maskRowId": "6ee704038422:person:1",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.539011,
+			"areaFraction": 0.004433333,
+			"band": "0.45-0.60",
+			"stratum": "person_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.39369,
+					"y": 0.018465,
+					"w": 0.078274,
+					"h": 0.152048
+				}
+			},
+			"artwork": {
+				"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+				"imageId": "ab67616d00001e0200079d5a7d92f2bff88570db",
+				"artworkId": "00079d5a7d92f2bff88570db",
+				"collection": "sharded",
+				"sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-e1cbd3c62d73.png",
+				"sha256": "9b0d6ba2d64a7614ca7094bd70dfda93e6d34acdd46c87b11a38ca7f95fe9ba8",
+				"bytes": 508946,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq-e905e0e95ea1",
+			"maskRowId": "3a8a1ad98c04:sticker:0",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.927775,
+			"areaFraction": 0.095480957,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "3a8a1ad98c04701b2985adb0bf673ed4c351a284ce339472a95efb557236dbcd",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.657197,
+					"y": 0.519362,
+					"w": 0.323917,
+					"h": 0.401161
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b2730003580bd2766859c4d81e13.jpg",
+				"imageId": "ab67616d0000b2730003580bd2766859c4d81e13.jpg",
+				"artworkId": "0003580bd2766859c4d81e13",
+				"collection": "sharded",
+				"sha256": "3a8a1ad98c04701b2985adb0bf673ed4c351a284ce339472a95efb557236dbcd",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-e905e0e95ea1.png",
+				"sha256": "e691254c557542c507a33d1ab1e5a27e2599d1b34c01bd60a2668f492cd0b986",
+				"bytes": 652052,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-eaf937e1396f",
+			"maskRowId": "26b991b5d5b9:person:5",
+			"concept": "person",
+			"conceptPhrase": "person",
+			"conceptGroup": "person_like",
+			"score": 0.606942,
+			"areaFraction": 0.008178,
+			"band": "0.60-0.80",
+			"stratum": "person_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+				"instanceIdx": 5,
+				"bbox": {
+					"x": 0.23361,
+					"y": 0.410421,
+					"w": 0.218721,
+					"h": 0.155442
+				}
+			},
+			"artwork": {
+				"imagePath": "images/birdsofprey.jpg",
+				"imageId": "images/birdsofprey.jpg",
+				"artworkId": "birdsofprey",
+				"collection": "other:images",
+				"sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+				"width": 1000,
+				"height": 1000
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-eaf937e1396f.png",
+				"sha256": "209e700d950dd0066e57d2a0d8ad6b16d39e5005367fdea4dcc8c37c8eb03e5d",
+				"bytes": 1293374,
+				"width": 2014,
+				"height": 1034,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-f91cda9b4c3a",
+			"maskRowId": "e2783ef2ee0c:album-title:0",
+			"concept": "album-title",
+			"conceptPhrase": "album title",
+			"conceptGroup": "text_like",
+			"score": 0.825085,
+			"areaFraction": 0.088137207,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.217935,
+					"y": 0.057244,
+					"w": 0.627655,
+					"h": 0.198542
+				}
+			},
+			"artwork": {
+				"imagePath": "06/ab67616d0000b2730006c5d727b329e4477f4a81",
+				"imageId": "ab67616d0000b2730006c5d727b329e4477f4a81",
+				"artworkId": "0006c5d727b329e4477f4a81",
+				"collection": "sharded",
+				"sha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-f91cda9b4c3a.png",
+				"sha256": "b951c63f56c44582bf7ec7548b83342587b9b0985feba15673a3885b3d306d41",
+				"bytes": 772155,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-fb9ab56ce357",
+			"maskRowId": "8b4f2aadf3b1:logo:0",
+			"concept": "logo",
+			"conceptPhrase": "logo",
+			"conceptGroup": "text_like",
+			"score": 0.433354,
+			"areaFraction": 0.773156738,
+			"band": "0.30-0.45",
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": true,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.009798,
+					"w": 0.994636,
+					"h": 0.990202
+				}
+			},
+			"artwork": {
+				"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+				"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+				"artworkId": "000bc98f315aba36374f9f93",
+				"collection": "sharded",
+				"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-fb9ab56ce357.png",
+				"sha256": "989de4db3cc71eed187f0d295d056c7009f2cf2c77f81b7b2d8ab673a6202d9e",
+				"bytes": 374734,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-ff7be1a72c0d",
+			"maskRowId": "8b4f2aadf3b1:sticker:0",
+			"concept": "sticker",
+			"conceptPhrase": "sticker",
+			"conceptGroup": "text_like",
+			"score": 0.678697,
+			"areaFraction": 0.780705566,
+			"band": "0.60-0.80",
+			"stratum": "text_like|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.008557,
+					"w": 0.996966,
+					"h": 0.991443
+				}
+			},
+			"artwork": {
+				"imagePath": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+				"imageId": "ab67616d0000b273000bc98f315aba36374f9f93",
+				"artworkId": "000bc98f315aba36374f9f93",
+				"collection": "sharded",
+				"sha256": "8b4f2aadf3b108d330857a4b842f8e58710341631a632453d779a8ecbb6f1b9b",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-ff7be1a72c0d.png",
+				"sha256": "ab33989c59bd2a87172394ebfcaaba22464f0b469f28b05879c78eebf69ba9cb",
+				"bytes": 381031,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq-ff890164ac85",
+			"maskRowId": "0d149b97cfa2:words:0",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptGroup": "text_like",
+			"score": 0.807571,
+			"areaFraction": 0.022385254,
+			"band": "0.80+",
+			"stratum": "text_like|0.80+",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-eval-142",
+				"runId": "9df07e7563194f9c98e7e0e7a96f7a78",
+				"schemaVersion": "sam-regions.v1",
+				"imageSha256": "0d149b97cfa25534d33918f39e3e5bbbaadabac8f3d5d8a7e456ebc695751fa3",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.246941,
+					"y": 0.128037,
+					"w": 0.554821,
+					"h": 0.161589
+				}
+			},
+			"artwork": {
+				"imagePath": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+				"imageId": "ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+				"artworkId": "00002947b898e4bd572ac4aa",
+				"collection": "sharded",
+				"sha256": "0d149b97cfa25534d33918f39e3e5bbbaadabac8f3d5d8a7e456ebc695751fa3",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays/smq-ff890164ac85.png",
+				"sha256": "a9bdf5a7ba03650f29115b892ca525a4f890f54d358116ddaea593381f8de3c3",
+				"bytes": 432980,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		}
+	]
+}

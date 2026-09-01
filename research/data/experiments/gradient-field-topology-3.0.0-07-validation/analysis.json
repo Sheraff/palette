@@ -1,0 +1,739 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-field-topology-3.0.0-07-analysis-1",
+  "generatedAt": "2026-07-20T15:48:13.972Z",
+  "manifestId": "e69e76f5fe44bc8b1af5cb68bfac013b26099b158c8133b2f115832a0309350d",
+  "thresholdRefitOn07": false,
+  "interpretation": {
+    "schemaVersion": 1,
+    "recordedAt": "2026-07-20T15:47:40Z",
+    "decisionScope": "exact-directed-background-surface-pair",
+    "reviewPopulation": "selection-enriched-non-prevalence",
+    "thresholdRefit": false,
+    "reviewSha256": "78a404e8b50465f1acc82561aa7812f0601393b0be46e191fbd73ec49628f59c",
+    "htmlSha256": "ed502038dda3ee92ea71e22c9864b72949639fd49768df2c36411ec4f6844da3",
+    "feedbackSha256": "9f6fb0d61f6be846b8cddba5eec7d7795cbb37af1ce238d657e2d4af192957b9",
+    "note": "The reviewer completed all 25 cases but reported low confidence in the review's informativeness because many exact pairs were judged either-way or selected-colors-not-identifiable. Preserve those responses as nondecisive rather than mapping them to gradient or flat."
+  },
+  "provenance": {
+    "manifestSha256": "eb3615ca14c82b8a117cedcc11ecede4865946862d9fbda95c9264dc047255d4",
+    "evaluationSha256": "abfb3ed846f5fd2484ec97100a83d3147dd05a17a77bda466b4a837062dbfd58",
+    "reviewSha256": "78a404e8b50465f1acc82561aa7812f0601393b0be46e191fbd73ec49628f59c",
+    "renderSha256": "cdcf84c87c44122e759d588d7601c32e43de58aa2f1a22811011c62c5f4bad2e",
+    "htmlSha256": "ed502038dda3ee92ea71e22c9864b72949639fd49768df2c36411ec4f6844da3",
+    "feedbackSha256": "9f6fb0d61f6be846b8cddba5eec7d7795cbb37af1ce238d657e2d4af192957b9",
+    "interpretationSha256": "93ddf8619b01331bbf7832d0a5c228d22a48dec44756631fc49d49484ef1c87b",
+    "modelFileSha256": "0ec901a4dde9a88e6ae0ce3dc5fb5587a726aea69ef5da023059a27e84a6b09c",
+    "parameterSha256": "98d0a0d89e83d1e66a211c05557db74467f13bf4cb1d99766a650f29178fbc11"
+  },
+  "summary": {
+    "cases": 25,
+    "decisive": 9,
+    "nondecisive": 16,
+    "judgments": {
+      "should-not-be-gradient": 5,
+      "should-be-gradient": 4,
+      "either-way": 11,
+      "selected-colors-not-identifiable": 5
+    },
+    "v3": {
+      "truePositive": 3,
+      "falseNegative": 1,
+      "trueNegative": 5,
+      "falsePositive": 0
+    },
+    "old086": {
+      "truePositive": 3,
+      "falseNegative": 1,
+      "trueNegative": 3,
+      "falsePositive": 2
+    },
+    "pairedOutcomes": {
+      "improvement": 3,
+      "unchanged-correct": 5,
+      "nondecisive": 16,
+      "regression": 1
+    },
+    "byPrivateStratum": {
+      "both-flat": {
+        "cases": 5,
+        "judgments": {
+          "selected-colors-not-identifiable": 1,
+          "should-not-be-gradient": 3,
+          "either-way": 1
+        },
+        "pairedOutcomes": {
+          "nondecisive": 2,
+          "unchanged-correct": 3
+        }
+      },
+      "both-gradient": {
+        "cases": 5,
+        "judgments": {
+          "should-be-gradient": 2,
+          "either-way": 2,
+          "selected-colors-not-identifiable": 1
+        },
+        "pairedOutcomes": {
+          "unchanged-correct": 2,
+          "nondecisive": 3
+        }
+      },
+      "old-flat-v3-gradient": {
+        "cases": 3,
+        "judgments": {
+          "should-be-gradient": 1,
+          "either-way": 2
+        },
+        "pairedOutcomes": {
+          "improvement": 1,
+          "nondecisive": 2
+        }
+      },
+      "old-gradient-v3-flat": {
+        "cases": 12,
+        "judgments": {
+          "should-not-be-gradient": 2,
+          "either-way": 6,
+          "selected-colors-not-identifiable": 3,
+          "should-be-gradient": 1
+        },
+        "pairedOutcomes": {
+          "improvement": 2,
+          "nondecisive": 9,
+          "regression": 1
+        }
+      }
+    },
+    "byMarginBand": {
+      "0.02-<0.05": {
+        "cases": 3,
+        "judgments": {
+          "selected-colors-not-identifiable": 1,
+          "either-way": 2
+        },
+        "pairedOutcomes": {
+          "nondecisive": 3
+        }
+      },
+      "0.05-<0.10": {
+        "cases": 5,
+        "judgments": {
+          "either-way": 2,
+          "should-be-gradient": 1,
+          "selected-colors-not-identifiable": 2
+        },
+        "pairedOutcomes": {
+          "nondecisive": 4,
+          "regression": 1
+        }
+      },
+      "<0.02": {
+        "cases": 1,
+        "judgments": {
+          "either-way": 1
+        },
+        "pairedOutcomes": {
+          "nondecisive": 1
+        }
+      },
+      ">=0.10": {
+        "cases": 16,
+        "judgments": {
+          "should-not-be-gradient": 5,
+          "should-be-gradient": 3,
+          "either-way": 6,
+          "selected-colors-not-identifiable": 2
+        },
+        "pairedOutcomes": {
+          "improvement": 3,
+          "unchanged-correct": 5,
+          "nondecisive": 8
+        }
+      }
+    },
+    "nondecisiveByModelOutcome": {
+      "v3Gradient": 5,
+      "v3Flat": 11,
+      "oldGradient": 12,
+      "oldFlat": 4
+    }
+  },
+  "entries": [
+    {
+      "familyId": "gv-122b804c71eb20acc562",
+      "pairSha256": "dc6c80847d1cab411f9c2976c022ad4b18abec33f727805df80de37bd8fa4bc2",
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:43:25.850Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "remaining-threshold",
+      "v3": {
+        "eligible": false,
+        "score": 0.14751591488705298,
+        "threshold": 0.25629320384844717,
+        "margin": -0.10877728896139419,
+        "correct": true
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": false
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "improvement"
+    },
+    {
+      "familyId": "gv-22995ca0659eab0c2703",
+      "pairSha256": "18760b9543bca553acc85a826e9c34abecaf81812681e01444485c6f2e7cc9c6",
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:43:08.399Z",
+      "sourceStratum": "both-gradient",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": true,
+        "score": 0.7852259882607903,
+        "threshold": 0.25629320384844717,
+        "margin": 0.528932784412343,
+        "correct": true
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": true
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "unchanged-correct"
+    },
+    {
+      "familyId": "gv-2b303eb6104edc2d82ef",
+      "pairSha256": "2b4d00803ef4105129cb7dc73cef4cdebd05562cca26d46c47c52176a2457be5",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:44:11.047Z",
+      "sourceStratum": "both-gradient",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": true,
+        "score": 0.453960586936197,
+        "threshold": 0.25629320384844717,
+        "margin": 0.19766738308774984,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-30faaf5d95f59e73e7a8",
+      "pairSha256": "964a0ecc6120327e38dcb51defde0f8ebaa9bd65ae9a0c6e1e49394310b723bd",
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:39:36.409Z",
+      "sourceStratum": "old-flat-v3-gradient",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": true,
+        "score": 0.3969182774131642,
+        "threshold": 0.25629320384844717,
+        "margin": 0.14062507356471704,
+        "correct": true
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "flat-background-isolated-surface",
+        "correct": false
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "improvement"
+    },
+    {
+      "familyId": "gv-3c36103fb81dfdac6402",
+      "pairSha256": "ff66f1ea25f6298f89ac759613f05cf3cd9e0fa8e6c9da77ebbde1088a334da7",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:44:23.774Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "shortfall-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.1745626931052751,
+        "threshold": 0.25629320384844717,
+        "margin": -0.08173051074317206,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.05-<0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-3fb75abd78dbb065d3d1",
+      "pairSha256": "f8dba4d12f8d95215ecdd58a3f3b595e3f9fc20c9abed776ec8735434f7143c6",
+      "judgment": "selected-colors-not-identifiable",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:42:05.437Z",
+      "sourceStratum": "both-flat",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": false,
+        "score": 0.020165466659374378,
+        "threshold": 0.25629320384844717,
+        "margin": -0.2361277371890728,
+        "correct": null
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "flat-background-isolated-surface",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-3fe908fceee5aa066ed1",
+      "pairSha256": "89ca12aeb06dd651dc2e87be9ca432d8cddb627ab0b2334fd85282aab4a0ba70",
+      "judgment": "selected-colors-not-identifiable",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:43:57.993Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": false,
+        "score": 0.10697276745883844,
+        "threshold": 0.25629320384844717,
+        "margin": -0.14932043638960873,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-42e14f62b38473485e02",
+      "pairSha256": "102ff9f944726c289a21591a0aa7e0fb4cbd4e0c83148df15712915230053ac8",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:40:56.767Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "remaining-threshold",
+      "v3": {
+        "eligible": false,
+        "score": 0.14280037321316302,
+        "threshold": 0.25629320384844717,
+        "margin": -0.11349283063528415,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-47e2e0a13de112e6df00",
+      "pairSha256": "de7773befb46b42135e1f9a2a7d019df359ab1b8259c8de381a3c889b6096b88",
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:43:16.794Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": false,
+        "score": 0.13282854907761416,
+        "threshold": 0.25629320384844717,
+        "margin": -0.12346465477083302,
+        "correct": true
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": false
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "improvement"
+    },
+    {
+      "familyId": "gv-4c3347a81c1a0fd98ec2",
+      "pairSha256": "08f3be9d679004b1c0cf3673a87b7e85682a1cc4eb246ba8101c8dfc4263d171",
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:41:07.161Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "shortfall-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.19686020709922972,
+        "threshold": 0.25629320384844717,
+        "margin": -0.059432996749217454,
+        "correct": false
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": true
+      },
+      "marginBand": "0.05-<0.10",
+      "pairedOutcome": "regression"
+    },
+    {
+      "familyId": "gv-5d64d048539f85e3820a",
+      "pairSha256": "3ab07b618aea6ed928f0aefe52ef06fc27cffb79edeea2f5760c51aaeeac4a78",
+      "judgment": "selected-colors-not-identifiable",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:40:45.281Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.22115034072764694,
+        "threshold": 0.25629320384844717,
+        "margin": -0.03514286312080023,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.02-<0.05",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-617b3eec2b1035fe9371",
+      "pairSha256": "1a5f36b57b142fe05febd679da45bcaf42f47573a13d142647766d6191fbdabc",
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:42:33.559Z",
+      "sourceStratum": "both-flat",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.04959847470665894,
+        "threshold": 0.25629320384844717,
+        "margin": -0.2066947291417882,
+        "correct": true
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity",
+        "correct": true
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "unchanged-correct"
+    },
+    {
+      "familyId": "gv-76d9f786e676b9f15318",
+      "pairSha256": "a6eace31b13c88ad0d0428e454fd424f8cd5e72190ae169543e80e3c96a5b0ef",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:45:44.936Z",
+      "sourceStratum": "old-flat-v3-gradient",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": true,
+        "score": 0.5956605032140799,
+        "threshold": 0.25629320384844717,
+        "margin": 0.33936729936563276,
+        "correct": null
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "flat-background-isolated-surface",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-8b6f6dc238b59ce0ce80",
+      "pairSha256": "d54b1ab52ea6011c130e570af634b45e3bbf3fa1b16bd6abdac7f4c6b9266e78",
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:44:41.886Z",
+      "sourceStratum": "both-flat",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": false,
+        "score": 0.014354795519596345,
+        "threshold": 0.25629320384844717,
+        "margin": -0.24193840832885083,
+        "correct": true
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "flat-background-isolated-surface",
+        "correct": true
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "unchanged-correct"
+    },
+    {
+      "familyId": "gv-909aab2667130a1156b8",
+      "pairSha256": "affdc0c538b5c14b1d12713888d76e3ada4262a198ec4a0079ee97313f9d11fd",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:39:52.572Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": false,
+        "score": 0.18834377772734734,
+        "threshold": 0.25629320384844717,
+        "margin": -0.06794942612109983,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.05-<0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-976c0ffb3b6e6d2517d0",
+      "pairSha256": "279941420cf2539e08e7ea583c9aed1e64156c06a2de7e8d7870e37ff9b6598a",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:45:11.259Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.21827182996647132,
+        "threshold": 0.25629320384844717,
+        "margin": -0.03802137388197585,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.02-<0.05",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-b6477741720455bfb060",
+      "pairSha256": "f8c9b498c7f5a066b92709f38886391162da060db45c88f652a2eba0d544b8a0",
+      "judgment": "selected-colors-not-identifiable",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:42:23.432Z",
+      "sourceStratum": "both-gradient",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": true,
+        "score": 0.35324247011433463,
+        "threshold": 0.25629320384844717,
+        "margin": 0.09694926626588746,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.05-<0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-bd2f4ce7a7a2bbb05eef",
+      "pairSha256": "e418b912ff7c07e08fae156d3604dad8634d3eb19ced2a2739cd008b2620a5a1",
+      "judgment": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:45:17.081Z",
+      "sourceStratum": "both-flat",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.07070541150886712,
+        "threshold": 0.25629320384844717,
+        "margin": -0.18558779233958006,
+        "correct": true
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support",
+        "correct": true
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "unchanged-correct"
+    },
+    {
+      "familyId": "gv-cb205a046bf1ea90afc6",
+      "pairSha256": "bc7fa20fdaab21675a1c69120af4d8e8264e6bed6d71d8787686ba170ce0dbc3",
+      "judgment": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:42:11.602Z",
+      "sourceStratum": "both-gradient",
+      "selectionLane": "stratum-hash",
+      "v3": {
+        "eligible": true,
+        "score": 0.926449272877058,
+        "threshold": 0.25629320384844717,
+        "margin": 0.6701560690286108,
+        "correct": true
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": true
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "unchanged-correct"
+    },
+    {
+      "familyId": "gv-ce02c5ffe50259985850",
+      "pairSha256": "897dbc0495fd14c675467d9aea4ca096b1ed720ae5f503d8d5521be9d16f8536",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:41:49.328Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "remaining-threshold",
+      "v3": {
+        "eligible": false,
+        "score": 0.09186748142728914,
+        "threshold": 0.25629320384844717,
+        "margin": -0.16442572242115805,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-d5b24516d51bda3d411f",
+      "pairSha256": "a052376e89587690f3515df6e43f1a5557c38448a7f8c1d8ac4d1b0f2db9e1d5",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:41:33.519Z",
+      "sourceStratum": "old-flat-v3-gradient",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": true,
+        "score": 0.26307887473173863,
+        "threshold": 0.25629320384844717,
+        "margin": 0.006785670883291461,
+        "correct": null
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "flat-background-isolated-surface",
+        "correct": null
+      },
+      "marginBand": "<0.02",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-d8a4cbee95a6d6a5daae",
+      "pairSha256": "c7aa9f6c02c05a2f901b07a46e27f3c34f968085c19ad16147a5c6d4d2f31fe9",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:44:55.791Z",
+      "sourceStratum": "both-flat",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.061668669048940195,
+        "threshold": 0.25629320384844717,
+        "margin": -0.19462453479950698,
+        "correct": null
+      },
+      "old086": {
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-df468c5159ab7021bc6d",
+      "pairSha256": "0ceababace2411103ca1a7181e934f2f3b0ccddd8387a831fc33e46e8091b2c6",
+      "judgment": "selected-colors-not-identifiable",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:45:38.175Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "shortfall-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.1642949558305647,
+        "threshold": 0.25629320384844717,
+        "margin": -0.09199824801788248,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.05-<0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-ef1a102e61e25bcc5f1f",
+      "pairSha256": "76908afbf2da1282c1215e12ce561118b27be66067602005a1578c96fb467438",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:40:11.768Z",
+      "sourceStratum": "both-gradient",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": true,
+        "score": 0.4488771461807208,
+        "threshold": 0.25629320384844717,
+        "margin": 0.1925839423322736,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": ">=0.10",
+      "pairedOutcome": "nondecisive"
+    },
+    {
+      "familyId": "gv-fcc6452e718d57bc6e0f",
+      "pairSha256": "0b2e09131c6d6fc92f10f3e0aef8f61064284a6573522dd5ec67095df13636c9",
+      "judgment": "either-way",
+      "comment": "",
+      "submittedAt": "2026-07-20T15:44:35.436Z",
+      "sourceStratum": "old-gradient-v3-flat",
+      "selectionLane": "stratum-nearest",
+      "v3": {
+        "eligible": false,
+        "score": 0.21766207557196177,
+        "threshold": 0.25629320384844717,
+        "margin": -0.038631128276485405,
+        "correct": null
+      },
+      "old086": {
+        "eligible": true,
+        "reason": "eligible",
+        "correct": null
+      },
+      "marginBand": "0.02-<0.05",
+      "pairedOutcome": "nondecisive"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# batches.jsonl holds the blinding keys (variant ids) of open review batches —
+# committing it would unblind them. The warehouse JSONL itself IS committed.
+**/batches.jsonl
+data/embeddings/*.npy
+data/embeddings/*.npz
+data/embeddings/shards/
+# Fresh-shard import drill, 2026-08-04 (loose end A11). Same policy as the pinned
+# embeddings directory: the .ids.jsonl index and the manifest ARE committed, the
+# vectors and the append-only write-ahead shards are not.
+data/embeddings-fresh-15/*.npy
+data/embeddings-fresh-15/*.npz
+data/embeddings-fresh-15/shards/
+oracle/**/.venv/
+oracle/**/__pycache__/
+# review-server runtime state (never committed)
+data/review-server/server.pid
+data/review-server/server.log
+# Robustness perturbation cache: re-encoded and dithered copies of corpus covers.
+# Same policy as the embeddings vectors — the SET FILES (pair-set-1.json,
+# perturbation-set-1.json) ARE committed, the derived pixels are not. Every byte
+# regenerates byte-identically from the corpus via
+# `build-perturbation-set.ts --materialize` (verified 2026-08-04).
+data/robustness/cache/
+# The diff-viewer export (`check.ts --emit-diff-set`) is a convenience list of image paths
+# regenerated on every run; the committed JSON report already carries the disagreeing trials.
+data/robustness/reports/*.disagreements.txt

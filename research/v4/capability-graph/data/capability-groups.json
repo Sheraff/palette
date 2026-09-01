@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "capability-groups.semantic-commitment.v1",
+  "label": "Capability compatibility map",
+  "description": "A two-dimensional classification for artifact contracts and mechanism claims. Horizontal position records semantic commitment only; lanes remain orthogonal and do not define execution order.",
+  "semantics": {
+    "orderingMeaning": "semantic-commitment-only",
+    "dependencyMeaning": "none",
+    "maturityMeaning": "none"
+  },
+  "axis": {
+    "id": "axis.semantic-commitment",
+    "label": "Semantic commitment",
+    "description": "Moves from source-bound observations at the left toward the exact product contract at the right. Position is not evidence maturity, priority, dependency, or build order.",
+    "direction": "left-to-right",
+    "positions": [
+      {
+        "id": "commitment.native-source",
+        "order": 0,
+        "label": "Native source",
+        "description": "Exact supplied-file and once-decoded native-raster custody without inferred visual meaning."
+      },
+      {
+        "id": "commitment.derived-measurement",
+        "order": 1,
+        "label": "Derived measurement",
+        "description": "Typed measurements or transforms whose semantics remain directly inspectable and bounded."
+      },
+      {
+        "id": "commitment.structured-evidence",
+        "order": 2,
+        "label": "Structured evidence",
+        "description": "Regions, graphs, masks, relationships, and other structured evidence without role authority."
+      },
+      {
+        "id": "commitment.semantic-hypothesis",
+        "order": 3,
+        "label": "Semantic hypothesis",
+        "description": "Explicit alternatives or abstentions about fields, marks, roles, or other visual meaning."
+      },
+      {
+        "id": "commitment.bounded-decision",
+        "order": 4,
+        "label": "Bounded decision",
+        "description": "A typed election, construction, validation, or arbitration result under declared conditions."
+      },
+      {
+        "id": "commitment.exact-product-contract",
+        "order": 5,
+        "label": "Exact product contract",
+        "description": "The complete four-role UI treatment, collapse state, optional rendered field, exact-pixel rules, and contract metadata."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "lane.image-and-color",
+      "label": "Image and color custody",
+      "description": "Encoded input, native pixels, color representations, and exact source witnesses."
+    },
+    {
+      "id": "lane.structure-and-field",
+      "label": "Structure and field evidence",
+      "description": "Spatial support, regions, topology, texture, field form, and field ownership hypotheses."
+    },
+    {
+      "id": "lane.role-and-treatment",
+      "label": "Roles and complete treatments",
+      "description": "Candidate colors, role hypotheses, complete tuples, collapse, selection, and repair."
+    },
+    {
+      "id": "lane.validation-and-rendering",
+      "label": "Validation and rendering",
+      "description": "Mechanical invariants, contrast, rendering, robustness, and deterministic replay."
+    },
+    {
+      "id": "lane.development-diagnostics",
+      "label": "Development diagnostics",
+      "description": "Development-only comparisons, sensitivity studies, synthetic controls, reports, and caches."
+    },
+    {
+      "id": "lane.models-and-external",
+      "label": "Models and external computation",
+      "description": "Model artifacts, external observations, and research-only learned or literature-derived inputs."
+    },
+    {
+      "id": "lane.review-and-evidence",
+      "label": "Review and evidence custody",
+      "description": "Question-scoped human records, known-good projections, adjudication, and evidence interpretation."
+    },
+    {
+      "id": "lane.configuration-and-governance",
+      "label": "Configuration and governance",
+      "description": "Configuration, controls, policy records, provenance, authorization, and source custody."
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "capability.native-source-custody",
+      "label": "Native source custody",
+      "description": "Preserve the exact supplied file and opaque native sRGB raster boundary.",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color"
+    },
+    {
+      "id": "capability.pixel-and-color-measurement",
+      "label": "Pixel and color measurement",
+      "description": "Produce source-bound color, support, distance, or scalar measurements.",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color"
+    },
+    {
+      "id": "capability.spatial-structure-evidence",
+      "label": "Spatial structure evidence",
+      "description": "Represent masks, labels, regions, adjacency, topology, texture, and field evidence.",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field"
+    },
+    {
+      "id": "capability.field-and-figure-hypotheses",
+      "label": "Field and figure hypotheses",
+      "description": "Retain explicit, uncertain, competing, or absent field and figure interpretations.",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field"
+    },
+    {
+      "id": "capability.role-and-identity-hypotheses",
+      "label": "Role and identity hypotheses",
+      "description": "Describe foreground, accent, identity, and role alternatives without product authority.",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment"
+    },
+    {
+      "id": "capability.treatment-construction-and-arbitration",
+      "label": "Treatment construction and arbitration",
+      "description": "Construct, retain, compare, or repair bounded complete-treatment alternatives.",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment"
+    },
+    {
+      "id": "capability.exact-ui-treatment-contract",
+      "label": "Exact UI treatment contract",
+      "description": "Express the exact four-role palette, collapse state, optional rendered field, and required metadata.",
+      "axisPositionId": "commitment.exact-product-contract",
+      "laneId": "lane.role-and-treatment"
+    },
+    {
+      "id": "capability.contract-and-render-validation",
+      "label": "Contract and render validation",
+      "description": "Validate mechanical legality and rendered-field behavior without claiming visual quality.",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering"
+    },
+    {
+      "id": "capability.development-diagnostics",
+      "label": "Development diagnostics",
+      "description": "Measure changes, sensitivity, robustness, blast radius, and provenance outside product inference.",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics"
+    },
+    {
+      "id": "capability.model-assisted-diagnostics",
+      "label": "Model-assisted diagnostics",
+      "description": "Represent model, external, or privileged diagnostic evidence under explicit restrictions.",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external"
+    },
+    {
+      "id": "capability.review-and-evidence-custody",
+      "label": "Review and evidence custody",
+      "description": "Preserve scoped review, accepted alternatives, adjudication, and exposure records.",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence"
+    },
+    {
+      "id": "capability.configuration-control-and-governance",
+      "label": "Configuration, control, and governance",
+      "description": "Make behavior-affecting configuration, controls, provenance, and governance records explicit.",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance"
+    }
+  ],
+  "productAnchors": {
+    "left": {
+      "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "label": "Native raw raster",
+      "meaning": "The once-decoded native-size opaque 8-bit sRGB raster is the fixed left product anchor."
+    },
+    "right": {
+      "artifactTypeId": "artifact.product.ui-palette.v3",
+      "axisPositionId": "commitment.exact-product-contract",
+      "laneId": "lane.role-and-treatment",
+      "label": "Exact v3 UI Palette product contract",
+      "meaning": "The complete published v3 UI Palette contract is the fixed right product goal."
+    }
+  },
+  "topologyPolicy": {
+    "compatibility": "candidate-semantic-compatibility-only",
+    "externalRoots": "permitted-and-classified",
+    "diagnostics": "first-class-and-filterable",
+    "cycles": "permitted",
+    "fanOut": "permitted",
+    "convergence": "permitted",
+    "dataPlanes": "runtime-development-governance-distinct",
+    "architectureInference": "not-asserted"
+  }
+}

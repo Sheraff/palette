@@ -1,0 +1,2412 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.09-model-oracles.v1",
+  "title": "Section 9 restricted models, semantic oracles, and learned artifacts",
+  "description": "Development-only typings for the nine restricted model and semantic-oracle mechanisms in Section 9 of the v4 mechanism census.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.raster.vlm-oracle-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM oracle-normalized raster",
+      "description": "A development-only raster resized and normalized exactly for a pinned VLM oracle arm.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 requires the image normalized under the oracle policy rather than silently treating the native raster as model input."
+      ],
+      "provenanceNotes": [
+        "The preprocessing policy, source dimensions, processed dimensions, and hashes remain attached; this raster is prohibited from product inference."
+      ]
+    },
+    {
+      "id": "artifact.model.vlm-pinned-bundle.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Pinned VLM bundle",
+      "description": "The exact VLM weights, revision, quantization, runtime, and model-family identity used by an oracle arm.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 makes the model and revision an effective oracle input."
+      ],
+      "provenanceNotes": [
+        "Warm VLM inference is prohibited at cold runtime; this bundle grants no semantic or product authority."
+      ]
+    },
+    {
+      "id": "artifact.model.vlm-tokenizer-pinned.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Pinned VLM tokenizer",
+      "description": "The exact tokenizer and revision paired with a VLM arm, including the interface used by grammar masking.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Grammar support is tokenizer-specific and cannot be inherited from another model arm."
+      ],
+      "provenanceNotes": [
+        "The tokenizer is a prohibited-runtime learned-artifact input, not a hidden implementation default."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-oracle-preprocessing.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM oracle preprocessing policy",
+      "description": "The pinned decode, resize, orientation, color, and normalization policy that produces a VLM oracle raster.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 conditions VLM observations on an oracle-normalized image."
+      ],
+      "provenanceNotes": [
+        "This research configuration is explicit and prohibited from silently replacing native-raster custody."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-closed-question-prompt.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Ordered closed-question VLM prompt",
+      "description": "The frozen ordered prompt and structural question set for ground, texture, enclosure, geometry, subjects, and marks.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Prompt wording and order are load-bearing inputs in Section 9."
+      ],
+      "provenanceNotes": [
+        "The exact bytes, order, revision, and hash must be retained for development-only oracle use."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-closed-answer-schema.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Closed-vocabulary VLM answer schema",
+      "description": "The frozen response schema and closed vocabularies associated with the ordered structural questions.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The schema is separate from both prompt text and any model answer."
+      ],
+      "provenanceNotes": [
+        "Schema validity constrains representation only and supplies no semantic truth."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-closed-decoding.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM closed-question decoding policy",
+      "description": "The frozen seed, decoding, attempt-bound, and deterministic execution policy for closed-question VLM inference.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 explicitly names seed and decoding policy as VLM inputs."
+      ],
+      "provenanceNotes": [
+        "This policy is frozen for an instrument run and has no product-selection authority."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.vlm-closed-question-answer-record.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM closed-question answer records",
+      "description": "One closed-vocabulary model answer per frozen structural question, with the model note retained as a development hypothesis.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 limits these records to development stratification."
+      ],
+      "provenanceNotes": [
+        "Answers are not truth, reviewed labels, field ownership, role ownership, or runtime features."
+      ]
+    },
+    {
+      "id": "artifact.provenance.vlm-oracle-inference.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM oracle inference provenance",
+      "description": "Full source, preprocessing, model, tokenizer, prompt, schema, seed, decoding, timing, and attempt provenance for an oracle response.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audit and reproduce prohibited-runtime VLM instrument observations.",
+      "sourceNotes": [
+        "Section 9 requires full provenance with every closed-question label record."
+      ],
+      "provenanceNotes": [
+        "Provenance establishes observation identity, not semantic correctness or a selected binding."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-grammar-prompt.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Structured-decoding VLM prompt",
+      "description": "The exact prompt bytes supplied to the grammar-constrained VLM instrumentation attempt.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The structured-output mechanism names prompt as a separate input."
+      ],
+      "provenanceNotes": [
+        "Prompt bytes and hash remain arm-specific and development-only."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-grammar-json-schema.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM grammar JSON schema",
+      "description": "The exact JSON Schema compiled into tokenizer-specific logits constraints and used for response validation.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 distinguishes schema enforcement from semantic correctness."
+      ],
+      "provenanceNotes": [
+        "Schema and hash are explicit research inputs; a valid instance is not a truthful answer."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-grammar-decoding-retry.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM grammar decoding and retry policy",
+      "description": "The frozen grammar mode, greedy decoding settings, validation rule, changed-input retry rule, and bounded attempt count.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 permits changed-input validate-and-retry only as the fallback when grammar is absent."
+      ],
+      "provenanceNotes": [
+        "Retrying unchanged greedy input is excluded; this policy remains prohibited at palette runtime."
+      ]
+    },
+    {
+      "id": "artifact.report.vlm-grammar-typed-response.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Grammar-valid typed VLM response",
+      "description": "A VLM response that is syntactically valid against the pinned grammar schema, retained separately from semantic answer records.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This artifact records mechanical structured-output success only."
+      ],
+      "provenanceNotes": [
+        "Grammar validity does not establish semantic correctness, truth, role, or field ownership."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.vlm-grammar-failed-attempt-ledger.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM grammar failed-attempt ledger",
+      "description": "A bounded ledger of malformed, schema-invalid, unsupported-grammar, or exhausted structured-decoding attempts.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audit structured-decoding failures without manufacturing an answer.",
+      "sourceNotes": [
+        "Section 9 requires a bounded failed-attempt state when typed JSON is not produced."
+      ],
+      "provenanceNotes": [
+        "Failure is retained explicitly and is never coerced into a semantic label."
+      ]
+    },
+    {
+      "id": "artifact.configuration.vlm-wording-variant.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Frozen VLM wording variant",
+      "description": "One independently frozen prompt wording for the same construct, question order, model, images, schema, and decoding conditions.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 compares two wording variants while intending to hold construct and order fixed."
+      ],
+      "provenanceNotes": [
+        "Each variant carries independent bytes, revision, and hash and remains prohibited at runtime."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.vlm-wording-disagreement.v1",
+      "productFocus": "full-analysis-only",
+      "label": "VLM inter-prompt disagreement diagnostic",
+      "description": "Per-question agreement, kappa, binary disagreement, and the concordant subset for two frozen wording variants, with no forced aggregate.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Expose prompt sensitivity for development stratification and evidence interpretation.",
+      "sourceNotes": [
+        "Section 9 treats disagreement as more informative than near-constant model self-confidence."
+      ],
+      "provenanceNotes": [
+        "Agreement and concordance can reflect shared model habits and are not truth or corpus authority."
+      ]
+    },
+    {
+      "id": "artifact.raster.sam-model-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM model-normalized raster",
+      "description": "A development-only raster transformed exactly for the pinned Segment Anything stack while retaining native-source correspondence.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The model-facing raster is explicit rather than hidden inside SAM execution."
+      ],
+      "provenanceNotes": [
+        "Resampling and normalization provenance are required; this raster is prohibited from cold palette inference."
+      ]
+    },
+    {
+      "id": "artifact.model.sam-pinned-stack.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Pinned SAM stack",
+      "description": "The exact SAM weights, revision, runtime, prompt encoders, mask head, and dependency versions used by the instrument.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 conditions determinism and output on the pinned SAM stack."
+      ],
+      "provenanceNotes": [
+        "The stack is prohibited at cold runtime under current cost and accuracy evidence."
+      ]
+    },
+    {
+      "id": "artifact.configuration.sam-preprocessing.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM preprocessing policy",
+      "description": "The pinned decode, resize, coordinate-remapping, color, tensor, and normalization policy used by the SAM stack.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "SAM output is stack- and preprocessing-specific."
+      ],
+      "provenanceNotes": [
+        "The policy and coordinate transforms are explicit development inputs, not runtime defaults."
+      ]
+    },
+    {
+      "id": "artifact.control.sam-prompt-set.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM prompt set",
+      "description": "Pinned point, box, text, or object prompts supplied as controls to candidate-mask generation.",
+      "category": "control",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 permits several explicit SAM prompt modes."
+      ],
+      "provenanceNotes": [
+        "These are supplied instrument controls, not produced semantic ground-point hypotheses or role labels."
+      ]
+    },
+    {
+      "id": "artifact.configuration.sam-mask-cut-selection.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM mask cut and selection policy",
+      "description": "The pinned score cuts, nonmaximum suppression, per-prompt selection, ordering, cap, and no-mask rules for candidate masks.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 names cut and selection policy as an effective mask-generation input."
+      ],
+      "provenanceNotes": [
+        "Thresholds and ordering are retained with the prohibited-runtime instrument."
+      ]
+    },
+    {
+      "id": "artifact.mask.sam-candidate.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM candidate masks",
+      "description": "Prompt-associated candidate masks emitted by the pinned SAM stack without semantic purity or role authority.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 limits SAM masks to visualizing subject, text, and mark hypotheses."
+      ],
+      "provenanceNotes": [
+        "A mask containing its prompt point or text does not establish semantic purity, field ownership, role, or truth."
+      ]
+    },
+    {
+      "id": "artifact.measurement.sam-candidate-score.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM candidate mask scores",
+      "description": "Model scores associated one-for-one with SAM candidate masks under the pinned stack and cut policy.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Inspect model scoring behavior alongside candidate masks.",
+      "sourceNotes": [
+        "Section 9 requires scores among SAM outputs."
+      ],
+      "provenanceNotes": [
+        "Model confidence is not semantic purity and cannot authorize a mask."
+      ]
+    },
+    {
+      "id": "artifact.provenance.sam-prompt-mask.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM prompt-to-mask provenance",
+      "description": "Source, model, preprocessing, prompt, cut, selection, timing, and candidate correspondence for a SAM invocation.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audit stack-specific SAM candidate generation.",
+      "sourceNotes": [
+        "Section 9 requires prompt provenance with masks and scores."
+      ],
+      "provenanceNotes": [
+        "Provenance preserves reproducibility but does not create a tested downstream binding."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.sam-explicit-no-mask.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM explicit no-mask state",
+      "description": "An explicit development state recording that no candidate mask survived or was emitted for the supplied prompt set.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 forbids silently replacing an absent SAM mask with a forced candidate."
+      ],
+      "provenanceNotes": [
+        "No-mask is an instrument result, not evidence that the prompted concept is absent from the image."
+      ]
+    },
+    {
+      "id": "artifact.configuration.sam-residual-subtraction-cuts.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM residual subtraction cuts",
+      "description": "The frozen mask categories, confidence cuts, union behavior, overlap handling, and subtraction policy used to form a residual.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 makes subtraction cuts explicit inputs to the tested residual rule."
+      ],
+      "provenanceNotes": [
+        "The cuts define a research-only prior and cannot confer semantic field ownership."
+      ]
+    },
+    {
+      "id": "artifact.raster.sam-field-enriched-residual.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM field-enriched residual raster",
+      "description": "A development-only native-correspondence raster with selected SAM subject, text, and mark supports removed or masked.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The tested residual was falsified as a pure-background isolator and retained only as field-enriched evidence."
+      ],
+      "provenanceNotes": [
+        "This raster is synthesized diagnostic evidence, not source truth, publishable pixels, or runtime field ownership."
+      ]
+    },
+    {
+      "id": "artifact.mask.sam-field-enriched-residual.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM field-enriched residual mask",
+      "description": "The complement support left after the configured union of selected SAM masks is subtracted.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The mask records the tested subtraction result rather than declaring pure field."
+      ],
+      "provenanceNotes": [
+        "Residual support can retain secondary objects, text, and ornaments and has no field or role authority."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.sam-residual-contamination-causes.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM residual contamination causes",
+      "description": "Question-scoped contamination attributions such as unnamed objects, residual text, ornaments, and subtraction misses.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Explain residual-purity failures in the scoped SAM experiment.",
+      "sourceNotes": [
+        "Section 9 retains contamination causes alongside the residual."
+      ],
+      "provenanceNotes": [
+        "Attributions remain review-scoped diagnostics and are not runtime labels."
+      ]
+    },
+    {
+      "id": "artifact.review.sam-residual-purity.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM residual purity review",
+      "description": "The scoped forced-choice purity review and qualification record for a SAM subtraction residual.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Retain the reviewed residual-purity evidence and its ambiguity qualifications.",
+      "sourceNotes": [
+        "Section 9 reports a 0.24 reweighted pure-field rate against a 0.75 bar."
+      ],
+      "provenanceNotes": [
+        "The review supports the scoped falsification and does not assign runtime field ownership to individual residuals."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.ground-point-unresolved.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Unresolved ground-point hypotheses",
+      "description": "One or more externally supplied image-coordinate hypotheses for the compositional ground, with no producer typed in this fragment.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "unresolved-external",
+      "sourceNotes": [
+        "Section 9 names point hypotheses as inputs to the tested point-to-SAM route."
+      ],
+      "provenanceNotes": [
+        "No mechanism here produces these hypotheses; their pointing-model origin remains an explicit unresolved root and is prohibited at runtime."
+      ]
+    },
+    {
+      "id": "artifact.configuration.sam-containing-mask-route.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM containing-mask route policy",
+      "description": "The frozen policy selecting a SAM mask that contains the supplied ground point.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "This is one of the three separately evaluated point-to-SAM growth policies."
+      ],
+      "provenanceNotes": [
+        "The route is a prohibited-runtime research configuration and has no preferred-producer implication."
+      ]
+    },
+    {
+      "id": "artifact.configuration.sam-ground-ranked-route.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM ground-ranked route policy",
+      "description": "The frozen policy ranking SAM candidates for ground before selecting the point-associated wash.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "This is one of the three separately evaluated point-to-SAM growth policies."
+      ],
+      "provenanceNotes": [
+        "Ground ranking is policy, not truth, and remains prohibited at runtime."
+      ]
+    },
+    {
+      "id": "artifact.configuration.sam-union-route.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM union route policy",
+      "description": "The frozen policy unioning eligible SAM candidates into a point-associated wash.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "This is one of the three separately evaluated point-to-SAM growth policies."
+      ],
+      "provenanceNotes": [
+        "Union behavior is policy, not field ownership, and remains prohibited at runtime."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.ground-point-localization-verdict.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Ground-point localization verdict",
+      "description": "The scoped dot-right evaluation of supplied ground-point hypotheses, kept separate from mask-growth evaluation.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Preserve the supported point-localization result independently of failed SAM growth.",
+      "sourceNotes": [
+        "Section 9 reports dot-right passing 13 of 16."
+      ],
+      "provenanceNotes": [
+        "The verdict is scoped experiment evidence and does not resolve the missing point producer or authorize runtime points."
+      ]
+    },
+    {
+      "id": "artifact.mask.sam-point-route-selected-wash.v1",
+      "productFocus": "full-analysis-only",
+      "label": "SAM point-route selected wash",
+      "description": "The candidate wash selected or unioned by exactly one tested point-to-SAM route policy.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The wash is retained separately from both generic SAM candidates and residual subtraction masks."
+      ],
+      "provenanceNotes": [
+        "The tested growth routes were falsified; this mask is not ground truth, field ownership, or a runtime field mask."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.point-to-sam-route-verdict.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Point-to-SAM route verdict",
+      "description": "The policy-specific both-right counts, bar comparison, duplicate-noise qualification, and route conclusion.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Retain the falsified ground-mask-route evidence by policy.",
+      "sourceNotes": [
+        "Section 9 separates successful pointing from failed mask growth and records duplicate-image response noise."
+      ],
+      "provenanceNotes": [
+        "This verdict does not select another mask producer or imply a runtime route."
+      ]
+    },
+    {
+      "id": "artifact.encoded-source.offline-development-corpus-file.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Offline development corpus files",
+      "description": "The exact encoded files and corpus membership used only for embedding, duplicate, coverage, and holdout diagnostics.",
+      "category": "encoded-source",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 names offline corpus files as global-embedding inputs."
+      ],
+      "provenanceNotes": [
+        "Corpus membership and file hashes are development custody; runtime corpus lookup and per-file matching are prohibited."
+      ]
+    },
+    {
+      "id": "artifact.raster.embedding-model-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Embedding-model-normalized raster",
+      "description": "A development-only whole-image raster transformed under the selected embedding arm's pinned preprocessing policy.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The model-facing corpus raster is explicit and retains crop, resize, center, and normalization behavior."
+      ],
+      "provenanceNotes": [
+        "This raster is a prohibited-runtime model input and does not replace native source custody."
+      ]
+    },
+    {
+      "id": "artifact.model.global-embedding-pinned-bundle.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Pinned global embedding model bundle",
+      "description": "The exact DINO- or CLIP-family weights, revision, runtime, processor, and code identity for one embedding arm.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 conditions offline descriptors on the selected model arm."
+      ],
+      "provenanceNotes": [
+        "Per-file inference with this learned bundle is prohibited at runtime."
+      ]
+    },
+    {
+      "id": "artifact.configuration.global-embedding-model-arm.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Global embedding model-arm configuration",
+      "description": "The pinned arm tag, model/processor pairing, resize and crop behavior, center handling, normalization, pooling, precision, batching, and L2-normalization policy.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The model arm is an explicit Section 9 input rather than an incidental model default."
+      ],
+      "provenanceNotes": [
+        "Configuration identity is frozen for offline comparison and grants no runtime authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.embedding-neighbor-clustering.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Embedding neighbor and clustering policy",
+      "description": "The pinned similarity, near-duplicate threshold, graph component, coverage clustering, seed, center initialization, tie, and strata policy.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 reports an incomplete 0.95 near-duplicate graph and arm-dependent coverage organization."
+      ],
+      "provenanceNotes": [
+        "Thresholds, seeds, initial centers, and tie behavior are explicit development inputs, not a corpus truth definition."
+      ]
+    },
+    {
+      "id": "artifact.measurement.global-image-embedding.v1",
+      "productFocus": "full-analysis-only",
+      "label": "L2-normalized global image embeddings",
+      "description": "One arm-tagged L2-normalized global descriptor vector per offline corpus file.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 supports these descriptors only for bounded offline diagnostics."
+      ],
+      "provenanceNotes": [
+        "Vectors mix subject, layout, and palette and are neither truth nor runtime palette features."
+      ]
+    },
+    {
+      "id": "artifact.graph.embedding-nearest-neighbor.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Embedding nearest-neighbor graph",
+      "description": "The arm- and policy-specific similarity graph over offline corpus descriptors.",
+      "category": "graph",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 emits a nearest-neighbor graph as a development corpus diagnostic."
+      ],
+      "provenanceNotes": [
+        "Edges are model similarities, not identity truth or tested runtime correspondences."
+      ]
+    },
+    {
+      "id": "artifact.region-set.embedding-near-duplicate-components.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Embedding near-duplicate components",
+      "description": "Connected components induced by the pinned near-duplicate similarity threshold, retained separately from embedding vectors and coverage clusters.",
+      "category": "region-set",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 describes likely rendition or duplicate components and measured the 0.95 graph as incomplete."
+      ],
+      "provenanceNotes": [
+        "Components are thresholded model hypotheses, not duplicate truth and never a runtime corpus lookup."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.embedding-coverage-strata.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Embedding coverage strata",
+      "description": "Arm-specific corpus cluster and coverage-stratum assignments used to organize development coverage.",
+      "category": "hypothesis",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 notes that holdout and coverage sets depend on the selected embedding arm."
+      ],
+      "provenanceNotes": [
+        "Strata organize development review only and are not semantic classes or runtime labels."
+      ]
+    },
+    {
+      "id": "artifact.provenance.global-embedding-run.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Global embedding run provenance",
+      "description": "Corpus, file, model, version, hash, preprocessing, arm, vector, neighbor, clustering, and reviewer-exposure provenance.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Audit offline embedding, duplicate, and coverage diagnostics.",
+      "sourceNotes": [
+        "Section 9 requires model, version, and hash provenance and warns about gallery exposure."
+      ],
+      "provenanceNotes": [
+        "The record preserves data-firewall context and does not authorize corpus-derived runtime behavior."
+      ]
+    },
+    {
+      "id": "artifact.measurement.dino-cls-all-patch-tokens.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DINO CLS and all patch tokens",
+      "description": "The complete per-image DINO forward-pass activations containing the CLS token and every patch token before pooling.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 says existing stored vectors are insufficient because these patch tokens were discarded."
+      ],
+      "provenanceNotes": [
+        "This prohibited-runtime activation artifact must remain paired with its raster, model, and preprocessing identities."
+      ]
+    },
+    {
+      "id": "artifact.configuration.dino-cls-mean-patch-pooling.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DINO CLS plus mean-patch pooling policy",
+      "description": "The frozen policy that averages all patch tokens, concatenates that mean with CLS, emits 2048 dimensions, and applies declared normalization.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 proposes this exact pooling rule as a separately tagged bake-off arm."
+      ],
+      "provenanceNotes": [
+        "The rule is unmeasured and prohibited for per-file runtime inference."
+      ]
+    },
+    {
+      "id": "artifact.measurement.dino-cls-mean-patch-embedding.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DINO CLS plus mean-patch embedding",
+      "description": "One separately tagged 2048-dimensional pooled vector per image from CLS concatenated with the mean of all patch tokens.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "This proposed vector remains distinct from the existing global-embedding contract and has no local measurement yet."
+      ],
+      "provenanceNotes": [
+        "The vector is not an adopted arm, duplicate component, semantic truth, or runtime feature."
+      ]
+    },
+    {
+      "id": "artifact.provenance.dino-pooling-bakeoff-arm.v1",
+      "productFocus": "full-analysis-only",
+      "label": "DINO pooling bake-off arm record",
+      "description": "A separate arm tag tying corpus, preprocessing, model, all-token forward pass, pooling rule, dimensions, hashes, and run identity together.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Prevent an unmeasured pooling arm from being confused with existing embedding evidence.",
+      "sourceNotes": [
+        "Section 9 requires a new separately tagged bake-off arm."
+      ],
+      "provenanceNotes": [
+        "Tagging does not adopt the arm or rewrite existing duplicate, holdout, coverage, or gallery evidence."
+      ]
+    },
+    {
+      "id": "artifact.raster.depth-model-normalized.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Depth-model-normalized raster",
+      "description": "A development-only raster transformed exactly for a pinned pretrained monocular depth model.",
+      "category": "raster",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The proposed depth route requires a model-specific image rather than silently consuming native pixels."
+      ],
+      "provenanceNotes": [
+        "Resizing and normalization are explicit and prohibited at runtime; no depth model has been run in this repository."
+      ]
+    },
+    {
+      "id": "artifact.model.monocular-depth-pinned-bundle.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Pinned monocular depth model bundle",
+      "description": "The exact pretrained depth weights, revision, processor, runtime, output convention, and calibration identity proposed for evaluation.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 leaves the depth model unselected and unrun."
+      ],
+      "provenanceNotes": [
+        "Any pretrained depth bundle is a prohibited-runtime research input and carries no compositional-ground authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.depth-preprocessing.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Monocular depth preprocessing policy",
+      "description": "The exact decode, resize, crop or center behavior, normalization, coordinate remapping, and output-resampling policy for a depth arm.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "The unbuilt depth route must expose model preprocessing as an effective input."
+      ],
+      "provenanceNotes": [
+        "This policy is development-only and cannot silently alter native-source evidence."
+      ]
+    },
+    {
+      "id": "artifact.configuration.depth-evidence-diagnostics.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Depth evidence diagnostic policy",
+      "description": "The pinned relative-depth convention, confidence handling, uniformity and edge measures, thresholds, and out-of-domain test protocol.",
+      "category": "configuration",
+      "plane": "development",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Section 9 proposes uniformity, edge, confidence, and explicit out-of-domain diagnostics."
+      ],
+      "provenanceNotes": [
+        "Thresholds are unmeasured research inputs and cannot convert depth into field truth."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.monocular-relative-depth.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Monocular relative-depth field",
+      "description": "A dense model-relative depth estimate with no metric scale and no compositional-ground interpretation.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 externally disfavors using relative depth to identify compositional ground."
+      ],
+      "provenanceNotes": [
+        "Confident structure can be wrong on printed pictures and flat graphics; this field is not truth, ownership, or a runtime field."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.monocular-depth-confidence.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Monocular depth confidence field",
+      "description": "An optional model-specific confidence or uncertainty field aligned to the relative-depth output.",
+      "category": "scalar-field",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 9 makes confidence optional because depth models do not share one confidence contract."
+      ],
+      "provenanceNotes": [
+        "Model confidence cannot establish correct geometry, compositional ground, or runtime authority."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.monocular-depth-uniformity-edge.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Depth uniformity and edge diagnostics",
+      "description": "Declared distributions and summaries of relative-depth uniformity, discontinuities, and alignment to image edges.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Evaluate the proposed photo-versus-flat and ground/figure depth claims.",
+      "sourceNotes": [
+        "Section 9 proposes these diagnostics but reports no local depth run."
+      ],
+      "provenanceNotes": [
+        "Uniformity and edges are model evidence only and do not assign a field, figure, identity, or role."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.monocular-depth-out-of-domain.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Monocular depth out-of-domain test",
+      "description": "An explicit test record for whether the pretrained depth premise applies to stylized covers, printed pictures, or flat graphics.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Expose domain failure instead of forcing relative depth into semantic evidence.",
+      "sourceNotes": [
+        "Section 9 requires an explicit out-of-domain test and notes only 4 of 30 hard covers depicted a place with depth."
+      ],
+      "provenanceNotes": [
+        "An in-domain result would still not establish compositional-ground truth or runtime admissibility."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "model.vlm-closed-question-set",
+      "focusClass": "research-only-oracle",
+      "title": "VLM structural labels",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.vlm-closed-question-set` - VLM structural labels",
+        "headingLine": 1911
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive` for semantic labels; implementation state `instrument`; evidence scope `isolated-semantic`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "oracle-raster",
+          "label": "Oracle-normalized image",
+          "artifactTypeId": "artifact.raster.vlm-oracle-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Development-only model raster; it does not replace the native source or enter cold inference."
+          ]
+        },
+        {
+          "id": "preprocessing-policy",
+          "label": "Oracle preprocessing policy",
+          "artifactTypeId": "artifact.configuration.vlm-oracle-preprocessing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins every transform used to obtain the model raster."
+          ]
+        },
+        {
+          "id": "model-bundle",
+          "label": "Pinned VLM model and revision",
+          "artifactTypeId": "artifact.model.vlm-pinned-bundle.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Prohibited-runtime model input; no model arm is selected for product use."
+          ]
+        },
+        {
+          "id": "tokenizer",
+          "label": "Pinned VLM tokenizer",
+          "artifactTypeId": "artifact.model.vlm-tokenizer-pinned.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Tokenizer identity is explicit rather than hidden in the model loader."
+          ]
+        },
+        {
+          "id": "ordered-prompt",
+          "label": "Ordered structural-question prompt",
+          "artifactTypeId": "artifact.configuration.vlm-closed-question-prompt.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Question wording and order are frozen effective inputs."
+          ]
+        },
+        {
+          "id": "answer-schema",
+          "label": "Closed-vocabulary answer schema",
+          "artifactTypeId": "artifact.configuration.vlm-closed-answer-schema.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The schema constrains representation but does not validate semantics."
+          ]
+        },
+        {
+          "id": "decoding-policy",
+          "label": "Seed and decoding policy",
+          "artifactTypeId": "artifact.configuration.vlm-closed-decoding.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Seed, decoding, and attempt behavior are explicit and frozen."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "answer-records",
+          "label": "Closed-question answer records",
+          "artifactTypeId": "artifact.hypothesis.vlm-closed-question-answer-record.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each frozen question has one closed-vocabulary answer or an explicitly represented schema state."
+          ],
+          "notes": [
+            "Answers are development hypotheses, not truth, runtime fields, role labels, or product-owned data."
+          ]
+        },
+        {
+          "id": "inference-provenance",
+          "label": "Full oracle provenance",
+          "artifactTypeId": "artifact.provenance.vlm-oracle-inference.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The record remains complete even when an answer is invalid or the invocation fails."
+          ],
+          "notes": [
+            "Provenance identifies the observation without certifying its semantics."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.grammar-constrained-decoding",
+      "focusClass": "research-only-oracle",
+      "title": "Structured VLM output enforcement",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.grammar-constrained-decoding` - Structured VLM output enforcement",
+        "headingLine": 1926
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically for oracle instrumentation; implementation state `instrument` and tested; evidence scope `mechanical`; runtime admissibility `prohibited` for palette inference.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "outputGroups": [
+        {
+          "id": "decoding-outcome",
+          "portIds": [
+            "typed-response",
+            "failed-attempt-ledger"
+          ],
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "One invocation terminates with valid typed JSON or a bounded failed-attempt ledger, never both and never neither."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "oracle-raster",
+          "label": "Oracle-normalized image",
+          "artifactTypeId": "artifact.raster.vlm-oracle-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The development-only image is identical across the structured-decoding attempt."
+          ]
+        },
+        {
+          "id": "preprocessing-policy",
+          "label": "Oracle preprocessing policy",
+          "artifactTypeId": "artifact.configuration.vlm-oracle-preprocessing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins the image transformation rather than hiding it in model execution."
+          ]
+        },
+        {
+          "id": "model-bundle",
+          "label": "Pinned VLM bundle",
+          "artifactTypeId": "artifact.model.vlm-pinned-bundle.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "The VLM remains prohibited for palette runtime."
+          ]
+        },
+        {
+          "id": "tokenizer",
+          "label": "Model tokenizer",
+          "artifactTypeId": "artifact.model.vlm-tokenizer-pinned.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Grammar support must be measured for this exact tokenizer."
+          ]
+        },
+        {
+          "id": "prompt",
+          "label": "Structured-decoding prompt",
+          "artifactTypeId": "artifact.configuration.vlm-grammar-prompt.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Prompt bytes and hash are explicit attempt inputs."
+          ]
+        },
+        {
+          "id": "json-schema",
+          "label": "Grammar JSON schema",
+          "artifactTypeId": "artifact.configuration.vlm-grammar-json-schema.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The same schema is compiled for logits constraints and used for validation."
+          ]
+        },
+        {
+          "id": "decoding-retry-policy",
+          "label": "Grammar decoding and retry policy",
+          "artifactTypeId": "artifact.configuration.vlm-grammar-decoding-retry.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Fallback retries are bounded and must change the greedy input."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "typed-response",
+          "label": "Valid typed JSON response",
+          "artifactTypeId": "artifact.report.vlm-grammar-typed-response.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only when grammar or bounded validation produces a schema-valid typed instance."
+          ],
+          "notes": [
+            "Mechanical validity is kept semantically separate from closed-question answers and semantic correctness."
+          ]
+        },
+        {
+          "id": "failed-attempt-ledger",
+          "label": "Bounded failed-attempt ledger",
+          "artifactTypeId": "artifact.diagnostic.vlm-grammar-failed-attempt-ledger.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present when grammar is unsupported, validation fails, or the bounded retry policy is exhausted."
+          ],
+          "notes": [
+            "A failed attempt remains failure and is not coerced into a label record."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.wording-disagreement",
+      "focusClass": "research-only-oracle",
+      "title": "Inter-prompt uncertainty",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.wording-disagreement` - Inter-prompt uncertainty",
+        "headingLine": 1940
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a disagreement diagnostic and `falsified` for the tested ground-question corpus authority; implementation state `instrument`; evidence scope `isolated-semantic`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "oracle-rasters",
+          "label": "Shared oracle-normalized images",
+          "artifactTypeId": "artifact.raster.vlm-oracle-normalized.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Both wording arms use the same development-only image corpus."
+          ]
+        },
+        {
+          "id": "preprocessing-policy",
+          "label": "Shared oracle preprocessing policy",
+          "artifactTypeId": "artifact.configuration.vlm-oracle-preprocessing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Preprocessing is frozen across variants."
+          ]
+        },
+        {
+          "id": "model-bundle",
+          "label": "Shared pinned VLM bundle",
+          "artifactTypeId": "artifact.model.vlm-pinned-bundle.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "The same prohibited-runtime model is used for both prompt variants."
+          ]
+        },
+        {
+          "id": "tokenizer",
+          "label": "Shared pinned tokenizer",
+          "artifactTypeId": "artifact.model.vlm-tokenizer-pinned.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Tokenizer identity is held fixed across wording variants."
+          ]
+        },
+        {
+          "id": "prompt-variant-one",
+          "label": "First frozen wording variant",
+          "artifactTypeId": "artifact.configuration.vlm-wording-variant.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The first variant is byte-distinct from the second while construct and order are intended to remain fixed."
+          ]
+        },
+        {
+          "id": "prompt-variant-two",
+          "label": "Second frozen wording variant",
+          "artifactTypeId": "artifact.configuration.vlm-wording-variant.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The second variant is independently hashed and is not an adaptive retry."
+          ]
+        },
+        {
+          "id": "answer-schema",
+          "label": "Shared closed-answer schema",
+          "artifactTypeId": "artifact.configuration.vlm-closed-answer-schema.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Closed vocabularies and question order are held fixed."
+          ]
+        },
+        {
+          "id": "decoding-policy",
+          "label": "Shared decoding policy",
+          "artifactTypeId": "artifact.configuration.vlm-closed-decoding.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Seed and decoding conditions are held fixed so wording is the intended contrast."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "wording-disagreement",
+          "label": "Inter-prompt disagreement diagnostic",
+          "artifactTypeId": "artifact.diagnostic.vlm-wording-disagreement.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Retains per-question agreement, kappa, binary disagreement, and concordant subset without a forced aggregate."
+          ],
+          "notes": [
+            "Disagreement is distinct from either VLM answer set, grammar validity, self-confidence, and ground truth."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.sam-mask-generation",
+      "focusClass": "research-only-oracle",
+      "title": "Prompted Segment Anything masks",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.sam-mask-generation` - Prompted Segment Anything masks",
+        "headingLine": 1955
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.spatial-structure-evidence"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `instrument`; evidence scope `isolated-semantic`; runtime admissibility `prohibited` under current accuracy and cold-cost evidence.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-source",
+          "label": "Native source raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Preserves exact source correspondence for prompts, masks, and output coordinates."
+          ]
+        },
+        {
+          "id": "sam-raster",
+          "label": "SAM model-normalized raster",
+          "artifactTypeId": "artifact.raster.sam-model-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Development-only model raster; it is not a runtime substitute for native pixels."
+          ]
+        },
+        {
+          "id": "preprocessing-policy",
+          "label": "SAM preprocessing policy",
+          "artifactTypeId": "artifact.configuration.sam-preprocessing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins resize, normalization, and coordinate remapping."
+          ]
+        },
+        {
+          "id": "sam-stack",
+          "label": "Pinned SAM stack",
+          "artifactTypeId": "artifact.model.sam-pinned-stack.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Determinism and masks are stack-specific; the stack is prohibited at cold runtime."
+          ]
+        },
+        {
+          "id": "prompts",
+          "label": "Point, box, text, or object prompts",
+          "artifactTypeId": "artifact.control.sam-prompt-set.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "control",
+          "notes": [
+            "Prompts are explicit controls and confer no semantic authority."
+          ]
+        },
+        {
+          "id": "cut-selection-policy",
+          "label": "Mask cut and selection policy",
+          "artifactTypeId": "artifact.configuration.sam-mask-cut-selection.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Cuts, ordering, caps, and no-mask behavior are pinned."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "candidate-masks",
+          "label": "Candidate SAM masks",
+          "artifactTypeId": "artifact.mask.sam-candidate.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Zero masks is valid and is accompanied by the explicit no-mask state; multiple prompt-associated candidates may survive."
+          ],
+          "notes": [
+            "Masks visualize hypotheses only and carry no subject, text, mark, field, or role truth."
+          ]
+        },
+        {
+          "id": "candidate-scores",
+          "label": "Candidate mask scores",
+          "artifactTypeId": "artifact.measurement.sam-candidate-score.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Scores align one-for-one with emitted candidates and are absent when there are no candidates."
+          ],
+          "notes": [
+            "A high score is not semantic purity."
+          ]
+        },
+        {
+          "id": "prompt-provenance",
+          "label": "Prompt and mask provenance",
+          "artifactTypeId": "artifact.provenance.sam-prompt-mask.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The invocation record is emitted whether masks exist or not."
+          ],
+          "notes": [
+            "Preserves prompt-to-candidate correspondence and full stack identity."
+          ]
+        },
+        {
+          "id": "no-mask-state",
+          "label": "Explicit no-mask state",
+          "artifactTypeId": "artifact.hypothesis.sam-explicit-no-mask.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present exactly when the invocation yields no candidate mask under the pinned policy."
+          ],
+          "notes": [
+            "No-mask does not mean the prompted concept is absent."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.sam-residual-subtraction",
+      "focusClass": "research-only-oracle",
+      "title": "Figure subtraction to field residual",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.sam-residual-subtraction` - Figure subtraction to field residual",
+        "headingLine": 1970
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `falsified` as the tested background isolator and `supported` only as a field-enriched prior; implementation state `instrument`; evidence scope `isolated-semantic`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "falsified",
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-source",
+          "label": "Native source raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The residual raster retains correspondence to this exact source."
+          ]
+        },
+        {
+          "id": "sam-masks",
+          "label": "Selected SAM candidate masks",
+          "artifactTypeId": "artifact.mask.sam-candidate.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Candidate masks are compatible evidence only; this port asserts no selected producer or tested binding."
+          ]
+        },
+        {
+          "id": "subtraction-cuts",
+          "label": "Residual subtraction cuts",
+          "artifactTypeId": "artifact.configuration.sam-residual-subtraction-cuts.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins which subject, text, and mark masks are unioned and subtracted."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "residual-raster",
+          "label": "Field-enriched residual image",
+          "artifactTypeId": "artifact.raster.sam-field-enriched-residual.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The residual exists even when contamination review finds it impure."
+          ],
+          "notes": [
+            "This development raster is field-enriched, not pure field, source truth, or publishable runtime pixels."
+          ]
+        },
+        {
+          "id": "residual-mask",
+          "label": "Field-enriched residual mask",
+          "artifactTypeId": "artifact.mask.sam-field-enriched-residual.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records the exact complement of the configured selected-mask union."
+          ],
+          "notes": [
+            "Residual support carries no field ownership or role semantics."
+          ]
+        },
+        {
+          "id": "contamination-causes",
+          "label": "Residual contamination causes",
+          "artifactTypeId": "artifact.diagnostic.sam-residual-contamination-causes.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The record can contain no named cause, one cause, or several causes under the scoped rubric."
+          ],
+          "notes": [
+            "Keeps failure explanations separate from the residual mask and purity decision."
+          ]
+        },
+        {
+          "id": "purity-review",
+          "label": "Residual purity review",
+          "artifactTypeId": "artifact.review.sam-residual-purity.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Retains forced-choice ambiguity and the pure, mostly, or contaminated review state."
+          ],
+          "notes": [
+            "Review supports the scoped falsification and never becomes runtime ownership data."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.point-to-sam-ground",
+      "focusClass": "research-only-oracle",
+      "title": "Point localization followed by mask growth",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.point-to-sam-ground` - Point localization followed by mask growth",
+        "headingLine": 1985
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.field-and-figure-hypotheses",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for point localization and `falsified` for the tested ground-mask route; implementation state `instrument`; evidence scope `isolated-semantic`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "growth-policy",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Exactly one of the three tested containing, ground-ranked, or union policies defines an invocation."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "native-image",
+          "label": "Native image",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Provides the image coordinate frame for point and mask review."
+          ]
+        },
+        {
+          "id": "point-hypotheses",
+          "label": "Ground-point hypotheses",
+          "artifactTypeId": "artifact.hypothesis.ground-point-unresolved.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "external-observation",
+          "notes": [
+            "The point producer is intentionally unresolved; this mechanism does not manufacture or own the hypotheses."
+          ]
+        },
+        {
+          "id": "sam-masks",
+          "label": "SAM candidate masks",
+          "artifactTypeId": "artifact.mask.sam-candidate.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Candidate compatibility does not bind this route to a mask producer."
+          ]
+        },
+        {
+          "id": "containing-policy",
+          "label": "Containing-mask policy",
+          "artifactTypeId": "artifact.configuration.sam-containing-mask-route.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "growth-policy",
+          "cardinality": "zero-or-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Selects the tested containing-mask route when present."
+          ]
+        },
+        {
+          "id": "ground-ranked-policy",
+          "label": "Ground-ranked policy",
+          "artifactTypeId": "artifact.configuration.sam-ground-ranked-route.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "growth-policy",
+          "cardinality": "zero-or-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Selects the tested ground-ranked route when present."
+          ]
+        },
+        {
+          "id": "union-policy",
+          "label": "Union policy",
+          "artifactTypeId": "artifact.configuration.sam-union-route.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "growth-policy",
+          "cardinality": "zero-or-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Selects the tested union route when present."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "point-verdict",
+          "label": "Point localization verdict",
+          "artifactTypeId": "artifact.diagnostic.ground-point-localization-verdict.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records dot-right independently of whether the selected wash is right."
+          ],
+          "notes": [
+            "Keeps the supported pointer finding distinct from the falsified mask-growth route."
+          ]
+        },
+        {
+          "id": "selected-wash",
+          "label": "Policy-selected SAM wash",
+          "artifactTypeId": "artifact.mask.sam-point-route-selected-wash.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when the chosen policy cannot produce an eligible wash; otherwise retains the exact selected or union mask."
+          ],
+          "notes": [
+            "The wash is neither a generic SAM candidate set nor a residual mask, and it has no field authority."
+          ]
+        },
+        {
+          "id": "route-verdict",
+          "label": "Point-to-SAM route verdict",
+          "artifactTypeId": "artifact.diagnostic.point-to-sam-route-verdict.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records policy identity, both-right count, bar result, and duplicate-response qualification."
+          ],
+          "notes": [
+            "The route verdict is evidence about the tested policy, not runtime selection or ownership."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.global-embeddings",
+      "focusClass": "research-only-oracle",
+      "title": "DINO/CLIP-family corpus descriptors",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.global-embeddings` - DINO/CLIP-family corpus descriptors",
+        "headingLine": 2000
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded offline diagnostics; implementation state `instrument`; evidence scope `mechanical`; runtime admissibility `prohibited` for per-file inference.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "offline-corpus",
+          "label": "Offline corpus files",
+          "artifactTypeId": "artifact.encoded-source.offline-development-corpus-file.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Development corpus only; runtime lookup, matching, and per-file corpus inference are prohibited."
+          ]
+        },
+        {
+          "id": "model-rasters",
+          "label": "Embedding-model-normalized corpus rasters",
+          "artifactTypeId": "artifact.raster.embedding-model-normalized.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "One development-only model raster corresponds to each corpus file under the arm policy."
+          ]
+        },
+        {
+          "id": "model-bundle",
+          "label": "Pinned embedding model bundle",
+          "artifactTypeId": "artifact.model.global-embedding-pinned-bundle.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "The learned bundle is prohibited for per-file product inference."
+          ]
+        },
+        {
+          "id": "model-arm",
+          "label": "Embedding model-arm configuration",
+          "artifactTypeId": "artifact.configuration.global-embedding-model-arm.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins preprocessing, center or crop behavior, pooling, precision, and L2 normalization."
+          ]
+        },
+        {
+          "id": "neighbor-clustering-policy",
+          "label": "Neighbor and clustering policy",
+          "artifactTypeId": "artifact.configuration.embedding-neighbor-clustering.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins similarity threshold, graph components, centers, clustering seed, ties, and coverage strata."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "embeddings",
+          "label": "Per-file L2-normalized vectors",
+          "artifactTypeId": "artifact.measurement.global-image-embedding.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Exactly one vector is expected for every successfully processed corpus file; failures remain in provenance rather than receiving fabricated vectors."
+          ],
+          "notes": [
+            "Descriptors are development measurements and remain distinct from duplicate components and semantic labels."
+          ]
+        },
+        {
+          "id": "neighbor-graph",
+          "label": "Nearest-neighbor graph",
+          "artifactTypeId": "artifact.graph.embedding-nearest-neighbor.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Can be sparse or disconnected under the pinned similarity and neighbor policy."
+          ],
+          "notes": [
+            "Graph edges indicate model similarity only."
+          ]
+        },
+        {
+          "id": "duplicate-components",
+          "label": "Likely near-duplicate components",
+          "artifactTypeId": "artifact.region-set.embedding-near-duplicate-components.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The set may be empty and is incomplete under the measured 0.95 graph."
+          ],
+          "notes": [
+            "Components remain thresholded hypotheses and are not duplicate truth or runtime lookup keys."
+          ]
+        },
+        {
+          "id": "coverage-strata",
+          "label": "Coverage clusters and strata",
+          "artifactTypeId": "artifact.hypothesis.embedding-coverage-strata.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Assignments are arm-specific and can change when model, preprocessing, pooling, centers, or seed changes."
+          ],
+          "notes": [
+            "Coverage organization is development custody, not a semantic corpus ontology."
+          ]
+        },
+        {
+          "id": "run-provenance",
+          "label": "Model, version, hash, and run provenance",
+          "artifactTypeId": "artifact.provenance.global-embedding-run.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Includes failed files, corpus identity, arm identity, and reviewer-gallery exposure state."
+          ],
+          "notes": [
+            "Provenance prevents offline corpus evidence from leaking into runtime authority."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.dino-cls-mean-patch",
+      "focusClass": "research-only-oracle",
+      "title": "DINO CLS plus mean-patch pooling",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.dino-cls-mean-patch` - DINO CLS plus mean-patch pooling",
+        "headingLine": 2016
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured`; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` for per-file inference.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "all-token-forward-pass",
+          "label": "CLS and all patch tokens",
+          "artifactTypeId": "artifact.measurement.dino-cls-all-patch-tokens.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "One complete activation set aligns with each image and already binds source image, preprocessing, model, processor, runtime, and forward-pass provenance; stored pooled vectors cannot substitute because patch tokens were discarded."
+          ]
+        },
+        {
+          "id": "pooling-policy",
+          "label": "CLS plus mean-patch pooling policy",
+          "artifactTypeId": "artifact.configuration.dino-cls-mean-patch-pooling.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins mean-over-all-patches, concatenation order, dimensions, and output normalization."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "pooled-vectors",
+          "label": "2048-dimensional pooled vectors",
+          "artifactTypeId": "artifact.measurement.dino-cls-mean-patch-embedding.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "One vector is emitted per successful complete-token input; missing or failed images remain explicit failures."
+          ],
+          "notes": [
+            "This unmeasured pooling output is distinct from existing global embeddings, duplicate components, and adopted coverage evidence."
+          ]
+        },
+        {
+          "id": "bakeoff-arm-record",
+          "label": "Separately tagged bake-off arm",
+          "artifactTypeId": "artifact.provenance.dino-pooling-bakeoff-arm.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always identifies the new arm independently of whether all vectors are produced."
+          ],
+          "notes": [
+            "The tag prevents accidental inheritance of prior duplicate, holdout, cluster, or gallery claims."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model.monocular-depth-ground",
+      "focusClass": "research-only-oracle",
+      "title": "Depth as ground/figure evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `model.monocular-depth-ground` - Depth as ground/figure evidence",
+        "headingLine": 2031
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally and externally disfavored for the claim; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-image",
+          "label": "Native source image",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Retains exact source correspondence for evaluating the model-relative output."
+          ]
+        },
+        {
+          "id": "depth-raster",
+          "label": "Depth-model-normalized image",
+          "artifactTypeId": "artifact.raster.depth-model-normalized.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Development-only model raster; no depth model has yet consumed one in this repository."
+          ]
+        },
+        {
+          "id": "depth-model",
+          "label": "Pretrained depth model bundle",
+          "artifactTypeId": "artifact.model.monocular-depth-pinned-bundle.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "The model is currently unselected, unrun, and prohibited at runtime."
+          ]
+        },
+        {
+          "id": "preprocessing-policy",
+          "label": "Depth preprocessing policy",
+          "artifactTypeId": "artifact.configuration.depth-preprocessing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins resize, crop or center behavior, normalization, and output remapping."
+          ]
+        },
+        {
+          "id": "diagnostic-policy",
+          "label": "Depth evidence diagnostic policy",
+          "artifactTypeId": "artifact.configuration.depth-evidence-diagnostics.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins relative-depth interpretation, confidence handling, uniformity, edge, and out-of-domain tests."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "relative-depth",
+          "label": "Dense relative depth",
+          "artifactTypeId": "artifact.scalar-field.monocular-relative-depth.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Values are model-relative and can be confidently structured but wrong or out of domain."
+          ],
+          "notes": [
+            "Depth evidence remains distinct from a ground mask, field hypothesis, truth, and runtime field ownership."
+          ]
+        },
+        {
+          "id": "confidence",
+          "label": "Optional depth confidence",
+          "artifactTypeId": "artifact.scalar-field.monocular-depth-confidence.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when the selected model exposes no separately meaningful confidence output."
+          ],
+          "notes": [
+            "Confidence is model-specific and cannot certify compositional ground."
+          ]
+        },
+        {
+          "id": "uniformity-edges",
+          "label": "Uniformity and edge diagnostics",
+          "artifactTypeId": "artifact.diagnostic.monocular-depth-uniformity-edge.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Can report weak, contradictory, degenerate, or apparently structured evidence without forcing a field decision."
+          ],
+          "notes": [
+            "The diagnostic tests the proposed evidence claim but assigns no semantics."
+          ]
+        },
+        {
+          "id": "out-of-domain-test",
+          "label": "Explicit out-of-domain test",
+          "artifactTypeId": "artifact.diagnostic.monocular-depth-out-of-domain.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Explicitly records in-domain, out-of-domain, ambiguous, or test-invalid state."
+          ],
+          "notes": [
+            "Out-of-domain handling remains separate from relative depth and never forces ground or figure ownership."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "The fragment encodes all nine Section 9 census mechanisms exactly once and no mechanism outside that section.",
+    "All learned models, model-normalized rasters, prompts, schemas, tokenizers, corpus artifacts, and model-dependent configurations are development-plane inputs whose Section 9 mechanisms are prohibited at runtime.",
+    "Outputs are diagnostic evidence or hypotheses only; none is truth, runtime field ownership, role ownership, a product contract, or a selected producer.",
+    "Shared artifact type IDs express candidate semantic compatibility only and do not assert an architecture, dependency, tested binding, selected route, or build order.",
+    "The point-to-SAM ground-point hypothesis has no producer in this fragment and remains classified as an unresolved external root."
+  ]
+}

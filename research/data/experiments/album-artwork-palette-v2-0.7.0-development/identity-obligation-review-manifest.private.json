@@ -1,0 +1,884 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.0-identity-obligation-review-v1",
+  "presentationVersion": "album-artwork-palette-v2-phase-4-presentation-v1",
+  "cases": [
+    {
+      "caseId": "development-03",
+      "order": 0,
+      "source": {
+        "file": "images/birdsofprey.jpg",
+        "sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+        "bytes": 136233
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#3fa72a",
+              "nearestName": "Yoshi",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#3fa72a",
+              "nearestName": "Yoshi",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#030102",
+              "nearestName": "Soot",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d02981",
+              "nearestName": "Magentarama",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#1c026d",
+              "nearestName": "Black Rice",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#22438a",
+              "nearestName": "First Mate",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#e0cdc7",
+              "nearestName": "Luna",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d02981",
+              "nearestName": "Magentarama",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-14",
+      "order": 1,
+      "source": {
+        "file": "images/black.jpg",
+        "sha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+        "bytes": 38119
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#6e6e6e",
+              "nearestName": "Slate",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#3d3d3d",
+              "nearestName": "Graphite",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#575757",
+              "nearestName": "Iron",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#575757",
+              "nearestName": "Iron",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#030303",
+              "nearestName": "Jet Black",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#3d3d3d",
+              "nearestName": "Graphite",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "development-08",
+      "order": 2,
+      "source": {
+        "file": "images/elephunk.jpg",
+        "sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+        "bytes": 70051
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#fcfdd1",
+              "nearestName": "Moonbeam",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fcfdd1",
+              "nearestName": "Moonbeam",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#0f4b55",
+              "nearestName": "Harbour Slate",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#a6c6c3",
+              "nearestName": "Wild Life",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#579099",
+              "nearestName": "Harbour Mist",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#032833",
+              "nearestName": "Midnight Blue",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fcfdd1",
+              "nearestName": "Moonbeam",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#a5c7c8",
+              "nearestName": "Wild Life",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-28",
+      "order": 3,
+      "source": {
+        "file": "08/ab67616d0000b2730008d804660f1ce6c664c237",
+        "sha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+        "bytes": 111547
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#b3b2b7",
+              "nearestName": "Silver",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#938f90",
+              "nearestName": "Grey",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#3c3334",
+              "nearestName": "Witches Cauldron",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#09070e",
+              "nearestName": "Blackout",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#9f9f9f",
+              "nearestName": "Cortex",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#8f8b88",
+              "nearestName": "Pebble",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#1a1921",
+              "nearestName": "Umbra",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#c8a388",
+              "nearestName": "Tan",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "development-07",
+      "order": 4,
+      "source": {
+        "file": "images/muse.jpg",
+        "sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+        "bytes": 113438
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#0082be",
+              "nearestName": "Blue Jay",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#0468a6",
+              "nearestName": "Smokescreen",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f2fafd",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#010101",
+              "nearestName": "Soot",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#000000",
+              "nearestName": "Pitch Black",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#026faa",
+              "nearestName": "Campanula",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#edf6fb",
+              "nearestName": "Frost",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#10a4d4",
+              "nearestName": "Sky Wave",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-19",
+      "order": 5,
+      "source": {
+        "file": "images/knuckles.jpg",
+        "sha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+        "bytes": 90657
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#beb2c6",
+              "nearestName": "Nebulous",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#9b9bbd",
+              "nearestName": "London Fog",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#1c0031",
+              "nearestName": "Coal Mine",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#d8cbdd",
+              "nearestName": "Pearl",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#9b9bbd",
+              "nearestName": "London Fog",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#9b9bbd",
+              "nearestName": "London Fog",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#d8cbdd",
+              "nearestName": "Pearl",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#beb2c6",
+              "nearestName": "Nebulous",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "development-23",
+      "order": 6,
+      "source": {
+        "file": "03/ab67616d0000b2730003cdbba19cbfd06f490085.jpg",
+        "sha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+        "bytes": 93716
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#142c2e",
+              "nearestName": "Nero",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#396a66",
+              "nearestName": "Douglas Fir",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#baa35f",
+              "nearestName": "Hay",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#5c9ba4",
+              "nearestName": "Yucca",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#142c2e",
+              "nearestName": "Nero",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#396a66",
+              "nearestName": "Douglas Fir",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#ebe3b4",
+              "nearestName": "Cream",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#b4a35e",
+              "nearestName": "Hay",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-15",
+      "order": 7,
+      "source": {
+        "file": "images/horrorwood.jpg",
+        "sha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+        "bytes": 241855
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#141b25",
+              "nearestName": "Jaguar",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#36444f",
+              "nearestName": "Pi",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#ccd3d9",
+              "nearestName": "Zen",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#808b91",
+              "nearestName": "Campfire Smoke",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#151922",
+              "nearestName": "Umbra",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#505e6b",
+              "nearestName": "Iron",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#ccd3d9",
+              "nearestName": "Zen",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#331924",
+              "nearestName": "Stout",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "development-12",
+      "order": 8,
+      "source": {
+        "file": "images/vvbrown.jpg",
+        "sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+        "bytes": 57673
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#9e961a",
+              "nearestName": "Pistachio Shell",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#e6e622",
+              "nearestName": "Yuzu",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#080808",
+              "nearestName": "Blackout",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#584c1c",
+              "nearestName": "Pineapple",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-24",
+      "order": 9,
+      "source": {
+        "file": "04/ab67616d0000b2730004b07fec8023569296fd5e",
+        "sha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+        "bytes": 156494
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#e9a03a",
+              "nearestName": "Honey Amber",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#b13d02",
+              "nearestName": "Terracotta",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#261400",
+              "nearestName": "Espresso Martini",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#fedd40",
+              "nearestName": "Dandelion",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#e9a03a",
+              "nearestName": "Honey Amber",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#b13d02",
+              "nearestName": "Terracotta",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#fefcaf",
+              "nearestName": "Polar",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#1beb02",
+              "nearestName": "Splat",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    },
+    {
+      "caseId": "development-26",
+      "order": 10,
+      "source": {
+        "file": "06/ab67616d00001e020006b33fb3c112e2ae60ab29",
+        "sha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+        "bytes": 27992
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#bab7b2",
+              "nearestName": "Silver",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#a19e99",
+              "nearestName": "Cortex",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#080808",
+              "nearestName": "Blackout",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#83807b",
+              "nearestName": "Sleepy Koala",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#cdcac5",
+              "nearestName": "Beige",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#8e8b86",
+              "nearestName": "Pebble",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#080808",
+              "nearestName": "Blackout",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#393631",
+              "nearestName": "Tamahagane",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-13",
+      "order": 11,
+      "source": {
+        "file": "images/once.jpg",
+        "sha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+        "bytes": 91019
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#dddde7",
+              "nearestName": "Velvet Scarf",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#dddde7",
+              "nearestName": "Velvet Scarf",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#3b303e",
+              "nearestName": "Witches Cauldron",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#807387",
+              "nearestName": "Lavender Grey",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#dddde7",
+              "nearestName": "Velvet Scarf",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#dddde7",
+              "nearestName": "Velvet Scarf",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#3b303e",
+              "nearestName": "Witches Cauldron",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#544959",
+              "nearestName": "Liver",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    }
+  ],
+  "manifestId": "56587cd633b8cc7995d96dcf56f71f71d6133ea618b0e3bd04d895edcf249d8d"
+}

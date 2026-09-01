@@ -1,0 +1,1550 @@
+{
+	"results_file": "../../data/oracle-premise/premise-run-1.jsonl",
+	"health": {
+		"rows": 284,
+		"ok": 284,
+		"failed": 0,
+		"parse_failed": 0,
+		"attempts_gt_1": 0,
+		"by_variant": {
+			"A": 142,
+			"B": 142
+		},
+		"constrained_decoding": [
+			true
+		],
+		"model_revisions": [
+			"f31102655767c89366f63d3eab2a5e2a8fd6d293"
+		],
+		"prompt_hashes": {
+			"A": [
+				"b1e58c3af233b91e44cf3832c24eeadedd01792dcc8cd8c72a25c0fe22bbcbd8"
+			],
+			"B": [
+				"c46f055e873fe7a0b9b569b1fd1444a194d3803ff11196e4f71441b7d07e6fc4"
+			]
+		},
+		"run_ids": [
+			"080d3c4b-e956-4f5c-853b-d4bd4ec3641b"
+		]
+	},
+	"canary": {
+		"count": 15,
+		"distinct_parsed_answers": 1,
+		"distinct_raw_texts": 1,
+		"stable": true,
+		"stable_reading": "true/false over the canary rows actually present"
+	},
+	"gradient_map": {
+		"shaded_field": "gradient",
+		"flat_field": "flat",
+		"multiple_distinct_fields": "flat",
+		"full_scene": "unmapped",
+		"pattern_or_texture": "unmapped",
+		"none_discernible": "unmapped",
+		"underdetermined": "unanswerable"
+	},
+	"p6_buckets_map": {
+		"flat_field|gradient": "contradiction_hard",
+		"flat_field|flat": "agreement",
+		"shaded_field|gradient": "agreement",
+		"shaded_field|flat": "contradiction_soft",
+		"multiple_distinct_fields|gradient": "underdetermined",
+		"multiple_distinct_fields|flat": "agreement",
+		"full_scene|gradient": "underdetermined",
+		"full_scene|flat": "underdetermined",
+		"pattern_or_texture|gradient": "underdetermined",
+		"pattern_or_texture|flat": "underdetermined",
+		"none_discernible|gradient": "underdetermined",
+		"none_discernible|flat": "underdetermined"
+	},
+	"notes": [
+		"PHASE_0_DECISIONS.md \u00a74 P6: this is never an exact-match test. `underdetermined` cells are counted, not scored; their SIZE is the instrument.",
+		"`strict_all_labels` forces every label into the binary (unmapped -> flat). `mapped_labels_only` drops flat_field/shaded_field/multiple_distinct_fields' three siblings entirely. Quote both or neither.",
+		"Ground truth is an accepted algorithm decision, not an elicited human label \u2014 see eval-set.json meta.groundTruthEpistemology before reading a low number as oracle failure.",
+		"Artworks whose accepted palettes disagreed on the gradient boolean are excluded from the primary numbers by default and reported under `conflicted_truth_subset`."
+	],
+	"population": {
+		"images_with_at_least_one_ok_answer": 142,
+		"primary": 137,
+		"conflicted_truth_excluded": 5,
+		"distinct_artworks": 137,
+		"by_tier": {
+			"thumbnail_<=320": 41,
+			"standard_<=640": 85,
+			"large_>640": 11
+		}
+	},
+	"per_variant": {
+		"A": {
+			"strict_all_labels": {
+				"n": 137,
+				"agreement": 0.6131,
+				"cohens_kappa": 0.21,
+				"matthews_corr": 0.2171,
+				"confusion": {
+					"human_gradient_oracle_gradient": 29,
+					"human_flat_oracle_flat": 55,
+					"human_flat_oracle_gradient": 18,
+					"human_gradient_oracle_flat": 35
+				},
+				"oracle_says_gradient_rate": 0.3431,
+				"human_says_gradient_rate": 0.4672
+			},
+			"mapped_labels_only": {
+				"n": 77,
+				"agreement": 0.7143,
+				"cohens_kappa": 0.446,
+				"matthews_corr": 0.4766,
+				"confusion": {
+					"human_gradient_oracle_gradient": 29,
+					"human_flat_oracle_flat": 26,
+					"human_flat_oracle_gradient": 18,
+					"human_gradient_oracle_flat": 4
+				},
+				"oracle_says_gradient_rate": 0.6104,
+				"human_says_gradient_rate": 0.4286
+			},
+			"unmapped_label_count": 60,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
+			"p6_buckets": {
+				"agreement": 55,
+				"underdetermined": 63,
+				"contradiction_soft": 18,
+				"contradiction_hard": 1
+			},
+			"p6_scored_share": 0.5401,
+			"contingency_ground_type_x_human_gradient": {
+				"flat_field|flat": 15,
+				"flat_field|gradient": 1,
+				"full_scene|flat": 21,
+				"full_scene|gradient": 29,
+				"multiple_distinct_fields|flat": 11,
+				"multiple_distinct_fields|gradient": 3,
+				"pattern_or_texture|flat": 8,
+				"pattern_or_texture|gradient": 2,
+				"shaded_field|flat": 18,
+				"shaded_field|gradient": 29
+			},
+			"ground_type_distribution": {
+				"multiple_distinct_fields": 14,
+				"flat_field": 16,
+				"shaded_field": 47,
+				"full_scene": 50,
+				"pattern_or_texture": 10
+			}
+		},
+		"B": {
+			"strict_all_labels": {
+				"n": 137,
+				"agreement": 0.6642,
+				"cohens_kappa": 0.311,
+				"matthews_corr": 0.3294,
+				"confusion": {
+					"human_gradient_oracle_gradient": 30,
+					"human_flat_oracle_flat": 61,
+					"human_flat_oracle_gradient": 12,
+					"human_gradient_oracle_flat": 34
+				},
+				"oracle_says_gradient_rate": 0.3066,
+				"human_says_gradient_rate": 0.4672
+			},
+			"mapped_labels_only": {
+				"n": 94,
+				"agreement": 0.7447,
+				"cohens_kappa": 0.4835,
+				"matthews_corr": 0.4835,
+				"confusion": {
+					"human_gradient_oracle_gradient": 30,
+					"human_flat_oracle_flat": 40,
+					"human_flat_oracle_gradient": 12,
+					"human_gradient_oracle_flat": 12
+				},
+				"oracle_says_gradient_rate": 0.4468,
+				"human_says_gradient_rate": 0.4468
+			},
+			"unmapped_label_count": 43,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
+			"p6_buckets": {
+				"agreement": 70,
+				"underdetermined": 47,
+				"contradiction_soft": 12,
+				"contradiction_hard": 8
+			},
+			"p6_scored_share": 0.6569,
+			"contingency_ground_type_x_human_gradient": {
+				"flat_field|flat": 31,
+				"flat_field|gradient": 8,
+				"full_scene|flat": 18,
+				"full_scene|gradient": 20,
+				"multiple_distinct_fields|flat": 9,
+				"multiple_distinct_fields|gradient": 4,
+				"pattern_or_texture|flat": 3,
+				"pattern_or_texture|gradient": 2,
+				"shaded_field|flat": 12,
+				"shaded_field|gradient": 30
+			},
+			"ground_type_distribution": {
+				"multiple_distinct_fields": 13,
+				"flat_field": 39,
+				"shaded_field": 42,
+				"full_scene": 38,
+				"pattern_or_texture": 5
+			}
+		}
+	},
+	"per_variant_by_tier": {
+		"A": {
+			"large_>640": {
+				"strict_all_labels": {
+					"n": 11,
+					"agreement": 0.8182,
+					"cohens_kappa": 0.6333,
+					"matthews_corr": 0.6333,
+					"confusion": {
+						"human_gradient_oracle_gradient": 5,
+						"human_flat_oracle_flat": 4,
+						"human_flat_oracle_gradient": 1,
+						"human_gradient_oracle_flat": 1
+					},
+					"oracle_says_gradient_rate": 0.5455,
+					"human_says_gradient_rate": 0.5455
+				},
+				"mapped_labels_only": {
+					"n": 9,
+					"agreement": 0.8889,
+					"cohens_kappa": 0.7692,
+					"matthews_corr": 0.7906,
+					"confusion": {
+						"human_gradient_oracle_gradient": 5,
+						"human_flat_oracle_flat": 3,
+						"human_flat_oracle_gradient": 1,
+						"human_gradient_oracle_flat": 0
+					},
+					"oracle_says_gradient_rate": 0.6667,
+					"human_says_gradient_rate": 0.5556
+				},
+				"unmapped_label_count": 2,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
+				"p6_buckets": {
+					"agreement": 8,
+					"underdetermined": 2,
+					"contradiction_soft": 1
+				},
+				"p6_scored_share": 0.8182,
+				"contingency_ground_type_x_human_gradient": {
+					"flat_field|flat": 2,
+					"full_scene|flat": 1,
+					"multiple_distinct_fields|flat": 1,
+					"pattern_or_texture|gradient": 1,
+					"shaded_field|flat": 1,
+					"shaded_field|gradient": 5
+				},
+				"ground_type_distribution": {
+					"multiple_distinct_fields": 1,
+					"shaded_field": 6,
+					"flat_field": 2,
+					"pattern_or_texture": 1,
+					"full_scene": 1
+				}
+			},
+			"standard_<=640": {
+				"strict_all_labels": {
+					"n": 85,
+					"agreement": 0.5647,
+					"cohens_kappa": 0.1173,
+					"matthews_corr": 0.1256,
+					"confusion": {
+						"human_gradient_oracle_gradient": 15,
+						"human_flat_oracle_flat": 33,
+						"human_flat_oracle_gradient": 11,
+						"human_gradient_oracle_flat": 26
+					},
+					"oracle_says_gradient_rate": 0.3059,
+					"human_says_gradient_rate": 0.4824
+				},
+				"mapped_labels_only": {
+					"n": 43,
+					"agreement": 0.6512,
+					"cohens_kappa": 0.3189,
+					"matthews_corr": 0.3363,
+					"confusion": {
+						"human_gradient_oracle_gradient": 15,
+						"human_flat_oracle_flat": 13,
+						"human_flat_oracle_gradient": 11,
+						"human_gradient_oracle_flat": 4
+					},
+					"oracle_says_gradient_rate": 0.6047,
+					"human_says_gradient_rate": 0.4419
+				},
+				"unmapped_label_count": 42,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
+				"p6_buckets": {
+					"agreement": 28,
+					"underdetermined": 45,
+					"contradiction_soft": 11,
+					"contradiction_hard": 1
+				},
+				"p6_scored_share": 0.4706,
+				"contingency_ground_type_x_human_gradient": {
+					"flat_field|flat": 7,
+					"flat_field|gradient": 1,
+					"full_scene|flat": 13,
+					"full_scene|gradient": 21,
+					"multiple_distinct_fields|flat": 6,
+					"multiple_distinct_fields|gradient": 3,
+					"pattern_or_texture|flat": 7,
+					"pattern_or_texture|gradient": 1,
+					"shaded_field|flat": 11,
+					"shaded_field|gradient": 15
+				},
+				"ground_type_distribution": {
+					"shaded_field": 26,
+					"full_scene": 34,
+					"multiple_distinct_fields": 9,
+					"pattern_or_texture": 8,
+					"flat_field": 8
+				}
+			},
+			"thumbnail_<=320": {
+				"strict_all_labels": {
+					"n": 41,
+					"agreement": 0.6585,
+					"cohens_kappa": 0.2843,
+					"matthews_corr": 0.2858,
+					"confusion": {
+						"human_gradient_oracle_gradient": 9,
+						"human_flat_oracle_flat": 18,
+						"human_flat_oracle_gradient": 6,
+						"human_gradient_oracle_flat": 8
+					},
+					"oracle_says_gradient_rate": 0.3659,
+					"human_says_gradient_rate": 0.4146
+				},
+				"mapped_labels_only": {
+					"n": 25,
+					"agreement": 0.76,
+					"cohens_kappa": 0.5455,
+					"matthews_corr": 0.6124,
+					"confusion": {
+						"human_gradient_oracle_gradient": 9,
+						"human_flat_oracle_flat": 10,
+						"human_flat_oracle_gradient": 6,
+						"human_gradient_oracle_flat": 0
+					},
+					"oracle_says_gradient_rate": 0.6,
+					"human_says_gradient_rate": 0.36
+				},
+				"unmapped_label_count": 16,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
+				"p6_buckets": {
+					"agreement": 19,
+					"underdetermined": 16,
+					"contradiction_soft": 6
+				},
+				"p6_scored_share": 0.6098,
+				"contingency_ground_type_x_human_gradient": {
+					"flat_field|flat": 6,
+					"full_scene|flat": 7,
+					"full_scene|gradient": 8,
+					"multiple_distinct_fields|flat": 4,
+					"pattern_or_texture|flat": 1,
+					"shaded_field|flat": 6,
+					"shaded_field|gradient": 9
+				},
+				"ground_type_distribution": {
+					"multiple_distinct_fields": 4,
+					"flat_field": 6,
+					"shaded_field": 15,
+					"full_scene": 15,
+					"pattern_or_texture": 1
+				}
+			}
+		},
+		"B": {
+			"large_>640": {
+				"strict_all_labels": {
+					"n": 11,
+					"agreement": 0.7273,
+					"cohens_kappa": 0.4762,
+					"matthews_corr": 0.559,
+					"confusion": {
+						"human_gradient_oracle_gradient": 3,
+						"human_flat_oracle_flat": 5,
+						"human_flat_oracle_gradient": 0,
+						"human_gradient_oracle_flat": 3
+					},
+					"oracle_says_gradient_rate": 0.2727,
+					"human_says_gradient_rate": 0.5455
+				},
+				"mapped_labels_only": {
+					"n": 10,
+					"agreement": 0.8,
+					"cohens_kappa": 0.6,
+					"matthews_corr": 0.6547,
+					"confusion": {
+						"human_gradient_oracle_gradient": 3,
+						"human_flat_oracle_flat": 5,
+						"human_flat_oracle_gradient": 0,
+						"human_gradient_oracle_flat": 2
+					},
+					"oracle_says_gradient_rate": 0.3,
+					"human_says_gradient_rate": 0.5
+				},
+				"unmapped_label_count": 1,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
+				"p6_buckets": {
+					"agreement": 8,
+					"underdetermined": 2,
+					"contradiction_hard": 1
+				},
+				"p6_scored_share": 0.8182,
+				"contingency_ground_type_x_human_gradient": {
+					"flat_field|flat": 4,
+					"flat_field|gradient": 1,
+					"multiple_distinct_fields|flat": 1,
+					"multiple_distinct_fields|gradient": 1,
+					"pattern_or_texture|gradient": 1,
+					"shaded_field|gradient": 3
+				},
+				"ground_type_distribution": {
+					"multiple_distinct_fields": 2,
+					"shaded_field": 3,
+					"flat_field": 5,
+					"pattern_or_texture": 1
+				}
+			},
+			"standard_<=640": {
+				"strict_all_labels": {
+					"n": 85,
+					"agreement": 0.6235,
+					"cohens_kappa": 0.2372,
+					"matthews_corr": 0.2517,
+					"confusion": {
+						"human_gradient_oracle_gradient": 18,
+						"human_flat_oracle_flat": 35,
+						"human_flat_oracle_gradient": 9,
+						"human_gradient_oracle_flat": 23
+					},
+					"oracle_says_gradient_rate": 0.3176,
+					"human_says_gradient_rate": 0.4824
+				},
+				"mapped_labels_only": {
+					"n": 58,
+					"agreement": 0.7069,
+					"cohens_kappa": 0.4096,
+					"matthews_corr": 0.4098,
+					"confusion": {
+						"human_gradient_oracle_gradient": 18,
+						"human_flat_oracle_flat": 23,
+						"human_flat_oracle_gradient": 9,
+						"human_gradient_oracle_flat": 8
+					},
+					"oracle_says_gradient_rate": 0.4655,
+					"human_says_gradient_rate": 0.4483
+				},
+				"unmapped_label_count": 27,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
+				"p6_buckets": {
+					"agreement": 41,
+					"underdetermined": 29,
+					"contradiction_soft": 9,
+					"contradiction_hard": 6
+				},
+				"p6_scored_share": 0.6588,
+				"contingency_ground_type_x_human_gradient": {
+					"flat_field|flat": 17,
+					"flat_field|gradient": 6,
+					"full_scene|flat": 10,
+					"full_scene|gradient": 14,
+					"multiple_distinct_fields|flat": 6,
+					"multiple_distinct_fields|gradient": 2,
+					"pattern_or_texture|flat": 2,
+					"pattern_or_texture|gradient": 1,
+					"shaded_field|flat": 9,
+					"shaded_field|gradient": 18
+				},
+				"ground_type_distribution": {
+					"shaded_field": 27,
+					"full_scene": 24,
+					"multiple_distinct_fields": 8,
+					"flat_field": 23,
+					"pattern_or_texture": 3
+				}
+			},
+			"thumbnail_<=320": {
+				"strict_all_labels": {
+					"n": 41,
+					"agreement": 0.7317,
+					"cohens_kappa": 0.4225,
+					"matthews_corr": 0.4379,
+					"confusion": {
+						"human_gradient_oracle_gradient": 9,
+						"human_flat_oracle_flat": 21,
+						"human_flat_oracle_gradient": 3,
+						"human_gradient_oracle_flat": 8
+					},
+					"oracle_says_gradient_rate": 0.2927,
+					"human_says_gradient_rate": 0.4146
+				},
+				"mapped_labels_only": {
+					"n": 26,
+					"agreement": 0.8077,
+					"cohens_kappa": 0.6108,
+					"matthews_corr": 0.6126,
+					"confusion": {
+						"human_gradient_oracle_gradient": 9,
+						"human_flat_oracle_flat": 12,
+						"human_flat_oracle_gradient": 3,
+						"human_gradient_oracle_flat": 2
+					},
+					"oracle_says_gradient_rate": 0.4615,
+					"human_says_gradient_rate": 0.4231
+				},
+				"unmapped_label_count": 15,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
+				"p6_buckets": {
+					"agreement": 21,
+					"underdetermined": 16,
+					"contradiction_soft": 3,
+					"contradiction_hard": 1
+				},
+				"p6_scored_share": 0.6098,
+				"contingency_ground_type_x_human_gradient": {
+					"flat_field|flat": 10,
+					"flat_field|gradient": 1,
+					"full_scene|flat": 8,
+					"full_scene|gradient": 6,
+					"multiple_distinct_fields|flat": 2,
+					"multiple_distinct_fields|gradient": 1,
+					"pattern_or_texture|flat": 1,
+					"shaded_field|flat": 3,
+					"shaded_field|gradient": 9
+				},
+				"ground_type_distribution": {
+					"multiple_distinct_fields": 3,
+					"flat_field": 11,
+					"shaded_field": 12,
+					"full_scene": 14,
+					"pattern_or_texture": 1
+				}
+			}
+		}
+	},
+	"conflicted_truth_subset": {
+		"A": {
+			"strict_all_labels": {
+				"n": 5,
+				"agreement": 0.8,
+				"cohens_kappa": 0.6154,
+				"matthews_corr": 0.6667,
+				"confusion": {
+					"human_gradient_oracle_gradient": 2,
+					"human_flat_oracle_flat": 2,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 1
+				},
+				"oracle_says_gradient_rate": 0.4,
+				"human_says_gradient_rate": 0.6
+			},
+			"mapped_labels_only": {
+				"n": 2,
+				"agreement": 1.0,
+				"cohens_kappa": null,
+				"matthews_corr": null,
+				"confusion": {
+					"human_gradient_oracle_gradient": 2,
+					"human_flat_oracle_flat": 0,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 0
+				},
+				"oracle_says_gradient_rate": 1.0,
+				"human_says_gradient_rate": 1.0
+			},
+			"unmapped_label_count": 3,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
+			"p6_buckets": {
+				"underdetermined": 3,
+				"agreement": 2
+			},
+			"p6_scored_share": 0.4,
+			"contingency_ground_type_x_human_gradient": {
+				"full_scene|flat": 1,
+				"full_scene|gradient": 1,
+				"pattern_or_texture|flat": 1,
+				"shaded_field|gradient": 2
+			},
+			"ground_type_distribution": {
+				"full_scene": 2,
+				"pattern_or_texture": 1,
+				"shaded_field": 2
+			}
+		},
+		"B": {
+			"strict_all_labels": {
+				"n": 5,
+				"agreement": 1.0,
+				"cohens_kappa": 1.0,
+				"matthews_corr": 1.0,
+				"confusion": {
+					"human_gradient_oracle_gradient": 3,
+					"human_flat_oracle_flat": 2,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 0
+				},
+				"oracle_says_gradient_rate": 0.6,
+				"human_says_gradient_rate": 0.6
+			},
+			"mapped_labels_only": {
+				"n": 4,
+				"agreement": 1.0,
+				"cohens_kappa": 1.0,
+				"matthews_corr": 1.0,
+				"confusion": {
+					"human_gradient_oracle_gradient": 3,
+					"human_flat_oracle_flat": 1,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 0
+				},
+				"oracle_says_gradient_rate": 0.75,
+				"human_says_gradient_rate": 0.75
+			},
+			"unmapped_label_count": 1,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
+			"p6_buckets": {
+				"agreement": 4,
+				"underdetermined": 1
+			},
+			"p6_scored_share": 0.8,
+			"contingency_ground_type_x_human_gradient": {
+				"flat_field|flat": 1,
+				"pattern_or_texture|flat": 1,
+				"shaded_field|gradient": 3
+			},
+			"ground_type_distribution": {
+				"flat_field": 1,
+				"pattern_or_texture": 1,
+				"shaded_field": 3
+			}
+		}
+	},
+	"inter_variant_agreement": {
+		"variants": [
+			"A",
+			"B"
+		],
+		"per_question": {
+			"ground_type": {
+				"n": 137,
+				"raw_agreement": 0.708,
+				"cohens_kappa": 0.6097,
+				"disagreement_pairs": {
+					"shaded_field->flat_field": 12,
+					"full_scene->shaded_field": 8,
+					"full_scene->flat_field": 5,
+					"multiple_distinct_fields->flat_field": 3,
+					"pattern_or_texture->flat_field": 3,
+					"shaded_field->multiple_distinct_fields": 2,
+					"multiple_distinct_fields->shaded_field": 1,
+					"shaded_field->pattern_or_texture": 1,
+					"multiple_distinct_fields->full_scene": 1,
+					"pattern_or_texture->multiple_distinct_fields": 1,
+					"full_scene->multiple_distinct_fields": 1,
+					"pattern_or_texture->shaded_field": 1
+				}
+			},
+			"shading_geometry": {
+				"n": 137,
+				"raw_agreement": 0.8102,
+				"cohens_kappa": 0.5786,
+				"disagreement_pairs": {
+					"radial_or_vignette->not_applicable": 12,
+					"not_applicable->radial_or_vignette": 9,
+					"linear->not_applicable": 2,
+					"irregular->not_applicable": 1,
+					"linear->radial_or_vignette": 1,
+					"not_applicable->linear": 1
+				}
+			},
+			"field_texture": {
+				"n": 137,
+				"raw_agreement": 0.6569,
+				"cohens_kappa": 0.4514,
+				"disagreement_pairs": {
+					"distinct_areas->smooth": 20,
+					"smooth->one_textured_material": 12,
+					"distinct_areas->one_textured_material": 8,
+					"one_textured_material->smooth": 4,
+					"smooth->distinct_areas": 3
+				}
+			},
+			"enclosure": {
+				"n": 137,
+				"raw_agreement": 0.8686,
+				"cohens_kappa": 0.5997,
+				"disagreement_pairs": {
+					"none->thin_border": 9,
+					"thick_frame_or_bars->thin_border": 4,
+					"none->thick_frame_or_bars": 2,
+					"thin_border->thick_frame_or_bars": 2,
+					"thick_frame_or_bars->none": 1
+				}
+			},
+			"confidence": {
+				"n": 137,
+				"raw_agreement": 0.9927,
+				"cohens_kappa": 0.0,
+				"disagreement_pairs": {
+					"high->medium": 1
+				}
+			}
+		}
+	},
+	"variants_agree_breakdown": {
+		"both_answered": 137,
+		"identical_ground_type": {
+			"n": 97,
+			"share": 0.708,
+			"scores_vs_human": {
+				"n": 97,
+				"agreement": 0.6701,
+				"cohens_kappa": 0.3379,
+				"matthews_corr": 0.3581,
+				"confusion": {
+					"human_gradient_oracle_gradient": 24,
+					"human_flat_oracle_flat": 41,
+					"human_flat_oracle_gradient": 8,
+					"human_gradient_oracle_flat": 24
+				},
+				"oracle_says_gradient_rate": 0.3299,
+				"human_says_gradient_rate": 0.4948
+			}
+		},
+		"same_binary_mapping": {
+			"n": 101,
+			"share": 0.7372,
+			"scores_vs_human": {
+				"n": 101,
+				"agreement": 0.6634,
+				"cohens_kappa": 0.3243,
+				"matthews_corr": 0.3473,
+				"confusion": {
+					"human_gradient_oracle_gradient": 24,
+					"human_flat_oracle_flat": 43,
+					"human_flat_oracle_gradient": 8,
+					"human_gradient_oracle_flat": 26
+				},
+				"oracle_says_gradient_rate": 0.3168,
+				"human_says_gradient_rate": 0.495
+			}
+		},
+		"variants_disagree_on_binary": {
+			"n": 36,
+			"share": 0.2628,
+			"human_gradient_rate_here": 0.3889,
+			"note": "Pipeline \u00a73 routes exactly this subset to the dense adjudicator. Its size is the first thing to look at: a large one means the bulk model is not settled on the question, independently of who is right."
+		}
+	},
+	"disagreements": [
+		{
+			"image_path": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+			"image_sha256": "e5a58747215f3453f77fdba55282a01647edd550d05e17730c869424b8f16908",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thin_border",
+				"field_texture": "distinct_areas",
+				"ground_type": "multiple_distinct_fields",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thin_border",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "agreement"
+		},
+		{
+			"image_path": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+			"image_sha256": "c20e8afc76d33e09e3f38bbbe7fe66aab6436c6374d7857010f870f0ed4bf51a",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"image_sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"image_sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "pattern_or_texture",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"image_sha256": "33d63ad96631b2325ff81c3e912d220cdafa4742bb2db8aa1983295577cbd668",
+			"human_gradient": false,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+			"image_sha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"image_sha256": "5551794235729a34e0945f5c282d66dacf93ac5b6a72df802c41813672868edc",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "04/ab67616d0000b2730004515066668684295c41a7",
+			"image_sha256": "fb518ecb88417f061f690a4bae1c30cf192037d9fe793d1c0dd0dcd6b93380d4",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "full_scene",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"image_sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"human_gradient": false,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thin_border",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"image_sha256": "842e59bf627f01acfbac69e7875289b046b3fff659c0792c951fc68cfe920a37",
+			"human_gradient": true,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "agreement"
+		},
+		{
+			"image_path": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"image_sha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+			"human_gradient": true,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_hard"
+		},
+		{
+			"image_path": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"image_sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+			"image_sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thin_border",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thin_border",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"image_sha256": "6ee7040384221c4a6b1b1c97f693f2b7d4e8506c16167dfb0b915df0349f3621",
+			"human_gradient": false,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thin_border",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"image_sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+			"image_sha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+			"human_gradient": true,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "distinct_areas",
+				"ground_type": "full_scene",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"image_sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"human_gradient": true,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "distinct_areas",
+				"ground_type": "multiple_distinct_fields",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+			"image_sha256": "2954e79ecf8c4680e5c3303b37a8cf9f1f3d56bc7769c0dab75e743b504f0d19",
+			"human_gradient": false,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "irregular"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+			"image_sha256": "14ae242448a2d6128e2f46b626bdd5c6ae032900c0e4ec3b45f8568658ffcd1b",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+			"image_sha256": "c8321c5e6b25ecb89ce53da8a5745d7e7eae0c8dec2c8d112cdd4d64926d5ec9",
+			"human_gradient": true,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "agreement"
+		},
+		{
+			"image_path": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"image_sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"human_gradient": true,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "distinct_areas",
+				"ground_type": "multiple_distinct_fields",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+			"image_sha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+			"human_gradient": false,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+			"image_sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+			"human_gradient": false,
+			"tier": "thumbnail_<=320",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "linear"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"image_sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "pattern_or_texture",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"image_sha256": "ff0bc9c4e6226cc5f8beeab191255ca97af9adc1aedfee4003033164c987365e",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"image_sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		},
+		{
+			"image_path": "images/meteora.jpg",
+			"image_sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"human_gradient": false,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "one_textured_material",
+				"ground_type": "full_scene",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "one_textured_material",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "images/muse.jpg",
+			"image_sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"human_gradient": true,
+			"tier": "standard_<=640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "distinct_areas",
+				"ground_type": "full_scene",
+				"shading_geometry": "not_applicable"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "underdetermined"
+		},
+		{
+			"image_path": "images/placebo.jpg",
+			"image_sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"human_gradient": true,
+			"tier": "large_>640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "linear"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "agreement"
+		},
+		{
+			"image_path": "images/vvbrown.jpg",
+			"image_sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+			"human_gradient": false,
+			"tier": "large_>640",
+			"A": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "thick_frame_or_bars",
+				"field_texture": "smooth",
+				"ground_type": "shaded_field",
+				"shading_geometry": "radial_or_vignette"
+			},
+			"B": {
+				"ambiguity_note": "",
+				"confidence": "high",
+				"enclosure": "none",
+				"field_texture": "smooth",
+				"ground_type": "flat_field",
+				"shading_geometry": "not_applicable"
+			},
+			"p6_bucket_A": "contradiction_soft"
+		}
+	],
+	"by_confidence": {
+		"A": {
+			"high": {
+				"n": 137,
+				"agreement": 0.6131,
+				"cohens_kappa": 0.21,
+				"matthews_corr": 0.2171,
+				"confusion": {
+					"human_gradient_oracle_gradient": 29,
+					"human_flat_oracle_flat": 55,
+					"human_flat_oracle_gradient": 18,
+					"human_gradient_oracle_flat": 35
+				},
+				"oracle_says_gradient_rate": 0.3431,
+				"human_says_gradient_rate": 0.4672
+			},
+			"medium": {
+				"n": 0,
+				"agreement": null,
+				"cohens_kappa": null,
+				"matthews_corr": null,
+				"confusion": {
+					"human_gradient_oracle_gradient": 0,
+					"human_flat_oracle_flat": 0,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 0
+				},
+				"oracle_says_gradient_rate": null,
+				"human_says_gradient_rate": null
+			},
+			"low": {
+				"n": 0,
+				"agreement": null,
+				"cohens_kappa": null,
+				"matthews_corr": null,
+				"confusion": {
+					"human_gradient_oracle_gradient": 0,
+					"human_flat_oracle_flat": 0,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 0
+				},
+				"oracle_says_gradient_rate": null,
+				"human_says_gradient_rate": null
+			}
+		},
+		"B": {
+			"high": {
+				"n": 136,
+				"agreement": 0.6691,
+				"cohens_kappa": 0.3191,
+				"matthews_corr": 0.3365,
+				"confusion": {
+					"human_gradient_oracle_gradient": 30,
+					"human_flat_oracle_flat": 61,
+					"human_flat_oracle_gradient": 12,
+					"human_gradient_oracle_flat": 33
+				},
+				"oracle_says_gradient_rate": 0.3088,
+				"human_says_gradient_rate": 0.4632
+			},
+			"medium": {
+				"n": 1,
+				"agreement": 0.0,
+				"cohens_kappa": 0.0,
+				"matthews_corr": null,
+				"confusion": {
+					"human_gradient_oracle_gradient": 0,
+					"human_flat_oracle_flat": 0,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 1
+				},
+				"oracle_says_gradient_rate": 0.0,
+				"human_says_gradient_rate": 1.0
+			},
+			"low": {
+				"n": 0,
+				"agreement": null,
+				"cohens_kappa": null,
+				"matthews_corr": null,
+				"confusion": {
+					"human_gradient_oracle_gradient": 0,
+					"human_flat_oracle_flat": 0,
+					"human_flat_oracle_gradient": 0,
+					"human_gradient_oracle_flat": 0
+				},
+				"oracle_says_gradient_rate": null,
+				"human_says_gradient_rate": null
+			}
+		}
+	}
+}

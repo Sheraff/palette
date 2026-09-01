@@ -1,0 +1,2940 @@
+{
+	"fixtureVersion": "color-bracketing-1",
+	"batchId": "bracketing-round-2",
+	"seed": 20260803,
+	"generatedBy": "research/v3/src/review-server/bracketing.ts",
+	"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+	"prompts": {
+		"same-color": {
+			"question": "Same color?",
+			"instruction": "Answer whether they register as the same color — not whether you can detect any difference at the seam. If you have to hunt along the boundary to find it, they're the same color. If they'd read as two different colors in a UI, they're different."
+		},
+		"accent-visible": {
+			"question": "Can you clearly see the shapes?",
+			"instruction": "Would these icons work as UI elements? If you have to hunt for them or they strain, answer no."
+		}
+	},
+	"quadrantBoundaries": {
+		"lightness": 0.55,
+		"chroma": 0.05
+	},
+	"prior": {
+		"sameColorBar": 0.01582
+	},
+	"items": [
+		{
+			"itemId": "r2-dark-neutral-00",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				110,
+				99,
+				100
+			],
+			"second": [
+				107,
+				99,
+				98
+			],
+			"firstHex": "#6e6364",
+			"secondHex": "#6b6362",
+			"truth": {
+				"targetDistance": 0.00575,
+				"okLabDistance": 0.006045381097150485,
+				"chromaDistance": 0.004893659439722916,
+				"apcaRaw": 1.0901829841222992,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0021766026767340574,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.0035494689599706586,
+				"deltaChroma": -0.0037790613077575384,
+				"deltaHueDegrees": 14.775532311323971,
+				"arc": 0.0031468591756177986,
+				"dominant": "chroma",
+				"purity": 0.34251728111238683
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-01",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				119,
+				90,
+				104
+			],
+			"second": [
+				116,
+				89,
+				105
+			],
+			"firstHex": "#775a68",
+			"secondHex": "#745969",
+			"truth": {
+				"targetDistance": 0.00631413379654954,
+				"okLabDistance": 0.006625456309377434,
+				"chromaDistance": 0.004341116454709637,
+				"apcaRaw": 1.3096798568402357,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0033888099910938108,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.005005135286295315,
+				"deltaChroma": -0.0005790363123990977,
+				"deltaHueDegrees": -5.7632978298832995,
+				"arc": 0.004302424480472286,
+				"dominant": "lightness",
+				"purity": 0.5706787075590456
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-02",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				73,
+				108,
+				93
+			],
+			"second": [
+				69,
+				107,
+				92
+			],
+			"firstHex": "#496c5d",
+			"secondHex": "#456b5c",
+			"truth": {
+				"targetDistance": 0.006933614887083326,
+				"okLabDistance": 0.006158530705335382,
+				"chromaDistance": 0.0030501372325799233,
+				"apcaRaw": 1.3196552874533334,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0035096582237788138,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.005350155447366778,
+				"deltaChroma": 0.002738059413095177,
+				"deltaHueDegrees": 1.5934706298923231,
+				"arc": 0.0013445509892419502,
+				"dominant": "lightness",
+				"purity": 0.7546785052949037
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-03",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				106,
+				112,
+				132
+			],
+			"second": [
+				102,
+				111,
+				129
+			],
+			"firstHex": "#6a7084",
+			"secondHex": "#666f81",
+			"truth": {
+				"targetDistance": 0.007613873407094237,
+				"okLabDistance": 0.008111081132326625,
+				"chromaDistance": 0.004608092187494335,
+				"apcaRaw": 1.5302968510111596,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005192872629488171,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.006674962436354126,
+				"deltaChroma": -0.0017464030338927884,
+				"deltaHueDegrees": -7.862063883579651,
+				"arc": 0.004266019727079079,
+				"dominant": "lightness",
+				"purity": 0.6770886708196877
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-04",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				82,
+				59,
+				52
+			],
+			"second": [
+				81,
+				61,
+				51
+			],
+			"firstHex": "#523b34",
+			"secondHex": "#513d33",
+			"truth": {
+				"targetDistance": 0.008360872243892786,
+				"okLabDistance": 0.007055977681486795,
+				"chromaDistance": 0.006392472936839761,
+				"apcaRaw": -1.708151107844124,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0012979693015110205,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.002987157644552929,
+				"deltaChroma": -0.0021192100161348607,
+				"deltaHueDegrees": 10.227471171882847,
+				"arc": 0.006033932319244303,
+				"dominant": "hue",
+				"purity": 0.17909800979435295
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-05",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				76,
+				92,
+				67
+			],
+			"second": [
+				80,
+				89,
+				64
+			],
+			"firstHex": "#4c5c43",
+			"secondHex": "#505940",
+			"truth": {
+				"targetDistance": 0.009181159305008077,
+				"okLabDistance": 0.009799480124062293,
+				"chromaDistance": 0.00841735658250072,
+				"apcaRaw": 1.3825192205946608,
+				"apcaLc": 0,
+				"deltaApcaY": 0.003514386907912989,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.005017760343512201,
+				"deltaChroma": -0.0034506070113319715,
+				"deltaHueDegrees": -10.385665716433579,
+				"arc": 0.007683927322553302,
+				"dominant": "hue",
+				"purity": 0.2619225405328034
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-06",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				110,
+				81,
+				76
+			],
+			"second": [
+				108,
+				84,
+				82
+			],
+			"firstHex": "#6e514c",
+			"secondHex": "#6c5452",
+			"truth": {
+				"targetDistance": 0.010081924914653356,
+				"okLabDistance": 0.010409182225100587,
+				"chromaDistance": 0.008630008395672704,
+				"apcaRaw": -2.4160586000528688,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0037321720017333554,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.005820140005701635,
+				"deltaChroma": -0.007799059552977564,
+				"deltaHueDegrees": -5.886062053467143,
+				"arc": 0.0037164575679089215,
+				"dominant": "chroma",
+				"purity": 0.312170191799937
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-07",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				75,
+				73,
+				100
+			],
+			"second": [
+				76,
+				69,
+				98
+			],
+			"firstHex": "#4b4964",
+			"secondHex": "#4c4562",
+			"truth": {
+				"targetDistance": 0.011071064841371757,
+				"okLabDistance": 0.011599905087153762,
+				"chromaDistance": 0.007280753026089679,
+				"apcaRaw": 1.680105006531235,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0044924395504991055,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.00903041712237379,
+				"deltaChroma": 0.003923903785374806,
+				"deltaHueDegrees": 7.551723443086985,
+				"arc": 0.006138331676721712,
+				"dominant": "lightness",
+				"purity": 0.6057470292895859
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-08",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				47,
+				52,
+				56
+			],
+			"second": [
+				39,
+				53,
+				58
+			],
+			"firstHex": "#2f3438",
+			"secondHex": "#27353a",
+			"truth": {
+				"targetDistance": 0.012157249509338575,
+				"okLabDistance": 0.012238640454785637,
+				"chromaDistance": 0.011792270484889556,
+				"apcaRaw": 0.6320715255896777,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00042270499902614597,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.0032751606056372617,
+				"deltaChroma": 0.010670680488586446,
+				"deltaHueDegrees": -20.2173980080438,
+				"arc": 0.0053574145206404826,
+				"dominant": "chroma",
+				"purity": 0.06997545685675487
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-09",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				22,
+				40,
+				26
+			],
+			"second": [
+				27,
+				42,
+				22
+			],
+			"firstHex": "#16281a",
+			"secondHex": "#1b2a16",
+			"truth": {
+				"targetDistance": 0.013350000000000002,
+				"okLabDistance": 0.013254017565842033,
+				"chromaDistance": 0.009878710661144445,
+				"apcaRaw": -1.2814094812340657,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0013196537611360661,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.00883629205657216,
+				"deltaChroma": 0.005620468683544724,
+				"deltaHueDegrees": -12.188977312752428,
+				"arc": 0.00814587788098544,
+				"dominant": "lightness",
+				"purity": 0.4435735506346083
+			}
+		},
+		{
+			"itemId": "r2-dark-neutral-control-0",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				89,
+				60,
+				60
+			],
+			"second": [
+				89,
+				60,
+				60
+			],
+			"firstHex": "#593c3c",
+			"secondHex": "#593c3c",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.442637582517275,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "r2-dark-neutral-repeat-0",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				106,
+				112,
+				132
+			],
+			"second": [
+				102,
+				111,
+				129
+			],
+			"firstHex": "#6a7084",
+			"secondHex": "#666f81",
+			"truth": {
+				"targetDistance": 0.007613873407094237,
+				"okLabDistance": 0.008111081132326625,
+				"chromaDistance": 0.004608092187494335,
+				"apcaRaw": 1.5302968510111596,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005192872629488171,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-neutral-03"
+		},
+		{
+			"itemId": "r2-dark-neutral-repeat-1",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				76,
+				92,
+				67
+			],
+			"second": [
+				80,
+				89,
+				64
+			],
+			"firstHex": "#4c5c43",
+			"secondHex": "#505940",
+			"truth": {
+				"targetDistance": 0.009181159305008077,
+				"okLabDistance": 0.009799480124062293,
+				"chromaDistance": 0.00841735658250072,
+				"apcaRaw": 1.3825192205946608,
+				"apcaLc": 0,
+				"deltaApcaY": 0.003514386907912989,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-neutral-05"
+		},
+		{
+			"itemId": "r2-dark-neutral-repeat-2",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				110,
+				81,
+				76
+			],
+			"second": [
+				108,
+				84,
+				82
+			],
+			"firstHex": "#6e514c",
+			"secondHex": "#6c5452",
+			"truth": {
+				"targetDistance": 0.010081924914653356,
+				"okLabDistance": 0.010409182225100587,
+				"chromaDistance": 0.008630008395672704,
+				"apcaRaw": -2.4160586000528688,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0037321720017333554,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-neutral-06"
+		},
+		{
+			"itemId": "r2-dark-neutral-repeat-3",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				82,
+				59,
+				52
+			],
+			"second": [
+				81,
+				61,
+				51
+			],
+			"firstHex": "#523b34",
+			"secondHex": "#513d33",
+			"truth": {
+				"targetDistance": 0.008360872243892786,
+				"okLabDistance": 0.007055977681486795,
+				"chromaDistance": 0.006392472936839761,
+				"apcaRaw": -1.708151107844124,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0012979693015110205,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-neutral-04"
+		},
+		{
+			"itemId": "r2-dark-saturated-00",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				47,
+				87,
+				17
+			],
+			"second": [
+				52,
+				83,
+				5
+			],
+			"firstHex": "#2f5711",
+			"secondHex": "#345305",
+			"truth": {
+				"targetDistance": 0.01274,
+				"okLabDistance": 0.012623552056844383,
+				"chromaDistance": 0.00863054280480404,
+				"apcaRaw": 1.7486615656781415,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004877547084486844,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.009212371976114797,
+				"deltaChroma": -0.0019001475612844265,
+				"deltaHueDegrees": -4.524310263772122,
+				"arc": 0.008419105278301359,
+				"dominant": "lightness",
+				"purity": 0.5325549794395859
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-01",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				83,
+				98,
+				199
+			],
+			"second": [
+				89,
+				96,
+				192
+			],
+			"firstHex": "#5362c7",
+			"secondHex": "#5960c0",
+			"truth": {
+				"targetDistance": 0.013695772818460518,
+				"okLabDistance": 0.013317079127057149,
+				"chromaDistance": 0.012480435768697864,
+				"apcaRaw": 1.391588871388135,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0041342978991310425,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.004645785132752933,
+				"deltaChroma": -0.008635945240683396,
+				"deltaHueDegrees": 3.394238783178764,
+				"arc": 0.009013719599156254,
+				"dominant": "hue",
+				"purity": 0.1216578445212157
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-02",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				75,
+				10,
+				128
+			],
+			"second": [
+				79,
+				10,
+				136
+			],
+			"firstHex": "#4b0a80",
+			"secondHex": "#4f0a88",
+			"truth": {
+				"targetDistance": 0.014723249065532334,
+				"okLabDistance": 0.015701659497126052,
+				"chromaDistance": 0.008401649489443405,
+				"apcaRaw": -2.2374669233028883,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0036595025405804955,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.013264780315565883,
+				"deltaChroma": 0.008270233748066541,
+				"deltaHueDegrees": -0.4830478849959263,
+				"arc": 0.0014805955776922078,
+				"dominant": "lightness",
+				"purity": 0.7136854987625081
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-03",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				139,
+				6,
+				80
+			],
+			"second": [
+				138,
+				5,
+				70
+			],
+			"firstHex": "#8b0650",
+			"secondHex": "#8a0546",
+			"truth": {
+				"targetDistance": 0.0158278080338416,
+				"okLabDistance": 0.016438105830964417,
+				"chromaDistance": 0.015331109354735686,
+				"apcaRaw": 1.1241033160734273,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0021080461298707068,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.005930295883269432,
+				"deltaChroma": -0.0038997143664772638,
+				"deltaHueDegrees": 5.137599863340142,
+				"arc": 0.014827868707482407,
+				"dominant": "hue",
+				"purity": 0.13013678830608694
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-04",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				93,
+				52,
+				48
+			],
+			"second": [
+				97,
+				51,
+				56
+			],
+			"firstHex": "#5d3430",
+			"secondHex": "#613338",
+			"truth": {
+				"targetDistance": 0.017015232578155317,
+				"okLabDistance": 0.016319411429692787,
+				"chromaDistance": 0.015102550943209872,
+				"apcaRaw": -1.8426393846090818,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0018797546668044146,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.0061835381796620514,
+				"deltaChroma": 0.006372091781632089,
+				"deltaHueDegrees": -12.458815988415836,
+				"arc": 0.013709907772938026,
+				"dominant": "hue",
+				"purity": 0.14331320285290622
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-05",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				28,
+				1,
+				57
+			],
+			"second": [
+				24,
+				5,
+				50
+			],
+			"firstHex": "#1c0139",
+			"secondHex": "#180532",
+			"truth": {
+				"targetDistance": 0.018291739391183948,
+				"okLabDistance": 0.01784425216505142,
+				"chromaDistance": 0.016609001053434956,
+				"apcaRaw": 0.6700584132534084,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0008062643052520854,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.006523681425157024,
+				"deltaChroma": -0.016310587068725804,
+				"deltaHueDegrees": -1.9702682655254193,
+				"arc": 0.0031467928384667433,
+				"dominant": "chroma",
+				"purity": 0.1336230994213024
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-06",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				25,
+				64,
+				147
+			],
+			"second": [
+				40,
+				62,
+				155
+			],
+			"firstHex": "#194093",
+			"secondHex": "#283e9b",
+			"truth": {
+				"targetDistance": 0.019664011550717474,
+				"okLabDistance": 0.019813598340332562,
+				"chromaDistance": 0.0176475919738219,
+				"apcaRaw": -2.0310051487016607,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0023954671045985365,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.009007839736447698,
+				"deltaChroma": 0.009556934845859594,
+				"deltaHueDegrees": 5.715107441539544,
+				"arc": 0.014843500130320405,
+				"dominant": "hue",
+				"purity": 0.2065682386358239
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-07",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				62,
+				16,
+				68
+			],
+			"second": [
+				59,
+				6,
+				63
+			],
+			"firstHex": "#3e1044",
+			"secondHex": "#3b063f",
+			"truth": {
+				"targetDistance": 0.021139233508493723,
+				"okLabDistance": 0.02075660548406338,
+				"chromaDistance": 0.007730419304433193,
+				"apcaRaw": 1.1489383791044983,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0021498367457815776,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.019263366491833578,
+				"deltaChroma": 0.006760654228992996,
+				"deltaHueDegrees": 2.041806725377228,
+				"arc": 0.0037506594913544896,
+				"dominant": "lightness",
+				"purity": 0.8612655717690276
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-08",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				125,
+				87,
+				9
+			],
+			"second": [
+				121,
+				96,
+				27
+			],
+			"firstHex": "#7d5709",
+			"secondHex": "#79601b",
+			"truth": {
+				"targetDistance": 0.02272512870398101,
+				"okLabDistance": 0.02381102568241118,
+				"chromaDistance": 0.01784921661626376,
+				"apcaRaw": -3.817597019853178,
+				"apcaLc": 0,
+				"deltaApcaY": 0.011850094890474006,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.015759771896640462,
+				"deltaChroma": -0.007405826039773009,
+				"deltaHueDegrees": 9.91586182446106,
+				"arc": 0.016252936031912905,
+				"dominant": "hue",
+				"purity": 0.4377538412440138
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-09",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				150,
+				58,
+				133
+			],
+			"second": [
+				140,
+				59,
+				124
+			],
+			"firstHex": "#963a85",
+			"secondHex": "#8c3b7c",
+			"truth": {
+				"targetDistance": 0.02443,
+				"okLabDistance": 0.023936604815168433,
+				"chromaDistance": 0.016148931465568766,
+				"apcaRaw": 2.6460693731901395,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0105676614396185,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.01766841992363516,
+				"deltaChroma": -0.016133558907637985,
+				"deltaHueDegrees": 0.2791172587476467,
+				"arc": 0.0007055556243313422,
+				"dominant": "lightness",
+				"purity": 0.5448402141240734
+			}
+		},
+		{
+			"itemId": "r2-dark-saturated-control-0",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				27,
+				11,
+				91
+			],
+			"second": [
+				27,
+				11,
+				91
+			],
+			"firstHex": "#1b0b5b",
+			"secondHex": "#1b0b5b",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -0.8452398669440435,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "r2-dark-saturated-repeat-0",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				28,
+				1,
+				57
+			],
+			"second": [
+				24,
+				5,
+				50
+			],
+			"firstHex": "#1c0139",
+			"secondHex": "#180532",
+			"truth": {
+				"targetDistance": 0.018291739391183948,
+				"okLabDistance": 0.01784425216505142,
+				"chromaDistance": 0.016609001053434956,
+				"apcaRaw": 0.6700584132534084,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0008062643052520854,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-saturated-05"
+		},
+		{
+			"itemId": "r2-dark-saturated-repeat-1",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				139,
+				6,
+				80
+			],
+			"second": [
+				138,
+				5,
+				70
+			],
+			"firstHex": "#8b0650",
+			"secondHex": "#8a0546",
+			"truth": {
+				"targetDistance": 0.0158278080338416,
+				"okLabDistance": 0.016438105830964417,
+				"chromaDistance": 0.015331109354735686,
+				"apcaRaw": 1.1241033160734273,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0021080461298707068,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-saturated-03"
+		},
+		{
+			"itemId": "r2-dark-saturated-repeat-2",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				93,
+				52,
+				48
+			],
+			"second": [
+				97,
+				51,
+				56
+			],
+			"firstHex": "#5d3430",
+			"secondHex": "#613338",
+			"truth": {
+				"targetDistance": 0.017015232578155317,
+				"okLabDistance": 0.016319411429692787,
+				"chromaDistance": 0.015102550943209872,
+				"apcaRaw": -1.8426393846090818,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0018797546668044146,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-saturated-04"
+		},
+		{
+			"itemId": "r2-dark-saturated-repeat-3",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				25,
+				64,
+				147
+			],
+			"second": [
+				40,
+				62,
+				155
+			],
+			"firstHex": "#194093",
+			"secondHex": "#283e9b",
+			"truth": {
+				"targetDistance": 0.019664011550717474,
+				"okLabDistance": 0.019813598340332562,
+				"chromaDistance": 0.0176475919738219,
+				"apcaRaw": -2.0310051487016607,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0023954671045985365,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-dark-saturated-06"
+		},
+		{
+			"itemId": "r2-light-neutral-00",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				205,
+				174,
+				169
+			],
+			"second": [
+				201,
+				171,
+				171
+			],
+			"firstHex": "#cdaea9",
+			"secondHex": "#c9abab",
+			"truth": {
+				"targetDistance": 0.01116,
+				"okLabDistance": 0.011450925017688424,
+				"chromaDistance": 0.007023251908580215,
+				"apcaRaw": 2.1522180914071503,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01673070662442261,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.009044203469037337,
+				"deltaChroma": -0.0018875999174700897,
+				"deltaHueDegrees": -10.79026352436772,
+				"arc": 0.006767165786320594,
+				"dominant": "lightness",
+				"purity": 0.6236704852755088
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-01",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				124,
+				133,
+				117
+			],
+			"second": [
+				122,
+				137,
+				123
+			],
+			"firstHex": "#7c8575",
+			"secondHex": "#7a897b",
+			"truth": {
+				"targetDistance": 0.012139758774689285,
+				"okLabDistance": 0.011829692959135434,
+				"chromaDistance": 0.007390356907388729,
+				"apcaRaw": -3.406335544463561,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01102851690076706,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.009237113201040148,
+				"deltaChroma": 0.0012094186014091242,
+				"deltaHueDegrees": 15.783298473387418,
+				"arc": 0.007292616512187865,
+				"dominant": "lightness",
+				"purity": 0.6095930723228239
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-02",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				147,
+				126,
+				113
+			],
+			"second": [
+				139,
+				125,
+				116
+			],
+			"firstHex": "#937e71",
+			"secondHex": "#8b7d74",
+			"truth": {
+				"targetDistance": 0.013205532536527377,
+				"okLabDistance": 0.013858749855063393,
+				"chromaDistance": 0.010478072001160887,
+				"apcaRaw": 1.9169442109045451,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008955953962768659,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.00907055426551806,
+				"deltaChroma": -0.01046204633658113,
+				"deltaHueDegrees": 1.2479543505295894,
+				"arc": 0.0005903899692395721,
+				"dominant": "chroma",
+				"purity": 0.42834153463414354
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-03",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				166,
+				167,
+				188
+			],
+			"second": [
+				175,
+				168,
+				185
+			],
+			"firstHex": "#a6a7bc",
+			"secondHex": "#afa8b9",
+			"truth": {
+				"targetDistance": 0.014364872713687554,
+				"okLabDistance": 0.013939314482095368,
+				"chromaDistance": 0.011120876269295098,
+				"apcaRaw": -3.108831964870382,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012676382954993792,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.008404201284701762,
+				"deltaChroma": -0.004827392834260556,
+				"deltaHueDegrees": 20.901832987425507,
+				"arc": 0.010056686368306894,
+				"dominant": "hue",
+				"purity": 0.3620758828503539
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-04",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				214,
+				209,
+				174
+			],
+			"second": [
+				205,
+				207,
+				179
+			],
+			"firstHex": "#d6d1ae",
+			"secondHex": "#cdcfb3",
+			"truth": {
+				"targetDistance": 0.015625993689362294,
+				"okLabDistance": 0.015538470128283619,
+				"chromaDistance": 0.01174691521587619,
+				"apcaRaw": 2.184907417308106,
+				"apcaLc": 0,
+				"deltaApcaY": 0.021773913419623425,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.010171235757693298,
+				"deltaChroma": -0.009202032356387148,
+				"deltaHueDegrees": 9.924774040830613,
+				"arc": 0.00734480910134797,
+				"dominant": "lightness",
+				"purity": 0.4273588818325351
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-05",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				166,
+				147,
+				167
+			],
+			"second": [
+				161,
+				150,
+				160
+			],
+			"firstHex": "#a693a7",
+			"secondHex": "#a196a0",
+			"truth": {
+				"targetDistance": 0.01699783100391356,
+				"okLabDistance": 0.017060515685997157,
+				"chromaDistance": 0.017046438115046744,
+				"apcaRaw": -2.1002720402569652,
+				"apcaLc": 0,
+				"deltaApcaY": 0.001547997282091984,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.000692923561467329,
+				"deltaChroma": -0.016938271609969874,
+				"deltaHueDegrees": 4.170364718748488,
+				"arc": 0.002013910939763126,
+				"dominant": "chroma",
+				"purity": 0.0016474793185510272
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-06",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				118,
+				117,
+				133
+			],
+			"second": [
+				110,
+				118,
+				125
+			],
+			"firstHex": "#767585",
+			"secondHex": "#6e767d",
+			"truth": {
+				"targetDistance": 0.018490104666706565,
+				"okLabDistance": 0.018760118146321933,
+				"chromaDistance": 0.0172525418658422,
+				"apcaRaw": 1.4643494776850066,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005006896538025024,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.0073682991274323095,
+				"deltaChroma": -0.009909097157977147,
+				"deltaHueDegrees": -44.05517365345253,
+				"arc": 0.014603831461628063,
+				"dominant": "hue",
+				"purity": 0.14843813640682801
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-07",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				157,
+				181,
+				174
+			],
+			"second": [
+				170,
+				179,
+				164
+			],
+			"firstHex": "#9db5ae",
+			"secondHex": "#aab3a4",
+			"truth": {
+				"targetDistance": 0.020113388026216338,
+				"okLabDistance": 0.019776929600620594,
+				"chromaDistance": 0.019612356920838916,
+				"apcaRaw": -1.9190753126296725,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0018829678970858077,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": 0.00254605585907397,
+				"deltaChroma": -0.00489377483129904,
+				"deltaHueDegrees": -43.458552071887965,
+				"arc": 0.019078209044992973,
+				"dominant": "hue",
+				"purity": 0.016435710991228394
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-08",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				178,
+				214,
+				228
+			],
+			"second": [
+				190,
+				207,
+				220
+			],
+			"firstHex": "#b2d6e4",
+			"secondHex": "#becfdc",
+			"truth": {
+				"targetDistance": 0.02187918268637905,
+				"okLabDistance": 0.02150705619306095,
+				"chromaDistance": 0.01957443170419048,
+				"apcaRaw": 2.470357158978445,
+				"apcaLc": 0,
+				"deltaApcaY": 0.025342931716916817,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.00891039222197676,
+				"deltaChroma": -0.016818998769888013,
+				"deltaHueDegrees": 17.310319706734532,
+				"arc": 0.010328883691215197,
+				"dominant": "chroma",
+				"purity": 0.16930047174955415
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-09",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				205,
+				219,
+				244
+			],
+			"second": [
+				189,
+				216,
+				238
+			],
+			"firstHex": "#cddbf4",
+			"secondHex": "#bdd8ee",
+			"truth": {
+				"targetDistance": 0.023799999999999998,
+				"okLabDistance": 0.02391384969611222,
+				"chromaDistance": 0.014112106512083618,
+				"apcaRaw": 3.6155335481614426,
+				"apcaLc": 0,
+				"deltaApcaY": 0.04224601746513934,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"decomposition": {
+				"deltaL": -0.019305974647239488,
+				"deltaChroma": 0.004400244024952746,
+				"deltaHueDegrees": -19.40005238434975,
+				"arc": 0.013429038361120174,
+				"dominant": "lightness",
+				"purity": 0.6511293030470815
+			}
+		},
+		{
+			"itemId": "r2-light-neutral-control-0",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				165,
+				211,
+				212
+			],
+			"second": [
+				165,
+				211,
+				212
+			],
+			"firstHex": "#a5d3d4",
+			"secondHex": "#a5d3d4",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.3316440448310767,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "r2-light-neutral-repeat-0",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				166,
+				147,
+				167
+			],
+			"second": [
+				161,
+				150,
+				160
+			],
+			"firstHex": "#a693a7",
+			"secondHex": "#a196a0",
+			"truth": {
+				"targetDistance": 0.01699783100391356,
+				"okLabDistance": 0.017060515685997157,
+				"chromaDistance": 0.017046438115046744,
+				"apcaRaw": -2.1002720402569652,
+				"apcaLc": 0,
+				"deltaApcaY": 0.001547997282091984,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-neutral-05"
+		},
+		{
+			"itemId": "r2-light-neutral-repeat-1",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				214,
+				209,
+				174
+			],
+			"second": [
+				205,
+				207,
+				179
+			],
+			"firstHex": "#d6d1ae",
+			"secondHex": "#cdcfb3",
+			"truth": {
+				"targetDistance": 0.015625993689362294,
+				"okLabDistance": 0.015538470128283619,
+				"chromaDistance": 0.01174691521587619,
+				"apcaRaw": 2.184907417308106,
+				"apcaLc": 0,
+				"deltaApcaY": 0.021773913419623425,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-neutral-04"
+		},
+		{
+			"itemId": "r2-light-neutral-repeat-2",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				118,
+				117,
+				133
+			],
+			"second": [
+				110,
+				118,
+				125
+			],
+			"firstHex": "#767585",
+			"secondHex": "#6e767d",
+			"truth": {
+				"targetDistance": 0.018490104666706565,
+				"okLabDistance": 0.018760118146321933,
+				"chromaDistance": 0.0172525418658422,
+				"apcaRaw": 1.4643494776850066,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005006896538025024,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-neutral-06"
+		},
+		{
+			"itemId": "r2-light-neutral-repeat-3",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				166,
+				167,
+				188
+			],
+			"second": [
+				175,
+				168,
+				185
+			],
+			"firstHex": "#a6a7bc",
+			"secondHex": "#afa8b9",
+			"truth": {
+				"targetDistance": 0.014364872713687554,
+				"okLabDistance": 0.013939314482095368,
+				"chromaDistance": 0.011120876269295098,
+				"apcaRaw": -3.108831964870382,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012676382954993792,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-neutral-03"
+		},
+		{
+			"itemId": "r2-light-saturated-h0-00",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				238,
+				153,
+				73
+			],
+			"second": [
+				235,
+				152,
+				60
+			],
+			"firstHex": "#ee9949",
+			"secondHex": "#eb983c",
+			"truth": {
+				"targetDistance": 0.01153,
+				"okLabDistance": 0.01183605865517417,
+				"chromaDistance": 0.009867214154554146,
+				"apcaRaw": 1.6058718056547079,
+				"apcaLc": 0,
+				"deltaApcaY": 0.010027516249567325,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"decomposition": {
+				"deltaL": -0.006536847047077798,
+				"deltaChroma": 0.004736930105527476,
+				"deltaHueDegrees": 3.5131976602832893,
+				"arc": 0.008657048722253898,
+				"dominant": "hue",
+				"purity": 0.30496996615626465
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h0-01",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				195,
+				199,
+				87
+			],
+			"second": [
+				203,
+				202,
+				96
+			],
+			"firstHex": "#c3c757",
+			"secondHex": "#cbca60",
+			"truth": {
+				"targetDistance": 0.01617512557196562,
+				"okLabDistance": 0.016439879348035494,
+				"chromaDistance": 0.00849127855161406,
+				"apcaRaw": -3.9528622599404186,
+				"apcaLc": 0,
+				"deltaApcaY": 0.027194191621504715,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"decomposition": {
+				"deltaL": 0.014077209295057846,
+				"deltaChroma": -0.006199776943232926,
+				"deltaHueDegrees": -2.5178613066283617,
+				"arc": 0.00580371703522678,
+				"dominant": "lightness",
+				"purity": 0.7331723360070849
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h0-02",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				218,
+				160,
+				159
+			],
+			"second": [
+				209,
+				154,
+				160
+			],
+			"firstHex": "#daa09f",
+			"secondHex": "#d19aa0",
+			"truth": {
+				"targetDistance": 0.022691646770932883,
+				"okLabDistance": 0.02272508988193579,
+				"chromaDistance": 0.010385465703343042,
+				"apcaRaw": 3.965674375481713,
+				"apcaLc": 0,
+				"deltaApcaY": 0.03417720861680118,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"decomposition": {
+				"deltaL": -0.020213159383598245,
+				"deltaChroma": -0.003054649304885859,
+				"deltaHueDegrees": -8.391317004910313,
+				"arc": 0.00992859313128541,
+				"dominant": "lightness",
+				"purity": 0.791070485264688
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h0-03",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				128,
+				145,
+				37
+			],
+			"second": [
+				139,
+				134,
+				0
+			],
+			"firstHex": "#809125",
+			"secondHex": "#8b8600",
+			"truth": {
+				"targetDistance": 0.03183349834818106,
+				"okLabDistance": 0.031007368326392983,
+				"chromaDistance": 0.025348462861937256,
+				"apcaRaw": 3.7117626479277086,
+				"apcaLc": 0,
+				"deltaApcaY": 0.023627956680391443,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"decomposition": {
+				"deltaL": -0.017858116391870293,
+				"deltaChroma": -0.0006845983516163556,
+				"deltaHueDegrees": -11.180640156915146,
+				"arc": 0.02533930429419468,
+				"dominant": "hue",
+				"purity": 0.3316954186651338
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h0-04",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				167,
+				134,
+				0
+			],
+			"second": [
+				149,
+				148,
+				64
+			],
+			"firstHex": "#a78600",
+			"secondHex": "#959440",
+			"truth": {
+				"targetDistance": 0.044658355002323395,
+				"okLabDistance": 0.04496333020214667,
+				"chromaDistance": 0.041672688692158906,
+				"apcaRaw": -5.041558145881419,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0252952447116101,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"decomposition": {
+				"deltaL": 0.01688455152006374,
+				"deltaChroma": -0.022645480391782727,
+				"deltaHueDegrees": 17.11477538652362,
+				"arc": 0.03514469683386736,
+				"dominant": "hue",
+				"purity": 0.14022640755783503
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h0-05",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				242,
+				143,
+				20
+			],
+			"second": [
+				206,
+				141,
+				35
+			],
+			"firstHex": "#f28f14",
+			"secondHex": "#ce8d23",
+			"truth": {
+				"targetDistance": 0.06264999999999998,
+				"okLabDistance": 0.062099553563126485,
+				"chromaDistance": 0.04056872431632044,
+				"apcaRaw": 7.4938113846055,
+				"apcaLc": 0,
+				"deltaApcaY": 0.06561380761171703,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"decomposition": {
+				"deltaL": -0.04701630738462992,
+				"deltaChroma": -0.0284957870539303,
+				"deltaHueDegrees": 11.034038134485037,
+				"arc": 0.029005466041126974,
+				"dominant": "lightness",
+				"purity": 0.5721048647666231
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h1-00",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				88,
+				169,
+				59
+			],
+			"second": [
+				97,
+				166,
+				57
+			],
+			"firstHex": "#58a93b",
+			"secondHex": "#61a639",
+			"truth": {
+				"targetDistance": 0.01153,
+				"okLabDistance": 0.010691525037025909,
+				"chromaDistance": 0.01007938599310989,
+				"apcaRaw": 1.4912140833032381,
+				"apcaLc": 0,
+				"deltaApcaY": 0.007025504333338373,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"decomposition": {
+				"deltaL": -0.0035657657830053813,
+				"deltaChroma": -0.007096884433418299,
+				"deltaHueDegrees": -2.5229338156927668,
+				"arc": 0.007159096560326154,
+				"dominant": "hue",
+				"purity": 0.11120737245157726
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h1-01",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				11,
+				243,
+				204
+			],
+			"second": [
+				0,
+				248,
+				214
+			],
+			"firstHex": "#0bf3cc",
+			"secondHex": "#00f8d6",
+			"truth": {
+				"targetDistance": 0.01617512557196562,
+				"okLabDistance": 0.016340847995158916,
+				"chromaDistance": 0.00737097617760375,
+				"apcaRaw": -4.0280119762690285,
+				"apcaLc": 0,
+				"deltaApcaY": 0.03694182652903677,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"decomposition": {
+				"deltaL": 0.014583964597806975,
+				"deltaChroma": 0.000205509359568673,
+				"deltaHueDegrees": 2.6191366143218886,
+				"arc": 0.007368112225908587,
+				"dominant": "lightness",
+				"purity": 0.7965297234511676
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h1-02",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				85,
+				173,
+				93
+			],
+			"second": [
+				79,
+				177,
+				113
+			],
+			"firstHex": "#55ad5d",
+			"secondHex": "#4fb171",
+			"truth": {
+				"targetDistance": 0.022691646770932883,
+				"okLabDistance": 0.02308360515002466,
+				"chromaDistance": 0.019981922854046624,
+				"apcaRaw": -3.811928700087519,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01726248713425782,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"decomposition": {
+				"deltaL": 0.011557490461911457,
+				"deltaChroma": -0.010620370610959246,
+				"deltaHueDegrees": 7.048285428954898,
+				"arc": 0.016938451796707645,
+				"dominant": "hue",
+				"purity": 0.25047973768639414
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h1-03",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				37,
+				185,
+				191
+			],
+			"second": [
+				0,
+				184,
+				171
+			],
+			"firstHex": "#25b9bf",
+			"secondHex": "#00b8ab",
+			"truth": {
+				"targetDistance": 0.03183349834818106,
+				"okLabDistance": 0.03150053929183977,
+				"chromaDistance": 0.028852902077246986,
+				"apcaRaw": 2.131677505584298,
+				"apcaLc": 0,
+				"deltaApcaY": 0.014757559063283687,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"decomposition": {
+				"deltaL": -0.012640965841166474,
+				"deltaChroma": 0.008218530934585022,
+				"deltaHueDegrees": -13.30682275509281,
+				"arc": 0.027674039087587688,
+				"dominant": "hue",
+				"purity": 0.16088956147512554
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h1-04",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				105,
+				202,
+				128
+			],
+			"second": [
+				118,
+				217,
+				144
+			],
+			"firstHex": "#69ca80",
+			"secondHex": "#76d990",
+			"truth": {
+				"targetDistance": 0.044658355002323395,
+				"okLabDistance": 0.04528497061234261,
+				"chromaDistance": 0.002608031776743269,
+				"apcaRaw": -9.9222436410611,
+				"apcaLc": 0,
+				"deltaApcaY": 0.08937012638906089,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"decomposition": {
+				"deltaL": 0.04520980793602458,
+				"deltaChroma": -0.0007458663098186269,
+				"deltaHueDegrees": 1.0223051016227203,
+				"arc": 0.0024991113364883164,
+				"dominant": "lightness",
+				"purity": 0.9966831915257056
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h1-05",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				150,
+				208,
+				105
+			],
+			"second": [
+				103,
+				222,
+				117
+			],
+			"firstHex": "#96d069",
+			"secondHex": "#67de75",
+			"truth": {
+				"targetDistance": 0.06264999999999998,
+				"okLabDistance": 0.05077239433807151,
+				"chromaDistance": 0.049141635360188,
+				"apcaRaw": -5.241097467171172,
+				"apcaLc": 0,
+				"deltaApcaY": 0.04138964232289377,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"decomposition": {
+				"deltaL": 0.012764626941158763,
+				"deltaChroma": 0.03258158872761399,
+				"deltaHueDegrees": 12.975064733734769,
+				"arc": 0.03697150719014146,
+				"dominant": "hue",
+				"purity": 0.06287584217573405
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h2-00",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				243,
+				139,
+				219
+			],
+			"second": [
+				244,
+				143,
+				215
+			],
+			"firstHex": "#f38bdb",
+			"secondHex": "#f48fd7",
+			"truth": {
+				"targetDistance": 0.01153,
+				"okLabDistance": 0.012449668982894917,
+				"chromaDistance": 0.011097834610745833,
+				"apcaRaw": -2.8728899651600055,
+				"apcaLc": 0,
+				"deltaApcaY": 0.011454604975146943,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"decomposition": {
+				"deltaL": 0.0056420142445927635,
+				"deltaChroma": -0.009006208667210719,
+				"deltaHueDegrees": 2.411825466867242,
+				"arc": 0.006487377303991756,
+				"dominant": "chroma",
+				"purity": 0.20532985255866182
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h2-01",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				111,
+				146,
+				206
+			],
+			"second": [
+				113,
+				151,
+				205
+			],
+			"firstHex": "#6f92ce",
+			"secondHex": "#7197cd",
+			"truth": {
+				"targetDistance": 0.01617512557196562,
+				"okLabDistance": 0.014876415622998776,
+				"chromaDistance": 0.00937917119722771,
+				"apcaRaw": -3.8884692949490596,
+				"apcaLc": 0,
+				"deltaApcaY": 0.016550506183819758,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"decomposition": {
+				"deltaL": 0.01154724596781831,
+				"deltaChroma": -0.007187823247881184,
+				"deltaHueDegrees": -3.6483223263103923,
+				"arc": 0.006029626921311954,
+				"dominant": "lightness",
+				"purity": 0.6023619138253106
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h2-02",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				107,
+				179,
+				245
+			],
+			"second": [
+				123,
+				179,
+				255
+			],
+			"firstHex": "#6bb3f5",
+			"secondHex": "#7bb3ff",
+			"truth": {
+				"targetDistance": 0.022691646770932883,
+				"okLabDistance": 0.02267418963506182,
+				"chromaDistance": 0.01888061973248144,
+				"apcaRaw": -3.4587960610277877,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017115449495488544,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"decomposition": {
+				"deltaL": 0.012555519667627357,
+				"deltaChroma": 0.004586504028144575,
+				"deltaHueDegrees": 8.567468858364975,
+				"arc": 0.018318273702655312,
+				"dominant": "hue",
+				"purity": 0.30655379842927893
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h2-03",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				155,
+				177,
+				217
+			],
+			"second": [
+				163,
+				174,
+				235
+			],
+			"firstHex": "#9bb1d9",
+			"secondHex": "#a3aeeb",
+			"truth": {
+				"targetDistance": 0.03183349834818106,
+				"okLabDistance": 0.0321094486260066,
+				"chromaDistance": 0.031358436275991164,
+				"apcaRaw": -2.383232429004927,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0066253342751520505,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"decomposition": {
+				"deltaL": 0.006903996334787443,
+				"deltaChroma": 0.025660098338596796,
+				"deltaHueDegrees": 13.896556583050653,
+				"arc": 0.018290622072701282,
+				"dominant": "chroma",
+				"purity": 0.04580314533277261
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h2-04",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				116,
+				112,
+				176
+			],
+			"second": [
+				135,
+				99,
+				160
+			],
+			"firstHex": "#7470b0",
+			"secondHex": "#8763a0",
+			"truth": {
+				"targetDistance": 0.044658355002323395,
+				"okLabDistance": 0.045094043760949665,
+				"chromaDistance": 0.04241106802291245,
+				"apcaRaw": 3.282266969245648,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017400692525293388,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"decomposition": {
+				"deltaL": -0.015322339634348814,
+				"deltaChroma": 0.0026968780782859886,
+				"deltaHueDegrees": 24.774005878027708,
+				"arc": 0.042329188770395265,
+				"dominant": "hue",
+				"purity": 0.11543575087002543
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-h2-05",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				211,
+				122,
+				217
+			],
+			"second": [
+				204,
+				105,
+				178
+			],
+			"firstHex": "#d37ad9",
+			"secondHex": "#cc69b2",
+			"truth": {
+				"targetDistance": 0.06264999999999998,
+				"okLabDistance": 0.06299610553203659,
+				"chromaDistance": 0.037971178013612494,
+				"apcaRaw": 8.18775449894775,
+				"apcaLc": 0,
+				"deltaApcaY": 0.06590369472965144,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"decomposition": {
+				"deltaL": -0.05026628047172421,
+				"deltaChroma": -0.010398628649448932,
+				"deltaHueDegrees": 13.270250127672682,
+				"arc": 0.03653932860607708,
+				"dominant": "lightness",
+				"purity": 0.6364556392957341
+			}
+		},
+		{
+			"itemId": "r2-light-saturated-control-0",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				230,
+				168,
+				232
+			],
+			"second": [
+				230,
+				168,
+				232
+			],
+			"firstHex": "#e6a8e8",
+			"secondHex": "#e6a8e8",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.5601055299105735,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null
+		},
+		{
+			"itemId": "r2-light-saturated-repeat-0",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				128,
+				145,
+				37
+			],
+			"second": [
+				139,
+				134,
+				0
+			],
+			"firstHex": "#809125",
+			"secondHex": "#8b8600",
+			"truth": {
+				"targetDistance": 0.03183349834818106,
+				"okLabDistance": 0.031007368326392983,
+				"chromaDistance": 0.025348462861937256,
+				"apcaRaw": 3.7117626479277086,
+				"apcaLc": 0,
+				"deltaApcaY": 0.023627956680391443,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-saturated-h0-03",
+			"hueThird": 0
+		},
+		{
+			"itemId": "r2-light-saturated-repeat-1",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				85,
+				173,
+				93
+			],
+			"second": [
+				79,
+				177,
+				113
+			],
+			"firstHex": "#55ad5d",
+			"secondHex": "#4fb171",
+			"truth": {
+				"targetDistance": 0.022691646770932883,
+				"okLabDistance": 0.02308360515002466,
+				"chromaDistance": 0.019981922854046624,
+				"apcaRaw": -3.811928700087519,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01726248713425782,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-saturated-h1-02",
+			"hueThird": 1
+		},
+		{
+			"itemId": "r2-light-saturated-repeat-2",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				107,
+				179,
+				245
+			],
+			"second": [
+				123,
+				179,
+				255
+			],
+			"firstHex": "#6bb3f5",
+			"secondHex": "#7bb3ff",
+			"truth": {
+				"targetDistance": 0.022691646770932883,
+				"okLabDistance": 0.02267418963506182,
+				"chromaDistance": 0.01888061973248144,
+				"apcaRaw": -3.4587960610277877,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017115449495488544,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-saturated-h2-02",
+			"hueThird": 2
+		},
+		{
+			"itemId": "r2-light-saturated-repeat-3",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				37,
+				185,
+				191
+			],
+			"second": [
+				0,
+				184,
+				171
+			],
+			"firstHex": "#25b9bf",
+			"secondHex": "#00b8ab",
+			"truth": {
+				"targetDistance": 0.03183349834818106,
+				"okLabDistance": 0.03150053929183977,
+				"chromaDistance": 0.028852902077246986,
+				"apcaRaw": 2.131677505584298,
+				"apcaLc": 0,
+				"deltaApcaY": 0.014757559063283687,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r2-light-saturated-h1-03",
+			"hueThird": 1
+		},
+		{
+			"itemId": "r2-probe-lightness-dark-neutral",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				124,
+				88,
+				90
+			],
+			"second": [
+				129,
+				92,
+				94
+			],
+			"firstHex": "#7c585a",
+			"secondHex": "#815c5e",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.015118652748699932,
+				"chromaDistance": 0.0009497688880942977,
+				"apcaRaw": -3.601103423014699,
+				"apcaLc": 0,
+				"deltaApcaY": 0.010668158441688017,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.015088790541159358,
+				"deltaChroma": 0.0009475261079941663,
+				"deltaHueDegrees": 0.07734310303990632,
+				"arc": 0.00006523514741609416,
+				"dominant": "lightness",
+				"purity": 0.9960535201454015
+			}
+		},
+		{
+			"itemId": "r2-probe-lightness-dark-saturated",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				50,
+				2,
+				80
+			],
+			"second": [
+				54,
+				7,
+				84
+			],
+			"firstHex": "#320250",
+			"secondHex": "#360754",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.015077703796818755,
+				"chromaDistance": 0.0008737648494873467,
+				"apcaRaw": -1.3359301617192914,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0015411073872468942,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.015052364823256281,
+				"deltaChroma": -0.0004366777880662198,
+				"deltaHueDegrees": 0.3437111996892668,
+				"arc": 0.0007568218001337826,
+				"dominant": "lightness",
+				"purity": 0.9966416983938016
+			}
+		},
+		{
+			"itemId": "r2-probe-lightness-light-neutral",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				226,
+				201,
+				182
+			],
+			"second": [
+				231,
+				206,
+				186
+			],
+			"firstHex": "#e2c9b6",
+			"secondHex": "#e7ceba",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.015209376007262191,
+				"chromaDistance": 0.001219666375751358,
+				"apcaRaw": -4.243014298463644,
+				"apcaLc": 0,
+				"deltaApcaY": 0.03484407572784387,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.015160393545754158,
+				"deltaChroma": 0.0007250023552504911,
+				"deltaHueDegrees": 1.4536065330147139,
+				"arc": 0.0009808375137662386,
+				"dominant": "lightness",
+				"purity": 0.9935689210533177
+			}
+		},
+		{
+			"itemId": "r2-probe-lightness-light-saturated",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				221,
+				132,
+				127
+			],
+			"second": [
+				226,
+				137,
+				131
+			],
+			"firstHex": "#dd847f",
+			"secondHex": "#e28983",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.015438040857239653,
+				"chromaDistance": 0.001268890298151124,
+				"apcaRaw": -4.411261010279962,
+				"apcaLc": 0,
+				"deltaApcaY": 0.023111780252492276,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.01538580589117966,
+				"deltaChroma": -0.0005034237577810352,
+				"deltaHueDegrees": 0.6053744579431601,
+				"arc": 0.0011647549879209552,
+				"dominant": "lightness",
+				"purity": 0.9932443727842246
+			}
+		},
+		{
+			"itemId": "r2-probe-chroma-dark-neutral",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				90,
+				82,
+				109
+			],
+			"second": [
+				89,
+				84,
+				102
+			],
+			"firstHex": "#5a526d",
+			"secondHex": "#595466",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.014842560088335243,
+				"chromaDistance": 0.014834287023377012,
+				"apcaRaw": -1.8846180805253026,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0009523485484510402,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0004954982178683176,
+				"deltaChroma": -0.01483329837554543,
+				"deltaHueDegrees": -0.2711157535084112,
+				"arc": 0.0001748211089549623,
+				"dominant": "chroma",
+				"purity": 0.9987468117655538
+			}
+		},
+		{
+			"itemId": "r2-probe-chroma-dark-saturated",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				148,
+				11,
+				34
+			],
+			"second": [
+				143,
+				27,
+				39
+			],
+			"firstHex": "#940b22",
+			"secondHex": "#8f1b27",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.014664552909684374,
+				"chromaDistance": 0.014658404870412041,
+				"apcaRaw": 0.9723636543378192,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0014519430515117365,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0004245923880770719,
+				"deltaChroma": -0.014658396389646944,
+				"deltaHueDegrees": -0.005738067054508633,
+				"arc": 0.000015785045753358186,
+				"dominant": "chroma",
+				"purity": 0.9991605272790163
+			}
+		},
+		{
+			"itemId": "r2-probe-chroma-light-neutral",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				165,
+				196,
+				184
+			],
+			"second": [
+				175,
+				193,
+				185
+			],
+			"firstHex": "#a5c4b8",
+			"secondHex": "#afc1b9",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.014864211470390416,
+				"chromaDistance": 0.014835446777983756,
+				"apcaRaw": 0.7259796693772487,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0020414592578859025,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0009242843361744191,
+				"deltaChroma": -0.014774804174218427,
+				"deltaHueDegrees": -2.6362790071920017,
+				"arc": 0.0013824468519526606,
+				"dominant": "chroma",
+				"purity": 0.9874900158810035
+			}
+		},
+		{
+			"itemId": "r2-probe-chroma-light-saturated",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				144,
+				206,
+				105
+			],
+			"second": [
+				148,
+				204,
+				115
+			],
+			"firstHex": "#90ce69",
+			"secondHex": "#94cc73",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.015081932818851208,
+				"chromaDistance": 0.015060045734613179,
+				"apcaRaw": 0.9097907898050862,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004155986370514453,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": -0.0008122315086849241,
+				"deltaChroma": -0.015050384858554922,
+				"deltaHueDegrees": 0.2209902361977356,
+				"arc": 0.0005401255145280126,
+				"dominant": "chroma",
+				"purity": 0.9958171440157296
+			}
+		},
+		{
+			"itemId": "r2-probe-hue-dark-neutral",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				81,
+				63,
+				44
+			],
+			"second": [
+				75,
+				66,
+				42
+			],
+			"firstHex": "#513f2c",
+			"secondHex": "#4b422a",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.015047459746712679,
+				"chromaDistance": 0.015046456827872439,
+				"apcaRaw": -1.5530780470670535,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0005474454315734789,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "hue",
+			"decomposition": {
+				"deltaL": -0.00017372897256706654,
+				"deltaChroma": 0.0002745259477850079,
+				"deltaHueDegrees": 22.049976389102056,
+				"arc": 0.015044043830669183,
+				"dominant": "hue",
+				"purity": 0.9995338656061602
+			}
+		},
+		{
+			"itemId": "r2-probe-hue-dark-saturated",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				135,
+				80,
+				74
+			],
+			"second": [
+				135,
+				79,
+				83
+			],
+			"firstHex": "#87504a",
+			"secondHex": "#874f53",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.014733070994425309,
+				"chromaDistance": 0.01472424070285881,
+				"apcaRaw": 0.7342886531432208,
+				"apcaLc": 0,
+				"deltaApcaY": 0.00014137014357840094,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "hue",
+			"decomposition": {
+				"deltaL": 0.0005100163242997557,
+				"deltaChroma": 0.00032959830867473894,
+				"deltaHueDegrees": -11.206012673064793,
+				"arc": 0.014720586428769618,
+				"dominant": "hue",
+				"purity": 0.9983011877207965
+			}
+		},
+		{
+			"itemId": "r2-probe-hue-light-neutral",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				127,
+				123,
+				149
+			],
+			"second": [
+				136,
+				120,
+				144
+			],
+			"firstHex": "#7f7b95",
+			"secondHex": "#887890",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.01547380465950066,
+				"chromaDistance": 0.015473649886259102,
+				"apcaRaw": 0.9554292800993803,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0015869353834482292,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "hue",
+			"decomposition": {
+				"deltaL": -0.0000692086545018844,
+				"deltaChroma": 0.0010251932269284975,
+				"deltaHueDegrees": 22.284640197526755,
+				"arc": 0.015440921905581505,
+				"dominant": "hue",
+				"purity": 0.9955911961925544
+			}
+		},
+		{
+			"itemId": "r2-probe-hue-light-saturated",
+			"part": "same-color",
+			"stratum": "light-saturated",
+			"first": [
+				226,
+				107,
+				170
+			],
+			"second": [
+				222,
+				108,
+				179
+			],
+			"firstHex": "#e26baa",
+			"secondHex": "#de6cb3",
+			"truth": {
+				"targetDistance": 0.015,
+				"okLabDistance": 0.01494271240160795,
+				"chromaDistance": 0.014929557507123825,
+				"apcaRaw": 0.8310891420004022,
+				"apcaLc": 0,
+				"deltaApcaY": 0.001074413712055633,
+				"identical": false
+			},
+			"role": "direction-probe",
+			"repeatOf": null,
+			"direction": "hue",
+			"decomposition": {
+				"deltaL": -0.0006268704480598686,
+				"deltaChroma": 0.00029310008566782453,
+				"deltaHueDegrees": -5.234553781002546,
+				"arc": 0.014926686130374235,
+				"dominant": "hue",
+				"purity": 0.9978553213296204
+			}
+		}
+	],
+	"serveOrder": [
+		"r2-light-neutral-08",
+		"r2-light-saturated-h0-05",
+		"r2-dark-saturated-control-0",
+		"r2-light-saturated-repeat-2",
+		"r2-dark-neutral-control-0",
+		"r2-probe-hue-dark-neutral",
+		"r2-light-saturated-h0-03",
+		"r2-dark-neutral-repeat-2",
+		"r2-light-saturated-h1-05",
+		"r2-light-neutral-00",
+		"r2-light-saturated-control-0",
+		"r2-dark-saturated-repeat-0",
+		"r2-light-saturated-h2-01",
+		"r2-dark-neutral-00",
+		"r2-dark-saturated-08",
+		"r2-probe-hue-light-neutral",
+		"r2-light-saturated-h1-01",
+		"r2-dark-saturated-09",
+		"r2-dark-neutral-repeat-0",
+		"r2-dark-neutral-07",
+		"r2-light-saturated-h2-02",
+		"r2-dark-saturated-07",
+		"r2-light-saturated-h2-04",
+		"r2-light-neutral-04",
+		"r2-dark-saturated-repeat-2",
+		"r2-light-saturated-h1-03",
+		"r2-dark-neutral-08",
+		"r2-dark-saturated-02",
+		"r2-light-saturated-h1-00",
+		"r2-light-saturated-repeat-3",
+		"r2-light-saturated-h0-04",
+		"r2-light-neutral-01",
+		"r2-dark-neutral-06",
+		"r2-light-neutral-03",
+		"r2-probe-lightness-light-saturated",
+		"r2-probe-lightness-dark-saturated",
+		"r2-probe-hue-dark-saturated",
+		"r2-light-saturated-h0-02",
+		"r2-dark-neutral-01",
+		"r2-light-neutral-control-0",
+		"r2-light-neutral-02",
+		"r2-dark-neutral-repeat-1",
+		"r2-dark-neutral-02",
+		"r2-light-saturated-h2-05",
+		"r2-light-saturated-repeat-1",
+		"r2-dark-saturated-00",
+		"r2-dark-neutral-09",
+		"r2-light-neutral-repeat-3",
+		"r2-light-saturated-h0-01",
+		"r2-probe-chroma-dark-saturated",
+		"r2-dark-neutral-03",
+		"r2-dark-saturated-05",
+		"r2-dark-neutral-repeat-3",
+		"r2-probe-chroma-light-saturated",
+		"r2-light-neutral-09",
+		"r2-light-saturated-repeat-0",
+		"r2-light-neutral-05",
+		"r2-light-neutral-07",
+		"r2-dark-saturated-01",
+		"r2-light-saturated-h0-00",
+		"r2-light-neutral-repeat-1",
+		"r2-dark-saturated-repeat-1",
+		"r2-light-saturated-h1-04",
+		"r2-light-saturated-h1-02",
+		"r2-light-neutral-repeat-0",
+		"r2-probe-lightness-light-neutral",
+		"r2-dark-saturated-04",
+		"r2-dark-saturated-repeat-3",
+		"r2-light-saturated-h2-03",
+		"r2-dark-neutral-04",
+		"r2-light-neutral-06",
+		"r2-dark-saturated-03",
+		"r2-probe-chroma-dark-neutral",
+		"r2-probe-chroma-light-neutral",
+		"r2-probe-lightness-dark-neutral",
+		"r2-light-saturated-h2-00",
+		"r2-light-neutral-repeat-2",
+		"r2-dark-saturated-06",
+		"r2-dark-neutral-05",
+		"r2-probe-hue-light-saturated"
+	],
+	"refinement": {
+		"round": 2,
+		"refines": "bracketing-round-1-clarified",
+		"sourceAnalysis": "research/v3/data/calibration/bracketing-round-1-analysis.json",
+		"priorIntervals": {
+			"dark-neutral": {
+				"low": 0.00575,
+				"high": 0.01335,
+				"threshold": 0.00876
+			},
+			"dark-saturated": {
+				"low": 0.01274,
+				"high": 0.02443,
+				"threshold": 0.01764
+			},
+			"light-neutral": {
+				"low": 0.01116,
+				"high": 0.0238,
+				"threshold": 0.01629
+			},
+			"light-saturated": {
+				"low": 0.01153,
+				"high": 0.06265,
+				"threshold": 0.02687
+			}
+		},
+		"ladder": {
+			"stepsPerQuadrant": 10,
+			"lightSaturatedStepsPerThird": 6
+		},
+		"hueSplit": {
+			"quadrant": "light-saturated",
+			"boundariesDegrees": [
+				0,
+				120,
+				240
+			],
+			"labels": [
+				"0–120°: pink-red, orange, yellow, yellow-green",
+				"120–240°: green, cyan, blue",
+				"240–360°: blue, violet, magenta, red"
+			]
+		},
+		"directionProbe": {
+			"targetDistance": 0.015,
+			"kinds": [
+				"lightness",
+				"chroma",
+				"hue"
+			],
+			"pairsPerKind": 4,
+			"baseMinChroma": 0.02
+		},
+		"repeatsPerQuadrant": 4,
+		"controlsPerQuadrant": 1,
+		"expressibilityFloor": {
+			"dark-neutral": {
+				"p10": 0.001155,
+				"median": 0.001499,
+				"p90": 0.001735
+			},
+			"dark-saturated": {
+				"p10": 0.000376,
+				"median": 0.001066,
+				"p90": 0.001665
+			},
+			"light-neutral": {
+				"p10": 0.001206,
+				"median": 0.001361,
+				"p90": 0.001456
+			},
+			"light-saturated": {
+				"p10": 0.000226,
+				"median": 0.000879,
+				"p90": 0.001452
+			}
+		}
+	}
+}

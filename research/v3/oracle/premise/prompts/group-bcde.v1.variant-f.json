@@ -1,0 +1,321 @@
+{
+	"schema_version": "group-bcde.v1",
+	"prompt_variant": "F",
+	"provenance": "[REVIEWED] Question set: research/v3/ORACLE_QUESTION_SET.md v2, groups B, C, D and E, asked as one document, plus the new §D field `subject_kind` added to that document in the same revision. Vocabularies are the question set's, verbatim; the five added values are listed under deviations. None of these groups has ever been piloted — this schema is the pilot instrument, not a correction of anything measured.",
+	"question_order": [
+		"has_text",
+		"text_roles",
+		"text_dominance",
+		"overlays",
+		"physical_media_scan",
+		"medium",
+		"color_character",
+		"grain_or_noise",
+		"has_dominant_subject",
+		"subject_kind",
+		"subject_area_band",
+		"has_signature_color",
+		"signature_carrier"
+	],
+	"design_notes": [
+		"group-bcde.v1 puts all thirteen questions — groups B, C, D and E, plus the new subject_kind — into ONE constrained decode. They are bundled rather than run as separate schemas because image encode and prefill dominate cost (~10.5 s per inference [MEASURED premise-run-1]) while decode length is negligible: the worst legal answer to all thirteen questions is under 200 tokens against MAX_TOKENS 256 [MEASURED, Qwen3-VL tokenizer at the pinned revision]. Separate schemas would cost a run each for the same answers, and would destroy the gate orders below.",
+		"Question order is the one structural difference between E and F, and it is the thing the pilot is powered to see. E asks every question that can be answered by naming what is on the cover BEFORE any question that requires a judgement about what it means; F puts each judgement immediately after its own gating question and keeps the question set's own group blocks intact. Design rule 6 taken globally versus design rule 6 taken locally. Twelve of the thirteen fields change position between them.",
+		"signature_carrier is held LAST in both variants. Two reasons: the gating question has_signature_color must precede it under constrained decoding, and holding one field's position fixed across both renderings makes it the control — if it moves between E and F, something other than order moved it. This is the role `enclosure` plays in the group-A probe arm's P/Q pair. It is why F puts its group-E block between the provenance and subject blocks rather than at the end: keeping the control fixed is worth more than following the question set's group sequence exactly.",
+		"Four gating orders are FORCED, not chosen, and are identical in E and F: has_text before text_roles and text_dominance; has_dominant_subject before subject_kind AND before subject_area_band; has_signature_color before signature_carrier. Under constrained decoding the JSON property order IS the generation order, so a conditional field generated before its condition would be answered blind.",
+		"subject_kind sits immediately after its gate in BOTH variants — position 8 in E (inside the describe block) and position 10 in F. It is the one new question in this schema and its purpose is VLM-to-SAM synergy: the VLM names the noun, SAM masks the named noun. Motivated by a car the masks missed in the residual round. ORACLE_QUESTION_SET.md §D.1.",
+		"The enum option order inside every question is the question set's own order, held byte-identical between E and F. No option-order hypothesis is under test in this pilot, so holding it constant keeps E-vs-F a comparison of question order and wording only.",
+		"E and F carry EIGHT shared blocks, byte-identical between them and declared as explicit keys under `shared_blocks` so the identity can be asserted rather than eyeballed. Everything else — the opening line, every stem, every option gloss and every JSON key name — is independently written. This is the C/D pattern.",
+		"Every referent was checked against a PLURAL case before shipping, which is the standing rule ORACLE_QUESTION_SET.md §A.6.0 earned the hard way. THE MAIN SUBJECT carries \"when there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one\", which is what makes subject_kind answerable on a cover holding a person AND a car rather than a presupposition failure. ONE PICTURE, ONE MEDIUM does the same job for `medium`, which competes with itself on a photographed collage.",
+		"No `confidence` and no `ambiguity_note`. Measured degenerate under group-a.v1: 298 of 299 parsed rows said `high` and the same 298 left the note empty [MEASURED premise-run-1]. ORACLE_QUESTION_SET.md's design rule 7 says to get uncertainty from inter-variant disagreement instead, and the E-vs-F per-question agreement is what this pilot reads.",
+		"Nothing here asks for a hex value, a contrast ratio, an area in pixels or a polarity. Two questions sit closer to the computable line than the rest and are flagged for it under deviations: color_character and grain_or_noise. subject_area_band is the one size question and it is a three-way eyeball band, present because it is the band where saliency methods degenerate, not because a number is wanted.",
+		"Variant F's wording family is about weight and placement: it asks what the cover carries, how large the writing looms, how the picture was made, where the colour sits. Keys: words / word_kinds / word_prominence / added_marks / packaging_photo / made_how / colour_spread / speckle / main_thing / main_thing_kind / main_thing_area / defining_colour / defining_colour_where. Its ordering hypothesis: each judgement sits immediately after its own gate, with the question set's group blocks kept intact and group E's block placed before the subject block so that signature_carrier stays last."
+	],
+	"deviations": [
+		"MULTI-SELECT. `text_roles` and `overlays` are the question set's only multi-selects and they are rendered as JSON arrays of enum items, with minItems 1 and maxItems set to the vocabulary size. VERIFIED: llguidance 1.7.6 (the constrained-decoding backend mlx-vlm 0.6.8 uses) compiles array-of-enum and accepts a well-formed answer token-by-token against the pinned model's tokenizer, on CPU, with no weights loaded. `uniqueItems` is NOT supported by that backend (it raises `Unimplemented keys: [\"uniqueItems\"]`), so the grammar cannot forbid a repeated value; repetition is counted in the analysis instead of being suppressed.",
+		"`not_applicable` added to `text_roles`, `text_dominance`, `subject_kind`, `subject_area_band` and `signature_carrier` — five conditional fields, five added values. Same reason and same shape as group-a.v1's `not_applicable` on `shading_geometry`: a fixed JSON schema cannot make a field conditional without a union, so a conditional question is asked unconditionally with an explicit inapplicable value. The condition itself is always generated first, so the pair (condition, dependent) is jointly readable and a mismatch between them is a countable inconsistency rather than a lost row.",
+		"`text_roles`'s `not_applicable` covers BOTH \"there is no text\" and \"there is text but no kind can be named\". It does not need to distinguish them, because `has_text` is generated first and already does: `has_text = no` versus `has_text = illegible_at_this_size`. Collapsing them into one value keeps the vocabulary closed and keeps the distinction where it is measured. `overlays` keeps the question set's own `none` instead, because there `none` is a real observation (\"I looked, there are none\"), not an inapplicability.",
+		"`subject_kind` is SINGLE-select, and that is a deliberate limitation with a pre-registered test rather than a settled choice. A cover holding a person AND a car has two kinds and only one slot; the shared THE MAIN SUBJECT block resolves it by naming the largest. This is design rule 8's shape (a slot that cannot record the answer it is being asked for), so the pilot MUST report the subject_kind distribution conditioned on has_dominant_subject == multiple. If mixed-kind covers are common, the v2 of this field is a multi-select, and the machinery for that already exists in this schema.",
+		"`has_text` keeps `illegible_at_this_size` exactly as the question set writes it, and it is the ONLY resolution escape hatch anywhere in groups B-E. Pipeline doc §7.1 and PHASE_0_DECISIONS.md §7: a rendition below a question's resolution floor must never yield a confident negative. The measured floors cover group-A questions only — no floor has been measured for any question in this schema — so the pilot must report this value's rate by resolution tier, and a tier where it never fires on 43 thumbnail-tier images is a finding about the instrument, not a clean bill of health.",
+		"`color_character` and `grain_or_noise` are the two questions in this schema that a pixel statistic could plausibly answer, which puts them closest to the \"never ask for computables\" rule. They are asked anyway because ORACLE_QUESTION_SET.md §E asks them and because their value is evaluation-side stratification rather than an algorithm input — and because grain_or_noise is explicitly a JPEG-artifact confound control. Pre-registered consequence: if a cheap computed measure reproduces either of them, that question is deleted from the next schema and the statistic is used instead.",
+		"An exclusive value appearing alongside others in a list (`overlays` = [\"none\", something] or `text_roles` = [\"not_applicable\", something]) is NOT a validation failure. The grammar cannot prevent it, greedy decoding means a retry reproduces it exactly, and failing the row would throw away the other twelve answers to punish one. It is recorded verbatim and counted as a named health metric, which is the treatment ORACLE_QUESTION_SET.md §A.6.6 established for self-contradiction: count it, do not suppress it."
+	],
+	"shared_blocks": {
+		"what_counts_as_text": "WHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.",
+		"what_counts_as_added_on": "WHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.",
+		"the_main_subject": "THE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.",
+		"one_picture_one_medium": "ONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.",
+		"the_signature_colour": "THE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.",
+		"lists": "LISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.",
+		"measuring": "MEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.",
+		"answering": "ANSWERING. Answer each question on its own. Do not try to make your answers tell one story."
+	},
+	"canonical_fields": [
+		"has_text",
+		"text_roles",
+		"text_dominance",
+		"overlays",
+		"physical_media_scan",
+		"has_dominant_subject",
+		"subject_kind",
+		"subject_area_band",
+		"has_signature_color",
+		"signature_carrier",
+		"medium",
+		"color_character",
+		"grain_or_noise"
+	],
+	"vocabularies": {
+		"has_text": [
+			"yes",
+			"no",
+			"illegible_at_this_size"
+		],
+		"text_roles": [
+			"title_display",
+			"artist_name",
+			"tracklist_or_body",
+			"badge_or_sticker",
+			"label_logo",
+			"incidental_in_scene",
+			"not_applicable"
+		],
+		"text_dominance": [
+			"dominant_element",
+			"present_secondary",
+			"minor",
+			"not_applicable"
+		],
+		"overlays": [
+			"parental_advisory",
+			"label_logo",
+			"barcode_or_price",
+			"watermark",
+			"none"
+		],
+		"physical_media_scan": [
+			"yes",
+			"no"
+		],
+		"has_dominant_subject": [
+			"single",
+			"multiple",
+			"none"
+		],
+		"subject_kind": [
+			"person",
+			"animal",
+			"vehicle",
+			"object",
+			"building_or_structure",
+			"abstract_shape",
+			"not_applicable"
+		],
+		"subject_area_band": [
+			"under_25",
+			"25_60",
+			"over_60",
+			"not_applicable"
+		],
+		"has_signature_color": [
+			"yes",
+			"no"
+		],
+		"signature_carrier": [
+			"text",
+			"subject",
+			"background",
+			"small_element",
+			"not_applicable"
+		],
+		"medium": [
+			"photograph",
+			"illustration_or_painting",
+			"render_3d",
+			"typography_only",
+			"collage",
+			"abstract_or_pattern"
+		],
+		"color_character": [
+			"monochrome",
+			"duotone_or_tinted",
+			"limited_palette",
+			"full_spectrum"
+		],
+		"grain_or_noise": [
+			"yes",
+			"no"
+		]
+	},
+	"multi_select_fields": [
+		"text_roles",
+		"overlays"
+	],
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Here is an album cover.\n\nAnswer thirteen questions about what it carries. Ignore the subject matter. Ignore whether you like it.\n\nWHAT COUNTS AS TEXT. Any lettering you can read as letters or words, anywhere on the cover: the title, the artist name, small print, the wordmark inside a logo, and writing that belongs to a photographed scene such as a shop sign or a slogan on a shirt.\n\nWHAT COUNTS AS ADDED ON. Some things sit on top of a cover without being part of the picture: a parental advisory sticker, a record label's logo, a barcode or a price tag, a watermark from a shop or a stock library. The test is who put it there, not how it looks. A record label logo can be a kind of text and an added-on element at the same time; two different questions ask about it and they are not rivals.\n\nTHE MAIN SUBJECT. The thing the cover is of: a person, a face, an animal, an object, a vehicle, a building. Lettering is not a subject. A pattern is not a subject. When there is more than one, take them all together — except where a single kind of thing is asked for, and then name the kind of the largest one.\n\nONE PICTURE, ONE MEDIUM. If more than one way of making a picture is present, name the one that makes up most of the cover. A photograph with lettering over it is a photograph. Lettering on a plain field, with no picture at all, is typography_only.\n\nTHE SIGNATURE COLOUR. One colour a person would name if you asked them what colour that cover is. Not the colour that covers the most area, and not a colour you have to hunt for. Plenty of covers do not have one, and no is a real answer.\n\nLISTS. Two of the thirteen questions take a list instead of one answer. List every value that applies and list each value only once.\n\nMEASURING. Do not work out colours, contrast or exact sizes. Where a size or a range is asked for, a rough eyeball is what is wanted.\n\nANSWERING. Answer each question on its own. Do not try to make your answers tell one story.\n\n1. words - does the cover carry any writing?\n   yes - there is writing you can read\n   no - the cover carries no writing\n   illegible_at_this_size - writing is there, but this copy is too small for you to read it\n\n2. word_kinds - which sorts of writing appear? Name every sort that is present.\n   title_display - the record's title, set large\n   artist_name - who made it\n   tracklist_or_body - track names, credits, legal small print, running text\n   badge_or_sticker - words held inside a badge, seal, ribbon, or sticker shape\n   label_logo - a label's or distributor's name set as its logo\n   incidental_in_scene - writing that happens to be in the picture: signage, packaging, a garment\n   not_applicable - no sort of writing can be named\n\n3. word_prominence - how large does the writing loom in the design?\n   dominant_element - the writing is the design; nothing outweighs it\n   present_secondary - plainly visible, plainly not the centre of it\n   minor - small, edge of frame, easy to overlook\n   not_applicable - there is no readable writing\n\n4. added_marks - what has been put on top of the picture? Name every one that is present.\n   parental_advisory - an explicit content or parental advisory mark\n   label_logo - the logo of a record label or a distributor\n   barcode_or_price - a barcode, catalogue block, or price sticker\n   watermark - a shop's or a picture library's mark washed over the image\n   none - nothing sits on top\n\n5. packaging_photo - are you looking at a photograph or scan of an object, rather than at the artwork itself?\n   yes - a sleeve, case, disc, spine, edge, fold, scuff, or the surface it rests on is visible\n   no - the artwork is presented as artwork, edge to edge\n\n6. made_how - how was this image made?\n   photograph - taken with a camera\n   illustration_or_painting - drawn or painted by a hand\n   render_3d - modelled in 3D and rendered out\n   typography_only - nothing but type on a bare ground\n   collage - assembled out of cut-out pieces\n   abstract_or_pattern - marks, shapes, or repeats standing for nothing\n\n7. colour_spread - how wide is the colour range at work?\n   monochrome - a single hue, or nothing but greys\n   duotone_or_tinted - two colours, or one tint laid over everything\n   limited_palette - a small deliberate set\n   full_spectrum - broad and unrestricted\n\n8. speckle - does grain or noise show across much of the picture?\n   yes - grain, halftone dots, sensor noise, or deliberate speckle, over much of it\n   no - it reads clean\n\n9. main_thing - how many main subjects are there?\n   single - just the one\n   multiple - two of them, or more\n   none - none at all; the cover is writing, pattern, or bare field\n\n10. main_thing_kind - what sort of thing is it?\n   person - a person, face, figure, or crowd\n   animal - a creature\n   vehicle - anything that carries you: car, bike, boat, plane, train\n   object - a made thing you could pick up or stand beside\n   building_or_structure - architecture: a building, a bridge, a tower, an interior as structure\n   abstract_shape - a form with no name\n   not_applicable - there is nothing to name\n\n11. main_thing_area - taken together, how much of the cover do they take up?\n   under_25 - under a quarter of the cover\n   25_60 - a quarter to roughly three fifths\n   over_60 - beyond three fifths\n   not_applicable - there are no subjects\n\n12. defining_colour - is there a colour that stands for this cover?\n   yes - one colour would be named for it\n   no - none does\n\n13. defining_colour_where - where does that colour actually sit?\n   text - on the writing\n   subject - on the subject\n   background - on the ground behind everything\n   small_element - on a small piece: a badge, an object, a band of colour\n   not_applicable - there is no such colour\n\nAnswer in JSON and nothing else.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"words": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"illegible_at_this_size"
+				]
+			},
+			"word_kinds": {
+				"type": "array",
+				"items": {
+					"type": "string",
+					"enum": [
+						"title_display",
+						"artist_name",
+						"tracklist_or_body",
+						"badge_or_sticker",
+						"label_logo",
+						"incidental_in_scene",
+						"not_applicable"
+					]
+				},
+				"minItems": 1,
+				"maxItems": 7
+			},
+			"word_prominence": {
+				"type": "string",
+				"enum": [
+					"dominant_element",
+					"present_secondary",
+					"minor",
+					"not_applicable"
+				]
+			},
+			"added_marks": {
+				"type": "array",
+				"items": {
+					"type": "string",
+					"enum": [
+						"parental_advisory",
+						"label_logo",
+						"barcode_or_price",
+						"watermark",
+						"none"
+					]
+				},
+				"minItems": 1,
+				"maxItems": 5
+			},
+			"packaging_photo": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no"
+				]
+			},
+			"made_how": {
+				"type": "string",
+				"enum": [
+					"photograph",
+					"illustration_or_painting",
+					"render_3d",
+					"typography_only",
+					"collage",
+					"abstract_or_pattern"
+				]
+			},
+			"colour_spread": {
+				"type": "string",
+				"enum": [
+					"monochrome",
+					"duotone_or_tinted",
+					"limited_palette",
+					"full_spectrum"
+				]
+			},
+			"speckle": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no"
+				]
+			},
+			"main_thing": {
+				"type": "string",
+				"enum": [
+					"single",
+					"multiple",
+					"none"
+				]
+			},
+			"main_thing_kind": {
+				"type": "string",
+				"enum": [
+					"person",
+					"animal",
+					"vehicle",
+					"object",
+					"building_or_structure",
+					"abstract_shape",
+					"not_applicable"
+				]
+			},
+			"main_thing_area": {
+				"type": "string",
+				"enum": [
+					"under_25",
+					"25_60",
+					"over_60",
+					"not_applicable"
+				]
+			},
+			"defining_colour": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no"
+				]
+			},
+			"defining_colour_where": {
+				"type": "string",
+				"enum": [
+					"text",
+					"subject",
+					"background",
+					"small_element",
+					"not_applicable"
+				]
+			}
+		},
+		"required": [
+			"words",
+			"word_kinds",
+			"word_prominence",
+			"added_marks",
+			"packaging_photo",
+			"made_how",
+			"colour_spread",
+			"speckle",
+			"main_thing",
+			"main_thing_kind",
+			"main_thing_area",
+			"defining_colour",
+			"defining_colour_where"
+		],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"words": "has_text",
+		"word_kinds": "text_roles",
+		"word_prominence": "text_dominance",
+		"added_marks": "overlays",
+		"packaging_photo": "physical_media_scan",
+		"made_how": "medium",
+		"colour_spread": "color_character",
+		"speckle": "grain_or_noise",
+		"main_thing": "has_dominant_subject",
+		"main_thing_kind": "subject_kind",
+		"main_thing_area": "subject_area_band",
+		"defining_colour": "has_signature_color",
+		"defining_colour_where": "signature_carrier"
+	},
+	"free_text_fields": []
+}

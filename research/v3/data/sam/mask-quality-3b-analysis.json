@@ -1,0 +1,784 @@
+{
+	"analysisVersion": "sam-mask-quality-3b.v1",
+	"batchId": "sam-mask-quality-3b-cjk",
+	"generatedBy": "research/v3/oracle/sam/analyze_mask_quality_3b.py",
+	"decides": "loose end A12, remaining half \u2014 whether CJK-script concepts join the SAM concept set with a category cut",
+	"builtFrom": [
+		"research/v3/data/sam/mask-quality-3b-sample.json",
+		"research/v3/data/sam/sam-mask-quality-3b-cjk.json",
+		"research/v3/data/sam/sam-cjk-probe-7.jsonl",
+		"research/v3/data/warehouse/warehouse.jsonl (via src/warehouse/cli.ts)"
+	],
+	"preRegistration": {
+		"source": "mask-quality-3b-sample.json -> a12DecisionRule",
+		"rule": {
+			"unitOfDecision": "the `cjk_script` group (`cjk-script` + `kanji` together), which is the form probe 4 recommended: one group, one threshold, the union carrying covers where either word fires",
+			"primaryTreatment": "`partly` excluded from both sides; the denominator is decided answers only",
+			"method": "sweep a candidate cut over the observed scores of the graded masks, maximising Youden J \u2014 the same sweep that produced the pooled cut and the text_like group cut",
+			"gates": "propose a CJK group threshold only if it clears the bars the existing analysis already applies: separation from the pooled cut >= 0.05, J gain >= 0.05, and at least 5 decided answers in the group",
+			"adoptIf": "the group's masks are largely accepted AND a cut below the pooled 0.578 separates accepted from rejected \u2014 then `cjk-script`/`kanji` are proposed as a concept-set addition WITH their own group threshold, which is probe 4's second option and its recommendation",
+			"closeIf": "the masks are largely rejected \u2014 A12 closes, no concept is added, and the finding is recorded as a category whose evidence never survived being looked at",
+			"incumbentCheck": "the `words` pass is judged on the same covers. If `words` masks are accepted wherever `cjk-script` masks are, the incumbent already covers the category and a new concept buys nothing regardless of how the CJK masks score.",
+			"notAdopted": "this round edits no constant. config.CONCEPT_PROMPTS is untouched, so every stored run stays reproducible; adding a concept is the reviewer's call and a separate, later change."
+		}
+	},
+	"answersRead": {
+		"readVia": "node --experimental-strip-types research/v3/src/warehouse/cli.ts query --batch sam-mask-quality-3b-cjk --json --latest --no-retracted",
+		"recordsReturned": 26,
+		"oracleLabels": 25,
+		"otherRecordTypes": {
+			"batch-complete": 1
+		},
+		"authors": {
+			"human:flo": 25
+		},
+		"machineAuthored": 0,
+		"supersedingRevisions": 0,
+		"revisionsAboveOne": 0,
+		"amendmentsInBatch": 0,
+		"ambiguityNotes": []
+	},
+	"perConcept": {
+		"cjk-script": {
+			"graded": 11,
+			"yes": 10,
+			"no": 1,
+			"partly": 0,
+			"decided": 11,
+			"acceptRate": 0.9090909090909091,
+			"scoreRange": [
+				0.301817,
+				0.471964
+			],
+			"rejectedScores": [
+				0.387273
+			]
+		},
+		"kanji": {
+			"graded": 10,
+			"yes": 10,
+			"no": 0,
+			"partly": 0,
+			"decided": 10,
+			"acceptRate": 1.0,
+			"scoreRange": [
+				0.307835,
+				0.641773
+			],
+			"rejectedScores": []
+		},
+		"words": {
+			"graded": 4,
+			"yes": 3,
+			"no": 1,
+			"partly": 0,
+			"decided": 4,
+			"acceptRate": 0.75,
+			"scoreRange": [
+				0.315269,
+				0.586651
+			],
+			"rejectedScores": [
+				0.315269
+			]
+		}
+	},
+	"decisionUnit": {
+		"unit": "the `cjk_script` group (`cjk-script` + `kanji` together), which is the form probe 4 recommended: one group, one threshold, the union carrying covers where either word fires",
+		"concepts": [
+			"cjk-script",
+			"kanji"
+		],
+		"graded": 21,
+		"counts": {
+			"yes": 20,
+			"no": 1,
+			"partly": 0,
+			"decided": 21
+		},
+		"acceptRate": 0.9523809523809523,
+		"cutInForce": 0.578,
+		"cutInForceProvenance": "no cjk_script entry in CALIBRATED_GROUP_THRESHOLDS, so calibrated_threshold_for() falls back to CALIBRATED_SCORE_THRESHOLD",
+		"scoreSpan": {
+			"yes": {
+				"n": 20,
+				"min": 0.301817,
+				"max": 0.641773
+			},
+			"no": {
+				"n": 1,
+				"min": 0.387273,
+				"max": 0.387273
+			},
+			"cleanlySeparable": false,
+			"acceptedMasksBelowARejectedOne": 10
+		},
+		"sweepBest": {
+			"threshold": 0.392655,
+			"keptTruePositive": 10,
+			"droppedFalseNegative": 10,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": 1.0,
+			"recall": 0.5,
+			"specificity": 1.0,
+			"youdenJ": 0.5,
+			"partlyKept": 0,
+			"partlyDropped": 0,
+			"coversWithAKeptAcceptedMask": 5,
+			"tiedCandidates": 1,
+			"tieRange": [
+				0.392655,
+				0.392655
+			]
+		},
+		"atPooledCut": {
+			"threshold": 0.578,
+			"keptTruePositive": 3,
+			"droppedFalseNegative": 17,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": 1.0,
+			"recall": 0.15,
+			"specificity": 1.0,
+			"youdenJ": 0.1499999999999999,
+			"partlyKept": 0,
+			"partlyDropped": 0,
+			"coversWithAKeptAcceptedMask": 2
+		},
+		"atTextLikeCut": {
+			"threshold": 0.697295,
+			"keptTruePositive": 0,
+			"droppedFalseNegative": 20,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": null,
+			"recall": 0.0,
+			"specificity": 1.0,
+			"youdenJ": 0.0,
+			"partlyKept": 0,
+			"partlyDropped": 0,
+			"coversWithAKeptAcceptedMask": 0
+		},
+		"atRunFloor": {
+			"threshold": 0.301817,
+			"keptTruePositive": 20,
+			"droppedFalseNegative": 0,
+			"keptFalsePositive": 1,
+			"droppedTrueNegative": 0,
+			"precision": 0.9523809523809523,
+			"recall": 1.0,
+			"specificity": 0.0,
+			"youdenJ": 0.0,
+			"partlyKept": 0,
+			"partlyDropped": 0,
+			"coversWithAKeptAcceptedMask": 5
+		},
+		"gates": {
+			"separation": {
+				"value": 0.185345,
+				"required": 0.05,
+				"passes": true
+			},
+			"jGain": {
+				"value": 0.35,
+				"required": 0.05,
+				"passes": true
+			},
+			"decided": {
+				"value": 21,
+				"required": 5,
+				"passes": true
+			},
+			"allPass": true
+		},
+		"fittedCutIsSubPooled": true
+	},
+	"truncationScope": {
+		"lessonFrom": "mask-quality-3-analysis.json -> hardTextPooledSensitivity (commit b2b32fb)",
+		"round3Failure": "section B was selected BY the cut (score < cut), so it could not contain a single keep-side row; its J of 1.000 measured where the sample was cut. Pooling round 1's 31 unconditioned text_like rows restored the keep side and the J gain fell to 0.0000.",
+		"howThisRoundDiffers": "round 3b was NOT selected by the cut. It was drawn across score bands, strongest to weakest per cover, and it CONTAINS keep-side rows: 3 kanji masks score >= 0.578. The keep side is present, so the J gain here is not the round-3 artefact.",
+		"truncationThatRemains": {
+			"kind": "left-truncation at the run floor, not selection on the outcome",
+			"floor": 0.3,
+			"floorProvenance": "config.SCORE_THRESHOLD = 0.3 at run time; regions scoring below it were never emitted, so no row below 0.3 can exist for any concept",
+			"observedMax": 0.641773,
+			"ceilingProvenance": "no cjk_script region anywhere in sam-cjk-probe-7 exceeds 0.641773; this is the concept's observed ceiling, not a sampling bound"
+		},
+		"doesTheFloorBiasTheJGain": {
+			"answer": "no",
+			"proof": "both the fitted cut (0.392655) and the pooled cut (0.578) already run specificity 1.000 with zero false positives. Any row below 0.3 is dropped by both, so it can only add true negatives, and specificity cannot rise above 1.0. The J gain is therefore invariant to de-truncating the floor.",
+			"numericCheck": [
+				{
+					"phantomBelowFloorNegatives": 10,
+					"jAtFittedCut": 0.5,
+					"jAtPooledCut": 0.1499999999999999,
+					"jGain": 0.3500000000000001
+				},
+				{
+					"phantomBelowFloorNegatives": 50,
+					"jAtFittedCut": 0.5,
+					"jAtPooledCut": 0.1499999999999999,
+					"jGain": 0.3500000000000001
+				},
+				{
+					"phantomBelowFloorNegatives": 200,
+					"jAtFittedCut": 0.5,
+					"jAtPooledCut": 0.1499999999999999,
+					"jGain": 0.3500000000000001
+				}
+			]
+		},
+		"pooling": {
+			"possibleForTheDecisionUnit": false,
+			"why": "there is no unconditioned CJK row to pool with. `chinese characters` and `kanji` are not in config.CONCEPT_PROMPTS, so no eval run contains them; probe 4 ran them but stored no mask_rle and was never reviewed. This round is the only human evidence about a CJK mask that exists, so there is no second sample to restore a missing side with \u2014 and per the proof above, no side is missing in the way round 3's was.",
+			"needed": false,
+			"wouldPoolingWordsHelp": "no \u2014 `words` is text_like, a different group and a different cut; pooling it into the cjk_script sweep would fit one threshold across two groups, which is the exact thing the per-group table exists to avoid."
+		},
+		"whatIsActuallyUnderpowered": {
+			"negativesInTheDecisionUnit": 1,
+			"consequence": "the specificity term of J is estimated from ONE answer, so it can only take the values 0.0 or 1.0. The sweep's 'optimum' is mechanically the smallest observed score above that single rejected mask. It is a boundary located by one answer, not a boundary estimated from a distribution of negatives.",
+			"andTheFloorHidesNegatives": "false positives concentrate at low scores, and the 0.3 floor removed that region by construction. The 1-in-21 rejection rate is the rate AMONG regions the model already scored >= 0.3, not the concept's error rate.",
+			"ungradedRowsFromTheSameRun": {
+				"cjk-script": 7,
+				"kanji": 18,
+				"total": 25,
+				"closableOnCpu": true,
+				"how": "sam-cjk-probe-7 stores mask_rle for every region, so overlays for the remaining CJK regions render on CPU. Grading them needs reviewer time, not GPU, and would put the specificity term on more than one answer."
+			}
+		},
+		"whatTheFittedCutCanClaim": [
+			"in-sample, at 0.392655 the cjk_script group keeps 10 accepted masks and 0 rejected ones: precision 1.000, recall 0.500 of the masks the reviewer called correct",
+			"at least one accepted mask survives on 5 of 5 covers that carry any CJK mask, against 3 of 5 at the pooled cut and 0 of 5 at the text_like cut",
+			"the claim holds only over the observed range [0.301817, 0.641773]"
+		],
+		"whatTheFittedCutCannotClaim": [
+			"any false-positive rate: one negative, and the score region where negatives live was truncated away at 0.3",
+			"anything about covers WITHOUT CJK script. Probe 4's 'zero false positives, silent on Korean, Thai and Malayalam' was measured on scores alone; no off-target mask was put in front of a reviewer in this round, so the precision half of probe 4's finding is still unreviewed",
+			"any behaviour above 0.641773, where this concept has never scored",
+			"that 0.392655 is a boundary in the data rather than the location of one rejected mask"
+		]
+	},
+	"incumbentCheck": {
+		"rule": "the `words` pass is judged on the same covers. If `words` masks are accepted wherever `cjk-script` masks are, the incumbent already covers the category and a new concept buys nothing regardless of how the CJK masks score.",
+		"perCover": [
+			{
+				"cover": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"cjkRegionsInRun": 2,
+				"cjkAcceptedKeptAtFittedCut": 1,
+				"wordsRegionsInRun": 0,
+				"wordsBestScore": 0.0,
+				"wordsGraded": 0,
+				"wordsAccepted": 0,
+				"wordsKeptAtTextLikeCut": 0,
+				"wordsKeptAtPooledCut": 0,
+				"incumbentSilent": true
+			},
+			{
+				"cover": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+				"cjkRegionsInRun": 2,
+				"cjkAcceptedKeptAtFittedCut": 1,
+				"wordsRegionsInRun": 0,
+				"wordsBestScore": 0.0,
+				"wordsGraded": 0,
+				"wordsAccepted": 0,
+				"wordsKeptAtTextLikeCut": 0,
+				"wordsKeptAtPooledCut": 0,
+				"incumbentSilent": true
+			},
+			{
+				"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"cjkRegionsInRun": 19,
+				"cjkAcceptedKeptAtFittedCut": 4,
+				"wordsRegionsInRun": 5,
+				"wordsBestScore": 0.496063,
+				"wordsGraded": 3,
+				"wordsAccepted": 2,
+				"wordsKeptAtTextLikeCut": 0,
+				"wordsKeptAtPooledCut": 0,
+				"incumbentSilent": false
+			},
+			{
+				"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"cjkRegionsInRun": 8,
+				"cjkAcceptedKeptAtFittedCut": 3,
+				"wordsRegionsInRun": 1,
+				"wordsBestScore": 0.586651,
+				"wordsGraded": 1,
+				"wordsAccepted": 1,
+				"wordsKeptAtTextLikeCut": 0,
+				"wordsKeptAtPooledCut": 1,
+				"incumbentSilent": false
+			},
+			{
+				"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"cjkRegionsInRun": 15,
+				"cjkAcceptedKeptAtFittedCut": 1,
+				"wordsRegionsInRun": 0,
+				"wordsBestScore": 0.0,
+				"wordsGraded": 0,
+				"wordsAccepted": 0,
+				"wordsKeptAtTextLikeCut": 0,
+				"wordsKeptAtPooledCut": 0,
+				"incumbentSilent": true
+			}
+		],
+		"coversCarryingCjkMasks": 5,
+		"coversWhereIncumbentIsSilent": 3,
+		"wordsMaxScoreAnywhereInRun": 0.586651,
+		"wordsCutInForce": 0.697295,
+		"coversWhereIncumbentKeepsAnythingAtItsOwnCut": 0,
+		"coversWhereCjkKeepsAnAcceptedMaskAtTheFittedCut": 5,
+		"wordsAcceptRate": 0.75,
+		"outcome": "INCUMBENT DOES NOT COVER THE CATEGORY",
+		"reasoning": "`words` emits no region at all on 3 of 5 covers that carry CJK masks. Where it does fire it is accepted 3/4 \u2014 the masks are not bad \u2014 but its best score anywhere in the run is 0.586651, below its own text_like cut of 0.697295. At the threshold actually in force the incumbent therefore keeps ZERO masks on ALL 5 covers. The condition that would moot a new concept \u2014 `words` accepted wherever `cjk-script` is \u2014 is not met on availability, let alone on production thresholds.",
+		"mootsTheAddition": false
+	},
+	"wordsPooledSensitivity": {
+		"purpose": "the round-3 de-truncation move, attempted here. It applies to the INCUMBENT control only \u2014 there is no CJK row anywhere to pool with (see truncationScope.pooling), so the decision unit cannot receive this treatment.",
+		"round1Rows": 5,
+		"round3bRows": 4,
+		"overlapDropped": 0,
+		"total": 9,
+		"round1Unconditioned": true,
+		"round1AnswerTally": {
+			"yes": 5
+		},
+		"pooledScoreRange": [
+			0.315269,
+			0.807571
+		],
+		"sweepBest": {
+			"threshold": 0.325296,
+			"keptTruePositive": 8,
+			"droppedFalseNegative": 0,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": 1.0,
+			"recall": 1.0,
+			"specificity": 1.0,
+			"youdenJ": 1.0,
+			"partlyKept": 0,
+			"partlyDropped": 0,
+			"coversWithAKeptAcceptedMask": 7,
+			"tiedCandidates": 1,
+			"tieRange": [
+				0.325296,
+				0.325296
+			]
+		},
+		"atTextLikeCut": {
+			"threshold": 0.697295,
+			"keptTruePositive": 3,
+			"droppedFalseNegative": 5,
+			"keptFalsePositive": 0,
+			"droppedTrueNegative": 1,
+			"precision": 1.0,
+			"recall": 0.375,
+			"specificity": 1.0,
+			"youdenJ": 0.375,
+			"partlyKept": 0,
+			"partlyDropped": 0,
+			"coversWithAKeptAcceptedMask": 3
+		},
+		"informativeForA12": false,
+		"whyNot": "round 1 drew from covers with no CJK script on them. Pooling those rows measures how good `words` masks are on Latin covers, which nobody disputes and which is not the incumbent question. The incumbent question is whether `words` fires AT ALL on CJK covers, and that is answered by availability on the 5 covers of this run, not by a sweep.",
+		"doesNotFund": "any change to CALIBRATED_GROUP_THRESHOLDS['text_like']. Round 3's 55-row pooled analysis is the authoritative text_like sweep and it found a J gain of exactly 0.0000; this 9-row subset is a smaller, differently-drawn population and must not be read as re-opening that."
+	},
+	"verdict": {
+		"a12": "ADOPT WITH A CATEGORY CUT",
+		"ruleApplied": {
+			"largelyAccepted": {
+				"value": 0.9523809523809523,
+				"met": true
+			},
+			"subPooledCutFitted": {
+				"value": 0.392655,
+				"met": true
+			},
+			"gatesAllPass": true,
+			"incumbentMootsIt": false,
+			"closeIfTriggered": false
+		},
+		"proposedGroup": "cjk_script",
+		"proposedConcepts": [
+			[
+				"cjk-script",
+				"chinese characters"
+			],
+			[
+				"kanji",
+				"kanji"
+			]
+		],
+		"proposedThreshold": 0.392655,
+		"thresholdConfidence": "WEAK \u2014 see truncationScope.whatIsActuallyUnderpowered. The number is the smallest observed score above the single rejected mask. The rule's gates pass on it, and the rule is what decides; but the constant should be landed as provisional and re-fitted after the remaining ungraded CJK regions are reviewed.",
+		"costOfTheFittedNumber": "adopting 0.392655 discards 10 of 20 masks the reviewer called correct, to exclude the single one they rejected. At the run floor the same group runs precision 0.9524 with recall 1.000 \u2014 the Youden objective the rule pre-registered prices one false positive as heavily as ten false negatives, and on a sample with one negative that is the whole of the difference.",
+		"whatCloses": [
+			"A12's remaining half \u2014 'has any human ever seen a CJK mask' \u2014 is closed. 25 masks were rendered, reviewed and released; 21 of them in the decision unit.",
+			"Probe 4's RECALL half is confirmed by eye: the masks `chinese characters` and `kanji` find on CJK covers are correct 20 times out of 21.",
+			"The 'is the calibrated cut category-dependent' question is answered YES for this category: the pooled cut keeps 3 of 20 correct masks and the text_like cut keeps 0.",
+			"The incumbent question is settled: `words` cannot stand in for a CJK concept."
+		],
+		"whatStaysOpen": [
+			"The PRECISION half of probe 4's finding. No off-target mask (Korean, Thai, Malayalam, or a Latin-only cover) was reviewed, so 'zero false positives' remains a claim about scores, not about masks a human has judged.",
+			"The threshold's identification. 25 CJK regions from the same run are ungraded and all carry mask_rle, so a completion round is CPU-render plus reviewer time \u2014 no GPU. Until then the specificity term rests on one answer.",
+			"Whether these masks are USEFUL as opposed to correct: the accepted CJK masks have a median area of 0.002679 of the cover \u2014 the same 'correct but tiny' caution round 3 raised for hard text.",
+			"Adding the concepts changes concept_set_hash(), so sam-eval-142 must be re-run in full before any analysis reads CJK rows alongside the existing ones (GPU, ~6.5 min)."
+		],
+		"outOfScope": [
+			"The 2 covers where nothing fires at any threshold (10/ab67616d0000b27300103a3729bf589e0dc913ab and images/nobs.jpg) are recorded as out of scope for this round: they carry zero regions for all three prompts, so no threshold can recover them and no mask exists to review."
+		]
+	},
+	"proposals": [
+		{
+			"id": "d-2026-08-04-sam-cjk-script-concepts-adopted-with-a-category-cut",
+			"kind": "instrument-calibration",
+			"status": "PROPOSED \u2014 not appended to decisions.json",
+			"fundedBy": [
+				"o-msdtw9x2-95f066b7",
+				"o-msdtwdcj-7b78b8f7",
+				"o-msdtwefx-4f97fa2f",
+				"o-msdtwf81-3bc62990",
+				"o-msdtwgeo-2e246a13",
+				"o-msdtwhjs-cd1c9d8b",
+				"o-msdtwib1-dc52c776",
+				"o-msdtwkeq-52851ec8",
+				"o-msdtwlie-fc524217",
+				"o-msdtwmmm-9c17d29a",
+				"o-msdtwoqa-99d30b6b",
+				"o-msdtwpbo-efaf8645",
+				"o-msdtwq6v-f372f857",
+				"o-msdtwrud-e7c04f19",
+				"o-msdtwtr2-075532b4",
+				"o-msdtwuj9-97236743",
+				"o-msdtww90-b5707f31",
+				"o-msdtwwum-9fcac7dd",
+				"o-msdtwxwm-c8c99092",
+				"o-msdtwyj8-663999f6",
+				"o-msdtwzt5-6decaa51"
+			],
+			"claim": "`cjk-script` (\"chinese characters\") and `kanji` join CONCEPT_PROMPTS as one group `cjk_script` with its own calibrated threshold of 0.392655. Funded by 21 decided reviewer answers on masks no human had ever seen: 20 correct, 1 not. The pre-registered gates all pass (separation 0.185345, J gain 0.35, n 21).",
+			"doesNotFund": "the threshold as a settled number. The sweep's optimum is the smallest observed score above the ONE rejected mask; the specificity term of J rests on that single answer, and the 0.3 run floor removed the score region where false positives live. The constant must land as PROVISIONAL and be re-fitted after the 25 ungraded CJK regions from the same run are reviewed.",
+			"alsoDoesNotFund": "probe 4's precision claim. No off-target mask (Korean, Thai, Malayalam, or a Latin-only cover) was put in front of a reviewer, so 'zero false positives' is still a statement about scores."
+		},
+		{
+			"id": "d-2026-08-04-sam-words-does-not-cover-cjk-script",
+			"kind": "measurement",
+			"status": "PROPOSED \u2014 not appended to decisions.json",
+			"fundedBy": [
+				"o-msdtx20v-7a979f49",
+				"o-msdtx5wm-958cb491",
+				"o-msdtx9pe-1ad3dda4",
+				"o-msdtxae7-2fbbca92"
+			],
+			"claim": "The incumbent check is settled against the incumbent. `words` emits no region at all on 3 of the 5 CJK covers, and its best score anywhere in the run (0.586651) is below its own text_like cut of 0.697295, so at the threshold in force it keeps ZERO masks on ALL 5. Where it does fire its masks are fine (3/4 accepted) \u2014 the failure is availability and score, not mask quality.",
+			"doesNotFund": "any change to CALIBRATED_GROUP_THRESHOLDS['text_like']. Round 3's 55-row pooled sweep remains the authoritative text_like analysis and found a J gain of 0.0000."
+		}
+	],
+	"proposedConfigDiff": {
+		"file": "research/v3/oracle/sam/config.py",
+		"status": "PROPOSED \u2014 NOT APPLIED. A sibling agent holds config.py this session for the person exemption (loose end A6). This diff is named for a follow-up commit and must be rebased onto that edit, not applied over it.",
+		"followUpName": "sam: adopt cjk_script concepts with a provisional category cut (A12)",
+		"hunks": [
+			{
+				"anchor": "CONCEPT_PROMPTS, replacing the A12 note at lines 118-123",
+				"diff": "     # [REVIEWED, n=16] CONCEPT SET v2.1 \u2014 one ADD, reviewer-approved 2026-08-03 (\"SAM\n     # static adds => yes, go\"). Evidence: probe 4 (data/sam/PROBE4_NOTES.md), \"barcode\"\n     # precision 1.00 with zero false positives on 14 no-barcode covers; 0.94 on the\n     # EAN-carrying promo sticker, clearing the calibrated cut with room. Recall 0.50\n     # (n=2): it missed the parcel's shipping-label barcode block.\n-    # The CJK words from the\n-    # same probe are NOT added: \"chinese characters\" recalls 4/4 with perfect precision\n-    # but its best score anywhere is 0.472 \u2014 every recovery dies at the 0.578 calibrated\n-    # cut. A category-aware threshold plus a CJK mask-quality round must come first\n-    # (loose end A12). COST: this ADD changes concept_set_hash(), so any stored run under\n-    # v2 must be re-run before an analysis reads it alongside barcode rows.\n     ('barcode', 'barcode'),\n+    # [REVIEWED, n=21] CONCEPT SET v2.2 \u2014 the CJK ADD, 2026-08-04. Both preconditions the\n+    # v2.1 note set are now met: the category-aware threshold machinery exists\n+    # (CALIBRATED_GROUP_THRESHOLDS below) and the CJK mask-quality round has been run and\n+    # reviewed (round 3b, data/sam/mask-quality-3b-analysis.json). 21 decided answers on\n+    # the cjk_script group: 20 correct, 1 not \u2014 a 95.2% accept rate on masks no human had\n+    # ever seen. The pooled cut keeps 3 of the 20 correct masks and the text_like cut\n+    # keeps 0, so the cut IS category-dependent for this category; the group threshold\n+    # below is what makes the add worth anything.\n+    #\n+    # The tag says what the mask CLAIMS, not what the prompt asks: 'chinese characters'\n+    # fires on Japanese covers as readily as Chinese ones, so the stored tag is\n+    # `cjk-script`. Probe 4 measured it silent on Korean, Thai and Malayalam, which is\n+    # why this is a SCRIPT concept and not a not-Latin one \u2014 but see the threshold note:\n+    # no off-target mask has been reviewed, so that half is still scores-only.\n+    #\n+    # COST: this ADD changes concept_set_hash(), so sam-eval-142 MUST BE RE-RUN IN FULL\n+    # (~6.5 min GPU) before any analysis reads CJK rows alongside the existing ones.\n+    ('cjk-script', 'chinese characters'),\n+    ('kanji', 'kanji'),\n )"
+			},
+			{
+				"anchor": "CONCEPT_GROUPS at lines 182-189 \u2014 selftest.py asserts every concept is in exactly one group, so this hunk is REQUIRED by the one above",
+				"diff": " CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {\n     \"text_like\": (\"words\", \"letter\", \"lettering\", \"display-text\"),\n     \"mark_like\": (\"emblem\", \"sticker\", \"parental-advisory\", \"barcode\"),\n     \"person_like\": (\"person\", \"face\"),\n+    # cjk_script is its OWN group and deliberately not part of text_like: probe 4's\n+    # co-firing rule (the rule that drew every other line here) puts it apart, because\n+    # `words` does not fire on 3 of the 5 covers where these two do. Folding it into\n+    # text_like would also drag it under text_like's 0.697295 cut, which keeps 0 of 20.\n+    \"cjk_script\": (\"cjk-script\", \"kanji\"),\n }"
+			},
+			{
+				"anchor": "CALIBRATED_GROUP_THRESHOLDS at lines 358-363",
+				"diff": " CALIBRATED_GROUP_THRESHOLDS: dict[str, float] = {\n     \"text_like\": 0.697295,\n+    # [MEASURED, n=21, PROVISIONAL] Round 3b, 2026-08-04. Sweep over observed scores,\n+    # primary treatment, ties to the lowest: own optimum 0.392655 at J 0.500000 against\n+    # J 0.150000 at the pooled cut \u2014 gain 0.350000 >= PER_GROUP_MIN_J_GAIN, separation\n+    # |0.578 - 0.392655| = 0.185345 >= PER_GROUP_MIN_SEPARATION, n 21 >= MIN_CELL_ANSWERS.\n+    # Unlike round 3's hard-text section this sample was NOT selected by the cut \u2014 it\n+    # spans score bands and contains keep-side rows \u2014 so the J gain is not the round-3\n+    # truncation artefact, and it is provably invariant to the 0.3 run floor (both cuts\n+    # already run specificity 1.000, so below-floor rows can only add true negatives).\n+    #\n+    # WHY PROVISIONAL, AND DO NOT QUIETLY DROP THIS WORD. The group holds exactly ONE\n+    # negative answer, so the specificity term of J is 0.0 or 1.0 and nothing else, and\n+    # this optimum is mechanically 'the smallest observed score above that one rejected\n+    # mask'. It also DISCARDS 10 of the 20 masks the reviewer called correct; at the run\n+    # floor the same group runs precision 0.9524 at recall 1.000. 25 CJK regions from\n+    # sam-cjk-probe-7 are still ungraded and all carry mask_rle, so re-fitting this is a\n+    # CPU render plus reviewer time \u2014 no GPU. Re-fit before treating it as settled.\n+    \"cjk_script\": 0.392655,\n }"
+			}
+		],
+		"notRequired": [
+			"group_of() and calibrated_threshold_for() need NO change \u2014 they are pure lookups over the two dicts above.",
+			"No edit to CALIBRATED_SCORE_THRESHOLD, CALIBRATED_SWEEP_OPTIMUM, CALIBRATED_MAX_AREA_FRACTION, GUARD_EXEMPT_GROUPS or SCORE_THRESHOLD."
+		],
+		"companionObligations": [
+			"selftest.py \u2014 asserts every concept is in exactly one group; it will fail if the CONCEPT_PROMPTS hunk lands without the CONCEPT_GROUPS hunk.",
+			"sam-eval-142 must be re-run in full under concept set v2.2 before any analysis reads CJK rows alongside existing ones (concept_set_hash changes, and it is part of row_key).",
+			"run_sam.py's stored calibrated_cut provenance block should gain the new group threshold so a reader can tell which rule produced a file."
+		]
+	},
+	"rows": [
+		{
+			"itemId": "smq3b-35dd6ed8c6a8",
+			"maskRowId": "143928b6baab:kanji:0",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.641773,
+			"areaFraction": 0.002822222,
+			"band": "0.60-0.80",
+			"answer": "yes",
+			"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36"
+		},
+		{
+			"itemId": "smq3b-c6a218ec8d20",
+			"maskRowId": "143928b6baab:kanji:2",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.634527,
+			"areaFraction": 0.001677778,
+			"band": "0.60-0.80",
+			"answer": "yes",
+			"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36"
+		},
+		{
+			"itemId": "smq3b-7c4599f9c6f9",
+			"maskRowId": "9ccfa7646ad0:kanji:0",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.604809,
+			"areaFraction": 0.001074219,
+			"band": "0.60-0.80",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-a307e00c02b1",
+			"maskRowId": "143928b6baab:words:0",
+			"concept": "words",
+			"group": "text_like",
+			"score": 0.586651,
+			"areaFraction": 0.024911111,
+			"band": "0.45-0.60",
+			"answer": "yes",
+			"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36"
+		},
+		{
+			"itemId": "smq3b-d6cd54b49de2",
+			"maskRowId": "9ccfa7646ad0:kanji:6",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.576769,
+			"areaFraction": 0.000695801,
+			"band": "0.45-0.60",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-a5709fa4a08a",
+			"maskRowId": "9ccfa7646ad0:kanji:11",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.548839,
+			"areaFraction": 0.002243652,
+			"band": "0.45-0.60",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-224a1953c6a7",
+			"maskRowId": "143928b6baab:kanji:5",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.531515,
+			"areaFraction": 0.001433333,
+			"band": "0.45-0.60",
+			"answer": "yes",
+			"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36"
+		},
+		{
+			"itemId": "smq3b-e50f8fb6ce17",
+			"maskRowId": "9ccfa7646ad0:words:0",
+			"concept": "words",
+			"group": "text_like",
+			"score": 0.496063,
+			"areaFraction": 0.00809082,
+			"band": "0.45-0.60",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-03c5c23951ea",
+			"maskRowId": "9ccfa7646ad0:cjk-script:0",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.471964,
+			"areaFraction": 0.00684082,
+			"band": "0.45-0.60",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-2638d94ffb41",
+			"maskRowId": "eeef27ece2ed:cjk-script:0",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.449211,
+			"areaFraction": 0.003898926,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "07/ab67616d0000b2730007960724fb77c8041c6c13"
+		},
+		{
+			"itemId": "smq3b-683c43ed1333",
+			"maskRowId": "9ccfa7646ad0:words:2",
+			"concept": "words",
+			"group": "text_like",
+			"score": 0.41006,
+			"areaFraction": 0.006506348,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-6eb17e28dc71",
+			"maskRowId": "ec1d748a16aa:cjk-script:0",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.394539,
+			"areaFraction": 0.090681152,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg"
+		},
+		{
+			"itemId": "smq3b-e33718f7b11e",
+			"maskRowId": "3b82cee640a2:cjk-script:0",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.392655,
+			"areaFraction": 0.009968262,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+		},
+		{
+			"itemId": "smq3b-9cab1693eff3",
+			"maskRowId": "9ccfa7646ad0:cjk-script:3",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.387273,
+			"areaFraction": 0.007514648,
+			"band": "0.30-0.45",
+			"answer": "no",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-50948b65e2b0",
+			"maskRowId": "143928b6baab:cjk-script:0",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.377375,
+			"areaFraction": 0.018388889,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36"
+		},
+		{
+			"itemId": "smq3b-f4b2fc14ca6b",
+			"maskRowId": "3b82cee640a2:kanji:0",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.366948,
+			"areaFraction": 0.003447266,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+		},
+		{
+			"itemId": "smq3b-d8bd7bda6f77",
+			"maskRowId": "ec1d748a16aa:cjk-script:1",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.352867,
+			"areaFraction": 0.00342041,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg"
+		},
+		{
+			"itemId": "smq3b-aa8bb3b38c85",
+			"maskRowId": "3b82cee640a2:kanji:4",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.34942,
+			"areaFraction": 0.003432617,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+		},
+		{
+			"itemId": "smq3b-3ac7c469bac0",
+			"maskRowId": "3b82cee640a2:kanji:8",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.322402,
+			"areaFraction": 0.0009375,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+		},
+		{
+			"itemId": "smq3b-ba02d6d84b20",
+			"maskRowId": "143928b6baab:cjk-script:1",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.31927,
+			"areaFraction": 0.002366667,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d00001e0200106c3252a4c133c0abde36"
+		},
+		{
+			"itemId": "smq3b-710dfe450bd3",
+			"maskRowId": "9ccfa7646ad0:words:4",
+			"concept": "words",
+			"group": "text_like",
+			"score": 0.315269,
+			"areaFraction": 0.007739258,
+			"band": "0.30-0.45",
+			"answer": "no",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-787f75917d52",
+			"maskRowId": "3b82cee640a2:cjk-script:2",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.312639,
+			"areaFraction": 0.002536621,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+		},
+		{
+			"itemId": "smq3b-6cf4e5126e0b",
+			"maskRowId": "eeef27ece2ed:kanji:0",
+			"concept": "kanji",
+			"group": "cjk_script",
+			"score": 0.307835,
+			"areaFraction": 0.003762207,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "07/ab67616d0000b2730007960724fb77c8041c6c13"
+		},
+		{
+			"itemId": "smq3b-8c2a9ebecbd1",
+			"maskRowId": "9ccfa7646ad0:cjk-script:6",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.306014,
+			"areaFraction": 0.002272949,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0"
+		},
+		{
+			"itemId": "smq3b-cbbfdf8912dd",
+			"maskRowId": "3b82cee640a2:cjk-script:5",
+			"concept": "cjk-script",
+			"group": "cjk_script",
+			"score": 0.301817,
+			"areaFraction": 0.001958008,
+			"band": "0.30-0.45",
+			"answer": "yes",
+			"cover": "10/ab67616d0000b27300100a3e9c764acf01c16db8"
+		}
+	]
+}

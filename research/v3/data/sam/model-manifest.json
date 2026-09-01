@@ -1,0 +1,87 @@
+{
+  "concept_prompts": [
+    [
+      "words",
+      "words"
+    ],
+    [
+      "letter",
+      "letter"
+    ],
+    [
+      "lettering",
+      "lettering"
+    ],
+    [
+      "display-text",
+      "album title"
+    ],
+    [
+      "emblem",
+      "logo"
+    ],
+    [
+      "sticker",
+      "sticker"
+    ],
+    [
+      "parental-advisory",
+      "parental advisory"
+    ],
+    [
+      "person",
+      "person"
+    ],
+    [
+      "face",
+      "face"
+    ],
+    [
+      "barcode",
+      "barcode"
+    ],
+    [
+      "cjk-script",
+      "chinese characters"
+    ],
+    [
+      "kanji",
+      "kanji"
+    ]
+  ],
+  "concept_set_hash": "d49a63c479d4e6724426b955a6428920920569f4e3604acf366f12ed86fa9dd5",
+  "concepts": [
+    "words",
+    "letter",
+    "lettering",
+    "display-text",
+    "emblem",
+    "sticker",
+    "parental-advisory",
+    "person",
+    "face",
+    "barcode",
+    "cjk-script",
+    "kanji"
+  ],
+  "config_sha256": "898d892490cdbaefc9a7a6ba2ae5ce5b7f93915a2aa8d6d0d5601417ca0b4b03",
+  "git_head": "4d99a9ce7a8b2e9a381deb16a4daad7d0210de52",
+  "model_id": "mlx-community/sam3.1-bf16",
+  "model_revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
+  "pinned_at": "2026-08-03T23:18:08.769Z",
+  "quantization": "bf16",
+  "runtime": {
+    "mlx": "0.32.0",
+    "package": "mlx-vlm",
+    "platform": "macOS-15.7.7-arm64-arm-64bit-Mach-O",
+    "python": "3.14.3",
+    "version": "0.6.8"
+  },
+  "schema_version": "sam-regions.v1",
+  "score_threshold": 0.3,
+  "snapshot_path": "/Users/Flo/.cache/huggingface/hub/models--mlx-community--sam3.1-bf16/snapshots/a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
+  "weight_load_note": "manual: Model(ModelConfig) + load_weights(strict=True), sanitize() bypassed",
+  "weights_bytes": 3493016552,
+  "weights_file": "model.safetensors",
+  "weights_sha256": "a1b1c19dcc9bdd68438bcd74433fadc90740e73c37a1f386872672d134879c42"
+}

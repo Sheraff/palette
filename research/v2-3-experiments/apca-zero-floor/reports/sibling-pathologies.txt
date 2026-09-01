@@ -1,0 +1,60 @@
+6941 distinct artworks
+
+exactly-zero APCA contrast, by role pair:
+  foreground on surface        14  (0.20%)   <- the pair the rule names
+  foreground on background     23  (0.33%)
+  accent on surface           144  (2.07%)
+  accent on background        133  (1.92%)
+
+foreground unreadable on EITHER field endpoint: 37 (0.53%)
+  overlap (unreadable on both): 0
+
+any of the four pairs at exactly zero: 305 (4.39%)
+
+--- the foreground-on-background cases the named rule would NOT touch (23) ---
+  images/birdsofprey.jpg
+    bg=#141975 surface=#3fa72a fg=#030102 accent=#d02981 gradient   fg/bg Lc=0.00 dE=63.4  fg/surface Lc=46.5
+  0a/ab67616d0000b273000a012132aac2610037a06a
+    bg=#5f2307 surface=#d69c77 fg=#140502 accent=#a33619 gradient   fg/bg Lc=0.00 dE=40.0  fg/surface Lc=57.2
+  0d/ab67616d0000b273000df9f3288d394ecf53318f
+    bg=#252300 surface=#f3d100 fg=#000000 accent=#fdef00 gradient   fg/bg Lc=0.00 dE=23.9  fg/surface Lc=80.3
+  07/ab67616d00001e0200076a5a05dfad9ad716d573
+    bg=#15010a surface=#ebab23 fg=#340307 accent=#f5d33e gradient   fg/bg Lc=0.00 dE=20.5  fg/surface Lc=62.9
+  13/ab67616d0000b273001306d8ae920fdad6ebb495
+    bg=#3f1f10 surface=#d1764a fg=#1b1b13 accent=#f3cb90 gradient   fg/bg Lc=0.00 dE=20.4  fg/surface Lc=42.4
+  02/ab67616d0000b2730002dae9b00c14643053fbe5.jpg
+    bg=#3f4a4c surface=#9fa5a1 fg=#085a54 accent=#d1d0d6 gradient   fg/bg Lc=0.00 dE=20.2  fg/surface Lc=36.3
+  13/ab67616d0000b2730013e24dd4e162fc480d9891
+    bg=#031322 surface=#edb4ad fg=#000000 accent=#011645 gradient   fg/bg Lc=0.00 dE=13.2  fg/surface Lc=70.8
+  10/ab67616d0000b27300108d4a81ce6ae77065105d
+    bg=#52443b surface=#fff6e5 fg=#3a3f42 accent=#90624a gradient   fg/bg Lc=0.00 dE=12.3  fg/surface Lc=89.8
+  07/ab67616d00001e020007b85f56e5a3ac2aead4e6
+    bg=#13171a surface=#a9aaa2 fg=#2a2e31 accent=#c9cbbd gradient   fg/bg Lc=0.00 dE=11.2  fg/surface Lc=52.0
+  0c/ab67616d00001e02000cc9913d9a58ea3771ba0f
+    bg=#490510 surface=#b6263f fg=#670f1f accent=#8d162a gradient   fg/bg Lc=0.00 dE=11.2  fg/surface Lc=15.4
+  05/ab67616d0000b27300055f1cfc1722c14bdb0bcf
+    bg=#2c2c2c surface=#c5c5c5 fg=#424242 accent=#fafafa gradient   fg/bg Lc=0.00 dE=10.0  fg/surface Lc=59.9
+  10/ab67616d00001e020010e138a4ef1fc6943974c1
+    bg=#05232b surface=#026c93 fg=#081617 accent=#00374a gradient   fg/bg Lc=0.00 dE=9.0  fg/surface Lc=24.2
+  0f/ab67616d0000b273000f31bf3a226768fcb37424
+    bg=#1c1502 surface=#d2bf9f fg=#060c02 accent=#faca00 gradient   fg/bg Lc=0.00 dE=8.6  fg/surface Lc=70.4
+  10/ab67616d0000b2730010aacb93ebe80370afa59c
+    bg=#1c2a37 surface=#ffffff fg=#121923 accent=#ca9629 gradient   fg/bg Lc=0.00 dE=8.4  fg/surface Lc=104.5
+  0e/ab67616d0000b273000eb97d43e8a375e41f6768
+    bg=#11648e surface=#0f2c4a fg=#186987 accent=#0b1b32 gradient   fg/bg Lc=0.00 dE=8.2  fg/surface Lc=-17.3
+  0d/ab67616d00001e02000d207eed6ccf3726207f79
+    bg=#e8b65f surface=#fff1cc fg=#e7ad4a accent=#e7ad4a gradient   fg/bg Lc=0.00 dE=7.9  fg/surface Lc=30.8
+  0e/ab67616d0000b273000ece7847f3b5fdea732479
+    bg=#191512 surface=#a69294 fg=#000000 accent=#dfaa8b gradient   fg/bg Lc=0.00 dE=7.6  fg/surface Lc=48.3
+  0e/ab67616d0000b273000e5d7ec6a14710a4870244
+    bg=#eff2f9 surface=#1f2018 fg=#ffffff accent=#f1671e gradient   fg/bg Lc=0.00 dE=5.9  fg/surface Lc=-105.9
+  13/ab67616d0000b2730013c2c64a482ac7f91a40ea
+    bg=#20323e surface=#7d9c9f fg=#1a2730 accent=#ecbaa3 gradient   fg/bg Lc=0.00 dE=5.4  fg/surface Lc=44.2
+  09/ab67616d0000b27300097cb8763b185ae295157e
+    bg=#e2e5ea surface=#49444a fg=#edf1f4 accent=#83545c gradient   fg/bg Lc=0.00 dE=4.2  fg/surface Lc=-86.7
+  13/ab67616d0000b2730013095d1c1a5350d21f448d
+    bg=#f2f3ee surface=#1f3835 fg=#fffef9 accent=#a15852 gradient   fg/bg Lc=0.00 dE=4.0  fg/surface Lc=-101.1
+  08/ab67616d0000b2730008c9a0f64b618fa453d250
+    bg=#0d0d0d surface=#e5e5e5 fg=#000000 accent=#1a1a1a gradient   fg/bg Lc=0.00 dE=3.6  fg/surface Lc=90.7
+  0b/ab67616d0000b273000bbaf2598060cff28678d3
+    bg=#0f0704 surface=#d1c2af fg=#000000 accent=#e9dbc8 gradient   fg/bg Lc=0.00 dE=3.6  fg/surface Lc=72.1

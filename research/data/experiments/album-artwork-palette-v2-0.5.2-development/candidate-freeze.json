@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "freezeVersion": "album-artwork-palette-v2-candidate-freeze-v1",
+  "candidateVersion": "album-artwork-first-principles-0.5.2",
+  "implementationHash": "ea1205ebd2d33abf99d8eed8a0e5e7625f1af6722dbe7879c90350c23d36fd40",
+  "implementationHashMethod": "development-evaluator-runtime-and-declared-files-v1",
+  "runtime": {
+    "node": "v25.8.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "implementationFiles": [
+    {
+      "path": "research/evaluate-album-artwork-palette-v2-development.ts",
+      "sha256": "690fbeb7d190fd642ed81823602ade1bd0e97639847705441a9cb3d738b49995",
+      "byteCount": 13211
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2.ts",
+      "sha256": "ec817372f7f31ccba3c688457dbe7fbd572bc2448226caea253a371b68a78461",
+      "byteCount": 122664
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-protocol.ts",
+      "sha256": "dd8c8dadbef5a54c03d97a994cc7a2c08f2317c329adc2224a2db72277ad1b35",
+      "byteCount": 1849
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-future-sample.ts",
+      "sha256": "65f4cb11d9f93c895ddacb010da643536a983fbf15dde6e755bb8aadb8e9efb3",
+      "byteCount": 32112
+    },
+    {
+      "path": "research/src/source-provenance-inventory.ts",
+      "sha256": "13d18358e69ec9eb77dd44357593da5b05aadf28dd1b20db06fa28814364d79a",
+      "byteCount": 24639
+    },
+    {
+      "path": "research/src/color.ts",
+      "sha256": "14aae7dfd90b4589b81d2061fda4c05e1a5513bb98ab864b25ce81a520139033",
+      "byteCount": 3934
+    },
+    {
+      "path": "research/src/color-name.ts",
+      "sha256": "dbb16263c8debbc7965eab73d35c20e2d2acedde8407cff6294e4c382649156c",
+      "byteCount": 2544
+    },
+    {
+      "path": "research/src/native-resolution-image.ts",
+      "sha256": "0fed2b94aec333b144088f41d7eaa9165097cf001d0e253c664255f4bb300bb2",
+      "byteCount": 2174
+    },
+    {
+      "path": "research/src/types.ts",
+      "sha256": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb",
+      "byteCount": 1679
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_5_2.md",
+      "sha256": "f17b3b8ba707c2084a6f56ee51a7d63e53714c109a43305f058fed5c76116a1e",
+      "byteCount": 5608
+    },
+    {
+      "path": "research/analyze-album-artwork-palette-v2-0.5.2-development.ts",
+      "sha256": "87485d749fc6f0d86cd940abe09f0812f8f474dd8b9ba776d450e0848f8051bc",
+      "byteCount": 14221
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2.test.ts",
+      "sha256": "f3e05b817f51f00c528c8ad6046077ab6444d2e479c4f1ffeea1f8221e66e51a",
+      "byteCount": 35555
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2-future-sample.test.ts",
+      "sha256": "78fb30bab03059d609a8c26db576afc164226300c63edd7679929d94bf416943",
+      "byteCount": 7590
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-fresh-sample.sealed.json",
+      "sha256": "6625aea0e38b93f6830a349468681a5dc6e93c99fe4bc3f38ca66ad23e0d16f3",
+      "byteCount": 4553
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-future-sample-02.sealed.json",
+      "sha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c",
+      "byteCount": 11107
+    },
+    {
+      "path": "research/album-artwork-palette-v2-development-child.ts",
+      "sha256": "6e5019146b04be1182ec1c15385fcadd41407fb5e4d5c0389c4267d2dc6c02dc",
+      "byteCount": 4885
+    },
+    {
+      "path": "package.json",
+      "sha256": "6d01b7ca68aae4015b98c3cc560c0dfaf774d0020348271d302b62322ce27ff3",
+      "byteCount": 2431
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "a858afe1d3946e113b58fc0c7bea25ed6a418d8190ce57951b6a4d0fe3af6058",
+      "byteCount": 28092
+    }
+  ],
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "developmentSourceCount": 28,
+  "scientificSha256": "44dad7455a43fb4c7eaea70ee3f5b522d6742bdb320cf3855ef3fb085b344b57",
+  "analysisId": "8fdfd3b1fb8e4ca7b4446f72f157430cb8d00c01cc9ccaed97e21683071bc028",
+  "inputHashes": {
+    "aggregateSha256": "ac8b958107ec31cafcb77bcd5c7054661e7ce12cf97459741b2585a829f9e560",
+    "analysisSha256": "bd4d3681541c1a38074234f0ffd36bb23e874869d6c4d880bf995f93fc0780bf",
+    "protocolSha256": "f17b3b8ba707c2084a6f56ee51a7d63e53714c109a43305f058fed5c76116a1e",
+    "futureSampleSealSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c"
+  },
+  "gates": {
+    "mechanism": true,
+    "exactDevelopmentReviewTransfer": true
+  },
+  "futureSample": {
+    "manifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+    "sealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+    "opened": false
+  },
+  "authorization": {
+    "futureSample02OneWayExecutionEligible": true,
+    "phase5": false,
+    "promotion": false,
+    "persistence": false,
+    "fullRoster": false
+  },
+  "freezeId": "8a401a451b1c824c70ad1f0394870719b6786f092e27a19eda8a4b626fa7b01b"
+}

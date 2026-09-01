@@ -1,0 +1,1222 @@
+{
+	"imagesRoot": "/Users/Flo/GitHub/palette/images",
+	"set": "base+offpanel",
+	"thresholds": {
+		"FRAME_DISTINCT": 0.058,
+		"RING_UNIFORMITY": 0.03,
+		"RING_COHESION": 0.03,
+		"MINIMUM_THICKNESS_FRACTION": 0.008,
+		"MAXIMUM_THICKNESS_FRACTION": 0.22
+	},
+	"total": 67,
+	"framed": 6,
+	"captured": 6,
+	"rows": [
+		{
+			"id": "images/artofficial.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#31305c",
+			"surfaceHex": "#040325",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/birdsofprey.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#141975",
+			"surfaceHex": "#3fa72a",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/black.jpg",
+			"frame": {
+				"thickness": 13,
+				"thicknessFraction": 0.0161090458488228,
+				"frameHex": "#000000",
+				"interiorDistance": 0.040470240216140804,
+				"nextRingDistance": 0.007547955507835851,
+				"detected": false,
+				"reason": "interior mean is within one family of the edge colour"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#000000",
+			"backgroundDistance": 0.0021439090379794215,
+			"surfaceDistance": 0.0021439090379794215,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/disney.avif",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#74c044",
+			"surfaceHex": "#2199d6",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/doja.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#fd75b5",
+			"surfaceHex": "#fd3d86",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/elephunk.jpg",
+			"frame": {
+				"thickness": 9,
+				"thicknessFraction": 0.018,
+				"frameHex": "#54919c",
+				"interiorDistance": 0.07343047338286142,
+				"nextRingDistance": 0.09320093782502464,
+				"detected": true,
+				"reason": "uniform edge ring distinct from interior"
+			},
+			"backgroundHex": "#55919b",
+			"surfaceHex": "#022833",
+			"backgroundDistance": 0.001803405589781757,
+			"surfaceDistance": 0.3629632818489802,
+			"backgroundIsFrame": true,
+			"gradient": false
+		},
+		{
+			"id": "images/franz.jpg",
+			"frame": {
+				"thickness": 15,
+				"thicknessFraction": 0.0234375,
+				"frameHex": "#020612",
+				"interiorDistance": 0.12490708819331438,
+				"nextRingDistance": 0.009337759988107756,
+				"detected": true,
+				"reason": "uniform edge ring distinct from interior"
+			},
+			"backgroundHex": "#020612",
+			"surfaceHex": "#020612",
+			"backgroundDistance": 0.0005170077704958114,
+			"surfaceDistance": 0.0005170077704958114,
+			"backgroundIsFrame": true,
+			"gradient": false
+		},
+		{
+			"id": "images/greenday.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#000211",
+			"surfaceHex": "#000211",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/havana.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#375c77",
+			"surfaceHex": "#243a51",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/horrorwood.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#141b25",
+			"surfaceHex": "#36444f",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/horsley.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#bd7042",
+			"surfaceHex": "#d6a944",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/infected.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#30388d",
+			"surfaceHex": "#2f2959",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/johns.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0d181c",
+			"surfaceHex": "#0d181c",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/knuckles.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#beb2c6",
+			"surfaceHex": "#7b80a8",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/krafty.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "uniform edge run is 5px, below the 6px floor"
+			},
+			"backgroundHex": "#050306",
+			"surfaceHex": "#680b3a",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/loups.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#fa7b34",
+			"surfaceHex": "#ebda8a",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/maroon5-masked.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0a0a0a",
+			"surfaceHex": "#000000",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/maroon5-original.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0a0a0a",
+			"surfaceHex": "#4a0d14",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/maroon5-saliency.png",
+			"frame": {
+				"thickness": 54,
+				"thicknessFraction": 0.054,
+				"frameHex": "#ffffff",
+				"interiorDistance": 0.0017400634964059307,
+				"nextRingDistance": 0.005224275872990287,
+				"detected": false,
+				"reason": "interior mean is within one family of the edge colour"
+			},
+			"backgroundHex": "#ffffff",
+			"surfaceHex": "#ffffff",
+			"backgroundDistance": 0.00004466615618846432,
+			"surfaceDistance": 0.00004466615618846432,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/maroon5.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0a0a0a",
+			"surfaceHex": "#4a0d14",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/meteora.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#000000",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/muse.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#026faa",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/nada.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#44648b",
+			"surfaceHex": "#919dcd",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/nobs.jpg",
+			"frame": {
+				"thickness": 71,
+				"thicknessFraction": 0.059166666666666666,
+				"frameHex": "#f7ffff",
+				"interiorDistance": 0.14611938693450685,
+				"nextRingDistance": 0.0018465668297384856,
+				"detected": true,
+				"reason": "uniform edge ring distinct from interior"
+			},
+			"backgroundHex": "#f6ffff",
+			"surfaceHex": "#f2f626",
+			"backgroundDistance": 0.001183830021378615,
+			"surfaceDistance": 0.20658044757815455,
+			"backgroundIsFrame": true,
+			"gradient": false
+		},
+		{
+			"id": "images/once.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#817486",
+			"surfaceHex": "#dddde7",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/orelsan.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#172737",
+			"surfaceHex": "#0c1222",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/placebo.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#6c8a8a",
+			"surfaceHex": "#86a5aa",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/pureblack.jpg",
+			"frame": {
+				"thickness": 111,
+				"thicknessFraction": 0.222,
+				"frameHex": "#000000",
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"detected": false,
+				"reason": "uniform run never ends (broad flat field, not a frame)"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#000000",
+			"backgroundDistance": 0,
+			"surfaceDistance": 0,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/purered.jpg",
+			"frame": {
+				"thickness": 111,
+				"thicknessFraction": 0.222,
+				"frameHex": "#fe0000",
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"detected": false,
+				"reason": "uniform run never ends (broad flat field, not a frame)"
+			},
+			"backgroundHex": "#fe0000",
+			"surfaceHex": "#fe0000",
+			"backgroundDistance": 0,
+			"surfaceDistance": 0,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/purewhite.jpg",
+			"frame": {
+				"thickness": 111,
+				"thicknessFraction": 0.222,
+				"frameHex": "#ffffff",
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"detected": false,
+				"reason": "uniform run never ends (broad flat field, not a frame)"
+			},
+			"backgroundHex": "#ffffff",
+			"surfaceHex": "#ffffff",
+			"backgroundDistance": 0,
+			"surfaceDistance": 0,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/skap.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#ffffff",
+			"surfaceHex": "#5d763c",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/slim.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#01040b",
+			"surfaceHex": "#140e18",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "images/slipknot.jpg",
+			"frame": {
+				"thickness": 111,
+				"thicknessFraction": 0.222,
+				"frameHex": "#000000",
+				"interiorDistance": 0.15233004547901172,
+				"nextRingDistance": 0,
+				"detected": false,
+				"reason": "uniform run never ends (broad flat field, not a frame)"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#000000",
+			"backgroundDistance": 0,
+			"surfaceDistance": 0,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/snarky.jpg",
+			"frame": {
+				"thickness": 29,
+				"thicknessFraction": 0.0453125,
+				"frameHex": "#c7bf36",
+				"interiorDistance": 0.004749371442181152,
+				"nextRingDistance": 0.001082988062035355,
+				"detected": false,
+				"reason": "interior mean is within one family of the edge colour"
+			},
+			"backgroundHex": "#c7bf36",
+			"surfaceHex": "#c7bf36",
+			"backgroundDistance": 0.00004919093021307442,
+			"surfaceDistance": 0.00004919093021307442,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/toxicity.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#b59e8e",
+			"surfaceHex": "#805a33",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/vvbrown.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#ffffff",
+			"surfaceHex": "#ffffff",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "images/ybbb.jpg",
+			"frame": {
+				"thickness": 59,
+				"thicknessFraction": 0.08428571428571428,
+				"frameHex": "#84090b",
+				"interiorDistance": 0.005745700488671211,
+				"nextRingDistance": 0.0010214414766729705,
+				"detected": false,
+				"reason": "interior mean is within one family of the edge colour"
+			},
+			"backgroundHex": "#83080a",
+			"surfaceHex": "#83080a",
+			"backgroundDistance": 0.0025509577763215205,
+			"surfaceDistance": 0.0025509577763215205,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#f5481d",
+			"surfaceHex": "#bd241c",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "00/ab67616d0000b273000067b14ae0c289ea107da5.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#7b7a78",
+			"surfaceHex": "#2f2681",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "01/ab67616d00001e020001c08189a1b1a67bab3d95.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#2d2113",
+			"surfaceHex": "#16110d",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "02/ab67616d00001e020002151606dfaef2a1708667.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#343331",
+			"surfaceHex": "#757a66",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "02/ab67616d0000b273000294f55a36c0d97e9f1264.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#061348",
+			"surfaceHex": "#0c131b",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#050a06",
+			"surfaceHex": "#21331b",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "03/ab67616d0000b273000315577e46e1c19af95c6a.jpg",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#3a5b48",
+			"surfaceHex": "#587964",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "04/ab67616d00001e0200044e41353e0c7be825ea15",
+			"frame": {
+				"thickness": 12,
+				"thicknessFraction": 0.04,
+				"frameHex": "#d5d5d5",
+				"interiorDistance": 0.11614293325517433,
+				"nextRingDistance": 0.006239681106662291,
+				"detected": true,
+				"reason": "uniform edge ring distinct from interior"
+			},
+			"backgroundHex": "#dcdcdc",
+			"surfaceHex": "#c4c4c4",
+			"backgroundDistance": 0.02293500827294316,
+			"surfaceDistance": 0.051236594453039554,
+			"backgroundIsFrame": true,
+			"gradient": true
+		},
+		{
+			"id": "04/ab67616d0000b2730004bb56cd7ab4ff53645456",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#b5c7cb",
+			"surfaceHex": "#b5c7cb",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+			"frame": {
+				"thickness": 19,
+				"thicknessFraction": 0.0296875,
+				"frameHex": "#ebeef1",
+				"interiorDistance": 0.1268892277245256,
+				"nextRingDistance": 0.00454007052568393,
+				"detected": true,
+				"reason": "uniform edge ring distinct from interior"
+			},
+			"backgroundHex": "#e8ebf0",
+			"surfaceHex": "#d1d4d9",
+			"backgroundDistance": 0.008197025582532049,
+			"surfaceDistance": 0.07815823431979142,
+			"backgroundIsFrame": true,
+			"gradient": true
+		},
+		{
+			"id": "05/ab67616d0000b27300052c41b4a0e5ff795355a6",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#070b0e",
+			"surfaceHex": "#58656e",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "06/ab67616d00001e0200067eeb85a0654b33e81700",
+			"frame": {
+				"thickness": 29,
+				"thicknessFraction": 0.09666666666666666,
+				"frameHex": "#b1b1b0",
+				"interiorDistance": 0.035437496622728944,
+				"nextRingDistance": 0.0023417309074876876,
+				"detected": false,
+				"reason": "interior mean is within one family of the edge colour"
+			},
+			"backgroundHex": "#b2b2b2",
+			"surfaceHex": "#eeeeee",
+			"backgroundDistance": 0.004461516325398301,
+			"surfaceDistance": 0.18997016152878743,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "06/ab67616d0000b2730006d52a610ad62749815845",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#fc4a4a",
+			"surfaceHex": "#e6a593",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "07/ab67616d0000b273000747af08c2483cd771a320",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#4b4f3e",
+			"surfaceHex": "#0e130d",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "08/ab67616d00001e020008937f3b6ee37f25e285e6",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#45532f",
+			"surfaceHex": "#7c7982",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "08/ab67616d0000b2730008e4f86349a1fac8d2c8e8",
+			"frame": {
+				"thickness": 63,
+				"thicknessFraction": 0.0984375,
+				"frameHex": "#e9acb2",
+				"interiorDistance": 0.07283375382882527,
+				"nextRingDistance": 0.010981940384949916,
+				"detected": true,
+				"reason": "uniform edge ring distinct from interior"
+			},
+			"backgroundHex": "#e8abb2",
+			"surfaceHex": "#e8abb2",
+			"backgroundDistance": 0.0023526729503163695,
+			"surfaceDistance": 0.0023526729503163695,
+			"backgroundIsFrame": true,
+			"gradient": false
+		},
+		{
+			"id": "09/ab67616d0000b2730009775a130a6d41b8e8980e",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#a3d0a7",
+			"surfaceHex": "#fdfdfd",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "09/ab67616d0000b2730009d178a401f9433fdddff2",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#21203f",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "0a/ab67616d0000b273000a012132aac2610037a06a",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#5f2307",
+			"surfaceHex": "#d69c77",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "0b/ab67616d00001e02000b36030964475c114c4894",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0a0905",
+			"surfaceHex": "#2f2f23",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "0b/ab67616d0000b273000bc404fe25f5a4ed779908",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#06102b",
+			"surfaceHex": "#2d62b0",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "0c/ab67616d0000b273000c33a9ae2568cd856e18cd",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0f131c",
+			"surfaceHex": "#112317",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "0d/ab67616d00001e02000dc6372be4c9ffc89fc9df",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#1a1303",
+			"surfaceHex": "#6d5d2c",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "0d/ab67616d0000b273000dfa2535deccc4375b98b9",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#2d3a43",
+			"surfaceHex": "#1d2532",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "0e/ab67616d0000b273000e9c5aa4f9a7c7e647978f",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#000000",
+			"surfaceHex": "#455241",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "0f/ab67616d0000b273000f2a5eadc888d59618e44a",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#312c29",
+			"surfaceHex": "#544c4a",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "10/ab67616d00001e02001080594ddf336265fb9455",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#7ba0d5",
+			"surfaceHex": "#2864ac",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		},
+		{
+			"id": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0c0b09",
+			"surfaceHex": "#2e2e24",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "11/ab67616d0000b27300115907e6afff93fbeadfa7",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#040404",
+			"surfaceHex": "#040404",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": false
+		},
+		{
+			"id": "11/ab67616d0000b2730011c0148119c34e2b222b02",
+			"frame": {
+				"detected": false,
+				"thickness": 0,
+				"thicknessFraction": 0,
+				"frameHex": null,
+				"interiorDistance": 0,
+				"nextRingDistance": 0,
+				"reason": "outermost ring is not near-uniform"
+			},
+			"backgroundHex": "#0e1317",
+			"surfaceHex": "#2d4a84",
+			"backgroundDistance": null,
+			"surfaceDistance": null,
+			"backgroundIsFrame": false,
+			"gradient": true
+		}
+	]
+}

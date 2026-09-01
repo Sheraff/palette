@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>v3 amend a released batch</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="amend-body">
+		<header class="bar">
+			<h1>v3 — amend a previous batch</h1>
+			<p id="batch-line">loading…</p>
+			<nav id="batch-nav" class="item-nav" aria-label="released batches"></nav>
+			<p class="amend-blurb">
+				Released batches, read-only. An amendment is a new record pointing at the original and the latest
+				one wins, so nothing here rewrites history and nothing races the orchestrator: a decision funded
+				by a since-amended verdict gets flagged for re-check. Grades, preference, comment and the confound
+				flag can change; what the verdict was <em>about</em> — the artwork, the palettes shown, the
+				fingerprints — cannot, ever.
+			</p>
+		</header>
+
+		<main id="items" aria-live="polite">
+			<p>loading…</p>
+		</main>
+
+		<footer class="bar amend-foot">
+			<p id="status" role="status">…</p>
+			<p class="adj-keys"><b>j k</b> move · <b>e</b> edit this item · <b>1–4</b> / <b>6–9</b> grades ·
+				<b>a b n</b> preference · <b>s</b> save the amendment · <b>x</b> retract the verdict · <b>Esc</b> cancel ·
+				<a href="/">all reviews</a></p>
+		</footer>
+
+		<script type="module" src="/amend.js"></script>
+	</body>
+</html>

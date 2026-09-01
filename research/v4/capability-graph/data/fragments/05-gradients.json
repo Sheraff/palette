@@ -1,0 +1,2925 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.gradients.section-05.v1",
+  "title": "Gradient and rendered-field mechanisms",
+  "description": "Typed artifact contracts and complete mechanism records for all 19 entries in Section 5 of the v4 mechanism census. This fragment records candidate semantic compatibility only and does not select a gradient architecture, pipeline, or renderer.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.evidence.field-domain.v1",
+      "productFocus": "product-flow",
+      "label": "Field and domain evidence",
+      "description": "Structured spatial evidence for a candidate field or domain, including geometry, ownership support, region membership, and explicit absent or out-of-domain states without deciding gradient semantics.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/acceptance",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": "accepted"
+              }
+            ],
+            "notes": [
+              "Only the accepted discriminator is inspected where midpoint nomination requires an accepted field domain."
+            ]
+          }
+        ],
+        "notes": [
+          "This declaration exposes one source-backed state path and is not a complete field-domain JSON schema."
+        ]
+      },
+      "sourceNotes": [
+        "Field/domain input named by gradient.semantic-boolean and gradient.spatial-midpoint-band in research/v4/MECHANISMS.md:1022-1025,1173-1176."
+      ],
+      "provenanceNotes": [
+        "A field-domain record must preserve null, ambiguous, and out-of-domain evidence rather than encode absence as a flat field."
+      ]
+    },
+    {
+      "id": "artifact.color.gradient-ordered-exact-endpoint-pair.v1",
+      "productFocus": "product-flow",
+      "label": "Ordered exact gradient endpoint pair",
+      "description": "A directed background-to-surface pair of exact native source-pixel colors, retaining endpoint order, native witnesses, and source support.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Direction is material for owned-continuity evidence in research/v4/MECHANISMS.md:1055-1064."
+      ],
+      "provenanceNotes": [
+        "Both colors must carry native pixel witnesses; reversing the pair produces a distinct value."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-pair-detector-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gradient pair-detector policy",
+      "description": "Declared bins, color space, path-deviation allowance, smoothness, continuity, coverage, coherence, and rejection thresholds for a bounded endpoint-pair detector.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The live histogram thresholds are implemented in gradientDetection.ts:10-140."
+      ],
+      "provenanceNotes": [
+        "Policy identity must distinguish the live root histogram from historical low-frequency, region, and fit successors."
+      ]
+    },
+    {
+      "id": "artifact.evidence.gradient-pair-detector.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient pair-detector evidence",
+      "description": "Mechanical evidence for a supplied ordered pair, including smoothness, endpoint-path coverage, occupied positions, continuity, spatial coherence, and rejection diagnostics.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Evidence fields follow research/v4/MECHANISMS.md:1038-1043 and the root path histogram in gradientDetection.ts:17-140."
+      ],
+      "provenanceNotes": [
+        "This evidence validates only the supplied pair and must not be presented as endpoint discovery or semantic field ownership."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.gradient-pair-eligibility.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient pair eligibility claim",
+      "description": "An eligible or rejected result for one supplied ordered pair, with detector identity and explicit rejection reasons; it is not a semantic gradient-field verdict.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The detector emits an eligible/rejected claim in research/v4/MECHANISMS.md:1040-1043."
+      ],
+      "provenanceNotes": [
+        "The claim remains scoped to one pair, one observation source, and one threshold identity."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.gradient-semantic-field-claim.v1",
+      "productFocus": "product-flow",
+      "label": "Semantic gradient-field claim",
+      "description": "A field-level claim with exactly one of flat, gradient, ambiguous, no-field, or out-of-domain, plus supporting geometry and an explicit abstention state.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Claim states and separation from endpoint refinement come from research/v4/MECHANISMS.md:1022-1028."
+      ],
+      "provenanceNotes": [
+        "Gradient means continuous shading of one field; endpoint difference alone cannot populate the gradient state."
+      ]
+    },
+    {
+      "id": "artifact.evidence.region-analysis.max-edge-224-pinned.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Pinned max-edge-224 region analysis",
+      "description": "The frozen development RegionAnalysis carrying OKLab pixels, labels, regions with saliency and text evidence, edge plane, source RGB, dimensions, and canonical preprocessing identity.",
+      "category": "region-set",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "RegionAnalysis shape is defined in research/src/regions.ts:4-33 and required by research/v4/MECHANISMS.md:1058-1061."
+      ],
+      "provenanceNotes": [
+        "The max-edge-224 preprocessing identity is prohibited by the current native/no-resampling runtime policy."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-owned-continuity-frozen.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Frozen owned-continuity evidence policy",
+      "description": "The pinned canonical and evidence identities, formulas, constants, and version checks for candidate-independent owned-continuity extraction.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Frozen evidence version and constants are declared in research/src/gradient-field-topology.ts:5-15."
+      ],
+      "provenanceNotes": [
+        "Any formula, preprocessing, endpoint direction, or identity change requires a different artifact revision."
+      ]
+    },
+    {
+      "id": "artifact.evidence.gradient-owned-continuity-frozen.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Frozen owned-continuity topology evidence",
+      "description": "Candidate-independent exact-pair topology evidence containing unified owned continuity inputs, owned progression, owned connectivity, distribution and ownership diagnostics, and all frozen identities.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The evidence contract and transformation are in research/src/gradient-field-topology.ts:17-113,448-494 and research/v4/MECHANISMS.md:1055-1068."
+      ],
+      "provenanceNotes": [
+        "Evidence does not select endpoints, assign roles, establish candidate availability, or claim complete-treatment quality."
+      ]
+    },
+    {
+      "id": "artifact.model.gradient-owned-continuity-logistic-frozen.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Frozen owned-continuity logistic scorer",
+      "description": "The frozen model version, feature formulas, means, scales, logistic coefficients, threshold, and fitting-artifact identities for exact-pair discrimination.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Exact frozen model identity is declared in research/src/gradient-field-topology-model.ts:3-28."
+      ],
+      "provenanceNotes": [
+        "The ownedConnectivity coefficient is exactly zero and must remain represented in the frozen feature vector."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-owned-continuity-score.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Frozen exact-pair scorer decision",
+      "description": "A balanced-prior discrimination score, logit, threshold margin, eligible boolean, standardized feature vector, and complete frozen model identity for one matching evidence record.",
+      "category": "decision",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Decision fields and version checks are in research/src/gradient-field-topology-model.ts:38-47,69-130."
+      ],
+      "provenanceNotes": [
+        "The score is not a calibrated prevalence probability and carries no endpoint, role, product, or composition authority."
+      ]
+    },
+    {
+      "id": "artifact.review.gradient-exact-pair-benchmark-274-frozen.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Frozen 274-row exact-pair benchmark",
+      "description": "The development-only inventory of 274 decisive directed exact-pair rows, including 135 should-be-gradient and 139 should-not-be-gradient labels, source hashes, endpoints, and frozen 224-profile evidence.",
+      "category": "review",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Inventory and frozen hash are checked in research/evaluate-native-exact-pair-topology-transfer.ts:26-47,141-152,499-504."
+      ],
+      "provenanceNotes": [
+        "These answer-bearing human labels are development inputs only and are prohibited from cold inference, fitting, palette output, and generalization claims."
+      ]
+    },
+    {
+      "id": "artifact.graph.gradient-native-transfer-identities-frozen.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Frozen source and native graph identities",
+      "description": "Exact identities for the frozen source registry, 224 decision profile, native primary-family hypothesis graph, graph policy, query contract, and deterministic reconstruction audit.",
+      "category": "graph",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Frozen graph and policy hashes are declared in research/evaluate-native-exact-pair-topology-transfer.ts:26-37,499-506,541-553."
+      ],
+      "provenanceNotes": [
+        "Graph identity is diagnostic custody and does not authorize a native runtime graph producer."
+      ]
+    },
+    {
+      "id": "artifact.report.gradient-native-exact-pair-transfer.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Native exact-pair transfer diagnostic",
+      "description": "Terminal development report containing complete mapping inventory, mapped and terminal statuses, native metrics, transfer deltas, reproducibility results, gates, and the narrow historical disposition.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Preserve the bounded native exact-pair transfer audit and historical development disposition; it is not a runtime or palette-producing handoff.",
+      "sourceNotes": [
+        "Report fields and withheld authorities are emitted in research/evaluate-native-exact-pair-topology-transfer.ts:484-603."
+      ],
+      "provenanceNotes": [
+        "The cited row-bearing artifacts were absent from clean-checkout custody at census time; the report must retain that limitation and all terminal mapping states."
+      ]
+    },
+    {
+      "id": "artifact.evidence.robust-field-model-residual-aggregate.v1",
+      "productFocus": "product-flow",
+      "label": "P5 robust field model and residual aggregate",
+      "description": "The complete P5 fit aggregate containing fitted flat, block, linear, or radial model records, paired residual and inlier-weight fields, absolute explained fractions, alternatives, abstention, and recursion state.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Aggregates exactly the P5 robust model, residual, inlier-weight, explained-fraction, abstention, and recursion outputs without asserting historical v2-3 GradientFitDiagnostic semantics."
+      ],
+      "provenanceNotes": [
+        "Retains every model-to-residual pairing, selected sample lattice, scores, explained fractions, abstention reason, recursion, source identity, and resource observations."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.accepted-historical-gradient-fit.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Accepted historical GradientFitDiagnostic",
+      "description": "One accepted v2-3 gradient fit diagnostic carrying source field domain, direction and topology, spatial parameter positions, occupied endpoint bands, progression and residual evidence, and exact-source support needed by endpoint and midpoint routes.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Historical band-local endpoint and spatial-midpoint routes consume an accepted GradientFitDiagnostic; no separate census mechanism produces that accepted diagnostic contract."
+      ],
+      "provenanceNotes": [
+        "This accepted historical diagnostic is not interchangeable with a P5 robust model/residual aggregate and remains an explicit internal handoff gap."
+      ]
+    },
+    {
+      "id": "artifact.evidence.occupied-native-midpoint-band.v1",
+      "productFocus": "product-flow",
+      "label": "Occupied native spatial midpoint-band evidence",
+      "description": "Native RGB and OKLab samples occupying the accepted fit's spatial midpoint parameter band, with population, occupancy, spread, chord deviation, source domain, and exact native witness candidates.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The spatial midpoint mechanism requires observed colors in the field's actual midpoint band; configuration alone cannot supply those samples."
+      ],
+      "provenanceNotes": [
+        "Binds the accepted historical fit, source field domain, native RGB and OKLab planes, spatial parameterization, band bounds, sample positions, and exact-pixel witness custody."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.gradient-fit-structure.v1",
+      "productFocus": "product-flow",
+      "label": "Fit-based field structure hypothesis",
+      "description": "A flat, two-block, ramp, or abstention hypothesis with absolute explained fraction, residual evidence, fit identity, and retained alternate hypotheses.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Output states and retained alternatives are specified in research/v4/MECHANISMS.md:1114-1119."
+      ],
+      "provenanceNotes": [
+        "A locally supported fit structure does not establish that the fitted field is semantically correct."
+      ]
+    },
+    {
+      "id": "artifact.measurement.gradient-endpoint-continuous-target.v1",
+      "productFocus": "product-flow",
+      "label": "Continuous gradient endpoint target",
+      "description": "A fitted continuous color target for one ordered endpoint, retaining fit identity, endpoint side, domain, coordinate contract, and uncertainty without claiming source-pixel publishability.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Continuous target followed by exact-pixel redemption is specified in research/v4/MECHANISMS.md:1128-1133."
+      ],
+      "provenanceNotes": [
+        "A target is not a publishable color and must not be substituted for an exact native witness."
+      ]
+    },
+    {
+      "id": "artifact.evidence.gradient-endpoint-band.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient endpoint band evidence",
+      "description": "The source-supported endpoint band for one side of a fitted field, with member pixels, positions, occupancy, support, domain, and fit identities.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Endpoint snap reads a fitted target against its endpoint band in research/v4/MECHANISMS.md:1128-1131."
+      ],
+      "provenanceNotes": [
+        "Band identity must remain tied to one field fit and one endpoint side."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-endpoint-support-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gradient endpoint support policy",
+      "description": "Declared source-support, band-population, same-color, pair-distinctness, palette-protection, and stopping criteria for endpoint snap or outward refinement.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Support and palette guards are described in research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md:347-370."
+      ],
+      "provenanceNotes": [
+        "Policy must identify the distance currency and must apply guards to the snapped source pixel, not only to a continuous walk target."
+      ]
+    },
+    {
+      "id": "artifact.color.gradient-endpoint-exact-witness.v1",
+      "productFocus": "product-flow",
+      "label": "Exact gradient endpoint witness",
+      "description": "One exact native source-pixel endpoint color with pixel index, coordinates, endpoint side, band and target identities, and support evidence.",
+      "category": "color",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The endpoint-snap output is one exact witness in research/v4/MECHANISMS.md:1128-1131."
+      ],
+      "provenanceNotes": [
+        "RGB and hex must be derived from the named native pixel; nearest-target synthesis is forbidden."
+      ]
+    },
+    {
+      "id": "artifact.measurement.gradient-endpoint-target-witness-distance.v1",
+      "productFocus": "product-flow",
+      "label": "Endpoint target-to-witness distance",
+      "description": "The declared color-space distance from a continuous endpoint target to the selected exact native source witness, with both identities and units.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Target-to-witness distance is an explicit endpoint-snap output in research/v4/MECHANISMS.md:1130-1131."
+      ],
+      "provenanceNotes": [
+        "Distance must retain color-space and target identities so narrowing and snap cliffs remain auditable."
+      ]
+    },
+    {
+      "id": "artifact.measurement.gradient-field-color-principal-axis.v1",
+      "productFocus": "product-flow",
+      "label": "Field color-covariance principal axis",
+      "description": "A directed principal axis in OKLab color covariance computed only from pixels owned by the field domain, with sign/orientation and domain identity.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The axis is color-covariance, not spatial, and field-domain-local in research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md:351-355."
+      ],
+      "provenanceNotes": [
+        "A whole-image or spatial principal axis is not compatible with this artifact type."
+      ]
+    },
+    {
+      "id": "artifact.evidence.gradient-endpoint-support-bands.v1",
+      "productFocus": "product-flow",
+      "label": "Endpoint outward support bands",
+      "description": "Ordered local source-support bands along an endpoint's outward field color direction, retaining exact pixels, population, field ownership, and optional spatial progression evidence.",
+      "category": "region-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Outward support continuation and the inconclusive spatial-progression guard are described in research/v4/MECHANISMS.md:1142-1149."
+      ],
+      "provenanceNotes": [
+        "Support records must retain field-domain ownership because unrelated object pixels can otherwise certify a step."
+      ]
+    },
+    {
+      "id": "artifact.treatment.palette-working-exact-source.v1",
+      "productFocus": "product-flow",
+      "label": "Working exact-source palette treatment",
+      "description": "A bounded current palette treatment carrying all protected published exact-source colors, role identities, collapse state, optional midpoint, and original endpoint-pair distinctness.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Endpoint refinement protects all other published colors in research/v4/MECHANISMS.md:1142-1146."
+      ],
+      "provenanceNotes": [
+        "This is a working bounded treatment, not the complete exact product-goal contract."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-endpoint-outward-refinement.v1",
+      "productFocus": "product-flow",
+      "label": "Endpoint outward refinement record",
+      "description": "Zero or more accepted exact-source outward steps and the final endpoint witness, with per-step support, palette guards, original-pair distinctness checks, and explicit stop reasons.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Output steps, final endpoint, and stop reasons are specified in research/v4/MECHANISMS.md:1145-1149."
+      ],
+      "provenanceNotes": [
+        "A zero-step result is valid and must preserve the first rejection or exhaustion reason."
+      ]
+    },
+    {
+      "id": "artifact.evidence.gradient-ordered-transition-paths.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Ordered native field-transition path evidence",
+      "description": "One exact-source native field-transition path record with its complete untrimmed ordered stages, including rejected no-path records with zero stages and rejected over-limit records with more than sixteen stages, exact stage colors and witnesses, endpoint identities and order, topology and domain, progression and support, accepted intermediate support, legacy and current eligibility, an associated field hypothesis or null, and complete rejection reasons.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "MECHANISMS.md:731-746 defines zero or more ordered native transition traces and hypotheses with exact stage colors, endpoint identities, eligibility, and rejection reasons; field-transition.ts:756-784 rejects paths over the configured 16-stage acceptance cap, while :992-1078 publishes every record with its untrimmed stages for direct consumption by gradient-support.ts:197-233."
+      ],
+      "provenanceNotes": [
+        "Every stage retains family and region IDs, spatial and color positions, population, exact RGB/OKLab/hex color, native pixel index, and coordinates; zero-stage and over-limit rejected records, endpoint identities, eligibility flags, nullable hypotheses, and rejection reasons remain present rather than being erased. The 16-stage limit is an acceptance policy recorded through eligibility and rejection state, not a universal artifact-shape bound."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-transition-publication.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient transition publication decision",
+      "description": "Accepted transition hypothesis IDs, eligibility, midpoint disposition, exact stop-path presence, or explicit no-midpoint and legal flat fallback with rejection provenance.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Earned publication and fallback states are specified in research/v4/MECHANISMS.md:1158-1164."
+      ],
+      "provenanceNotes": [
+        "A flat fallback must remain distinguishable from a missing computation and retain the rejected path identities."
+      ]
+    },
+    {
+      "id": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+      "productFocus": "product-flow",
+      "label": "Exact-source 2-4 stop gradient path",
+      "description": "An ordered path of exactly two to four stops in [0,1], each an exact native source pixel, beginning at background and ending at surface, with strictly ordered positions and source provenance for interior stops.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/stops",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-equals",
+                "value": 2
+              },
+              {
+                "comparator": "count-between-inclusive",
+                "value": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "comparator": "count-between-inclusive",
+                "value": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "notes": [
+              "Consumers inspect the exact source contract's full 2-4 range or narrower two-stop and 2-3-stop mechanism domains."
+            ]
+          }
+        ],
+        "notes": [
+          "Only ordered stop-count predicates are exposed; this is not the runtime stop payload schema."
+        ]
+      },
+      "sourceNotes": [
+        "The exact 2-4 stop contract and endpoint obligations are defined in research/v3/src/contract/types.ts:74-166."
+      ],
+      "provenanceNotes": [
+        "Interior stops are not additional role colors; four stops remain negotiable on proven utility and are not authorized merely by this type."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-midpoint-nomination-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gradient midpoint nomination policy",
+      "description": "Declared spatial midpoint band, occupancy and field-support criteria, transition halfway windows, cross-hue threshold, family-bin scale, and fixed stop position 0.5.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Spatial band and transition-stage constants are in research/v2-3/src/internal/palette-core.ts:3504-3515 and research/v2-3/src/internal/gradient-support.ts:11-17."
+      ],
+      "provenanceNotes": [
+        "The spatial-band and transition-stage routes retain distinct provenance even though both nominate a stop at 0.5."
+      ]
+    },
+    {
+      "id": "artifact.candidate.gradient-midpoint-nomination.v1",
+      "productFocus": "product-flow",
+      "label": "Source-supported gradient midpoint nomination",
+      "description": "Zero or one exact-source stop nomination at position 0.5, discriminated by spatial-midpoint-band or transition-path-stage origin and retaining that route's population, position, family, region, chord, and witness evidence.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The two distinct provenance variants are defined in research/v2-3/src/internal/gradient-support.ts:19-75."
+      ],
+      "provenanceNotes": [
+        "A nomination has no independent authority to become a rendered stop; null is a valid route result."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-midpoint-distinctness.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Rendered midpoint distinctness policy",
+      "description": "The independent chord-deviation and endpoint-color-distinctness gates, including family-bin scaling, CIE76 same-color bar 3.3, and renderer midpoint position.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Independent gates and threshold are documented in research/v2-3/src/internal/palette-core.ts:3508-3575."
+      ],
+      "provenanceNotes": [
+        "Endpoint distinctness cannot substitute for spatial support or chord deviation and must remain separately measured."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-midpoint-distinctness.v1",
+      "productFocus": "product-flow",
+      "label": "Rendered midpoint distinctness decision",
+      "description": "The supported midpoint or null after independently evaluating endpoint difference and chord deviation, retaining both measurements, thresholds, and rejection causes.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Decision shape follows earnedRenderMidpoint in research/v2-3/src/internal/palette-core.ts:3551-3575."
+      ],
+      "provenanceNotes": [
+        "Null must distinguish endpoint-indistinct, chord-indistinct, and absent nomination states."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.gradient-populated-artwork-colors.v1",
+      "productFocus": "product-flow",
+      "label": "Populated exact artwork colors",
+      "description": "Occupied native-image color bins above a declared population floor, each represented by an exact source pixel with count, fraction, family, coordinates, and quantization identity.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The 0.001-supported color-set construction is in research/v2-3/src/internal/ramp-midpoint.ts:44-55,88-171."
+      ],
+      "provenanceNotes": [
+        "Population floor, quantization step, native raster identity, and exact representative pixel are part of the value."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-excursion-sampling.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gradient excursion sampling policy",
+      "description": "The source-support floor, finite ramp sample positions, interpolation identity, same-color currency, excursion firing bar, and deterministic nomination tie policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Support floor, sample grid, and bar are in research/v2-3/src/internal/ramp-midpoint.ts:44-86."
+      ],
+      "provenanceNotes": [
+        "The 2.5-times-same-color bar is fitted to one positive anchor and must retain that calibration limitation."
+      ]
+    },
+    {
+      "id": "artifact.measurement.gradient-ramp-excursion.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient ramp excursion measurement",
+      "description": "Per-sample distance from the rendered OKLab stop path to the nearest sufficiently populated artwork color, including worst excursion, worst position, path identity, and support-set identity.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Measurement implementation is research/v2-3/src/internal/ramp-midpoint.ts:174-221."
+      ],
+      "provenanceNotes": [
+        "This is a reusable measurement consumed by excursion midpoint insertion; it is not terminal and is not itself a human quality score."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-excursion-midpoint-insertion.v1",
+      "productFocus": "product-flow",
+      "label": "Excursion midpoint insertion decision",
+      "description": "A deterministic unchanged-ramp or one-stop-at-0.5 decision, including firing state, nominee or null, before and after excursion, endpoint difference, chord deviation, population, and native witness provenance.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The bounded add-only decision is implemented in research/v2-3/src/internal/ramp-midpoint.ts:322-388."
+      ],
+      "provenanceNotes": [
+        "The decision is valid only for an already-selected two-stop gradient and cannot replace an existing midpoint."
+      ]
+    },
+    {
+      "id": "artifact.color.role-exact-source.v1",
+      "productFocus": "product-flow",
+      "label": "Exact-source role color",
+      "description": "One named UI role color represented by an exact native source pixel and canonical opaque sRGB8 value.",
+      "category": "color",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Whole-ramp contrast evaluates a role color in research/v4/MECHANISMS.md:1251-1255."
+      ],
+      "provenanceNotes": [
+        "Role name and exact source witness must accompany the color so foreground and accent obligations are not conflated."
+      ]
+    },
+    {
+      "id": "artifact.custody.gradient-render-binding.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Declared gradient render binding",
+      "description": "A binding among a stop path, interpolation space, position mapping, geometry treatment, gamut behavior, concrete renderer, and renderer version; it is distinct from both fitted geometry and the rendered ramp.",
+      "category": "custody",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Renderer identity is load-bearing for ramp verdicts in research/v3/src/contract/ramp.ts:1-27 and research/v4/MECHANISMS.md:1318-1323."
+      ],
+      "provenanceNotes": [
+        "This type records only an explicitly named renderer such as the pinned review renderer; it does not invent or authorize a final UI renderer."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-ramp-contrast-floors.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Resolved whole-ramp contrast floors",
+      "description": "Resolved raw APCA magnitude and chromatic functional-distance obligations for a named role, including interpolation, sample-density, refinement, and violation-kind policy identities.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Foreground minimum and pointwise accent conjunction are implemented in research/v3/src/contract/ramp.ts:266-367."
+      ],
+      "provenanceNotes": [
+        "Foreground and accent floor shapes are distinct and must retain their role-specific interpretation."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-whole-ramp-contrast.v1",
+      "productFocus": "product-flow",
+      "label": "Whole-ramp contrast validation",
+      "description": "Deterministic coarse samples and local refinement results, minimizing positions, exact-stop or interior-ramp subjects, sign-crossing and chromatic-carry evidence, and pass, fail, or not-computable records.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Sampling, refinement, and extrema are implemented in research/v3/src/contract/ramp.ts:102-225,248-367."
+      ],
+      "provenanceNotes": [
+        "Records must retain the clipping-versus-browser-gamut-mapping approximation and separate contract validity from quality."
+      ]
+    },
+    {
+      "id": "artifact.rendering.gradient-ramp-bound.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Concrete bound gradient ramp",
+      "description": "The concrete rendered color continuum or deterministic sampled rendering for one exact stop path under one declared render binding, kept distinct from stop and geometry metadata.",
+      "category": "rendering",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Rendered-ramp custody is required by research/v4/MECHANISMS.md:1318-1323 and research/v3/src/review-server/gradient.ts:1-15."
+      ],
+      "provenanceNotes": [
+        "A ramp value is scoped to its renderer and version; the same abstract stop path under another renderer is a different value."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-raw-contrast-adequacy-bar.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Raw contrast adequacy bar",
+      "description": "A declared raw contrast adequacy threshold and role interpretation for measuring low-contrast length over a bound ramp.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The bar is an input, not a universal floor, in research/v4/MECHANISMS.md:1271-1277."
+      ],
+      "provenanceNotes": [
+        "Threshold identity and raw contrast function must accompany the value."
+      ]
+    },
+    {
+      "id": "artifact.statistic.gradient-indistinct-fraction.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Gradient indistinct fraction",
+      "description": "Terminal descriptive statistic containing the fraction of ramp parameter length below a raw contrast bar, corresponding intervals, crossings, role identity, and renderer identity.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "intentionalTerminalPurpose": "Expose low-contrast ramp-length diagnostics for review and measurement; the historical unshipped statistic is not a selection gate.",
+      "sourceNotes": [
+        "Dense-grid and interval-refinement implementation is research/v2-3-experiments/track-b4/continuum.ts:40-130."
+      ],
+      "provenanceNotes": [
+        "Ramp-parameter length equals screen-area exposure only for the declared linear render mapping."
+      ]
+    },
+    {
+      "id": "artifact.mask.gradient-field-natural.v1",
+      "productFocus": "product-flow",
+      "label": "Natural gradient field mask",
+      "description": "A naturally produced native-resolution field-membership mask with uncertainty or abstention, coordinate contract, source-raster identity, and no reviewed answer labels.",
+      "category": "mask",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Natural field mask is one alternative input in research/v4/MECHANISMS.md:1286-1290."
+      ],
+      "provenanceNotes": [
+        "Natural masks must not carry reviewer acceptance, target structure, or downstream palette answers."
+      ]
+    },
+    {
+      "id": "artifact.mask.gradient-field-known-good-projection.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Known-good gradient field-mask projection",
+      "description": "A minimal development-only projection of a reviewed adequate field mask for the declared path-fitting question, retaining semantic mask value, uncertainty, coordinates, source witnesses, schema revision, and content hash but excluding review metadata and labels.",
+      "category": "mask",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Known-good projection firewall and minimal content are specified in research/v4/STRATEGY.md:280-333."
+      ],
+      "provenanceNotes": [
+        "Human-authored or reviewed masks are development-only inputs and cannot establish natural handoff, generalization, runtime admissibility, or complete-treatment quality."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-mdl-path-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gradient MDL path policy",
+      "description": "Declared linear and radial spatial-t fit families, OKLab path binning, Douglas-Peucker tolerance, p95 residual, source-witness rule, monotonicity assumptions, 2-4 stop bound, and per-stop price.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The unbuilt proposal is detailed in research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md:394-405 and research/v2-3-experiments/literature-review/REPORT.md:22-24."
+      ],
+      "provenanceNotes": [
+        "JND tolerance and stop price are uncalibrated and must remain explicit rather than hidden in code."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.gradient-mdl-structure-alternatives.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient MDL structure alternatives",
+      "description": "Development-only unselected flat, linear, and radial hypotheses, each retaining p95 residual, geometry, stop count, explanation cost, and where applicable an exact-source path of two to four observed stops plus all tied and losing alternatives.",
+      "category": "candidate-set",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Required alternatives and exact 2-4 source-supported stops are specified in research/v4/MECHANISMS.md:1286-1292."
+      ],
+      "provenanceNotes": [
+        "Outputs derived from known-good masks remain development values; this artifact never represents a selected publishable path."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-structure-price.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gradient structure-price policy",
+      "description": "A measured lambda, explanation-cost currency, eligible collapse, flat, and ramp structures, tie rule, and sensitivity sweep protocol for a local field-structure sub-decision.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The surviving lambda structure sub-decision is summarized in research/v3/phase-2/GRAFT_INVENTORY.md:58-59."
+      ],
+      "provenanceNotes": [
+        "This policy prices field structure only and cannot be reused as a global role-assignment currency."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-structure-priced.v1",
+      "productFocus": "product-flow",
+      "label": "Priced gradient structure decision",
+      "description": "A selected collapse, flat, or ramp structure under one local explanation currency, with total and component costs, lambda sensitivity trace, and all tied alternatives.",
+      "category": "decision",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Bounded outputs are listed in research/v4/MECHANISMS.md:1302-1308."
+      ],
+      "provenanceNotes": [
+        "The containing global objective was falsified; only the isolated structure decision survives."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.gradient-fitted-geometry.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Fitted gradient geometry",
+      "description": "Linear, radial, or conic geometry actually computed by a field fit, with normalized coordinates, fit identity, domain, parameterization, and uncertainty.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Optional fitted geometry shape is described in research/v3/src/contract/types.ts:92-113."
+      ],
+      "provenanceNotes": [
+        "Geometry is present only when a fit computed it; it must not be synthesized solely for output."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gradient-review-renderer.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Pinned gradient review-renderer control",
+      "description": "The explicitly named review renderer and version, fixed 135-degree linear mapping, OKLab interpolation, display-position reserve mapping, precision, and gamut behavior used for a bounded verdict.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Current review mapping and renderer are pinned in research/v3/src/review-server/gradient.ts:19-115."
+      ],
+      "provenanceNotes": [
+        "This control describes the historical/current review renderer only and grants no authority to define a final product renderer."
+      ]
+    },
+    {
+      "id": "artifact.provenance.gradient-fitted-geometry-metadata.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Fitted gradient geometry metadata",
+      "description": "Optional preserved metadata for geometry actually computed by detection, retaining its normalized parameters and fit identity even when the bound renderer uses a different fixed geometry.",
+      "category": "provenance",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Optional geometry metadata is an explicit output in research/v4/MECHANISMS.md:1320-1323."
+      ],
+      "provenanceNotes": [
+        "Metadata preserves a detected visual claim but does not authorize any consumer to render it."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "gradient.semantic-boolean",
+      "focusClass": "product-transformation",
+      "title": "Gradient existence independent of endpoint difference",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.semantic-boolean` - Gradient existence independent of endpoint difference",
+        "headingLine": 1016
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for separating the question and `inconclusive` for the semantic decision; implementation state `historical`; evidence scope `isolated-semantic`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "field-domain",
+          "label": "Field and domain evidence",
+          "artifactTypeId": "artifact.evidence.field-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Must retain absent, ambiguous, and out-of-domain evidence; endpoint difference alone is not an admissible substitute."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "semantic-claim",
+          "label": "Semantic gradient-field claim",
+          "artifactTypeId": "artifact.hypothesis.gradient-semantic-field-claim.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Exactly one state is flat, gradient, ambiguous, no-field, or out-of-domain; ambiguous is an explicit abstention."
+          ],
+          "notes": [
+            "Supporting geometry belongs to the claim, but endpoint and guide-stop refinement remain separate questions."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.low-frequency-and-path-detectors",
+      "focusClass": "product-transformation",
+      "title": "Smoothness and endpoint-path tests",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.low-frequency-and-path-detectors` - Smoothness and endpoint-path tests",
+        "headingLine": 1032
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence",
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `live` root path and `historical` successors; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `unresolved` as gradient authority.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "live",
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "observation-source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "The live root consumes the full native raster; historical successors may consume bounded region or field-domain observations."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "full-raster",
+          "label": "Full native raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "observation-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "The live root path histogram observes the full image color population."
+          ]
+        },
+        {
+          "id": "regions-or-domain",
+          "label": "Region or field-domain observation",
+          "artifactTypeId": "artifact.evidence.field-domain.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "observation-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Historical low-frequency, spatial-coherence, or fit forms may be scoped to structured regions."
+          ]
+        },
+        {
+          "id": "endpoint-pair",
+          "label": "Ordered exact endpoint pair",
+          "artifactTypeId": "artifact.color.gradient-ordered-exact-endpoint-pair.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The detector validates a supplied pair and cannot discover or repair endpoint ownership."
+          ]
+        },
+        {
+          "id": "detector-policy",
+          "label": "Detector policy",
+          "artifactTypeId": "artifact.configuration.gradient-pair-detector-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Identity separates the live root thresholds from historical successors that did not converge."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "detector-evidence",
+          "label": "Pair detector evidence",
+          "artifactTypeId": "artifact.evidence.gradient-pair-detector.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Rejected pairs still emit measured coverage, continuity, smoothness, coherence, and rejection diagnostics where computable."
+          ],
+          "notes": [
+            "Global smoothness may support the wrong pair and is not semantic ownership evidence."
+          ]
+        },
+        {
+          "id": "eligibility-claim",
+          "label": "Eligible or rejected pair claim",
+          "artifactTypeId": "artifact.hypothesis.gradient-pair-eligibility.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The bounded state is eligible or rejected; rejection reasons remain explicit."
+          ],
+          "notes": [
+            "This pair claim must not be promoted to a semantic gradient-field claim without separate field evidence."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.owned-continuity-evidence",
+      "focusClass": "evaluation-probe",
+      "title": "Frozen candidate-independent topology evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.owned-continuity-evidence` - Frozen candidate-independent topology evidence",
+        "headingLine": 1048
+      },
+      "capabilityIds": [
+        "capability.spatial-structure-evidence",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.spatial-structure-evidence",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for the cited exact-pair development/validation evidence and `inconclusive` beyond it; implementation state `historical` and `tested`; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `prohibited` for the max-edge-224 formulation under current native/no-resampling policy.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "endpoint-pair",
+          "label": "Directed background-to-surface candidates",
+          "artifactTypeId": "artifact.color.gradient-ordered-exact-endpoint-pair.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The pair is already selected; order is material and this mechanism does not find endpoints."
+          ]
+        },
+        {
+          "id": "region-analysis",
+          "label": "Pinned max-edge-224 RegionAnalysis",
+          "artifactTypeId": "artifact.evidence.region-analysis.max-edge-224-pinned.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Carries OKLab pixels, labels, regions, saliency/text evidence, edges, source RGB, and dimensions under the frozen preprocessing identity."
+          ]
+        },
+        {
+          "id": "evidence-policy",
+          "label": "Frozen evidence policy",
+          "artifactTypeId": "artifact.configuration.gradient-owned-continuity-frozen.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Canonical and evidence identities must match exactly."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "owned-continuity",
+          "label": "Frozen owned-continuity evidence",
+          "artifactTypeId": "artifact.evidence.gradient-owned-continuity-frozen.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Degenerate or too-close endpoints produce the versioned zero-evidence record rather than a fabricated positive signal."
+          ],
+          "notes": [
+            "The record retains unifiedOwnedContinuity inputs, ownedProgression, ownedConnectivity, diagnostics, and identities."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.frozen-exact-pair-scorer",
+      "focusClass": "evaluation-probe",
+      "title": "Frozen owned-continuity discrimination rule",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.frozen-exact-pair-scorer` - Frozen owned-continuity discrimination rule",
+        "headingLine": 1070
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses",
+        "capability.model-assisted-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` only for its selected exact-pair scope; implementation state `historical` and `tested`; evidence scope `isolated-semantic`; runtime admissibility `prohibited` because the frozen evidence identity uses max-edge-224 preprocessing.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "topology-evidence",
+          "label": "Matching-version topology evidence",
+          "artifactTypeId": "artifact.evidence.gradient-owned-continuity-frozen.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Evidence version mismatch is invalid, not an abstaining score."
+          ]
+        },
+        {
+          "id": "frozen-model",
+          "label": "Frozen logistic scorer",
+          "artifactTypeId": "artifact.model.gradient-owned-continuity-logistic-frozen.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Coefficients, standardization, threshold, feature order, and identities are immutable inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "score-decision",
+          "label": "Exact-pair scorer decision",
+          "artifactTypeId": "artifact.decision.gradient-owned-continuity-score.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Finite matching-version evidence yields score, margin, and eligible boolean; malformed or mismatched evidence is invalid rather than coerced."
+          ],
+          "notes": [
+            "The balanced-prior score is not a calibrated prevalence probability."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.native-exact-pair-transfer",
+      "focusClass": "review-custody",
+      "title": "Native graph transfer diagnostic",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.native-exact-pair-transfer` - Native graph transfer diagnostic",
+        "headingLine": 1087
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.review-and-evidence-custody",
+        "capability.model-assisted-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for checked working-copy summary assertions and `unsupported` for clean-checkout evidence custody; implementation state `instrument` and `tested`; evidence scope `mechanical` for mapping/agreement and `isolated-semantic` for accuracy against human labels; runtime admissibility `prohibited` because frozen labeled rows are effective inputs.",
+        "scientificInterpretations": [
+          "supported",
+          "unsupported"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "benchmark-rows",
+          "label": "Frozen 274-row exact-pair benchmark",
+          "artifactTypeId": "artifact.review.gradient-exact-pair-benchmark-274-frozen.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "review",
+          "notes": [
+            "Answer-bearing labels and frozen 224-profile rows are effective development inputs and prohibit runtime use."
+          ]
+        },
+        {
+          "id": "graph-identities",
+          "label": "Exact source and native graph identities",
+          "artifactTypeId": "artifact.graph.gradient-native-transfer-identities-frozen.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Includes source hashes, native graph and query policy, and deterministic reconstruction identity."
+          ]
+        },
+        {
+          "id": "frozen-scorer",
+          "label": "Frozen exact-pair scorer",
+          "artifactTypeId": "artifact.model.gradient-owned-continuity-logistic-frozen.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Refitting is forbidden; the same frozen rule evaluates mapped native evidence and the 224 profile."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "transfer-report",
+          "label": "Native transfer diagnostic",
+          "artifactTypeId": "artifact.report.gradient-native-exact-pair-transfer.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Every row terminates as mapped, ambiguous, unmappable, indistinguishable, or source-ineligible; limited runs and failed gates remain explicit."
+          ],
+          "terminalPurpose": "Record mapping inventory, native metrics, transfer deltas, custody limits, and historical disposition without producing a palette or runtime decision.",
+          "notes": [
+            "Disposition may authorize only the recorded future structured-field-state plan; complete tuples, palette output, human review, and reserve roots remain withheld."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.fit-based-structure-choice",
+      "focusClass": "product-transformation",
+      "title": "Flat, two-block, or ramp from fit evidence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.fit-based-structure-choice` - Flat, two-block, or ramp from fit evidence",
+        "headingLine": 1108
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded structure evidence and `inconclusive` for selection constants; implementation state `prototype`; evidence scope `isolated-semantic`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "field-fits",
+          "label": "Robust field fits",
+          "artifactTypeId": "artifact.evidence.robust-field-model-residual-aggregate.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The aggregate fit record exposes accepted alternatives, absolute explained fraction, residuals, abstention, and recursion before any color election."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "structure-hypothesis",
+          "label": "Fit-based structure hypothesis",
+          "artifactTypeId": "artifact.hypothesis.gradient-fit-structure.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is flat, two-block, ramp, or abstention; alternate fit hypotheses remain present."
+          ],
+          "notes": [
+            "The output retains absolute explained fraction, residuals, and fit identity."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.endpoint-snap",
+      "focusClass": "product-transformation",
+      "title": "Continuous target redeemed by source pixel",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.endpoint-snap` - Continuous target redeemed by source pixel",
+        "headingLine": 1122
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `natural-handoff` and `perturbation`; runtime admissibility `permitted` only with exact native publication and declared support.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "natural-handoff",
+          "perturbation"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "fit-target",
+          "label": "Continuous endpoint target",
+          "artifactTypeId": "artifact.measurement.gradient-endpoint-continuous-target.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The continuous target stabilizes fitting but is never itself publishable."
+          ]
+        },
+        {
+          "id": "endpoint-band",
+          "label": "Endpoint band",
+          "artifactTypeId": "artifact.evidence.gradient-endpoint-band.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Band side, domain, and fit identities must match the target."
+          ]
+        },
+        {
+          "id": "native-raster",
+          "label": "Native source pixels",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The published witness must be redeemed from this native raster."
+          ]
+        },
+        {
+          "id": "support-policy",
+          "label": "Endpoint support criteria",
+          "artifactTypeId": "artifact.configuration.gradient-endpoint-support-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Criteria declare support and the target-to-source projection rule."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "endpoint-witness",
+          "label": "Exact endpoint witness",
+          "artifactTypeId": "artifact.color.gradient-endpoint-exact-witness.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "A valid result is one supported exact native pixel; absence of a supported band witness is an invalid or abstaining result, not a synthesized color."
+          ],
+          "notes": [
+            "Nearest-to-target selection retains the discrete snap cliff."
+          ]
+        },
+        {
+          "id": "snap-distance",
+          "label": "Target-to-witness distance",
+          "artifactTypeId": "artifact.measurement.gradient-endpoint-target-witness-distance.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Distance is finite only for a valid target and exact witness and otherwise records not-computable."
+          ],
+          "notes": [
+            "Distance keeps systematic endpoint narrowing measurable."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.endpoint-outward-walk",
+      "focusClass": "product-transformation",
+      "title": "Source-supported endpoint extension",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.endpoint-outward-walk` - Source-supported endpoint extension",
+        "headingLine": 1137
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `natural-handoff` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "natural-handoff",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "field-domain",
+          "label": "Field-domain pixels",
+          "artifactTypeId": "artifact.evidence.field-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Only field-owned pixels may support the walk."
+          ]
+        },
+        {
+          "id": "starting-endpoint",
+          "label": "Starting exact endpoint",
+          "artifactTypeId": "artifact.color.gradient-endpoint-exact-witness.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The starting witness and endpoint side remain fixed provenance for all steps."
+          ]
+        },
+        {
+          "id": "principal-axis",
+          "label": "Field color principal axis",
+          "artifactTypeId": "artifact.measurement.gradient-field-color-principal-axis.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "This is the field-domain OKLab covariance axis, not a spatial axis."
+          ]
+        },
+        {
+          "id": "support-bands",
+          "label": "Outward support bands",
+          "artifactTypeId": "artifact.evidence.gradient-endpoint-support-bands.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Bands retain any spatial-progression evidence without making that inconclusive guard mandatory."
+          ]
+        },
+        {
+          "id": "current-palette",
+          "label": "Current protected palette",
+          "artifactTypeId": "artifact.treatment.palette-working-exact-source.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "All other published colors, midpoint, and original pair distinctness are protected."
+          ]
+        },
+        {
+          "id": "support-policy",
+          "label": "Endpoint support and guard policy",
+          "artifactTypeId": "artifact.configuration.gradient-endpoint-support-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Guards apply to each accepted exact source pixel, not just to continuous targets."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "endpoint-refinement",
+          "label": "Endpoint outward refinement",
+          "artifactTypeId": "artifact.decision.gradient-endpoint-outward-refinement.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Zero accepted steps is valid; every result carries a final endpoint and explicit stop reason."
+          ],
+          "notes": [
+            "Accepted steps must remain exact source witnesses and preserve palette guards."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.transition-support-and-flat-fallback",
+      "focusClass": "product-transformation",
+      "title": "Earned transition publication",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.transition-support-and-flat-fallback` - Earned transition publication",
+        "headingLine": 1152
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for bounded fallback behavior; implementation state `historical`; evidence scope `mechanical`; runtime admissibility `permitted` under explicit path acceptance and rejection provenance.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "transition-paths",
+          "label": "Ordered transition paths",
+          "artifactTypeId": "artifact.evidence.gradient-ordered-transition-paths.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "The full accepted and rejected evidence set remains available; this mechanism filters on eligibility, non-null hypothesis, and empty rejection reasons before publication and never treats an over-limit record as accepted."
+          ]
+        },
+        {
+          "id": "treatment",
+          "label": "Working treatment",
+          "artifactTypeId": "artifact.treatment.palette-working-exact-source.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Provides the legal flat treatment retained when no transition path is accepted."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "publication-decision",
+          "label": "Transition publication or flat fallback",
+          "artifactTypeId": "artifact.decision.gradient-transition-publication.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records accepted path IDs and gradient eligibility, or explicit no-midpoint and flat fallback with rejection provenance."
+          ],
+          "notes": [
+            "Fallback is a visible algorithmic result rather than a hidden gradient under the same label."
+          ]
+        },
+        {
+          "id": "exact-stop-path",
+          "label": "Accepted exact stop path",
+          "artifactTypeId": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+          "cardinality": "zero-or-one",
+          "valueConstraints": [
+            {
+              "valuePath": "/stops",
+              "comparator": "count-between-inclusive",
+              "value": [
+                2,
+                3
+              ],
+              "notes": [
+                "This historical publication route emits only ordinary two-stop or source-supported three-stop paths."
+              ]
+            }
+          ],
+          "valueStateNotes": [
+            "Present only for an accepted path; this historical route emits an ordinary two-stop or source-supported three-stop descriptor, never a four-stop path."
+          ],
+          "notes": [
+            "Absence accompanies the explicit flat fallback in the publication decision."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.spatial-midpoint-band",
+      "focusClass": "product-transformation",
+      "title": "Midpoint from the field's spatial middle",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.spatial-midpoint-band` - Midpoint from the field's spatial middle",
+        "headingLine": 1167
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses",
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in the bounded route and `inconclusive` on need; implementation state `historical`; evidence scope `isolated-semantic`; runtime admissibility `permitted` only after accepted field evidence.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "accepted-domain",
+          "label": "Accepted field domain",
+          "artifactTypeId": "artifact.evidence.field-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/acceptance",
+              "comparator": "equals",
+              "value": "accepted",
+              "notes": [
+                "A proposed or rejected domain cannot authorize midpoint nomination."
+              ]
+            }
+          ],
+          "notes": [
+            "The domain must already be accepted as field material."
+          ]
+        },
+        {
+          "id": "accepted-fit",
+          "label": "Accepted field fit",
+          "artifactTypeId": "artifact.diagnostic.accepted-historical-gradient-fit.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Provides spatial parameter positions for the field's middle band."
+          ]
+        },
+        {
+          "id": "occupied-midpoint-band",
+          "label": "Observed native midpoint-band samples",
+          "artifactTypeId": "artifact.evidence.occupied-native-midpoint-band.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Supplies the actual native RGB and OKLab observations, population, spread, chord deviation, and exact witness candidates used to nominate a midpoint."
+          ]
+        },
+        {
+          "id": "midpoint-policy",
+          "label": "Spatial midpoint nomination policy",
+          "artifactTypeId": "artifact.configuration.gradient-midpoint-nomination-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares midpoint band, support, field-like, chord, and exact witness criteria."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "midpoint-nomination",
+          "label": "Spatial-band midpoint nomination",
+          "artifactTypeId": "artifact.candidate.gradient-midpoint-nomination.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Null is valid when the band lacks a supported representative or its mode is not field-like."
+          ],
+          "notes": [
+            "A present nomination retains position 0.5, band population, occupancy, spread, chord deviation, domain, and exact native witness."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.transition-stage-midpoint",
+      "focusClass": "product-transformation",
+      "title": "Midpoint from an intermediate path stage",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.transition-stage-midpoint` - Midpoint from an intermediate path stage",
+        "headingLine": 1182
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses",
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in bounded cross-hue cases; implementation state `historical`; evidence scope `isolated-semantic`; runtime admissibility `permitted` only after an accepted transition path.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "transition-paths",
+          "label": "Complete ordered transition-path evidence",
+          "artifactTypeId": "artifact.evidence.gradient-ordered-transition-paths.v1",
+          "requirement": "required",
+          "cardinality": "one-or-more",
+          "inputClass": "natural",
+          "notes": [
+            "Consumes the full accepted and rejected evidence set, then filters on path eligibility and rejection state before considering accepted intermediate stages; zero-stage and over-limit rejected records cannot nominate a midpoint."
+          ]
+        },
+        {
+          "id": "midpoint-policy",
+          "label": "Transition-stage midpoint policy",
+          "artifactTypeId": "artifact.configuration.gradient-midpoint-nomination-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares cross-hue and halfway windows, family-bin chord-deviation floor, and fixed output position 0.5."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "midpoint-nomination",
+          "label": "Transition-stage midpoint nomination",
+          "artifactTypeId": "artifact.candidate.gradient-midpoint-nomination.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Null is valid for non-cross-hue paths or when no accepted stage lies near halfway in both spatial and color progression."
+          ],
+          "notes": [
+            "A present nomination retains stage index, spatial and color positions, population, family, region, domain, and exact native witness."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.midpoint-endpoint-distinctness",
+      "focusClass": "product-admission",
+      "title": "Independent rendered-midpoint color gate",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.midpoint-endpoint-distinctness` - Independent rendered-midpoint color gate",
+        "headingLine": 1196
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in the bounded reviewed population; implementation state `live` and tested; evidence scope `mechanical` and `isolated-semantic`; runtime admissibility `permitted` after a midpoint has otherwise been earned.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "isolated-semantic"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "endpoint-pair",
+          "label": "Candidate background and surface",
+          "artifactTypeId": "artifact.color.gradient-ordered-exact-endpoint-pair.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The rendered endpoints actually carried by the candidate are authoritative for this gate."
+          ]
+        },
+        {
+          "id": "supported-midpoint",
+          "label": "Otherwise-supported midpoint",
+          "artifactTypeId": "artifact.candidate.gradient-midpoint-nomination.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Spatial-band or transition-stage support must already be established; this gate cannot create support."
+          ]
+        },
+        {
+          "id": "distinctness-policy",
+          "label": "Midpoint distinctness policy",
+          "artifactTypeId": "artifact.configuration.gradient-midpoint-distinctness.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Endpoint CIE76 3.3 and chord-deviation decisions remain independent."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "midpoint-decision",
+          "label": "Midpoint or null decision",
+          "artifactTypeId": "artifact.decision.gradient-midpoint-distinctness.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains the midpoint only when both independent gates pass; otherwise null with endpoint-indistinct or chord-indistinct cause."
+          ],
+          "notes": [
+            "Both measurements are retained to expose the gate's independent causal blast radius."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.excursion-probe",
+      "focusClass": "evaluation-probe",
+      "title": "Distance from rendered ramp to artwork colors",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.excursion-probe` - Distance from rendered ramp to artwork colors",
+        "headingLine": 1215
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a diagnostic and `inconclusive` for threshold calibration; implementation state `historical`; evidence scope `mechanical`; runtime admissibility `permitted` as a measurement.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "stop-path",
+          "label": "Endpoint path with optional midpoint",
+          "artifactTypeId": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/stops",
+              "comparator": "count-between-inclusive",
+              "value": [
+                2,
+                3
+              ],
+              "notes": [
+                "The bounded excursion probe accepts endpoints plus at most one midpoint."
+              ]
+            }
+          ],
+          "notes": [
+            "The bounded probe evaluates a two-stop path or a path with one midpoint; it does not select endpoints or stops."
+          ]
+        },
+        {
+          "id": "artwork-colors",
+          "label": "Sufficiently populated artwork colors",
+          "artifactTypeId": "artifact.candidate-set.gradient-populated-artwork-colors.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The nearest-color yardstick excludes unsupported noise under the declared support floor."
+          ]
+        },
+        {
+          "id": "sample-policy",
+          "label": "Excursion sample policy",
+          "artifactTypeId": "artifact.configuration.gradient-excursion-sampling.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares finite sample positions and the rendered OKLab interpolation identity."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "excursion",
+          "label": "Ramp excursion measurement",
+          "artifactTypeId": "artifact.measurement.gradient-ramp-excursion.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains every sampled position and distance, the worst finite excursion, and the deterministic first worst position."
+          ],
+          "notes": [
+            "This output intentionally remains consumable by gradient.excursion-midpoint-insertion and is not marked terminal."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.excursion-midpoint-insertion",
+      "focusClass": "product-transformation",
+      "title": "Add a source stop to return on-artwork",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.excursion-midpoint-insertion` - Add a source stop to return on-artwork",
+        "headingLine": 1231
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in a tiny reviewed scope and `inconclusive` for the bar; implementation state `historical`; evidence scope `composition` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "composition",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "two-stop-path",
+          "label": "Already-selected two-stop gradient",
+          "artifactTypeId": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/stops",
+              "comparator": "count-equals",
+              "value": 2,
+              "notes": [
+                "Insertion is defined only after a two-stop gradient has already been selected."
+              ]
+            }
+          ],
+          "notes": [
+            "This port accepts exactly the two-stop value-state; the mechanism never replaces an existing midpoint or changes gradient eligibility."
+          ]
+        },
+        {
+          "id": "artwork-colors",
+          "label": "Occupied exact artwork colors",
+          "artifactTypeId": "artifact.candidate-set.gradient-populated-artwork-colors.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Candidates must satisfy the 0.001 population floor and carry native witnesses."
+          ]
+        },
+        {
+          "id": "excursion-before",
+          "label": "Two-stop excursion measurement",
+          "artifactTypeId": "artifact.measurement.gradient-ramp-excursion.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Must match the input two-stop path, artwork-color set, and sample-policy identity."
+          ]
+        },
+        {
+          "id": "insertion-policy",
+          "label": "Support, sample-grid, and excursion policy",
+          "artifactTypeId": "artifact.configuration.gradient-excursion-sampling.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes support floor, sample grid, endpoint distinctness, chord movement, tie rule, and firing bar."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "insertion-decision",
+          "label": "Excursion insertion decision",
+          "artifactTypeId": "artifact.decision.gradient-excursion-midpoint-insertion.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is unchanged below bar, fired with no qualifying nominee, or fired with one exact-source stop; before and after excursion remain explicit."
+          ],
+          "notes": [
+            "The result retains the tiny corpus blast radius and unstable-bar provenance."
+          ]
+        },
+        {
+          "id": "resulting-stop-path",
+          "label": "Unchanged or three-stop exact path",
+          "artifactTypeId": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+          "cardinality": "exactly-one",
+          "valueConstraints": [
+            {
+              "valuePath": "/stops",
+              "comparator": "count-between-inclusive",
+              "value": [
+                2,
+                3
+              ],
+              "notes": [
+                "The result is the unchanged two-stop path or one three-stop path with a midpoint at 0.5."
+              ]
+            }
+          ],
+          "valueStateNotes": [
+            "Returns the original two-stop path unchanged or exactly one added source-supported stop at 0.5; it never emits four stops."
+          ],
+          "notes": [
+            "The stop is added only when it brings worst excursion below the firing bar."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.whole-ramp-contrast",
+      "focusClass": "product-admission",
+      "title": "Contrast minima over interpolation",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.whole-ramp-contrast` - Contrast minima over interpolation",
+        "headingLine": 1246
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `live` and tested; evidence scope `mechanical`; runtime admissibility `permitted` as contract validation.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "live"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "role-color",
+          "label": "Foreground or accent role color",
+          "artifactTypeId": "artifact.color.role-exact-source.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Role identity selects the plain foreground minimum or pointwise accent conjunction."
+          ]
+        },
+        {
+          "id": "stop-path",
+          "label": "Ordered exact stop path",
+          "artifactTypeId": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/stops",
+              "comparator": "count-between-inclusive",
+              "value": [
+                2,
+                4
+              ],
+              "notes": [
+                "The exact product contract permits two through four ordered stops."
+              ]
+            }
+          ],
+          "notes": [
+            "All published segments and exact stop positions are inspected."
+          ]
+        },
+        {
+          "id": "render-binding",
+          "label": "Interpolation and render identity",
+          "artifactTypeId": "artifact.custody.gradient-render-binding.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Binds interpolation, gamut behavior, mapping, renderer, and version; an abstract path is insufficient."
+          ]
+        },
+        {
+          "id": "contrast-floors",
+          "label": "Resolved role contrast floors",
+          "artifactTypeId": "artifact.configuration.gradient-ramp-contrast-floors.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes coarse density and local refinement identities as well as role-specific obligations."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "contrast-validation",
+          "label": "Whole-ramp contrast validation",
+          "artifactTypeId": "artifact.decision.gradient-whole-ramp-contrast.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Reports pass, stop violation, interior-ramp violation, or not-computable, with minimizing location and measured evidence."
+          ],
+          "notes": [
+            "Dense per-segment sampling and local refinement retain sign-crossing and chromatic-carry evidence and the gamut approximation caveat."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.indistinct-fraction",
+      "focusClass": "evaluation-probe",
+      "title": "Low-contrast ramp-length measurement",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.indistinct-fraction` - Low-contrast ramp-length measurement",
+        "headingLine": 1266
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a measurement; implementation state `historical` and unshipped; evidence scope `mechanical`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "role-color",
+          "label": "Role color",
+          "artifactTypeId": "artifact.color.role-exact-source.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Role identity remains attached to the exposure statistic."
+          ]
+        },
+        {
+          "id": "rendered-ramp",
+          "label": "Bound rendered ramp",
+          "artifactTypeId": "artifact.rendering.gradient-ramp-bound.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Renderer and mapping identity are part of the ramp because parameter length is mapping-dependent."
+          ]
+        },
+        {
+          "id": "adequacy-bar",
+          "label": "Raw contrast adequacy bar",
+          "artifactTypeId": "artifact.configuration.gradient-raw-contrast-adequacy-bar.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "The bar is declared for this diagnostic and is not a universal contract floor."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "indistinct-fraction",
+          "label": "Indistinct ramp fraction",
+          "artifactTypeId": "artifact.statistic.gradient-indistinct-fraction.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Finite valid ramps yield a fraction in [0,1] plus intervals; invalid renderer or ramp identities yield not-computable rather than zero."
+          ],
+          "terminalPurpose": "Expose the historical unshipped low-contrast exposure measurement for diagnostics, not as an authorization or selection gate.",
+          "notes": [
+            "The output retains renderer identity and the condition under which ramp length equals screen-area exposure."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.mdl-path-simplification",
+      "focusClass": "product-transformation",
+      "title": "Spatial-t regression, Douglas-Peucker, and stop price",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.mdl-path-simplification` - Spatial-t regression, Douglas-Peucker, and stop price",
+        "headingLine": 1281
+      },
+      "capabilityIds": [
+        "capability.field-and-figure-hypotheses",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.field-and-figure-hypotheses",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured`; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "field-mask-source",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "Natural and accepted known-good mask conditions are separate diagnostic matrix cells and must never be merged or selected after observing outcomes."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "natural-mask",
+          "label": "Natural field mask",
+          "artifactTypeId": "artifact.mask.gradient-field-natural.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "field-mask-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Exercises natural handoff with producer uncertainty, abstention, and field-mask errors intact."
+          ]
+        },
+        {
+          "id": "known-good-mask",
+          "label": "Known-good field-mask projection",
+          "artifactTypeId": "artifact.mask.gradient-field-known-good-projection.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "field-mask-source",
+          "cardinality": "zero-or-one",
+          "inputClass": "known-good-projection",
+          "notes": [
+            "Development-only minimal projection for conditional competence; excludes review labels, IDs, comments, preferences, and downstream answers."
+          ]
+        },
+        {
+          "id": "native-pixels",
+          "label": "Native source pixels",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Spatial t is fitted at native resolution and every retained stop must redeem an observed source pixel."
+          ]
+        },
+        {
+          "id": "mdl-policy",
+          "label": "MDL path and stop-price policy",
+          "artifactTypeId": "artifact.configuration.gradient-mdl-path-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares linear/radial fits, Douglas-Peucker tolerance, p95 residual, source support, stop bounds, and price."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "mdl-alternatives",
+          "label": "Unselected MDL structure alternatives",
+          "artifactTypeId": "artifact.candidate-set.gradient-mdl-structure-alternatives.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Retains flat, linear, and radial alternatives, 2-4 exact-source stops where applicable, p95 residual, geometry, costs, ties, and abstention when fits are invalid."
+          ],
+          "notes": [
+            "Known-good-conditioned outputs remain development-only and cannot be reported as natural generalization or a publishable path."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.lambda-structure-price",
+      "focusClass": "product-transformation",
+      "title": "Priced collapse/flat/ramp structure",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.lambda-structure-price` - Priced collapse/flat/ramp structure",
+        "headingLine": 1296
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for local structure pricing and `falsified` for the containing global role currency; implementation state `prototype`; evidence scope `isolated-semantic` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "falsified"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "isolated-semantic",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "structure-alternatives",
+          "label": "Alternative field structures and costs",
+          "artifactTypeId": "artifact.candidate-set.gradient-mdl-structure-alternatives.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Alternatives retain collapse, flat, and ramp explanation costs without assigning all palette roles."
+          ]
+        },
+        {
+          "id": "price-policy",
+          "label": "Local structure price",
+          "artifactTypeId": "artifact.configuration.gradient-structure-price.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Lambda and currency are frozen for the decision and swept only under the declared sensitivity protocol."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "priced-structure",
+          "label": "Priced structure decision",
+          "artifactTypeId": "artifact.decision.gradient-structure-priced.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Contains selected local structure, all tied alternatives, and lambda sensitivity; invalid or empty alternatives produce abstention."
+          ],
+          "notes": [
+            "The result has structure-subdecision scope only; it cannot inherit the falsified global role currency's authority."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gradient.render-geometry-custody",
+      "focusClass": "review-custody",
+      "title": "Detection geometry versus delivered render",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `gradient.render-geometry-custody` - Detection geometry versus delivered render",
+        "headingLine": 1312
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for custody and `inconclusive` for product geometry; implementation state `instrument`; evidence scope `mechanical` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "instrument"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "fitted-geometry",
+          "label": "Actually fitted geometry",
+          "artifactTypeId": "artifact.hypothesis.gradient-fitted-geometry.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Linear, radial, or conic geometry must have been computed by the fit rather than invented for output."
+          ]
+        },
+        {
+          "id": "stop-path",
+          "label": "Exact stop path",
+          "artifactTypeId": "artifact.gradient.stop-path.exact-source-2-to-4.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/stops",
+              "comparator": "count-between-inclusive",
+              "value": [
+                2,
+                4
+              ],
+              "notes": [
+                "Rendering custody applies to the complete bounded two-to-four-stop path."
+              ]
+            }
+          ],
+          "notes": [
+            "The abstract ordered path remains distinct from fitted geometry and delivered rendering."
+          ]
+        },
+        {
+          "id": "review-renderer",
+          "label": "Pinned review renderer",
+          "artifactTypeId": "artifact.configuration.gradient-review-renderer.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Binds the documented fixed 135-degree OKLab review rendering and version; it is not a final UI renderer definition."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "geometry-metadata",
+          "label": "Preserved fitted geometry metadata",
+          "artifactTypeId": "artifact.provenance.gradient-fitted-geometry-metadata.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only when the fit supplied valid geometry; absence does not alter stop-path rendering behavior."
+          ],
+          "notes": [
+            "Preservation records the detected visual claim without authorizing a consumer to render it."
+          ]
+        },
+        {
+          "id": "render-binding",
+          "label": "Concrete render binding",
+          "artifactTypeId": "artifact.custody.gradient-render-binding.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Binds stop path, renderer/version, interpolation, display mapping, delivered geometry, and gamut behavior."
+          ],
+          "notes": [
+            "The binding explicitly records when delivered fixed-linear geometry differs from fitted radial or conic geometry."
+          ]
+        },
+        {
+          "id": "rendered-ramp",
+          "label": "Bound rendered ramp",
+          "artifactTypeId": "artifact.rendering.gradient-ramp-bound.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "A valid stop path and renderer yield one concrete ramp; renderer failure or invalid geometry is explicit rather than replaced by an abstract path."
+          ],
+          "notes": [
+            "A verdict applies to this renderer/version-specific ramp, not to the stop path in the abstract."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Each of the 19 Section 5 census mechanism IDs appears exactly once; no mechanism outside Section 5 is typed here.",
+    "Matching artifact type IDs express candidate semantic compatibility only. This fragment contains no graph bindings, dependency assertions, runtime ordering, selected producer, or architecture.",
+    "The 274 frozen labeled benchmark rows and known-good field-mask projections are development inputs and are barred from cold runtime inference.",
+    "Ramp excursion remains a nonterminal reusable measurement consumed by excursion midpoint insertion; transfer and indistinctness outputs are explicitly marked diagnostic terminals.",
+    "Render geometry custody binds only an explicitly identified renderer, including the documented review renderer. It neither invents nor authorizes a final UI renderer, and fitted geometry, render binding, and concrete ramp remain distinct artifacts."
+  ]
+}

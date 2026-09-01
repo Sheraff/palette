@@ -1,0 +1,936 @@
+{
+  "schemaVersion": 1,
+  "rosterVersion": "album-artwork-palette-v2-0.7.5-known-bad-roster-1.0.0",
+  "status": "frozen-before-counterfactual-0.7.5-output",
+  "authority": "bounded-development-diagnosis-and-one-factor-mechanism-selection-only",
+  "baseline": {
+    "version": "album-artwork-first-principles-0.7.4",
+    "resultsId": "5b2526b05267bf7df7aea80e91fd8f7fad0aed27044fc8bfe5bdb4b7e9ef1a7a",
+    "artifactManifestId": "4f5278d454cfd7223fad9c1bd174a75892c0f17fdf40d04a3623d35f1f910aef",
+    "candidateReviewAnalysisId": "01aa2c81c2856b10d45a8b66dee2c9f3886d1e41700d8e1ee157e0d2fff0cd7b"
+  },
+  "bindings": [
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PLAN_V2.md",
+      "rawSha256": "cf43b640ab6c89bb64fffb7cd143a6b2486259a9dc252311684bd2b4dc317855"
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_3_CANDIDATE_RECALL_POSTMORTEM.md",
+      "rawSha256": "09d1d3d8e32c3dc00bc2ed25ae41328af4882209a65182a415bf7a5452ae2160"
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_4.md",
+      "rawSha256": "805bc221c18a4eddf99cb9f7a20bfa1a30a992caaae791d30d221d0e5bf05a86"
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_4_CANDIDATE_CLOSURE_POSTMORTEM.md",
+      "rawSha256": "f3a61a63b6adf35083487bf546b05737248ccdac202bf166c4c6bad197e78742"
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_4_CANDIDATE_REVIEW.md",
+      "rawSha256": "9ee26ea72dc1260a66ce5f28eaf0c667554f888890fa125831e8060649e7f60f"
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_4_CANDIDATE_REVIEW_POSTMORTEM.md",
+      "rawSha256": "3b90ae073ccdd06593f92c0e87d5d69434f54beeb8d98b1d1ae5d5e24f7a1acf"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/results.json",
+      "rawSha256": "aed8e386717a45020b8eccadf1362bc31157a47aef4804b4b3d8b8fb31a4a4b8"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/manifest.json",
+      "rawSha256": "ea070636d10353d72e131c70638d792540ffddae894a0be568df2985bfdf80f4"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-candidate-review/review-analysis.json",
+      "rawSha256": "fb56d5c9331b39fb7a9dc492d684fef820d18e1117bfc08d660222fe6d005243"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-review-manifest.private.json",
+      "rawSha256": "0d10397551fab94bfa44763a9c808d319703ac7877a02cda72ed6f9b67ad0132"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-review-analysis.json",
+      "rawSha256": "3ecaa90543f6924402e96f9766f322d2a1d74f56d9e00f12634be2b6988651eb"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-technical-interpretations.json",
+      "rawSha256": "b25e7e0f123f24fe7ba3d4c7ca5600de42bd15a893f4e56c9ed2bc3961b928dc"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+      "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+      "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-technical-interpretations.json",
+      "rawSha256": "441e8f1b591207fd54aae5af78956150881e152ca8ee86a96a6b66840b73f35c"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-manifest.private.json",
+      "rawSha256": "239fe5418fe77e0c7e52cc45df6f94a07e03b95d8268c318d0572b52fd9bff7e"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-analysis.json",
+      "rawSha256": "12f5a234265fbec65453676bab207cf4776a9cb6b3d03e46c5341afdf2961654"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+      "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.4.1-development/lightweight-review-analysis.json",
+      "rawSha256": "e334f649f6cc406757090f760e0a7fda08a284cc3ea0217793058ff28b3a4098"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.4.3-development/targeted-review-analysis.json",
+      "rawSha256": "cbba6743d11c7fadc0654c327a5dc423fcef4474a437cc2a20303537ba606614"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.4.3-development/targeted-review-manifest.json",
+      "rawSha256": "edd96e6b2f54646c82c164b369744feff0708e0f49304f7947175c0e7fcc4f35"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-03.json",
+      "rawSha256": "50940af1cc7219a5c47a2b57fb2f8fa16fb03d709390c7425dab78604cbbc565"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-12.json",
+      "rawSha256": "2fd1a63bca5838bbbc0fb6655700532955454fd21d201b06975903bf1d1e0ffd"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-13.json",
+      "rawSha256": "a9123c773adda850a1d1ef02a3f8598e01b79cf768401fed720d0f35f5a68654"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-15.json",
+      "rawSha256": "000bca4ed0509fe3ef284e1d08db0b4a8e42c753f8df619ed3f6d0727f5e7307"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-16.json",
+      "rawSha256": "e24ebb710242867bf9f25fb86fab95aabc8b586278b76a45aa12f38ee1b6d5e5"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-19.json",
+      "rawSha256": "1095579cfe397e6605f6edd285325354f1c4810b5248cc0bafb584370bf712d0"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-26.json",
+      "rawSha256": "3f55e259020da7945a490c8afaa51c37fa08a3071deda3158f6edeb27f707cf0"
+    }
+  ],
+  "severityPolicy": {
+    "phase4Blocker": "exact-current-source-and-treatment with a latest applicable direct human quality below acceptable and an unresolved core product obligation",
+    "systemicDiagnostic": "exact-current-source-and-treatment remains acceptable but has repeated or independently corroborated core-obligation criticism",
+    "acceptedIsolatedLimitation": "exact-current-source-and-treatment remains acceptable and criticism is optional, uncertain, or non-systemic",
+    "contradictoryHumanJudgmentsRemainVerbatim": true,
+    "technicalInterpretationsNeverReplaceHumanLabels": true,
+    "changedTreatmentsInheritSourceLevelLabels": false,
+    "severityMayChangeAfterCounterfactualInspection": false
+  },
+  "counts": {
+    "caseCount": 7,
+    "phase4BlockerCount": 2,
+    "systemicDiagnosticCount": 3,
+    "acceptedIsolatedLimitationCount": 2
+  },
+  "cases": [
+    {
+      "caseId": "development-03",
+      "severity": "severe-phase-4-blocker",
+      "blocksPhase4": true,
+      "rationale": "The exact current winner has repeated below-acceptable human assessments and unresolved core field and foreground identity criticism.",
+      "current074": {
+        "source": {
+          "caseId": "development-03",
+          "path": "images/birdsofprey.jpg",
+          "sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "byteCount": 136233,
+          "artworkId": "exact:26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "cohort": "stress",
+          "structureTags": [
+            "broad gradient",
+            "photography and portrait",
+            "highly chromatic"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-03.json",
+          "rawSha256": "50940af1cc7219a5c47a2b57fb2f8fa16fb03d709390c7425dab78604cbbc565"
+        },
+        "winnerKey": "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+          "#3fa72a:#3fa72a:#030102:#d02981:flat",
+          "#1d127b:#245894:#bcddb0:#030102:gradient",
+          "#31a329:#31a329:#030102:#23b2c2:flat",
+          "#31a329:#31a329:#030102:#bcddb0:flat",
+          "#1d127b:#31a329:#bcddb0:#030102:flat",
+          "#1d127b:#eb3821:#bcddb0:#030102:flat",
+          "#1c026d:#1c026d:#bcddb0:#d02981:flat"
+        ],
+        "novelSlateKeys": []
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "current-treatment",
+          "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "treatmentKey": "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+          "quality": "unacceptable",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork",
+          "commentSha256": "90796ef7fe059f63ddee7092dc205f5d3454e110298b81c55c4e185c145738c8",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.1-development/lightweight-review-analysis.json",
+            "rawSha256": "e334f649f6cc406757090f760e0a7fda08a284cc3ea0217793058ff28b3a4098"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "current-treatment",
+          "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "treatmentKey": "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+          "quality": "unacceptable",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork",
+          "commentSha256": "90796ef7fe059f63ddee7092dc205f5d3454e110298b81c55c4e185c145738c8",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+            "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "treatmentKey": "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+          "quality": "weak-fallback",
+          "issues": [
+            "incomplete artwork identity"
+          ],
+          "relativeOutcome": "neither-acceptable",
+          "comment": "",
+          "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-manifest.private.json",
+            "rawSha256": "239fe5418fe77e0c7e52cc45df6f94a07e03b95d8268c318d0572b52fd9bff7e"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-analysis.json",
+            "rawSha256": "12f5a234265fbec65453676bab207cf4776a9cb6b3d03e46c5341afdf2961654"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "treatmentKey": "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+          "quality": "acceptable",
+          "issues": [
+            "incomplete artwork identity"
+          ],
+          "relativeOutcome": "candidate-stronger",
+          "comment": "Option A has the correct color for the foreground and an acceptable color for the background. However, we need this to be a gradient. The artwork itself has a background made of many gradients, so it is necessary that we have a gradient for this palette ",
+          "commentSha256": "02588b5c6b08b1e021bc288ad8288db5c512666826a954ca3c245a63bad984ea",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "treatmentKey": "#1c026d:#22438a:#e0cdc7:#d02981:gradient",
+          "quality": "weak-fallback",
+          "issues": [
+            "incomplete artwork identity"
+          ],
+          "relativeOutcome": "baseline-stronger",
+          "comment": "still the same comment as for the last few times this artwork has been shown in review:\n- the foreground should be black like the title of the album on the artwork. Luna can work as a weak fallback.\n- Magentarama is an excellent accent\n- the background should be a gradient between 2 major hues like it is in the artwork (orange-red to green; or green to cyan-blue; or cyan-green to dark blue). Those are some of the strongest gradients in all of our datasets\n\ni know this artwork is exceptionally tricky, this is why it is in this dataset",
+          "commentSha256": "cda4dae4b7bfc209555c7ba97da04fdb8e29e77fbabc6246721baeddf5c525b9",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-review-manifest.private.json",
+            "rawSha256": "0d10397551fab94bfa44763a9c808d319703ac7877a02cda72ed6f9b67ad0132"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-review-analysis.json",
+            "rawSha256": "3ecaa90543f6924402e96f9766f322d2a1d74f56d9e00f12634be2b6988651eb"
+          }
+        }
+      ],
+      "technicalInterpretations": [
+        {
+          "target": "shared",
+          "transferStatus": "descriptive-symptom-only",
+          "classes": [
+            "persistent-foreground-role-identity-misalignment",
+            "persistent-field-chromatic-identity-misalignment"
+          ],
+          "source": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-technical-interpretations.json",
+            "rawSha256": "b25e7e0f123f24fe7ba3d4c7ca5600de42bd15a893f4e56c9ed2bc3961b928dc"
+          }
+        },
+        {
+          "target": "rejected-0.7.1-candidate",
+          "transferStatus": "non-transferable-different-treatment",
+          "classes": [
+            "identity-quality-guard-incomplete-comparison-domain"
+          ],
+          "source": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.1-development/quality-guard-technical-interpretations.json",
+            "rawSha256": "b25e7e0f123f24fe7ba3d4c7ca5600de42bd15a893f4e56c9ed2bc3961b928dc"
+          }
+        }
+      ],
+      "reviewedAlternatives": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "reviewed-alternative",
+          "commentScope": "current-treatment",
+          "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+          "treatmentKey": "#3fa72a:#3fa72a:#030102:#d02981:flat",
+          "quality": "acceptable",
+          "issues": [
+            "missing gradient",
+            "incomplete artwork identity"
+          ],
+          "relativeOutcome": "candidate-stronger",
+          "comment": "Option A has the correct color for the foreground and an acceptable color for the background. However, we need this to be a gradient. The artwork itself has a background made of many gradients, so it is necessary that we have a gradient for this palette ",
+          "commentSha256": "02588b5c6b08b1e021bc288ad8288db5c512666826a954ca3c245a63bad984ea",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          },
+          "current074Location": "public-slate"
+        }
+      ]
+    },
+    {
+      "caseId": "development-12",
+      "severity": "severe-phase-4-blocker",
+      "blocksPhase4": true,
+      "rationale": "The exact current winner is a reviewed weak fallback with incomplete artwork identity because it omits the bright-yellow identity direction.",
+      "current074": {
+        "source": {
+          "caseId": "development-12",
+          "path": "images/vvbrown.jpg",
+          "sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+          "byteCount": 57673,
+          "artworkId": "exact:06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+          "cohort": "stress",
+          "structureTags": [
+            "portrait",
+            "monochrome and low-chroma",
+            "typography-led"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-12.json",
+          "rawSha256": "2fd1a63bca5838bbbc0fb6655700532955454fd21d201b06975903bf1d1e0ffd"
+        },
+        "winnerKey": "#fffffe:#fffffe:#080808:#584c1c:flat",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#fffffe:#fffffe:#080808:#584c1c:flat",
+          "#fffffe:#fffffe:#e6e622:#584c1c:flat",
+          "#fffffe:#fffffe:#9e961a:#e6e622:flat",
+          "#fffffe:#fffffe:#cdcb20:#584c1c:flat",
+          "#fffffe:#221c10:#e9e81e:#584c1c:flat",
+          "#080808:#584c1c:#ffffff:#e6e622:flat",
+          "#080808:#201911:#ffffff:#e6e622:flat",
+          "#080808:#433518:#ffffff:#e6e622:flat"
+        ],
+        "novelSlateKeys": [
+          "#fffffe:#221c10:#e9e81e:#584c1c:flat"
+        ]
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+          "treatmentKey": "#fffffe:#fffffe:#080808:#584c1c:flat",
+          "quality": "weak-fallback",
+          "issues": [
+            "incomplete artwork identity"
+          ],
+          "relativeOutcome": "neither-acceptable",
+          "comment": "Option A is missing the blacks. Option B is missing the bright yellow. so neither is acceptable ",
+          "commentSha256": "e487b02fa795ec376cd82f59cdfcd72d6c270f5398c1f0e691e883aabb5dda42",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          }
+        }
+      ],
+      "technicalInterpretations": [
+        {
+          "target": "rejected-0.7.0-candidate",
+          "transferStatus": "non-transferable-different-treatment",
+          "classes": [
+            "identity-complement-regression-missing-dark-anchor"
+          ],
+          "source": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-technical-interpretations.json",
+            "rawSha256": "441e8f1b591207fd54aae5af78956150881e152ca8ee86a96a6b66840b73f35c"
+          }
+        }
+      ],
+      "reviewedAlternatives": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "reviewed-alternative",
+          "commentScope": "pair-shared",
+          "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+          "treatmentKey": "#fffffe:#fffffe:#9e961a:#e6e622:flat",
+          "quality": "weak-fallback",
+          "issues": [
+            "incomplete artwork identity"
+          ],
+          "relativeOutcome": "neither-acceptable",
+          "comment": "Option A is missing the blacks. Option B is missing the bright yellow. so neither is acceptable ",
+          "commentSha256": "e487b02fa795ec376cd82f59cdfcd72d6c270f5398c1f0e691e883aabb5dda42",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          },
+          "current074Location": "public-slate"
+        }
+      ]
+    },
+    {
+      "caseId": "development-13",
+      "severity": "accepted-isolated-limitation",
+      "blocksPhase4": false,
+      "rationale": "The exact current winner is acceptable; the only criticism is an optional slight gradient and its technical interpretation is explicitly uncertain.",
+      "current074": {
+        "source": {
+          "caseId": "development-13",
+          "path": "images/once.jpg",
+          "sha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+          "byteCount": 91019,
+          "artworkId": "exact:26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+          "cohort": "stress",
+          "structureTags": [
+            "low-chroma",
+            "frame and border",
+            "near-uniform"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-13.json",
+          "rawSha256": "a9123c773adda850a1d1ef02a3f8598e01b79cf768401fed720d0f35f5a68654"
+        },
+        "winnerKey": "#dddde7:#dddde7:#3b303e:#807387:flat",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#dddde7:#dddde7:#3b303e:#807387:flat",
+          "#dddde7:#dddde7:#3b303e:#544959:flat",
+          "#dddde7:#dddde7:#3b303e:#988d9e:flat",
+          "#dddde7:#dddde7:#685b6d:#3b303e:flat",
+          "#796c7e:#d2d1df:#3b303e:#544959:gradient",
+          "#807387:#d8d8e4:#3b303e:#544959:flat",
+          "#807387:#685b6d:#dddde7:#3b303e:flat",
+          "#807387:#9d91a5:#dddde7:#3b303e:flat"
+        ],
+        "novelSlateKeys": []
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+          "treatmentKey": "#dddde7:#dddde7:#3b303e:#807387:flat",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": "similarly-valid",
+          "comment": "A slight gradient would be nice here for either candidate ",
+          "commentSha256": "acf653baa4dd39501e16b9aaa69c221cf5101d0c99e43e84cd243e1ac1e84e3b",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          }
+        }
+      ],
+      "technicalInterpretations": [
+        {
+          "target": "shared",
+          "transferStatus": "uncertain-descriptive-symptom-only",
+          "classes": [
+            "gradient-availability-shared"
+          ],
+          "source": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-technical-interpretations.json",
+            "rawSha256": "441e8f1b591207fd54aae5af78956150881e152ca8ee86a96a6b66840b73f35c"
+          }
+        }
+      ],
+      "reviewedAlternatives": []
+    },
+    {
+      "caseId": "development-15",
+      "severity": "accepted-isolated-limitation",
+      "blocksPhase4": false,
+      "rationale": "The exact current winner is acceptable; the only later criticism is explicitly uncertain and carries no issue tags.",
+      "current074": {
+        "source": {
+          "caseId": "development-15",
+          "path": "images/horrorwood.jpg",
+          "sha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+          "byteCount": 241855,
+          "artworkId": "exact:69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+          "cohort": "stress",
+          "structureTags": [
+            "high-detail artwork",
+            "photography",
+            "small signature colors"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-15.json",
+          "rawSha256": "000bca4ed0509fe3ef284e1d08db0b4a8e42c753f8df619ed3f6d0727f5e7307"
+        },
+        "winnerKey": "#141b25:#36444f:#ccd3d9:#808b91:flat",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#141b25:#36444f:#ccd3d9:#808b91:flat",
+          "#141b25:#63717a:#ccd3d9:#331924:flat",
+          "#141b25:#63717a:#ccd3d9:#242e3a:flat",
+          "#667481:#3b4858:#ccd3d9:#151922:flat",
+          "#36444f:#242e3a:#ccd3d9:#151922:flat",
+          "#141b25:#4c5a65:#151922:#ccd3d9:flat",
+          "#3b4858:#3b4858:#151922:#ccd3d9:flat",
+          "#505e6b:#667481:#151922:#242f41:flat"
+        ],
+        "novelSlateKeys": [
+          "#141b25:#63717a:#ccd3d9:#331924:flat",
+          "#141b25:#63717a:#ccd3d9:#242e3a:flat",
+          "#667481:#3b4858:#ccd3d9:#151922:flat",
+          "#36444f:#242e3a:#ccd3d9:#151922:flat",
+          "#505e6b:#667481:#151922:#242f41:flat"
+        ]
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "current-treatment",
+          "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+          "treatmentKey": "#141b25:#36444f:#ccd3d9:#808b91:flat",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "",
+          "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+            "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+          "treatmentKey": "#141b25:#36444f:#ccd3d9:#808b91:flat",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": "similarly-valid",
+          "comment": "I'm not 100% sure so i'm not checking the boxes, but i think those 2 options are missing gradient and artwork identity",
+          "commentSha256": "281fd21ba2f0b05559a6df1b65cf4e4818c81430eb814caffe0b62ab6f558188",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-manifest.private.json",
+            "rawSha256": "239fe5418fe77e0c7e52cc45df6f94a07e03b95d8268c318d0572b52fd9bff7e"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-analysis.json",
+            "rawSha256": "12f5a234265fbec65453676bab207cf4776a9cb6b3d03e46c5341afdf2961654"
+          }
+        }
+      ],
+      "technicalInterpretations": [],
+      "reviewedAlternatives": []
+    },
+    {
+      "caseId": "development-16",
+      "severity": "confirmed-non-blocking-systemic-diagnostic",
+      "blocksPhase4": false,
+      "rationale": "The exact current winner is acceptable but repeatedly carries a missing-gradient symptom and an artwork-specific accent request.",
+      "current074": {
+        "source": {
+          "caseId": "development-16",
+          "path": "images/nada.jpg",
+          "sha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+          "byteCount": 174998,
+          "artworkId": "exact:92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+          "cohort": "stress",
+          "structureTags": [
+            "broad flat field",
+            "repeated small signatures",
+            "highly chromatic"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-16.json",
+          "rawSha256": "e24ebb710242867bf9f25fb86fab95aabc8b586278b76a45aa12f38ee1b6d5e5"
+        },
+        "winnerKey": "#44648b:#354f70:#fbfcf7:#100d28:flat",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#44648b:#354f70:#fbfcf7:#100d28:flat",
+          "#44648b:#919dcd:#fbfcf7:#354f70:flat",
+          "#44648b:#919dcd:#fbfcf7:#2c287f:flat",
+          "#45658c:#587aa0:#fbfcf7:#100d28:flat",
+          "#44648b:#44648b:#fbfcf7:#100d28:flat",
+          "#44648b:#283555:#f9fbfa:#100d28:flat",
+          "#44648b:#2a2d7e:#fbfcf7:#100d28:flat",
+          "#335173:#335173:#fbfcf7:#100d28:flat"
+        ],
+        "novelSlateKeys": [
+          "#44648b:#919dcd:#fbfcf7:#354f70:flat",
+          "#44648b:#919dcd:#fbfcf7:#2c287f:flat",
+          "#45658c:#587aa0:#fbfcf7:#100d28:flat",
+          "#44648b:#283555:#f9fbfa:#100d28:flat"
+        ]
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "current-treatment",
+          "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+          "treatmentKey": "#44648b:#354f70:#fbfcf7:#100d28:flat",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "- This should be a gradient \n- Accent could be a better color. Like a slightly lighter blue, still darker than the background, but that would match the album's title on the artwork, or it could be some shade of yellow, orange, or red to match the many dots at the bottom ",
+          "commentSha256": "c2d90a5efb35dadf78fc5a2e6ee3699b589579c80a7274e48159a8c1a059a4dc",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+            "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+          "treatmentKey": "#44648b:#354f70:#fbfcf7:#100d28:flat",
+          "quality": "acceptable",
+          "issues": [
+            "missing gradient"
+          ],
+          "relativeOutcome": "a-stronger",
+          "comment": "",
+          "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-manifest.private.json",
+            "rawSha256": "239fe5418fe77e0c7e52cc45df6f94a07e03b95d8268c318d0572b52fd9bff7e"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-analysis.json",
+            "rawSha256": "12f5a234265fbec65453676bab207cf4776a9cb6b3d03e46c5341afdf2961654"
+          }
+        }
+      ],
+      "technicalInterpretations": [],
+      "reviewedAlternatives": []
+    },
+    {
+      "caseId": "development-19",
+      "severity": "confirmed-non-blocking-systemic-diagnostic",
+      "blocksPhase4": false,
+      "rationale": "The exact current winner is acceptable, but an exact historically strong and preferred treatment remains in the 0.7.4 frontier and is lost before the public slate.",
+      "current074": {
+        "source": {
+          "caseId": "development-19",
+          "path": "images/knuckles.jpg",
+          "sha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+          "byteCount": 90657,
+          "artworkId": "exact:057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+          "cohort": "stress",
+          "structureTags": [
+            "compressed or noisy",
+            "photography",
+            "low source quality"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-19.json",
+          "rawSha256": "1095579cfe397e6605f6edd285325354f1c4810b5248cc0bafb584370bf712d0"
+        },
+        "winnerKey": "#beb2c6:#9b9bbd:#1c0031:#d8cbdd:flat",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#beb2c6:#9b9bbd:#1c0031:#d8cbdd:flat",
+          "#9b9bbd:#b47f9b:#d8cbdd:#beb2c6:flat",
+          "#ac849f:#8281ab:#bfb2c4:#61aec2:flat",
+          "#beb2c6:#7b80a8:#bfb2c4:#9c99c4:flat",
+          "#9b9bbd:#7b80a8:#d8cbdd:#beb2c6:flat",
+          "#9b9bbd:#9b9bbd:#d8cbdd:#beb2c6:flat",
+          "#1c0031:#1c0031:#d8cbdd:#beb2c6:flat",
+          "#beb2c6:#b47f9b:#60aac5:#d8cbdd:flat"
+        ],
+        "novelSlateKeys": [
+          "#9b9bbd:#b47f9b:#d8cbdd:#beb2c6:flat",
+          "#ac849f:#8281ab:#bfb2c4:#61aec2:flat",
+          "#beb2c6:#7b80a8:#bfb2c4:#9c99c4:flat",
+          "#9b9bbd:#7b80a8:#d8cbdd:#beb2c6:flat",
+          "#beb2c6:#b47f9b:#60aac5:#d8cbdd:flat"
+        ]
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "current-treatment",
+          "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+          "treatmentKey": "#beb2c6:#9b9bbd:#1c0031:#d8cbdd:flat",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "This kind of works, but it was so much better before we had a version that matched the artwork much better. You should be able to find it in former reviews ",
+          "commentSha256": "acc1550f3ce5f69eb9f3c437df56ce5d9663a05cfff3b69458ca021a2dbd9079",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+            "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+          "treatmentKey": "#beb2c6:#9b9bbd:#1c0031:#d8cbdd:flat",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": "similarly-valid",
+          "comment": "the Coal Mine foreground for both of these options is too dark, it does not feel like part of this artwork that is made of pastel colors. Option B would be nearly perfect with a Snow white foreground.",
+          "commentSha256": "c4e2a5cab1e50aa3d91de3e8fe95a37fc079ff212e93dd7f4e6857be2a2d5d93",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-manifest.private.json",
+            "rawSha256": "239fe5418fe77e0c7e52cc45df6f94a07e03b95d8268c318d0572b52fd9bff7e"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.5.1-development/ranking-review-analysis.json",
+            "rawSha256": "12f5a234265fbec65453676bab207cf4776a9cb6b3d03e46c5341afdf2961654"
+          }
+        }
+      ],
+      "technicalInterpretations": [],
+      "reviewedAlternatives": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "reviewed-alternative",
+          "commentScope": "current-treatment",
+          "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+          "treatmentKey": "#bfb2c4:#9c99c4:#6c678f:#d8cbdd:flat",
+          "quality": "strong",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "",
+          "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.1-development/lightweight-review-analysis.json",
+            "rawSha256": "e334f649f6cc406757090f760e0a7fda08a284cc3ea0217793058ff28b3a4098"
+          },
+          "current074Location": "ordinary-global-frontier",
+          "additionalHumanEvidence": {
+            "independentlyValid": true,
+            "preferred": true,
+            "comment": "strong preference for option A",
+            "manifest": {
+              "path": "research/data/experiments/album-artwork-palette-v2-0.4.3-development/targeted-review-manifest.json",
+              "rawSha256": "edd96e6b2f54646c82c164b369744feff0708e0f49304f7947175c0e7fcc4f35"
+            },
+            "analysis": {
+              "path": "research/data/experiments/album-artwork-palette-v2-0.4.3-development/targeted-review-analysis.json",
+              "rawSha256": "cbba6743d11c7fadc0654c327a5dc423fcef4474a437cc2a20303537ba606614"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-26",
+      "severity": "confirmed-non-blocking-systemic-diagnostic",
+      "blocksPhase4": false,
+      "rationale": "The exact current winner is acceptable but repeatedly carries the artwork-inconsistent dark-foreground polarity symptom.",
+      "current074": {
+        "source": {
+          "caseId": "development-26",
+          "path": "06/ab67616d00001e020006b33fb3c112e2ae60ab29",
+          "sha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+          "byteCount": 27992,
+          "artworkId": "0006b33fb3c112e2ae60ab29",
+          "cohort": "dataset",
+          "structureTags": [
+            "dataset diversity probe"
+          ]
+        },
+        "artifact": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-26.json",
+          "rawSha256": "3f55e259020da7945a490c8afaa51c37fa08a3071deda3158f6edeb27f707cf0"
+        },
+        "winnerKey": "#cdcac5:#8e8b86:#080808:#393631:gradient",
+        "winnerMatches072": true,
+        "winnerMatches060": true,
+        "slateKeys": [
+          "#cdcac5:#8e8b86:#080808:#393631:gradient",
+          "#bab7b2:#a19e99:#080808:#83807b:gradient",
+          "#cdcac5:#8e8b86:#080808:#706b65:gradient",
+          "#bab7b2:#ebeae6:#83807b:#080808:flat",
+          "#bab7b2:#d2cfca:#83807b:#080808:gradient",
+          "#bab7b2:#d2cfca:#83807b:#080808:flat",
+          "#d7d6d1:#d7d6d1:#83807b:#080808:flat",
+          "#d2cfca:#a19e99:#83807b:#080808:gradient"
+        ],
+        "novelSlateKeys": [
+          "#bab7b2:#d2cfca:#83807b:#080808:gradient",
+          "#d2cfca:#a19e99:#83807b:#080808:gradient"
+        ]
+      },
+      "humanEvidence": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "current-treatment",
+          "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+          "treatmentKey": "#cdcac5:#8e8b86:#080808:#393631:gradient",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": null,
+          "comment": "That works, but it would be better if the foreground was actually lighter than the background to match the artwork ",
+          "commentSha256": "c3528b8cfdccdc3b342e29bc151df7f17e2244e1ae1d7fb52d418d941379bb37",
+          "manifest": null,
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+            "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+          }
+        },
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "current-treatment",
+          "commentScope": "pair-shared",
+          "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+          "treatmentKey": "#cdcac5:#8e8b86:#080808:#393631:gradient",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": "similarly-valid",
+          "comment": "Options would work better if the foreground was lighter than the background. This is what the artwork does, and if we want to capture the spirit of the artwork, this is what we need to obtain as well ",
+          "commentSha256": "269400c88b9408fcb4793a24339d6aefe05e331715dfa68e5d52795fc1455086",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          }
+        }
+      ],
+      "technicalInterpretations": [
+        {
+          "target": "shared",
+          "transferStatus": "descriptive-symptom-only",
+          "classes": [
+            "foreground-polarity-misalignment"
+          ],
+          "source": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-technical-interpretations.json",
+            "rawSha256": "441e8f1b591207fd54aae5af78956150881e152ca8ee86a96a6b66840b73f35c"
+          }
+        }
+      ],
+      "reviewedAlternatives": [
+        {
+          "evidenceKind": "human-review",
+          "reviewTarget": "reviewed-alternative",
+          "commentScope": "pair-shared",
+          "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+          "treatmentKey": "#bab7b2:#a19e99:#080808:#83807b:gradient",
+          "quality": "acceptable",
+          "issues": [],
+          "relativeOutcome": "similarly-valid",
+          "comment": "Options would work better if the foreground was lighter than the background. This is what the artwork does, and if we want to capture the spirit of the artwork, this is what we need to obtain as well ",
+          "commentSha256": "269400c88b9408fcb4793a24339d6aefe05e331715dfa68e5d52795fc1455086",
+          "manifest": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-manifest.private.json",
+            "rawSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b"
+          },
+          "analysis": {
+            "path": "research/data/experiments/album-artwork-palette-v2-0.7.0-development/identity-obligation-review-analysis.json",
+            "rawSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+          },
+          "current074Location": "public-slate"
+        }
+      ]
+    }
+  ],
+  "exclusions": {
+    "protectedOrFreshSources": "excluded",
+    "filenameSourceIdColorNameAndAgentMemoryOnlyCases": "excluded",
+    "changedOrNovelUnreviewedTreatments": "retained-as-unreviewed-current-custody-only"
+  },
+  "authorization": {
+    "current074ReadOnlyDiagnosis": true,
+    "oneFactorProtocolPreparation": true,
+    "counterfactualCandidateOutputBeforeProtocol": false,
+    "humanReview": false,
+    "protectedOrFreshArtworkAccess": false,
+    "phase4": false,
+    "promotion": false,
+    "defaultExtractorChange": false,
+    "persistence": false
+  },
+  "rosterId": "0ce0465834d82b1a72e931eab21e5a4b318eac14919c4bb07b59e5e7e5653c6f"
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-field-topology-3.0.0-images-diagnostic-partial-analysis-1",
+  "generatedAt": "2026-07-20T16:24:12.222Z",
+  "partial": true,
+  "decisionScope": "exact-directed-background-surface-pair",
+  "thresholdRefit": false,
+  "inferenceFromAbsence": false,
+  "unreviewedMeaning": "remain-unlabeled",
+  "provenance": {
+    "diagnosticSha256": "1ad1f643d7b1fe38c83a6cc9f5487ffd5d1fbea8ad4517fcb168d09de6dcaf41",
+    "renderSha256": "3b0019e657342cfedb7d9cad94be04682c13d6d6649d8d0be1f4e48729c2b3d6",
+    "htmlSha256": "60ecf9edbc5e7f1572bc8ff58ec15d6cf9b124e979019a6dc5d0e565145e5bd6",
+    "feedbackSha256": "59486c4d1740a842675d74526130ca5222edf9108504025d38b892f985c64fa8",
+    "interpretationSha256": "76d273647057efedd74599ca015f47da9b6c331b4d09143dc1fa72cde10b0e54",
+    "analyzerSha256": "8f759ee2268a796f994404e2bc277aa0046be4af7c72481dce32266fd97fd93f",
+    "modelIdentitySha256": "9cd15f12004578c2a8a65cd83b63401889266428495551f569c16236be8c9818",
+    "parameterSha256": "98d0a0d89e83d1e66a211c05557db74467f13bf4cb1d99766a650f29178fbc11"
+  },
+  "summary": {
+    "totalCases": 34,
+    "reviewed": 1,
+    "unreviewed": 33,
+    "reviewedDecisive": 1,
+    "reviewedNondecisive": 0,
+    "explicitJudgments": {
+      "should-be-gradient": 1
+    },
+    "canonicalReviewedOnly": {
+      "confusion": {
+        "truePositive": 1,
+        "falseNegative": 0,
+        "trueNegative": 0,
+        "falsePositive": 0
+      },
+      "correct": 1
+    },
+    "v3ReviewedOnly": {
+      "confusion": {
+        "truePositive": 0,
+        "falseNegative": 1,
+        "trueNegative": 0,
+        "falsePositive": 0
+      },
+      "correct": 0
+    }
+  },
+  "qualitativeFindings": {
+    "reviewerStatement": "Most individual reviews seemed unlikely to be useful, but the exposed results overall looked very good.",
+    "interpretationOnly": true,
+    "notAnIndividualCaseLabel": true
+  },
+  "reviewedEntries": [
+    {
+      "familyId": "image-a9e574a961521afd176b",
+      "anchor": {
+        "file": "images/muse.jpg",
+        "sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+        "bytes": 113438,
+        "width": 640,
+        "height": 640
+      },
+      "pairSha256": "94dc676afb272d47e8516080454bb0004cfaebcd5168b546fde2c66a82b9d9ab",
+      "decision": "should-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-20T16:14:15.735Z",
+      "canonicalGradient": true,
+      "v3Gradient": false,
+      "v3Score": 0.22308830752240646,
+      "v3Margin": -0.033204896326040706,
+      "canonicalCorrect": true,
+      "v3Correct": false
+    }
+  ],
+  "unreviewedCases": {
+    "count": 33,
+    "labelsAssigned": 0,
+    "inferenceFromMissingResponse": false
+  }
+}

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Palette Planned Branch Workbench</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-mark" aria-hidden="true">V4 / WB</div>
+    <div class="masthead-title">
+      <p class="eyebrow">Artwork file to UI palette / interchangeable branches</p>
+      <h1>Palette Planned Branch Workbench</h1>
+    </div>
+    <div class="snapshot" id="snapshot">Loading planned branch snapshot...</div>
+    <a class="source-link" href="/MECHANISMS.html#L1" target="_blank" rel="noreferrer">Census source</a>
+  </header>
+
+  <main class="instrument" id="instrument">
+    <aside class="controls" id="controls" aria-label="Workbench controls">
+      <section class="control-section projection-section">
+        <div class="section-heading"><span>Planned workbench</span><output id="layerCount">0 layers</output></div>
+        <div id="modeControls">
+          <div class="mode-grid primary-mode-grid">
+            <button class="mode-button workbench-mode active" type="button" data-mode="workbench" aria-pressed="true">Planned workbench</button>
+          </div>
+        </div>
+        <p class="control-note workbench-summary" id="modeNote" aria-live="polite">Many interchangeable mechanisms. Start with image-facing foundations, then progress once a mechanism's outputs are validated. Planned routes are not implementation proof.</p>
+        <section class="planned-error" id="plannedError" role="status" aria-live="polite" hidden>
+          <strong>Planned workbench unavailable</strong>
+          <span></span>
+          <button type="button" data-mode="product">Open Built Product</button>
+        </section>
+        <div class="layer-tabs" id="layerTabs" role="tablist" aria-label="Progressive planned mechanism layers"></div>
+        <div class="origin-key" aria-label="Mechanism implementation status key">
+          <span class="origin-existing">Existing</span>
+          <span class="origin-proposed">Missing mechanism to build</span>
+        </div>
+      </section>
+
+      <section class="control-section search-section">
+        <div class="section-heading"><span>Search mechanisms and artifacts</span><output id="searchCount">0 results</output></div>
+        <form id="searchForm" role="search">
+          <label class="search-field">
+            <span class="visually-hidden">Search existing, proposed, condemned, artifact IDs, and operations</span>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="Mechanism, artifact, operation" spellcheck="false">
+            <kbd>Enter</kbd>
+          </label>
+          <label class="switch-row built-only-control" id="searchContextControl">
+            <input id="searchContext" type="checkbox">
+            <span>Built graph matches + one-hop context</span>
+          </label>
+        </form>
+        <div class="search-results" id="branchSearchResults" role="list" aria-label="Workbench search results"></div>
+      </section>
+
+      <section class="control-section plan-tools">
+        <details class="plan-disclosure" id="recipeControls">
+          <summary><span>Compare planned recipes</span><b id="recipeCount">0 recipes</b></summary>
+          <p class="disclosure-status">Type-closed on paper; not implemented or evaluated.</p>
+          <label class="field-label" for="recipeSlotSelect">Interchangeability slot</label>
+          <select class="recipe-picker" id="recipeSlotSelect">
+            <option value="">Choose a generated slot</option>
+          </select>
+          <div class="recipe-slot-detail" id="recipeSlotDetail"></div>
+          <label class="visually-hidden" for="recipeSelect">Highlight one optional planned recipe</label>
+          <select class="recipe-picker" id="recipeSelect" aria-describedby="recipeHelp"></select>
+          <p class="control-note" id="recipeHelp">No recipe is selected by default. A highlight never hides alternatives or becomes the architecture.</p>
+          <div class="recipe-detail" id="recipeDetail" aria-live="polite"></div>
+        </details>
+
+        <details class="plan-disclosure" id="handoffControls">
+          <summary><span>Exact missing handoffs</span><b id="handoffCount">0</b></summary>
+          <label class="field-label" for="handoffSearch">Search proposed handoffs</label>
+          <input class="panel-search" id="handoffSearch" type="search" autocomplete="off" placeholder="Mechanism, artifact, operation">
+          <div class="handoff-list" id="handoffList"></div>
+        </details>
+      </section>
+
+      <section class="control-section research-section">
+        <details class="secondary-controls" id="secondaryControls">
+          <summary>Research details</summary>
+          <div class="secondary-drawer">
+            <div class="drawer-section built-views">
+              <div class="section-heading"><span>Built graph</span></div>
+              <div class="mode-grid secondary-mode-grid">
+                <button class="mode-button" type="button" data-mode="product" aria-pressed="false">Built product graph</button>
+                <button class="mode-button full-registry-button" type="button" data-mode="full" aria-pressed="false">Full registry</button>
+              </div>
+              <label class="switch-row" id="allProductContractsControl">
+                <input id="showAllProductContracts" type="checkbox">
+                <span>Show all built product contracts</span>
+              </label>
+              <label class="overlay-control switch-row" id="overlayControl">
+                <input id="productOverlay" type="checkbox">
+                <span>Secondary evaluation and research context</span>
+              </label>
+            </div>
+
+            <div class="drawer-section condemned-section">
+              <details class="condemned-controls" id="condemnedControls">
+                <summary><span>Condemned formulations</span><b id="condemnedCount">0</b></summary>
+                <p class="control-note">Hidden from planned layers and recipes. Reasons and exact source evidence remain inspectable here.</p>
+                <div class="condemned-list" id="condemnedList"></div>
+              </details>
+            </div>
+
+            <div class="drawer-section secondary-projections">
+              <div class="section-heading"><span>Built research projections</span></div>
+              <div class="mode-grid secondary-mode-grid">
+                <button class="mode-button" type="button" data-mode="frontiers" aria-pressed="false">Declared input reach</button>
+                <button class="mode-button" type="button" data-mode="orphans" aria-pressed="false">Full-registry orphans</button>
+                <button class="mode-button" type="button" data-mode="diagnostics" aria-pressed="false">Diagnostics / dev</button>
+                <button class="mode-button" type="button" data-mode="runtime" aria-pressed="false">Has permitted variant</button>
+              </div>
+            </div>
+
+            <div class="drawer-section filters">
+              <div class="section-heading"><span>Built coordinate filters</span><button id="clearFilters" class="text-button" type="button">Clear</button></div>
+              <label class="field-label" for="capabilityFilter">Taxonomy membership</label>
+              <select id="capabilityFilter"><option value="">All memberships</option></select>
+              <fieldset>
+                <legend>Data plane</legend>
+                <div class="check-row" id="planeFilters"></div>
+              </fieldset>
+              <label class="field-label" for="categoryFilter">Artifact category</label>
+              <select id="categoryFilter"><option value="">All categories</option></select>
+              <label class="field-label" for="orphanFilter">Orphan class</label>
+              <select id="orphanFilter">
+                <option value="">All classifications</option>
+                <option value="required-gap">Required input unavailable</option>
+                <option value="configuration-gap">Configuration input unavailable</option>
+                <option value="unavailable-alternative-group">Unavailable alternative group</option>
+                <option value="optional-absence">Optional absent input</option>
+                <option value="unused-alternative">Unused alternative</option>
+                <option value="expected-external-root">Expected external root</option>
+                <option value="unresolved-external-root">Unresolved external root</option>
+                <option value="product-goal-gap">Product goal gap</option>
+                <option value="internal-unused">Internal unused output</option>
+                <option value="intentional-terminal">Intentional terminal</option>
+                <option value="expected-external-handoff">Expected external handoff</option>
+                <option value="unresolved-terminal">Unresolved terminal</option>
+                <option value="product-goal-terminal">Product goal terminal</option>
+              </select>
+            </div>
+
+            <div class="drawer-section navigator-section">
+              <div class="section-heading"><span>Visible-entry navigator</span><output id="navigatorCount">0</output></div>
+              <label class="visually-hidden" for="visibleNodeNavigator">Select a currently visible graph entry</label>
+              <select id="visibleNodeNavigator" class="node-navigator" size="7" role="listbox" aria-label="Currently visible graph entries"></select>
+              <p class="control-note">Choose a row to select and center it without canvas hit testing.</p>
+            </div>
+
+            <div class="drawer-section map-key">
+              <div class="section-heading"><span>Map key</span></div>
+              <div class="legend-grid">
+                <span class="legend-swatch mechanism"></span><span>Existing built mechanism</span>
+                <span class="legend-swatch proposed"></span><span>Missing mechanism to build</span>
+                <span class="legend-line output"></span><span>Exact typed product handoff</span>
+                <span class="legend-swatch artifact"></span><span>Built artifact contract</span>
+                <span class="legend-swatch overlay"></span><span>Secondary built context</span>
+              </div>
+            </div>
+
+            <section class="drawer-section product-connectivity" id="productConnectivity" aria-labelledby="productConnectivityHeading" hidden>
+              <div class="section-heading"><span id="productConnectivityHeading">Built product connectivity</span></div>
+              <button class="confirmed-materializer" id="materializerContract" type="button">
+                <span>Confirmed structural gap</span>
+                <strong>Loading exact built materializer status...</strong>
+              </button>
+              <div class="connectivity-counts" aria-label="Open built contract counts">
+                <span><b id="openInputCount">0</b> input</span>
+                <span><b id="openAlternativeCount">0</b> alternative</span>
+                <span><b id="openOutputCount">0</b> output</span>
+              </div>
+              <p class="connectivity-note">Typed connectivity observations, not a work list.</p>
+              <details class="open-contracts" id="openContracts">
+                <summary><span>Open built contracts</span><b id="openContractCount">0</b></summary>
+                <p>Exact built-graph observations only. They prescribe no work, order, or prerequisite.</p>
+                <div class="contract-groups" id="openContractGroups"></div>
+              </details>
+            </section>
+
+            <section class="drawer-section counts" id="generatedCounts" aria-live="polite">Loading analysis...</section>
+          </div>
+        </details>
+      </section>
+    </aside>
+
+    <section class="map-shell" id="mapShell" aria-label="Interactive planned mechanism workbench">
+      <div class="map-toolbar">
+        <div class="view-actions">
+          <button id="zoomOutButton" type="button" aria-label="Zoom out">-</button>
+          <button id="zoomInButton" type="button" aria-label="Zoom in">+</button>
+          <button id="fitButton" type="button">Fit visible</button>
+          <button id="resetButton" type="button">Reset view</button>
+        </div>
+        <div class="visible-count" id="visibleCount" role="status" aria-live="polite">Preparing planned layer...</div>
+        <div class="zoom-readout" id="zoomReadout">100%</div>
+      </div>
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="graphCanvas" tabindex="0" role="img" aria-label="Planned mechanism layer map. Every box is a mechanism and every line is an exact typed product handoff. Drag or use one finger to pan; wheel, pinch, plus, or minus to zoom; arrow keys pan; Home or F fits visible mechanisms; Enter centers the selected mechanism; Escape clears selection."></canvas>
+        <div class="axis-caption" id="axisCaption"><span>immediate upstream</span><b>selected mechanism layer <small>alternatives stay visible</small></b><span>immediate downstream</span></div>
+        <canvas id="minimap" width="220" height="126" role="img" aria-label="Graph overview"></canvas>
+        <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+        <div class="loading" id="loading">
+          <span></span>
+          Reading planned branch data
+        </div>
+      </div>
+      <footer class="map-warning" id="mapWarning">Many interchangeable mechanisms. Start with image-facing foundations and progress once a mechanism's outputs are validated. Planned routes are not implementation proof.</footer>
+    </section>
+
+    <aside class="inspector" id="inspector" aria-live="polite" aria-label="Selected mechanism or contract inspector"></aside>
+  </main>
+
+  <div class="live-status visually-hidden" id="liveStatus" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

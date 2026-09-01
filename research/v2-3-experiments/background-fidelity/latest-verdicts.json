@@ -1,0 +1,4163 @@
+{
+ "ab67616d00001e020000269ead63cf2376a6b67d": {
+  "verdict": "strong",
+  "batch": "review-6-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-d-c3"
+  ],
+  "palettes": {
+   "trunk-d-c3": {
+    "background": "#fcd000",
+    "surface": "#f9faf4",
+    "foreground": "#010400",
+    "accent": "#fc0402",
+    "gradient": false
+   },
+   "v2-2": {
+    "background": "#fcd000",
+    "surface": "#f9faf4",
+    "foreground": "#010400",
+    "accent": "#fc0402",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020000ff9a99b8761b17336fa2": {
+  "verdict": "strong",
+  "batch": "review-8-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#0a0710",
+    "surface": "#250d25",
+    "foreground": "#9f022f",
+    "accent": "#9f022f",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#0a0710",
+    "surface": "#250d25",
+    "foreground": "#9f022f",
+    "accent": "#9f022f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020001738a49a69ed70ffcbe42": {
+  "verdict": "strong",
+  "batch": "review-6-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-d-c3"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#7b7b71",
+    "surface": "#c1c3c0",
+    "foreground": "#000b14",
+    "accent": "#61625a",
+    "gradient": true
+   },
+   "trunk-d-c3": {
+    "background": "#7b7b71",
+    "surface": "#c1c3c0",
+    "foreground": "#000b14",
+    "accent": "#61625a",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e0200018a1e2daf68a53f504cb9": {
+  "verdict": "acceptable",
+  "batch": "review-15-white-fg-fresh",
+  "applies": [
+   "trunk-h5"
+  ],
+  "palettes": {
+   "trunk-h5": {
+    "background": "#f4d3f0",
+    "surface": "#d3b6c8",
+    "foreground": "#887b8d",
+    "accent": "#c399bd",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#f4d3f0",
+    "surface": "#d3b6c8",
+    "foreground": "#887b8d",
+    "accent": "#c399bd",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "I don't really recognize the surface color (Blotting Paper) in the artwork. So maybe the reason I favored option A is just because the midpoint makes the surface less visible and since it doesn't feel to me like it fits then I prefer the version where we don't see it as much. Also there is some orangish tones in the artwork that could make for a very good chromatic accent. I think it pretty closely matches the Mothy orange "
+ },
+ "ab67616d00001e020001c08189a1b1a67bab3d95": {
+  "verdict": "acceptable",
+  "batch": "review-23-fg-movers",
+  "applies": [
+   "o2-before",
+   "o2-after"
+  ],
+  "palettes": {
+   "o2-after": {
+    "background": "#2d2113",
+    "surface": "#16110d",
+    "foreground": "#dcb246",
+    "accent": "#f7f7f5",
+    "gradient": false
+   },
+   "o2-before": {
+    "background": "#2d2113",
+    "surface": "#16110d",
+    "foreground": "#f7f7f5",
+    "accent": "#dcb246",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#e9e8e4",
+   "surface": "#fdfdfb",
+   "foreground": "#dcb246",
+   "accent": "#58ca1a"
+  },
+  "notes": ""
+ },
+ "ab67616d00001e020002881a851f1e14c374562b": {
+  "verdict": "strong",
+  "batch": "review-24-coverage",
+  "applies": [
+   "x-coverage-alternative"
+  ],
+  "palettes": {
+   "x-coverage-alternative": {
+    "background": "#262642",
+    "surface": "#754577",
+    "foreground": "#fbfdfa",
+    "accent": "#d0456e",
+    "gradient": false
+   },
+   "x-coverage-incumbent": {
+    "background": "#262340",
+    "surface": "#54495a",
+    "foreground": "#fbfdfa",
+    "accent": "#23a4ba",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020002f9f58137435bcf6e8e77": {
+  "verdict": "acceptable",
+  "batch": "batch-35",
+  "applies": [
+   "gr-a",
+   "gr-c"
+  ],
+  "palettes": {
+   "gr-c": {
+    "background": "#884e38",
+    "surface": "#8973b1",
+    "foreground": "#fdfdf1",
+    "accent": "#c5ab20",
+    "gradient": true
+   },
+   "gr-a": {
+    "background": "#8068a6",
+    "surface": "#884e38",
+    "foreground": "#fdfdf1",
+    "accent": "#c5ab20",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "foreground and accent are flipped"
+ },
+ "ab67616d00001e0200034fd1f86970643e18bf98": {
+  "verdict": "strong",
+  "batch": "review-9-fresh",
+  "applies": [
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#f8e1d9",
+    "surface": "#f8e1d9",
+    "foreground": "#241f19",
+    "accent": "#07679a",
+    "gradient": false
+   },
+   "trunk-dca4": {
+    "background": "#06679a",
+    "surface": "#06679a",
+    "foreground": "#f8e1d9",
+    "accent": "#241f19",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "This palette might be made even stronger if the accent was ibis pink or babe pink instead of black "
+ },
+ "ab67616d00001e020003e50500c5d762da89643a": {
+  "verdict": "strong",
+  "batch": "batch-28",
+  "applies": [
+   "cr-alt"
+  ],
+  "palettes": {
+   "cr-alt": {
+    "background": "#050a06",
+    "surface": "#21331b",
+    "foreground": "#b67e1f",
+    "accent": "#496036",
+    "gradient": false
+   },
+   "cr-trunk": {
+    "background": "#050a06",
+    "surface": "#121e10",
+    "foreground": "#cfd4c0",
+    "accent": "#758151",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#050a06",
+   "surface": "#cfd4c0",
+   "foreground": "#b67e1f",
+   "accent": "#496036"
+  },
+  "notes": ""
+ },
+ "ab67616d00001e0200044a28a45b7b23d4be2f79": {
+  "verdict": "strong",
+  "batch": "review-15-white-fg-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-h5"
+  ],
+  "palettes": {
+   "trunk-h5": {
+    "background": "#beb4b5",
+    "surface": "#dfdde0",
+    "foreground": "#3a2828",
+    "accent": "#cc9a8f",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#beb4b5",
+    "surface": "#dfdde0",
+    "foreground": "#3a2828",
+    "accent": "#84554f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020004ccf0ae91364130886c02": {
+  "verdict": "strong",
+  "batch": "batch-34",
+  "applies": [
+   "gf-on"
+  ],
+  "palettes": {
+   "gf-off": {
+    "background": "#4d8a15",
+    "surface": "#64a821",
+    "foreground": "#d1e4d0",
+    "accent": "#35710f",
+    "gradient": false
+   },
+   "gf-on": {
+    "background": "#4f8918",
+    "surface": "#61a51a",
+    "foreground": "#d1e4d0",
+    "accent": "#35710f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000564718f605c1f326b2ca2": {
+  "verdict": "strong",
+  "batch": "batch-30",
+  "applies": [
+   "sk-off",
+   "sk-on"
+  ],
+  "palettes": {
+   "sk-on": {
+    "background": "#131929",
+    "surface": "#131929",
+    "foreground": "#9ccce0",
+    "accent": "#5c98ba",
+    "gradient": false
+   },
+   "sk-off": {
+    "background": "#131929",
+    "surface": "#18556a",
+    "foreground": "#9ccce0",
+    "accent": "#5c98ba",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "weak preference for option A"
+ },
+ "ab67616d00001e020005a54a9ea60f48619788f1": {
+  "verdict": "strong",
+  "batch": "review-18-vivid-boundary",
+  "applies": [
+   "vivid-series-2-incumbent"
+  ],
+  "palettes": {
+   "vivid-series-2-incumbent": {
+    "background": "#950303",
+    "surface": "#bc0002",
+    "foreground": "#f9fef7",
+    "accent": "#6c0808",
+    "gradient": true
+   },
+   "vivid-series-2-vivid": {
+    "background": "#950303",
+    "surface": "#bc0002",
+    "foreground": "#f9fef7",
+    "accent": "#fd645f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020005fa7c7e0e067474967e41": {
+  "verdict": "strong",
+  "batch": "batch-26",
+  "applies": [
+   "x2-off",
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-coverage": {
+    "background": "#e6eef1",
+    "surface": "#e0cece",
+    "foreground": "#9e105a",
+    "accent": "#0277e8",
+    "gradient": true
+   },
+   "x2-off": {
+    "background": "#e6eef1",
+    "surface": "#e0cece",
+    "foreground": "#087883",
+    "accent": "#9e105a",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "slight preference for B if we need a tie breaker, but both really work"
+ },
+ "ab67616d00001e0200066a61bbcbeadd632f7f38": {
+  "verdict": "strong",
+  "batch": "review-8-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#d32b80",
+    "surface": "#ee4c9f",
+    "foreground": "#fef9fd",
+    "accent": "#51cadf",
+    "gradient": false
+   },
+   "trunk-dca4": {
+    "background": "#d32b80",
+    "surface": "#ee4c9f",
+    "foreground": "#fef9fd",
+    "accent": "#51cadf",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020006bcb4b80e6d6c49820121": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#3a2922",
+    "surface": "#ac8b6c",
+    "foreground": "#fbfbf3",
+    "accent": "#5f69a7",
+    "gradient": true
+   },
+   "calib-1b": {
+    "background": "#3a2922",
+    "surface": "#ac8b6c",
+    "foreground": "#fbfbf3",
+    "accent": "#5f69a7",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#3a2922",
+   "surface": "#c3a897",
+   "foreground": "#fbfbf3",
+   "accent": "#672a4c"
+  },
+  "notes": "This blue accent may be totally valid, but visually it's a bit odd because it comes from an off-screen blue light reflecting off of the white clothes of one person in the picture, so it doesn't feel like it belongs"
+ },
+ "ab67616d00001e020006eb2197bdb0a7b9392108": {
+  "verdict": "strong",
+  "batch": "batch-30",
+  "applies": [
+   "sk-off",
+   "sk-on"
+  ],
+  "palettes": {
+   "sk-on": {
+    "background": "#361a05",
+    "surface": "#220b05",
+    "foreground": "#bbba8a",
+    "accent": "#8a7c33",
+    "gradient": false
+   },
+   "sk-off": {
+    "background": "#361a05",
+    "surface": "#220b05",
+    "foreground": "#f5b934",
+    "accent": "#8a7c33",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "weak preference for option B"
+ },
+ "ab67616d00001e0200079d5a7d92f2bff88570db": {
+  "verdict": "strong",
+  "batch": "review-9-fresh",
+  "applies": [
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#e8e8e8",
+    "surface": "#aeadab",
+    "foreground": "#030303",
+    "accent": "#6a2f11",
+    "gradient": false
+   },
+   "trunk-dca4": {
+    "background": "#e8e8e8",
+    "surface": "#aeadab",
+    "foreground": "#160f17",
+    "accent": "#face13",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e0200083a2d455755e4c1116825": {
+  "verdict": "strong",
+  "batch": "review-9-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#4b3d3d",
+    "surface": "#806a77",
+    "foreground": "#f4ece9",
+    "accent": "#d2bfc5",
+    "gradient": false
+   },
+   "v2-2": {
+    "background": "#4d3e3b",
+    "surface": "#7c6778",
+    "foreground": "#f4ece9",
+    "accent": "#d2bfc5",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000844cad2cb586a22b891f2": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#fbf2ed",
+    "surface": "#fbf2ed",
+    "foreground": "#181520",
+    "accent": "#ac6429",
+    "gradient": false
+   },
+   "calib-1b": {
+    "background": "#fbf2ed",
+    "surface": "#fbf2ed",
+    "foreground": "#181520",
+    "accent": "#ac6429",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#fbf2ed",
+   "surface": "#e9b784",
+   "foreground": "#181520",
+   "accent": "#ac6429"
+  },
+  "notes": "This palette feels very black and white We could use the surface as a way to add more of the tan gold caramel colors that are in this artwork "
+ },
+ "ab67616d00001e0200087b1314ac8e17bc1c6916": {
+  "verdict": "acceptable",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-ask"
+  ],
+  "palettes": {
+   "sr-off": {
+    "background": "#020401",
+    "surface": "#311f13",
+    "foreground": "#f1e8df",
+    "accent": "#e7a680",
+    "gradient": true
+   },
+   "sr-ask": {
+    "background": "#020401",
+    "surface": "#311f13",
+    "foreground": "#f1e8df",
+    "accent": "#ff4e2a",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020009657a5122a7b3d40458b0": {
+  "verdict": "strong",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#fffbf2",
+    "surface": "#fffbf2",
+    "foreground": "#2a4d23",
+    "accent": "#0c1e12",
+    "gradient": false
+   },
+   "ra3-off": {
+    "background": "#fffbf2",
+    "surface": "#fffbf2",
+    "foreground": "#0c1e12",
+    "accent": "#2a4d23",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000a8aa1dafa651976a7bb44": {
+  "verdict": "strong",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-off"
+  ],
+  "palettes": {
+   "sr-ask": {
+    "background": "#100702",
+    "surface": "#291107",
+    "foreground": "#fbf809",
+    "accent": "#f0d202",
+    "gradient": true
+   },
+   "sr-off": {
+    "background": "#100702",
+    "surface": "#291107",
+    "foreground": "#fbf809",
+    "accent": "#fa8a02",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000acce65f2cf84ea8655e1c": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3b": {
+    "background": "#353537",
+    "surface": "#4a4d52",
+    "foreground": "#fcfcfc",
+    "accent": "#7f80ac",
+    "gradient": false
+   },
+   "calib-3": {
+    "background": "#353537",
+    "surface": "#4a4d52",
+    "foreground": "#fcfcfc",
+    "accent": "#7f80ac",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#353537",
+   "surface": "#7f80ac",
+   "foreground": "#fcfcfc",
+   "accent": "#417779"
+  },
+  "notes": ""
+ },
+ "ab67616d00001e02000b096f0b03b7745c8e8aab": {
+  "verdict": "strong",
+  "batch": "review-17-vivid-series",
+  "applies": [
+   "vivid-series-incumbent",
+   "vivid-series-vivid"
+  ],
+  "palettes": {
+   "vivid-series-incumbent": {
+    "background": "#083808",
+    "surface": "#001802",
+    "foreground": "#f8fdf7",
+    "accent": "#54995a",
+    "gradient": true
+   },
+   "vivid-series-vivid": {
+    "background": "#083808",
+    "surface": "#001802",
+    "foreground": "#f8fdf7",
+    "accent": "#17d21f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000b5fe0db38c29686e103dc": {
+  "verdict": "weak-fallback",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-off",
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-off": {
+    "background": "#f3f3f3",
+    "surface": "#f3f3f3",
+    "foreground": "#010101",
+    "accent": "#012943",
+    "gradient": false
+   },
+   "ra3-on": {
+    "background": "#f3f3f3",
+    "surface": "#f3f3f3",
+    "foreground": "#012943",
+    "accent": "#010101",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000b87c4345d251dd50300f8": {
+  "verdict": "acceptable",
+  "batch": "review-17-vivid-series",
+  "applies": [
+   "vivid-series-vivid"
+  ],
+  "palettes": {
+   "vivid-series-incumbent": {
+    "background": "#efcf92",
+    "surface": "#cca467",
+    "foreground": "#00093c",
+    "accent": "#b68646",
+    "gradient": false
+   },
+   "vivid-series-vivid": {
+    "background": "#efcf92",
+    "surface": "#cca467",
+    "foreground": "#00093c",
+    "accent": "#9e0d2e",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "There are some pretty nice hues around green and blue that could also work nicely as the foreground. The currently selected logbook foreground does work and it is visible in the artwork but visually it has pretty much the same value as the other lighter blue-green hues and so those might have a bigger impact in how much we feel like the palette reflects the artwork "
+ },
+ "ab67616d00001e02000c3523d80259b49a06ee45": {
+  "verdict": "strong",
+  "batch": "batch-31",
+  "applies": [
+   "ra-off",
+   "ra-on"
+  ],
+  "palettes": {
+   "ra-off": {
+    "background": "#1b1829",
+    "surface": "#2e6c85",
+    "foreground": "#f5c98a",
+    "accent": "#bf9376",
+    "gradient": true
+   },
+   "ra-on": {
+    "background": "#1b1829",
+    "surface": "#2e6c85",
+    "foreground": "#d8b688",
+    "accent": "#9c7c71",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "weak preference for option A"
+ },
+ "ab67616d00001e02000c4d52300a016ee65f1622": {
+  "verdict": "strong",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1b": {
+    "background": "#0c070b",
+    "surface": "#300c16",
+    "foreground": "#c6a37b",
+    "accent": "#b67161",
+    "gradient": false
+   },
+   "calib-1": {
+    "background": "#0c070b",
+    "surface": "#300c16",
+    "foreground": "#c6a37b",
+    "accent": "#b67161",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#0c070b",
+   "surface": "#712553",
+   "foreground": "#b67161",
+   "accent": "#d479bf"
+  },
+  "notes": "This palette feels a bit muted compared to the artwork that contains very rich purples and gold beige colors "
+ },
+ "ab67616d00001e02000c5e69af1d6ce16e2b1a61": {
+  "verdict": "strong",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#bcb8b5",
+    "surface": "#8a857f",
+    "foreground": "#441207",
+    "accent": "#020100",
+    "gradient": true
+   },
+   "ra3-off": {
+    "background": "#bcb8b5",
+    "surface": "#8a857f",
+    "foreground": "#020100",
+    "accent": "#441207",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000cd48fb26f462cd33760f6": {
+  "verdict": "strong",
+  "batch": "batch-28",
+  "applies": [
+   "cr-alt"
+  ],
+  "palettes": {
+   "cr-alt": {
+    "background": "#ffffff",
+    "surface": "#ffffff",
+    "foreground": "#a7dbd9",
+    "accent": "#bdf369",
+    "gradient": false
+   },
+   "cr-trunk": {
+    "background": "#ffffff",
+    "surface": "#ffffff",
+    "foreground": "#201f41",
+    "accent": "#b7f07d",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000d457f4b8829a59481e78b": {
+  "verdict": "strong",
+  "batch": "batch-28",
+  "applies": [
+   "cr-trunk",
+   "cr-m1"
+  ],
+  "palettes": {
+   "cr-trunk": {
+    "background": "#fd524b",
+    "surface": "#f9a94a",
+    "foreground": "#fdfcaa",
+    "accent": "#fb8257",
+    "gradient": false
+   },
+   "cr-m1": {
+    "background": "#fd514d",
+    "surface": "#f9a135",
+    "foreground": "#fcfdef",
+    "accent": "#faf43c",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000db903479b2da9843413b1": {
+  "verdict": "acceptable",
+  "batch": "batch-34",
+  "applies": [
+   "gf-off"
+  ],
+  "palettes": {
+   "gf-on": {
+    "background": "#77d0ca",
+    "surface": "#e2d4c7",
+    "foreground": "#20150f",
+    "accent": "#5da1a2",
+    "gradient": true
+   },
+   "gf-off": {
+    "background": "#8ad1cd",
+    "surface": "#e1d1c1",
+    "foreground": "#20150f",
+    "accent": "#5da1a2",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#8ad1cd",
+   "surface": "#e1d1c1",
+   "foreground": "#20150f",
+   "accent": "#ed6569"
+  },
+  "notes": "The accent should be the color of the watermelon in the artwork (Pulp) or of the pineapple (Gold). Or maybe the color of the watermelon rind / pineapple leaves (but that's a bit of a stretch)"
+ },
+ "ab67616d00001e02000dc6372be4c9ffc89fc9df": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1b": {
+    "background": "#1a1303",
+    "surface": "#6d5d2c",
+    "foreground": "#c8b58b",
+    "accent": "#988044",
+    "gradient": true
+   },
+   "calib-1": {
+    "background": "#1a1303",
+    "surface": "#6d5d2c",
+    "foreground": "#c8b58b",
+    "accent": "#988044",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "Main focus area of this artwork is a bright red title with black subtitle written on top of subway tiles with grime leaking on top, and rust colored decorations. The proposed palette seems to be representing what is outside of this main focus area, the olive / muddy colors of a subway track. So technically it does match part of the artwork, but not the right parts."
+ },
+ "ab67616d00001e02000e229142cb6dbae156341c": {
+  "verdict": "strong",
+  "batch": "batch-26",
+  "applies": [
+   "x2-off",
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-coverage": {
+    "background": "#111e14",
+    "surface": "#dc5738",
+    "foreground": "#e8ebe2",
+    "accent": "#d5c675",
+    "gradient": false
+   },
+   "x2-off": {
+    "background": "#101b15",
+    "surface": "#dd5839",
+    "foreground": "#e8ebe2",
+    "accent": "#d5c675",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000eaebc73a8a91dabda71fa": {
+  "verdict": "weak-fallback",
+  "batch": "review-18-vivid-boundary",
+  "applies": [
+   "vivid-series-2-incumbent",
+   "vivid-series-2-vivid"
+  ],
+  "palettes": {
+   "vivid-series-2-incumbent": {
+    "background": "#242424",
+    "surface": "#242424",
+    "foreground": "#f1f9ec",
+    "accent": "#78d429",
+    "gradient": false
+   },
+   "vivid-series-2-vivid": {
+    "background": "#242424",
+    "surface": "#242424",
+    "foreground": "#f1f9ec",
+    "accent": "#7df20d",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#242424",
+   "surface": "#091201",
+   "foreground": "#78d429",
+   "accent": "#f1f9ec"
+  },
+  "notes": "This palette is pretty bad as well. I don't know why the foreground was picked as ghost mint when really this is not the color that reflects this artwork. But in this case, the ghost mint white can serve as the accent "
+ },
+ "ab67616d00001e02000ec9e3bb9ee4fc008b018e": {
+  "verdict": "strong",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3": {
+    "background": "#fab6db",
+    "surface": "#fab6db",
+    "foreground": "#2c2c2c",
+    "accent": "#2c2c2c",
+    "gradient": false
+   },
+   "calib-3b": {
+    "background": "#fab6db",
+    "surface": "#fab6db",
+    "foreground": "#2c2c2c",
+    "accent": "#2c2c2c",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000f723f36271de0ed3aa893": {
+  "verdict": "strong",
+  "batch": "review-17-vivid-series",
+  "applies": [
+   "vivid-series-incumbent",
+   "vivid-series-vivid"
+  ],
+  "palettes": {
+   "vivid-series-vivid": {
+    "background": "#2a0c54",
+    "surface": "#09060d",
+    "foreground": "#f7f2f9",
+    "accent": "#8827c4",
+    "gradient": true
+   },
+   "vivid-series-incumbent": {
+    "background": "#2a0c54",
+    "surface": "#09060d",
+    "foreground": "#f7f2f9",
+    "accent": "#8b65b0",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02000f9f4ba3750dc73886b2ad": {
+  "verdict": "weak-fallback",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#21356a",
+    "surface": "#4d4b59",
+    "foreground": "#f1faf9",
+    "accent": "#eed32e",
+    "gradient": false
+   },
+   "calib-1b": {
+    "background": "#21356a",
+    "surface": "#4d4b59",
+    "foreground": "#f1faf9",
+    "accent": "#eed32e",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "The surface doesn't feel like it comes from this artwork, i don't know where Liver grey is represented.\nThis is also a pretty bad quality artwork, i'm almost tempted to drop it."
+ },
+ "ab67616d00001e0200102a1cdfa1c0f12d6528ea": {
+  "verdict": "strong",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-ask"
+  ],
+  "palettes": {
+   "sr-ask": {
+    "background": "#a9b8cd",
+    "surface": "#014047",
+    "foreground": "#e3eaf2",
+    "accent": "#f4405d",
+    "gradient": true
+   },
+   "sr-off": {
+    "background": "#a9b8cd",
+    "surface": "#014047",
+    "foreground": "#e3eaf2",
+    "accent": "#d79a87",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02001031d1e10290f8e446bd68": {
+  "verdict": "strong",
+  "batch": "batch-26",
+  "applies": [
+   "x2-off",
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-coverage": {
+    "background": "#0c070b",
+    "surface": "#25160f",
+    "foreground": "#faf3ed",
+    "accent": "#e48068",
+    "gradient": true
+   },
+   "x2-off": {
+    "background": "#0c070b",
+    "surface": "#25160f",
+    "foreground": "#faf3ed",
+    "accent": "#e7a37e",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e02001061a3c7a084a0af56580d": {
+  "verdict": "acceptable",
+  "batch": "review-6-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-d-c3"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#6103df",
+    "surface": "#761e14",
+    "foreground": "#fafbf5",
+    "accent": "#fbee61",
+    "gradient": false
+   },
+   "trunk-d-c3": {
+    "background": "#6103df",
+    "surface": "#761e14",
+    "foreground": "#fafbf5",
+    "accent": "#fbee61",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "This artwork should be discarded as invalid (not the palette, the artwork itself is invalid)"
+ },
+ "ab67616d00001e0200106c3252a4c133c0abde36": {
+  "verdict": "strong",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#b6b6b6",
+    "accent": "#fbfbfb",
+    "gradient": false
+   },
+   "calib-1b": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#b6b6b6",
+    "accent": "#fbfbfb",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020010b864b2a925ec6bfaa30e": {
+  "verdict": "strong",
+  "batch": "batch-31",
+  "applies": [
+   "ra-off",
+   "ra-on"
+  ],
+  "palettes": {
+   "ra-on": {
+    "background": "#140210",
+    "surface": "#113b63",
+    "foreground": "#ae66a6",
+    "accent": "#773a8a",
+    "gradient": true
+   },
+   "ra-off": {
+    "background": "#140210",
+    "surface": "#113b63",
+    "foreground": "#fdfdfd",
+    "accent": "#763d8a",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#381b31",
+   "surface": "#113b63",
+   "foreground": "#ae66a6",
+   "accent": "#2279be"
+  },
+  "notes": ""
+ },
+ "ab67616d00001e0200117a3fb2444ed7e04c4721": {
+  "verdict": "strong",
+  "batch": "review-8-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#07395c",
+    "surface": "#095f5c",
+    "foreground": "#eeebf2",
+    "accent": "#178e92",
+    "gradient": true
+   },
+   "trunk-dca4": {
+    "background": "#07395c",
+    "surface": "#095f5c",
+    "foreground": "#eeebf2",
+    "accent": "#178e92",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "This is already excellent. I wonder if a midpoint could make the gradient even richer "
+ },
+ "ab67616d00001e0200124d0597059e8987bc4577": {
+  "verdict": "strong",
+  "batch": "review-19-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-k2"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#1a1b15",
+    "surface": "#573f23",
+    "foreground": "#fdf6ca",
+    "accent": "#b1b522",
+    "gradient": false
+   },
+   "trunk-k2": {
+    "background": "#1a1c0f",
+    "surface": "#6f512d",
+    "foreground": "#fdf6ca",
+    "accent": "#b1b522",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020013bebcaee941ebcc13437c": {
+  "verdict": "acceptable",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-off",
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#a5b1c1",
+    "surface": "#65758e",
+    "foreground": "#d5c47f",
+    "accent": "#19171c",
+    "gradient": true
+   },
+   "ra3-off": {
+    "background": "#a5b1c1",
+    "surface": "#65758e",
+    "foreground": "#19171c",
+    "accent": "#d5c47f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d00001e020014515e58cd4399da62ed02": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2": {
+    "background": "#fbfaf6",
+    "surface": "#fbfaf6",
+    "foreground": "#150d1a",
+    "accent": "#df2816",
+    "gradient": false
+   },
+   "calib-2b": {
+    "background": "#fbfaf6",
+    "surface": "#fbfaf6",
+    "foreground": "#150d1a",
+    "accent": "#df2816",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#fbfaf6",
+   "surface": "#fac4aa",
+   "foreground": "#150d1a",
+   "accent": "#df2816"
+  },
+  "notes": ""
+ },
+ "ab67616d00001e0200148e0886d097d85fd41039": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3": {
+    "background": "#f5d3ee",
+    "surface": "#e92296",
+    "foreground": "#1d271f",
+    "accent": "#224098",
+    "gradient": false
+   },
+   "calib-3b": {
+    "background": "#f5d3ee",
+    "surface": "#e92296",
+    "foreground": "#1d271f",
+    "accent": "#224098",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "we can veto this artwork, it is low quality"
+ },
+ "ab67616d00001e020014adcd67767097b6fb42e0": {
+  "verdict": "strong",
+  "batch": "review-19-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-k2"
+  ],
+  "palettes": {
+   "trunk-k2": {
+    "background": "#046a54",
+    "surface": "#0a2f7d",
+    "foreground": "#fcb912",
+    "accent": "#e2372d",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#046a54",
+    "surface": "#0a2f7d",
+    "foreground": "#e0cecc",
+    "accent": "#fcb912",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "This artwork is probably one of our weak points. It has very clear defined colors, but it's more colours than we can fit in our palettes. Also, the Bayou Green and Royal Navy blue are exactly halfway between a gradient and just a splatter, so either gradient or flat could work "
+ },
+ "ab67616d0000b27300002947b898e4bd572ac4aa": {
+  "verdict": "strong",
+  "batch": "calib-batch-1a",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1b": {
+    "background": "#2e2e2e",
+    "surface": "#1a1a1a",
+    "foreground": "#d3d3d3",
+    "accent": "#8a8a8a",
+    "gradient": true
+   },
+   "calib-1": {
+    "background": "#2e2e2e",
+    "surface": "#1a1a1a",
+    "foreground": "#d3d3d3",
+    "accent": "#8a8a8a",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300009f60aeb150a5db45b47b": {
+  "verdict": "strong",
+  "batch": "batch-26",
+  "applies": [
+   "x2-off",
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-coverage": {
+    "background": "#1c1012",
+    "surface": "#392628",
+    "foreground": "#faf9f7",
+    "accent": "#965f4b",
+    "gradient": true
+   },
+   "x2-off": {
+    "background": "#1d171b",
+    "surface": "#253032",
+    "foreground": "#faf9f7",
+    "accent": "#b8a79f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300014fb430dd1b693e653121": {
+  "verdict": "acceptable",
+  "batch": "review-21-nomination",
+  "applies": [
+   "r-batch-a2"
+  ],
+  "palettes": {
+   "r-batch-a2": {
+    "background": "#11130e",
+    "surface": "#23761e",
+    "foreground": "#f5f5f5",
+    "accent": "#fbd17f",
+    "gradient": true
+   },
+   "r-batch-b2": {
+    "background": "#11130e",
+    "surface": "#23761e",
+    "foreground": "#f5f5f5",
+    "accent": "#98ac27",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300015083990110d3b1a4ea8a": {
+  "verdict": "strong",
+  "batch": "review-10-marks-midpoints",
+  "applies": [
+   "trunk-a5",
+   "c-alt2"
+  ],
+  "palettes": {
+   "trunk-a5": {
+    "background": "#927f92",
+    "surface": "#fcfef9",
+    "foreground": "#23232d",
+    "accent": "#824892",
+    "gradient": false
+   },
+   "c-alt2": {
+    "background": "#927f92",
+    "surface": "#615362",
+    "foreground": "#fcfef9",
+    "accent": "#824892",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300018a0a56bae40350d9fa8e": {
+  "verdict": "strong",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2": {
+    "background": "#f0a808",
+    "surface": "#f0a808",
+    "foreground": "#3e2810",
+    "accent": "#556206",
+    "gradient": false
+   },
+   "calib-2b": {
+    "background": "#f0a808",
+    "surface": "#f0a808",
+    "foreground": "#3e2810",
+    "accent": "#556206",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730001c404b8a04a8789db8dab": {
+  "verdict": "weak-fallback",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-off",
+   "sr-ask"
+  ],
+  "palettes": {
+   "sr-off": {
+    "background": "#070908",
+    "surface": "#070908",
+    "foreground": "#fdf9fa",
+    "accent": "#055226",
+    "gradient": false
+   },
+   "sr-ask": {
+    "background": "#070908",
+    "surface": "#070908",
+    "foreground": "#fdf9fa",
+    "accent": "#ede1bb",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#070908",
+   "surface": "#055226",
+   "foreground": "#ffffff",
+   "accent": "#cec091"
+  },
+  "notes": "In this artwork Woodland Green is an important part of the identity. So not having it makes the palette weaker. \nthis artwork has big white text, which make Snow a very suitable color for the foreground.\nthis artwork has a wide black field, which makes Blackout a very suitable color for the background\nso a way to make this work is to have Woodland Green as the surface, which does fit the artwork's \"intent\", and then keep Cream / Bone as the accent"
+ },
+ "ab67616d0000b273000285d15c911a20ed2ce152": {
+  "verdict": null,
+  "batch": "conversational",
+  "applies": [],
+  "palettes": {},
+  "corrections": {},
+  "notes": "Addendum to the batch-36 strong-both verdict: 'i do have a weak preference for option B with the gradient, but both options work well' \u2014 B = cc-off, the gradient side. Weak lean to KEEPING the gradient on 000285d1."
+ },
+ "ab67616d0000b27300028829f9e78dbe7ce92f7e": {
+  "verdict": "acceptable",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-off",
+   "sr-ask"
+  ],
+  "palettes": {
+   "sr-ask": {
+    "background": "#282129",
+    "surface": "#485b6a",
+    "foreground": "#f6efc1",
+    "accent": "#40e1c2",
+    "gradient": false
+   },
+   "sr-off": {
+    "background": "#282129",
+    "surface": "#485b6a",
+    "foreground": "#f6efc1",
+    "accent": "#e5b3cc",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "Both Tadorna Teal and Blush pink have the same \"value\" in this artwork. They are the 2 main colors making up the identity of the artwork. So here neither palette is stronger because they each carry only one of those 2 colors. A strong palette would carry both."
+ },
+ "ab67616d0000b2730002dc280ccc28cadb7d4ae4": {
+  "verdict": "strong",
+  "batch": "review-17-vivid-series",
+  "applies": [
+   "vivid-series-vivid"
+  ],
+  "palettes": {
+   "vivid-series-incumbent": {
+    "background": "#fefefe",
+    "surface": "#fefefe",
+    "foreground": "#0a0919",
+    "accent": "#12356d",
+    "gradient": false
+   },
+   "vivid-series-vivid": {
+    "background": "#fefefe",
+    "surface": "#fefefe",
+    "foreground": "#0a0919",
+    "accent": "#ea64bb",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730002dfdcde2cb0a75822168c": {
+  "verdict": "unacceptable",
+  "batch": "batch-35",
+  "applies": [
+   "gr-a",
+   "gr-c"
+  ],
+  "palettes": {
+   "gr-a": {
+    "background": "#fcc02c",
+    "surface": "#332616",
+    "foreground": "#030303",
+    "accent": "#1e1c1f",
+    "gradient": true
+   },
+   "gr-c": {
+    "background": "#b6810d",
+    "surface": "#332616",
+    "foreground": "#030303",
+    "accent": "#1e1c1f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000323957b88112ca49b8ee0": {
+  "verdict": "strong",
+  "batch": "batch-36",
+  "applies": [
+   "cc-on"
+  ],
+  "palettes": {
+   "cc-off": {
+    "background": "#e1ded5",
+    "surface": "#663f30",
+    "foreground": "#19100b",
+    "accent": "#2e2017",
+    "gradient": true
+   },
+   "cc-on": {
+    "background": "#dad6cb",
+    "surface": "#dad6cb",
+    "foreground": "#2b2118",
+    "accent": "#763f2a",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300034b1c66ddd55a5337f66a": {
+  "verdict": "strong",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#281832",
+    "surface": "#273d77",
+    "foreground": "#9ae5fc",
+    "accent": "#c3b0c6",
+    "gradient": true
+   },
+   "ra3-off": {
+    "background": "#281832",
+    "surface": "#273d77",
+    "foreground": "#c3b0c6",
+    "accent": "#9ae5fc",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300034b60105d8937440211da": {
+  "verdict": "strong",
+  "batch": "review-15-white-fg-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-h5"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#4b3027",
+    "surface": "#8a5438",
+    "foreground": "#e6dbc9",
+    "accent": "#b39a72",
+    "gradient": false
+   },
+   "trunk-h5": {
+    "background": "#4b3027",
+    "surface": "#8a5438",
+    "foreground": "#e6dbc9",
+    "accent": "#b39a72",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730003580bd2766859c4d81e13": {
+  "verdict": "strong",
+  "batch": "batch-37",
+  "applies": [
+   "gc-flat"
+  ],
+  "palettes": {
+   "gc-flat": {
+    "background": "#dfceba",
+    "surface": "#a9a373",
+    "foreground": "#513f27",
+    "accent": "#fafafa",
+    "gradient": false
+   },
+   "gc-grad": {
+    "background": "#dfceba",
+    "surface": "#a9a373",
+    "foreground": "#513f27",
+    "accent": "#fafafa",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#dfceba",
+   "surface": "#fafafa",
+   "foreground": "#513f27",
+   "accent": "#a9a373"
+  },
+  "notes": ""
+ },
+ "ab67616d0000b27300038e79a0efbc7325db6444": {
+  "verdict": "strong",
+  "batch": "calib-batch-1b",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#070101",
+    "surface": "#570d0c",
+    "foreground": "#cbc2b9",
+    "accent": "#fc0001",
+    "gradient": false
+   },
+   "calib-1b": {
+    "background": "#070101",
+    "surface": "#570d0c",
+    "foreground": "#cbc2b9",
+    "accent": "#fc0001",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#070101",
+   "surface": "#570d0c",
+   "foreground": "#fc0001",
+   "accent": "#cbc2b9"
+  },
+  "notes": "This artwork's main text is bright red (Torch Red) and some light spots are light grey (Dim), so it feels like the foreground and accent roles are flipped in this palette"
+ },
+ "ab67616d0000b273000390c07f75da30b4e8aba8": {
+  "verdict": "weak-fallback",
+  "batch": "batch-38",
+  "applies": [
+   "gc2-flat",
+   "gc2-grad"
+  ],
+  "palettes": {
+   "gc2-grad": {
+    "background": "#fcfaed",
+    "surface": "#f0b691",
+    "foreground": "#364d55",
+    "accent": "#f8e541",
+    "gradient": true
+   },
+   "gc2-flat": {
+    "background": "#fcfaed",
+    "surface": "#f0b691",
+    "foreground": "#364d55",
+    "accent": "#f8e541",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "i wouldn't have expected Snow to be the background when Peach seems to be the dominating field color in the artwork. These palettes feel wrong. An incorrect background makes it very hard to judge the rest of the palette"
+ },
+ "ab67616d0000b27300040defaf772cad7a1738ce": {
+  "verdict": "strong",
+  "batch": "calib-batch-1b",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#1e1e28",
+    "surface": "#3f3148",
+    "foreground": "#c4b3a9",
+    "accent": "#eda9f2",
+    "gradient": true
+   },
+   "calib-1b": {
+    "background": "#1e1e28",
+    "surface": "#3f3148",
+    "foreground": "#c4b3a9",
+    "accent": "#eda9f2",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000442caec7ec8cb724bf265": {
+  "verdict": "strong",
+  "batch": "batch-30",
+  "applies": [
+   "sk-off",
+   "sk-on"
+  ],
+  "palettes": {
+   "sk-on": {
+    "background": "#0d140d",
+    "surface": "#0d140d",
+    "foreground": "#cafb6e",
+    "accent": "#3fcc28",
+    "gradient": false
+   },
+   "sk-off": {
+    "background": "#11110f",
+    "surface": "#112b10",
+    "foreground": "#cafb6e",
+    "accent": "#3fcc28",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "weak preference for option B, even better if option B is a gradient"
+ },
+ "ab67616d0000b27300048db3f62d54e5bbb0f161": {
+  "verdict": "acceptable",
+  "batch": "batch-35",
+  "applies": [
+   "gr-a",
+   "gr-c"
+  ],
+  "palettes": {
+   "gr-c": {
+    "background": "#184888",
+    "surface": "#aa6e92",
+    "foreground": "#441d2f",
+    "accent": "#f2b892",
+    "gradient": true
+   },
+   "gr-a": {
+    "background": "#375593",
+    "surface": "#e89078",
+    "foreground": "#441d2f",
+    "accent": "#f2b892",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "- the midpoint could be better if it was more purple/pink: the artwork is a sunset, and there is clearly a purple-pink zone (maybe Equestrienne?) between the Blue Iris main sky and the Lox sun.\n- i think this palette would be stronger with a white or light grey blue foreground, like the text in this artwork"
+ },
+ "ab67616d0000b2730005230fae1822525e5a5ff6": {
+  "verdict": "strong",
+  "batch": "review-11-seams-diversity",
+  "applies": [
+   "trunk-c5"
+  ],
+  "palettes": {
+   "trunk-a5": {
+    "background": "#eff3f6",
+    "surface": "#d6d7dc",
+    "foreground": "#121117",
+    "accent": "#86858b",
+    "gradient": true
+   },
+   "trunk-c5": {
+    "background": "#eff3f6",
+    "surface": "#d6d7dc",
+    "foreground": "#121117",
+    "accent": "#ee231f",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000531830819a9db4885e928": {
+  "verdict": "acceptable",
+  "batch": "review-18-vivid-boundary",
+  "applies": [
+   "vivid-series-2-incumbent"
+  ],
+  "palettes": {
+   "vivid-series-2-vivid": {
+    "background": "#7c4a27",
+    "surface": "#e7962b",
+    "foreground": "#fbfbef",
+    "accent": "#f51702",
+    "gradient": true
+   },
+   "vivid-series-2-incumbent": {
+    "background": "#7c4a27",
+    "surface": "#e7962b",
+    "foreground": "#fbfbef",
+    "accent": "#fcdc65",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "I'm not sure about the midpoint here. It is visually very close to the background, and not very close to the surface. So, as a result, we have a much shorter distance to transition from midpoint to surface, resulting in a bit of banding\nThe scarlet blaze accent in option A does kinda work, but it is the red of the label icon on the top right corner, which doesn't really belong to the artwork itself "
+ },
+ "ab67616d0000b2730005597105ba1e2d38f62cfc": {
+  "verdict": "strong",
+  "batch": "calib-batch-1b",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1b": {
+    "background": "#1b161a",
+    "surface": "#382926",
+    "foreground": "#7e5b55",
+    "accent": "#eaac87",
+    "gradient": true
+   },
+   "calib-1": {
+    "background": "#1b161a",
+    "surface": "#382926",
+    "foreground": "#7e5b55",
+    "accent": "#eaac87",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730005a91812c85db291ea5d85": {
+  "verdict": "strong",
+  "batch": "batch-31",
+  "applies": [
+   "ra-off",
+   "ra-on"
+  ],
+  "palettes": {
+   "ra-off": {
+    "background": "#1f6998",
+    "surface": "#123146",
+    "foreground": "#f9fcf3",
+    "accent": "#f0d732",
+    "gradient": false
+   },
+   "ra-on": {
+    "background": "#1f6998",
+    "surface": "#123146",
+    "foreground": "#f0d732",
+    "accent": "#e88220",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000626fb25df8b60c4b97ca4": {
+  "verdict": "strong",
+  "batch": "batch-34",
+  "applies": [
+   "gf-on"
+  ],
+  "palettes": {
+   "gf-on": {
+    "background": "#221914",
+    "surface": "#093c8b",
+    "foreground": "#fefefc",
+    "accent": "#f9f019",
+    "gradient": true
+   },
+   "gf-off": {
+    "background": "#221817",
+    "surface": "#1655a5",
+    "foreground": "#fefefc",
+    "accent": "#f9f019",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "both gradient/flat can work for this artwork, but this gradient does seem to represent the artwork well"
+ },
+ "ab67616d0000b273000637ffe82ad17bfa0f1073": {
+  "verdict": "strong",
+  "batch": "review-25-decisions",
+  "applies": [
+   "w-batch-before",
+   "w-batch-after"
+  ],
+  "palettes": {
+   "w-batch-after": {
+    "background": "#424436",
+    "surface": "#2f2e1c",
+    "foreground": "#f6f5f1",
+    "accent": "#99a192",
+    "gradient": true
+   },
+   "w-batch-before": {
+    "background": "#424436",
+    "surface": "#2f2e1c",
+    "foreground": "#f6f5f1",
+    "accent": "#a57e57",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730006a059abb2a6b7dd4ad461": {
+  "verdict": "strong",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3": {
+    "background": "#fafafa",
+    "surface": "#d9d9d9",
+    "foreground": "#111111",
+    "accent": "#cd1a1d",
+    "gradient": false
+   },
+   "calib-3b": {
+    "background": "#fafafa",
+    "surface": "#d9d9d9",
+    "foreground": "#111111",
+    "accent": "#cd1a1d",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730006c5d727b329e4477f4a81": {
+  "verdict": "strong",
+  "batch": "review-21-nomination",
+  "applies": [
+   "r-batch-b"
+  ],
+  "palettes": {
+   "r-batch-a": {
+    "background": "#0e0e28",
+    "surface": "#2a284d",
+    "foreground": "#f3f5f4",
+    "accent": "#c27f62",
+    "gradient": false
+   },
+   "r-batch-b": {
+    "background": "#0e0e28",
+    "surface": "#2a284d",
+    "foreground": "#f3f5f4",
+    "accent": "#f5c982",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730007447dce968ba3a4066044": {
+  "verdict": "acceptable",
+  "batch": "batch-34",
+  "applies": [
+   "gf-on"
+  ],
+  "palettes": {
+   "gf-off": {
+    "background": "#131313",
+    "surface": "#131313",
+    "foreground": "#ececee",
+    "accent": "#404066",
+    "gradient": false
+   },
+   "gf-on": {
+    "background": "#151515",
+    "surface": "#3f3d62",
+    "foreground": "#ececee",
+    "accent": "#6c589f",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#151515",
+   "surface": "#3f3d62",
+   "foreground": "#ececee",
+   "accent": "#842c68"
+  },
+  "notes": "with the gradient now representing the purple hue, we could use the accent to represent the red-bordeaux hue (for example Berry Velvet #842c68) instead of letting both be purple. Purple is indeed more important in this artwork, so if both surface and background are black, we have to use the accent to incorporate purple. But now that we have a purple surface, the accent is \"free\"."
+ },
+ "ab67616d0000b27300075841f68d8cd71db368d8": {
+  "verdict": "strong",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-off",
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#000000",
+    "surface": "#1b0e06",
+    "foreground": "#d7b184",
+    "accent": "#fdfdfd",
+    "gradient": false
+   },
+   "ra3-off": {
+    "background": "#000000",
+    "surface": "#1b0e06",
+    "foreground": "#fdfdfd",
+    "accent": "#d7b184",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730007960724fb77c8041c6c13": {
+  "verdict": "strong",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2": {
+    "background": "#ab2266",
+    "surface": "#1f636c",
+    "foreground": "#50fdf7",
+    "accent": "#faef9d",
+    "gradient": true
+   },
+   "calib-2b": {
+    "background": "#ab2266",
+    "surface": "#1f636c",
+    "foreground": "#50fdf7",
+    "accent": "#faef9d",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300079f9ad0372526979bfb09": {
+  "verdict": "weak-fallback",
+  "batch": "batch-38",
+  "applies": [
+   "gc2-grad"
+  ],
+  "palettes": {
+   "gc2-grad": {
+    "background": "#242328",
+    "surface": "#6b3e45",
+    "foreground": "#b98285",
+    "accent": "#ededed",
+    "gradient": true
+   },
+   "gc2-flat": {
+    "background": "#242328",
+    "surface": "#6b3e45",
+    "foreground": "#b98285",
+    "accent": "#ededed",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#242328",
+   "surface": "#953c5c",
+   "foreground": "#b98285",
+   "accent": "#ededed"
+  },
+  "notes": "I don't really see where this Cherrywood surface comes from. I do think this artwork wants a gradient field, but probably surface should be closer to Beaujolais to match the artwork."
+ },
+ "ab67616d0000b2730007cc8b341c11227aa7b461": {
+  "verdict": "strong",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-ask"
+  ],
+  "palettes": {
+   "sr-ask": {
+    "background": "#5d856b",
+    "surface": "#99bece",
+    "foreground": "#fbfbfb",
+    "accent": "#f06d13",
+    "gradient": true
+   },
+   "sr-off": {
+    "background": "#5d856b",
+    "surface": "#99bece",
+    "foreground": "#fbfbfb",
+    "accent": "#242426",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730007d42f64cb70acce41c71d": {
+  "verdict": "strong",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3b": {
+    "background": "#020202",
+    "surface": "#1b1b11",
+    "foreground": "#fcfdef",
+    "accent": "#b8a79d",
+    "gradient": false
+   },
+   "calib-3": {
+    "background": "#020202",
+    "surface": "#1b1b11",
+    "foreground": "#fcfdef",
+    "accent": "#b8a79d",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300081dec93652e6af2582192": {
+  "verdict": "strong",
+  "batch": "review-14-b2",
+  "applies": [
+   "trunk-h",
+   "trunk-b7"
+  ],
+  "palettes": {
+   "trunk-h": {
+    "background": "#56667f",
+    "surface": "#978f9c",
+    "foreground": "#fafcf9",
+    "accent": "#bdc6cf",
+    "gradient": true
+   },
+   "trunk-b7": {
+    "background": "#6c7487",
+    "surface": "#c7b9b6",
+    "foreground": "#fafcf9",
+    "accent": "#a06d52",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300083cc5b8d8d2e7ca7147cd": {
+  "verdict": "strong",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2": {
+    "background": "#700e63",
+    "surface": "#fac1c7",
+    "foreground": "#371432",
+    "accent": "#180a21",
+    "gradient": true
+   },
+   "calib-2b": {
+    "background": "#700e63",
+    "surface": "#fac1c7",
+    "foreground": "#371432",
+    "accent": "#180a21",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730008601958194a047b8e75a3": {
+  "verdict": "acceptable",
+  "batch": "review-24-coverage",
+  "applies": [
+   "x-coverage-alternative"
+  ],
+  "palettes": {
+   "x-coverage-alternative": {
+    "background": "#89be90",
+    "surface": "#4eab8e",
+    "foreground": "#623c39",
+    "accent": "#faba50",
+    "gradient": false
+   },
+   "x-coverage-incumbent": {
+    "background": "#623c39",
+    "surface": "#623c39",
+    "foreground": "#faf4e8",
+    "accent": "#fbb94b",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300088460068752fad04f8541": {
+  "verdict": "strong",
+  "batch": "review-8-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#f9b6f9",
+    "accent": "#f7f7f7",
+    "gradient": false
+   },
+   "trunk-dca4": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#f6f4f7",
+    "accent": "#9f045f",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730008a072e88d67d38dfc2556": {
+  "verdict": "strong",
+  "batch": "batch-37",
+  "applies": [
+   "gc-flat",
+   "gc-grad"
+  ],
+  "palettes": {
+   "gc-flat": {
+    "background": "#e3e1cc",
+    "surface": "#e1d48e",
+    "foreground": "#9b282f",
+    "accent": "#383a77",
+    "gradient": false
+   },
+   "gc-grad": {
+    "background": "#e3e1cc",
+    "surface": "#e1d48e",
+    "foreground": "#9b282f",
+    "accent": "#383a77",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730008c1c08433aa880aad7f30": {
+  "verdict": "strong",
+  "batch": "review-24-coverage",
+  "applies": [
+   "x-coverage-alternative"
+  ],
+  "palettes": {
+   "x-coverage-incumbent": {
+    "background": "#99cdc9",
+    "surface": "#c4dbd5",
+    "foreground": "#303942",
+    "accent": "#2c7268",
+    "gradient": true
+   },
+   "x-coverage-alternative": {
+    "background": "#9dcfcc",
+    "surface": "#ccddd7",
+    "foreground": "#297269",
+    "accent": "#ce9f71",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#9dcfcc",
+   "surface": "#ccddd7",
+   "foreground": "#297269",
+   "accent": "#fcfef0"
+  },
+  "notes": ""
+ },
+ "ab67616d0000b273000913b3e9ae2c7173d1a8b2": {
+  "verdict": "strong",
+  "batch": "review-8-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#481232",
+    "surface": "#51454f",
+    "foreground": "#fbb6ef",
+    "accent": "#cd4fa1",
+    "gradient": true
+   },
+   "trunk-dca4": {
+    "background": "#481232",
+    "surface": "#51454f",
+    "foreground": "#fbb6ef",
+    "accent": "#cd4fa1",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "This palette is already very good, but I wonder if a midpoint could maybe improve it "
+ },
+ "ab67616d0000b27300092c140fe03d08e0dc906a": {
+  "verdict": "strong",
+  "batch": "batch-34",
+  "applies": [
+   "gf-off"
+  ],
+  "palettes": {
+   "gf-off": {
+    "background": "#0041fd",
+    "surface": "#0041fd",
+    "foreground": "#efe1ee",
+    "accent": "#a9b1f2",
+    "gradient": false
+   },
+   "gf-on": {
+    "background": "#d5d5f1",
+    "surface": "#345eff",
+    "foreground": "#efe1ee",
+    "accent": "#a9b1f2",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#0041fd",
+   "surface": "#6987f7",
+   "foreground": "#efe1ee",
+   "accent": "#d5d5f1"
+  },
+  "notes": "This artwork is an exception, because \n- it clearly contains a very strong blue-to-white gradient\n- it *only* contains blue and white\nbecause of its limited \"range\" of hues, using a gradient as a background guarantees that both colors are used in the background (white and blue) and that the foreground colors (foreground and accent) will be almost impossible to distinguish in *at least some parts* of the gradient.\n\nThere is technically a way to represent both: limit the background gradient to only a portion of the full range (for example deep blue Nazar to light blue Skinny Jeans) and then use the rest of the range for the foreground and accent. I did an example of this in \"One palette you'd endorse\" below."
+ },
+ "ab67616d0000b273000936275a2446e5739034e5": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3b": {
+    "background": "#4c4032",
+    "surface": "#85684a",
+    "foreground": "#ebfaff",
+    "accent": "#cb9636",
+    "gradient": true
+   },
+   "calib-3": {
+    "background": "#4c4032",
+    "surface": "#85684a",
+    "foreground": "#ebfaff",
+    "accent": "#cb9636",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#4c4032",
+   "surface": "#ebfaff",
+   "foreground": "#cb9636",
+   "accent": "#637cbc"
+  },
+  "notes": "- we're missing the mauve color from this artwork\n- the midpoint is weird, the field now looks like \"beige-brown -> black -> beige-brown\" which feels more like a weird artifact and less like a smooth gradient\n- the palette proposed in \"One palette you'd endorse\" is not meant to have a gradient, but there are no controls for gradient / midpoint in the UI"
+ },
+ "ab67616d0000b2730009448702be55dfc86fde67": {
+  "verdict": "strong",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3b": {
+    "background": "#efebdf",
+    "surface": "#d0c9c3",
+    "foreground": "#44252a",
+    "accent": "#695f67",
+    "gradient": true
+   },
+   "calib-3": {
+    "background": "#efebdf",
+    "surface": "#d0c9c3",
+    "foreground": "#44252a",
+    "accent": "#695f67",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#efebdf",
+   "surface": "#d0c9c3",
+   "foreground": "#44252a",
+   "accent": "#784144"
+  },
+  "notes": ""
+ },
+ "ab67616d0000b273000955ccfc1e8da97a09b32d": {
+  "verdict": "strong",
+  "batch": "review-16-frames-accents",
+  "applies": [
+   "alt-16"
+  ],
+  "palettes": {
+   "trunk-k": {
+    "background": "#fbbb4d",
+    "surface": "#fbbb4d",
+    "foreground": "#131313",
+    "accent": "#997634",
+    "gradient": false
+   },
+   "alt-16": {
+    "background": "#fbbb4d",
+    "surface": "#fbbb4d",
+    "foreground": "#131313",
+    "accent": "#131313",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300097e55f9a93ceb03afa4b2": {
+  "verdict": "strong",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-off",
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-off": {
+    "background": "#c03902",
+    "surface": "#df5304",
+    "foreground": "#020204",
+    "accent": "#93dcfc",
+    "gradient": false
+   },
+   "ra3-on": {
+    "background": "#c03902",
+    "surface": "#df5304",
+    "foreground": "#93dcfc",
+    "accent": "#020204",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "personal preference for option A\nmight work well as a gradient, not sure"
+ },
+ "ab67616d0000b27300099f4221cf6ed5f2440904": {
+  "verdict": "strong",
+  "batch": "review-9-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#6c5d58",
+    "surface": "#4b3631",
+    "foreground": "#8ba3bd",
+    "accent": "#0e0906",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#6c5d58",
+    "surface": "#4b3631",
+    "foreground": "#8ba3bd",
+    "accent": "#0e0906",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730009d178a401f9433fdddff2": {
+  "verdict": "strong",
+  "batch": "batch-34",
+  "applies": [
+   "gf-on"
+  ],
+  "palettes": {
+   "gf-off": {
+    "background": "#000000",
+    "surface": "#c42a42",
+    "foreground": "#fafafa",
+    "accent": "#15a6a9",
+    "gradient": false
+   },
+   "gf-on": {
+    "background": "#000000",
+    "surface": "#aa375e",
+    "foreground": "#f5f7f4",
+    "accent": "#15a6a9",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730009ee6f6835bed9a0e41752": {
+  "verdict": "acceptable",
+  "batch": "review-22-floors",
+  "applies": [
+   "q2-after"
+  ],
+  "palettes": {
+   "q2-after": {
+    "background": "#54a0c4",
+    "surface": "#1b70b3",
+    "foreground": "#f8aebf",
+    "accent": "#f8e0a0",
+    "gradient": true
+   },
+   "q2-before": {
+    "background": "#54a0c4",
+    "surface": "#1b70b3",
+    "foreground": "#2b1311",
+    "accent": "#f8e0a0",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#54a0c4",
+   "surface": "#1b70b3",
+   "foreground": "#f8e0a0",
+   "accent": "#f8aebf"
+  },
+  "notes": "In this artwork the main text is vanilla, so we could use that as the foreground and then have the Chantilly pink as the accent that would fit the artwork more "
+ },
+ "ab67616d0000b273000a24cc32b3d8b6e31bc161": {
+  "verdict": "strong",
+  "batch": "batch-37",
+  "applies": [
+   "gc-grad"
+  ],
+  "palettes": {
+   "gc-flat": {
+    "background": "#010101",
+    "surface": "#613335",
+    "foreground": "#e0cdc6",
+    "accent": "#c19570",
+    "gradient": false
+   },
+   "gc-grad": {
+    "background": "#010101",
+    "surface": "#613335",
+    "foreground": "#e0cdc6",
+    "accent": "#c19570",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000a2927c0f27657e4a2aeaa": {
+  "verdict": null,
+  "batch": "conversational",
+  "applies": [],
+  "palettes": {},
+  "corrections": {},
+  "notes": "Sharpening the Slate-accent sample: 'in this case Slate #706c6d almost acts as a true *accent* since the entire palette is red.' Principle: accent-ness is CONTEXTUAL to the palette, not absolute \u2014 the accent role is what stands apart from the palette's dominant hue field. In a monochromatic (all-red) palette a neutral is the true accent; in a neutral-heavy palette a chromatic color is. Current machinery scores accent chroma/identity absolutely; it has no notion of within-palette distinctiveness as the accent's job."
+ },
+ "ab67616d0000b273000a392cb5a08d9801562845": {
+  "verdict": "strong",
+  "batch": "review-20-fg-boundary",
+  "applies": [
+   "fg-boundary-alt"
+  ],
+  "palettes": {
+   "fg-boundary-current": {
+    "background": "#242424",
+    "surface": "#000000",
+    "foreground": "#f7f7f5",
+    "accent": "#ffd800",
+    "gradient": false
+   },
+   "fg-boundary-alt": {
+    "background": "#242424",
+    "surface": "#000000",
+    "foreground": "#ffd800",
+    "accent": "#f7f7f5",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000a9e0be9521986cc08839e": {
+  "verdict": "strong",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2": {
+    "background": "#4f1337",
+    "surface": "#277722",
+    "foreground": "#fcf7fd",
+    "accent": "#a1bd34",
+    "gradient": true
+   },
+   "calib-2b": {
+    "background": "#4f1337",
+    "surface": "#277722",
+    "foreground": "#fcf7fd",
+    "accent": "#a1bd34",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000aa22923f3a9064c0e525b": {
+  "verdict": "strong",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-off",
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#09171a",
+    "surface": "#768572",
+    "foreground": "#ceb384",
+    "accent": "#fafbf3",
+    "gradient": true
+   },
+   "ra3-off": {
+    "background": "#09171a",
+    "surface": "#768572",
+    "foreground": "#fafbf3",
+    "accent": "#ceb384",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000b62d7cd2fff24d03bc962": {
+  "verdict": "acceptable",
+  "batch": "batch-38",
+  "applies": [
+   "gc2-flat"
+  ],
+  "palettes": {
+   "gc2-flat": {
+    "background": "#f8f8f6",
+    "surface": "#fab17c",
+    "foreground": "#bd0209",
+    "accent": "#596d0a",
+    "gradient": false
+   },
+   "gc2-grad": {
+    "background": "#f8f8f6",
+    "surface": "#fab17c",
+    "foreground": "#bd0209",
+    "accent": "#596d0a",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000bc98f315aba36374f9f93": {
+  "verdict": "strong",
+  "batch": "batch-37",
+  "applies": [
+   "gc-flat"
+  ],
+  "palettes": {
+   "gc-grad": {
+    "background": "#000000",
+    "surface": "#ed1592",
+    "foreground": "#ffffff",
+    "accent": "#ffec01",
+    "gradient": true
+   },
+   "gc-flat": {
+    "background": "#000000",
+    "surface": "#ed1592",
+    "foreground": "#ffffff",
+    "accent": "#ffec01",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000c42c61ba60f69e5a40a29": {
+  "verdict": "strong",
+  "batch": "sr-batch",
+  "applies": [
+   "sr-ask"
+  ],
+  "palettes": {
+   "sr-ask": {
+    "background": "#5e2f05",
+    "surface": "#b56b00",
+    "foreground": "#fbfdf8",
+    "accent": "#fdfc0c",
+    "gradient": true
+   },
+   "sr-off": {
+    "background": "#5e2f05",
+    "surface": "#b56b00",
+    "foreground": "#fbfdf8",
+    "accent": "#de9b06",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000c73c8b330d72e642629ad": {
+  "verdict": "acceptable",
+  "batch": "batch-38",
+  "applies": [
+   "gc2-flat"
+  ],
+  "palettes": {
+   "gc2-flat": {
+    "background": "#011128",
+    "surface": "#0d4230",
+    "foreground": "#e6eef1",
+    "accent": "#d50f10",
+    "gradient": false
+   },
+   "gc2-grad": {
+    "background": "#011128",
+    "surface": "#0d4230",
+    "foreground": "#e6eef1",
+    "accent": "#d50f10",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000d5cdbc67ed815efc360ad": {
+  "verdict": "strong",
+  "batch": "batch-28",
+  "applies": [
+   "cr-m1",
+   "cr-alt"
+  ],
+  "palettes": {
+   "cr-alt": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#e4b144",
+    "accent": "#f22632",
+    "gradient": false
+   },
+   "cr-m1": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#f7de67",
+    "accent": "#f22632",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000d8049603d6ab7f5d759bb": {
+  "verdict": "strong",
+  "batch": "review-22-floors",
+  "applies": [
+   "q2-before",
+   "q2-after"
+  ],
+  "palettes": {
+   "q2-after": {
+    "background": "#0e0701",
+    "surface": "#301e08",
+    "foreground": "#fafcf1",
+    "accent": "#774e0c",
+    "gradient": true
+   },
+   "q2-before": {
+    "background": "#0d0804",
+    "surface": "#010101",
+    "foreground": "#fafcf1",
+    "accent": "#774e0c",
+    "gradient": true
+   }
+  },
+  "corrections": {
+   "background": "#0e0701",
+   "surface": "#6e480a",
+   "foreground": "#fafcf1",
+   "accent": "#692906"
+  },
+  "notes": ""
+ },
+ "ab67616d0000b273000e229142cb6dbae156341c": {
+  "verdict": "weak-fallback",
+  "batch": "batch-38",
+  "applies": [
+   "gc2-grad"
+  ],
+  "palettes": {
+   "gc2-grad": {
+    "background": "#0c1416",
+    "surface": "#264010",
+    "foreground": "#e8ebe2",
+    "accent": "#dd5839",
+    "gradient": true
+   },
+   "gc2-flat": {
+    "background": "#0c1416",
+    "surface": "#264010",
+    "foreground": "#e8ebe2",
+    "accent": "#dd5839",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000e440b3d59e91eb43040ee": {
+  "verdict": "strong",
+  "batch": "batch-38",
+  "applies": [
+   "gc2-flat"
+  ],
+  "palettes": {
+   "gc2-flat": {
+    "background": "#e1ddda",
+    "surface": "#84d8be",
+    "foreground": "#1b594c",
+    "accent": "#223228",
+    "gradient": false
+   },
+   "gc2-grad": {
+    "background": "#e1ddda",
+    "surface": "#84d8be",
+    "foreground": "#1b594c",
+    "accent": "#223228",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000e91d6c3b44e900d334a78": {
+  "verdict": "strong",
+  "batch": "review-20-fg-boundary",
+  "applies": [
+   "fg-boundary-alt"
+  ],
+  "palettes": {
+   "fg-boundary-alt": {
+    "background": "#383838",
+    "surface": "#1a1a1c",
+    "foreground": "#fbf072",
+    "accent": "#f94d37",
+    "gradient": true
+   },
+   "fg-boundary-current": {
+    "background": "#383838",
+    "surface": "#1a1a1c",
+    "foreground": "#e1ddda",
+    "accent": "#fbf072",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000ec4aa76a94a5ba13c5946": {
+  "verdict": "weak-fallback",
+  "batch": "batch-37",
+  "applies": [
+   "gc-flat",
+   "gc-grad"
+  ],
+  "palettes": {
+   "gc-grad": {
+    "background": "#f1f0ec",
+    "surface": "#483469",
+    "foreground": "#ddd1c3",
+    "accent": "#d44b91",
+    "gradient": true
+   },
+   "gc-flat": {
+    "background": "#f1f0ec",
+    "surface": "#483469",
+    "foreground": "#ddd1c3",
+    "accent": "#d44b91",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#483469",
+   "surface": "#be4f70",
+   "foreground": "#ddd1c3",
+   "accent": "#48837f"
+  },
+  "notes": "it is hard to rank these palettes about the gradient because I think the main issue is that this background is incorrect. It relied too much on the thin white frame around the outside, and completely failed to convey the real artwork's background which is likely closer to the Lava Stone purple.\nThen the surface can be another color, the other dominant background color in the artwork seems to be Rhubarb pink, which makes for a nice gradient (but doesn't *have* to be a gradient)\n"
+ },
+ "ab67616d0000b273000f58e77c6b56afa4666ad0": {
+  "verdict": "acceptable",
+  "batch": "batch-31",
+  "applies": [
+   "ra-off"
+  ],
+  "palettes": {
+   "ra-off": {
+    "background": "#413877",
+    "surface": "#803d60",
+    "foreground": "#df828d",
+    "accent": "#fba035",
+    "gradient": false
+   },
+   "ra-on": {
+    "background": "#171c16",
+    "surface": "#171c16",
+    "foreground": "#fba035",
+    "accent": "#803d60",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#413877",
+   "surface": "#413877",
+   "foreground": "#fba035",
+   "accent": "#df828d"
+  },
+  "notes": ""
+ },
+ "ab67616d0000b273000f815611cd5966187e2051": {
+  "verdict": "acceptable",
+  "batch": "batch-36",
+  "applies": [
+   "cc-off",
+   "cc-on"
+  ],
+  "palettes": {
+   "cc-on": {
+    "background": "#dbdce1",
+    "surface": "#fbfbfb",
+    "foreground": "#1d1a21",
+    "accent": "#8e672c",
+    "gradient": false
+   },
+   "cc-off": {
+    "background": "#dbdce1",
+    "surface": "#fbfbfb",
+    "foreground": "#1d1a21",
+    "accent": "#8e672c",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273000fa9b53f161dc999ef557d": {
+  "verdict": "strong",
+  "batch": "batch-37",
+  "applies": [
+   "gc-flat"
+  ],
+  "palettes": {
+   "gc-grad": {
+    "background": "#fbfbf9",
+    "surface": "#fde310",
+    "foreground": "#242021",
+    "accent": "#c27b21",
+    "gradient": true
+   },
+   "gc-flat": {
+    "background": "#fbfbf9",
+    "surface": "#fde310",
+    "foreground": "#242021",
+    "accent": "#c27b21",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#fbfbf9",
+   "surface": "#fde310",
+   "foreground": "#242021",
+   "accent": "#fa981d"
+  },
+  "notes": ""
+ },
+ "ab67616d0000b27300100a3e9c764acf01c16db8": {
+  "verdict": "acceptable",
+  "batch": "review-9-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#80bbf7",
+    "surface": "#b6debc",
+    "foreground": "#090810",
+    "accent": "#4c4859",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#80bbf7",
+    "surface": "#b6debc",
+    "foreground": "#090810",
+    "accent": "#4c4859",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300103a3729bf589e0dc913ab": {
+  "verdict": "acceptable",
+  "batch": "batch-26",
+  "applies": [
+   "x2-off",
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-off": {
+    "background": "#8ba3ad",
+    "surface": "#a8bbc1",
+    "foreground": "#1d2226",
+    "accent": "#f9f9ef",
+    "gradient": false
+   },
+   "x2-coverage": {
+    "background": "#1d2226",
+    "surface": "#563e24",
+    "foreground": "#c0b98b",
+    "accent": "#f9f9ef",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300103a4dcd62e3dd6f76d123": {
+  "verdict": "strong",
+  "batch": "calib-batch-1b",
+  "applies": [
+   "calib-1",
+   "calib-1b"
+  ],
+  "palettes": {
+   "calib-1": {
+    "background": "#1a232a",
+    "surface": "#3a4c56",
+    "foreground": "#e9efed",
+    "accent": "#bd0c16",
+    "gradient": true
+   },
+   "calib-1b": {
+    "background": "#1a232a",
+    "surface": "#3a4c56",
+    "foreground": "#e9efed",
+    "accent": "#bd0c16",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273001063830a2e597293293797": {
+  "verdict": "strong",
+  "batch": "review-8-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#090a0c",
+    "surface": "#273a48",
+    "foreground": "#7599a5",
+    "accent": "#405c71",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#090a0c",
+    "surface": "#273a48",
+    "foreground": "#5f7f8e",
+    "accent": "#405a6b",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730010bcd17e41331debec2bd5": {
+  "verdict": "strong",
+  "batch": "review-13-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-h"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#ffffff",
+    "surface": "#ffffff",
+    "foreground": "#030303",
+    "accent": "#cc282f",
+    "gradient": false
+   },
+   "trunk-h": {
+    "background": "#ffffff",
+    "surface": "#ffffff",
+    "foreground": "#030303",
+    "accent": "#cc282f",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730010def2c33a308e8bd193f8": {
+  "verdict": "strong",
+  "batch": "review-19-fresh",
+  "applies": [
+   "v2-2",
+   "trunk-k2"
+  ],
+  "palettes": {
+   "trunk-k2": {
+    "background": "#0c0b09",
+    "surface": "#2e2e24",
+    "foreground": "#faf9f7",
+    "accent": "#8a8774",
+    "gradient": false
+   },
+   "v2-2": {
+    "background": "#0c0b09",
+    "surface": "#2e2e24",
+    "foreground": "#faf9f7",
+    "accent": "#8a8774",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b273001102263870e8b11c13ec31": {
+  "verdict": "strong",
+  "batch": "review-14-b2",
+  "applies": [
+   "trunk-h",
+   "trunk-b7"
+  ],
+  "palettes": {
+   "trunk-b7": {
+    "background": "#8e8580",
+    "surface": "#d7ae8e",
+    "foreground": "#081c23",
+    "accent": "#6a5c5b",
+    "gradient": true
+   },
+   "trunk-h": {
+    "background": "#8e8580",
+    "surface": "#d7ae8e",
+    "foreground": "#020a0d",
+    "accent": "#3f322c",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300113e357f86250837b99d13": {
+  "verdict": "acceptable",
+  "batch": "review-17-vivid-series",
+  "applies": [
+   "vivid-series-incumbent",
+   "vivid-series-vivid"
+  ],
+  "palettes": {
+   "vivid-series-vivid": {
+    "background": "#98aad2",
+    "surface": "#c8d1e0",
+    "foreground": "#2c2216",
+    "accent": "#da2723",
+    "gradient": true
+   },
+   "vivid-series-incumbent": {
+    "background": "#98aad2",
+    "surface": "#c8d1e0",
+    "foreground": "#2c2216",
+    "accent": "#e7e38c",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "These palettes work and they're definitely good. However, I'm wondering whether we might want to have both the fire accent and still keep the elder flower color maybe as the surface (in which case there wouldn't be a gradient). I don't know I'm not sure but they they do work "
+ },
+ "ab67616d0000b27300116380305ae5fd3607c43b": {
+  "verdict": "strong",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2b": {
+    "background": "#bc0d0a",
+    "surface": "#d98d13",
+    "foreground": "#f1e9e6",
+    "accent": "#17933b",
+    "gradient": false
+   },
+   "calib-2": {
+    "background": "#bc0d0a",
+    "surface": "#d98d13",
+    "foreground": "#f1e9e6",
+    "accent": "#17933b",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730011c0148119c34e2b222b02": {
+  "verdict": "acceptable",
+  "batch": "review-10-marks-midpoints",
+  "applies": [
+   "trunk-a5",
+   "trunk-b4"
+  ],
+  "palettes": {
+   "trunk-a5": {
+    "background": "#0e1317",
+    "surface": "#2d4a84",
+    "foreground": "#f5f9fa",
+    "accent": "#8d9fc3",
+    "gradient": true
+   },
+   "trunk-b4": {
+    "background": "#0e1317",
+    "surface": "#2d4a84",
+    "foreground": "#f5f9fa",
+    "accent": "#8d9fc3",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "A red hue for the accent would work nice here. Something like Bordeaux or Bruise or Film Noir. There are a few in the roll corrections "
+ },
+ "ab67616d0000b2730011c1dcb3a4a0cd92bdf203": {
+  "verdict": "acceptable",
+  "batch": "batch-33",
+  "applies": [
+   "ra3-off",
+   "ra3-on"
+  ],
+  "palettes": {
+   "ra3-on": {
+    "background": "#0c0807",
+    "surface": "#221713",
+    "foreground": "#ecde95",
+    "accent": "#f7f7f7",
+    "gradient": false
+   },
+   "ra3-off": {
+    "background": "#0c0807",
+    "surface": "#221713",
+    "foreground": "#f7f7f7",
+    "accent": "#ecde95",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b27300127e4552b22c761d50c8f5": {
+  "verdict": "strong",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3": {
+    "background": "#0278a8",
+    "surface": "#eaecdf",
+    "foreground": "#050908",
+    "accent": "#99330d",
+    "gradient": true
+   },
+   "calib-3b": {
+    "background": "#0278a8",
+    "surface": "#eaecdf",
+    "foreground": "#050908",
+    "accent": "#99330d",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "This palette works, but I think the gradient doesn't go far enough. It could represent almost the entirety of the artwork's field by using Bleu Ciel (gackground) -> Linen (midpoint) -> Amber (surface), which I think should be supported by the topology of this artwork."
+ },
+ "ab67616d0000b2730012eb9ade9c1bf4a5411c5d": {
+  "verdict": "acceptable",
+  "batch": "batch-26",
+  "applies": [
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-coverage": {
+    "background": "#040205",
+    "surface": "#20365f",
+    "foreground": "#e9e9eb",
+    "accent": "#96d1a5",
+    "gradient": false
+   },
+   "x2-off": {
+    "background": "#040205",
+    "surface": "#1a272f",
+    "foreground": "#e9e9eb",
+    "accent": "#96d1a5",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730013055bc2b2fbe8228e62c4": {
+  "verdict": "acceptable",
+  "batch": "review-19-fresh",
+  "applies": [
+   "trunk-k2"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#2c2723",
+    "surface": "#443f3c",
+    "foreground": "#fbfbfb",
+    "accent": "#d5bcc2",
+    "gradient": true
+   },
+   "trunk-k2": {
+    "background": "#2c2723",
+    "surface": "#443f3c",
+    "foreground": "#fbfbfb",
+    "accent": "#96b4fd",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730013e7782db25f28b59084ec": {
+  "verdict": "strong",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3b": {
+    "background": "#18130f",
+    "surface": "#d5cebe",
+    "foreground": "#fcfcfc",
+    "accent": "#fac751",
+    "gradient": true
+   },
+   "calib-3": {
+    "background": "#18130f",
+    "surface": "#d5cebe",
+    "foreground": "#fcfcfc",
+    "accent": "#fac751",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "ab67616d0000b2730013f0c1413596008703e3f3": {
+  "verdict": "acceptable",
+  "batch": "calib-batch-3",
+  "applies": [
+   "calib-3",
+   "calib-3b"
+  ],
+  "palettes": {
+   "calib-3": {
+    "background": "#010101",
+    "surface": "#fa95cf",
+    "foreground": "#ffffff",
+    "accent": "#fdc53a",
+    "gradient": false
+   },
+   "calib-3b": {
+    "background": "#010101",
+    "surface": "#fa95cf",
+    "foreground": "#ffffff",
+    "accent": "#fdc53a",
+    "gradient": false
+   }
+  },
+  "corrections": {
+   "background": "#010101",
+   "surface": "#fa95cf",
+   "foreground": "#21cab3",
+   "accent": "#fdc53a"
+  },
+  "notes": "this palette is missing an important color from the artwork (some neon teal green) and instead uses Snow white, which doesn't weigh much in the artwork's identity. "
+ },
+ "ab67616d0000b2730014cb7f2229ff8195e3ba04": {
+  "verdict": "strong",
+  "batch": "calib-batch-2",
+  "applies": [
+   "calib-2",
+   "calib-2b"
+  ],
+  "palettes": {
+   "calib-2b": {
+    "background": "#0f0f0f",
+    "surface": "#6b6f7a",
+    "foreground": "#929fb2",
+    "accent": "#572816",
+    "gradient": true
+   },
+   "calib-2": {
+    "background": "#0f0f0f",
+    "surface": "#6b6f7a",
+    "foreground": "#929fb2",
+    "accent": "#572816",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "artofficial": {
+  "verdict": "strong",
+  "batch": "review-3-identity",
+  "applies": [
+   "v2-2",
+   "track-c"
+  ],
+  "palettes": {
+   "track-c": {
+    "background": "#31305c",
+    "surface": "#040325",
+    "foreground": "#bdc1ca",
+    "accent": "#f5e20c",
+    "gradient": false
+   },
+   "v2-2": {
+    "background": "#31305c",
+    "surface": "#040325",
+    "foreground": "#bdc1ca",
+    "accent": "#fded9f",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "birdsofprey": {
+  "verdict": "strong",
+  "batch": "review-23-fg-movers",
+  "applies": [
+   "o2-before"
+  ],
+  "palettes": {
+   "o2-before": {
+    "background": "#141975",
+    "surface": "#3fa72a",
+    "foreground": "#030102",
+    "accent": "#d02981",
+    "gradient": true
+   },
+   "o2-after": {
+    "background": "#1c026d",
+    "surface": "#144184",
+    "foreground": "#bcddb0",
+    "accent": "#d02981",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "disney": {
+  "verdict": "strong",
+  "batch": "review-7-identity-confirm",
+  "applies": [
+   "trunk-dca4",
+   "trunk-c4b"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#74c044",
+    "surface": "#f68121",
+    "foreground": "#fbfdfc",
+    "accent": "#c72690",
+    "gradient": false
+   },
+   "trunk-c4b": {
+    "background": "#74c044",
+    "surface": "#2199d6",
+    "foreground": "#fbfdfc",
+    "accent": "#c72690",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "doja": {
+  "verdict": "strong",
+  "batch": "review-12-midpoints",
+  "applies": [
+   "trunk-b6"
+  ],
+  "palettes": {
+   "trunk-b6t2": {
+    "background": "#fd75b5",
+    "surface": "#f79e80",
+    "foreground": "#fff6fc",
+    "accent": "#ce5e52",
+    "gradient": true
+   },
+   "trunk-b6": {
+    "background": "#fd75b5",
+    "surface": "#fd3d86",
+    "foreground": "#fff6fc",
+    "accent": "#fda8cf",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "Option B is stronger because option A does a gradient between pink and Bisque skin color which does not represent this artwork "
+ },
+ "elephunk": {
+  "verdict": "strong",
+  "batch": "review-16-frames-accents",
+  "applies": [
+   "trunk-j",
+   "trunk-k"
+  ],
+  "palettes": {
+   "trunk-k": {
+    "background": "#55919b",
+    "surface": "#022833",
+    "foreground": "#fcfdd1",
+    "accent": "#a5c7c8",
+    "gradient": false
+   },
+   "trunk-j": {
+    "background": "#55919b",
+    "surface": "#022833",
+    "foreground": "#fcfdd1",
+    "accent": "#a5c7c8",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "franz": {
+  "verdict": "strong",
+  "batch": "review-16-frames-accents",
+  "applies": [
+   "trunk-j",
+   "trunk-k"
+  ],
+  "palettes": {
+   "trunk-k": {
+    "background": "#020612",
+    "surface": "#020612",
+    "foreground": "#f9ebc4",
+    "accent": "#da9925",
+    "gradient": false
+   },
+   "trunk-j": {
+    "background": "#020612",
+    "surface": "#020612",
+    "foreground": "#f9ebc4",
+    "accent": "#da9925",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "greenday": {
+  "verdict": "strong",
+  "batch": "review-4-ranking",
+  "applies": [
+   "trunk-d-a2"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#fefefe",
+    "surface": "#fefefe",
+    "foreground": "#000211",
+    "accent": "#c13033",
+    "gradient": false
+   },
+   "trunk-d-a2": {
+    "background": "#000211",
+    "surface": "#000211",
+    "foreground": "#fefefe",
+    "accent": "#c13131",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "havana": {
+  "verdict": "strong",
+  "batch": "review-25-decisions",
+  "applies": [
+   "w-batch-after"
+  ],
+  "palettes": {
+   "w-batch-after": {
+    "background": "#375c77",
+    "surface": "#243a51",
+    "foreground": "#eed076",
+    "accent": "#ee655f",
+    "gradient": true
+   },
+   "w-batch-before": {
+    "background": "#375c77",
+    "surface": "#243a51",
+    "foreground": "#e1824a",
+    "accent": "#eed076",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "horrorwood": {
+  "verdict": "acceptable",
+  "batch": "review-11-seams-diversity",
+  "applies": [
+   "trunk-e2",
+   "trunk-f"
+  ],
+  "palettes": {
+   "trunk-f": {
+    "background": "#141b25",
+    "surface": "#36444f",
+    "foreground": "#ccd3d9",
+    "accent": "#808b91",
+    "gradient": false
+   },
+   "trunk-e2": {
+    "background": "#141b25",
+    "surface": "#36444f",
+    "foreground": "#ccd3d9",
+    "accent": "#808b91",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "horsley": {
+  "verdict": "strong",
+  "batch": "review-7-identity-confirm",
+  "applies": [
+   "v2-2"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#b8753e",
+    "surface": "#c99242",
+    "foreground": "#0f0f0f",
+    "accent": "#f2eec1",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#bd7042",
+    "surface": "#d6a944",
+    "foreground": "#0f0f0f",
+    "accent": "#f2eec1",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "Option B works better because it encompasses a greater surface of the gradient "
+ },
+ "infected": {
+  "verdict": "strong",
+  "batch": "review-23-fg-movers",
+  "applies": [
+   "o2-before"
+  ],
+  "palettes": {
+   "o2-before": {
+    "background": "#30388d",
+    "surface": "#2f2959",
+    "foreground": "#49b7f6",
+    "accent": "#e24852",
+    "gradient": true
+   },
+   "o2-after": {
+    "background": "#30388d",
+    "surface": "#2f2959",
+    "foreground": "#e24852",
+    "accent": "#487ff4",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "johns": {
+  "verdict": "strong",
+  "batch": "batch-26",
+  "applies": [
+   "x2-coverage"
+  ],
+  "palettes": {
+   "x2-off": {
+    "background": "#0d181c",
+    "surface": "#0d181c",
+    "foreground": "#f7f8fa",
+    "accent": "#ff5a62",
+    "gradient": false
+   },
+   "x2-coverage": {
+    "background": "#0d181c",
+    "surface": "#315a92",
+    "foreground": "#f7f8fa",
+    "accent": "#ff5a62",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "knuckles": {
+  "verdict": "strong",
+  "batch": "review-3-identity",
+  "applies": [
+   "track-c"
+  ],
+  "palettes": {
+   "track-c": {
+    "background": "#beb2c6",
+    "surface": "#7b80a8",
+    "foreground": "#d8cbdd",
+    "accent": "#60aac5",
+    "gradient": false
+   },
+   "v2-2": {
+    "background": "#bfb2c4",
+    "surface": "#9c99c4",
+    "foreground": "#6c678f",
+    "accent": "#d8cbdd",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "Both options kind of work. I like the accent in option A, which brings some representation for other hues than only purplish pastel. I do like option B as well, the surface feels more like part of the artwork. Maybe, I'm not sure, but maybe both could benefit from being gradients, but that's very optional. The foreground in this artwork is actually white text, so neither of these actually fully captures that, but they do work "
+ },
+ "krafty": {
+  "verdict": "strong",
+  "batch": "review-7-identity-confirm",
+  "applies": [
+   "trunk-dca4"
+  ],
+  "palettes": {
+   "trunk-dca4": {
+    "background": "#050306",
+    "surface": "#680b3a",
+    "foreground": "#f7a223",
+    "accent": "#eb0a8a",
+    "gradient": false
+   },
+   "trunk-c4b": {
+    "background": "#050306",
+    "surface": "#680b3a",
+    "foreground": "#eb0a8a",
+    "accent": "#f7a223",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": "The text of the artwork is Golden Mango, so the foreground of the palette should also be golden mango using self-love as the foreground does not work "
+ },
+ "loups": {
+  "verdict": "strong",
+  "batch": "review-12-midpoints",
+  "applies": [
+   "trunk-b6t2"
+  ],
+  "palettes": {
+   "trunk-b6": {
+    "background": "#fa7b34",
+    "surface": "#ebda8a",
+    "foreground": "#fde5d9",
+    "accent": "#fab14a",
+    "gradient": true
+   },
+   "trunk-b6t2": {
+    "background": "#fa7b34",
+    "surface": "#ebda8a",
+    "foreground": "#fde5d9",
+    "accent": "#fc8831",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "Option B is stronger because the accent remains distinguishable for a large part of the gradient. However, on full background colored areas the accent is still hard to distinguish "
+ },
+ "meteora": {
+  "verdict": "strong",
+  "batch": "review-11-seams-diversity",
+  "applies": [
+   "trunk-f"
+  ],
+  "palettes": {
+   "trunk-e2": {
+    "background": "#000000",
+    "surface": "#151108",
+    "foreground": "#fafafa",
+    "accent": "#a59073",
+    "gradient": false
+   },
+   "trunk-f": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#fafafa",
+    "accent": "#a59073",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "muse": {
+  "verdict": "strong",
+  "batch": "batch-36",
+  "applies": [
+   "cc-off"
+  ],
+  "palettes": {
+   "cc-on": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#edf6fb",
+    "accent": "#0082be",
+    "gradient": false
+   },
+   "cc-off": {
+    "background": "#000000",
+    "surface": "#026faa",
+    "foreground": "#edf6fb",
+    "accent": "#10a4d4",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "nobs": {
+  "verdict": "strong",
+  "batch": "batch-31",
+  "applies": [
+   "ra-off"
+  ],
+  "palettes": {
+   "ra-off": {
+    "background": "#f6ffff",
+    "surface": "#f2f626",
+    "foreground": "#a1162d",
+    "accent": "#0695fd",
+    "gradient": false
+   },
+   "ra-on": {
+    "background": "#f6ffff",
+    "surface": "#f6ffff",
+    "foreground": "#0695fd",
+    "accent": "#f4d002",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "once": {
+  "verdict": "strong",
+  "batch": "review-14-b2",
+  "applies": [
+   "trunk-h",
+   "trunk-b7"
+  ],
+  "palettes": {
+   "trunk-h": {
+    "background": "#817486",
+    "surface": "#dddde7",
+    "foreground": "#3b303e",
+    "accent": "#6c5f71",
+    "gradient": true
+   },
+   "trunk-b7": {
+    "background": "#817486",
+    "surface": "#dddde7",
+    "foreground": "#3b303e",
+    "accent": "#6c5f71",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "orelsan": {
+  "verdict": "strong",
+  "batch": "review-10-marks-midpoints",
+  "applies": [
+   "v2-2",
+   "trunk-a5"
+  ],
+  "palettes": {
+   "trunk-a5": {
+    "background": "#172737",
+    "surface": "#0c1222",
+    "foreground": "#e9dec8",
+    "accent": "#6c5f57",
+    "gradient": true
+   },
+   "v2-2": {
+    "background": "#293949",
+    "surface": "#0c1222",
+    "foreground": "#e9dec8",
+    "accent": "#6c5f57",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "placebo": {
+  "verdict": "strong",
+  "batch": "review-14-b2",
+  "applies": [
+   "trunk-b7"
+  ],
+  "palettes": {
+   "trunk-h": {
+    "background": "#6c8a8a",
+    "surface": "#86a5aa",
+    "foreground": "#fbfdfa",
+    "accent": "#111312",
+    "gradient": true
+   },
+   "trunk-b7": {
+    "background": "#6c8a8a",
+    "surface": "#86a5aa",
+    "foreground": "#fbfdfa",
+    "accent": "#c91611",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "This midpoint isn't really ideal. I think it's using the shadows in the artwork as part of the gradient, and of course, if you only look at the colors, it does work, but this is not the vibe of the artwork, so I think that result will be better without this midpoint "
+ },
+ "skap": {
+  "verdict": "acceptable",
+  "batch": "batch-34",
+  "applies": [
+   "gf-off"
+  ],
+  "palettes": {
+   "gf-off": {
+    "background": "#ffffff",
+    "surface": "#5d763c",
+    "foreground": "#000103",
+    "accent": "#be814b",
+    "gradient": false
+   },
+   "gf-on": {
+    "background": "#fdfdfd",
+    "surface": "#5d763c",
+    "foreground": "#000103",
+    "accent": "#c27d44",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "slim": {
+  "verdict": "strong",
+  "batch": "batch-28",
+  "applies": [
+   "cr-trunk"
+  ],
+  "palettes": {
+   "cr-trunk": {
+    "background": "#01040b",
+    "surface": "#140e18",
+    "foreground": "#56676f",
+    "accent": "#df2a33",
+    "gradient": true
+   },
+   "cr-m1": {
+    "background": "#01040b",
+    "surface": "#140e18",
+    "foreground": "#37c2eb",
+    "accent": "#df2a33",
+    "gradient": true
+   }
+  },
+  "corrections": {},
+  "notes": "option B does seem valid, so i'm not mad if we have to keep it, but aesthetically it's not exactly the vibe of the artwork"
+ },
+ "slipknot": {
+  "verdict": "strong",
+  "batch": "review-1-track-d",
+  "applies": [
+   "v2-2",
+   "track-d-h1only"
+  ],
+  "palettes": {
+   "track-d-h1only": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#fbfbfd",
+    "accent": "#fbfbfd",
+    "gradient": false
+   },
+   "v2-2": {
+    "background": "#000000",
+    "surface": "#000000",
+    "foreground": "#fbfbfd",
+    "accent": "#fbfbfd",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "toxicity": {
+  "verdict": "strong",
+  "batch": "review-1-track-d",
+  "applies": [
+   "v2-2",
+   "track-d-h1only"
+  ],
+  "palettes": {
+   "v2-2": {
+    "background": "#b59e8e",
+    "surface": "#805a33",
+    "foreground": "#edebd2",
+    "accent": "#dd1434",
+    "gradient": false
+   },
+   "track-d-h1only": {
+    "background": "#b59e8e",
+    "surface": "#805a33",
+    "foreground": "#edebd2",
+    "accent": "#dd1434",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ },
+ "vvbrown": {
+  "verdict": "strong",
+  "batch": "review-23-fg-movers",
+  "applies": [
+   "o2-before",
+   "o2-after"
+  ],
+  "palettes": {
+   "o2-before": {
+    "background": "#ffffff",
+    "surface": "#ffffff",
+    "foreground": "#080808",
+    "accent": "#e6e622",
+    "gradient": false
+   },
+   "o2-after": {
+    "background": "#080808",
+    "surface": "#584c1c",
+    "foreground": "#ffffff",
+    "accent": "#e6e622",
+    "gradient": false
+   }
+  },
+  "corrections": {},
+  "notes": ""
+ }
+}

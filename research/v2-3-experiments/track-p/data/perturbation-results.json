@@ -1,0 +1,185 @@
+{
+	"schemaVersion": 1,
+	"baselineImages": 154,
+	"sites": [
+		{
+			"site": 39,
+			"id": "ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights.fieldFidelity#1@42",
+			"file": "research/v2-3/src/internal/base-scoring.ts",
+			"line": 42,
+			"value": 0.16,
+			"docComment": null,
+			"lineText": "fieldFidelity: 0.16,",
+			"firings": 0,
+			"comparisons": 0,
+			"flip20": 0,
+			"nearest": null,
+			"directions": {
+				"down20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				},
+				"up20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				}
+			},
+			"worstFlipped": 0,
+			"totalFlipped": 0
+		},
+		{
+			"site": 40,
+			"id": "ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights.surfaceFidelity#1@43",
+			"file": "research/v2-3/src/internal/base-scoring.ts",
+			"line": 43,
+			"value": 0.06,
+			"docComment": null,
+			"lineText": "surfaceFidelity: 0.06,",
+			"firings": 0,
+			"comparisons": 0,
+			"flip20": 0,
+			"nearest": null,
+			"directions": {
+				"down20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				},
+				"up20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				}
+			},
+			"worstFlipped": 0,
+			"totalFlipped": 0
+		},
+		{
+			"site": 41,
+			"id": "ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights.artworkIdentity#1@44",
+			"file": "research/v2-3/src/internal/base-scoring.ts",
+			"line": 44,
+			"value": 0.12,
+			"docComment": null,
+			"lineText": "artworkIdentity: 0.12,",
+			"firings": 0,
+			"comparisons": 0,
+			"flip20": 0,
+			"nearest": null,
+			"directions": {
+				"down20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				},
+				"up20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				}
+			},
+			"worstFlipped": 0,
+			"totalFlipped": 0
+		},
+		{
+			"site": 42,
+			"id": "ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights.representativeness#1@45",
+			"file": "research/v2-3/src/internal/base-scoring.ts",
+			"line": 45,
+			"value": 0.12,
+			"docComment": null,
+			"lineText": "representativeness: 0.12,",
+			"firings": 0,
+			"comparisons": 0,
+			"flip20": 0,
+			"nearest": null,
+			"directions": {
+				"down20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				},
+				"up20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				}
+			},
+			"worstFlipped": 0,
+			"totalFlipped": 0
+		},
+		{
+			"site": 43,
+			"id": "ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights.foregroundPathUtility#1@46",
+			"file": "research/v2-3/src/internal/base-scoring.ts",
+			"line": 46,
+			"value": 0.19,
+			"docComment": null,
+			"lineText": "foregroundPathUtility: 0.19,",
+			"firings": 0,
+			"comparisons": 0,
+			"flip20": 0,
+			"nearest": null,
+			"directions": {
+				"down20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				},
+				"up20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				}
+			},
+			"worstFlipped": 0,
+			"totalFlipped": 0
+		},
+		{
+			"site": 44,
+			"id": "ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights.accentFidelity#1@47",
+			"file": "research/v2-3/src/internal/base-scoring.ts",
+			"line": 47,
+			"value": 0.07,
+			"docComment": null,
+			"lineText": "accentFidelity: 0.07,",
+			"firings": 0,
+			"comparisons": 0,
+			"flip20": 0,
+			"nearest": null,
+			"directions": {
+				"down20": {
+					"images": 154,
+					"flipped": 0,
+					"errors": 0,
+					"fields": {},
+					"flippedImages": []
+				}
+			},
+			"worstFlipped": 0,
+			"totalFlipped": 0
+		}
+	]
+}

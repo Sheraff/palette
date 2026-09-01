@@ -1,0 +1,2835 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.10b-literature-decision.v1",
+  "title": "Literature-derived comparison, decision, certification, and saliency mechanisms",
+  "description": "Complete typings for the remaining twelve Section 10 literature-derived mechanisms. The records expose policy, calibration, model, and runtime conditions without selecting bindings, a pipeline, or an architecture.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.raster.native-srgb8-opaque.v1",
+      "productFocus": "product-flow",
+      "label": "Native opaque sRGB8 raster",
+      "description": "The once-decoded, native-dimension, three-channel opaque 8-bit sRGB raster with no resampling.",
+      "category": "raster",
+      "plane": "runtime",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "frozen",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
+      "sourceNotes": [
+        "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
+      ],
+      "provenanceNotes": [
+        "Native dimensions, pixel order, source hash, and decode identity remain available through paired custody metadata."
+      ]
+    },
+    {
+      "id": "artifact.statistic.weighted-color-spatial-distribution.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Weighted color/spatial distribution",
+      "description": "A finite normalized or unnormalized measure over declared color and optional spatial coordinates, with stable support IDs and nonnegative masses.",
+      "category": "statistic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Two such distributions are the natural inputs named at MECHANISMS.md:2202-2205."
+      ],
+      "provenanceNotes": [
+        "Records support construction, coordinate units, color space, mass normalization, and whether the measure describes artwork, a field hypothesis, or a candidate palette.",
+        "A palette distribution is not an exact UI treatment and carries no role or publication authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.unbalanced-optimal-transport.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Unbalanced optimal-transport configuration",
+      "description": "Pinned ground-cost definition, mass creation/destruction divergence and penalties, regularization, solver, stopping, numeric precision, and deterministic tie policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the ground cost and mass-relaxation parameters at MECHANISMS.md:2204-2207 explicit."
+      ],
+      "provenanceNotes": [
+        "Ground cost and mass penalty are exchange rates and require independent revision identity and sensitivity analysis."
+      ]
+    },
+    {
+      "id": "artifact.measurement.unbalanced-transport-plan.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Unbalanced transport plan",
+      "description": "A sparse or dense coupling between stable support IDs, including transported mass and solver status under one pinned unbalanced-transport configuration.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Transport-plan output at MECHANISMS.md:2204-2205."
+      ],
+      "provenanceNotes": [
+        "Support IDs bind plan entries to both input distributions; nonconvergence is not represented as a valid plan."
+      ]
+    },
+    {
+      "id": "artifact.statistic.unbalanced-unmatched-mass.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Unbalanced unmatched-mass account",
+      "description": "Per-support and aggregate mass creation, destruction, and unmatched-mass quantities for both sides of an unbalanced transport comparison.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Unmatched-mass output at MECHANISMS.md:2204-2205."
+      ],
+      "provenanceNotes": [
+        "Retains side, support ID, mass units, and mass-relaxation configuration identity."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.unbalanced-transport-cost-decomposition.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Unbalanced transport cost decomposition",
+      "description": "A diagnostic decomposition of movement, mass-relaxation, and regularization contributions, with objective and convergence values.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Cost-decomposition output and scalar-judge warning at MECHANISMS.md:2205-2207."
+      ],
+      "provenanceNotes": [
+        "This is an evaluation artifact, not a treatment score, selector, or product decision."
+      ]
+    },
+    {
+      "id": "artifact.provenance.transport-correspondence.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Transport correspondence provenance",
+      "description": "Identity and derivation record for both distributions, their support ordering, ground cost, relaxation settings, solver revision, and execution status.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Correspondence-provenance output at MECHANISMS.md:2204-2205."
+      ],
+      "provenanceNotes": [
+        "Preserves failed and converged executions without turning either into role evidence."
+      ]
+    },
+    {
+      "id": "artifact.graph.weighted-attributed-metric-space.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Weighted attributed metric space",
+      "description": "A finite support with stable IDs, nonnegative masses, feature vectors and feature metric, plus a declared pairwise structural-distance matrix.",
+      "category": "graph",
+      "plane": "runtime",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The two weighted attributed metric spaces named at MECHANISMS.md:2215-2218."
+      ],
+      "provenanceNotes": [
+        "Records support construction, feature units, pairwise-relation units, mass normalization, and stable ordering.",
+        "The contract is structural evidence, not a role assignment or complete treatment."
+      ]
+    },
+    {
+      "id": "artifact.configuration.fused-gromov-wasserstein.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Fused Gromov-Wasserstein configuration",
+      "description": "Pinned feature cost, structural loss, feature/structure tradeoff, regularization, initialization, solver, restart, stopping, precision, and deterministic selection policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Makes the feature/structure tradeoff at MECHANISMS.md:2217-2220 explicit."
+      ],
+      "provenanceNotes": [
+        "Initialization and restart policy are load-bearing because the optimization is nonconvex."
+      ]
+    },
+    {
+      "id": "artifact.measurement.fused-gromov-wasserstein-coupling.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Fused Gromov-Wasserstein coupling",
+      "description": "A coupling over stable support IDs from two weighted attributed metric spaces under one pinned fused objective and solver execution.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Coupling output at MECHANISMS.md:2217-2218."
+      ],
+      "provenanceNotes": [
+        "Includes initialization, restart, convergence, objective, and support-order identity; a nonconverged run has no valid coupling."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.fused-gromov-wasserstein-evaluation.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Fused Gromov-Wasserstein diagnostic evaluation",
+      "description": "Fused discrepancy with separately reported feature and relation mismatch contributions, solver status, and sensitivity context.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Fused discrepancy and relation-mismatch decomposition at MECHANISMS.md:2217-2220."
+      ],
+      "provenanceNotes": [
+        "Diagnostic only: relation fit is not role correctness, preference, selection, or treatment authority."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.structured-hypotheses.v1",
+      "productFocus": "product-flow",
+      "label": "Finite structured hypothesis set",
+      "description": "A finite, stably identified set of structured hypotheses with no ordering, election, or product authority.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Finite hypothesis domains are required by MECHANISMS.md:2245-2248 and 2272-2275."
+      ],
+      "provenanceNotes": [
+        "Members may be masks, fields, or treatment candidates only when their own contracts say so; this set is not the exact UI treatment contract."
+      ]
+    },
+    {
+      "id": "artifact.configuration.finite-structured-objective.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Finite structured objective configuration",
+      "description": "A revisioned objective over stable structured-hypothesis IDs, including all terms, scales, feasibility rules, minimization/maximization orientation, and deterministic evaluation semantics.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Finite structured objective at MECHANISMS.md:2247-2250."
+      ],
+      "provenanceNotes": [
+        "A wrong objective can produce many diverse wrong answers and has no implied product authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.diverse-m-best-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Diverse M-best diversity policy",
+      "description": "Pinned diversity metric or constraints, structural comparison domain, distance thresholds or penalties, generation algorithm, and deterministic tie/duplicate semantics.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Diversity measure/constraints at MECHANISMS.md:2247-2250."
+      ],
+      "provenanceNotes": [
+        "Diversity semantics are policy and require revision identity and sensitivity analysis."
+      ]
+    },
+    {
+      "id": "artifact.configuration.requested-m.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Requested M configuration",
+      "description": "A positive requested count of distinct hypotheses, including behavior when fewer than M feasible distinct hypotheses exist.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Requested M input at MECHANISMS.md:2247-2248."
+      ],
+      "provenanceNotes": [
+        "M is explicit policy rather than an implementation default."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.ordered-diverse-hypotheses.v1",
+      "productFocus": "product-flow",
+      "label": "Ordered diverse hypothesis set",
+      "description": "Up to M stable hypothesis IDs ordered by the declared generation/objective policy while retaining structurally diverse near-optimal alternatives.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Ordered hypothesis-set output at MECHANISMS.md:2247-2248."
+      ],
+      "provenanceNotes": [
+        "Ordering is not final selection, and membership is not a complete-treatment authorization."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.diverse-m-best-trace.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Diverse M-best cost and duplicate trace",
+      "description": "Per-hypothesis base costs, diversity costs or constraint results, generation order, rejected duplicates, ties, and termination status.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Base/diversity costs and duplicate/tie trace at MECHANISMS.md:2247-2248."
+      ],
+      "provenanceNotes": [
+        "The trace evaluates generation behavior and is not a portfolio election."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.submodular-selection-items.v1",
+      "productFocus": "product-flow",
+      "label": "Submodular selection item universe",
+      "description": "A finite set of stable item IDs eligible for a declared submodular selection problem, without costs, values, or selection state hidden in the contract.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Makes the item/hypothesis universe implicit in MECHANISMS.md:2261-2262 and explicit in 2274-2275 a typed input."
+      ],
+      "provenanceNotes": [
+        "Items are candidates, not selected treatments or the exact product contract."
+      ]
+    },
+    {
+      "id": "artifact.configuration.submodular-item-costs.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Submodular target-cover item costs",
+      "description": "Nonnegative costs keyed exactly to a stable selection-item universe, with units, precision, and missing-item policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Item-cost input at MECHANISMS.md:2261-2262."
+      ],
+      "provenanceNotes": [
+        "Cost units and revision are part of policy provenance."
+      ]
+    },
+    {
+      "id": "artifact.configuration.monotone-submodular-coverage.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Monotone submodular coverage function",
+      "description": "A revisioned evaluable set function with declared domain, range, normalization, monotonicity/submodularity basis, precision, and marginal-gain semantics.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Coverage-function input and proof/measurement condition at MECHANISMS.md:2259-2264."
+      ],
+      "provenanceNotes": [
+        "Feature definitions encode authority; claimed approximation context is invalid unless assumptions are established."
+      ]
+    },
+    {
+      "id": "artifact.configuration.submodular-coverage-target.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Submodular coverage target",
+      "description": "A declared target value in the exact range and precision of one monotone submodular coverage function, including target-reach comparison semantics.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Target input at MECHANISMS.md:2259-2262."
+      ],
+      "provenanceNotes": [
+        "The target is policy and is not interchangeable with a fixed cardinality budget."
+      ]
+    },
+    {
+      "id": "artifact.configuration.deterministic-selection-tie-rule.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Deterministic selection tie rule",
+      "description": "A total, revisioned rule over stable item IDs for resolving exactly equal or precision-equivalent greedy marginal choices.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Tie-rule input at MECHANISMS.md:2261-2262 and 2274-2275."
+      ],
+      "provenanceNotes": [
+        "Includes numeric comparison precision; it does not hide random or iteration-order behavior."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.submodular-target-cover-selection.v1",
+      "productFocus": "product-flow",
+      "label": "Target-cover selected subset",
+      "description": "The stable item subset selected by greedy minimum-cost target cover, with total selection cost and target-reach termination state.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Selected-subset output at MECHANISMS.md:2261-2262."
+      ],
+      "provenanceNotes": [
+        "This is a target-cover subset, not a fixed-budget subset, a partial preorder, or a selected UI treatment."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.submodular-target-cover-evaluation.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Target-cover coverage evaluation",
+      "description": "Achieved coverage, declared target, uncovered amount, feasibility/termination state, and Wolsey-assumption context for one selected subset.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Achieved coverage and uncovered-target outputs at MECHANISMS.md:2261-2264."
+      ],
+      "provenanceNotes": [
+        "Approximation language is conditional on the declared assumptions and does not establish treatment quality."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.submodular-marginal-gain-trace.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Submodular greedy marginal trace",
+      "description": "Iteration-ordered eligible items, marginal values, costs where applicable, tie classes, chosen IDs, cumulative value, and stop reason.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Marginal-gain outputs at MECHANISMS.md:2261-2262 and 2274-2275."
+      ],
+      "provenanceNotes": [
+        "The trace binds to the exact universe, function, budget or target, and tie rule."
+      ]
+    },
+    {
+      "id": "artifact.configuration.monotone-submodular-value.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Nonnegative monotone submodular value function",
+      "description": "A revisioned evaluable nonnegative monotone submodular objective with declared item domain, normalization, precision, and evidence for the Nemhauser-Wolsey-Fisher assumptions.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Value-function input and guarantee conditions at MECHANISMS.md:2272-2278."
+      ],
+      "provenanceNotes": [
+        "No guarantee transfers to nonmonotone, nonsubmodular, or additionally constrained variants."
+      ]
+    },
+    {
+      "id": "artifact.configuration.cardinality-budget.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Cardinality budget",
+      "description": "A nonnegative integer maximum selected-set cardinality, with explicit behavior when it exceeds the eligible universe size.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Fixed cardinality-budget input at MECHANISMS.md:2272-2275."
+      ],
+      "provenanceNotes": [
+        "Capacity is explicit policy and does not remove displacement."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.submodular-budget-selection.v1",
+      "productFocus": "product-flow",
+      "label": "Budget-bounded selected subset",
+      "description": "The stable item subset selected by fixed-cardinality greedy marginal-gain maximization, bounded by the declared budget.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Bounded selected-subset output at MECHANISMS.md:2274-2275."
+      ],
+      "provenanceNotes": [
+        "This is a fixed-budget subset, not a target-cover subset, partial preorder, or complete UI treatment."
+      ]
+    },
+    {
+      "id": "artifact.report.submodular-budget-approximation-context.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Submodular budget approximation context",
+      "description": "A report of achieved objective value, budget use, stop condition, and the verified, unverified, or violated assumptions governing any approximation claim.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Approximation-context output at MECHANISMS.md:2274-2278."
+      ],
+      "provenanceNotes": [
+        "The report does not establish treatment quality or authorize objective features."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.multicriteria-alternatives.v1",
+      "productFocus": "product-flow",
+      "label": "Multicriteria alternative set",
+      "description": "A finite set of stable alternative IDs to be compared, without embedded criterion performance, ordering, or selected-winner state.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Alternatives input at MECHANISMS.md:2289-2292."
+      ],
+      "provenanceNotes": [
+        "Alternatives can reference treatments only through a separately typed candidate contract; this set is not itself a treatment."
+      ]
+    },
+    {
+      "id": "artifact.measurement.oriented-criterion-performance-table.v1",
+      "productFocus": "product-flow",
+      "label": "Oriented criterion performance table",
+      "description": "Criterion-by-alternative performances with stable IDs, maximize/minimize orientation, units, missingness, and numeric precision, but no hidden weights or thresholds.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Oriented criterion performances at MECHANISMS.md:2289-2290."
+      ],
+      "provenanceNotes": [
+        "Binds every row and column to stable criterion and alternative definitions."
+      ]
+    },
+    {
+      "id": "artifact.configuration.electre-criterion-weights.v1",
+      "productFocus": "inspector-metadata",
+      "label": "ELECTRE criterion weights",
+      "description": "Nonnegative criterion weights keyed to the performance table, with normalization, precision, and elicitation provenance.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Criterion-weight input at MECHANISMS.md:2289-2293."
+      ],
+      "provenanceNotes": [
+        "Weights are policy requiring source and sensitivity provenance."
+      ]
+    },
+    {
+      "id": "artifact.configuration.electre-pseudocriterion-thresholds.v1",
+      "productFocus": "inspector-metadata",
+      "label": "ELECTRE pseudo-criterion thresholds",
+      "description": "Criterion-specific indifference, preference, and optional veto threshold functions, including units, direction, boundary comparisons, and missing-veto behavior.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Indifference/preference/veto inputs at MECHANISMS.md:2289-2294."
+      ],
+      "provenanceNotes": [
+        "Threshold and veto changes can reverse or make alternatives incomparable."
+      ]
+    },
+    {
+      "id": "artifact.configuration.electre-iii-distillation.v1",
+      "productFocus": "inspector-metadata",
+      "label": "ELECTRE III distillation configuration",
+      "description": "Pinned credibility-cut discrimination functions, qualification rules, tie handling, ascending/descending distillation procedure, intersection rule, and numeric precision.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Distillation discrimination settings at MECHANISMS.md:2287-2294."
+      ],
+      "provenanceNotes": [
+        "This is specifically ELECTRE III-style distillation, not an ELECTRE I kernel."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.electre-pairwise-evaluation.v1",
+      "productFocus": "secondary-overlay",
+      "label": "ELECTRE pairwise diagnostic evaluation",
+      "description": "Pairwise partial/global concordance, per-criterion discordance and veto activation, credibility matrix, and calculation trace.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Pairwise concordance, discordance/veto, and credibility outputs at MECHANISMS.md:2287-2292."
+      ],
+      "provenanceNotes": [
+        "This evaluation remains distinct from every preorder and does not select an alternative."
+      ]
+    },
+    {
+      "id": "artifact.decision.partial-preorder.v1",
+      "productFocus": "product-flow",
+      "label": "Partial preorder",
+      "description": "Ordered equivalence blocks plus explicit incomparability relations over stable alternative IDs, with no forced total order or selected winner.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Descending, ascending, and intersection preorder outputs at MECHANISMS.md:2287-2292."
+      ],
+      "provenanceNotes": [
+        "The producing port identifies descending, ascending, or intersection semantics; none is a selected subset or treatment."
+      ]
+    },
+    {
+      "id": "artifact.candidate.observed-color-theme.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Candidate observed-color theme",
+      "description": "A finite swatch set whose colors are witnessed in the source under explicit observation provenance, without UI roles, contrast claims, or complete-treatment state.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Candidate observed-color theme input at MECHANISMS.md:2306-2309."
+      ],
+      "provenanceNotes": [
+        "Observed colors do not establish role assignment, gradient state, contrast, or complete UI quality."
+      ]
+    },
+    {
+      "id": "artifact.measurement.segmented-image-theme-features.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Segmented image-theme features",
+      "description": "Revisioned segment, salience, reconstruction, diversity, and coverage feature values for one image/theme pair, with segment and feature implementation identity.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Segmented image features at MECHANISMS.md:2306-2309."
+      ],
+      "provenanceNotes": [
+        "Feature implementation and segmentation revision must match the fitted model contract."
+      ]
+    },
+    {
+      "id": "artifact.model.learned-theme-representativeness.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Fitted theme-representativeness model",
+      "description": "Frozen coefficients or model state fitted from human-selected swatch sets, bound to training population, feature schema, split, fitting procedure, and model revision.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Fitted-model input and transfer requirements at MECHANISMS.md:2306-2315."
+      ],
+      "provenanceNotes": [
+        "Runtime admissibility is unresolved; transferring coefficients requires a new population, feature implementation, data split, and runtime decision.",
+        "The model predicts theme representativeness only and is not a role or complete-treatment model."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.theme-representativeness-prediction.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Theme-representativeness prediction",
+      "description": "A model prediction for one candidate observed-color theme, including prediction scale, model identity, feature-schema identity, and out-of-domain status.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Representativeness-prediction output at MECHANISMS.md:2308-2309."
+      ],
+      "provenanceNotes": [
+        "Diagnostic prediction only; it cannot select, rank by complete UI quality, or assign roles."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.theme-feature-contributions.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Theme feature contributions",
+      "description": "Per-feature contributions or attributions to one representativeness prediction, in the fitted model's declared attribution semantics.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Feature-contribution output at MECHANISMS.md:2308-2309."
+      ],
+      "provenanceNotes": [
+        "Contribution semantics bind to the exact model and do not validate the repository's hand-weighted currency."
+      ]
+    },
+    {
+      "id": "artifact.statistic.exchangeable-calibration-scores-losses.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Frozen exchangeable calibration scores and losses",
+      "description": "A frozen calibration sample of scores and bounded monotone losses, with sample IDs, inclusion policy, order, and custody identity separated from per-item inference.",
+      "category": "statistic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.review-and-evidence",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Frozen calibration scores/losses and exchangeability requirement at MECHANISMS.md:2323-2329."
+      ],
+      "provenanceNotes": [
+        "Calibration independence and exchangeability are load-bearing; per-item review data cannot enter runtime lookup.",
+        "Records population, split, exclusions, score/loss definitions, and immutable sample/custody identity."
+      ]
+    },
+    {
+      "id": "artifact.configuration.conformal-risk-level.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Conformal risk level",
+      "description": "A declared expected-risk bound and finite-sample confidence/error parameters in the units of one bounded monotone loss.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Risk-level input at MECHANISMS.md:2323-2326."
+      ],
+      "provenanceNotes": [
+        "The risk level is protocol policy and does not turn multi-valid reviewer preference into a monotone loss."
+      ]
+    },
+    {
+      "id": "artifact.configuration.monotone-threshold-family.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Monotone threshold family",
+      "description": "An ordered, revisioned threshold family with score orientation, inclusion semantics, endpoints, discretization, and proof obligation for monotonicity of the declared loss.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Monotone threshold-family input at MECHANISMS.md:2323-2326."
+      ],
+      "provenanceNotes": [
+        "Threshold search and boundary comparisons are fully pinned rather than hidden defaults."
+      ]
+    },
+    {
+      "id": "artifact.configuration.calibrated-monotone-risk-threshold.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Calibrated monotone-risk threshold",
+      "description": "The threshold chosen from one declared family, bound to risk level, frozen calibration sample, loss, finite-sample method, and calibration custody identity.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Calibrated-threshold output at MECHANISMS.md:2325-2326."
+      ],
+      "provenanceNotes": [
+        "Not a cold-inference input unless calibration custody is separately frozen and admitted; the census currently marks runtime prohibited."
+      ]
+    },
+    {
+      "id": "artifact.report.conformal-risk-guarantee.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Conformal risk-control guarantee",
+      "description": "A finite-sample guarantee statement containing controlled loss, risk level, confidence/error terms, sample size, assumptions, chosen threshold, and sample/custody identity.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Risk guarantee with sample/custody identity at MECHANISMS.md:2325-2329."
+      ],
+      "provenanceNotes": [
+        "This statistical guarantee is distinct from a per-item certified output, treatment, or runtime decision."
+      ]
+    },
+    {
+      "id": "artifact.model.structured-output-base-mechanism.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Structured-output base mechanism",
+      "description": "A frozen executable mechanism contract mapping perturbed inputs to one declared structured-output metric space, including preprocessing, model/code revision, determinism, and failure states.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Base-mechanism input at MECHANISMS.md:2338-2341."
+      ],
+      "provenanceNotes": [
+        "May wrap model-backed or algorithmic computation but must disclose runtime, preprocessing, randomness, and output contract; it grants no runtime admission.",
+        "It is an executable research artifact, not a graph binding to another census mechanism."
+      ]
+    },
+    {
+      "id": "artifact.configuration.center-smoothing-perturbation.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Center-smoothing perturbation distribution",
+      "description": "A fully specified perturbation distribution and bounded input threat set, including units, norm, radius parameterization, clipping, sampling algorithm, and seed derivation.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Perturbation-distribution input at MECHANISMS.md:2338-2343."
+      ],
+      "provenanceNotes": [
+        "Randomness and byte determinism are separate claims; distribution and seed policy are load-bearing."
+      ]
+    },
+    {
+      "id": "artifact.configuration.structured-output-distance.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Structured-output distance",
+      "description": "A revisioned metric or declared pseudometric over the base mechanism's structured output, with units, equivalence handling, and invalid-output behavior.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Output-distance input and metric-risk warning at MECHANISMS.md:2338-2344."
+      ],
+      "provenanceNotes": [
+        "The metric can ignore role or aesthetic damage and therefore carries no quality authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.center-smoothing-sampling.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Center-smoothing sampling configuration",
+      "description": "Pinned sample count, batch policy, pseudorandom generator, seed, center-estimation algorithm, tie handling, resource ceilings, and failure policy.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Sample-count input and repeated-randomized-inference constraint at MECHANISMS.md:2340-2343."
+      ],
+      "provenanceNotes": [
+        "Resource conditions and deterministic replay requirements remain research-only and unresolved."
+      ]
+    },
+    {
+      "id": "artifact.configuration.center-smoothing-confidence.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Center-smoothing confidence configuration",
+      "description": "Declared confidence level, finite-sample correction, allocation of error probabilities, and abstention boundary comparisons.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Confidence input at MECHANISMS.md:2340-2341."
+      ],
+      "provenanceNotes": [
+        "Confidence and abstention rules are explicit protocol settings."
+      ]
+    },
+    {
+      "id": "artifact.candidate.center-smoothed-structured-output.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Center-smoothed structured output",
+      "description": "The estimated center in the declared structured-output metric space, present only when the certification procedure does not abstain.",
+      "category": "candidate",
+      "plane": "development",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Center-output result at MECHANISMS.md:2340-2341."
+      ],
+      "provenanceNotes": [
+        "This generic structured center is not a runtime treatment artifact or the exact UI treatment contract."
+      ]
+    },
+    {
+      "id": "artifact.report.center-smoothing-certificate.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Center-smoothing robustness certificate",
+      "description": "A per-input certificate relating a bounded input perturbation to a certified output-distance radius or bound at declared confidence, with all assumptions and method revisions.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Certified radius/bound output at MECHANISMS.md:2338-2344."
+      ],
+      "provenanceNotes": [
+        "A certificate can cover a consistently wrong result and says nothing about semantic correctness."
+      ]
+    },
+    {
+      "id": "artifact.decision.center-smoothing-disposition.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Center-smoothing certification disposition",
+      "description": "Exactly one explicit disposition: certified with linked center and certificate IDs, or abstained with a reason code.",
+      "category": "decision",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Abstention output at MECHANISMS.md:2340-2341."
+      ],
+      "provenanceNotes": [
+        "Keeps abstention distinct from a null center and from the certificate payload."
+      ]
+    },
+    {
+      "id": "artifact.provenance.center-smoothing-sampling-record.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Center-smoothing sampling record",
+      "description": "Seed, PRNG, requested and completed sample counts, sample/batch identities, failures, resource use, base-mechanism revision, and execution environment.",
+      "category": "provenance",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Sampling-record output and determinism constraint at MECHANISMS.md:2340-2343."
+      ],
+      "provenanceNotes": [
+        "Replay metadata does not convert a probabilistic guarantee into byte-identical inference."
+      ]
+    },
+    {
+      "id": "artifact.model.ibp-compatible-neural-network.v1",
+      "productFocus": "full-analysis-only",
+      "label": "IBP-compatible neural network",
+      "description": "A frozen neural graph and parameters whose every operation has declared interval propagation semantics, including preprocessing, numeric precision, training provenance, and runtime requirements.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Compatible neural-model input and runtime restriction at MECHANISMS.md:2351-2358."
+      ],
+      "provenanceNotes": [
+        "Runtime is prohibited unless a compatible neural runtime is independently admitted.",
+        "Training for tighter bounds changes the model and therefore requires a new immutable model identity."
+      ]
+    },
+    {
+      "id": "artifact.measurement.neural-input-intervals.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Neural input intervals",
+      "description": "Lower and upper bounds in the exact preprocessed neural input coordinate system, with perturbation norm/radius derivation, clipping, and source-input identity.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Input-bounds input at MECHANISMS.md:2353-2356."
+      ],
+      "provenanceNotes": [
+        "Bounds must match model preprocessing and do not imply native-pixel admissibility."
+      ]
+    },
+    {
+      "id": "artifact.configuration.ibp-decision-function.v1",
+      "productFocus": "full-analysis-only",
+      "label": "IBP decision function and margins",
+      "description": "A deterministic mapping from bounded neural outputs to declared decisions, including class or role margins, threshold comparisons, tie behavior, and abstention semantics.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Decision-function input and declared-margin condition at MECHANISMS.md:2353-2356."
+      ],
+      "provenanceNotes": [
+        "Decision semantics and margins are policy, not inferred from interval bounds."
+      ]
+    },
+    {
+      "id": "artifact.measurement.neural-output-intervals.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Neural output intervals",
+      "description": "Sound lower and upper bounds for each declared neural output under one model and input-interval contract, including propagation precision and unsupported-operation status.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Output-interval result at MECHANISMS.md:2355-2356."
+      ],
+      "provenanceNotes": [
+        "Loose intervals remain valid but may be vacuous; invalid propagation is not represented as sound intervals."
+      ]
+    },
+    {
+      "id": "artifact.decision.ibp-certified-decisions.v1",
+      "productFocus": "full-analysis-only",
+      "label": "IBP-certified decisions",
+      "description": "The possibly empty set of decisions proved unable to cross declared margins for all inputs in the input interval, linked to output bounds and decision-function revision.",
+      "category": "decision",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Certified-decision output at MECHANISMS.md:2353-2356."
+      ],
+      "provenanceNotes": [
+        "Certified decisions are distinct from output intervals and from any treatment; a certificate says nothing about semantics."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.ibp-bound-status.v1",
+      "productFocus": "full-analysis-only",
+      "label": "IBP vacuity and propagation status",
+      "description": "Per-output and aggregate non-vacuous, vacuous, unsupported, or invalid status with interval widths, failed margins, and operation attribution.",
+      "category": "diagnostic",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Vacuous/non-vacuous status at MECHANISMS.md:2355-2358."
+      ],
+      "provenanceNotes": [
+        "Status preserves looseness and compatibility failures rather than presenting every bound as useful."
+      ]
+    },
+    {
+      "id": "artifact.configuration.cielab-conversion.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Pinned CIELAB conversion",
+      "description": "A complete sRGB transfer, XYZ matrix, reference white, adaptation, Lab formula, alpha policy, precision, and clipping configuration.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Color-conversion input at MECHANISMS.md:2466-2470."
+      ],
+      "provenanceNotes": [
+        "Conversion revision and numeric precision are behavior-affecting inputs."
+      ]
+    },
+    {
+      "id": "artifact.configuration.frequency-tuned-smoothing.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Frequency-tuned saliency smoothing kernel",
+      "description": "Pinned kernel family, support, coefficients or sigma, boundary handling, channel domain, normalization, pass order, and numeric precision.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Smoothing-kernel input at MECHANISMS.md:2466-2472."
+      ],
+      "provenanceNotes": [
+        "Kernel scale can erase typography and small marks and is not a harmless implementation detail."
+      ]
+    },
+    {
+      "id": "artifact.color.global-mean-cielab.v1",
+      "productFocus": "product-flow",
+      "label": "Global mean CIELAB color",
+      "description": "A three-component arithmetic mean over the declared CIELAB raster domain, with source raster, conversion, inclusion mask, accumulation order, and precision identity.",
+      "category": "color",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Global-mean input at MECHANISMS.md:2466-2471."
+      ],
+      "provenanceNotes": [
+        "Must derive from the same raster and conversion used by the saliency execution; split-field inadequacy remains visible."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.frequency-tuned-saliency.v1",
+      "productFocus": "product-flow",
+      "label": "Frequency-tuned saliency field",
+      "description": "One finite nonnegative scalar saliency value per native raster pixel from smoothed CIELAB deviation from the declared global mean.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Full-resolution scalar saliency map at MECHANISMS.md:2466-2470."
+      ],
+      "provenanceNotes": [
+        "Dimensions remain native and values bind to conversion, smoothing, mean, distance formula, and precision.",
+        "This field encodes color distinctiveness, not ownership, attention, role, identity, treatment, or quality."
+      ]
+    },
+    {
+      "id": "artifact.statistic.frequency-tuned-saliency-summary.v1",
+      "productFocus": "product-flow",
+      "label": "Frequency-tuned saliency summary distribution",
+      "description": "Declared histogram, quantiles, extrema, and finite-value counts over one frequency-tuned saliency field, with bin and quantile conventions.",
+      "category": "statistic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Summary-distribution output at MECHANISMS.md:2469-2470."
+      ],
+      "provenanceNotes": [
+        "Summary identity links to the exact saliency field and aggregation conventions."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.normalized-scale-saliency-input.v1",
+      "productFocus": "product-flow",
+      "label": "Normalized-scale scalar saliency input",
+      "description": "The cited spectral-residual scalar image after explicit intensity normalization and scale normalization or resizing, with source transform and dimensions.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Normalized scalar-image input at MECHANISMS.md:2481-2488."
+      ],
+      "provenanceNotes": [
+        "The cited normalized-scale form is runtime-prohibited because resizing changes source scale and selected frequency bands."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.native-resolution-saliency-input.v1",
+      "productFocus": "product-flow",
+      "label": "Native-resolution scalar saliency input",
+      "description": "A scalar image retaining the native raster dimensions under a separately declared channel/intensity transform and no spatial resampling.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Represents only the unresolved native-resolution reformulation named at MECHANISMS.md:2481-2482."
+      ],
+      "provenanceNotes": [
+        "No equivalence to the cited normalized-scale method is claimed; runtime behavior and validity remain unresolved."
+      ]
+    },
+    {
+      "id": "artifact.configuration.spectral-residual-fft.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Spectral-residual FFT configuration",
+      "description": "Pinned transform dimensionality, sign, normalization, frequency indexing, real/complex layout, padding and crop policy, log epsilon, numeric precision, and library/runtime revision.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "FFT conventions and padding/normalization risks at MECHANISMS.md:2484-2490."
+      ],
+      "provenanceNotes": [
+        "FFT runtime, precision, and padding are behavior-affecting and must be independently admitted for cold inference."
+      ]
+    },
+    {
+      "id": "artifact.configuration.log-spectrum-averaging.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Log-spectrum averaging filter",
+      "description": "Pinned local averaging filter over Fourier log amplitude, including support, coefficients, boundary handling in frequency coordinates, epsilon, and subtraction order.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Log-spectrum averaging-filter input at MECHANISMS.md:2483-2487."
+      ],
+      "provenanceNotes": [
+        "Filter support selects frequency bands and therefore cannot be implicit."
+      ]
+    },
+    {
+      "id": "artifact.configuration.spectral-response-smoothing.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Spectral-residual output smoothing",
+      "description": "Pinned response-domain transform and smoothing kernel, support, coefficients, boundary handling, normalization, and numeric precision.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "Output-smoothing input and answer sensitivity at MECHANISMS.md:2486-2490."
+      ],
+      "provenanceNotes": [
+        "Response squaring/magnitude convention and smoothing are explicit rather than hidden implementation choices."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.fourier-log-spectrum-residual.v1",
+      "productFocus": "product-flow",
+      "label": "Fourier log-spectrum residual field",
+      "description": "The log-amplitude spectrum minus its configured local average, indexed in declared Fourier coordinates and retaining phase linkage provenance.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Spectral-residual output at MECHANISMS.md:2483-2487."
+      ],
+      "provenanceNotes": [
+        "This frequency-domain field is distinct from the reconstructed response and spatial saliency field."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.spectral-residual-reconstructed-response.v1",
+      "productFocus": "product-flow",
+      "label": "Spectral-residual reconstructed response",
+      "description": "The inverse-transform response reconstructed from residual log amplitude and retained phase before the declared output smoothing and final saliency convention.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Reconstructed-response output at MECHANISMS.md:2483-2487."
+      ],
+      "provenanceNotes": [
+        "Retains complex/magnitude convention, crop, and input coordinate identity."
+      ]
+    },
+    {
+      "id": "artifact.scalar-field.spectral-residual-saliency.v1",
+      "productFocus": "product-flow",
+      "label": "Spectral-residual saliency field",
+      "description": "A scalar spatial saliency value per output coordinate after configured reconstruction and response smoothing, with explicit mapping to normalized or native input coordinates.",
+      "category": "scalar-field",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.structure-and-field",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Scalar saliency-map output at MECHANISMS.md:2483-2490."
+      ],
+      "provenanceNotes": [
+        "This method-specific field is not compatible by identity with frequency-tuned saliency.",
+        "Spectral surprise carries no field ownership, role, identity, treatment, or quality semantics."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "literature.unbalanced-optimal-transport",
+      "focusClass": "evaluation-probe",
+      "title": "Partial mass correspondence",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.unbalanced-optimal-transport` - Partial mass correspondence",
+        "headingLine": 2197
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "artwork-distribution",
+          "label": "Artwork weighted color/spatial distribution",
+          "artifactTypeId": "artifact.statistic.weighted-color-spatial-distribution.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Must identify artwork support, masses, coordinate units, color space, and normalization."
+          ]
+        },
+        {
+          "id": "comparison-distribution",
+          "label": "Palette or field weighted color/spatial distribution",
+          "artifactTypeId": "artifact.statistic.weighted-color-spatial-distribution.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Must independently identify support and masses; it is not assumed to be a complete treatment."
+          ]
+        },
+        {
+          "id": "transport-configuration",
+          "label": "Ground cost, mass relaxation, and solver configuration",
+          "artifactTypeId": "artifact.configuration.unbalanced-optimal-transport.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins every exchange rate and convergence condition; runtime admissibility remains unresolved."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "transport-plan",
+          "label": "Transport plan",
+          "artifactTypeId": "artifact.measurement.unbalanced-transport-plan.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when validation or optimization fails; nonconvergence is retained in provenance."
+          ],
+          "notes": [
+            "A correspondence measurement, not role evidence or a selected treatment."
+          ]
+        },
+        {
+          "id": "unmatched-mass",
+          "label": "Unmatched mass account",
+          "artifactTypeId": "artifact.statistic.unbalanced-unmatched-mass.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for a valid plan and explicitly accounts for both distribution sides."
+          ],
+          "notes": [
+            "Mass creation and destruction remain separate from movement cost."
+          ]
+        },
+        {
+          "id": "cost-decomposition",
+          "label": "Cost decomposition",
+          "artifactTypeId": "artifact.diagnostic.unbalanced-transport-cost-decomposition.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present for a numerically evaluable execution, including values from a nonoptimal stopped plan only when marked as such."
+          ],
+          "notes": [
+            "Diagnostic only; no scalar component is granted selector authority."
+          ]
+        },
+        {
+          "id": "correspondence-provenance",
+          "label": "Correspondence provenance",
+          "artifactTypeId": "artifact.provenance.transport-correspondence.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always records validation failure, solver failure, nonconvergence, or successful completion."
+          ],
+          "notes": [
+            "Binds all outputs to both distributions and the exact configuration."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.fused-gromov-wasserstein",
+      "focusClass": "evaluation-probe",
+      "title": "Joint feature and relation matching",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.fused-gromov-wasserstein` - Joint feature and relation matching",
+        "headingLine": 2210
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "artwork-metric-space",
+          "label": "Artwork weighted attributed metric space",
+          "artifactTypeId": "artifact.graph.weighted-attributed-metric-space.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Declares feature and pairwise structural metrics without role labels."
+          ]
+        },
+        {
+          "id": "comparison-metric-space",
+          "label": "Palette-family weighted attributed metric space",
+          "artifactTypeId": "artifact.graph.weighted-attributed-metric-space.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "A structural representation of a candidate family, not a complete UI treatment."
+          ]
+        },
+        {
+          "id": "fused-configuration",
+          "label": "Feature/structure tradeoff and solver configuration",
+          "artifactTypeId": "artifact.configuration.fused-gromov-wasserstein.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins nonconvex initialization, restarts, stopping, and selection among runs; runtime remains unresolved."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "coupling",
+          "label": "Fused coupling",
+          "artifactTypeId": "artifact.measurement.fused-gromov-wasserstein-coupling.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent on input incompatibility or solver failure; locally converged status does not imply a global optimum."
+          ],
+          "notes": [
+            "Retains support correspondence but no role or preference authority."
+          ]
+        },
+        {
+          "id": "diagnostic-evaluation",
+          "label": "Fused discrepancy and mismatch evaluation",
+          "artifactTypeId": "artifact.diagnostic.fused-gromov-wasserstein-evaluation.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May report invalid, failed, nonconverged, or locally converged status; discrepancy is available only when numerically defined."
+          ],
+          "notes": [
+            "Explicitly diagnostic and never a selector output."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.diverse-m-best",
+      "focusClass": "product-transformation",
+      "title": "Retain diverse near-optimal hypotheses",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.diverse-m-best` - Retain diverse near-optimal hypotheses",
+        "headingLine": 2240
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.configuration-control-and-governance",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "hypotheses",
+          "label": "Finite structured hypothesis set",
+          "artifactTypeId": "artifact.candidate-set.structured-hypotheses.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "All feasible members have stable IDs; no member receives treatment authority from this mechanism."
+          ]
+        },
+        {
+          "id": "base-objective",
+          "label": "Finite structured objective",
+          "artifactTypeId": "artifact.configuration.finite-structured-objective.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Defines base quality and feasibility independently of diversity."
+          ]
+        },
+        {
+          "id": "diversity-policy",
+          "label": "Diversity measure and constraints",
+          "artifactTypeId": "artifact.configuration.diverse-m-best-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Defines structural diversity, duplicate equivalence, and tie handling as explicit policy."
+          ]
+        },
+        {
+          "id": "requested-m",
+          "label": "Requested M",
+          "artifactTypeId": "artifact.configuration.requested-m.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins requested portfolio size and shortfall behavior."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "ordered-hypotheses",
+          "label": "Ordered diverse hypothesis set",
+          "artifactTypeId": "artifact.candidate-set.ordered-diverse-hypotheses.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Can contain fewer than M members only with an explicit exhaustion or infeasibility state; ordering does not denote a final winner."
+          ],
+          "notes": [
+            "Preserves alternatives for conditional review or downstream evidence without implied election."
+          ]
+        },
+        {
+          "id": "cost-trace",
+          "label": "Base/diversity cost and duplicate/tie trace",
+          "artifactTypeId": "artifact.diagnostic.diverse-m-best-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records invalid objective values, duplicate exhaustion, ties, and generation failure rather than silently shortening the result."
+          ],
+          "notes": [
+            "Diagnostic trace remains distinct from the ordered candidate set."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.submodular-target-cover",
+      "focusClass": "product-admission",
+      "title": "Minimum-cost target coverage",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.submodular-target-cover` - Minimum-cost target coverage",
+        "headingLine": 2254
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.configuration-control-and-governance",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "items",
+          "label": "Selection item universe",
+          "artifactTypeId": "artifact.candidate-set.submodular-selection-items.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Finite stable IDs define the exact domain of costs and coverage."
+          ]
+        },
+        {
+          "id": "item-costs",
+          "label": "Item costs",
+          "artifactTypeId": "artifact.configuration.submodular-item-costs.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Every eligible item has a finite nonnegative cost in declared units."
+          ]
+        },
+        {
+          "id": "coverage-function",
+          "label": "Monotone submodular coverage function",
+          "artifactTypeId": "artifact.configuration.monotone-submodular-coverage.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Monotonicity and submodularity must be proved or measured before invoking approximation context."
+          ]
+        },
+        {
+          "id": "coverage-target",
+          "label": "Coverage target",
+          "artifactTypeId": "artifact.configuration.submodular-coverage-target.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Target reach semantics and numeric tolerance are pinned."
+          ]
+        },
+        {
+          "id": "tie-rule",
+          "label": "Deterministic tie rule",
+          "artifactTypeId": "artifact.configuration.deterministic-selection-tie-rule.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Resolves ratio or marginal equivalence without random or iteration-order behavior."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-subset",
+          "label": "Target-cover selected subset",
+          "artifactTypeId": "artifact.candidate-set.submodular-target-cover-selection.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May be empty for an already met target and may terminate below target only with explicit infeasible/exhausted state."
+          ],
+          "notes": [
+            "A bounded method-specific subset, not a treatment or preorder."
+          ]
+        },
+        {
+          "id": "coverage-evaluation",
+          "label": "Achieved and uncovered coverage evaluation",
+          "artifactTypeId": "artifact.diagnostic.submodular-target-cover-evaluation.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always states achieved coverage, uncovered target, and whether assumptions and target reach hold."
+          ],
+          "notes": [
+            "Diagnostic evaluation remains separate from the subset."
+          ]
+        },
+        {
+          "id": "marginal-trace",
+          "label": "Marginal gain and cost trace",
+          "artifactTypeId": "artifact.diagnostic.submodular-marginal-gain-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Includes initial state and every greedy iteration, including ties and non-finite rejection states."
+          ],
+          "notes": [
+            "Binds the selected subset to the declared function, costs, target, and tie rule."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.submodular-budget-maximization",
+      "focusClass": "product-admission",
+      "title": "Fixed-budget marginal-gain retention",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.submodular-budget-maximization` - Fixed-budget marginal-gain retention",
+        "headingLine": 2267
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.configuration-control-and-governance",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "hypotheses",
+          "label": "Hypothesis selection universe",
+          "artifactTypeId": "artifact.candidate-set.submodular-selection-items.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Finite stable hypothesis IDs define the exact optimization domain."
+          ]
+        },
+        {
+          "id": "value-function",
+          "label": "Nonnegative monotone submodular value function",
+          "artifactTypeId": "artifact.configuration.monotone-submodular-value.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Approximation context is conditional on all declared function assumptions."
+          ]
+        },
+        {
+          "id": "cardinality-budget",
+          "label": "Cardinality budget",
+          "artifactTypeId": "artifact.configuration.cardinality-budget.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "A fixed capacity, not a target-cover stopping condition."
+          ]
+        },
+        {
+          "id": "tie-rule",
+          "label": "Deterministic tie rule",
+          "artifactTypeId": "artifact.configuration.deterministic-selection-tie-rule.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins equal-marginal resolution and numeric equivalence."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-subset",
+          "label": "Budget-bounded selected subset",
+          "artifactTypeId": "artifact.candidate-set.submodular-budget-selection.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May be empty at zero budget and cannot exceed the declared cardinality; early exhaustion is explicit."
+          ],
+          "notes": [
+            "A fixed-budget subset distinct from target cover, a preorder, and a complete treatment."
+          ]
+        },
+        {
+          "id": "marginal-trace",
+          "label": "Marginal gain trace",
+          "artifactTypeId": "artifact.diagnostic.submodular-marginal-gain-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Includes all chosen and rejected tie candidates through budget or universe exhaustion."
+          ],
+          "notes": [
+            "Diagnostic trace binds to the value function, budget, and tie rule."
+          ]
+        },
+        {
+          "id": "approximation-context",
+          "label": "Approximation context",
+          "artifactTypeId": "artifact.report.submodular-budget-approximation-context.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Marks each required condition verified, unverified, or violated and withholds an approximation claim unless applicable."
+          ],
+          "notes": [
+            "No guarantee is transferred to additional-constraint or nonmonotone variants."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.electre-outranking",
+      "focusClass": "product-transformation",
+      "title": "Veto-aware multicriteria comparison",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.electre-outranking` - Veto-aware multicriteria comparison",
+        "headingLine": 2281
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` for ELECTRE locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "alternatives",
+          "label": "Alternatives",
+          "artifactTypeId": "artifact.candidate-set.multicriteria-alternatives.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Stable IDs only; no winner or ordering is embedded."
+          ]
+        },
+        {
+          "id": "performances",
+          "label": "Oriented criterion performances",
+          "artifactTypeId": "artifact.measurement.oriented-criterion-performance-table.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Rows and columns exactly cover declared criteria and alternatives with explicit orientation and units."
+          ]
+        },
+        {
+          "id": "criterion-weights",
+          "label": "Criterion weights",
+          "artifactTypeId": "artifact.configuration.electre-criterion-weights.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Explicit policy with provenance and sensitivity obligations."
+          ]
+        },
+        {
+          "id": "pseudocriteria",
+          "label": "Indifference, preference, and veto thresholds",
+          "artifactTypeId": "artifact.configuration.electre-pseudocriterion-thresholds.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "All pseudo-criterion boundaries and optional veto behavior are pinned."
+          ]
+        },
+        {
+          "id": "distillation",
+          "label": "ELECTRE III distillation settings",
+          "artifactTypeId": "artifact.configuration.electre-iii-distillation.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins descending, ascending, discrimination, and intersection semantics; not an ELECTRE I kernel."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "pairwise-evaluation",
+          "label": "Pairwise concordance, discordance, veto, and credibility evaluation",
+          "artifactTypeId": "artifact.diagnostic.electre-pairwise-evaluation.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Invalid or missing performance/threshold states are explicit; no preorder is implied by the diagnostic matrices alone."
+          ],
+          "notes": [
+            "Diagnostic evaluation remains separate from all distillation decisions."
+          ]
+        },
+        {
+          "id": "descending-preorder",
+          "label": "Descending partial preorder",
+          "artifactTypeId": "artifact.decision.partial-preorder.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May retain tied blocks and incomparable alternatives; it is never coerced to a total order."
+          ],
+          "notes": [
+            "Descending distillation result, not a selected winner."
+          ]
+        },
+        {
+          "id": "ascending-preorder",
+          "label": "Ascending partial preorder",
+          "artifactTypeId": "artifact.decision.partial-preorder.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "May retain tied blocks and incomparable alternatives; it is never coerced to a total order."
+          ],
+          "notes": [
+            "Ascending distillation result, independently retained."
+          ]
+        },
+        {
+          "id": "intersection-preorder",
+          "label": "Intersection partial preorder",
+          "artifactTypeId": "artifact.decision.partial-preorder.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Preserves incomparability when ascending and descending relations do not support one order."
+          ],
+          "notes": [
+            "Intersection relation is neither a selected subset nor preferred treatment."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.learned-theme-representativeness",
+      "focusClass": "research-only-oracle",
+      "title": "Human-fitted image-theme model",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.learned-theme-representativeness` - Human-fitted image-theme model",
+        "headingLine": 2300
+      },
+      "capabilityIds": [
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.model-assisted-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in the cited paper and `unmeasured` for this repository's treatment task; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "candidate-theme",
+          "label": "Candidate observed-color theme",
+          "artifactTypeId": "artifact.candidate.observed-color-theme.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Observed swatches only; no role, contrast, gradient, or complete-treatment state is inferred."
+          ]
+        },
+        {
+          "id": "image-features",
+          "label": "Segmented image-theme features",
+          "artifactTypeId": "artifact.measurement.segmented-image-theme-features.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Feature schema and segmentation revision must exactly match model expectations."
+          ]
+        },
+        {
+          "id": "fitted-model",
+          "label": "Fitted representativeness model",
+          "artifactTypeId": "artifact.model.learned-theme-representativeness.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Frozen training population, split, coefficients, feature implementation, and model revision are required; runtime admission is unresolved."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "prediction",
+          "label": "Representativeness prediction",
+          "artifactTypeId": "artifact.diagnostic.theme-representativeness-prediction.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent for schema/model incompatibility; out-of-domain status is retained and is not silently scored."
+          ],
+          "notes": [
+            "A diagnostic theme prediction, not a role assignment, selector, or quality judgment."
+          ]
+        },
+        {
+          "id": "feature-contributions",
+          "label": "Feature contributions",
+          "artifactTypeId": "artifact.diagnostic.theme-feature-contributions.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent if the fitted model has no declared contribution semantics or prediction is invalid."
+          ],
+          "notes": [
+            "Contributions remain tied to the exact fitted model."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.conformal-risk-control",
+      "focusClass": "configuration-governance",
+      "title": "Calibrated monotone-loss bounds",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.conformal-risk-control` - Calibrated monotone-loss bounds",
+        "headingLine": 2317
+      },
+      "capabilityIds": [
+        "capability.development-diagnostics",
+        "capability.review-and-evidence-custody",
+        "capability.contract-and-render-validation",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.development-diagnostics",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` until calibration custody is separated from cold inference and the loss assumptions hold.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "calibration-sample",
+          "label": "Frozen calibration scores and losses",
+          "artifactTypeId": "artifact.statistic.exchangeable-calibration-scores-losses.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "external-observation",
+          "notes": [
+            "Requires immutable sample/custody identity, exchangeability, independent calibration, and a bounded monotone loss; per-item runtime review data is prohibited."
+          ]
+        },
+        {
+          "id": "risk-level",
+          "label": "Risk level",
+          "artifactTypeId": "artifact.configuration.conformal-risk-level.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares expected-risk and finite-sample error parameters."
+          ]
+        },
+        {
+          "id": "threshold-family",
+          "label": "Monotone threshold family",
+          "artifactTypeId": "artifact.configuration.monotone-threshold-family.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Score orientation, family order, boundaries, and monotone-loss assumption are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "calibrated-threshold",
+          "label": "Calibrated threshold",
+          "artifactTypeId": "artifact.configuration.calibrated-monotone-risk-threshold.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when assumptions, sample size, finite values, or threshold feasibility fail; no permissive fallback is implied."
+          ],
+          "notes": [
+            "Calibration output is governance custody, not an admitted cold-inference artifact."
+          ]
+        },
+        {
+          "id": "risk-guarantee",
+          "label": "Finite-sample risk guarantee",
+          "artifactTypeId": "artifact.report.conformal-risk-guarantee.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "States a valid guarantee only when all assumptions hold; otherwise records why no guarantee is available."
+          ],
+          "notes": [
+            "Keeps statistical guarantee, calibration custody, and runtime threshold use distinct."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.center-smoothing",
+      "focusClass": "evaluation-probe",
+      "title": "Certified structured-output stability",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.center-smoothing` - Certified structured-output stability",
+        "headingLine": 2332
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation",
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `unresolved` and research-only until resource conditions exist.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "base-mechanism",
+          "label": "Structured-output base mechanism",
+          "artifactTypeId": "artifact.model.structured-output-base-mechanism.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Frozen executable contract only; this port does not bind a census mechanism or grant its model/runtime admission."
+          ]
+        },
+        {
+          "id": "perturbation-distribution",
+          "label": "Perturbation distribution",
+          "artifactTypeId": "artifact.configuration.center-smoothing-perturbation.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Threat set, distribution, clipping, sampling, and seed derivation are explicit."
+          ]
+        },
+        {
+          "id": "output-distance",
+          "label": "Structured-output distance",
+          "artifactTypeId": "artifact.configuration.structured-output-distance.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Must match the base output contract and disclose ignored role or aesthetic distinctions."
+          ]
+        },
+        {
+          "id": "sampling-configuration",
+          "label": "Sample count and execution policy",
+          "artifactTypeId": "artifact.configuration.center-smoothing-sampling.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins sample count, PRNG, seed, center estimator, resource ceiling, and failure policy; repeated inference remains research-only."
+          ]
+        },
+        {
+          "id": "confidence-configuration",
+          "label": "Confidence and abstention policy",
+          "artifactTypeId": "artifact.configuration.center-smoothing-confidence.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Finite-sample confidence and abstention boundaries are protocol inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "center-output",
+          "label": "Center structured output",
+          "artifactTypeId": "artifact.candidate.center-smoothed-structured-output.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent exactly when the disposition abstains or execution is invalid."
+          ],
+          "notes": [
+            "A research candidate in an output metric space, not a selected runtime treatment."
+          ]
+        },
+        {
+          "id": "certificate",
+          "label": "Certified radius or bound",
+          "artifactTypeId": "artifact.report.center-smoothing-certificate.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only for a certified disposition; absent on abstention and never replaced by a zero-radius pseudo-certificate."
+          ],
+          "notes": [
+            "Per-input robustness certificate remains distinct from the center output."
+          ]
+        },
+        {
+          "id": "disposition",
+          "label": "Certification or abstention disposition",
+          "artifactTypeId": "artifact.decision.center-smoothing-disposition.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Exactly certified or abstained, with reason and linked output IDs where applicable."
+          ],
+          "notes": [
+            "Makes abstention first-class rather than encoding it as null treatment data."
+          ]
+        },
+        {
+          "id": "sampling-record",
+          "label": "Sampling record",
+          "artifactTypeId": "artifact.provenance.center-smoothing-sampling-record.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Records partial execution and failures as well as successful certification runs."
+          ],
+          "notes": [
+            "Separates randomized execution provenance from the guarantee payload."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.interval-bound-propagation",
+      "focusClass": "research-only-oracle",
+      "title": "Deterministic neural bounds",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.interval-bound-propagation` - Deterministic neural bounds",
+        "headingLine": 2347
+      },
+      "capabilityIds": [
+        "capability.contract-and-render-validation",
+        "capability.model-assisted-diagnostics",
+        "capability.development-diagnostics",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.contract-and-render-validation",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` unless a compatible neural runtime is independently admitted.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "neural-model",
+          "label": "IBP-compatible neural model",
+          "artifactTypeId": "artifact.model.ibp-compatible-neural-network.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Every operation requires declared interval semantics; model and compatible neural runtime are not admitted by this typing."
+          ]
+        },
+        {
+          "id": "input-bounds",
+          "label": "Input intervals",
+          "artifactTypeId": "artifact.measurement.neural-input-intervals.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Bounds are expressed after the exact model preprocessing and bind to one source input."
+          ]
+        },
+        {
+          "id": "decision-function",
+          "label": "Decision function and margins",
+          "artifactTypeId": "artifact.configuration.ibp-decision-function.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Declares thresholds, margins, ties, and abstention separately from the neural model."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "output-intervals",
+          "label": "Output intervals",
+          "artifactTypeId": "artifact.measurement.neural-output-intervals.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when the graph contains an unsupported operation or sound propagation fails; loose but sound intervals remain present."
+          ],
+          "notes": [
+            "Numeric bounds remain distinct from certified decisions."
+          ]
+        },
+        {
+          "id": "certified-decisions",
+          "label": "Certified decisions",
+          "artifactTypeId": "artifact.decision.ibp-certified-decisions.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent without sound output intervals; when present, the set can be empty if no declared margin is certified."
+          ],
+          "notes": [
+            "A bounded neural decision certificate, not semantic or treatment authority."
+          ]
+        },
+        {
+          "id": "bound-status",
+          "label": "Vacuous/non-vacuous and propagation status",
+          "artifactTypeId": "artifact.diagnostic.ibp-bound-status.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Always records valid non-vacuous, valid vacuous, unsupported, or invalid propagation status."
+          ],
+          "notes": [
+            "Keeps diagnostic usefulness separate from sound interval and certified-decision artifacts."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.frequency-tuned-saliency",
+      "focusClass": "product-transformation",
+      "title": "Global color-deviation saliency map",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.frequency-tuned-saliency` - Global color-deviation saliency map",
+        "headingLine": 2461
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `permitted` as a fixed bounded image computation.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "native-raster",
+          "label": "Native opaque sRGB8 raster",
+          "artifactTypeId": "artifact.raster.native-srgb8-opaque.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "No spatial resampling or model normalization; output dimensions remain native."
+          ]
+        },
+        {
+          "id": "color-conversion",
+          "label": "CIELAB conversion",
+          "artifactTypeId": "artifact.configuration.cielab-conversion.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins transfer, reference white, adaptation, precision, and clipping."
+          ]
+        },
+        {
+          "id": "smoothing-kernel",
+          "label": "Smoothing kernel",
+          "artifactTypeId": "artifact.configuration.frequency-tuned-smoothing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins support, coefficients, boundary handling, and channel domain."
+          ]
+        },
+        {
+          "id": "global-mean",
+          "label": "Global mean CIELAB color",
+          "artifactTypeId": "artifact.color.global-mean-cielab.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Must derive from the same raster and CIELAB conversion, with no hidden alternate inclusion mask."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "saliency-field",
+          "label": "Frequency-tuned saliency field",
+          "artifactTypeId": "artifact.scalar-field.frequency-tuned-saliency.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "One finite value per native pixel for valid finite inputs; invalid conversion or mean is an execution failure, not a null field."
+          ],
+          "notes": [
+            "Method-specific runtime scalar field; no field ownership, attention, role, identity, or treatment semantics."
+          ]
+        },
+        {
+          "id": "summary-distribution",
+          "label": "Saliency summary distribution",
+          "artifactTypeId": "artifact.statistic.frequency-tuned-saliency-summary.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Defined over exactly the emitted finite saliency values with declared bins and quantiles."
+          ],
+          "notes": [
+            "Summary statistic remains distinct from the per-pixel field."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "literature.spectral-residual-saliency",
+      "focusClass": "product-transformation",
+      "title": "Fourier log-spectrum residual",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `literature.spectral-residual-saliency` - Fourier log-spectrum residual",
+        "headingLine": 2477
+      },
+      "capabilityIds": [
+        "capability.pixel-and-color-measurement",
+        "capability.spatial-structure-evidence",
+        "capability.configuration-control-and-governance"
+      ],
+      "primaryCapabilityId": "capability.pixel-and-color-measurement",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` locally; implementation state `unbuilt`; evidence scope `none-local`; runtime admissibility `prohibited` for the cited normalized-scale form and `unresolved` for a native-resolution reformulation.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "unbuilt"
+        ],
+        "evidenceScopes": [
+          "none-local"
+        ],
+        "runtimeAdmissibilities": [
+          "prohibited",
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [
+        {
+          "id": "scale-form",
+          "selectionCardinality": "exactly-one",
+          "notes": [
+            "The cited normalized-scale input is runtime-prohibited; the separately identified native-resolution reformulation is unresolved and is not claimed equivalent."
+          ]
+        }
+      ],
+      "inputPorts": [
+        {
+          "id": "normalized-input",
+          "label": "Cited normalized-scale scalar image",
+          "artifactTypeId": "artifact.scalar-field.normalized-scale-saliency-input.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "scale-form",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Cited form; spatial scale normalization/resizing makes runtime admissibility prohibited."
+          ]
+        },
+        {
+          "id": "native-input",
+          "label": "Native-resolution scalar reformulation input",
+          "artifactTypeId": "artifact.scalar-field.native-resolution-saliency-input.v1",
+          "requirement": "alternative",
+          "alternativeGroupId": "scale-form",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Unresolved reformulation only; no citation-level equivalence, validity, or runtime admission is asserted."
+          ]
+        },
+        {
+          "id": "fft-configuration",
+          "label": "FFT conventions and runtime",
+          "artifactTypeId": "artifact.configuration.spectral-residual-fft.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins padding, normalization, indexing, log epsilon, precision, and implementation revision."
+          ]
+        },
+        {
+          "id": "averaging-filter",
+          "label": "Log-spectrum averaging filter",
+          "artifactTypeId": "artifact.configuration.log-spectrum-averaging.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins selected local frequency neighborhood and boundary handling."
+          ]
+        },
+        {
+          "id": "output-smoothing",
+          "label": "Output response smoothing",
+          "artifactTypeId": "artifact.configuration.spectral-response-smoothing.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Pins response convention, smoothing kernel, boundaries, and precision."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "spectral-residual",
+          "label": "Fourier log-spectrum residual",
+          "artifactTypeId": "artifact.scalar-field.fourier-log-spectrum-residual.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Defined only for finite transform/log values under the pinned epsilon and conventions; invalid execution emits no substitute field."
+          ],
+          "notes": [
+            "Frequency-domain evidence distinct from both spatial response outputs."
+          ]
+        },
+        {
+          "id": "reconstructed-response",
+          "label": "Reconstructed response",
+          "artifactTypeId": "artifact.scalar-field.spectral-residual-reconstructed-response.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Retains the exact output dimensions associated with the selected scale form and explicit crop policy."
+          ],
+          "notes": [
+            "Intermediate response remains separate from final smoothed saliency."
+          ]
+        },
+        {
+          "id": "saliency-field",
+          "label": "Spectral-residual saliency field",
+          "artifactTypeId": "artifact.scalar-field.spectral-residual-saliency.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "One finite scalar per selected-form output coordinate for a valid execution; coordinate mapping to source is explicit."
+          ],
+          "notes": [
+            "Method-specific field, distinct from frequency-tuned saliency and devoid of field, role, identity, treatment, or quality semantics."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "This fragment types exactly twelve Section 10 mechanisms and contains no generated compatibility hyperedges, graph bindings, dependencies, selected pipeline, or architecture.",
+    "Matching artifact type IDs express candidate semantic compatibility only; repeated types do not select a producer or consumer.",
+    "Generic candidate sets, ordered alternatives, selected subsets, and partial preorders are not the exact UI treatment contract and grant no product authority.",
+    "Development diagnostics, calibration records, models, certificates, and execution provenance must not leak into cold inference without separate authorization and an admitted artifact contract.",
+    "Runtime-plane saliency and decision artifacts describe possible per-file values only; the census status and explicit port notes continue to govern admissibility."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-07-19T22:22:06Z",
+  "decisionScope": "exact-selected-background-surface-pair",
+  "promotionDecision": "reject-gradient-eligibility-0.8",
+  "manualJudgments": [
+    {
+      "familyId": "gc-15a1a79ee427004b55f5",
+      "reviewSet": "removed",
+      "decision": "should-be-gradient",
+      "note": "This is the only false removal written down explicitly; there may have been more."
+    }
+  ],
+  "qualitativeFindings": [
+    "Many removed gradients were either-way.",
+    "Many gradients retained by 0.8 should actually be flat."
+  ],
+  "roleSelectionBugs": [
+    {
+      "familyId": "gc-583a7f4b2375592af971",
+      "kind": "background-representativeness",
+      "note": "The selected background works but is not the color visually associated with the artwork background."
+    },
+    {
+      "familyId": "gc-330aec036a8605e596c0",
+      "kind": "palette-color-fidelity",
+      "note": "The selected palette does not appear to use the proper artwork colors."
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+	"schema_version": "group-a.v2",
+	"prompt_variant": "C",
+	"provenance": "[REVIEWED] Question set: research/v3/ORACLE_QUESTION_SET.md v2, group A. Vocabularies byte-identical to group-a.v1 (variants A and B); criterion text and canonical examples from §A.2, precedence rule from §A.1, both quoted verbatim. Deviations listed below.",
+	"design_notes": [
+		"Group-a.v2 = the corrected ground_type criterion under the FROZEN group-a.v1 vocabulary. The vocabulary split proposed in ORACLE_QUESTION_SET.md §A.5 is deliberately NOT implemented here: two changes at once cannot be attributed, and C/D establish the baseline any split would have to beat.",
+		"Question order is variant B's: enclosure, then texture, then the critical ground question, then shading. B's order matched the reviewer's exact ground_type answer on 16/30 contested artworks against variant A's 7/30 [MEASURED disambiguation-1]. Under constrained decoding the JSON property order IS the generation order, so the model has committed to two cheap facts about the image before it answers the hard one.",
+		"The enum option order inside every question is also variant B's, held constant on purpose. C/D-vs-B is therefore not confounded by option order; what changed against B is the criterion text, the precedence rule, the confidence trigger, and the stems.",
+		"C and D differ from each other in stem prose and JSON key names only. Question order, option order, vocabulary, the THE TEST block and the WHICH ANSWERS ARE FOR WHAT block are byte-identical between them. So C-vs-D isolates wording, and C/D-vs-B tests whether B's ordering result survives two fresh wordings (ORACLE_QUESTION_SET.md design rule 6 is wording-confounded until it does).",
+		"Placement note: both shared blocks sit at the top of the prompt, before question 1, rather than inline at the ground question the way variant B carried its one-surface rule. They are long and both later questions lean on them. This is part of what changed against B; the ORDER THAT MATTERS is the JSON property order, which is generation order under constrained decoding, and that is B's exactly.",
+		"The THE TEST block and the WHICH ANSWERS ARE FOR WHAT block are quoted verbatim from ORACLE_QUESTION_SET.md v2 §A.2 and §A.1, which is the same text the human review form must carry. The two instruments quote one sentence, not two paraphrases of it.",
+		"Greedy decoding, so prompt variation remains the only source of a disagreement signal (pipeline §3).",
+		"Variant C's wording family is spatial and diagnostic: it names the ground, asks what is making it uneven, and asks what shape a progression has. Keys: frame / unevenness / ground / gradient_shape / confidence."
+	],
+	"deviations": [
+		"Identical to variants A and B: `not_applicable` is added to the shading vocabulary because a fixed JSON schema cannot make a field conditional without a union, and the analysis treats `not_applicable` and a missing answer identically.",
+		"`note` is the question set's `ambiguity_note`. HUMAN AUDIT ONLY, never read by code (pipeline §0). Required by the schema, capped at 120 characters so decode cost stays bounded.",
+		"New in group-a.v2: the `confidence` stem carries an operational trigger (\"answer low whenever a second answer is defensible\"). Under group-a.v1 the field was degenerate: 298 of 299 parsed rows said `high` [MEASURED premise-run-1]. The vocabulary is unchanged; only the instruction for choosing among its values is new. `confidence` is generated last under constrained decoding and is not part of the primary comparison."
+	],
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Look at this album cover.\n\nFour questions about its GROUND: the large areas that lie behind and around any subject, lettering or figures. Small details do not count. What the cover is about does not count. Whether it is attractive does not count.\n\nTHE TEST. The ground reads either as ONE CONTINUOUS COLOUR PROGRESSION or as DISCRETE COLOUR AREAS. Whether it is one physical surface is a strong hint, but it is neither required nor decisive.\nCanonical case 1, the painted wall. A wall painted in bands that melt into each other is one continuous progression (shaded_field). The same wall painted in crisp bands is discrete areas (multiple_distinct_fields). Same wall, same paint, different answer.\nCanonical case 2, the blurry meeting line. One flat area meeting one shaded area along a blurry line is still discrete areas (multiple_distinct_fields). A single surface that is flat across part of itself and shaded across another part is one continuous progression (shaded_field). How soft the join looks is never the test.\nIf it is genuinely a coin flip, answer with your first read. Do not deliberate.\n\nWHICH ANSWERS ARE FOR WHAT. flat_field, shaded_field and multiple_distinct_fields answer the test above; use one of them whenever the ground can be read at all. full_scene, pattern_or_texture and none_discernible are only for grounds where the test cannot be applied: a depicted space with no readable overall colour behaviour, a motif or material that IS the ground, or nothing readable at all. A photograph of a place whose ground still reads as one progression or as discrete areas takes the test answer, not full_scene.\n\n1. frame - is the picture shut in by a border or a bar?\n   thick_frame_or_bars - a wide frame, or a solid band along one or more edges, big enough to be an area in its own right\n   none - the picture runs all the way out to the edges\n   thin_border - a narrow keyline or thin frame\n\n2. unevenness - where the ground is not one even colour, what is making it uneven?\n   distinct_areas - separate patches of different colour, nothing to do with a material\n   one_textured_material - grain, film noise, paper, canvas, brush marks, print dots: the same material throughout\n   smooth - it is even; no visible texture at all\n\n3. ground - apply THE TEST above, then choose.\n   multiple_distinct_fields - discrete colour areas, two or more, hard join or soft join\n   shaded_field - one continuous colour progression across the ground\n   flat_field - one area, one colour, no progression\n   pattern_or_texture - a motif or material that is itself the ground\n   full_scene - a depicted space whose ground has no readable colour behaviour\n   none_discernible - no ground can be made out\n\n4. gradient_shape - if and only if you chose shaded_field, what shape is the progression?\n   radial_or_vignette - spreading outward from a centre, or darkening into the corners\n   not_applicable - you did not choose shaded_field\n   irregular - it has no simple geometry\n   linear - it runs straight across, one edge to the other\n\nThen:\n   confidence - high, medium or low over the four answers together. Answer low whenever a second answer is defensible.\n   note - an empty string when confidence is high; otherwise one short sentence naming what is unclear\n\nReply with JSON only.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"frame": {
+				"type": "string",
+				"enum": [
+					"thick_frame_or_bars",
+					"none",
+					"thin_border"
+				]
+			},
+			"unevenness": {
+				"type": "string",
+				"enum": [
+					"distinct_areas",
+					"one_textured_material",
+					"smooth"
+				]
+			},
+			"ground": {
+				"type": "string",
+				"enum": [
+					"multiple_distinct_fields",
+					"shaded_field",
+					"flat_field",
+					"pattern_or_texture",
+					"full_scene",
+					"none_discernible"
+				]
+			},
+			"gradient_shape": {
+				"type": "string",
+				"enum": [
+					"radial_or_vignette",
+					"not_applicable",
+					"irregular",
+					"linear"
+				]
+			},
+			"confidence": {
+				"type": "string",
+				"enum": [
+					"high",
+					"medium",
+					"low"
+				]
+			},
+			"note": {
+				"type": "string",
+				"maxLength": 120
+			}
+		},
+		"required": [
+			"frame",
+			"unevenness",
+			"ground",
+			"gradient_shape",
+			"confidence",
+			"note"
+		],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"frame": "enclosure",
+		"unevenness": "field_texture",
+		"ground": "ground_type",
+		"gradient_shape": "shading_geometry",
+		"confidence": "confidence",
+		"note": "ambiguity_note"
+	},
+	"free_text_fields": [
+		"note"
+	]
+}

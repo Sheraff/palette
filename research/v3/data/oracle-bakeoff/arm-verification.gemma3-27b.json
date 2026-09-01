@@ -1,0 +1,90 @@
+{
+	"purpose": "One-forward-pass load verification for a bake-off arm.",
+	"generated_by": "research/v3/oracle/bakeoff/verify_load.py",
+	"generated_at": "2026-08-03T08:18:51.378Z",
+	"arm": "gemma3-27b",
+	"model_id": "mlx-community/gemma-3-27b-it-8bit",
+	"model_revision": "524cdc4f56a58ef94949ba65dc63a29c48362b1a",
+	"quantization": "8bit",
+	"architecture": "gemma3",
+	"weights_manifest_sha256": "fcbd487c53a9bcd41a22db4d788c87c58b0164ea23e301a76f10326e51bc6f4c",
+	"snapshot_path": "/Users/Flo/.cache/huggingface/hub/models--mlx-community--gemma-3-27b-it-8bit/snapshots/524cdc4f56a58ef94949ba65dc63a29c48362b1a",
+	"runtime_version": "mlx-vlm 0.6.8",
+	"mlx_version": "0.32.0",
+	"python_version": "3.14.3",
+	"load_seconds": 2.89,
+	"grammar": {
+		"available": true,
+		"detail": "llguidance json-schema mask built"
+	},
+	"system_turn": "separate",
+	"test_image": {
+		"image_path": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
+		"image_sha256": "0298c3007670023f8c34c0264cfc54dbf617b7c4bbf906e4580f49ee8b478f7d",
+		"source_long_edge_px": 640,
+		"processed_long_edge_px": 640,
+		"why_this_image": "the premise run's pinned canary \u2014 same picture for every arm"
+	},
+	"passes": [
+		{
+			"prompt_variant": "A",
+			"constrained_decoding": true,
+			"status": "ok",
+			"parsed": {
+				"ground_type": "shaded_field",
+				"shading_geometry": "irregular",
+				"field_texture": "one_textured_material",
+				"enclosure": "none",
+				"confidence": "high",
+				"ambiguity_note": ""
+			},
+			"raw_text": "{\"ground\": \"shaded_field\", \"shading\": \"irregular\", \"texture\": \"one_textured_material\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
+			"attempts": 1,
+			"parse_failed": false,
+			"error_class": null,
+			"error_message": null,
+			"prompt_tokens": 807,
+			"generation_tokens": 43,
+			"wall_seconds": 20.968,
+			"peak_memory_gb": 31.620621816,
+			"system_turn": "separate"
+		},
+		{
+			"prompt_variant": "A",
+			"constrained_decoding": false,
+			"status": "ok",
+			"parsed": {
+				"ground_type": "shaded_field",
+				"shading_geometry": "irregular",
+				"field_texture": "one_textured_material",
+				"enclosure": "none",
+				"confidence": "high",
+				"ambiguity_note": ""
+			},
+			"raw_text": "```json\n{\n  \"ground\": \"shaded_field\",\n  \"shading\": \"irregular\",\n  \"texture\": \"one_textured_material\",\n  \"enclosure\": \"none\",\n  \"confidence\": \"high\",\n  \"note\": \"\"\n}\n```",
+			"attempts": 1,
+			"parse_failed": false,
+			"error_class": null,
+			"error_message": null,
+			"prompt_tokens": 807,
+			"generation_tokens": 63,
+			"wall_seconds": 22.917,
+			"peak_memory_gb": 31.620621816,
+			"system_turn": "separate"
+		}
+	],
+	"gpu_faults": 0,
+	"verdict": {
+		"loads": true,
+		"constrained_ok": true,
+		"fallback_ok": true,
+		"decoding_path_for_runs": "constrained"
+	},
+	"projection_inputs": {
+		"first_pass_seconds": 20.968,
+		"later_passes_seconds": [
+			22.917
+		],
+		"peak_memory_gb": 31.620621816
+	}
+}

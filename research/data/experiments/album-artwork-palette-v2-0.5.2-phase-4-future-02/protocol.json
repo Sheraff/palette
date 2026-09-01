@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 1,
+  "experimentVersion": "album-artwork-palette-v2-0.5.2-phase-4-future-02",
+  "createdAt": "2026-07-27T09:50:54.239Z",
+  "outputDirectory": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02",
+  "candidateFreeze": {
+    "path": "research/data/experiments/album-artwork-palette-v2-0.5.2-development/candidate-freeze.json",
+    "rawSha256": "782b90d43e001eb04ee7bde89f67095c15e5fa0be346f7db39559d82b5ae7f75",
+    "freezeId": "8a401a451b1c824c70ad1f0394870719b6786f092e27a19eda8a4b626fa7b01b",
+    "implementationHash": "ea1205ebd2d33abf99d8eed8a0e5e7625f1af6722dbe7879c90350c23d36fd40",
+    "scientificSha256": "44dad7455a43fb4c7eaea70ee3f5b522d6742bdb320cf3855ef3fb085b344b57",
+    "futureSample02OneWayExecutionEligible": true
+  },
+  "candidate": {
+    "version": "album-artwork-first-principles-0.5.2",
+    "frozenImplementationHash": "ea1205ebd2d33abf99d8eed8a0e5e7625f1af6722dbe7879c90350c23d36fd40",
+    "freezeId": "8a401a451b1c824c70ad1f0394870719b6786f092e27a19eda8a4b626fa7b01b",
+    "closure": {
+      "version": "album-artwork-palette-v2-phase-4-static-import-closure-v1",
+      "roots": [
+        "research/album-artwork-palette-v2-0.5.2-phase-4-candidate-child.ts"
+      ],
+      "files": [
+        {
+          "path": "research/album-artwork-palette-v2-0.5.2-phase-4-candidate-child.ts",
+          "rawSha256": "0b0186f9158d45e6aacdd4b161c3a2a34fd689e1d2e0dc068b3a3d7ee9c044df"
+        },
+        {
+          "path": "research/src/album-artwork-palette-v2-future-sample.ts",
+          "rawSha256": "65f4cb11d9f93c895ddacb010da643536a983fbf15dde6e755bb8aadb8e9efb3"
+        },
+        {
+          "path": "research/src/album-artwork-palette-v2-protocol.ts",
+          "rawSha256": "dd8c8dadbef5a54c03d97a994cc7a2c08f2317c329adc2224a2db72277ad1b35"
+        },
+        {
+          "path": "research/src/album-artwork-palette-v2.ts",
+          "rawSha256": "ec817372f7f31ccba3c688457dbe7fbd572bc2448226caea253a371b68a78461"
+        },
+        {
+          "path": "research/src/color-name.ts",
+          "rawSha256": "dbb16263c8debbc7965eab73d35c20e2d2acedde8407cff6294e4c382649156c"
+        },
+        {
+          "path": "research/src/color.ts",
+          "rawSha256": "14aae7dfd90b4589b81d2061fda4c05e1a5513bb98ab864b25ce81a520139033"
+        },
+        {
+          "path": "research/src/native-resolution-image.ts",
+          "rawSha256": "0fed2b94aec333b144088f41d7eaa9165097cf001d0e253c664255f4bb300bb2"
+        },
+        {
+          "path": "research/src/source-provenance-inventory.ts",
+          "rawSha256": "13d18358e69ec9eb77dd44357593da5b05aadf28dd1b20db06fa28814364d79a"
+        },
+        {
+          "path": "research/src/types.ts",
+          "rawSha256": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb"
+        }
+      ],
+      "sha256": "cfad65cc2a0c355b9ffe6c6a56eaf688e0934845d1ce1fa4798227da5ed9e8b8"
+    }
+  },
+  "baseline": {
+    "version": "region-graph-0.19.0",
+    "entryPoints": [
+      "research/src/image.ts#loadImage(bytes)",
+      "research/src/extract.ts#extractPalette(image).methods.spatial"
+    ],
+    "scientificPayload": "version-width-height-complete-spatial-result; processingMs-excluded",
+    "closure": {
+      "version": "album-artwork-palette-v2-phase-4-static-import-closure-v1",
+      "roots": [
+        "research/album-artwork-palette-v2-0.5.2-phase-4-baseline-child.ts"
+      ],
+      "files": [
+        {
+          "path": "research/album-artwork-palette-v2-0.5.2-phase-4-baseline-child.ts",
+          "rawSha256": "77c9e8f77150492462b22463a0f3b7623d54ee30b34b125a02b1ebaee27ba5a2"
+        },
+        {
+          "path": "research/src/accent-contrast.ts",
+          "rawSha256": "7bad392473ce4bf16adec6e0114a35bd9637b7b80e799071aad346e3648962fb"
+        },
+        {
+          "path": "research/src/album-artwork-palette-v2-future-sample.ts",
+          "rawSha256": "65f4cb11d9f93c895ddacb010da643536a983fbf15dde6e755bb8aadb8e9efb3"
+        },
+        {
+          "path": "research/src/candidates.ts",
+          "rawSha256": "8785749f96183408d5984a84b10154fc887cc708bd2d8419ec8ba7b9b1068950"
+        },
+        {
+          "path": "research/src/chromatic-candidate-availability.ts",
+          "rawSha256": "2cc366406a01f23f19d7db8ccf1f0cfb296cd0b58a1acd7c0d8fb1b71c202bed"
+        },
+        {
+          "path": "research/src/chromatic-role-extract.ts",
+          "rawSha256": "3b6788a666600609702cd807239c6c04dfb3d9d068d851afeb5a62a43b4cf34a"
+        },
+        {
+          "path": "research/src/color-name.ts",
+          "rawSha256": "dbb16263c8debbc7965eab73d35c20e2d2acedde8407cff6294e4c382649156c"
+        },
+        {
+          "path": "research/src/color.ts",
+          "rawSha256": "14aae7dfd90b4589b81d2061fda4c05e1a5513bb98ab864b25ce81a520139033"
+        },
+        {
+          "path": "research/src/extract.ts",
+          "rawSha256": "18eff4f07193f01006e08674d33b0ec0f654d1c9253991d1e4686c32064fbf84"
+        },
+        {
+          "path": "research/src/foreground-contrast.ts",
+          "rawSha256": "b5f9ad499e85f7bf8058e6c13774c1c0f09f4c2b5ce7a8b2891c325e57ed4999"
+        },
+        {
+          "path": "research/src/guarded-palette.ts",
+          "rawSha256": "bed24c0ccc7854b96dcddf8c487bbfb11edf264ee3053b7358120b44ca6ada2e"
+        },
+        {
+          "path": "research/src/image.ts",
+          "rawSha256": "c043d1169c8f8338bf9fdce98707ed1533122580770bceb38170c4953adaa8e4"
+        },
+        {
+          "path": "research/src/joint-palette.ts",
+          "rawSha256": "6806c95730090c31ce78e9217e4cad2ce228fd876786ad457058610ab827af92"
+        },
+        {
+          "path": "research/src/palette.ts",
+          "rawSha256": "bba8d53a7a0649bc0603673db65c6ae78e03e5aa8bca66d771e3b3df0e60a420"
+        },
+        {
+          "path": "research/src/region-graph-0.17-extract.ts",
+          "rawSha256": "a1ebdc39c3fb954edb93531d6d03caf7da70b95b866e9b4a9392533724fc64f2"
+        },
+        {
+          "path": "research/src/regions.ts",
+          "rawSha256": "2812a6b40a0b948dc6d97e6067d9a71e4d168b88ac30a99c9b61199ecf59b845"
+        },
+        {
+          "path": "research/src/source-provenance-inventory.ts",
+          "rawSha256": "13d18358e69ec9eb77dd44357593da5b05aadf28dd1b20db06fa28814364d79a"
+        },
+        {
+          "path": "research/src/types.ts",
+          "rawSha256": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb"
+        }
+      ],
+      "sha256": "bfdfb7333a39b074da3e92f6f7027fbfed8182cf5b551a452ffdbf3e40f046db"
+    }
+  },
+  "futureSample": {
+    "path": "research/data/album-artwork-palette-v2-future-sample-02.sealed.json",
+    "rawSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c",
+    "manifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+    "sealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+    "root": "10",
+    "familyCount": 12,
+    "preferredSourcePolicy": "unique-variant-matching-preferredSourcePath",
+    "inventory": {
+      "path": "research/data/source-provenance-inventory-00-14.json",
+      "inventoryVersion": "source-provenance-inventory-00-14-v1",
+      "inventoryId": "3907c57f94cd7dfea992c5d1ce98da6de2165c720b75259b32f0250da1881c7f",
+      "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+    },
+    "effectiveExclusionCommitment": "09d6cf24080ef984c38c6cb46a96751476a6c334ef72be3e19cb1083d2fd55ae",
+    "sources": [
+      {
+        "caseId": "future-02-01",
+        "path": "10/ab67616d00001e02001095f83999b17333ab1125",
+        "sha256": "3cccd4eca181bee52834681cec424a445628ed235367787f93dfa32f10254ae6",
+        "byteCount": 22650,
+        "artworkId": "001095f83999b17333ab1125",
+        "selectionKey": "003a84ef564ec116703362c24fa804a70c89bf8e3a1aff6ff67237c8f0cc42f7",
+        "familyCommitment": "9f745327a4a5d3ce2c365cf342694492deb0ca8d076d632767f64d6ba857ff07"
+      },
+      {
+        "caseId": "future-02-02",
+        "path": "10/ab67616d00001e020010d319b94bde4706b941f2",
+        "sha256": "33dfed6981e0933e4a62a49407b85df6d0d05e649d95851d1cb7eac8c7f2b99f",
+        "byteCount": 49356,
+        "artworkId": "0010d319b94bde4706b941f2",
+        "selectionKey": "02a9ed372671ff4f974c34e43bcb3ef7e4d3a16d098d35171973ca9cecc93e49",
+        "familyCommitment": "b6d40eb08fd134985681ce9cedacf61bcc366933ae2b630213ac13359d5475c3"
+      },
+      {
+        "caseId": "future-02-03",
+        "path": "10/ab67616d00001e020010d93ffdbae82b6d7d6884",
+        "sha256": "5aa11b8c6418cf94d25ade2fe03094ecb52ebb832f0016024ac7c03ff09fe8da",
+        "byteCount": 25898,
+        "artworkId": "0010d93ffdbae82b6d7d6884",
+        "selectionKey": "030196d793cb19e4269d8ae40e5937134123c2f9d01c6e15ee741f57acee90bd",
+        "familyCommitment": "77f850b8cb4f4c4a782e173c46a737d7417d0c2560f4434aa3bbff6f6ce2bccb"
+      },
+      {
+        "caseId": "future-02-04",
+        "path": "10/ab67616d0000b2730010f7adddbacef93dd045f8",
+        "sha256": "7d016feed4dff09e2cf274e27f9c319f31255fed60323689fff7a4e3bc673100",
+        "byteCount": 121291,
+        "artworkId": "0010f7adddbacef93dd045f8",
+        "selectionKey": "032654cb94dd0b32f203b3b3166dac6d00fc582606d2c45f0a067cdea8d6a4a6",
+        "familyCommitment": "69ebf1b46eb060f6570b4c444b3c144807f594142746d7c160743f30c435296a"
+      },
+      {
+        "caseId": "future-02-05",
+        "path": "10/ab67616d00001e020010c625e2281b34caf4e3af",
+        "sha256": "d6c813af7f179795bae97d47addc7a9247a7a6a01531c04a952c31b4a1f1a5cc",
+        "byteCount": 46231,
+        "artworkId": "0010c625e2281b34caf4e3af",
+        "selectionKey": "033f435f660133d10ee5f28be488ab5506b93731c8ca9ae52efa66cee91ecf4e",
+        "familyCommitment": "965e99700ba189de8d844279189ee0d621894b60f5c74b763ae60c620d5e7f7a"
+      },
+      {
+        "caseId": "future-02-06",
+        "path": "10/ab67616d00001e0200101f18d7394f8e6c78e5b1",
+        "sha256": "5a47b5e4fdfdf322e526c1fee5da51ed2cbf450cebb639c65914487ea589ce39",
+        "byteCount": 46721,
+        "artworkId": "00101f18d7394f8e6c78e5b1",
+        "selectionKey": "03846cd28b2853c4828c3553ece3a4644d60f4d5d599092504a87a3196d4af81",
+        "familyCommitment": "bafc78d4fec681addc30406195a349f5ca7437988d6ff483e6a9a5fd7d40e9a3"
+      },
+      {
+        "caseId": "future-02-07",
+        "path": "10/ab67616d0000b2730010c72b0a6a2c7b073f4ff4",
+        "sha256": "461502fab6a71a7ce7a14f41cb4166dee74d8351dbc551bc925c092c70f0cd1a",
+        "byteCount": 118621,
+        "artworkId": "0010c72b0a6a2c7b073f4ff4",
+        "selectionKey": "04cc1b30c8cf6cdc643816bf55b583e34cc028948e04bd703544cc72cd6d5cc0",
+        "familyCommitment": "8ce8ada2080784b9dc8877eb105f3d39c532439b2f46f27c9d7e87bfa6f7174a"
+      },
+      {
+        "caseId": "future-02-08",
+        "path": "10/ab67616d0000b2730010082188524290151d5624",
+        "sha256": "6ce66cf4f0c42658031e0ce2fc73258dc072883dd719cd459969b47bdc4010a1",
+        "byteCount": 172532,
+        "artworkId": "0010082188524290151d5624",
+        "selectionKey": "0503c6f0dc2a7440cfa8a14421132e549e46c6b917bde712dc13f8124fa5e61a",
+        "familyCommitment": "154830968e8ed42f7e039e49416df8395ff5760d09fd101fee4632aef6b26d87"
+      },
+      {
+        "caseId": "future-02-09",
+        "path": "10/ab67616d00001e0200104e29afcccd0253886c63",
+        "sha256": "bc6e1a0593a1353887593749a0f528052f05978c0ce6508e7f74ec651a7e6bbe",
+        "byteCount": 60061,
+        "artworkId": "00104e29afcccd0253886c63",
+        "selectionKey": "056fc578a7c2e1990ac92cfe12cab06d59bc5307f8ad818036384929951ae879",
+        "familyCommitment": "2b5859bca9cec5142d7eee93e95ad026814393c9a57fcb16f3f3a866d2aab7d3"
+      },
+      {
+        "caseId": "future-02-10",
+        "path": "10/ab67616d00001e0200103500d883e207097ac96e",
+        "sha256": "01a0c88f5ab073cd2f11bc83f598c937d23710c9d5b69300112ae048ef4336b9",
+        "byteCount": 26942,
+        "artworkId": "00103500d883e207097ac96e",
+        "selectionKey": "063cb8cbf65e455e36b71d48054539b03b015588f7a4cca1423683d50d35e96e",
+        "familyCommitment": "fa1cf3853f9449d29fbb934d737c0312b4f5869df4cb3e38d2acbdf7a0eed7a9"
+      },
+      {
+        "caseId": "future-02-11",
+        "path": "10/ab67616d0000b27300100a3952304245c7ba52d6",
+        "sha256": "7b05dc0d6ca58d7b2a97cae28be171508f0607cc00eccaa5a88a3b17e481e5fe",
+        "byteCount": 20203,
+        "artworkId": "00100a3952304245c7ba52d6",
+        "selectionKey": "0654363ede8a6ac4e7691326ed019954eb64189b3321f0dd0a427c63ae82c8db",
+        "familyCommitment": "ec654611fdc80c7e2939fc6fc5df3054911528fada074fb594b0a6624a9867da"
+      },
+      {
+        "caseId": "future-02-12",
+        "path": "10/ab67616d00001e020010a81b5035e2d00a9eb740",
+        "sha256": "7485cccc5c285c3e49a071803fd8820fb1c31cb4cb74c108a5962cbd7a23dbd2",
+        "byteCount": 23508,
+        "artworkId": "0010a81b5035e2d00a9eb740",
+        "selectionKey": "0712266dddc8dec5b2e83f90c04ff8a67b7eff3328cb4b42e569cd9589ac2ac1",
+        "familyCommitment": "f913b2d22cdcbea2c4a6b7512875c599bf6bb9e974abf42110bb4c77ec441457"
+      }
+    ]
+  },
+  "sourceCustody": {
+    "pathRule": "direct-root-10-child-only",
+    "checksBeforeDecode": [
+      "bound-path",
+      "realpath",
+      "regular-file",
+      "non-symlink",
+      "device-inode-size",
+      "byte-count",
+      "sha256"
+    ],
+    "candidateAndBaselineReadSeparately": true,
+    "alternateVariantsOpened": false,
+    "preservedRootsOpened": false
+  },
+  "sideAssignment": {
+    "domain": "album-artwork-palette-v2-phase-4-side-assignment-v1",
+    "digest": "SHA256(domain || NUL || future seal commitment || NUL || preferred-source SHA-256)",
+    "rule": "candidate-is-A-for-first-six-and-B-for-last-six",
+    "assignments": [
+      {
+        "caseId": "future-02-03",
+        "sourceSha256": "5aa11b8c6418cf94d25ade2fe03094ecb52ebb832f0016024ac7c03ff09fe8da",
+        "key": "028db36d5d35abd23c396218f1064cc62b95175749e0e71bb5ef7a24a7700f2e",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "future-02-12",
+        "sourceSha256": "7485cccc5c285c3e49a071803fd8820fb1c31cb4cb74c108a5962cbd7a23dbd2",
+        "key": "0431ed4c317db69a28dad892f5e87c4ec14e14eb12c5e39bedf9f34cabe7579d",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "future-02-01",
+        "sourceSha256": "3cccd4eca181bee52834681cec424a445628ed235367787f93dfa32f10254ae6",
+        "key": "1931ef7793b25d4b39884211c122fead176381376bae291acb1cb781639c13a9",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "future-02-11",
+        "sourceSha256": "7b05dc0d6ca58d7b2a97cae28be171508f0607cc00eccaa5a88a3b17e481e5fe",
+        "key": "58f074ea96d7f73002b3ff19ea1ae89441989a170a243257618401b12851101d",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "future-02-02",
+        "sourceSha256": "33dfed6981e0933e4a62a49407b85df6d0d05e649d95851d1cb7eac8c7f2b99f",
+        "key": "6810a9417c1bdd1ea7346647bd18a1eaa3c5ffdd7aea3b6b9b48c58e1fff5825",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "future-02-07",
+        "sourceSha256": "461502fab6a71a7ce7a14f41cb4166dee74d8351dbc551bc925c092c70f0cd1a",
+        "key": "69f982a257593404592fc393de03b2ea92ca12e853f12cdb187455adf00ee8e0",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "future-02-10",
+        "sourceSha256": "01a0c88f5ab073cd2f11bc83f598c937d23710c9d5b69300112ae048ef4336b9",
+        "key": "7352ccbbf459be6e43dcf428d9785634501db6c22e078121cc0511b86ae5cd58",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "future-02-04",
+        "sourceSha256": "7d016feed4dff09e2cf274e27f9c319f31255fed60323689fff7a4e3bc673100",
+        "key": "aad655002487ad2c010cdeee84a600517b8569542b00dd3e3064ebb268f44839",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "future-02-09",
+        "sourceSha256": "bc6e1a0593a1353887593749a0f528052f05978c0ce6508e7f74ec651a7e6bbe",
+        "key": "b6a4a78aab7005541c841b8a529552018786b86b95a0ffc8020ca54c3e71e63f",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "future-02-06",
+        "sourceSha256": "5a47b5e4fdfdf322e526c1fee5da51ed2cbf450cebb639c65914487ea589ce39",
+        "key": "dbac5ebcfdc287696a684f7e8b08ebff42145de96950473441099c2efe8ef007",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "future-02-05",
+        "sourceSha256": "d6c813af7f179795bae97d47addc7a9247a7a6a01531c04a952c31b4a1f1a5cc",
+        "key": "e50fa5297f5652bb9ee5d2c471596b9da8a38b45fc71790c9b3b008b3af48c51",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "future-02-08",
+        "sourceSha256": "6ce66cf4f0c42658031e0ce2fc73258dc072883dd719cd459969b47bdc4010a1",
+        "key": "fb68a9f83e2fd4cfdfb6d6e46f83292d889933ffa767ed750e30d31be2ca5781",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      }
+    ],
+    "assignmentSha256": "03b8a4a68c983f417f49206dd894942790d56167f101d274126cc045d21ec9da"
+  },
+  "presentation": {
+    "version": "album-artwork-palette-v2-phase-4-presentation-v1",
+    "roles": [
+      "background",
+      "surface",
+      "foreground",
+      "accent"
+    ],
+    "colorNames": "colornames-oklab-0.6.0-presentation-only"
+  },
+  "execution": {
+    "arguments": [],
+    "candidateWorkers": 6,
+    "candidateFirst": true,
+    "baselineStartsAfterDurableCandidateCompleteMarker": true,
+    "baselineMode": "sequential-separate-children-stop-on-first-error",
+    "force": false,
+    "overwrite": false,
+    "reuse": false,
+    "automaticRetry": false
+  },
+  "runtime": {
+    "node": "v25.8.1",
+    "versions": {
+      "node": "25.8.1",
+      "acorn": "8.16.0",
+      "ada": "3.4.3",
+      "amaro": "1.1.8",
+      "ares": "1.34.6",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "lief": "0.17.0",
+      "llhttp": "9.3.1",
+      "merve": "1.2.0",
+      "modules": "141",
+      "napi": "10",
+      "nbytes": "0.1.3",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.68.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "3.5.5",
+      "simdjson": "4.3.1",
+      "simdutf": "7.3.3",
+      "sqlite": "3.52.0",
+      "tz": "2025c",
+      "undici": "7.22.0",
+      "unicode": "17.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.23",
+      "v8": "14.1.146.11-node.21",
+      "zlib": "1.3.1-e00f703",
+      "zstd": "1.5.7"
+    },
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/Users/Flo/.nvm/versions/node/v25.8.1/bin/node"
+  },
+  "controls": {
+    "method": "raw-sha256",
+    "files": [
+      {
+        "path": "package.json",
+        "rawSha256": "6d01b7ca68aae4015b98c3cc560c0dfaf774d0020348271d302b62322ce27ff3"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "rawSha256": "a858afe1d3946e113b58fc0c7bea25ed6a418d8190ce57951b6a4d0fe3af6058"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_FUTURE_SAMPLE_02_PROTOCOL.md",
+        "rawSha256": "3016a5db981c206cf7143229faef2cc179ee2e6937a743e96d909d8eb5d916f0"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PHASE_4_FUTURE_02_PROTOCOL.md",
+        "rawSha256": "1d671ba6a03d98fc8bfdf724cbd9536072ff3c06e6ce7a32224c108ca6ce3c5b"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PLAN_V2.md",
+        "rawSha256": "cf43b640ab6c89bb64fffb7cd143a6b2486259a9dc252311684bd2b4dc317855"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_5_2.md",
+        "rawSha256": "f17b3b8ba707c2084a6f56ee51a7d63e53714c109a43305f058fed5c76116a1e"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-0.5.2-phase-4-baseline-child.ts",
+        "rawSha256": "77c9e8f77150492462b22463a0f3b7623d54ee30b34b125a02b1ebaee27ba5a2"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-0.5.2-phase-4-candidate-child.ts",
+        "rawSha256": "0b0186f9158d45e6aacdd4b161c3a2a34fd689e1d2e0dc068b3a3d7ee9c044df"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-review/app.js",
+        "rawSha256": "cb06270bc2766e51ccb8b19bd4b23329dd58990c90b173dcef406d41e7bdb9b9"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-review/index.html",
+        "rawSha256": "165066252f7beafae918b38d5fdcbb25ad0cdaca391d90bda8b0e4622d8d39c7"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-review/styles.css",
+        "rawSha256": "8b5f4fe927d18d057c251f939d7cef3364409ea369c524b97538c83de947b5b5"
+      },
+      {
+        "path": "research/analyze-album-artwork-palette-v2-0.5.2-phase-4-review.ts",
+        "rawSha256": "20fedfeb8161e519d85ed744b891b044b4ec363e671cfd671b4f049d1d2aecd6"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-development-panel.json",
+        "rawSha256": "9258032b8ea2d40166d2be89767f5b15341145de314b007c09e766ffbaac75e4"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-fresh-sample.sealed.json",
+        "rawSha256": "6625aea0e38b93f6830a349468681a5dc6e93c99fe4bc3f38ca66ad23e0d16f3"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-future-sample-02.sealed.json",
+        "rawSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-phase-4/protocol.json",
+        "rawSha256": "aad491373fae7bdf798fbba06d1fbd1d55fb8002e610f6a2b92d8bdf80bbeb37"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.5.2-development/candidate-freeze.json",
+        "rawSha256": "782b90d43e001eb04ee7bde89f67095c15e5fa0be346f7db39559d82b5ae7f75"
+      },
+      {
+        "path": "research/data/source-provenance-inventory-00-14.json",
+        "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+      },
+      {
+        "path": "research/freeze-album-artwork-palette-v2-0.5.2.ts",
+        "rawSha256": "bbe17832a81717742be70b88edea16a69cf4f1a3c05d734f395d47f01b2f5a2f"
+      },
+      {
+        "path": "research/run-album-artwork-palette-v2-0.5.2-phase-4.ts",
+        "rawSha256": "85f6436c602166ecf1487a2f9397bac7813ee602f8117980c23d4fdf45ecb379"
+      },
+      {
+        "path": "research/serve-album-artwork-palette-v2-phase-4-review.ts",
+        "rawSha256": "6553e005cb3df380715fa0aedcf60c86917ea4227359a54d13d5968f26d19772"
+      },
+      {
+        "path": "research/src/album-artwork-palette-v2-phase-4-review.ts",
+        "rawSha256": "c16d4eb1fa1ee01726f5664b1ae56522d661eeda37adf3550941098fd6a8dbb1"
+      },
+      {
+        "path": "research/tests/album-artwork-palette-v2-phase-4.test.ts",
+        "rawSha256": "9862c42dd7ca925eee549eeb08b947e5311cdc1ffd1a9bcf66bdf3fbfe243a88"
+      },
+      {
+        "path": "research/tsconfig.json",
+        "rawSha256": "13b922dd408d2512b88f07e1b97e2760db28648db38cbcfbf9bf30dce6b26667"
+      }
+    ],
+    "sha256": "db2cc1ddffbf1c8441e0b4a4f67d43ffa5395833172d211c26233fd44bb25e65"
+  },
+  "protocolId": "71ef0088f8b95c2a52fb73dc17683bb366e4bd3811a640f09c8ba74214a74a46"
+}

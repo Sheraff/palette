@@ -1,0 +1,546 @@
+{
+  "generatedAt": "2026-07-19T09:27:32.819Z",
+  "algorithmVersion": "region-graph-0.17.0",
+  "source": {
+    "corpus": "images",
+    "fileCount": 35,
+    "semanticSha256": "43a102ccb0fe6d043a1d1d23a20500d6489fe1df813dff4125e2058532a916d3"
+  },
+  "thresholds": {
+    "medianAdvisory": 0.02,
+    "maximumAdvisory": 0.08
+  },
+  "summary": {
+    "median": 0,
+    "p90": 0.0814272598772463,
+    "maximum": 0.780447751602501,
+    "warnings": 29
+  },
+  "entries": [
+    {
+      "file": "artofficial.jpg",
+      "cropDistance": {
+        "background": 0.19410044415922098,
+        "foreground": 0,
+        "surface": 0.10150530248592786,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0016891235309643756,
+        "foreground": 0.0028426568908558767,
+        "surface": 0.004260224542417757,
+        "accent": 0.002479611320527221
+      }
+    },
+    {
+      "file": "birdsofprey.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0006972542512766015,
+        "foreground": 0.10439387862338419,
+        "surface": 0.0006313448613055576,
+        "accent": 0.004865173133466327
+      }
+    },
+    {
+      "file": "black.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0.18943883418869156
+      },
+      "noiseDistance": {
+        "background": 0.06658054719691626,
+        "foreground": 0,
+        "surface": 0.06658054719691626,
+        "accent": 0.20883855137126808
+      }
+    },
+    {
+      "file": "disney.avif",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0.007938272649442324,
+        "surface": 0.29960837810384033,
+        "accent": 0.37267653705758164
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.00411227599862739,
+        "surface": 0.29960837810384033,
+        "accent": 0.37224156574197503
+      }
+    },
+    {
+      "file": "doja.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0.03245484659547415,
+        "surface": 0.11879540566337263,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.002013634507560619,
+        "foreground": 0.03601701652756889,
+        "surface": 0,
+        "accent": 0.026584227985574704
+      }
+    },
+    {
+      "file": "elephunk.jpg",
+      "cropDistance": {
+        "background": 0.0015555486399983637,
+        "foreground": 0,
+        "surface": 0.0015555486399983637,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0015555486399983637,
+        "foreground": 0,
+        "surface": 0.0015555486399983637,
+        "accent": 0.002373164996486292
+      }
+    },
+    {
+      "file": "franz.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0037708133169408187,
+        "foreground": 0.0013768453017122255,
+        "surface": 0.0037708133169408187,
+        "accent": 0.001675384242961005
+      }
+    },
+    {
+      "file": "greenday.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.00789502034877539,
+        "foreground": 0,
+        "surface": 0.00789502034877539,
+        "accent": 0
+      }
+    },
+    {
+      "file": "havana.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.2811702100492816,
+        "foreground": 0.780447751602501,
+        "surface": 0.5795700451827668,
+        "accent": 0.2431276249754265
+      }
+    },
+    {
+      "file": "horrorwood.jpg",
+      "cropDistance": {
+        "background": 0.007943803546213803,
+        "foreground": 0,
+        "surface": 0.031475629909237766,
+        "accent": 0.06166459841661533
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.005507864273403187,
+        "surface": 0.0019899790934348126,
+        "accent": 0.0034931864439549888
+      }
+    },
+    {
+      "file": "horsley.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0017812874088205346,
+        "foreground": 0.003997378585194432,
+        "surface": 0.0007960761675097326,
+        "accent": 0
+      }
+    },
+    {
+      "file": "infected.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.001522464923229763,
+        "surface": 0.019479849102098278,
+        "accent": 0.010634828272743932
+      }
+    },
+    {
+      "file": "johns.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.0338880352641851,
+        "surface": 0.0019008640332897268,
+        "accent": 0.009893624908844833
+      }
+    },
+    {
+      "file": "knuckles.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0.07386834105210756,
+        "accent": 0.05259126744889292
+      },
+      "noiseDistance": {
+        "background": 0.0028503828345377625,
+        "foreground": 0,
+        "surface": 0.003953472841856,
+        "accent": 0.057389633990968324
+      }
+    },
+    {
+      "file": "krafty.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0.010499725629472375,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.007887966724652157,
+        "foreground": 0.0028971154795033706,
+        "surface": 0.007887966724652157,
+        "accent": 0.34683765495597974
+      }
+    },
+    {
+      "file": "loups.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.08682111173222716,
+        "foreground": 0.03275947652953004,
+        "surface": 0.023123852802473227,
+        "accent": 0.04745571317307041
+      }
+    },
+    {
+      "file": "maroon5-original.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.005419212923764129,
+        "foreground": 0.020447317334441658,
+        "surface": 0.1544904269970871,
+        "accent": 0.0021275406922105127
+      }
+    },
+    {
+      "file": "maroon5.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.005419212923764129,
+        "foreground": 0.020447317334441658,
+        "surface": 0.1544904269970871,
+        "accent": 0.0021275406922105127
+      }
+    },
+    {
+      "file": "meteora.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.06658054719691626,
+        "foreground": 0.008155229962915072,
+        "surface": 0.06658054719691626,
+        "accent": 0
+      }
+    },
+    {
+      "file": "muse.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.06658054719691626,
+        "foreground": 0.03434633904217093,
+        "surface": 0.2827365470706763,
+        "accent": 0.029506451328624915
+      }
+    },
+    {
+      "file": "nada.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0016824323687299463,
+        "foreground": 0.019083558294106934,
+        "surface": 0.00299792702219113,
+        "accent": 0.03324431379368129
+      }
+    },
+    {
+      "file": "nobs.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.19631186482170793,
+        "surface": 0,
+        "accent": 0
+      }
+    },
+    {
+      "file": "once.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.3460699858361168,
+        "foreground": 0.5449697275297418,
+        "surface": 0.3460699858361168,
+        "accent": 0.5010747350115349
+      }
+    },
+    {
+      "file": "orelsan.jpg",
+      "cropDistance": {
+        "background": 0.025981143583311366,
+        "foreground": 0.07176325255909588,
+        "surface": 0.01624775435353515,
+        "accent": 0.03772871273878769
+      },
+      "noiseDistance": {
+        "background": 0.003367343342901324,
+        "foreground": 0.0031205636087360323,
+        "surface": 0.0038368830228891733,
+        "accent": 0.03664413906477955
+      }
+    },
+    {
+      "file": "placebo.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0.0020623570458876816,
+        "accent": 0.009902299067037988
+      },
+      "noiseDistance": {
+        "background": 0.004485303512024411,
+        "foreground": 0.0020138519214109394,
+        "surface": 0.0014907191899677635,
+        "accent": 0.051341242619618435
+      }
+    },
+    {
+      "file": "pureblack.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.03695762896305728,
+        "foreground": 0,
+        "surface": 0.03695762896305728,
+        "accent": 0
+      }
+    },
+    {
+      "file": "purered.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0020192104565506454,
+        "foreground": 0,
+        "surface": 0.0020192104565506454,
+        "accent": 0
+      }
+    },
+    {
+      "file": "purewhite.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0013010361903571838,
+        "foreground": 0,
+        "surface": 0.0013010361903571838,
+        "accent": 0
+      }
+    },
+    {
+      "file": "skap.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0.30004470271646244
+      },
+      "noiseDistance": {
+        "background": 0.005431084366876661,
+        "foreground": 0.0814272598772463,
+        "surface": 0.0013438290324964406,
+        "accent": 0.028184763783219643
+      }
+    },
+    {
+      "file": "slim.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.031730707978538435,
+        "foreground": 0,
+        "surface": 0.21964975573800924,
+        "accent": 0.022421186994194948
+      }
+    },
+    {
+      "file": "slipknot.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0.006371871562145432,
+        "surface": 0,
+        "accent": 0.006371871562145432
+      },
+      "noiseDistance": {
+        "background": 0.06658054719691626,
+        "foreground": 0.007635962849464239,
+        "surface": 0.06658054719691626,
+        "accent": 0.007635962849464239
+      }
+    },
+    {
+      "file": "snarky.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0.06559156153762688
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.005557980157693173,
+        "surface": 0,
+        "accent": 0.09719449651756903
+      }
+    },
+    {
+      "file": "toxicity.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.028181700703126922,
+        "surface": 0.07438184565912331,
+        "accent": 0.2801155200615783
+      }
+    },
+    {
+      "file": "vvbrown.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0.0024569579087047517,
+        "foreground": 0.008285189714764912,
+        "surface": 0.0024569579087047517,
+        "accent": 0.0024676890937084268
+      }
+    },
+    {
+      "file": "ybbb.jpg",
+      "cropDistance": {
+        "background": 0,
+        "foreground": 0,
+        "surface": 0,
+        "accent": 0
+      },
+      "noiseDistance": {
+        "background": 0,
+        "foreground": 0.0028667445074024383,
+        "surface": 0,
+        "accent": 0.004631926848939724
+      }
+    }
+  ]
+}

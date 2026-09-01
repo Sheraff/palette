@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>colour bracketing</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="bracket-body">
+		<header class="bracket-bar bracket-head">
+			<div class="bracket-prompt">
+				<p id="question">loading…</p>
+				<p id="instruction" class="bracket-instruction"></p>
+			</div>
+			<p id="progress"></p>
+		</header>
+
+		<main id="stage" class="bracket-stage" aria-live="polite"></main>
+
+		<footer class="bracket-bar">
+			<p id="status">…</p>
+			<p class="bracket-keys">
+				<b>y</b> yes · <b>n</b> no · <b>u</b> undo one · <b>r</b> release when finished ·
+				<a href="/">all reviews</a>
+			</p>
+		</footer>
+	</body>
+	<script type="module" src="/bracketing.js"></script>
+</html>

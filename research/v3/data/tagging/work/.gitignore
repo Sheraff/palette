@@ -1,0 +1,4 @@
+# Work files are scratch: every one is reproducible from the warehouse with
+# `export-untagged.ts`, and carries no information the warehouse does not already have.
+# The vocabulary and TAGS.md (one directory up) are committed; these are not.
+*.json

@@ -1,0 +1,778 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.7.4",
+  "implementationSha256": "b1139a62047bcb5d454c39c19b74e0c518de07145c49efa784d416305b8d2f3e",
+  "executionManifestId": "a80f75b402a12516fb00f2afb3dd56e4c0fb8a4a5f7d8d5284e557eec87a3d09",
+  "mode": "full-28-source",
+  "fixedPanelSourceCount": 28,
+  "executedSourceCount": 28,
+  "scientificSha256": "3dd20b73f39ebca33ca6dd762f9a4d5db13867dc85e685aa15f8d4a17708cc21",
+  "scheduleScientificSha256": {
+    "scheduleA": "3dd20b73f39ebca33ca6dd762f9a4d5db13867dc85e685aa15f8d4a17708cc21",
+    "scheduleB": "3dd20b73f39ebca33ca6dd762f9a4d5db13867dc85e685aa15f8d4a17708cc21"
+  },
+  "sources": [
+    {
+      "caseId": "development-01",
+      "sourceSha256": "79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+      "scientificSha256": "a04e8c7f1ff925ed5c119333281e3540b0157fbb86b99f4a5d77ce92f82e4537",
+      "candidateDomainCount": 2,
+      "additionCount": 0,
+      "frontierAdditionCount": 0,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-02",
+      "sourceSha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "scientificSha256": "908524a1304dfc73bea8de7cbd1137a3b111a1268f25f3c76016c494db265624",
+      "candidateDomainCount": 4,
+      "additionCount": 0,
+      "frontierAdditionCount": 0,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "scientificSha256": "cc2b107e61824be93a80e3c30bf8181ddaf88005f0a39ee334ba96b505dd9031",
+      "candidateDomainCount": 1500,
+      "additionCount": 120,
+      "frontierAdditionCount": 5,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "scientificSha256": "a00bf12897783e23a4f4c9489dd3f21549ca8c05b25d323ed6046e9ec960486a",
+      "candidateDomainCount": 1500,
+      "additionCount": 15,
+      "frontierAdditionCount": 2,
+      "winnerMatches072": true,
+      "winnerMatches060": false,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-05",
+      "sourceSha256": "6dfd27c93891e02bccb9597196bca250807177c210e3e660f6fb66257cd2c1ef",
+      "scientificSha256": "51fbdd0d920dc98956fe0707269cfd3ee88eb1729c36bd95db2bb96cec06082b",
+      "candidateDomainCount": 1500,
+      "additionCount": 500,
+      "frontierAdditionCount": 12,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "scientificSha256": "0ce5c094c43fd30f39913de743876cd71e063b6c1191f11dac799f5e571862aa",
+      "candidateDomainCount": 1500,
+      "additionCount": 75,
+      "frontierAdditionCount": 1,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "scientificSha256": "29c11c48b61823f5fe2e9edc01835e71879337e167e6e2f2f9fe5f1e97c1af9d",
+      "candidateDomainCount": 1500,
+      "additionCount": 425,
+      "frontierAdditionCount": 31,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#030000:#0468a6:#edf6fb:#10a4d4:gradient"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#030000:#0468a6:#edf6fb:#10a4d4:gradient"
+      ]
+    },
+    {
+      "caseId": "development-08",
+      "sourceSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+      "scientificSha256": "83a2cfcbb460e623188158935d2af4a3bcb71422e66e702e1ff7358708f1ffeb",
+      "candidateDomainCount": 1500,
+      "additionCount": 245,
+      "frontierAdditionCount": 15,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#022833:#061518:#a5c7c8:#d4b090:flat",
+        "#022833:#0f4b55:#f5fbd7:#a5c7c8:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#022833:#061518:#a5c7c8:#d4b090:flat",
+        "#022833:#0f4b55:#f5fbd7:#a5c7c8:flat"
+      ]
+    },
+    {
+      "caseId": "development-09",
+      "sourceSha256": "67f6c4f58c00ac4299d5517ba541410eddd0901e34d753c2536229b2c13cd3c3",
+      "scientificSha256": "3ecf3a728e09a4888feab058949f9f5bd15b90427237e6584550176f7368ca3c",
+      "candidateDomainCount": 1334,
+      "additionCount": 594,
+      "frontierAdditionCount": 97,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#83080a:#632b1c:#0d0b0e:#94311e:flat",
+        "#83080a:#270708:#f8eeb3:#0d0b0e:flat",
+        "#83080a:#5b0c08:#f8eeb3:#0d0b0e:flat",
+        "#912d1d:#5e2f1f:#f8eeb3:#0d0b0e:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#83080a:#632b1c:#0d0b0e:#94311e:flat",
+        "#83080a:#270708:#f8eeb3:#0d0b0e:flat",
+        "#83080a:#5b0c08:#f8eeb3:#0d0b0e:flat",
+        "#912d1d:#5e2f1f:#f8eeb3:#0d0b0e:flat"
+      ]
+    },
+    {
+      "caseId": "development-10",
+      "sourceSha256": "681a2c4a00cdee770a08049034023bb45309455ab8bf796571fcc6bb3b3a5f9e",
+      "scientificSha256": "9c843b841e8764d9527d28264630820d36f679d68902f350e6f682a6c799383e",
+      "candidateDomainCount": 880,
+      "additionCount": 90,
+      "frontierAdditionCount": 15,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#c7bf36:#040c01:#020c03:#fcfdf5:flat",
+        "#020c03:#010101:#e9e6b3:#fcfdf5:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#c7bf36:#040c01:#020c03:#fcfdf5:flat",
+        "#020c03:#010101:#e9e6b3:#fcfdf5:flat"
+      ]
+    },
+    {
+      "caseId": "development-11",
+      "sourceSha256": "b62f5cdd35099615d788a6548f62aa8edb0aea93661d336cb856f6c30ee9c9da",
+      "scientificSha256": "85b413deeb2a234bf295a75e7ea61c96637069fa388ca62d9ba14a24f524cf34",
+      "candidateDomainCount": 1500,
+      "additionCount": 190,
+      "frontierAdditionCount": 41,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#b29b8b:#351f07:#edebd2:#d61834:flat",
+        "#805a33:#a07241:#edebd2:#dd1434:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#b29b8b:#351f07:#edebd2:#d61834:flat",
+        "#805a33:#a07241:#edebd2:#dd1434:flat"
+      ]
+    },
+    {
+      "caseId": "development-12",
+      "sourceSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+      "scientificSha256": "0a0bf7b95bc683882fada068d363fcab7e022420d0867261228aaab51ed68bd3",
+      "candidateDomainCount": 1500,
+      "additionCount": 270,
+      "frontierAdditionCount": 2,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#fffffe:#221c10:#e9e81e:#584c1c:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#fffffe:#221c10:#e9e81e:#584c1c:flat"
+      ]
+    },
+    {
+      "caseId": "development-13",
+      "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+      "scientificSha256": "b5aa7f53286b99114fad9218402a381bb9e98c22d39a5e0ed90a0439aded4891",
+      "candidateDomainCount": 1500,
+      "additionCount": 85,
+      "frontierAdditionCount": 1,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-14",
+      "sourceSha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+      "scientificSha256": "29842673b2ee87b3bb9abd4109fb845ad61f945131b1e13f2b82c8d9dbcdb458",
+      "candidateDomainCount": 556,
+      "additionCount": 259,
+      "frontierAdditionCount": 30,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#575757:#6e6e6e:#030303:#3d3d3d:flat",
+        "#3d3d3d:#161616:#575757:#030303:flat",
+        "#575757:#6e6e6e:#3d3d3d:#030303:flat",
+        "#565656:#161616:#424242:#030303:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#575757:#6e6e6e:#030303:#3d3d3d:flat",
+        "#3d3d3d:#161616:#575757:#030303:flat",
+        "#575757:#6e6e6e:#3d3d3d:#030303:flat",
+        "#565656:#161616:#424242:#030303:flat"
+      ]
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "scientificSha256": "c4647e5a9226ac5bee4c8f63920b53e18fbcaba5819ece416b99b814c80a768d",
+      "candidateDomainCount": 1500,
+      "additionCount": 445,
+      "frontierAdditionCount": 31,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#141b25:#63717a:#ccd3d9:#331924:flat",
+        "#141b25:#63717a:#ccd3d9:#242e3a:flat",
+        "#667481:#3b4858:#ccd3d9:#151922:flat",
+        "#36444f:#242e3a:#ccd3d9:#151922:flat",
+        "#505e6b:#667481:#151922:#242f41:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#141b25:#63717a:#ccd3d9:#331924:flat",
+        "#141b25:#63717a:#ccd3d9:#242e3a:flat",
+        "#667481:#3b4858:#ccd3d9:#151922:flat",
+        "#36444f:#242e3a:#ccd3d9:#151922:flat",
+        "#505e6b:#667481:#151922:#242f41:flat"
+      ]
+    },
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "scientificSha256": "622a1c41c396fe7f6e0f76ddef2761f0637b7ed096b7be99dee82c9357df453e",
+      "candidateDomainCount": 1500,
+      "additionCount": 270,
+      "frontierAdditionCount": 55,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#44648b:#919dcd:#fbfcf7:#354f70:flat",
+        "#44648b:#919dcd:#fbfcf7:#2c287f:flat",
+        "#45658c:#587aa0:#fbfcf7:#100d28:flat",
+        "#44648b:#283555:#f9fbfa:#100d28:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#44648b:#919dcd:#fbfcf7:#354f70:flat",
+        "#44648b:#919dcd:#fbfcf7:#2c287f:flat",
+        "#45658c:#587aa0:#fbfcf7:#100d28:flat",
+        "#44648b:#283555:#f9fbfa:#100d28:flat"
+      ]
+    },
+    {
+      "caseId": "development-17",
+      "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+      "scientificSha256": "22cae74e8892a5871ac8dfe73be45cdbc9cbbb0c62362004dc5bda8c67d0fe2a",
+      "candidateDomainCount": 1500,
+      "additionCount": 0,
+      "frontierAdditionCount": 0,
+      "winnerMatches072": true,
+      "winnerMatches060": false,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-18",
+      "sourceSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "scientificSha256": "cd0a09f3c01dff084e1527780543f47acfd5faa3a248b23999b10ff62494c75a",
+      "candidateDomainCount": 1500,
+      "additionCount": 245,
+      "frontierAdditionCount": 41,
+      "winnerMatches072": false,
+      "winnerMatches060": false,
+      "novelFinalWinnerKey": "#04002a:#161439:#f5e50c:#fded9f:flat",
+      "novelRetainedSlateKeys": [
+        "#04002a:#161439:#f5e50c:#fded9f:flat",
+        "#31305c:#151b3b:#f5e50c:#bdc1ca:flat",
+        "#f5e20c:#fae892:#040325:#d15635:flat"
+      ],
+      "changedWinnerGuardPass": false,
+      "resolvedCrossVersionLossCount": 3,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#31305c:#151b3b:#f5e50c:#bdc1ca:flat",
+        "#f5e20c:#fae892:#040325:#d15635:flat"
+      ]
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "scientificSha256": "b52062ae8a144f568a8474df5ff32cccbd0eda841d3090f04df2ff5b97692f12",
+      "candidateDomainCount": 1140,
+      "additionCount": 510,
+      "frontierAdditionCount": 72,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#9b9bbd:#b47f9b:#d8cbdd:#beb2c6:flat",
+        "#ac849f:#8281ab:#bfb2c4:#61aec2:flat",
+        "#beb2c6:#7b80a8:#bfb2c4:#9c99c4:flat",
+        "#9b9bbd:#7b80a8:#d8cbdd:#beb2c6:flat",
+        "#beb2c6:#b47f9b:#60aac5:#d8cbdd:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#9b9bbd:#b47f9b:#d8cbdd:#beb2c6:flat",
+        "#ac849f:#8281ab:#bfb2c4:#61aec2:flat",
+        "#beb2c6:#7b80a8:#bfb2c4:#9c99c4:flat",
+        "#9b9bbd:#7b80a8:#d8cbdd:#beb2c6:flat",
+        "#beb2c6:#b47f9b:#60aac5:#d8cbdd:flat"
+      ]
+    },
+    {
+      "caseId": "development-20",
+      "sourceSha256": "d07c8ca590c619cccdbeea00aef8e25a700b859d3f9a01b8cabf03dd2dc22aa9",
+      "scientificSha256": "6aa3e11b0696e1d20a5ab682f24f75e58e7c541163355d507baf398381daae7d",
+      "candidateDomainCount": 1500,
+      "additionCount": 165,
+      "frontierAdditionCount": 3,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#070302:#4d4d4d:#fafafa:#14100f:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#070302:#4d4d4d:#fafafa:#14100f:flat"
+      ]
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "scientificSha256": "cb3e0d4c05ac6574369dea52d5ff661fa86ca3393394145833b121617290a793",
+      "candidateDomainCount": 1500,
+      "additionCount": 315,
+      "frontierAdditionCount": 32,
+      "winnerMatches072": false,
+      "winnerMatches060": false,
+      "novelFinalWinnerKey": "#eed0ec:#ed81b2:#510cc9:#b62bba:flat",
+      "novelRetainedSlateKeys": [
+        "#eed0ec:#ed81b2:#510cc9:#b62bba:flat"
+      ],
+      "changedWinnerGuardPass": false,
+      "resolvedCrossVersionLossCount": 3,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "scientificSha256": "bbfccd59cfaef4335cd9a5ec99bd8f72a0a97c9dcaeff0b7672b0383363d1bd6",
+      "candidateDomainCount": 1500,
+      "additionCount": 250,
+      "frontierAdditionCount": 9,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#02102b:#000000:#bed6e2:#539db8:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#02102b:#000000:#bed6e2:#539db8:flat"
+      ]
+    },
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "scientificSha256": "fc7d9af7fd16dd3a23624631e40cafaa7a88ce6ea777861684a6243dd5eea9f2",
+      "candidateDomainCount": 1500,
+      "additionCount": 215,
+      "frontierAdditionCount": 17,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#142c2e:#854529:#5c9ba4:#baa35f:flat",
+        "#d7c37a:#3a6b67:#142c2e:#baa35f:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#142c2e:#854529:#5c9ba4:#baa35f:flat",
+        "#d7c37a:#3a6b67:#142c2e:#baa35f:flat"
+      ]
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "scientificSha256": "fa793d914b7491cb9764d3cc7bb87f49a1afcb01bf13822160c3f44e8f3df455",
+      "candidateDomainCount": 1500,
+      "additionCount": 70,
+      "frontierAdditionCount": 21,
+      "winnerMatches072": true,
+      "winnerMatches060": false,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#a12003:#dd8722:#fefcaf:#1beb02:gradient",
+        "#c04b16:#e29626:#fefcaf:#1beb02:gradient"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#a12003:#dd8722:#fefcaf:#1beb02:gradient",
+        "#c04b16:#e29626:#fefcaf:#1beb02:gradient"
+      ]
+    },
+    {
+      "caseId": "development-25",
+      "sourceSha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+      "scientificSha256": "356d77ead9b24ef8e4cb95c49518e0fddfd8bc5ec3a734c3d01a8c62f6d31fd2",
+      "candidateDomainCount": 1500,
+      "additionCount": 495,
+      "frontierAdditionCount": 42,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#270303:#7b0f0f:#fd0bed:#fd9b02:flat",
+        "#0a0100:#4b0102:#fd0bed:#fd9b02:flat",
+        "#fc4a02:#fd9b02:#fc9707:#fa09ee:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#270303:#7b0f0f:#fd0bed:#fd9b02:flat",
+        "#0a0100:#4b0102:#fd0bed:#fd9b02:flat",
+        "#fc4a02:#fd9b02:#fc9707:#fa09ee:flat"
+      ]
+    },
+    {
+      "caseId": "development-26",
+      "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+      "scientificSha256": "e60363f719280d5396a9b7cbae928d664cb442b00d6ba2a89aab54a345f94fc7",
+      "candidateDomainCount": 1500,
+      "additionCount": 495,
+      "frontierAdditionCount": 66,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#bab7b2:#d2cfca:#83807b:#080808:gradient",
+        "#d2cfca:#a19e99:#83807b:#080808:gradient"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#bab7b2:#d2cfca:#83807b:#080808:gradient",
+        "#d2cfca:#a19e99:#83807b:#080808:gradient"
+      ]
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "scientificSha256": "73d0b3cc67d01a563b9c31843b74d2ef440e435a4cd62dee990c830a790a6f80",
+      "candidateDomainCount": 1500,
+      "additionCount": 240,
+      "frontierAdditionCount": 16,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [
+        "#373737:#7b7b7b:#202020:#515151:flat"
+      ],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": [
+        "#373737:#7b7b7b:#202020:#515151:flat"
+      ]
+    },
+    {
+      "caseId": "development-28",
+      "sourceSha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+      "scientificSha256": "383065a4c83f94078455709a22593d854f91ab9b734cdd4b25db33357adcae39",
+      "candidateDomainCount": 1500,
+      "additionCount": 90,
+      "frontierAdditionCount": 0,
+      "winnerMatches072": true,
+      "winnerMatches060": true,
+      "novelFinalWinnerKey": null,
+      "novelRetainedSlateKeys": [],
+      "changedWinnerGuardPass": null,
+      "resolvedCrossVersionLossCount": 0,
+      "novelAlternativesReachingSlateWithoutTopOne": []
+    }
+  ],
+  "counts": {
+    "exactWinnerMatches072": 26,
+    "exactWinnerChanges072": 2,
+    "exactWinnerMatches060": 23,
+    "exactWinnerChanges060": 5,
+    "novelFinalWinners": 2,
+    "novelRetainedSlateKeys": 46,
+    "changedWinnerGuardPasses": 0,
+    "changedWinnerGuardFailures": 2,
+    "resolvedCrossVersionLosses": 6,
+    "novelAlternativesReachingSlateWithoutTopOne": 44,
+    "candidateAdditions": 6673,
+    "frontierAdditions": 657
+  },
+  "caseIds": {
+    "exactWinnerMatches072": [
+      "development-01",
+      "development-02",
+      "development-03",
+      "development-04",
+      "development-05",
+      "development-06",
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-10",
+      "development-11",
+      "development-12",
+      "development-13",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-17",
+      "development-19",
+      "development-20",
+      "development-22",
+      "development-23",
+      "development-24",
+      "development-25",
+      "development-26",
+      "development-27",
+      "development-28"
+    ],
+    "exactWinnerChanges072": [
+      "development-18",
+      "development-21"
+    ],
+    "exactWinnerMatches060": [
+      "development-01",
+      "development-02",
+      "development-03",
+      "development-05",
+      "development-06",
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-10",
+      "development-11",
+      "development-12",
+      "development-13",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-19",
+      "development-20",
+      "development-22",
+      "development-23",
+      "development-25",
+      "development-26",
+      "development-27",
+      "development-28"
+    ],
+    "exactWinnerChanges060": [
+      "development-04",
+      "development-17",
+      "development-18",
+      "development-21",
+      "development-24"
+    ],
+    "novelFinalWinners": [
+      "development-18",
+      "development-21"
+    ],
+    "novelRetainedSlateKeys": [
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-10",
+      "development-11",
+      "development-12",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-18",
+      "development-19",
+      "development-20",
+      "development-21",
+      "development-22",
+      "development-23",
+      "development-24",
+      "development-25",
+      "development-26",
+      "development-27"
+    ],
+    "changedWinnerGuardPasses": [],
+    "changedWinnerGuardFailures": [
+      "development-18",
+      "development-21"
+    ],
+    "resolvedCrossVersionLosses": [
+      "development-18",
+      "development-21"
+    ],
+    "novelAlternativesReachingSlateWithoutTopOne": [
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-10",
+      "development-11",
+      "development-12",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-18",
+      "development-19",
+      "development-20",
+      "development-22",
+      "development-23",
+      "development-24",
+      "development-25",
+      "development-26",
+      "development-27"
+    ],
+    "candidateAdditions": [
+      "development-03",
+      "development-04",
+      "development-05",
+      "development-06",
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-10",
+      "development-11",
+      "development-12",
+      "development-13",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-18",
+      "development-19",
+      "development-20",
+      "development-21",
+      "development-22",
+      "development-23",
+      "development-24",
+      "development-25",
+      "development-26",
+      "development-27",
+      "development-28"
+    ],
+    "frontierAdditions": [
+      "development-03",
+      "development-04",
+      "development-05",
+      "development-06",
+      "development-07",
+      "development-08",
+      "development-09",
+      "development-10",
+      "development-11",
+      "development-12",
+      "development-13",
+      "development-14",
+      "development-15",
+      "development-16",
+      "development-18",
+      "development-19",
+      "development-20",
+      "development-21",
+      "development-22",
+      "development-23",
+      "development-24",
+      "development-25",
+      "development-26",
+      "development-27"
+    ]
+  },
+  "mechanicalGate": {
+    "pass": true,
+    "failures": []
+  },
+  "dispositionAuthority": true,
+  "disposition": "novel-final-winner-delta-awaiting-separate-review-authorization",
+  "authorization": {
+    "humanReview": false,
+    "humanReviewSelection": false,
+    "reviewPreparation": false,
+    "protectedSampleArtworkAccess": false,
+    "directionalSample": false,
+    "phase4": false,
+    "phase5": false,
+    "promotion": false,
+    "defaultExtractorChange": false,
+    "productBaselineChange": false,
+    "persistence": false,
+    "cachePublication": false,
+    "fullRoster": false,
+    "multiHourRun": false,
+    "productionReplacement": false,
+    "combinedMechanism": false,
+    "rankingChange": false,
+    "learnedModel": false,
+    "factorized6000": false
+  },
+  "resultsId": "5b2526b05267bf7df7aea80e91fd8f7fad0aed27044fc8bfe5bdb4b7e9ef1a7a"
+}

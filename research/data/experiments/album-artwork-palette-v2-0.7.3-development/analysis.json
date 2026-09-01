@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.7.3",
+  "implementationSha256": "aab33ab1555b2348bb4ab5c8f7d6afeb2bea34a56f2cbcf0c6e759092e9ce9e0",
+  "executionManifestId": "0755804a06a31b6ff1472c08aa1961686f2ce0783fa32ca5f18a1316f5cd6f42",
+  "scientificSha256": "3c4c23f85b4eacaa025f7657d1b54324a485d886ef630f36626e6e1e46cd4baf",
+  "inputHashes": {
+    "executionManifestRawSha256": "1d2323abbcd318bf9278c2c772aa283eade73385c97f38ea3a0c3bcb6fa36f27",
+    "resultsRawSha256": "b6d7f560589b4723709221a865f019e4dad79cf44c1e011b0f97349f4f57713a",
+    "summaryRawSha256": "0c66fd54d204c06a8c38942cb1c498a8cbf175e3d59869b20e089441c0471351",
+    "sourceOrderedRoot": "f8517e732158063af4c6d138786daabd5b56c44667f684b4de5447013d513b2e",
+    "frozenControl": {
+      "version": "album-artwork-first-principles-0.7.2",
+      "implementationSha256": "6b29ebc3f6e88e170a3d283009d3e5868c8fa92e72efb350c5dc0abe6750e28e",
+      "scientificSha256": "fdc4207bd1e4d4d3431fd6c1ced031aa32d9593cabd33f6a6164938a610a72c8",
+      "files": {
+        "summary": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.2-development/summary.json",
+          "rawSha256": "0974ef010e58fb1e4558748e07746e28a4d6cf7959dddac44c708d064036d636"
+        },
+        "aggregate": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.2-development/aggregate.json",
+          "rawSha256": "f0e8bb06accb8b7a7eb0c02955ddbf00e015655751b013581fb18454eb40d9d3"
+        },
+        "analysis": {
+          "path": "research/data/experiments/album-artwork-palette-v2-0.7.2-development/development-analysis.json",
+          "rawSha256": "6aa97a83217aee20852c1a371d05909cf11e28f74ebdcd0826b0fb72162c25b0"
+        },
+        "protocol": {
+          "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_2.md",
+          "rawSha256": "07017658a2b3b0b702bb5ac73c43e5a4f931d5429be9898ae318b6341a34c7b0"
+        },
+        "postmortem": {
+          "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_2_COMPLETE_QUALITY_DOMAIN_POSTMORTEM.md",
+          "rawSha256": "f3449b8306c09622dc07c56814620cf2b0f4009301c724729fc4249f63841f0e"
+        }
+      }
+    }
+  },
+  "verification": {
+    "schemaAndCountReconciliation": true,
+    "exactControlEquality": true,
+    "additiveControlTreatmentPreservation": true,
+    "changedStageIsolation": true,
+    "registryAndMatrixDimensions": true,
+    "tenStageFirstLossCustody": true,
+    "candidateAndSlateBounds": true,
+    "incumbentAndObligationPreservation": true,
+    "sourceConnectedLineage": true,
+    "exactGuardAndQualificationClauses": true,
+    "armDeterminism": true,
+    "runtimeGate": true,
+    "factorizedCountsAndTrigger": true
+  },
+  "gate": {
+    "threshold": 3,
+    "denominator": 28,
+    "arms": [
+      {
+        "arm": "all-existing-representative-strategies",
+        "qualifyingSourceCount": 0,
+        "pass": false
+      },
+      {
+        "arm": "all-retained-representative-cross-pairs",
+        "qualifyingSourceCount": 0,
+        "pass": false
+      },
+      {
+        "arm": "widened-field-hypothesis-retention",
+        "qualifyingSourceCount": 22,
+        "pass": true
+      },
+      {
+        "arm": "widened-family-lane-retention",
+        "qualifyingSourceCount": 19,
+        "pass": true
+      },
+      {
+        "arm": "factorized-pareto-3000",
+        "qualifyingSourceCount": 22,
+        "pass": true
+      }
+    ]
+  },
+  "selection": {
+    "gateThreshold": 3,
+    "gateDenominator": 28,
+    "fullPanelEligible": true,
+    "selectedArm": "widened-field-hypothesis-retention",
+    "pass": true
+  },
+  "authorization": {
+    "humanReview": false,
+    "directionalSample": false,
+    "phase5": false,
+    "promotion": false,
+    "persistence": false,
+    "fullRoster": false
+  },
+  "disposition": "bounded-recall-mechanism-selected-no-next-step-authorized",
+  "mechanicalPass": true,
+  "analysisId": "713941825c681456d63ede0a2c94aab853d88e3ae352caf58c750be5357de089"
+}

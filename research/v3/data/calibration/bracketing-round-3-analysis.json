@@ -1,0 +1,566 @@
+{
+	"schema": "bracketing-round-3-analysis/v1",
+	"batchId": "bracketing-round-3",
+	"analyzedAt": "2026-08-03T22:36:54.673Z",
+	"analyzer": "research/v3/data/calibration/analyze-bracketing-round-3.ts",
+	"fixture": "research/v3/data/calibration/bracketing-round-3.json",
+	"preregistration": "research/v3/data/calibration/bracketing-round-3-preregistration.md",
+	"warehouse": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+	"question": "When a pair's two colours fall in different regions, is the same-colour bar the larger of the two regional bars (Math.max, the incumbent) or their average?",
+	"preRegisteredRule": {
+		"population": "The 42 items with role 'ladder' and straddle.zone 'in-band', each counted once, at its first showing. Repeats are not counted as independent trials. Controls and attention checks are never scored. n = those answered, k = those answered 'same colour'.",
+		"prediction": "On every in-band item the two rules disagree by construction: Math.max predicts 'same colour', the average predicts 'distinct'. So accuracy(max) = k/n and accuracy(avg) = 1 - k/n exactly, and the winner is whichever exceeds one half.",
+		"decisive": "Decisive if and only if the two-sided exact binomial test of k against p = 0.5 yields p < 0.05, and the 95% Wilson interval for k/n excludes 0.5. At the design n these coincide. If n < 42, the threshold is recomputed at the realized n before the count is looked at.",
+		"decisiveAtDesignN": {
+			"n": 42,
+			"favoursMax": 28,
+			"favoursAverage": 14
+		},
+		"unresolved": "Any 15 <= k <= 27 is reported as unresolved — not a tie, not weak support for either rule, and not a licence to keep Math.max on the strength of this round. The rule then stays as it is only because it is already there, and the loose end stays open.",
+		"anisotropyVeto": "k is also computed over the 21 lightness-dominant and the 21 chroma-dominant in-band items separately. If those rates fall on opposite sides of 0.5 and at least one subgroup is individually decisive at alpha = 0.05, the round reports 'anisotropy-confounded': no global winner, and the finding is that the straddle bar depends on the direction of the difference, which neither candidate rule can express.",
+		"validityGates": "Checked before anything above is computed. All 3 identical-pair checks must be answered 'same' and all 3 clearly-distinct checks 'distinct'; any failure voids the round. If both below-band items come back 'distinct', or both above-band items 'same', the bands are not where rounds 1-2 put them and the verdict is reported as not interpretable.",
+		"sensitivity": "Re-run with each repeated item's later answer substituted for its first. If the verdict differs from the primary run, the round is unresolved whatever the primary count said.",
+		"exploratory": "A logistic fit of P(same) on log d over all 46 ladder items. If its p = 0.5 crossing lands strictly inside the pooled band with a 95% interval excluding both the pooled avg and the pooled max, that is reported as 'neither rule — the straddling bar is intermediate'. Badly under-powered at 46 points over six bands; exploratory, never the headline.",
+		"power": {
+			"0.60": 0.24,
+			"0.65": 0.48,
+			"0.70": 0.74,
+			"0.75": 0.92,
+			"0.80": 0.99
+		},
+		"powerNote": "The round reliably detects a strong preference and is underpowered for a mild one. The reviewer's measured repeat consistency across rounds 1-2 is 62.5%, which sits below the decisive cut of 66.7% — so 'unresolved' is a genuinely likely outcome, and it is a real result rather than a failure. Stated before the data so that a null cannot later be read as support for the incumbent."
+	},
+	"verdict": "anisotropy-confounded",
+	"verdictReason": "The lightness-dominant and chroma-dominant subgroups fall on opposite sides of 0.5 (15/21 vs 2/21) and at least one is individually decisive. The straddle bar depends on the direction of the difference, which neither candidate rule can express. The primary count is independently unresolved (k = 17 of n = 42, two-sided exact binomial p = 0.2800), so both roads lead to no rule change; the veto is what says why.",
+	"validityGates": {
+		"attentionChecks": {
+			"identical": [
+				{
+					"itemId": "r3-control-identical-0",
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "r3-control-identical-1",
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "r3-control-identical-2",
+					"answered": true,
+					"answer": true,
+					"passed": true
+				}
+			],
+			"obvious": [
+				{
+					"itemId": "r3-control-obvious-0",
+					"distance": 0.06494,
+					"answered": true,
+					"answer": false,
+					"passed": true
+				},
+				{
+					"itemId": "r3-control-obvious-1",
+					"distance": 0.09134,
+					"answered": true,
+					"answer": false,
+					"passed": true
+				},
+				{
+					"itemId": "r3-control-obvious-2",
+					"distance": 0.09181,
+					"answered": true,
+					"answer": false,
+					"passed": true
+				}
+			],
+			"passed": 6,
+			"total": 6,
+			"passRate": 1,
+			"gatePassed": true
+		},
+		"bandControls": {
+			"belowBand": [
+				{
+					"itemId": "r3-dn-ls-control-below-0",
+					"distance": 0.01205,
+					"bandFraction": -0.598,
+					"direction": "lightness",
+					"answer": true,
+					"expected": true
+				},
+				{
+					"itemId": "r3-ds-ls-control-below-1",
+					"distance": 0.0166,
+					"bandFraction": -0.6,
+					"direction": "chroma",
+					"answer": false,
+					"expected": true
+				}
+			],
+			"aboveBand": [
+				{
+					"itemId": "r3-dn-ls-control-above-0",
+					"distance": 0.02699,
+					"bandFraction": 1.596,
+					"direction": "lightness",
+					"answer": false,
+					"expected": false
+				},
+				{
+					"itemId": "r3-ds-ls-control-above-1",
+					"distance": 0.02534,
+					"bandFraction": 1.61,
+					"direction": "chroma",
+					"answer": false,
+					"expected": false
+				}
+			],
+			"belowBandBroken": false,
+			"aboveBandBroken": false,
+			"bandsInterpretable": true,
+			"note": "Diagnostic, never scored. Both rules agree on these items; they only check that the bands sit where rounds 1-2 put them. Neither failure mode fired, so the bands stand. The single wrong-side answer is the chroma-dominant below-band control (purity 0.91) called distinct at 0.01660 — which is the anisotropy showing up in the controls too, not the bands being misplaced."
+		}
+	},
+	"primary": {
+		"population": "role = ladder, straddle.zone = in-band, counted once at first showing",
+		"designedN": 42,
+		"n": 42,
+		"k": 17,
+		"unanswered": 0,
+		"sameRate": 0.4048,
+		"accuracyMax": 0.4048,
+		"accuracyAverage": 0.5952,
+		"exactBinomialP": 0.279956,
+		"wilson95": {
+			"low": 0.2704,
+			"high": 0.5551
+		},
+		"decisiveCutsAtRealizedN": {
+			"favoursMax": 28,
+			"favoursAverage": 14
+		},
+		"unresolvedInterval": [
+			15,
+			27
+		],
+		"verdictFromPrimaryAlone": "unresolved"
+	},
+	"anisotropy": {
+		"lightnessDominant": {
+			"direction": "lightness",
+			"designed": 21,
+			"n": 21,
+			"k": 15,
+			"sameRate": 0.7143,
+			"exactBinomialP": 0.078354,
+			"wilson95": {
+				"low": 0.5004,
+				"high": 0.8619
+			},
+			"decisive": false,
+			"favours": "max"
+		},
+		"chromaDominant": {
+			"direction": "chroma",
+			"designed": 21,
+			"n": 21,
+			"k": 2,
+			"sameRate": 0.0952,
+			"exactBinomialP": 0.000221,
+			"wilson95": {
+				"low": 0.0265,
+				"high": 0.2891
+			},
+			"decisive": true,
+			"favours": "average"
+		},
+		"oppositeSidesOfHalf": true,
+		"atLeastOneDecisive": true,
+		"vetoTriggered": true
+	},
+	"repeats": {
+		"designed": 6,
+		"bothAnswered": 6,
+		"agreed": 5,
+		"agreement": 0.8333,
+		"roundsOneTwoBaseline": 0.625,
+		"pairs": [
+			{
+				"itemId": "r3-repeat-0",
+				"repeatOf": "r3-dn-ln-f20-lightness",
+				"firstShowing": true,
+				"laterShowing": true,
+				"agreed": true
+			},
+			{
+				"itemId": "r3-repeat-1",
+				"repeatOf": "r3-dn-ln-f80-chroma",
+				"firstShowing": false,
+				"laterShowing": false,
+				"agreed": true
+			},
+			{
+				"itemId": "r3-repeat-2",
+				"repeatOf": "r3-dn-ls-f80-lightness",
+				"firstShowing": true,
+				"laterShowing": true,
+				"agreed": true
+			},
+			{
+				"itemId": "r3-repeat-3",
+				"repeatOf": "r3-ln-ls-f60-chroma",
+				"firstShowing": false,
+				"laterShowing": false,
+				"agreed": true
+			},
+			{
+				"itemId": "r3-repeat-4",
+				"repeatOf": "r3-ds-ls-f80-lightness",
+				"firstShowing": false,
+				"laterShowing": true,
+				"agreed": false
+			},
+			{
+				"itemId": "r3-repeat-5",
+				"repeatOf": "r3-ds-ln-f80-chroma",
+				"firstShowing": false,
+				"laterShowing": false,
+				"agreed": true
+			}
+		],
+		"note": "Never scored in the primary analysis — repeats are not independent trials (contract.md finding 8)."
+	},
+	"sensitivity": {
+		"description": "Each repeated item's later answer substituted for its first, then re-scored.",
+		"substituted": [
+			"r3-dn-ln-f20-lightness",
+			"r3-dn-ln-f80-chroma",
+			"r3-dn-ls-f80-lightness",
+			"r3-ds-ln-f80-chroma",
+			"r3-ds-ls-f80-lightness",
+			"r3-ln-ls-f60-chroma"
+		],
+		"n": 42,
+		"k": 18,
+		"sameRate": 0.4286,
+		"exactBinomialP": 0.440799,
+		"verdict": "unresolved",
+		"agreesWithPrimary": true
+	},
+	"breakdowns": {
+		"byRegionPair": [
+			{
+				"key": "dark-neutral x dark-saturated",
+				"n": 6,
+				"k": 3,
+				"sameRate": 0.5
+			},
+			{
+				"key": "dark-neutral x light-neutral",
+				"n": 8,
+				"k": 6,
+				"sameRate": 0.75
+			},
+			{
+				"key": "dark-neutral x light-saturated",
+				"n": 8,
+				"k": 3,
+				"sameRate": 0.375
+			},
+			{
+				"key": "dark-saturated x light-neutral",
+				"n": 6,
+				"k": 1,
+				"sameRate": 0.1667
+			},
+			{
+				"key": "dark-saturated x light-saturated",
+				"n": 6,
+				"k": 2,
+				"sameRate": 0.3333
+			},
+			{
+				"key": "light-neutral x light-saturated",
+				"n": 8,
+				"k": 2,
+				"sameRate": 0.25
+			}
+		],
+		"byBandFraction": [
+			{
+				"key": 0.2,
+				"n": 12,
+				"k": 5,
+				"sameRate": 0.4167
+			},
+			{
+				"key": 0.4,
+				"n": 6,
+				"k": 4,
+				"sameRate": 0.6667
+			},
+			{
+				"key": 0.5,
+				"n": 6,
+				"k": 3,
+				"sameRate": 0.5
+			},
+			{
+				"key": 0.6,
+				"n": 6,
+				"k": 2,
+				"sameRate": 0.3333
+			},
+			{
+				"key": 0.8,
+				"n": 12,
+				"k": 3,
+				"sameRate": 0.25
+			}
+		],
+		"byHueThirdLightSaturatedOnly": [
+			{
+				"key": 0,
+				"n": 8,
+				"k": 3,
+				"sameRate": 0.375
+			},
+			{
+				"key": 1,
+				"n": 8,
+				"k": 1,
+				"sameRate": 0.125
+			},
+			{
+				"key": 2,
+				"n": 6,
+				"k": 3,
+				"sameRate": 0.5
+			}
+		],
+		"byDirectionAndBandFraction": [
+			{
+				"direction": "lightness",
+				"cells": [
+					{
+						"key": 0.2,
+						"n": 6,
+						"k": 4,
+						"sameRate": 0.6667
+					},
+					{
+						"key": 0.4,
+						"n": 3,
+						"k": 3,
+						"sameRate": 1
+					},
+					{
+						"key": 0.5,
+						"n": 3,
+						"k": 3,
+						"sameRate": 1
+					},
+					{
+						"key": 0.6,
+						"n": 3,
+						"k": 2,
+						"sameRate": 0.6667
+					},
+					{
+						"key": 0.8,
+						"n": 6,
+						"k": 3,
+						"sameRate": 0.5
+					}
+				]
+			},
+			{
+				"direction": "chroma",
+				"cells": [
+					{
+						"key": 0.2,
+						"n": 6,
+						"k": 1,
+						"sameRate": 0.1667
+					},
+					{
+						"key": 0.4,
+						"n": 3,
+						"k": 1,
+						"sameRate": 0.3333
+					},
+					{
+						"key": 0.5,
+						"n": 3,
+						"k": 0,
+						"sameRate": 0
+					},
+					{
+						"key": 0.6,
+						"n": 3,
+						"k": 0,
+						"sameRate": 0
+					},
+					{
+						"key": 0.8,
+						"n": 6,
+						"k": 0,
+						"sameRate": 0
+					}
+				]
+			}
+		],
+		"note": "Reported regardless, never a basis for the verdict. dark-saturated x light-neutral is six near-replicates at ~0.0160 by declaration in §2, not a gradient; no within-band trend is read from it."
+	},
+	"exploratory": {
+		"label": "EXPLORATORY — never the headline. 46 points over six different bands is badly under-powered.",
+		"n": 46,
+		"yesCount": 18,
+		"threshold": 0.015343,
+		"confidenceInterval": {
+			"low": 0.01257,
+			"high": 0.018729
+		},
+		"separated": false,
+		"converged": true,
+		"note": null,
+		"pooledAvgBar": 0.015926,
+		"pooledMaxBar": 0.01958,
+		"crossingInsidePooledBand": false,
+		"crossingIntervalExcludesBothBars": false,
+		"supportsIntermediateBar": false
+	},
+	"dormancy": {
+		"crossRegionRolePairs": 2582,
+		"rolePairs": 3309,
+		"pairsInAnyDisagreementBand": 0,
+		"closestCrossRegionPair": 0.04664,
+		"statement": "Zero of the 2,582 cross-region role pairs in the 554-palette distilled corpus land in any disagreement band; the closest sits at OKLab 0.04664, about twice the largest bar. Whatever this round says, no current palette verdict changes either way. The round settles a rule, not a corpus behaviour."
+	},
+	"fundedBy": {
+		"batchCompleteRecordId": "bc-msdsybvi-d9223987",
+		"oracleLabelRecordIds": [
+			"o-msdsw2m5-4fb5187e",
+			"o-msdsw504-f42643e1",
+			"o-msdsw5qs-13afa3ab",
+			"o-msdsw6uq-dd12f742",
+			"o-msdsw7kn-e1ba4482",
+			"o-msdsw9dj-6e2d845d",
+			"o-msdswaho-fab41d17",
+			"o-msdswb9g-235bbde8",
+			"o-msdswccx-47e1450c",
+			"o-msdswd1d-76dbeadb",
+			"o-msdswf1z-4c7849b4",
+			"o-msdswi68-82c12d7b",
+			"o-msdswj10-4f14fdb0",
+			"o-msdswjqz-44e1629c",
+			"o-msdswlwr-1440a09e",
+			"o-msdswmyj-d11fefb6",
+			"o-msdswnp7-d4539ece",
+			"o-msdswojg-d401c60e",
+			"o-msdswsgz-8cc01c2c",
+			"o-msdswxf5-6fbff04a",
+			"o-msdswz0d-06d6b2f9",
+			"o-msdsx1fy-e8510fce",
+			"o-msdsx25v-8210dc92",
+			"o-msdsx2w3-b6471388",
+			"o-msdsx3ov-a5dd3dec",
+			"o-msdsx4vr-8f5ee531",
+			"o-msdsx5rr-4060f914",
+			"o-msdsx88l-33129f25",
+			"o-msdsx9ci-4a5adfca",
+			"o-msdsxa7m-1812a48a",
+			"o-msdsxaxz-f1dde46a",
+			"o-msdsxekh-05aca253",
+			"o-msdsxg9k-980cc87e",
+			"o-msdsxhw0-fbea0bbb",
+			"o-msdsxil6-b8ccfffd",
+			"o-msdsxjcw-27585db7",
+			"o-msdsxki5-16b12ae3",
+			"o-msdsxn2j-73737f67",
+			"o-msdsxoal-f229cded",
+			"o-msdsxp5e-e5cdfbb8",
+			"o-msdsxpsp-f8a7c149",
+			"o-msdsxqh2-af15272e",
+			"o-msdsxrdf-71cfc253",
+			"o-msdsxsc1-53afbe44",
+			"o-msdsxu1x-bbd39b96",
+			"o-msdsxvjm-edd2e2c9",
+			"o-msdsxw3j-f8d3d703",
+			"o-msdsxwq7-7d2d97a7",
+			"o-msdsxz6p-7103b9f5",
+			"o-msdsy0q9-eaa760ac",
+			"o-msdsy1f0-4130839a",
+			"o-msdsy21r-b8d7c6a8",
+			"o-msdsy2z1-f633eae0",
+			"o-msdsy3vx-240076b9",
+			"o-msdsy5hd-6da368d6",
+			"o-msdsy7cl-ba308754",
+			"o-msdsy871-dddd0c1a",
+			"o-msdsyaoj-1f131c24"
+		],
+		"inBandRecordIds": [
+			"o-msdsxvjm-edd2e2c9",
+			"o-msdswd1d-76dbeadb",
+			"o-msdsxn2j-73737f67",
+			"o-msdsw6uq-dd12f742",
+			"o-msdsy5hd-6da368d6",
+			"o-msdsy1f0-4130839a",
+			"o-msdsxki5-16b12ae3",
+			"o-msdswb9g-235bbde8",
+			"o-msdsx88l-33129f25",
+			"o-msdswjqz-44e1629c",
+			"o-msdsxg9k-980cc87e",
+			"o-msdsy21r-b8d7c6a8",
+			"o-msdswxf5-6fbff04a",
+			"o-msdsy2z1-f633eae0",
+			"o-msdswccx-47e1450c",
+			"o-msdsxhw0-fbea0bbb",
+			"o-msdsxz6p-7103b9f5",
+			"o-msdswlwr-1440a09e",
+			"o-msdswj10-4f14fdb0",
+			"o-msdswi68-82c12d7b",
+			"o-msdsxpsp-f8a7c149",
+			"o-msdsxwq7-7d2d97a7",
+			"o-msdsx2w3-b6471388",
+			"o-msdsxjcw-27585db7",
+			"o-msdsw7kn-e1ba4482",
+			"o-msdswf1z-4c7849b4",
+			"o-msdsxaxz-f1dde46a",
+			"o-msdsxa7m-1812a48a",
+			"o-msdswz0d-06d6b2f9",
+			"o-msdsyaoj-1f131c24",
+			"o-msdsy0q9-eaa760ac",
+			"o-msdsx25v-8210dc92",
+			"o-msdsw5qs-13afa3ab",
+			"o-msdsw2m5-4fb5187e",
+			"o-msdsw9dj-6e2d845d",
+			"o-msdsw504-f42643e1",
+			"o-msdswojg-d401c60e",
+			"o-msdsxsc1-53afbe44",
+			"o-msdsxu1x-bbd39b96",
+			"o-msdsx5rr-4060f914",
+			"o-msdsx1fy-e8510fce",
+			"o-msdsx9ci-4a5adfca"
+		]
+	},
+	"answerHygiene": {
+		"recordsSkipped": {
+			"otherLabelSchema": 635,
+			"otherBatch": 228,
+			"unknownItem": 0,
+			"questionKeyMismatch": 0,
+			"nonBooleanAnswer": 0,
+			"retracted": 0,
+			"superseded": 0
+		},
+		"answeredItems": 58,
+		"fixtureItems": 58,
+		"note": "Supersession and retraction resolved by the warehouse's own rule: per (batch, item, question) the latest non-retracted record is the reviewer's position."
+	}
+}

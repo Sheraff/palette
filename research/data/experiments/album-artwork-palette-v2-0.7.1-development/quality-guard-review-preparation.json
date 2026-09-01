@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+  "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf",
+  "candidateVersion": "album-artwork-first-principles-0.7.1",
+  "implementationHash": "a24561fd38227afdc6e68928a8cffc51e2e22213591bef6680290637a635103e",
+  "scientificSha256": "0c3780a114cab31a0ae8384548d93c8ee49a541f70c3da214ca4527e3909d642",
+  "failedPredecessorVersion": "album-artwork-first-principles-0.7.0",
+  "baselineVersion": "album-artwork-first-principles-0.6.0",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "changedFromFailedCount": 17,
+  "changedFromBaselineCount": 4,
+  "exactBaselineMatchCount": 24,
+  "transferredExactReviewAssessments": [
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "candidateQuality": "strong",
+      "predecessorQuality": "strong",
+      "relativeOutcome": "similarly-valid"
+    }
+  ],
+  "freshReviewCaseCount": 3,
+  "candidateSideCounts": {
+    "A": 2,
+    "B": 1
+  },
+  "inputHashes": {
+    "currentAggregateSha256": "15d31bba183f9c645327ed6f204d9be08fd80cd16092626097fe39f5af16d702",
+    "failedAggregateSha256": "abccff26cb806cbaa01a6a5a2068919767b552ff3e6b1683db974746662281d9",
+    "baselineAggregateSha256": "44fc6ab503208e1be29f697cb5acb0477d2a88092bd192b0068d1f9fde1bdef1",
+    "currentSummarySha256": "623fd7334e0ba6649e07c0c31ad7a61696b4d7efbb06b49fecf6e2a983d716f7",
+    "priorReviewManifestSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b",
+    "priorReviewAnalysisSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa",
+    "reviewProtocolSha256": "6c487bdab6fdf6c7678ff6f998be278f84ef3a1b179cd330e68a0095298daf4d"
+  },
+  "sourcePolicy": "fixed-authorized-development-panel-only; no directional sample execution",
+  "preparationId": "e871b261f3730fab65740a8e3ad5f37429330f315408ac25a626705c92095613"
+}

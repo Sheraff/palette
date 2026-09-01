@@ -1,0 +1,241 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "ground-freetext-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "ground-freetext.v1",
+	"seed": 0,
+	"generatedBy": "research/v3/src/review-server/freetext.ts",
+	"builtFrom": [
+		"research/v3/data/oracle-validation/cascade-ground-truth-1.json",
+		"research/v3/data/oracle-premise/cascade-ground-truth-1-analysis.json"
+	],
+	"selection": {
+		"rule": "Exactly the covers where the cascade round's reviewer answer was `none_discernible` and the reviewer has since said the token meant a vocabulary failure rather than a perception — `cascade-ground-truth-1-analysis.json` `verdict.vocabulary_misfit_covers`, 9 covers. Every item row (path, hash, rendition, stratum) is reused VERBATIM from `cascade-ground-truth-1.json`, so a free-text answer is about the same bytes the closed-vocabulary answer was about; rebuilding the rows from the corpus would risk a rendition drift that would make the two incomparable. The round asks one open question per cover and offers no vocabulary at all, because a longer list would measure whether the reviewer accepts new words rather than which words are missing.",
+		"counts": {
+			"misfit_covers": 9,
+			"items": 9
+		}
+	},
+	"questions": [
+		{
+			"key": "ground_freetext",
+			"kind": "freetext",
+			"question": "Describe the ground/background in your own words — what is it, and why did no tag fit?",
+			"instruction": "No list this time, and no right answer. Say what you see in your own words — as long or as short as you like.",
+			"contextLabel": "Context, not a question — in the cascade round you answered:",
+			"contextNote": "Nothing here is being challenged and nothing needs correcting. It is shown so you can say why that word was the closest one available.",
+			"answers": []
+		}
+	],
+	"items": [
+		{
+			"itemId": "gf-fee5aa90e94c",
+			"questionKey": "ground_freetext",
+			"imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+			"sha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+			"imageId": "ab67616d0000b27300014fb430dd1b693e653121.jpg",
+			"artworkId": "00014fb430dd1b693e653121",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "71bacc05c36195d2",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-96ce2811c9d8",
+			"questionKey": "ground_freetext",
+			"imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"sha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+			"imageId": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"artworkId": "000300752f338b6aedff856c",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "9dbd7a9f92886c36",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-c6d19597ab9d",
+			"questionKey": "ground_freetext",
+			"imagePath": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+			"sha256": "c6d19597ab9d71847da3dc53ae70d7526d61ea14bb08ffdcac3bd475d768eace",
+			"imageId": "ab67616d00001e0200066a61bbcbeadd632f7f38",
+			"artworkId": "00066a61bbcbeadd632f7f38",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "de9c4881d5db4be9",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-9f0f531571fe",
+			"questionKey": "ground_freetext",
+			"imagePath": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+			"sha256": "9f0f531571fe1540006bd0796707f5bab18b16034da6ebe8ef3b096a9069d7a4",
+			"imageId": "ab67616d0000b27300075841f68d8cd71db368d8",
+			"artworkId": "00075841f68d8cd71db368d8",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "254cb60a45da52b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-3bda1f6ebf2e",
+			"questionKey": "ground_freetext",
+			"imagePath": "0c/ab67616d00001e02000c4d52300a016ee65f1622",
+			"sha256": "3bda1f6ebf2e36e3d1281731bfa0b8ccd62a3e589d03a7b83424df6e2f65552c",
+			"imageId": "ab67616d00001e02000c4d52300a016ee65f1622",
+			"artworkId": "000c4d52300a016ee65f1622",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "45ca4d306f8322e0",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-eb8b829680d8",
+			"questionKey": "ground_freetext",
+			"imagePath": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+			"sha256": "eb8b829680d8b55a6bb2d77ff982dc225b32db097c04734f3c006c9f36f0cd41",
+			"imageId": "ab67616d00001e02000f0a78a1791248aec707e3",
+			"artworkId": "000f0a78a1791248aec707e3",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "118d9702fa075c8a",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-5da9408e8e01",
+			"questionKey": "ground_freetext",
+			"imagePath": "0f/ab67616d0000b273000fa9b53f161dc999ef557d",
+			"sha256": "5da9408e8e01c391c1b9fe4d0496929ed18e3199bfaeca4d63151cf690404079",
+			"imageId": "ab67616d0000b273000fa9b53f161dc999ef557d",
+			"artworkId": "000fa9b53f161dc999ef557d",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b68d53f7902d9a6f",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-c5b20159f95c",
+			"questionKey": "ground_freetext",
+			"imagePath": "images/artofficial.jpg",
+			"sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+			"imageId": "artofficial.jpg",
+			"artworkId": "artofficial",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "e68508919438842e",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "large_>640",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		},
+		{
+			"itemId": "gf-3afaf90cd911",
+			"questionKey": "ground_freetext",
+			"imagePath": "images/krafty.jpg",
+			"sha256": "3afaf90cd911c134fe26708b3da3fdad181eb38cd8455a8a4538de88a4894091",
+			"imageId": "krafty.jpg",
+			"artworkId": "krafty",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "60f5c265fd622fa6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640",
+			"priorAnswer": {
+				"batchId": "cascade-ground-truth-1",
+				"questionKey": "ground_type",
+				"answer": "none_discernible"
+			}
+		}
+	],
+	"serveOrder": [
+		"gf-fee5aa90e94c",
+		"gf-96ce2811c9d8",
+		"gf-c6d19597ab9d",
+		"gf-9f0f531571fe",
+		"gf-3bda1f6ebf2e",
+		"gf-eb8b829680d8",
+		"gf-5da9408e8e01",
+		"gf-c5b20159f95c",
+		"gf-3afaf90cd911"
+	]
+}

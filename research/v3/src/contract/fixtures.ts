@@ -1,0 +1,1090 @@
+/**
+ * Fixture palettes and synthetic sources for the contract tests.
+ *
+ * Two kinds live here: palettes that are valid and must stay valid, and palettes built to violate
+ * exactly one invariant. The second kind is the more useful: a validator that only ever sees good
+ * input is a validator nobody has tested.
+ *
+ * The colours are not arbitrary. Each violating fixture was chosen by measurement so that it trips
+ * its own invariant and no other — in particular `contrastFloorViolation` is a vivid magenta on mid
+ * grey, which is 24 same-colour bars apart by the one ruler and still, according to APCA, invisible.
+ * That pair is the reason invariant 4 exists as a separate rule from invariant 3.
+ */
+
+import { colorFromHex } from "./color.ts"
+import { CONTRACT_VERSION } from "./constants.ts"
+import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters } from "./invariants.ts"
+import type {
+	GradientStop,
+	NonSourceColorEscape,
+	Palette,
+	PaletteColor,
+	PaletteMetadata,
+	PixelAccessor,
+	PixelIterable,
+	PixelSample,
+	ResolvedContrastFloors,
+	Rgb8,
+	TransparencyReport,
+} from "./types.ts"
+
+// ---------------------------------------------------------------------------------------------
+// Metadata
+// ---------------------------------------------------------------------------------------------
+
+/** A syntactically valid sha-256 digest. Not the digest of anything; fixtures decode no files. */
+const FIXTURE_CONTENT_HASH = "0".repeat(64)
+
+const FIXTURE_SIZE = { width: 200, height: 200 }
+
+export function fixtureMetadata(overrides: Partial<PaletteMetadata> = {}): PaletteMetadata {
+	return {
+		algorithmVersion: "v3-fixture-0",
+		preprocessingVersion: "sharp-0.33.5/no-resample",
+		inputContentHash: FIXTURE_CONTENT_HASH,
+		sourceRendition: {
+			path: "/fixtures/album.jpg",
+			width: FIXTURE_SIZE.width,
+			height: FIXTURE_SIZE.height,
+			format: "jpeg",
+		},
+		processedSize: { ...FIXTURE_SIZE },
+		...overrides,
+	}
+}
+
+/** The contrast block a palette gets when the caller left both parameters at their defaults. */
+export const DEFAULT_RESOLVED_CONTRAST = resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS)
+
+// ---------------------------------------------------------------------------------------------
+// Palette construction
+// ---------------------------------------------------------------------------------------------
+
+export type FixtureSpec = Readonly<{
+	background: string
+	surface: string
+	foreground: string
+	accent: string
+	stops?: readonly (readonly [hex: string, position: number])[]
+	surfaceCollapsed?: boolean
+	accentCollapsed?: boolean
+	escape?: NonSourceColorEscape | null
+}>
+
+export function makePalette(spec: FixtureSpec): Palette {
+	const stops = spec.stops?.map(([value, position]): GradientStop => ({
+		color: colorFromHex(value),
+		position,
+	}))
+	return {
+		contractVersion: CONTRACT_VERSION,
+		roles: {
+			background: colorFromHex(spec.background),
+			surface: colorFromHex(spec.surface),
+			foreground: colorFromHex(spec.foreground),
+			accent: colorFromHex(spec.accent),
+		},
+		gradient: stops === undefined ? null : { stops: stops as unknown as [GradientStop, GradientStop] },
+		collapse: {
+			surfaceCollapsed: spec.surfaceCollapsed ?? spec.surface === spec.background,
+			accentCollapsed: spec.accentCollapsed ?? spec.accent === spec.foreground,
+		},
+		escape: spec.escape ?? null,
+		contrast: DEFAULT_RESOLVED_CONTRAST,
+		metadata: fixtureMetadata(),
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
+// Valid fixtures
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * The plain case: four distinct roles, no gradient, no collapse. A dark blue field with near-white
+ * text and a warm accent — the shape most album artwork ends up in.
+ */
+export const validFlat: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+})
+
+/**
+ * Both sanctioned collapses at once, exactly equal and flagged: surface onto background, accent onto
+ * foreground. This is what a legitimately two-colour artwork publishes.
+ */
+export const validCollapsed: Palette = makePalette({
+	background: "#101820",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#f2f5f7",
+})
+
+/**
+ * A three-stop gradient that **begins at the background and ends at the surface**, with a genuine
+ * third colour between them, plus opportunistic geometry.
+ *
+ * The endpoints are the reviewer's ruling of 2026-08-04 — *"when the field is a gradient, the first
+ * stop is the `background` and the last stop is the `surface`"* — so this fixture is the natural
+ * case and not a coincidence: `#101820` → `#2b3f57` → `#4a6b8a`, with `#101820` published as the
+ * background and `#4a6b8a` as the surface. What it exercises is the pair of clauses that are easy to
+ * get wrong together — invariant 1 pins the two ends to the field roles, and invariant 3 exempts the
+ * field roles from stop distinctness so those mandatory coincidences are legal. The **interior**
+ * stop stays decoupled from every role, and the foreground and accent get no exemption at all.
+ */
+export const validGradient: Palette = {
+	...makePalette({
+		background: "#101820",
+		surface: "#4a6b8a",
+		foreground: "#f2f5f7",
+		accent: "#e0533a",
+		stops: [["#101820", 0], ["#2b3f57", 0.5], ["#4a6b8a", 1]],
+	}),
+	gradient: {
+		stops: [
+			{ color: colorFromHex("#101820"), position: 0 },
+			{ color: colorFromHex("#2b3f57"), position: 0.5 },
+			{ color: colorFromHex("#4a6b8a"), position: 1 },
+		],
+		geometry: { kind: "linear", start: [0, 0], end: [1, 1], angleDegrees: 135 },
+	},
+}
+
+export const validPalettes: readonly Palette[] = [validFlat, validCollapsed, validGradient]
+
+// ---------------------------------------------------------------------------------------------
+// Violating fixtures — one per invariant, each tripping only its own
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * I1: a fifth stop. The contract allows two to four.
+ *
+ * Endpoints are the field roles, so the *only* thing wrong here is the count — the three surplus
+ * colours sit in the interior, where extra stops would go if they were allowed.
+ */
+export const schemaTooManyStops: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0], ["#2b3f57", 0.3], ["#4a6b8a", 0.6], ["#7fa3c2", 0.8], ["#1e2a38", 1]],
+})
+
+/** I1: positions that do not increase. The colours are the correct field-role endpoints. */
+export const schemaUnorderedStops: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0.7], ["#1e2a38", 0.2]],
+})
+
+/**
+ * I1: a ramp that does not span its own parameter — the first stop sits at 0.2 and the last at 0.8.
+ * Ordered, in range, and still wrong: positions are normalized over the ramp's own span, so this
+ * describes a mis-normalized gradient rather than a shorter one.
+ */
+export const schemaStopSpanIncomplete: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0.2], ["#1e2a38", 0.8]],
+})
+
+/** I1: a position outside [0,1]. */
+export const schemaStopOutOfRange: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0], ["#1e2a38", 1.4]],
+})
+
+/**
+ * I1: a ramp whose ends are not the field roles — reviewer's ruling of 2026-08-04.
+ *
+ * Both ends are wrong at once, so the fixture proves the two codes are reported independently:
+ * `#2b3f57` where the background `#101820` should be, `#4a6b8a` where the surface `#1e2a38` should
+ * be. Everything else about it is clean — the positions span [0,1], the stops are mutually distinct,
+ * and the foreground and accent clear every pair — so it trips these two codes and nothing else.
+ *
+ * Before the ruling this palette was **valid**: stops were decoupled from role colours, and a ramp
+ * that started somewhere else entirely was the ordinary case. It is the fixture that would notice a
+ * silent revert.
+ */
+export const schemaGradientEndpointsNotFieldRoles: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#2b3f57", 0], ["#4a6b8a", 1]],
+})
+
+/** I1: the first stop is the background, and only the last end is wrong. */
+export const schemaLastStopNotSurface: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0], ["#4a6b8a", 1]],
+})
+
+/**
+ * I1: surface and background are exactly equal but the flag is clear. Collapse must be *stated*, or
+ * it cannot be counted — which is the entire reason the flags exist.
+ */
+export const schemaCollapseUnflagged: Palette = makePalette({
+	background: "#101820",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	surfaceCollapsed: false,
+})
+
+/** I1: the flag is set but the colours are not exactly equal. */
+export const schemaFlagWithoutEquality: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	surfaceCollapsed: true,
+})
+
+/** I1: the metadata block cannot identify what was extracted. */
+export const schemaBadMetadata: Palette = {
+	...validFlat,
+	metadata: fixtureMetadata({ inputContentHash: "not-a-digest" }),
+}
+
+/** I1: the hex and the rgb triple disagree, so downstream checks would disagree with each other. */
+export const schemaHexRgbMismatch: Palette = {
+	...validFlat,
+	roles: {
+		...validFlat.roles,
+		accent: { rgb: [224, 83, 58] as Rgb8, hex: "#000000" as PaletteColor["hex"] },
+	},
+}
+
+/**
+ * I3: two gradient stops the ruler cannot tell apart. A degenerate ramp — the two stops render as
+ * one colour.
+ *
+ * Both stops are dark-neutral, where the reviewer's bar is the tightest of the four (0.00876); this
+ * pair sits at 0.00752. Under the pre-bracketing scalar bar of 0.012 the old fixture used a pair at
+ * 0.01127, which the measurement has since reclassified as genuinely *distinct* in this region.
+ *
+ * **Three stops since the endpoint ruling of 2026-08-04**, and it has to be. With the ends pinned to
+ * the background and the surface, a two-stop degenerate ramp is no longer a statement about stops at
+ * all — it is a background and a surface that are the same colour, which invariant 3 already caught
+ * as a *role* pair. The defect that stays stop-specific is an **interior** stop indistinguishable
+ * from an end, which is what this is: `#2d4159` sitting on top of the background `#2b3f57`.
+ */
+export const distinctnessIndistinctStops: Palette = makePalette({
+	background: "#2b3f57",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#2b3f57", 0], ["#2d4159", 0.5], ["#1e2a38", 1]],
+})
+
+/**
+ * I3: the foreground sits on top of a gradient stop. "White on white" — the field roles are exempt
+ * from stop distinctness, the foreground is emphatically not.
+ *
+ * The offending stop is the **interior** one, for the same reason as the fixture above: since the
+ * endpoint ruling the two ends are the background and the surface by construction, so the only stop
+ * a foreground can collide with is one in the middle.
+ */
+export const distinctnessForegroundMatchesStop: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0], ["#f2f5f7", 0.5], ["#1e2a38", 1]],
+})
+
+/**
+ * I3: an invisible accent — indistinguishable from the surface it sits on. Promoted to an invariant
+ * by the reviewer on 2026-08-02: an invisible accent is never valid.
+ */
+export const distinctnessInvisibleAccent: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#1f2b39",
+})
+
+/**
+ * I3: surface and background near-identical but not exactly equal, flag clear. Consistent as far as
+ * invariant 1 is concerned — and still a violation, because a sanctioned collapse has to be exact.
+ * "Almost collapsed" is the state the flags exist to make impossible.
+ */
+export const distinctnessNearCollapse: Palette = makePalette({
+	background: "#2b3f57",
+	surface: "#2d4159",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	surfaceCollapsed: false,
+})
+
+/**
+ * The regional bar, demonstrated: **the same OKLab distance, judged both ways.**
+ *
+ * Each of these palettes carries a stop pair 0.01400 apart (matched to within 9e-7). In
+ * dark-neutral, where the reviewer's bar is 0.00932, that is two distinct colours. In
+ * light-saturated, where the bar is 0.02293, it is one colour twice. A single threshold cannot
+ * produce both answers, which is what the bracketing rounds measured and what
+ * `oneThresholdSurvives: false` records.
+ *
+ * The distance is chosen to sit outside **both regions' confidence intervals** — above
+ * dark-neutral's high of 0.01137 and below light-saturated's low of 0.01658 — so the demonstration
+ * survives the measurement's own uncertainty rather than depending on the point estimates. It also
+ * clears dark-neutral's 8-bit quantisation floor (±0.00075) by six times.
+ */
+/*
+ * Both carry the judged pair as **stops[0] and stops[1]** rather than as the two stops of a 2-stop
+ * ramp. Since the endpoint ruling of 2026-08-04 the ends of a ramp are the background and the
+ * surface, so a 2-stop ramp's pair is also a role pair and would be reported twice — once as
+ * `roles.background ↔ roles.surface` and once as the stop pair. A third stop moves the judged pair
+ * into the position `background ↔ interior stop`, where the field-role exemption suppresses the
+ * duplicate and the stop pair is judged alone. The distance under test is untouched.
+ */
+export const regionalBarDistinctInDarkNeutral: Palette = makePalette({
+	background: "#1e2a38",
+	surface: "#f2f5f7",
+	foreground: "#e0533a",
+	accent: "#4a6b8a",
+	stops: [["#1e2a38", 0], ["#162a34", 0.5], ["#f2f5f7", 1]],
+})
+
+export const regionalBarSameInLightSaturated: Palette = makePalette({
+	background: "#bc4758",
+	surface: "#f2f5f7",
+	foreground: "#4a6b8a",
+	accent: "#e0533a",
+	stops: [["#bc4758", 0], ["#b74b60", 0.5], ["#f2f5f7", 1]],
+})
+
+/**
+ * A pair that straddles a region boundary, chosen so the rule actually decides the outcome.
+ *
+ * `#0e152e` is dark-saturated (bar 0.01502) and `#111830` is dark-neutral (bar 0.00932) — the chroma
+ * boundary runs between them. Their distance is 0.01217, placed at the exact midpoint of the two
+ * bars (0.00285 clear of each). So the smaller-bar rule would call them distinct and the larger-bar
+ * rule calls them the same colour, with equal room on both sides; `sameColorBar` takes the larger,
+ * so this is a violation. See that function for why.
+ */
+export const regionalBarStraddlingPair: Palette = makePalette({
+	background: "#0e152e",
+	surface: "#e0533a",
+	foreground: "#4a6b8a",
+	accent: "#9e7397",
+	stops: [["#0e152e", 0], ["#111830", 0.5], ["#e0533a", 1]],
+})
+
+/**
+ * I4: a vivid magenta foreground on a mid-grey background. The two are 0.307 apart in OKLab — over
+ * twenty same-colour bars, so invariant 3 is perfectly happy — and |raw APCA| is 2.31, below the
+ * 2.5 epsilon. APCA reports Lc 0: at this luminance the hue carries the difference and the text
+ * carries none of it. Surface and accent are chosen so that only the foreground/background pair
+ * trips.
+ */
+export const contrastFloorViolation: Palette = makePalette({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#ca00ff",
+	accent: "#f2f5f7",
+})
+
+/**
+ * A genuinely collapsed accent under an accent floor the pair cannot meet.
+ *
+ * The accent is exactly the foreground, and the caller has raised `minAccentContrast` to Lc 105 —
+ * a raw floor of 107.7, above the pair's actual |raw| of 102.6. Invariant 4 must report nothing:
+ * a collapsed accent is the foreground, is validated as the foreground, and has no independent
+ * existence to hold to its own floor.
+ */
+export const collapsedAccentUnderRaisedFloor: Palette = {
+	...makePalette({
+		background: "#101820",
+		surface: "#1e2a38",
+		foreground: "#f2f5f7",
+		accent: "#f2f5f7",
+	}),
+	contrast: resolveContrastParameters({ minTextContrast: 0, minAccentContrast: 105 }),
+}
+
+/**
+ * The same exemption, claimed by a flag that is lying: `accentCollapsed` is set over two colours
+ * that are not equal, and the accent sits at zero luminance contrast against both fields. Invariant
+ * 1 catches the flag; invariant 4 must still catch the invisible accent, or a false flag would buy
+ * an exemption from the thing the flag is supposed to make countable.
+ */
+export const lyingAccentCollapseFlag: Palette = makePalette({
+	background: "#808080",
+	surface: "#808080",
+	foreground: "#f2f5f7",
+	accent: "#5e8876",
+	surfaceCollapsed: true,
+	accentCollapsed: true,
+})
+
+/**
+ * The accent's escape, in the direction that **rescues** — and at a distance generous enough to
+ * survive the reviewer's 2026-08-04 tightening.
+ *
+ * A vivid magenta accent on mid grey: |raw APCA| 2.378, under the epsilon, so luminance says
+ * invisible. But the two colours are **0.263** apart in OKLab — 1.8× `ACCENT_FUNCTIONAL_DISTANCE`,
+ * and above the top rung of the reviewer's own equal-luminance ladder (0.24181), which they called
+ * clearly visible. Valid palette.
+ *
+ * This fixture is the *"we want to keep that class of accents"* half of the refinement: the reviewer
+ * did not abolish the escape, they raised its price. A one-dimensional accent floor would condemn
+ * this palette, and the reviewer has twice declined to.
+ *
+ * Its companion `accentJustOverVisibilityDistance` is the other half — an isoluminant accent at
+ * merely *detectable* distance, which used to pass and now does not.
+ */
+export const accentRescuedByColor: Palette = makePalette({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#e700a8",
+})
+
+/**
+ * The accent's second dimension, in the direction that still **condemns**.
+ *
+ * A muted green accent on mid grey: |raw APCA| 1.048 *and* only 0.055 apart in OKLab — under the
+ * detection threshold that governed the escape until 2026-08-04 and, a fortiori, under the functional
+ * one that governs it now. Its verdict has never moved, at either threshold, which is what makes it
+ * the stable reference point among these fixtures.
+ *
+ * Note the distance clears invariant 3's bar for this region (0.02687) comfortably — the two
+ * invariants are asking different questions, and this fixture sits in the gap between them.
+ */
+export const accentInvisibleAtEqualLuminance: Palette = makePalette({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#5e8876",
+})
+
+/**
+ * The self-certification bypass, found by an independent verifier on 2026-08-02.
+ *
+ * `#5a5a5a` on `#002bff` is isoluminant: 0.297 apart in OKLab — twenty-four same-colour bars, so
+ * invariant 3 is content — and |raw APCA| 0.699, well below the text epsilon. It is precisely §4
+ * invariant 4's founding case, "invalid regardless of hue".
+ *
+ * The palette declares `effectiveRawMagnitude: 0.0001`. Because invariant 4 measures against the
+ * palette's own recorded floor, a declared floor below the epsilon used to certify this pair as
+ * legible and the whole palette reported zero violations. Invariant 1 now rejects any declared floor
+ * under its role's epsilon, which is what makes invariant 4 unfakeable.
+ */
+export const contrastFloorSelfCertified: Palette = {
+	...makePalette({
+		background: "#002bff",
+		surface: "#101820",
+		foreground: "#5a5a5a",
+		accent: "#f2f5f7",
+	}),
+	contrast: {
+		minTextContrast: { requestedLc: 0, effectiveRawMagnitude: 0.0001 },
+		minAccentContrast: { requestedLc: 0, effectiveRawMagnitude: 0.0001 },
+	},
+}
+
+/**
+ * A declared floor that is above its epsilon but does not follow from the recorded `requestedLc`.
+ * The palette is misreporting what it enforced, which makes any verdict about it unscopable.
+ */
+export const contrastFloorInconsistent: Palette = {
+	...validFlat,
+	contrast: {
+		minTextContrast: { requestedLc: 60, effectiveRawMagnitude: 3 },
+		minAccentContrast: DEFAULT_RESOLVED_CONTRAST.minAccentContrast,
+	},
+}
+
+// ---------------------------------------------------------------------------------------------
+// I4 against the gradient stops — §2's third field for `minTextContrast`
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The bypass the adversarial review constructed**, now a violation.
+ * (`reviews/phase-0-adversarial/contract.md` finding 2, case A11.)
+ *
+ * White background, near-white surface, near-black text, and a gradient running black → white. The
+ * foreground is perfectly legible against everything the palette calls a field, and invisible against
+ * half its own gradient: `#111111` on the `#000000` stop is |raw APCA| 1.1656, Lc 0.
+ *
+ * Invariant 3 is right not to catch it — the two colours are 0.178 apart in OKLab, nineteen
+ * dark-neutral bars, so they are genuinely *distinct colours*. They are at zero *luminance* contrast,
+ * which is a different question and the one invariant 4 asks. Before 2026-08-03 this palette returned
+ * `{ valid: true, violations: [] }`.
+ *
+ * Everything else about it was deliberately clean, so the fixture proved the new clause and nothing
+ * else: the background and surface are exempt from stop distinctness, and the accent cleared every
+ * pair. Since 2026-08-04 the accent `#e0533a` also trips the ramp floor here — this gradient runs
+ * black to white, so every possible accent crosses it in luminance. See `foregroundInvisibleMidRamp`
+ * for the general statement.
+ */
+export const foregroundInvisibleOverStop: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#eeeeee",
+	foreground: "#111111",
+	accent: "#e0533a",
+	stops: [["#ffffff", 0], ["#000000", 0.5], ["#eeeeee", 1]],
+})
+
+/**
+ * I4: a foreground that clears the floor at **every published stop** and vanishes **between** them.
+ *
+ * `#808080` over a `#303030` → `#d0d0d0` ramp. At the stops the foreground is comfortable — |raw APCA|
+ * 32.34 and 42.29, thirteen and seventeen times the epsilon — and a per-stop check reports nothing at
+ * all. Halfway along, at t ≈ 0.5332, the rendered ramp is `#818181`: one 8-bit step from the
+ * foreground, |raw APCA| 1.2153, invisible.
+ *
+ * This fixture is the reviewer's ruling of 2026-08-03 in one palette — *"it's not 'each stop' by the
+ * way, because the contrast issue could happen somewhere in the middle of 2 points too"* — and it is
+ * the case the first version of the stop clause could not see. Invariant 3 is again legitimately
+ * content: the foreground is 0.29 and 0.26 from the two stops, seventeen same-colour bars, so the
+ * *published colours* really are distinct. It is the colours between them that are not.
+ *
+ * **No longer isolated to the foreground, and it cannot be.** The accent `#e0533a` crosses the same
+ * ramp in luminance; until 2026-08-04 it was 0.18 from the ramp in OKLab at the crossing and its
+ * chroma rescue held, so it reported nothing. With the rescue gone it reports an
+ * `I4.ramp-below-contrast-floor` of its own, and no choice of accent would prevent that: this ramp
+ * runs `#303030` → `#d0d0d0`, so **any** colour whose luminance falls inside that span crosses it, and
+ * at a crossing APCA's polarity flip puts `|raw|` under every floor the contract can express. A
+ * wide-span ramp condemns every role that lives inside it. That is a real consequence of the ruling,
+ * not a defect in this fixture, and it is recorded here because the fixture used to promise isolation.
+ */
+export const foregroundInvisibleMidRamp: Palette = makePalette({
+	background: "#303030",
+	surface: "#d0d0d0",
+	foreground: "#808080",
+	accent: "#e0533a",
+	stops: [["#303030", 0], ["#d0d0d0", 1]],
+})
+
+/**
+ * I4: an **accent** that clears the floor at every published stop and goes invisible between them.
+ *
+ * The accent half of the same ruling, and the half that had no enforcement path at all before
+ * 2026-08-03: `minAccentContrast` did not reach the gradient, by an explicit decision that the
+ * reviewer has now overturned.
+ *
+ * `#4a6b8a` over a `#16202c` → `#9fb6cc` ramp — a ramp of the accent's own hue, running from well
+ * below it to well above it. At the stops the accent is fine on luminance alone (|raw APCA| 24.59 and
+ * 37.51). At t ≈ 0.5234 the ramp renders `#596a7b`, where the accent is at |raw APCA| 0.7459 **and**
+ * 0.0286 away in OKLab.
+ *
+ * The hue match is why this fixture is built the way it is: under the conjunction that stood until
+ * 2026-08-04 both dimensions had to fail *at the same ramp point*, which a luminance sweep alone
+ * cannot arrange. Since the metric ruling the luminance half suffices and the hue match is no longer
+ * load-bearing — but the fixture is kept as built, because its verdict is unchanged and the
+ * companion fixture below is what isolates the part that did change.
+ *
+ * Isolated to the accent: the foreground `#f2f5f7` bottoms out at |raw APCA| 41.33 over the same ramp.
+ */
+export const accentInvisibleMidRamp: Palette = makePalette({
+	background: "#16202c",
+	surface: "#9fb6cc",
+	foreground: "#f2f5f7",
+	accent: "#4a6b8a",
+	stops: [["#16202c", 0], ["#9fb6cc", 1]],
+})
+
+/**
+ * The accent's escape **over the ramp**: invisible in luminance mid-ramp, and far enough away in
+ * colour there to survive it. A valid palette.
+ *
+ * Companion to `accentInvisibleMidRamp` directly above: same ramp, `#16202c` → `#9fb6cc`, and an
+ * accent of a completely different hue. `#e0533a` is a warm orange; the ramp is blue. At t ≈ 0.7100
+ * the ramp renders `#73879a`, where the accent sits at |raw APCA| **1.0116** — well under the 2.5
+ * epsilon — and **0.2126** away in OKLab, which is **1.46×** `ACCENT_FUNCTIONAL_DISTANCE`.
+ *
+ * This is what makes the pointwise search necessary rather than decorative. A whole-ramp check that
+ * minimised luminance and distance *separately* would condemn this palette: somewhere on the ramp the
+ * accent is isoluminant, and somewhere else on the ramp the accent is close in colour — just never at
+ * the same place. `firstInvisibleAccentOnRamp` evaluates both at one point, so this passes.
+ *
+ * Isolated to the accent, and genuinely so: the foreground `#f2f5f7` is lighter than both stops, so it
+ * never crosses the ramp and bottoms out at |raw APCA| 41.33.
+ */
+export const accentEscapesMidRampByColor: Palette = makePalette({
+	background: "#16202c",
+	surface: "#9fb6cc",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#16202c", 0], ["#9fb6cc", 1]],
+})
+
+/**
+ * **The reviewer's refinement of 2026-08-04, as a verdict**: an accent invisible mid-ramp at a
+ * distance that is comfortably *detectable* and not *functional*. Valid until that refinement, a
+ * violation after it.
+ *
+ * The same `#16202c` → `#9fb6cc` ramp a third time, with a muted forest-green accent `#2a531e`. It is
+ * comfortable at both stops — |raw APCA| 12.69 and 49.93, five and twenty times the epsilon, so a
+ * per-stop check sees nothing at all. At t ≈ 0.3208 the ramp renders `#3d4c5b`, where the accent sits
+ * at |raw APCA| **0.7525** and **0.10926** away in OKLab.
+ *
+ * That distance is the whole point of the fixture: it is **1.47×** `ACCENT_VISIBILITY_COLOR_DISTANCE`,
+ * so the retired detection threshold rescued it and this palette published clean, and **0.75×**
+ * `ACCENT_FUNCTIONAL_DISTANCE`, so the functional threshold does not.
+ *
+ * It sits in the band the refinement created, and it is the only fixture here that does. If the escape
+ * were ever quietly reverted to the detection threshold, this is what would notice.
+ *
+ * Isolated to the accent: sole violation, and the foreground never crosses the ramp.
+ */
+export const accentInvisibleMidRampAtDetectableDistance: Palette = makePalette({
+	background: "#16202c",
+	surface: "#9fb6cc",
+	foreground: "#f2f5f7",
+	accent: "#2a531e",
+	stops: [["#16202c", 0], ["#9fb6cc", 1]],
+})
+
+// ---------------------------------------------------------------------------------------------
+// Threshold brackets — one LSB either side of each frozen number
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * A contrast block written **by hand**, carrying the frozen epsilons as literal digits.
+ *
+ * Every other fixture here gets its contrast block from `resolveContrastParameters`, which means the
+ * declared floor is manufactured by the code under test and moves in lockstep with any edit to the
+ * epsilons — so no test built on one can tell whether an epsilon changed
+ * (`reviews/phase-0-adversarial/contract.md` finding 3, root cause). This block is typed out instead.
+ * Invariant 1 checks a declared floor against `max(lcFloorToRawMagnitude(requestedLc), ε)` to within
+ * 1e-9, so **any** edit to either epsilon in either direction makes `validateSchema` reject a palette
+ * carrying this block — which is the pin.
+ *
+ * The digits are `EPSILON_TEXT_RAW` and `EPSILON_ACCENT_RAW` as frozen on 2026-08-03. Both are
+ * `[UNCALIBRATED]` placeholders awaiting `PHASE_0_LOOSE_ENDS.md` A3's corpus measurement; when that
+ * lands, this block and the six fixtures below are what must be re-derived and re-verified, on
+ * purpose.
+ */
+export const HAND_WRITTEN_EPSILON_CONTRAST: ResolvedContrastFloors = {
+	minTextContrast: { requestedLc: 0, effectiveRawMagnitude: 2.5 },
+	minAccentContrast: { requestedLc: 0, effectiveRawMagnitude: 2.5 },
+}
+
+function withHandWrittenContrast(spec: FixtureSpec): Palette {
+	return { ...makePalette(spec), contrast: HAND_WRITTEN_EPSILON_CONTRAST }
+}
+
+/**
+ * **The text epsilon, bracketed by one least-significant bit.**
+ *
+ * The same background `#64a244` and two foregrounds one LSB apart in the red channel:
+ *
+ * | fixture | foreground | \|raw APCA\| vs background |
+ * |---|---|---|
+ * | `textFloorJustUnderEpsilon` | `#8c88ef` | 2.437945 |
+ * | `textFloorJustOverEpsilon`  | `#8d88ef` | 2.538832 |
+ *
+ * One is a violation and the other is not, and the only thing between them is `EPSILON_TEXT_RAW`.
+ * Both pairs are 0.28 apart in OKLab — thirty same-colour bars — so invariant 3 is content about both,
+ * and the surface and accent are chosen to clear every other pair by two orders of magnitude. The
+ * epsilon can move by 0.04 in one direction or 0.04 in the other before one of these two fixtures
+ * changes its verdict.
+ *
+ * Found by search over 8-bit pairs, not by asking the code what it thought: the magnitudes above are
+ * recorded here and asserted as literals in `contract-invariants.test.ts`.
+ */
+export const textFloorJustUnderEpsilon: Palette = withHandWrittenContrast({
+	background: "#64a244",
+	surface: "#101820",
+	foreground: "#8c88ef",
+	accent: "#f2f5f7",
+})
+
+export const textFloorJustOverEpsilon: Palette = withHandWrittenContrast({
+	background: "#64a244",
+	surface: "#101820",
+	foreground: "#8d88ef",
+	accent: "#f2f5f7",
+})
+
+/**
+ * **The accent epsilon, bracketed the same way**, over background `#b50f00` with two accents one LSB
+ * apart in the green channel:
+ *
+ * | fixture | accent | \|raw APCA\| | OKLab distance |
+ * |---|---|---|---|
+ * | `accentFloorJustUnderEpsilon` | `#b6123c` | 2.477742 | 0.04926 |
+ * | `accentFloorJustOverEpsilon`  | `#b6133c` | 2.506932 | 0.04903 |
+ *
+ * Both distances are **below** `ACCENT_FUNCTIONAL_DISTANCE`, so the colour escape is switched off in
+ * both and the verdict turns on `EPSILON_ACCENT_RAW` alone — which is the point, since the accent's
+ * two clauses are conjunctive and a bracket that let colour decide would pin nothing. They were also
+ * below `ACCENT_VISIBILITY_COLOR_DISTANCE`, the threshold the escape ran on until 2026-08-04, so this
+ * bracket survived the refinement untouched — it was built to be decided by the epsilon and it still
+ * is. Both distances are comfortably above the region's same-colour bar, so invariant 3 stays out of
+ * it too.
+ */
+export const accentFloorJustUnderEpsilon: Palette = withHandWrittenContrast({
+	background: "#b50f00",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b6123c",
+})
+
+export const accentFloorJustOverEpsilon: Palette = withHandWrittenContrast({
+	background: "#b50f00",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b6133c",
+})
+
+/**
+ * **The detection distance, straddled — and no longer deciding an accent-vs-field verdict.**
+ *
+ * Background `#057689` and two accents one LSB apart in the red channel, both at |raw APCA| under 1 —
+ * far below the accent epsilon, so luminance condemns both:
+ *
+ * | fixture | accent | OKLab distance | \|raw APCA\| | verdict before 2026-08-04 | after |
+ * |---|---|---|---|---|---|
+ * | `accentJustUnderVisibilityDistance` | `#506ca0` | 0.073786 | 0.9007 | invalid | invalid |
+ * | `accentJustOverVisibilityDistance`  | `#516ca0` | 0.074600 | 0.8380 | **valid** | **invalid** |
+ *
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE` is 0.07444, between them. These two used to be the bracket that
+ * pinned that digit against the *field*: the escape ran on it, so an edit flipped one of them.
+ *
+ * **The reviewer's refinement of 2026-08-04 moved the escape onto `ACCENT_FUNCTIONAL_DISTANCE`**,
+ * which is 1.96× larger, so both of these now sit under it and are judged identically. That is the
+ * refinement at its own boundary, and it is what these fixtures now pin — a pair one LSB either side
+ * of the *detection* distance must get the **same** verdict, because detection is no longer the
+ * question. `accentJustOverVisibilityDistance` is also the reviewer's own worry made concrete: an
+ * isoluminant accent you can just about tell from its field, which used to publish clean.
+ *
+ * The two digits are pinned elsewhere, each where it now lives:
+ * `accentFunctionalJustUnder/OverDistance` for the escape, and
+ * `foregroundAccentJustUnder/OverSeparation` for the relocated detection distance.
+ */
+export const accentJustUnderVisibilityDistance: Palette = withHandWrittenContrast({
+	background: "#057689",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#506ca0",
+})
+
+export const accentJustOverVisibilityDistance: Palette = withHandWrittenContrast({
+	background: "#057689",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#516ca0",
+})
+
+/**
+ * **The accent's functional distance, bracketed by one least-significant bit** — the escape's own
+ * threshold, pinned the way the epsilons are.
+ *
+ * Background `#808080` and two accents one LSB apart in the green channel, both isoluminant with it
+ * (|raw APCA| well under the 2.5 epsilon), so luminance condemns both and only the escape can save
+ * either:
+ *
+ * | fixture | accent | OKLab distance | \|raw APCA\| |
+ * |---|---|---|---|
+ * | `accentFunctionalJustUnderDistance` | `#b55ea7` | 0.145106 | 1.6077 |
+ * | `accentFunctionalJustOverDistance`  | `#b55da7` | 0.146718 | 1.8300 |
+ *
+ * `ACCENT_FUNCTIONAL_DISTANCE` is 0.14591, with 0.00080 of room on each side — the most balanced
+ * straddle the 8-bit grid offers against this background, found by search over all 16.7 M colours.
+ * One palette is a violation and the other is clean, and the only thing between them is that constant.
+ *
+ * **This pins the digit, and pins nothing about the reviewer's eyes.** The constant is
+ * `[UNCALIBRATED]`: no stimulus has ever been graded against the functional criterion it is named
+ * for, and the value is an interpolation between two rungs of a ladder that was run under a different
+ * criterion. What this bracket guarantees is that the placeholder cannot drift silently before the
+ * round that replaces it — which is exactly what the epsilons' brackets guarantee, and for the same
+ * reason.
+ */
+export const accentFunctionalJustUnderDistance: Palette = withHandWrittenContrast({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b55ea7",
+})
+
+export const accentFunctionalJustOverDistance: Palette = withHandWrittenContrast({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b55da7",
+})
+
+/**
+ * **The foreground↔accent separation distance, bracketed by one least-significant bit** — the digit
+ * pinned where the reviewer's ruling of 2026-08-04 put it.
+ *
+ * Foreground `#f2f5f7` and two accents one LSB apart in the green channel:
+ *
+ * | fixture | accent | OKLab distance from the foreground |
+ * |---|---|---|
+ * | `foregroundAccentJustUnderSeparation` | `#f1d9f9` | 0.073167 |
+ * | `foregroundAccentJustOverSeparation`  | `#f1d8f9` | 0.075718 |
+ *
+ * `FOREGROUND_ACCENT_SEPARATION_DISTANCE` is 0.07444, with 0.00127 of room on each side — the most
+ * balanced straddle the 8-bit grid offers for this foreground, found by search over all 16.7 M
+ * colours rather than by asking the code what it thought. One palette is a violation
+ * (`I3.foreground-accent-not-separated`) and the other is clean, and the only thing between them is
+ * that constant.
+ *
+ * Both distances are five to eight times the region's same-colour bar, so invariant 3's original
+ * clause is content about both pairs and cannot be what decides them — which is the point, since the
+ * bracket is supposed to pin the *elevated* bar and not the one underneath it. Every other pair in
+ * both palettes clears every check by an order of magnitude.
+ *
+ * **What this bracket does and does not pin.** It pins the constant. It does not pin a reviewer's
+ * judgement: nobody has ever been shown a foreground and an accent at graded separations and asked
+ * where two roles become one. The digit is on loan from the accent-vs-field measurement — see
+ * `FOREGROUND_ACCENT_SEPARATION_DISTANCE` — so what these two fixtures guarantee is that the loan
+ * cannot be silently repaid at a different value, not that the value is right.
+ */
+export const foregroundAccentJustUnderSeparation: Palette = withHandWrittenContrast({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#f1d9f9",
+})
+
+export const foregroundAccentJustOverSeparation: Palette = withHandWrittenContrast({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#f1d8f9",
+})
+
+/**
+ * Malformed shapes a corpus sweep over persisted JSON will actually meet. Validation must count each
+ * as a violation and never throw — one bad record cannot be allowed to kill the sweep.
+ */
+export const malformedPalettes: readonly (readonly [label: string, value: unknown])[] = [
+	["null", null],
+	["undefined", undefined],
+	["empty object", {}],
+	["roles undefined", { contractVersion: "v", roles: undefined }],
+	["roles null", { contractVersion: "v", roles: null }],
+	["roles not an object", { contractVersion: "v", roles: 42 }],
+	["gradient stops not an array", { roles: {}, gradient: { stops: "nope" } }],
+	["gradient not an object", { roles: {}, gradient: 7 }],
+	["gradient stops of nulls", { roles: {}, gradient: { stops: [null, null] } }],
+	["collapse null", { roles: {}, collapse: null }],
+	["contrast a string", { roles: {}, contrast: "x" }],
+	["metadata a number", { roles: {}, metadata: 3 }],
+	["an array", []],
+	["a string", "palette"],
+]
+
+// ---------------------------------------------------------------------------------------------
+// Synthetic sources, for invariant 2
+// ---------------------------------------------------------------------------------------------
+
+function parseHex(value: string): Rgb8 {
+	return colorFromHex(value).rgb
+}
+
+/**
+ * An image of equal horizontal bands. Every colour occupies `1/n` of the frame, which clears the
+ * population floor by two orders of magnitude at the fixture size.
+ */
+export function bandedSource(
+	hexes: readonly string[],
+	size: { width: number; height: number } = FIXTURE_SIZE,
+): PixelAccessor {
+	const colors = hexes.map(parseHex)
+	return {
+		width: size.width,
+		height: size.height,
+		getPixel(_x, y) {
+			const band = Math.min(colors.length - 1, Math.floor((y / size.height) * colors.length))
+			return colors[band]
+		},
+	}
+}
+
+/**
+ * The same image, exposed through the iterator shape instead of random access, so the tests can
+ * prove invariant 2 accepts both and reaches the same verdict.
+ */
+export function iterableSource(accessor: PixelAccessor): PixelIterable {
+	return {
+		width: accessor.width,
+		height: accessor.height,
+		*pixels(): Generator<PixelSample> {
+			for (let y = 0; y < accessor.height; y++) {
+				for (let x = 0; x < accessor.width; x++) {
+					yield { x: x / accessor.width, y: y / accessor.height, rgb: accessor.getPixel(x, y) }
+				}
+			}
+		},
+	}
+}
+
+/**
+ * A field of one colour with `rareCount` pixels of another sprinkled into the first row. Drives a
+ * published colour below the population floor without removing it from the image.
+ *
+ * That distinction — "not there" versus "not there enough" — used to be a distinction invariant 2
+ * *enforced*. Since the reviewer's ruling of 2026-08-04 it enforces only the first half: absence is
+ * a violation, rarity is a reported figure (see `validateSourceSupport`). The helper is kept because
+ * the second half is still *measured*, and these fixtures are how the report-only path is tested.
+ */
+export function sparseSource(
+	fieldHex: string,
+	rareHex: string,
+	rareCount: number,
+	size: { width: number; height: number } = FIXTURE_SIZE,
+): PixelAccessor {
+	const field = parseHex(fieldHex)
+	const rare = parseHex(rareHex)
+	return {
+		width: size.width,
+		height: size.height,
+		getPixel(x, y) {
+			return y === 0 && x < rareCount ? rare : field
+		},
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
+// The one sanctioned non-source colour — reviewer's ruling, 2026-08-04
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * The escape taken legally, at the background: pure white over a surface collapsed onto it.
+ *
+ * This is the shape the ruling grants — *"pure white (`#ffffff`) or pure black (`#000000`) only,
+ * used as background or foreground only (with surface or accent collapsed correspondingly), only
+ * when there is genuinely no other way to produce a 2-color palette"*. The foreground and the accent
+ * are ordinary source pixels; only the field is invented, and the field is one colour because the
+ * surface collapsed onto it.
+ *
+ * Valid **against `escapeBackgroundSource`**, which does not contain white. Against
+ * `escapeUnnecessarySource`, which does, the same palette is a violation — see `I2.escape-not-needed`.
+ * That pair is the whole point: the escape is a claim about the artwork, not a property of the
+ * palette, so the identical palette is legal over one image and illegal over another.
+ */
+export const escapeWhiteBackground: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#ffffff",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#ffffff").hex },
+})
+
+/** The escape taken legally at the **foreground**: pure black text with the accent collapsed onto it. */
+export const escapeBlackForeground: Palette = makePalette({
+	background: "#f2f5f7",
+	surface: "#e0533a",
+	foreground: "#000000",
+	accent: "#000000",
+	escape: { role: "foreground", color: colorFromHex("#000000").hex },
+})
+
+/** I1: near-white is not white. The permitted set is two literals and nothing rounds into it. */
+export const escapeColorNotPermitted: Palette = makePalette({
+	background: "#fefefe",
+	surface: "#fefefe",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#fefefe").hex },
+})
+
+/**
+ * I1: the escape at a role it may not occupy. A surface or an accent is a *second* colour of its
+ * kind, and inventing one of those is inventing a palette rather than rescuing one.
+ */
+export const escapeRoleNotPermitted: Palette = makePalette({
+	background: "#101820",
+	surface: "#ffffff",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	escape: { role: "surface" as "background", color: colorFromHex("#ffffff").hex },
+})
+
+/**
+ * I1: a legal colour at a legal role, with the partner **not** collapsed.
+ *
+ * Four distinct roles and an invented colour among them: the escape was granted for the case where
+ * there is no other way to produce a *two-colour* palette, and this palette plainly had another way.
+ */
+export const escapePartnerNotCollapsed: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#1e2a38",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#ffffff").hex },
+})
+
+/** I1: the declaration describes a colour the named role does not publish. */
+export const escapeRoleColorMismatch: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#ffffff",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#000000").hex },
+})
+
+/** Every colour `escapeWhiteBackground` publishes **except** the escape itself. */
+export const escapeBackgroundSource = bandedSource(["#101820", "#e0533a"])
+
+/** The same image with white in it, which makes the escape a claim the artwork refutes. */
+export const escapeUnnecessarySource = bandedSource(["#101820", "#e0533a", "#ffffff"])
+
+/**
+ * White absent *and* the accent absent. The escape covers exactly one colour, so the accent must
+ * still be reported — this is the fixture that stops the declaration becoming a blanket opt-out.
+ */
+export const escapeBackgroundMissingAccentSource = bandedSource(["#101820", "#c0c8d0"])
+
+/** Every colour `escapeBlackForeground` publishes except the escape itself. */
+export const escapeForegroundSource = bandedSource(["#f2f5f7", "#e0533a"])
+
+/** Every colour `validFlat` publishes, present in quantity. */
+export const validFlatSource = bandedSource(["#101820", "#1e2a38", "#f2f5f7", "#e0533a"])
+
+/** Every colour `validGradient` publishes, present in quantity. */
+export const validGradientSource = bandedSource([
+	"#101820",
+	"#1e2a38",
+	"#f2f5f7",
+	"#e0533a",
+	"#2b3f57",
+	"#4a6b8a",
+])
+
+/** An image that simply does not contain `validFlat`'s accent. */
+export const missingAccentSource = bandedSource(["#101820", "#1e2a38", "#f2f5f7", "#c0c8d0"])
+
+// ---------------------------------------------------------------------------------------------
+// Transparency reports, for invariant 5
+// ---------------------------------------------------------------------------------------------
+
+/** A JPEG: no alpha channel at all. The sharded corpus is 100% this. */
+export const opaqueJpegReport: TransparencyReport = {
+	hasAlphaChannel: false,
+	hasTransparentPixels: false,
+}
+
+/** A PNG with an alpha channel that happens to be uniformly opaque. Accepted — alpha is not transparency. */
+export const opaquePngReport: TransparencyReport = {
+	hasAlphaChannel: true,
+	hasTransparentPixels: false,
+	transparentFraction: 0,
+}
+
+/** A disc scan: circular cutout, roughly 28% transparent. Refused. */
+export const transparentDiscScanReport: TransparencyReport = {
+	hasAlphaChannel: true,
+	hasTransparentPixels: true,
+	transparentFraction: 0.28,
+}

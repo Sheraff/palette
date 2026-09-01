@@ -1,0 +1,1840 @@
+[
+	{
+		"image": "ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 222,
+			"diagnoseGradientFits": 15,
+			"endpointRefinements": 0,
+			"supportedPaths": 55
+		},
+		"refinements": {
+			"attempted": 0,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 289,
+			"nonControl": 270,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 3,
+			"chroma": [
+				0.2536,
+				0,
+				0.0061,
+				0.0028,
+				0.1781
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1350,
+			"eligibleCandidates": 1210,
+			"eligibilityFilteredOut": 140,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 322,
+			"eligibleSelectMs": 253,
+			"frontierWithGuard": 86,
+			"frontierNoGuard": 86,
+			"frontierNoAuthorized": 68,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-9464:family-10783"
+		},
+		"elapsed": 1236
+	},
+	{
+		"image": "ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 519,
+			"diagnoseGradientFits": 208,
+			"endpointRefinements": 386,
+			"supportedPaths": 15
+		},
+		"refinements": {
+			"attempted": 12,
+			"accepted": 1
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 20,
+			"nonControl": 0,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 4,
+			"nearNeutral": 2,
+			"chroma": [
+				0.0876,
+				0,
+				0.0038,
+				0.1352
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 16,
+			"materialized": 246,
+			"eligibleCandidates": 226,
+			"eligibilityFilteredOut": 20,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 16,
+			"eligibleSelectMs": 11,
+			"frontierWithGuard": 48,
+			"frontierNoGuard": 47,
+			"frontierNoAuthorized": 48,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 12,
+				"chordPass": 4,
+				"bothPass": 0,
+				"killedByEndpointRule": 4
+			},
+			"winnerHypothesis": "gradient:field-domain-1200:linear:diagonal-down:family-1542:family-2445:#0d080f:#200c25"
+		},
+		"elapsed": 1786
+	},
+	{
+		"image": "ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 515,
+			"diagnoseGradientFits": 195,
+			"endpointRefinements": 122,
+			"supportedPaths": 17
+		},
+		"refinements": {
+			"attempted": 4,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 1,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 48,
+			"nonControl": 0,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 5,
+			"chroma": [
+				0.0141,
+				0.0282,
+				0.0104,
+				0.0125,
+				0.0134
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1080,
+			"eligibilityFilteredOut": 420,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 346,
+			"eligibleSelectMs": 186,
+			"frontierWithGuard": 227,
+			"frontierNoGuard": 197,
+			"frontierNoAuthorized": 227,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 440,
+				"chordPass": 440,
+				"bothPass": 60,
+				"killedByEndpointRule": 380
+			},
+			"winnerHypothesis": "gradient:field-domain-0:linear:diagonal-down:family-6373:family-9019:#6d6d63:#bcc2c0"
+		},
+		"elapsed": 2019
+	},
+	{
+		"image": "ab67616d00001e020002881a851f1e14c374562b.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 580,
+			"diagnoseGradientFits": 42,
+			"endpointRefinements": 0,
+			"supportedPaths": 55
+		},
+		"refinements": {
+			"attempted": 0,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"diffuse-composite": {
+				"total": 4,
+				"eligible": 0
+			},
+			"connected": {
+				"total": 44,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain owns fewer than two native corner fields": 4,
+			"field domain population below 0.08": 2,
+			"field domain weighted field score below 0.35": 1
+		},
+		"registry": {
+			"total": 449,
+			"nonControl": 407,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 3,
+			"chroma": [
+				0.0008,
+				0.1075,
+				0.1773,
+				0.0404,
+				0.0364
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1260,
+			"eligibilityFilteredOut": 240,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 335,
+			"eligibleSelectMs": 228,
+			"frontierWithGuard": 109,
+			"frontierNoGuard": 109,
+			"frontierNoAuthorized": 74,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": true,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-2864:family-4629"
+		},
+		"elapsed": 1635
+	},
+	{
+		"image": "ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 734,
+			"diagnoseGradientFits": 248,
+			"endpointRefinements": 384,
+			"supportedPaths": 22
+		},
+		"refinements": {
+			"attempted": 13,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 1,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 1,
+				"eligible": 1
+			},
+			"connected": {
+				"total": 47,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 161,
+			"nonControl": 147,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 2,
+			"chroma": [
+				0.0268,
+				0.0133,
+				0.1896,
+				0.1104,
+				0.0694
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1045,
+			"eligibleCandidates": 730,
+			"eligibilityFilteredOut": 315,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 187,
+			"eligibleSelectMs": 94,
+			"frontierWithGuard": 127,
+			"frontierNoGuard": 127,
+			"frontierNoAuthorized": 107,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "one:family-5467"
+		},
+		"elapsed": 2527
+	},
+	{
+		"image": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 1084,
+			"diagnoseGradientFits": 737,
+			"endpointRefinements": 400,
+			"supportedPaths": 18
+		},
+		"refinements": {
+			"attempted": 19,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 1,
+				"eligible": 1
+			},
+			"connected": {
+				"total": 46,
+				"eligible": 2
+			},
+			"diffuse-composite": {
+				"total": 1,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 1,
+			"field domain owns fewer than two native corner fields": 1
+		},
+		"registry": {
+			"total": 113,
+			"nonControl": 54,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 4,
+			"chroma": [
+				0.0628,
+				0.0366,
+				0.0065,
+				0.0527,
+				0.027
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1169,
+			"eligibilityFilteredOut": 331,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 325,
+			"eligibleSelectMs": 200,
+			"frontierWithGuard": 188,
+			"frontierNoGuard": 188,
+			"frontierNoAuthorized": 181,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-1522:family-2404"
+		},
+		"elapsed": 3932
+	},
+	{
+		"image": "ab67616d00001e0200066a61bbcbeadd632f7f38.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 481,
+			"diagnoseGradientFits": 140,
+			"endpointRefinements": 232,
+			"supportedPaths": 40
+		},
+		"refinements": {
+			"attempted": 12,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 377,
+			"nonControl": 359,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 1,
+			"chroma": [
+				0.1102,
+				0.1758,
+				0.15,
+				0.002,
+				0.2026
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1360,
+			"eligibilityFilteredOut": 140,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 314,
+			"eligibleSelectMs": 259,
+			"frontierWithGuard": 190,
+			"frontierNoGuard": 190,
+			"frontierNoAuthorized": 179,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-6498:family-7380"
+		},
+		"elapsed": 2251
+	},
+	{
+		"image": "ab67616d00001e0200079d5a7d92f2bff88570db.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 219,
+			"diagnoseGradientFits": 16,
+			"endpointRefinements": 0,
+			"supportedPaths": 30
+		},
+		"refinements": {
+			"attempted": 0,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 462,
+			"nonControl": 432,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 1,
+			"chroma": [
+				0.1706,
+				0.1543,
+				0.092,
+				0.1536,
+				0.0007
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1225,
+			"eligibilityFilteredOut": 275,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 325,
+			"eligibleSelectMs": 204,
+			"frontierWithGuard": 248,
+			"frontierNoGuard": 248,
+			"frontierNoAuthorized": 227,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-10363:family-9464"
+		},
+		"elapsed": 1154
+	},
+	{
+		"image": "ab67616d00001e0200083a2d455755e4c1116825.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 1189,
+			"diagnoseGradientFits": 502,
+			"endpointRefinements": 281,
+			"supportedPaths": 42
+		},
+		"refinements": {
+			"attempted": 16,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 1,
+				"eligible": 1
+			},
+			"connected": {
+				"total": 34,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 13,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain owns fewer than two native corner fields": 13,
+			"field domain population below 0.08": 12,
+			"field domain weighted field score below 0.35": 3
+		},
+		"registry": {
+			"total": 115,
+			"nonControl": 76,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 5,
+			"chroma": [
+				0.0232,
+				0.0074,
+				0.0194,
+				0.0156,
+				0.0261
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 945,
+			"eligibilityFilteredOut": 555,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 364,
+			"eligibleSelectMs": 165,
+			"frontierWithGuard": 106,
+			"frontierNoGuard": 106,
+			"frontierNoAuthorized": 106,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-4189:family-5952"
+		},
+		"elapsed": 3583
+	},
+	{
+		"image": "ab67616d00001e02001061a3c7a084a0af56580d.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 329,
+			"diagnoseGradientFits": 12,
+			"endpointRefinements": 0,
+			"supportedPaths": 40
+		},
+		"refinements": {
+			"attempted": 0,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 1,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 643,
+			"nonControl": 614,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 2,
+			"chroma": [
+				0.0086,
+				0.1573,
+				0.0094,
+				0.0857,
+				0.1194
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1210,
+			"eligibilityFilteredOut": 290,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 344,
+			"eligibleSelectMs": 224,
+			"frontierWithGuard": 122,
+			"frontierNoGuard": 122,
+			"frontierNoAuthorized": 97,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-5106:family-4232"
+		},
+		"elapsed": 1299
+	},
+	{
+		"image": "ab67616d00001e0200117a3fb2444ed7e04c4721.jpg",
+		"size": "300x300",
+		"timings": {
+			"seed": 637,
+			"diagnoseGradientFits": 194,
+			"endpointRefinements": 47,
+			"supportedPaths": 42
+		},
+		"refinements": {
+			"attempted": 3,
+			"accepted": 1
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 47,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 1,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 1,
+			"field domain owns fewer than two native corner fields": 1,
+			"field domain weighted field score below 0.35": 1
+		},
+		"registry": {
+			"total": 218,
+			"nonControl": 173,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 2,
+			"chroma": [
+				0.0118,
+				0.096,
+				0.0431,
+				0.0849,
+				0.0608
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 230,
+			"materialized": 1500,
+			"eligibleCandidates": 1130,
+			"eligibilityFilteredOut": 370,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 345,
+			"eligibleSelectMs": 206,
+			"frontierWithGuard": 219,
+			"frontierNoGuard": 219,
+			"frontierNoAuthorized": 205,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 336,
+				"chordPass": 229,
+				"bothPass": 69,
+				"killedByEndpointRule": 160
+			},
+			"winnerHypothesis": "gradient:field-domain-25:linear:diagonal-up:family-3284:family-4146:#07395c:#095f5c"
+		},
+		"elapsed": 2038
+	},
+	{
+		"image": "ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1980,
+			"diagnoseGradientFits": 387,
+			"endpointRefinements": 292,
+			"supportedPaths": 120
+		},
+		"refinements": {
+			"attempted": 12,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 44,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 4,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 4,
+			"field domain owns fewer than two native corner fields": 4,
+			"field domain weighted field score below 0.35": 4
+		},
+		"registry": {
+			"total": 188,
+			"nonControl": 151,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 4,
+			"chroma": [
+				0.015,
+				0.125,
+				0.0566,
+				0.0015,
+				0.0383
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1110,
+			"eligibilityFilteredOut": 390,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 333,
+			"eligibleSelectMs": 191,
+			"frontierWithGuard": 117,
+			"frontierNoGuard": 117,
+			"frontierNoAuthorized": 105,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-6834:family-10783"
+		},
+		"elapsed": 4388
+	},
+	{
+		"image": "ab67616d0000b273000442caec7ec8cb724bf265.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1910,
+			"diagnoseGradientFits": 805,
+			"endpointRefinements": 2050,
+			"supportedPaths": 96
+		},
+		"refinements": {
+			"attempted": 9,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 31,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 17,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 17,
+			"field domain owns fewer than two native corner fields": 17,
+			"field domain weighted field score below 0.35": 8
+		},
+		"registry": {
+			"total": 208,
+			"nonControl": 184,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 4,
+			"nearNeutral": 0,
+			"chroma": [
+				0.222,
+				0.1767,
+				0.2547,
+				0.1704
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 940,
+			"eligibilityFilteredOut": 560,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 364,
+			"eligibleSelectMs": 145,
+			"frontierWithGuard": 80,
+			"frontierNoGuard": 80,
+			"frontierNoAuthorized": 70,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-1963:family-2824"
+		},
+		"elapsed": 8523
+	},
+	{
+		"image": "ab67616d0000b2730005230fae1822525e5a5ff6.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1690,
+			"diagnoseGradientFits": 732,
+			"endpointRefinements": 1319,
+			"supportedPaths": 52
+		},
+		"refinements": {
+			"attempted": 7,
+			"accepted": 1
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 211,
+			"nonControl": 184,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 4,
+			"nearNeutral": 4,
+			"chroma": [
+				0.0078,
+				0.0139,
+				0.0233,
+				0.006
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 280,
+			"materialized": 1500,
+			"eligibleCandidates": 1042,
+			"eligibilityFilteredOut": 458,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 333,
+			"eligibleSelectMs": 164,
+			"frontierWithGuard": 117,
+			"frontierNoGuard": 115,
+			"frontierNoAuthorized": 117,
+			"guardWinnerChanged": true,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 126,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "gradient:field-domain-0:linear:diagonal-down:family-10341:family-9459:#eff3f6:#d6d7dc"
+		},
+		"elapsed": 6666
+	},
+	{
+		"image": "ab67616d0000b2730005a91812c85db291ea5d85.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1293,
+			"diagnoseGradientFits": 334,
+			"endpointRefinements": 788,
+			"supportedPaths": 184
+		},
+		"refinements": {
+			"attempted": 6,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 455,
+			"nonControl": 427,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 4,
+			"nearNeutral": 3,
+			"chroma": [
+				0.1702,
+				0.0026,
+				0.0137,
+				0.0301
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1185,
+			"eligibilityFilteredOut": 315,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 309,
+			"eligibleSelectMs": 198,
+			"frontierWithGuard": 154,
+			"frontierNoGuard": 154,
+			"frontierNoAuthorized": 148,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-5467:family-3284"
+		},
+		"elapsed": 4674
+	},
+	{
+		"image": "ab67616d0000b273000637ffe82ad17bfa0f1073.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 2770,
+			"diagnoseGradientFits": 1509,
+			"endpointRefinements": 1317,
+			"supportedPaths": 112
+		},
+		"refinements": {
+			"attempted": 14,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 1,
+				"eligible": 1
+			},
+			"connected": {
+				"total": 37,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 10,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 10,
+			"field domain owns fewer than two native corner fields": 10,
+			"field domain weighted field score below 0.35": 4
+		},
+		"registry": {
+			"total": 178,
+			"nonControl": 133,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 4,
+			"chroma": [
+				0.0049,
+				0.0235,
+				0.0137,
+				0.0776,
+				0.0264
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1080,
+			"eligibilityFilteredOut": 420,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 362,
+			"eligibleSelectMs": 197,
+			"frontierWithGuard": 93,
+			"frontierNoGuard": 74,
+			"frontierNoAuthorized": 93,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 240,
+				"chordPass": 240,
+				"bothPass": 0,
+				"killedByEndpointRule": 240
+			},
+			"winnerHypothesis": "gradient:field-domain-0:linear:diagonal-down:family-4168:family-3286:#484939:#2f2c1d"
+		},
+		"elapsed": 9387
+	},
+	{
+		"image": "ab67616d0000b27300075841f68d8cd71db368d8.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 682,
+			"diagnoseGradientFits": 171,
+			"endpointRefinements": 0,
+			"supportedPaths": 124
+		},
+		"refinements": {
+			"attempted": 0,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 40,
+				"eligible": 0
+			},
+			"diffuse-composite": {
+				"total": 8,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 8,
+			"field domain owns fewer than two native corner fields": 8,
+			"field domain weighted field score below 0.35": 7
+		},
+		"registry": {
+			"total": 147,
+			"nonControl": 94,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 3,
+			"chroma": [
+				0.0743,
+				0.0003,
+				0.0942,
+				0.0509,
+				0.0272
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1195,
+			"eligibilityFilteredOut": 305,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 301,
+			"eligibleSelectMs": 187,
+			"frontierWithGuard": 56,
+			"frontierNoGuard": 56,
+			"frontierNoAuthorized": 49,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-220:family-1984"
+		},
+		"elapsed": 1990
+	},
+	{
+		"image": "ab67616d0000b27300088460068752fad04f8541.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1425,
+			"diagnoseGradientFits": 431,
+			"endpointRefinements": 858,
+			"supportedPaths": 117
+		},
+		"refinements": {
+			"attempted": 6,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 512,
+			"nonControl": 499,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 4,
+			"nearNeutral": 1,
+			"chroma": [
+				0.0041,
+				0.1866,
+				0.2531,
+				0.1454
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 745,
+			"eligibleCandidates": 605,
+			"eligibilityFilteredOut": 140,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 118,
+			"eligibleSelectMs": 75,
+			"frontierWithGuard": 50,
+			"frontierNoGuard": 50,
+			"frontierNoAuthorized": 48,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "one:family-220"
+		},
+		"elapsed": 4512
+	},
+	{
+		"image": "ab67616d0000b273000913b3e9ae2c7173d1a8b2.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 2055,
+			"diagnoseGradientFits": 847,
+			"endpointRefinements": 775,
+			"supportedPaths": 63
+		},
+		"refinements": {
+			"attempted": 5,
+			"accepted": 2
+		},
+		"supportedPaths": {
+			"total": 1,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 42,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 6,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 6,
+			"field domain owns fewer than two native corner fields": 6,
+			"field domain weighted field score below 0.35": 1
+		},
+		"registry": {
+			"total": 91,
+			"nonControl": 60,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 0,
+			"chroma": [
+				0.1734,
+				0.1263,
+				0.2087,
+				0.1358,
+				0.0977
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 440,
+			"materialized": 1500,
+			"eligibleCandidates": 1182,
+			"eligibilityFilteredOut": 318,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 356,
+			"eligibleSelectMs": 229,
+			"frontierWithGuard": 106,
+			"frontierNoGuard": 87,
+			"frontierNoAuthorized": 95,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 281,
+				"chordPass": 221,
+				"bothPass": 75,
+				"killedByEndpointRule": 146
+			},
+			"winnerHypothesis": "gradient:field-domain-1:linear:vertical:family-3327:family-4188:#481232:#51454f"
+		},
+		"elapsed": 6336
+	},
+	{
+		"image": "ab67616d0000b27300099f4221cf6ed5f2440904.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 2110,
+			"diagnoseGradientFits": 926,
+			"endpointRefinements": 771,
+			"supportedPaths": 47
+		},
+		"refinements": {
+			"attempted": 8,
+			"accepted": 1
+		},
+		"supportedPaths": {
+			"total": 1,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 33,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 15,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain population below 0.08": 15,
+			"field domain owns fewer than two native corner fields": 15,
+			"field domain weighted field score below 0.35": 12
+		},
+		"registry": {
+			"total": 94,
+			"nonControl": 48,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 5,
+			"chroma": [
+				0.0478,
+				0.0103,
+				0.0326,
+				0.0441,
+				0.0334
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 250,
+			"materialized": 1500,
+			"eligibleCandidates": 1057,
+			"eligibilityFilteredOut": 443,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 328,
+			"eligibleSelectMs": 180,
+			"frontierWithGuard": 192,
+			"frontierNoGuard": 192,
+			"frontierNoAuthorized": 192,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 268,
+				"chordPass": 268,
+				"bothPass": 110,
+				"killedByEndpointRule": 158
+			},
+			"winnerHypothesis": "gradient:field-domain-0:linear:vertical:family-5953:family-3748:#6c5d58:#4b3631"
+		},
+		"elapsed": 6398
+	},
+	{
+		"image": "ab67616d0000b2730009d178a401f9433fdddff2.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 739,
+			"diagnoseGradientFits": 115,
+			"endpointRefinements": 0,
+			"supportedPaths": 82
+		},
+		"refinements": {
+			"attempted": 0,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 46,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 2,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain owns fewer than two native corner fields": 2
+		},
+		"registry": {
+			"total": 656,
+			"nonControl": 618,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 2,
+			"chroma": [
+				0.1071,
+				0.165,
+				0.1573,
+				0.0225,
+				0
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1005,
+			"eligibilityFilteredOut": 495,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 307,
+			"eligibleSelectMs": 143,
+			"frontierWithGuard": 95,
+			"frontierNoGuard": 95,
+			"frontierNoAuthorized": 76,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 0,
+				"chordPass": 0,
+				"bothPass": 0,
+				"killedByEndpointRule": 0
+			},
+			"winnerHypothesis": "flat:family-220:family-2864"
+		},
+		"elapsed": 1789
+	},
+	{
+		"image": "ab67616d0000b27300100a3e9c764acf01c16db8.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1914,
+			"diagnoseGradientFits": 527,
+			"endpointRefinements": 292,
+			"supportedPaths": 74
+		},
+		"refinements": {
+			"attempted": 5,
+			"accepted": 1
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 36,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 12,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain owns fewer than two native corner fields": 12,
+			"field domain population below 0.08": 10
+		},
+		"registry": {
+			"total": 241,
+			"nonControl": 205,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 4,
+			"chroma": [
+				0.04,
+				0.0279,
+				0.0493,
+				0.0996,
+				0.0174
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 270,
+			"materialized": 1500,
+			"eligibleCandidates": 1164,
+			"eligibilityFilteredOut": 336,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 359,
+			"eligibleSelectMs": 231,
+			"frontierWithGuard": 72,
+			"frontierNoGuard": 68,
+			"frontierNoAuthorized": 66,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 305,
+				"chordPass": 213,
+				"bothPass": 151,
+				"killedByEndpointRule": 62
+			},
+			"winnerHypothesis": "gradient:field-domain-351:linear:diagonal-up:family-8575:family-9439:#70acf5:#c4e0af"
+		},
+		"elapsed": 4599
+	},
+	{
+		"image": "ab67616d0000b273001063830a2e597293293797.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1801,
+			"diagnoseGradientFits": 825,
+			"endpointRefinements": 523,
+			"supportedPaths": 54
+		},
+		"refinements": {
+			"attempted": 3,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"connected": {
+				"total": 3,
+				"eligible": 1
+			}
+		},
+		"diffuseReasons": {},
+		"registry": {
+			"total": 23,
+			"nonControl": 0,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 4,
+			"nearNeutral": 4,
+			"chroma": [
+				0.0422,
+				0.0339,
+				0.0188,
+				0.044
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 821,
+			"eligibleCandidates": 647,
+			"eligibilityFilteredOut": 174,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 110,
+			"eligibleSelectMs": 69,
+			"frontierWithGuard": 192,
+			"frontierNoGuard": 167,
+			"frontierNoAuthorized": 192,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 231,
+				"chordPass": 231,
+				"bothPass": 73,
+				"killedByEndpointRule": 158
+			},
+			"winnerHypothesis": "gradient:field-domain-0:linear:diagonal-up:family-1521:family-3726:#060709:#304351"
+		},
+		"elapsed": 4892
+	},
+	{
+		"image": "ab67616d0000b2730011c0148119c34e2b222b02.jpg",
+		"size": "640x640",
+		"timings": {
+			"seed": 1725,
+			"diagnoseGradientFits": 703,
+			"endpointRefinements": 0,
+			"supportedPaths": 55
+		},
+		"refinements": {
+			"attempted": 6,
+			"accepted": 0
+		},
+		"supportedPaths": {
+			"total": 0,
+			"eligible": 0
+		},
+		"domainKinds": {
+			"diffuse-composite": {
+				"total": 9,
+				"eligible": 1
+			},
+			"connected": {
+				"total": 39,
+				"eligible": 0
+			}
+		},
+		"diffuseReasons": {
+			"field domain owns fewer than two native corner fields": 8,
+			"field domain population below 0.08": 7,
+			"field domain weighted field score below 0.35": 2
+		},
+		"registry": {
+			"total": 261,
+			"nonControl": 224,
+			"nonControlUsed": 0,
+			"nonControlUsedIds": [],
+			"directionsNeedingNonControl": 0
+		},
+		"obligations": {
+			"count": 5,
+			"nearNeutral": 2,
+			"chroma": [
+				0.0176,
+				0.0545,
+				0.0739,
+				0.0895,
+				0.0628
+			]
+		},
+		"emergency": {
+			"eligible": false,
+			"reason": "not-eligible"
+		},
+		"deep": {
+			"creditedTransitions": 0,
+			"transitionHypotheses": 0,
+			"supplementalTreatments": 0,
+			"materialized": 1500,
+			"eligibleCandidates": 1030,
+			"eligibilityFilteredOut": 470,
+			"eligibilityChangedWinner": false,
+			"envelopeMargin": 0,
+			"scoreMs": 348,
+			"eligibleSelectMs": 168,
+			"frontierWithGuard": 74,
+			"frontierNoGuard": 62,
+			"frontierNoAuthorized": 65,
+			"guardWinnerChanged": false,
+			"authorizedWinnerChanged": false,
+			"midpoint": {
+				"withEvidence": 365,
+				"chordPass": 310,
+				"bothPass": 85,
+				"killedByEndpointRule": 225
+			},
+			"winnerHypothesis": "gradient:diffuse-field-domain-147:linear:diagonal-down:family-1962:family-4606:#191f2b:#334376"
+		},
+		"elapsed": 4005
+	}
+]

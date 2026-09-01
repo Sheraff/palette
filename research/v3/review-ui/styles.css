@@ -1,0 +1,1468 @@
+/*
+ * Review chrome is strictly two colors: black and white (REVIEW_UI.md §3).
+ * Black background, flat, no shadows, no gradients, no greys — everywhere except the mock player
+ * UI and the swatches, which show palette colors. Selection is shown by inverting, never by tint.
+ */
+
+:root {
+	color-scheme: dark;
+	--ink: #ffffff;
+	--paper: #000000;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+}
+
+body {
+	font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+	margin: 0;
+}
+
+code {
+	font: inherit;
+}
+
+a {
+	color: var(--ink);
+}
+
+.bar {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.bar h1 {
+	font-size: 13px;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+	font-weight: 400;
+}
+
+button {
+	font: inherit;
+	color: var(--ink);
+	background: var(--paper);
+	border: 1px solid var(--ink);
+	border-radius: 0;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+button:hover {
+	text-decoration: underline;
+}
+
+button.selected {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+	outline: 2px dashed var(--ink);
+	outline-offset: 2px;
+}
+
+textarea,
+input[type="text"] {
+	font: inherit;
+	width: 100%;
+	color: var(--ink);
+	background: var(--paper);
+	border: 1px solid var(--ink);
+	border-radius: 0;
+	padding: 6px 8px;
+	resize: vertical;
+}
+
+input[type="checkbox"] {
+	accent-color: var(--ink);
+	width: 14px;
+	height: 14px;
+}
+
+.item-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.item-nav button {
+	padding: 3px 8px;
+}
+
+/* A judged item is marked with a leading marker, not a color — there are only two colors. */
+.item-nav button::before {
+	content: "· ";
+}
+
+.item-nav button.judged::before {
+	content: "× ";
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.artwork-block {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+.artwork-block img {
+	display: block;
+	width: 180px;
+	height: auto;
+	border: 1px solid var(--ink);
+}
+
+.artwork-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+	word-break: break-all;
+}
+
+.sides {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+	gap: 12px;
+}
+
+.side {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+.side h2 {
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+/* Mock first, swatches under it (revision 2). */
+.side-body {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+/* ---- mock player UI: palette colors only, borderless artwork, no shadows ----
+ * Layout revision 3, 2026-08-03, from the reviewer's report on revision 2 (see renderMock's comment
+ * for their findings verbatim). The shape is revision 2's: the field fills a tall frame and carries
+ * content at BOTH ends, so a gradient is judged over its whole ramp rather than under a card at the
+ * bottom. Revision 3 changes one number — the artwork, which revision 2 shrank too far.
+ */
+
+.mock {
+	padding: 18px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 18px;
+	/* Tall enough that a 2-stop ramp is visibly a ramp, and that the two content ends are far apart. */
+	min-height: 420px;
+	min-width: 0;
+}
+
+.mock-top,
+.mock-bottom {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	min-width: 0;
+}
+
+.mock-top {
+	justify-content: space-between;
+}
+
+.mock-bottom {
+	flex-wrap: wrap;
+}
+
+.mock-middle {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	min-width: 0;
+}
+
+/* Small and borderless, and the one number revision 4 moves.
+ *
+ * Revision 1: full width (field invisible). Revision 2: 96 px (overshot small). Revision 3:
+ * 152 px (orchestrator band-pick). Revision 4: [REVIEWED] 250 px — the reviewer's own number,
+ * given verbatim 2026-08-03 ("let's make the embedded artworks width:250px"). This supersedes
+ * the earlier keep-it-under-half heuristic: the reviewer is the design authority on the
+ * judging surface, and the number is theirs. */
+.mock-art {
+	display: block;
+	width: 250px;
+	height: auto;
+	flex: none;
+	border: 0;
+}
+
+.mock-field-text {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.mock-title {
+	font-size: 17px;
+	font-weight: 700;
+}
+
+.mock-caption {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.mock-card {
+	flex: 1 1 auto;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+.mock-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.mock-row-text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+/* The rail is background-coloured with an accent fill, so accent-against-background is on screen
+ * as a real relationship and not only as two swatches side by side. */
+.mock-track {
+	height: 4px;
+	width: 100%;
+	flex: 1 1 100%;
+}
+
+.mock-track-fill {
+	height: 100%;
+	width: 42%;
+}
+
+.mock-icons {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex: none;
+}
+
+.icon {
+	display: block;
+}
+
+.icon-prev {
+	width: 13px;
+	height: 14px;
+	clip-path: polygon(0 0, 0 100%, 12% 100%, 12% 55%, 100% 100%, 100% 0, 12% 45%, 12% 0);
+}
+
+.icon-play {
+	width: 16px;
+	height: 18px;
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.icon-next {
+	width: 13px;
+	height: 14px;
+	clip-path: polygon(100% 0, 100% 100%, 88% 100%, 88% 55%, 0 100%, 0 0, 88% 45%, 88% 0);
+}
+
+.icon-dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.icon-bars {
+	width: 14px;
+	height: 14px;
+	clip-path: polygon(0 60%, 20% 60%, 20% 100%, 0 100%, 0 60%, 40% 20%, 60% 20%, 60% 100%, 40% 100%, 40% 20%, 80% 0, 100% 0, 100% 100%, 80% 100%, 80% 0);
+}
+
+/* ---- swatches, BELOW the mock ----
+ * Reviewer, revision 2: "the swatches have only secondary importance to the mock UI". A compact
+ * wrapping row under it, not a column beside it stealing half the width.
+ */
+
+.swatches {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+	min-width: 0;
+}
+
+.swatches li {
+	display: grid;
+	grid-template-columns: 20px minmax(0, 1fr);
+	gap: 6px;
+	align-items: start;
+	flex: 0 1 auto;
+	max-width: 100%;
+}
+
+.chip {
+	width: 20px;
+	height: 20px;
+	border: 1px solid var(--ink);
+}
+
+.swatch-text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	word-break: break-word;
+}
+
+.swatch-role {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* A full-width break in the wrapping row: the gradient header starts its own line. */
+.swatch-sub {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.swatches li:has(.swatch-sub) {
+	flex: 1 0 100%;
+	border-top: 1px solid var(--ink);
+	padding-top: 6px;
+}
+
+/* ---- reviewer input ---- */
+
+.inputs {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.control {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.control-label {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.control-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+
+/* One line of plain explanation under a control — what a prefilled preference means, what a
+ * gradient shape actually asks for, what deleting a submitted palette does. Black and white like the
+ * rest of the chrome; smaller, because it is an explanation and not a control. */
+.control-note {
+	font-size: 12px;
+	max-width: 78ch;
+}
+
+.confound {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.footer-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+/* The batch-level note, written before the release button is pressed. */
+.release-note {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.modes {
+	letter-spacing: 0.04em;
+}
+
+/* ---- the palette composer (REVIEW_UI.md §4) ----
+ * Optional per item and closed by default, so it costs nothing when it is not wanted. Two pickers on
+ * the left, the live preview on the right — the same mock the reviewer grades in, never a second
+ * renderer. Chrome stays black and white; the only colours are the artwork, the swatches and the
+ * preview itself.
+ */
+
+.composer {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.composer-keys {
+	letter-spacing: 0.02em;
+}
+
+.composer-body {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 12px;
+	align-items: start;
+}
+
+.composer-pickers {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+/* The eyedropper target. Cross-hair because clicking it picks the pixel under the pointer. */
+.composer-art {
+	display: block;
+	width: 100%;
+	max-width: 420px;
+	height: auto;
+	border: 1px solid var(--ink);
+	cursor: crosshair;
+}
+
+.composer-grid {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.composer-swatch {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	text-align: left;
+	padding: 3px 6px;
+}
+
+.composer-swatch-text {
+	white-space: nowrap;
+}
+
+.composer-grid-note {
+	flex: 1 0 100%;
+	letter-spacing: 0.02em;
+}
+
+.composer-preview {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+.composer-history {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	word-break: break-all;
+}
+
+/* ---- amend a released batch ----
+ * Read-only until an item is opened for editing. It reuses the adjudication page's item shell, since
+ * both are "browse a finished thing and optionally record something about it".
+ */
+
+.amend-body {
+	padding-bottom: 96px;
+}
+
+.amend-blurb {
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.amend-foot {
+	position: fixed;
+	left: 12px;
+	right: 12px;
+	bottom: 12px;
+	background: var(--paper);
+	gap: 6px;
+}
+
+.amend-item {
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas: "head" "art";
+}
+
+.amend-item-body {
+	grid-area: art;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	min-width: 0;
+}
+
+.keys {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+summary {
+	cursor: pointer;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.banner {
+	border: 1px solid var(--ink);
+	padding: 8px 10px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+/* ---- colour bracketing round ----
+ * The judgement is about two colours and nothing else, so the page carries no colour of its own:
+ * black ground, white text, and a wide black margin between the chrome and the fields, because a
+ * bright surround would shift the very perception being measured.
+ */
+
+.bracket-body {
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-rows: auto minmax(0, 1fr) auto;
+	gap: 0;
+	overflow: hidden;
+}
+
+.bracket-bar {
+	border: 0;
+	padding: 10px 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 16px;
+	font-size: 12px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.bracket-keys {
+	text-transform: none;
+	letter-spacing: 0.04em;
+}
+
+.bracket-head {
+	align-items: flex-start;
+}
+
+.bracket-prompt {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+/* The standing criterion. It stays on screen for every item: the reviewer's first pass was
+ * abandoned because the question was clear but the criterion was not. */
+.bracket-instruction {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.bracket-stage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 6vw 4vh;
+	min-height: 0;
+}
+
+/* Two fields, edge to edge against each other, separated only by a thin black line. */
+.pair {
+	display: grid;
+	grid-template-columns: 1fr 4px 1fr;
+	width: 100%;
+	height: 100%;
+}
+
+.pair-field {
+	height: 100%;
+}
+
+.pair-divider {
+	background: var(--paper);
+}
+
+/*
+ * Perception round 4 mixes two stimulus kinds on one kit page, and the kit's stage is padded more
+ * tightly than the bracketing rounds' was. A patch pair drawn there takes this rule instead, so it
+ * fills the same share of the screen as the 184 identity pairs whose answers round 4 pools with —
+ * `.oracle-stage.pair-stage` outranks `.oracle-stage` on specificity, not on source order.
+ */
+.oracle-stage.pair-stage {
+	padding: 0 6vw 4vh;
+}
+
+/* Part 2: accent shapes on the field colour, at the size a player UI would use them. */
+.accent-stage {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6vw;
+}
+
+.accent-shape {
+	width: 8vmin;
+	height: 8vmin;
+}
+
+.accent-circle {
+	border-radius: 50%;
+}
+
+.accent-ring {
+	border-radius: 50%;
+	background: none !important;
+	border-style: solid;
+	border-width: 1.6vmin;
+}
+
+.accent-triangle {
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.bracket-done {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	text-align: center;
+}
+
+/* ---- oracle validation (REVIEW_UI.md §6) ----
+ * A looking task: the artwork takes the whole stage and the chrome is two lines of white on black.
+ * The answer mapping is pinned to the bottom bar and never scrolls away — a recalled hotkey is a
+ * mis-pressed hotkey, and a closed vocabulary gives no way to spot that afterwards.
+ */
+
+.oracle-body {
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-rows: auto minmax(0, 1fr) auto;
+	gap: 0;
+	overflow: hidden;
+}
+
+.oracle-bar {
+	border: 0;
+	padding: 10px 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 16px;
+	font-size: 12px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.oracle-head {
+	align-items: flex-start;
+}
+
+.oracle-foot {
+	align-items: flex-end;
+	border-top: 1px solid var(--ink);
+}
+
+.oracle-prompt {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+/* The referent preamble and the unsure framing: what "the background" means, and that unsure is a
+ * real answer. Above the question, on every item — see OracleQuestion.preamble. */
+.oracle-preamble {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+	/* The group-BCDE round's preamble is eight shared definition blocks, carried verbatim because the
+	 * reviewer must read the same definitions the model was given (PREMISE_NEXT.md §15.9). They are
+	 * separated by blank lines, and they are bounded here so that no amount of preamble can push the
+	 * artwork off a 100vh grid whose middle row is the whole judgement. A one-line preamble — every
+	 * earlier round — is unaffected by both rules. */
+	white-space: pre-line;
+	max-height: 26vh;
+	overflow-y: auto;
+}
+
+.oracle-preamble:empty {
+	display: none;
+}
+
+/* Reconciliation context — a by-artwork round only (OracleItemReconciliation).
+ *
+ * The reviewer's own two earlier answers, side by side for the first time, and the rule they break.
+ * Black and white like the rest of the chrome (REVIEW_UI.md §3): the conflict line is set apart by a
+ * rule and by weight, never by colour, because colour anywhere but the mock UI and the swatches
+ * would be a second signal competing with the artwork. */
+.oracle-reconcile {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.oracle-reconcile-conflict {
+	font-weight: 700;
+	border-left: 2px solid var(--ink);
+	padding-left: 8px;
+}
+
+.oracle-reconcile:empty {
+	display: none;
+}
+
+/* The standing instruction. It stays on screen for every item of the pass: an answer only means
+ * something against the exact words it was answered under. */
+.oracle-instruction {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+/* The reviewer's handle on one item, so they can talk about it afterwards — their words: "IDs that I
+ * can copy paste to you to give feedback about a specific item".
+ *
+ * `user-select: all` makes a single click take the whole line, which is the entire point of it being
+ * on screen. The case is pinned to `none` because these are hashes: a hash displayed in capitals and
+ * copied in lower case is a hash that starts an argument. Monospace it already inherits from body. */
+.oracle-item-id {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	font-size: 11px;
+	user-select: all;
+	overflow-wrap: anywhere;
+}
+
+/* The per-item failure explanation — the entire point of the endorsement-recheck round, and the one
+ * thing the reviewer could not find on it: "i don't know what the failure is on each artwork, so i
+ * cannot answer."
+ *
+ * It was drawn with `.oracle-preamble`, and that was the mistake. In every OTHER round that class
+ * holds a STANDING preamble — the same referent definition on every item of the pass, there to be
+ * read once and then skimmed past. The reviewer has correctly learned to ignore it. Here the text
+ * changes with every palette and IS the question, so it gets its own class, a rule down its side and
+ * a label that says what it is. Same served words either way; what changes is that they no longer
+ * look like chrome. */
+.recheck-failure-label {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.recheck-failure {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	font-size: 13px;
+	line-height: 1.5;
+	max-width: 92ch;
+	border-left: 3px solid var(--ink);
+	padding: 2px 0 2px 10px;
+	/* Bounded like the preamble it replaces, so no amount of explanation can push the palette off a
+	 * 100vh grid — but taller, because this one has to be read rather than acknowledged. */
+	max-height: 30vh;
+	overflow-y: auto;
+}
+
+.recheck-failure-label:empty,
+.recheck-failure:empty {
+	display: none;
+}
+
+.oracle-keys {
+	text-transform: none;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+.oracle-stage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 3vw 2vh;
+	min-height: 0;
+}
+
+/* Large, because this is a looking task: fill the stage, never crop, never upscale past the file. */
+.oracle-art {
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	border: 1px solid var(--ink);
+}
+
+.oracle-mapping {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+	text-transform: none;
+	letter-spacing: 0.02em;
+}
+
+.oracle-map {
+	display: grid;
+	grid-template-columns: 1.5em minmax(0, 14em) minmax(0, 1fr);
+	gap: 10px;
+	align-items: baseline;
+}
+
+/* A multi-select gains one column: the on/off mark. Without auto-advance there is nothing else on
+ * screen that says a keypress landed. */
+.oracle-map-multi {
+	grid-template-columns: 1.5em 2.5em minmax(0, 14em) minmax(0, 1fr);
+}
+
+.oracle-map-mark {
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	opacity: 0.45;
+}
+
+.oracle-map-multi.is-selected .oracle-map-mark,
+.oracle-map-multi.is-selected .oracle-map-label {
+	opacity: 1;
+	font-weight: 700;
+}
+
+.oracle-map-multi:not(.is-selected) .oracle-map-label,
+.oracle-map-multi:not(.is-selected) .oracle-map-gloss {
+	opacity: 0.6;
+}
+
+/* What a multi-select is about to record, and the key that records it. Empty on every other kind. */
+.oracle-pending {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	margin: 6px 0 0;
+}
+
+.oracle-pending:empty {
+	display: none;
+}
+
+.oracle-map-label {
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+}
+
+.oracle-map-gloss {
+	min-width: 0;
+}
+
+.oracle-done {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	text-align: center;
+}
+
+/* ---- oracle adjudication: the post-release browse ----
+ * Still a looking task, so the artwork stays large; but this page is read side by side with five
+ * plain facts, and it scrolls. The current item is marked by inverting its heading — there are only
+ * two colours here either.
+ */
+
+.adj-body {
+	padding-bottom: 64px;
+}
+
+.adj-foot {
+	position: fixed;
+	left: 12px;
+	right: 12px;
+	bottom: 12px;
+	background: var(--paper);
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.adj-keys {
+	letter-spacing: 0.02em;
+}
+
+.adj-section {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	margin-bottom: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.adj-section h2 {
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.adj-blurb {
+	max-width: 92ch;
+}
+
+.adj-item {
+	border-top: 1px solid var(--ink);
+	padding-top: 12px;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(280px, 0.6fr);
+	grid-template-areas: "head head" "art facts";
+	gap: 12px;
+	align-items: start;
+}
+
+.adj-item-head {
+	grid-area: head;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	word-break: break-all;
+}
+
+/* The current item, marked by inversion — never by a tint. */
+.adj-current > .adj-item-head {
+	background: var(--ink);
+	color: var(--paper);
+	padding: 2px 6px;
+}
+
+.adj-art {
+	grid-area: art;
+	display: block;
+	width: 100%;
+	max-width: 560px;
+	height: auto;
+	border: 1px solid var(--ink);
+}
+
+.adj-facts {
+	grid-area: facts;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.adj-fact {
+	display: grid;
+	grid-template-columns: 13em minmax(0, 1fr);
+	gap: 10px;
+	align-items: baseline;
+	word-break: break-word;
+}
+
+/* The d/m rule. Repeated under every item on purpose — see ADJUDICATION_RULE. */
+.adj-rule {
+	border-top: 1px solid var(--ink);
+	padding-top: 6px;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.adj-rule:empty {
+	display: none;
+}
+
+.adj-fact-label {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+	.adj-item {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas: "head" "art" "facts";
+	}
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * The landing dashboard (`/`) — the reviewer's single entry point.
+ *
+ * Same two colours as every other page: black paper, white ink, borders instead of fills. The one
+ * shaded thing is the progress bar, and it is shaded by inversion (a solid white run over a black
+ * track), not by a grey.
+ * ------------------------------------------------------------------------------------------- */
+
+.dash-body {
+	max-width: 100ch;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.dash-head {
+	border: 1px solid var(--ink);
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.dash-head h1 {
+	font-size: 13px;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+}
+
+.dash-summary {
+	font-size: 15px;
+}
+
+.dash-main {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.dash-empty {
+	border: 1px dashed var(--ink);
+	padding: 16px;
+}
+
+.dash-card {
+	border: 1px solid var(--ink);
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.dash-card-title {
+	font-size: 16px;
+	letter-spacing: 0.04em;
+}
+
+.dash-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: baseline;
+}
+
+.dash-kind,
+.dash-purpose {
+	border: 1px solid var(--ink);
+	padding: 1px 6px;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	font-size: 11px;
+}
+
+.dash-age {
+	opacity: 0.75;
+}
+
+.dash-progress {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.dash-bar {
+	border: 1px solid var(--ink);
+	height: 10px;
+	padding: 1px;
+}
+
+.dash-bar-fill {
+	background: var(--ink);
+	height: 100%;
+}
+
+.dash-open {
+	display: inline-block;
+	border: 1px solid var(--ink);
+	padding: 6px 10px;
+	text-decoration: none;
+}
+
+/* Selection and hover invert, never tint — the same rule the item pages follow. */
+.dash-open:hover,
+.dash-open:focus-visible {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.dash-section summary {
+	cursor: pointer;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	font-size: 11px;
+	border: 1px solid var(--ink);
+	padding: 8px 10px;
+}
+
+.dash-released {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 10px 0 0;
+}
+
+.dash-released-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: baseline;
+	border-bottom: 1px solid var(--ink);
+	padding-bottom: 4px;
+}
+
+.dash-foot {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.dash-note {
+	max-width: 80ch;
+	opacity: 0.75;
+}
+
+/* --- free-text round (REVIEW_UI.md §4) ---------------------------------------------------- */
+/* Two colours only, flat, no shadows and no gradients — the chrome rule of §3. The artwork is the
+   one thing on the page allowed to carry colour, and it is served at its own size because the
+   reviewer zooms natively rather than through a magnifier. */
+
+.freetext-stage {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 2rem;
+	justify-content: center;
+}
+
+.freetext-frame {
+	margin: 0;
+	flex: 0 1 auto;
+}
+
+.freetext-frame img {
+	display: block;
+	max-width: min(46vw, 640px);
+	height: auto;
+	/* A border, not a shadow: the cover's own edge can be any colour, including the page's black,
+	   and an artwork that bleeds into the background is an artwork whose ground cannot be judged —
+	   which is the exact question this round asks. */
+	border: 1px solid #fff;
+}
+
+.freetext-side {
+	flex: 1 1 22rem;
+	max-width: 34rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.freetext-context {
+	border: 1px solid #fff;
+	padding: 0.75rem 1rem;
+}
+
+.freetext-context-label,
+.freetext-context-note {
+	margin: 0;
+	font-size: 0.85rem;
+	opacity: 0.75;
+}
+
+.freetext-context-answer {
+	margin: 0.35rem 0;
+	font-family: ui-monospace, monospace;
+	font-size: 1.1rem;
+}
+
+.freetext-label {
+	font-size: 0.85rem;
+	opacity: 0.75;
+}
+
+.freetext-input {
+	width: 100%;
+	min-height: 12rem;
+	resize: vertical;
+	background: #000;
+	color: #fff;
+	border: 1px solid #fff;
+	padding: 0.75rem;
+	font: inherit;
+	line-height: 1.5;
+}
+
+.freetext-input:focus {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.freetext-saved {
+	margin: 0;
+	font-size: 0.85rem;
+	opacity: 0.6;
+	min-height: 1.2em;
+}
+
+/* --- round kit (round-kit.js) -------------------------------------------------------------- */
+/* Every class the kit emits has a rule here, and a test reads this file to prove it. The
+   endorsement page invented `oracle-answer`, matched no rule, and its hotkey grid collapsed into a
+   run-on line on the reviewer's screen while every textContent assertion passed — the harness has
+   no CSS engine, so an unstyled class is invisible to it and catastrophic in the browser. */
+
+.round-keymap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1.25rem;
+	margin: 0;
+}
+
+.round-key {
+	white-space: nowrap;
+}
+
+.round-key b {
+	font-weight: 700;
+}
+
+/* The failure surface. A page that cannot load says so here rather than sitting on "loading…",
+   which is indistinguishable from a slow network and sends the reviewer away. */
+.round-error {
+	border: 1px solid #fff;
+	padding: 1rem 1.25rem;
+	max-width: 40rem;
+}
+
+.round-error p {
+	margin: 0 0 0.5rem;
+}
+
+.round-error p:last-child {
+	margin-bottom: 0;
+	opacity: 0.7;
+}
+
+.round-text-panel {
+	max-width: 42rem;
+	line-height: 1.6;
+	white-space: pre-wrap;
+}
+
+.round-composite {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	align-items: center;
+}
+
+/* Per-item note box and the copyable item id — kit standard on every round. */
+.round-notebox {
+	border: 1px solid #fff;
+	padding: 0.75rem 1rem;
+	margin-top: 1rem;
+	max-width: 34rem;
+}
+
+.round-note-label {
+	display: block;
+	font-size: 0.85rem;
+	opacity: 0.75;
+	margin-bottom: 0.4rem;
+}
+
+.round-note-input {
+	width: 100%;
+	background: #000;
+	color: #fff;
+	border: 1px solid #fff;
+	padding: 0.5rem;
+	font: inherit;
+	line-height: 1.5;
+	resize: vertical;
+}
+
+.round-note-input:focus {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.round-notemark {
+	margin: 0;
+	font-size: 0.85rem;
+	opacity: 0.7;
+	min-height: 1.2em;
+}
+
+/* Monospace and user-selectable: this string exists to be copied into a message. */
+.round-itemref {
+	margin: 0;
+	font-family: ui-monospace, monospace;
+	font-size: 0.8rem;
+	opacity: 0.6;
+	user-select: all;
+	cursor: pointer;
+	word-break: break-all;
+}
+
+/* A retired round's reason, on the dashboard. It is the only part that says what happened. */
+.dash-retired-why {
+	opacity: 0.7;
+	font-style: italic;
+}
+
+/* ---- dev loop (read-only developer views) ----
+ * Added 2026-08-04 with `devloop-run.js` / `devloop-diff.js`. These two pages are on the kit and in
+ * browse mode: they record nothing, so they carry no answer chrome at all. Chrome stays black and
+ * white and flat (REVIEW_UI.md §3) — the artwork and the palette are the only colour on screen, which
+ * matters more here than anywhere, since the whole page exists to show what a candidate produced.
+ */
+
+/* The before/after pair reads as a comparison only if the two mocks are beside each other. The kit's
+ * composite stacks by default, which is right for a stimulus above a caption and wrong for a diff. */
+.devloop-stage .round-composite {
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+/* Path, timing and the change metric. Monospace because it is mostly numbers and hashes, and
+ * pre-wrap because the diff summary is deliberately two lines: headline, then the per-role numbers. */
+.devloop-context {
+	margin: 0;
+	font-family: ui-monospace, monospace;
+	font-size: 0.78rem;
+	opacity: 0.75;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.devloop-index {
+	max-width: 60rem;
+	display: block;
+	line-height: 1.6;
+}
+
+.devloop-index ul {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.devloop-index small {
+	font-family: ui-monospace, monospace;
+	opacity: 0.65;
+}
+
+/* Says out loud what this server is not. A developer view that looks like a review page is one
+ * screenshot away from being quoted as one. */
+.devloop-warning {
+	border: 1px solid var(--ink);
+	padding: 0.5rem 0.75rem;
+	font-size: 0.85rem;
+}

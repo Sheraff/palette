@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Album Artwork Palette Review</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<header>
+		<p class="eyebrow">Lightweight top-treatment review</p>
+		<h1>Artwork into interface</h1>
+		<p>Judge the complete treatment shown. The background treatment intentionally dominates this mock.</p>
+	</header>
+	<main>
+		<section class="review-heading">
+			<div>
+				<p id="progress"></p>
+				<h2 id="case-title"></h2>
+			</div>
+			<div class="navigation">
+				<button id="previous" type="button">Previous</button>
+				<button id="next" type="button">Next</button>
+			</div>
+		</section>
+		<section id="preview" class="palette-preview" aria-label="Background-dominant complete treatment"></section>
+		<dl id="role-legend" class="role-legend" aria-label="Named palette roles"></dl>
+		<section class="assessment" aria-labelledby="assessment-title">
+			<h2 id="assessment-title">Assessment</h2>
+			<fieldset>
+				<legend>Absolute quality</legend>
+				<div id="quality-options" class="quality-options"></div>
+			</fieldset>
+			<label for="comment">Optional comment</label>
+			<textarea id="comment" maxlength="2000" rows="5" placeholder="What most limits or supports this complete treatment?"></textarea>
+			<div class="save-row">
+				<p id="save-status" role="status"></p>
+				<button id="save" type="button">Save assessment</button>
+			</div>
+		</section>
+	</main>
+	<script type="module" src="/app.js"></script>
+</body>
+</html>

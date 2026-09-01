@@ -1,0 +1,120 @@
+6941 distinct artworks
+
+APCA reports exactly 0 whenever the raw magnitude is below 10. Inside that bucket the
+raw value still varies, and it is the only thing that says HOW unreadable a pair is.
+
+--- foreground-surface: 14 artworks in the clamped-zero bucket ---
+  raw |Lc| <  0.5:    0  (+0)
+  raw |Lc| <    1:    0  (+0)
+  raw |Lc| <    2:    4  (+4)
+  raw |Lc| <    3:    5  (+1)
+  raw |Lc| <    5:    6  (+1)
+  raw |Lc| <    7:   11  (+5)
+  raw |Lc| <   10:   14  (+3)
+  smallest 1.188, median 5.357, largest 8.798
+  every member, least readable first:
+    raw  1.188  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6
+      bg=#3e3c3d surface=#a3a29e fg=#a2a19d accent=#4e4e4e gradient
+    raw  1.427  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33
+      bg=#7b8181 surface=#231103 fg=#080a05 accent=#4c1f0a gradient
+    raw  1.428  09/ab67616d00001e0200099b3aaf316149051a4578
+      bg=#b5b5b5 surface=#151515 fg=#000000 accent=#e1e1e1 gradient
+    raw  1.855  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a
+      bg=#f8f8fa surface=#282c2d fg=#2b2f38 accent=#606658 gradient
+    raw  2.678  07/ab67616d0000b2730007d4cb364e04df68f6e2c1
+      bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient
+    raw  4.422  05/ab67616d0000b273000527ac7469703d3a23f678
+      bg=#dedfda surface=#31342d fg=#202425 accent=#6e6f6a gradient
+    raw  5.350  0f/ab67616d0000b273000ff03239ed595debcc3b3e
+      bg=#d2d4d3 surface=#292d2c fg=#0e100f accent=#555756 gradient
+    raw  5.357  12/ab67616d0000b27300126c1c0aa41c3c19edf10a
+      bg=#b6bbb5 surface=#4f362f fg=#382a27 accent=#a23b3e gradient
+    raw  5.860  07/ab67616d00001e0200072f74f8ca566c0f323190
+      bg=#e1e5e4 surface=#373923 fg=#262418 accent=#9b815c gradient
+    raw  6.456  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg
+      bg=#ebd4ce surface=#1f1e1a fg=#443427 accent=#73503c gradient
+    raw  6.756  06/ab67616d0000b27300061f809b1e3d9c3b709362
+      bg=#362633 surface=#e348d4 fg=#c348d6 accent=#522baa gradient
+    raw  7.843  08/ab67616d0000b2730008dfd3663a999bc759f2c2
+      bg=#efb295 surface=#794629 fg=#5f3620 accent=#f1dac8 gradient
+    raw  8.063  13/ab67616d0000b2730013715954240ec1eac72531
+      bg=#0c223a surface=#038faa fg=#7e8dce accent=#fbfdf8 gradient
+    raw  8.798  0d/ab67616d0000b273000d9c3f7eb321671401d1e0
+      bg=#b0b4bf surface=#35383d fg=#171008 accent=#444b55 gradient
+
+--- foreground-background: 23 artworks in the clamped-zero bucket ---
+  raw |Lc| <  0.5:    1  (+1)
+  raw |Lc| <    1:    2  (+1)
+  raw |Lc| <    2:    5  (+3)
+  raw |Lc| <    3:    7  (+2)
+  raw |Lc| <    5:   16  (+9)
+  raw |Lc| <    7:   18  (+2)
+  raw |Lc| <   10:   23  (+5)
+  smallest 0.469, median 3.633, largest 9.259
+  every member, least readable first:
+    raw  0.469  0b/ab67616d0000b273000bbaf2598060cff28678d3
+      bg=#0f0704 surface=#d1c2af fg=#000000 accent=#e9dbc8 gradient
+    raw  0.667  08/ab67616d0000b2730008c9a0f64b618fa453d250
+      bg=#0d0d0d surface=#e5e5e5 fg=#000000 accent=#1a1a1a gradient
+    raw  1.205  13/ab67616d0000b2730013e24dd4e162fc480d9891
+      bg=#031322 surface=#edb4ad fg=#000000 accent=#011645 gradient
+    raw  1.349  0f/ab67616d0000b273000f31bf3a226768fcb37424
+      bg=#1c1502 surface=#d2bf9f fg=#060c02 accent=#faca00 gradient
+    raw  1.522  0e/ab67616d0000b273000ece7847f3b5fdea732479
+      bg=#191512 surface=#a69294 fg=#000000 accent=#dfaa8b gradient
+    raw  2.075  07/ab67616d00001e0200076a5a05dfad9ad716d573
+      bg=#15010a surface=#ebab23 fg=#340307 accent=#f5d33e gradient
+    raw  2.247  10/ab67616d00001e020010e138a4ef1fc6943974c1
+      bg=#05232b surface=#026c93 fg=#081617 accent=#00374a gradient
+    raw  3.077  13/ab67616d0000b2730013c2c64a482ac7f91a40ea
+      bg=#20323e surface=#7d9c9f fg=#1a2730 accent=#ecbaa3 gradient
+    raw  3.133  0e/ab67616d0000b273000eb97d43e8a375e41f6768
+      bg=#11648e surface=#0f2c4a fg=#186987 accent=#0b1b32 gradient
+    raw  3.136  13/ab67616d0000b273001306d8ae920fdad6ebb495
+      bg=#3f1f10 surface=#d1764a fg=#1b1b13 accent=#f3cb90 gradient
+    raw  3.485  10/ab67616d0000b2730010aacb93ebe80370afa59c
+      bg=#1c2a37 surface=#ffffff fg=#121923 accent=#ca9629 gradient
+    raw  3.633  0d/ab67616d0000b273000df9f3288d394ecf53318f
+      bg=#252300 surface=#f3d100 fg=#000000 accent=#fdef00 gradient
+    raw  3.800  10/ab67616d0000b27300108d4a81ce6ae77065105d
+      bg=#52443b surface=#fff6e5 fg=#3a3f42 accent=#90624a gradient
+    raw  4.237  0d/ab67616d00001e02000d207eed6ccf3726207f79
+      bg=#e8b65f surface=#fff1cc fg=#e7ad4a accent=#e7ad4a gradient
+    raw  4.620  07/ab67616d00001e020007b85f56e5a3ac2aead4e6
+      bg=#13171a surface=#a9aaa2 fg=#2a2e31 accent=#c9cbbd gradient
+    raw  4.841  02/ab67616d0000b2730002dae9b00c14643053fbe5.jpg
+      bg=#3f4a4c surface=#9fa5a1 fg=#085a54 accent=#d1d0d6 gradient
+    raw  5.094  0c/ab67616d00001e02000cc9913d9a58ea3771ba0f
+      bg=#490510 surface=#b6263f fg=#670f1f accent=#8d162a gradient
+    raw  5.726  images/birdsofprey.jpg
+      bg=#141975 surface=#3fa72a fg=#030102 accent=#d02981 gradient
+    raw  7.600  05/ab67616d0000b27300055f1cfc1722c14bdb0bcf
+      bg=#2c2c2c surface=#c5c5c5 fg=#424242 accent=#fafafa gradient
+    raw  7.884  13/ab67616d0000b2730013095d1c1a5350d21f448d
+      bg=#f2f3ee surface=#1f3835 fg=#fffef9 accent=#a15852 gradient
+    raw  8.191  09/ab67616d0000b27300097cb8763b185ae295157e
+      bg=#e2e5ea surface=#49444a fg=#edf1f4 accent=#83545c gradient
+    raw  9.015  0e/ab67616d0000b273000e5d7ec6a14710a4870244
+      bg=#eff2f9 surface=#1f2018 fg=#ffffff accent=#f1671e gradient
+    raw  9.259  0a/ab67616d0000b273000a012132aac2610037a06a
+      bg=#5f2307 surface=#d69c77 fg=#140502 accent=#a33619 gradient
+
+--- accent-surface: 144 artworks in the clamped-zero bucket ---
+  raw |Lc| <  0.5:    1  (+1)
+  raw |Lc| <    1:    4  (+3)
+  raw |Lc| <    2:   15  (+11)
+  raw |Lc| <    3:   29  (+14)
+  raw |Lc| <    5:   62  (+33)
+  raw |Lc| <    7:   92  (+30)
+  raw |Lc| <   10:  144  (+52)
+  smallest 0.468, median 5.361, largest 9.852
+
+--- accent-background: 132 artworks in the clamped-zero bucket ---
+  raw |Lc| <  0.5:    0  (+0)
+  raw |Lc| <    1:    2  (+2)
+  raw |Lc| <    2:   10  (+8)
+  raw |Lc| <    3:   23  (+13)
+  raw |Lc| <    5:   49  (+26)
+  raw |Lc| <    7:   84  (+35)
+  raw |Lc| <   10:  132  (+48)
+  smallest 0.896, median 5.934, largest 9.896

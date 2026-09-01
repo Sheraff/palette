@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-gate-confirmation-review-v6",
+  "manifestId": "8e67a4c5e8cde55e874c55c164b623572f8765a24c5f15408da8e1ae47b183f0",
+  "manifestSha256": "26afa43e31f763995b1dbb5ad3ef8b785f03f10d0bb9763db2ed08be5197e06f",
+  "feedbackSha256": "1c197bf2d6b00fdd0541ba2e645db77d187de0db09805715fac3432c19296d08",
+  "storeIntegrity": {
+    "manifestCaseCount": 4,
+    "storedEntryCount": 4,
+    "uniqueCaseCount": 4,
+    "lastWriteWins": true,
+    "preferencesReferenceOnlyPositiveOptions": true
+  },
+  "reviewerInterpretationConstraintVerbatim": "valid palette does not mean perfect",
+  "interpretationPolicy": {
+    "selected": "independently usable positive direction, moderated by its verbatim comment",
+    "preferred": "explicit preference only among selected positives",
+    "unselected": "unlabeled, not a negative example",
+    "perfectOrProductionReadyInferredFromSelection": false
+  },
+  "counts": {
+    "caseCount": 4,
+    "completedResponseCount": 4,
+    "caseWithPositiveCount": 4,
+    "currentCandidatePositiveCaseCount": 4,
+    "totalPositiveMarks": 11,
+    "paretoTopPositiveCount": 4,
+    "legacyScalarTopPositiveCount": 0,
+    "paretoAlternativePositiveCount": 0,
+    "controlPositiveCount": 7,
+    "preferredResponseCount": 2,
+    "preferredParetoTopCount": 1,
+    "noneConfidentlyValidCount": 0,
+    "uncertainCount": 0
+  },
+  "mechanismSubGates": {
+    "currentCandidateCoverage": {
+      "pass": true,
+      "reason": "A current candidate direction is positively marked on 4 of 4 cases."
+    },
+    "deterministicTopOne": {
+      "pass": true,
+      "reason": "Pareto top is positively marked on 4 of 4 cases."
+    },
+    "preferenceAlignment": {
+      "pass": false,
+      "reason": "Pareto top is preferred on 1 of 2 cases with an explicit preference; this is advisory, not the validity gate."
+    }
+  },
+  "mechanismGate": {
+    "pass": true,
+    "reasons": [
+      "Every targeted case has at least one positive current direction.",
+      "The deterministic top is independently valid on all 4 targeted cases.",
+      "The repaired development-23 top is explicitly preferred.",
+      "Development-07 retains a non-blocking lighter-cyan accent preference among two independently valid directions."
+    ]
+  },
+  "phaseDisposition": "targeted-mechanism-gate-passed-absolute-quality-review-authorized",
+  "freshSampleOpened": false,
+  "nextStep": "Run the already-bound 12-case top-one absolute-quality review; do not open the fresh sample yet.",
+  "responseInterpretations": [
+    {
+      "caseId": "development-07",
+      "originalResponse": {
+        "caseId": "development-07",
+        "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+        "validOptionIds": [
+          "C",
+          "D"
+        ],
+        "preferredOptionId": "C",
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:45:10.869Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "prior-positive-control",
+          "positive": false,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#026faa",
+          "surfaceHex": "#000000",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#0082be"
+        },
+        {
+          "optionId": "B",
+          "role": "prior-positive-control",
+          "positive": false,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#026faa",
+          "surfaceHex": "#000000",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#10a4d4"
+        },
+        {
+          "optionId": "C",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": true,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#000000",
+          "surfaceHex": "#026faa",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#86d1ee"
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#000000",
+          "surfaceHex": "#026faa",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#10a4d4"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "deterministic-top-independently-valid",
+          "confidence": "high",
+          "evidence": "The current deterministic top is explicitly marked independently valid."
+        },
+        {
+          "class": "accent-representative-preference-within-valid-field-direction",
+          "confidence": "high",
+          "evidence": "The current black/blue gradient top remains a positive, while the lighter-cyan prior positive is explicitly preferred."
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-24",
+      "originalResponse": {
+        "caseId": "development-24",
+        "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+        "validOptionIds": [
+          "A",
+          "C",
+          "D"
+        ],
+        "preferredOptionId": null,
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:45:26.082Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#f9b73d",
+          "surfaceHex": "#dd8722",
+          "foregroundHex": "#261400",
+          "accentHex": "#c82100"
+        },
+        {
+          "optionId": "B",
+          "role": "legacy-scalar-top",
+          "positive": false,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#f9b73d",
+          "surfaceHex": "#dd8722",
+          "foregroundHex": "#261400",
+          "accentHex": "#844502"
+        },
+        {
+          "optionId": "C",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#91760f",
+          "surfaceHex": "#b56317",
+          "foregroundHex": "#f9b73d",
+          "accentHex": "#1beb02"
+        },
+        {
+          "optionId": "D",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#ed9f23",
+          "surfaceHex": "#c97c24",
+          "foregroundHex": "#261400",
+          "accentHex": "#1beb02"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "deterministic-top-independently-valid",
+          "confidence": "high",
+          "evidence": "The current deterministic top is explicitly marked independently valid."
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-27",
+      "originalResponse": {
+        "caseId": "development-27",
+        "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+        "validOptionIds": [
+          "A",
+          "C",
+          "D"
+        ],
+        "preferredOptionId": null,
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:45:50.579Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#4d4d4d",
+          "surfaceHex": "#090909",
+          "foregroundHex": "#979797",
+          "accentHex": "#808080"
+        },
+        {
+          "optionId": "B",
+          "role": "prior-positive-control",
+          "positive": false,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#090909",
+          "surfaceHex": "#4d4d4d",
+          "foregroundHex": "#979797",
+          "accentHex": "#808080"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#090909",
+          "surfaceHex": "#4d4d4d",
+          "foregroundHex": "#f7f7f7",
+          "accentHex": "#979797"
+        },
+        {
+          "optionId": "D",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#292929",
+          "surfaceHex": "#585858",
+          "foregroundHex": "#979797",
+          "accentHex": "#090909"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "deterministic-top-independently-valid",
+          "confidence": "high",
+          "evidence": "The current deterministic top is explicitly marked independently valid."
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-23",
+      "originalResponse": {
+        "caseId": "development-23",
+        "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+        "validOptionIds": [
+          "A",
+          "B",
+          "D"
+        ],
+        "preferredOptionId": "D",
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:46:20.236Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#142c2e",
+          "surfaceHex": "#396a66",
+          "foregroundHex": "#dbc683",
+          "accentHex": "#baa35f"
+        },
+        {
+          "optionId": "B",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "one-field",
+          "backgroundHex": "#142c2e",
+          "surfaceHex": "#142c2e",
+          "foregroundHex": "#dbc683",
+          "accentHex": "#5c9ba4"
+        },
+        {
+          "optionId": "C",
+          "role": "legacy-scalar-top",
+          "positive": false,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "one-field",
+          "backgroundHex": "#142c2e",
+          "surfaceHex": "#142c2e",
+          "foregroundHex": "#ebe3b4",
+          "accentHex": "#d7c37a"
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": true,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#142c2e",
+          "surfaceHex": "#396a66",
+          "foregroundHex": "#ebe3b4",
+          "accentHex": "#b4a35e"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "deterministic-top-independently-valid",
+          "confidence": "high",
+          "evidence": "The current deterministic top is explicitly marked independently valid."
+        },
+        {
+          "class": "illustrated-field-and-accent-repair-preferred",
+          "confidence": "high",
+          "evidence": "The repaired distinct teal surface with separated cream/gold roles is explicitly preferred."
+        }
+      ],
+      "interpretationUncertain": false
+    }
+  ]
+}

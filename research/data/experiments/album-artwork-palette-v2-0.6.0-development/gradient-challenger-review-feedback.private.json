@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.6.0-gradient-challenger-review-v1",
+  "manifestId": "1e9ceb7e2d682223808ef0fc0af8d2536275e9a9a9e8eba70a1dd51e840bf107",
+  "entries": [
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "qualityA": "strong",
+      "qualityB": "acceptable",
+      "comparison": "a-stronger",
+      "tagsA": [],
+      "tagsB": [
+        "missing gradient"
+      ],
+      "comment": "",
+      "submittedAt": "2026-07-27T11:21:56.385Z"
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [
+        "missing gradient"
+      ],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T11:21:53.569Z"
+    }
+  ]
+}

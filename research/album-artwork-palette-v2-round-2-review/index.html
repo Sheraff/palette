@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Album Artwork Palette Review</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<header>
+		<p class="eyebrow">Phase 3 complete-treatment review</p>
+		<h1>Artwork into interface</h1>
+		<p>For each artwork, choose the strongest complete treatment, optionally mark other directions as also valid, and assess only the strongest. Color names are presentation aids only.</p>
+	</header>
+	<main>
+		<section class="review-heading" aria-live="polite">
+			<div>
+				<p id="progress"></p>
+				<h2 id="case-title"></h2>
+			</div>
+			<div class="case-navigation">
+				<button id="previous-case" type="button">Previous artwork</button>
+				<button id="next-case" type="button">Next artwork</button>
+			</div>
+		</section>
+		<nav id="alternatives" class="alternatives" aria-label="Complete treatment alternatives"></nav>
+		<section id="preview" class="palette-preview" aria-label="Complete palette treatment preview"></section>
+		<section class="assessment" aria-labelledby="assessment-title">
+			<h2 id="assessment-title">Assess selected treatment</h2>
+			<p id="assessment-selection"></p>
+			<p>Preview alternatives above, choose one strongest treatment, optionally mark other independently valid directions, then submit one assessment for this artwork.</p>
+			<fieldset>
+				<legend>Absolute quality</legend>
+				<div id="quality-options" class="choice-row"></div>
+			</fieldset>
+			<fieldset>
+				<legend>Optional issue tags</legend>
+				<div id="issue-options" class="choice-row"></div>
+			</fieldset>
+			<label for="comment">Comment</label>
+			<textarea id="comment" maxlength="2000" rows="6" placeholder="What succeeds or fails in this complete treatment?"></textarea>
+			<div class="save-row">
+				<p id="save-status" role="status"></p>
+				<button id="save" type="button">Save artwork review</button>
+			</div>
+		</section>
+	</main>
+	<script type="module" src="/app.js"></script>
+</body>
+</html>

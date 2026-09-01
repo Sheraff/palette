@@ -1,0 +1,420 @@
+/*
+ * Based on research/album-artwork-palette-v2-0.7.7-quick-review/styles.css (blinded A/B layout),
+ * with the role legend, swatch, and gradient-midpoint custody rules taken from
+ * research/album-artwork-palette-v2-phase-3-showcase/styles.css. Additions for this track are
+ * limited to the extra assessment controls (verdict, tags, swatch corrections, submit bar).
+ */
+
+:root {
+	color-scheme: dark;
+	font: 15px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	color: #fff;
+	background: #000;
+}
+
+* { box-sizing: border-box; }
+
+body {
+	margin: 0;
+	color: #fff;
+	background: #000;
+}
+
+button, textarea { font: inherit; }
+
+button, textarea {
+	border: 1px solid #fff;
+	border-radius: 0;
+	color: #fff;
+	background: #000;
+}
+
+button {
+	padding: 12px 18px;
+	font-weight: 800;
+	cursor: pointer;
+}
+
+button:hover, button:focus-visible, button.selected {
+	color: #000;
+	background: #fff;
+}
+
+button:disabled {
+	color: #fff;
+	background: #000;
+	cursor: not-allowed;
+	opacity: .45;
+}
+
+.masthead {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+	gap: clamp(28px, 6vw, 96px);
+	align-items: end;
+	width: min(1480px, calc(100% - 40px));
+	margin: 0 auto;
+	padding: clamp(34px, 6vw, 84px) 0 clamp(28px, 4vw, 52px);
+	border-bottom: 1px solid #fff;
+}
+
+.eyebrow, .option-heading, .review-progress, .role-status, .status, .control-label, .submission {
+	font: 750 11px/1.25 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+}
+
+.masthead h1 {
+	margin: 12px 0 0;
+	font: 500 clamp(48px, 7vw, 96px)/.86 Georgia, "Times New Roman", serif;
+	letter-spacing: -.055em;
+}
+
+.instructions { max-width: 62ch; }
+.instructions p:last-child { margin-bottom: 0; }
+
+.review-progress {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	display: flex;
+	justify-content: space-between;
+	padding: 13px max(20px, calc((100% - 1480px) / 2));
+	border-bottom: 1px solid #fff;
+	background: #000;
+}
+
+#review {
+	width: min(1480px, calc(100% - 40px));
+	margin: 0 auto;
+	padding: clamp(30px, 5vw, 72px) 0 90px;
+}
+
+.review-item + .review-item {
+	margin-top: clamp(70px, 9vw, 130px);
+	padding-top: clamp(40px, 6vw, 80px);
+	border-top: 1px solid #fff;
+}
+
+.item-heading { margin-bottom: 20px; }
+.item-heading p { margin: 0 0 8px; }
+.identity-note { margin: 10px 0 0; max-width: 62ch; }
+
+.item-heading h2 {
+	margin: 0;
+	font: 500 clamp(32px, 4vw, 54px)/.95 Georgia, "Times New Roman", serif;
+	letter-spacing: -.035em;
+	text-transform: capitalize;
+}
+
+.preview-pair {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.preview-pair.single { grid-template-columns: minmax(0, 1fr); }
+
+.option-panel {
+	min-width: 0;
+	border: 1px solid #fff;
+	background: #000;
+}
+
+.option-heading {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 11px 12px;
+	border-bottom: 1px solid #fff;
+}
+
+.palette-preview {
+	--background: #000;
+	--surface: #000;
+	--foreground: #fff;
+	--accent: #fff;
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(150px, .72fr) minmax(190px, 1.28fr);
+	gap: clamp(18px, 3vw, 46px);
+	align-items: center;
+	min-height: 470px;
+	padding: clamp(20px, 3.5vw, 48px);
+	color: var(--foreground);
+	overflow: hidden;
+}
+
+.artwork {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: 330px;
+	object-fit: contain;
+	border: 0;
+	border-radius: 0;
+	outline: 0;
+	box-shadow: none;
+}
+
+.background-copy {
+	align-self: start;
+	padding-top: clamp(18px, 4vw, 54px);
+	color: var(--foreground);
+}
+
+.background-copy h3 {
+	max-width: 9ch;
+	margin: 0;
+	font: 500 clamp(34px, 4.6vw, 66px)/.88 Georgia, "Times New Roman", serif;
+	letter-spacing: -.05em;
+}
+
+.background-copy > p:last-child {
+	max-width: 30ch;
+	margin: 14px 0 0;
+}
+
+.accent-copy {
+	margin: 0 0 8px;
+	color: var(--accent);
+	font: 800 10px/1.25 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .13em;
+	text-transform: uppercase;
+}
+
+.surface-card {
+	position: absolute;
+	right: clamp(14px, 2vw, 28px);
+	bottom: clamp(14px, 2vw, 28px);
+	width: min(40%, 240px);
+	min-height: 100px;
+	padding: 16px;
+	color: var(--foreground);
+	background: var(--surface);
+}
+
+.surface-card strong { display: block; line-height: 1.25; }
+
+.role-legend {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	margin: 0;
+	border-top: 1px solid #fff;
+	color: #fff;
+	background: #000;
+}
+
+.role-entry { min-width: 0; padding: 10px; }
+.role-entry + .role-entry { border-left: 1px solid #fff; }
+
+.role-entry dt {
+	font: 750 10px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.role-entry dd { margin: 6px 0 0; }
+
+.role-color {
+	display: grid;
+	grid-template-columns: 28px minmax(0, 1fr);
+	gap: 8px;
+	align-items: center;
+}
+
+.swatch {
+	display: block;
+	width: 28px;
+	height: 28px;
+	border: 1px solid #fff;
+}
+
+.role-color strong, .role-color code, .midpoint-color strong, .midpoint-color code {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.role-color strong { font-size: 11px; }
+.role-color code, .role-status { font-size: 10px; line-height: 1.35; }
+
+.midpoint-custody {
+	display: grid;
+	grid-template-columns: 28px auto minmax(100px, auto) 1fr;
+	gap: 12px;
+	align-items: center;
+	padding: 11px 13px;
+	border-top: 1px solid #fff;
+	font: 750 10px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+.assessment {
+	margin-top: 20px;
+	padding: 18px;
+	border: 1px solid #fff;
+	background: #000;
+}
+
+.control + .control { margin-top: 20px; }
+.control-label { margin: 0 0 10px; }
+
+.control-hint {
+	max-width: 78ch;
+	margin: -4px 0 12px;
+	color: #b4b4b4;
+	font-size: 13px;
+}
+
+.comment.primary {
+	min-height: 120px;
+	margin-top: 0;
+	border-width: 2px;
+	font-size: 15px;
+}
+
+.decision { display: flex; flex-wrap: wrap; gap: 9px; }
+
+.correction-shortcuts {
+	align-items: center;
+	margin-bottom: 14px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid #fff;
+}
+
+.correction-summary {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	margin-left: auto;
+}
+
+.correction-slot {
+	display: inline-flex;
+	gap: 6px;
+	align-items: center;
+	font: 750 10px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.correction-slot .swatch { width: 18px; height: 18px; }
+
+.correction-slot .swatch.empty {
+	background: repeating-linear-gradient(135deg, #000 0 3px, #fff 3px 4px);
+}
+
+.correction-workspace {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+	gap: 18px;
+	align-items: start;
+}
+
+.correction-preview {
+	position: sticky;
+	top: 56px;
+}
+
+/* The assembled palette is a preview, not a third option under review: same mock, smaller frame. */
+.preview-panel .palette-preview {
+	min-height: 300px;
+	padding: 18px;
+	grid-template-columns: minmax(90px, .7fr) minmax(120px, 1.3fr);
+	gap: 16px;
+}
+
+.preview-panel .background-copy { padding-top: 10px; }
+.preview-panel .background-copy h3 { font-size: clamp(22px, 2vw, 30px); }
+.preview-panel .background-copy > p:last-child { display: none; }
+.preview-panel .artwork { max-height: 170px; }
+.preview-panel .surface-card { width: min(52%, 150px); min-height: 66px; padding: 11px; }
+.preview-panel .role-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.preview-panel .role-entry:nth-child(3) { border-top: 1px solid #fff; border-left: 0; }
+.preview-panel .role-entry:nth-child(4) { border-top: 1px solid #fff; }
+
+.correction {
+	display: grid;
+	grid-template-columns: 110px minmax(0, 1fr);
+	gap: 12px;
+	align-items: center;
+}
+
+.correction + .correction { margin-top: 10px; }
+
+.swatch-strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.swatch-choice {
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	padding: 6px 9px;
+	font: 750 10px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.swatch-choice .swatch { width: 16px; height: 16px; flex: none; }
+.swatch-choice strong { font-weight: 750; }
+.swatch-choice code { opacity: .75; }
+.swatch-choice.proposed { border-style: dashed; }
+.swatch-choice.selected .swatch { border-color: #000; }
+
+.swatch-clear { padding: 7px 10px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+
+.correction-note { margin: 10px 0 0; font-size: 11px; }
+
+.comment {
+	width: 100%;
+	min-height: 72px;
+	margin-top: 14px;
+	padding: 11px;
+	resize: vertical;
+}
+
+.status { margin: 10px 0 0; }
+
+.submission {
+	position: sticky;
+	bottom: 0;
+	z-index: 20;
+	display: flex;
+	gap: 20px;
+	align-items: center;
+	padding: 13px max(20px, calc((100% - 1480px) / 2));
+	border-top: 1px solid #fff;
+	background: #000;
+}
+
+@media (max-width: 1120px) {
+	.preview-pair { grid-template-columns: 1fr; }
+	.palette-preview { min-height: 520px; }
+	.correction-workspace { grid-template-columns: minmax(0, 1fr); }
+	.correction-preview { position: static; }
+	.preview-panel .palette-preview { min-height: 380px; }
+}
+
+@media (max-width: 760px) {
+	.masthead { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+	.masthead, #review { width: min(100% - 20px, 1480px); }
+	.review-progress, .option-heading, .submission { align-items: flex-start; flex-direction: column; gap: 4px; }
+	.palette-preview { display: block; min-height: 610px; }
+	.artwork { width: 70%; }
+	.background-copy { padding-top: 24px; }
+	.surface-card { width: 54%; }
+	.role-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.role-entry:nth-child(3) { border-top: 1px solid #fff; border-left: 0; }
+	.role-entry:nth-child(4) { border-top: 1px solid #fff; }
+	.midpoint-custody { grid-template-columns: 28px minmax(0, 1fr); }
+	.midpoint-color, .midpoint-custody > span:last-child { grid-column: 2; }
+	.correction { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+	.correction-workspace { grid-template-columns: minmax(0, 1fr); }
+	.correction-preview { position: static; }
+}

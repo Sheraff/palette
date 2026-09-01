@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-eligibility-music-promotion-audit-analysis-0.1.0",
+  "generatedAt": "2026-07-19T22:25:49.949Z",
+  "candidateVersion": "gradient-eligibility-0.8.0-dev",
+  "promotionRecommended": false,
+  "promotionDecision": "reject-gradient-eligibility-0.8",
+  "reviewInterpretation": {
+    "schemaVersion": 1,
+    "recordedAt": "2026-07-19T22:22:06Z",
+    "decisionScope": "exact-selected-background-surface-pair",
+    "promotionDecision": "reject-gradient-eligibility-0.8",
+    "manualJudgments": [
+      {
+        "familyId": "gc-15a1a79ee427004b55f5",
+        "reviewSet": "removed",
+        "decision": "should-be-gradient",
+        "note": "This is the only false removal written down explicitly; there may have been more."
+      }
+    ],
+    "qualitativeFindings": [
+      "Many removed gradients were either-way.",
+      "Many gradients retained by 0.8 should actually be flat."
+    ],
+    "roleSelectionBugs": [
+      {
+        "familyId": "gc-583a7f4b2375592af971",
+        "kind": "background-representativeness",
+        "note": "The selected background works but is not the color visually associated with the artwork background."
+      },
+      {
+        "familyId": "gc-330aec036a8605e596c0",
+        "kind": "palette-color-fidelity",
+        "note": "The selected palette does not appear to use the proper artwork colors."
+      }
+    ]
+  },
+  "provenance": {
+    "removedPlanSha256": "a3c02f9e66414d38893a1401eacea7d18d40463d7673690478abca539768a619",
+    "removedHtmlSha256": "4c9789b4ff825177bf9cd9884adf9bfaf83d7f205dd5df84b958d8c1914ad0d4",
+    "removedFeedbackSha256": "9203a0048da48838ccf08f8ab57c5f42daf78d6eec723b7f1677d835def04759",
+    "retainedPlanSha256": "fee2bf2f5621c708cd805dc296ff19854061671d114fd6815436ca51c2ef9d9b",
+    "retainedHtmlSha256": "ddc70f322d3580f4b5dda4b5a32f44608bdc6dd343e300bf2deebf11bfc40675",
+    "retainedFeedbackSha256": "77c2e8fac77d327636f9a1c0b51dd7ec1a46fb8842940ee287adc3d42708c404",
+    "interpretationSha256": "7e3ef42779dfc79a7e1a4fb8e0b248069c97e448f40719c00b4980804ec60c14"
+  },
+  "summary": {
+    "removed": {
+      "planned": 78,
+      "feedbackSubmitted": 0,
+      "manualJudgments": 1,
+      "unreviewed": 77,
+      "judgments": {
+        "should-be-gradient": 1
+      },
+      "falseRemovals": 1
+    },
+    "retained": {
+      "planned": 1183,
+      "submitted": 102,
+      "unreviewed": 1081,
+      "judgments": {
+        "should-not-be-gradient": 37,
+        "should-be-gradient": 43,
+        "either-way": 22
+      },
+      "falseRetentions": 37
+    }
+  },
+  "falseRemovals": [
+    {
+      "familyId": "gc-15a1a79ee427004b55f5",
+      "decision": "should-be-gradient",
+      "comment": "This is the only false removal written down explicitly; there may have been more.",
+      "submittedAt": "2026-07-19T22:22:06Z",
+      "source": "manual-note",
+      "candidateReason": "insufficient-spatial-continuity"
+    }
+  ],
+  "falseRetentions": [
+    {
+      "familyId": "gc-02a3180ebb37c62d2bcb",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:25.973Z"
+    },
+    {
+      "familyId": "gc-0d3278928d1c86840a2d",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:14:33.371Z"
+    },
+    {
+      "familyId": "gc-0e1d229645131c804b72",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:52.407Z"
+    },
+    {
+      "familyId": "gc-21cf20d02f6ccb15e65c",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:02:13.787Z"
+    },
+    {
+      "familyId": "gc-25c89c7984bab8761a5b",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:54.685Z"
+    },
+    {
+      "familyId": "gc-32f958716c2053ec64f6",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:17:20.862Z"
+    },
+    {
+      "familyId": "gc-36fa9524c0c64e0819d1",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:10:00.247Z"
+    },
+    {
+      "familyId": "gc-3c2697ea07d3bc75ea21",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:50.979Z"
+    },
+    {
+      "familyId": "gc-3dcaaaf4388b9f38260e",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:09:20.237Z"
+    },
+    {
+      "familyId": "gc-420a33c8c9eec748fd30",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:09:53.196Z"
+    },
+    {
+      "familyId": "gc-535b0c12c20aed0d9863",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:07:58.083Z"
+    },
+    {
+      "familyId": "gc-665ba14f4419fa770468",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:49.590Z"
+    },
+    {
+      "familyId": "gc-6a100e26bcc7459bf64f",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:44.729Z"
+    },
+    {
+      "familyId": "gc-6b0ca1eddb96f04ff1a0",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:13:52.505Z"
+    },
+    {
+      "familyId": "gc-6bec7d385f7aa8452b7f",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:10:30.342Z"
+    },
+    {
+      "familyId": "gc-6bf191568fbb22c71bae",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:10:57.116Z"
+    },
+    {
+      "familyId": "gc-6d78670eb4d2aac144d6",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:42.904Z"
+    },
+    {
+      "familyId": "gc-75a59426c1d5220738b8",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:18:36.435Z"
+    },
+    {
+      "familyId": "gc-77e426e34e6e5b66bce5",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:18:38.806Z"
+    },
+    {
+      "familyId": "gc-783016dc0a71c1df1038",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:04.968Z"
+    },
+    {
+      "familyId": "gc-7b9dac598964f418586c",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:12.677Z"
+    },
+    {
+      "familyId": "gc-9330501e75612a1501fd",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:39.686Z"
+    },
+    {
+      "familyId": "gc-952a828fe80eee05c802",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:47.231Z"
+    },
+    {
+      "familyId": "gc-a7c9ef53dfaed8a77ea3",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:07:32.373Z"
+    },
+    {
+      "familyId": "gc-a9a980233071f56d96a3",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:17:36.528Z"
+    },
+    {
+      "familyId": "gc-aa5901cfd71b7090175d",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:23.718Z"
+    },
+    {
+      "familyId": "gc-b505578b456ef9b16a0b",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:18:28.383Z"
+    },
+    {
+      "familyId": "gc-b6dcad5d62ef22ef29e1",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:17:17.236Z"
+    },
+    {
+      "familyId": "gc-ba9ba421c87a0a707419",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:09:38.016Z"
+    },
+    {
+      "familyId": "gc-bcd538b195c37a8abca3",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:12:22.157Z"
+    },
+    {
+      "familyId": "gc-be6078805bc6f9906353",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:13:46.375Z"
+    },
+    {
+      "familyId": "gc-c79a6d529180b9fdd5c9",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:27.566Z"
+    },
+    {
+      "familyId": "gc-d7779096c7915aaf3801",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:15:41.170Z"
+    },
+    {
+      "familyId": "gc-da8cf60fb17003448fb6",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:15:53.499Z"
+    },
+    {
+      "familyId": "gc-e03bf7ec6284b484c894",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:13:19.010Z"
+    },
+    {
+      "familyId": "gc-ecd2ad28b722f1552b24",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:14:40.319Z"
+    },
+    {
+      "familyId": "gc-f7efc310c0a65eca9d36",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:05:48.159Z"
+    }
+  ]
+}

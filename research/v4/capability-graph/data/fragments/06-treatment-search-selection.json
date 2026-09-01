@@ -1,0 +1,2718 @@
+{
+  "$schema": "../../schema/fragment.schema.json",
+  "documentKind": "capability-graph-mapping-fragment",
+  "schemaVersion": "1.3.0",
+  "fragmentId": "fragment.06-treatment-search-selection.v1",
+  "title": "Section 6 treatment search and selection",
+  "description": "Artifact contracts and complete mechanism typings for Section 6 complete-treatment construction, search, arbitration, selection, and repair. The records assert candidate semantic compatibility only, not bindings, architecture, or a selected pipeline.",
+  "sourceSnapshot": {
+    "path": "research/v4/MECHANISMS.md",
+    "gitCommit": "f348d363278e0881fe50e446644a97f220eb9153",
+    "gitBlob": "87cd4eee2e01b3c46fffe91d64b330c192909d47",
+    "gitTree": "c9db4da6ee7f6acef729af2cb4ffc1d325e2b191",
+    "gitCommitTimestamp": "2026-08-30T22:40:39+02:00",
+    "sha256": "3b60e57482786a977e3526989a21abefb85d1f9cd417762ca65e3d89ec2824c5",
+    "byteLength": 196653,
+    "lineCount": 2625,
+    "mechanismCount": 149
+  },
+  "artifactTypes": [
+    {
+      "id": "artifact.candidate-set.finite-treatment-tuple-factors.v1",
+      "productFocus": "product-flow",
+      "label": "Finite treatment tuple factors",
+      "description": "Finite background, surface, foreground, accent, and field-state alternatives with declared factor membership. This is a factor domain, not a domain of already constructed complete tuples.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1334-1341 and :1352-1358 distinguish finite tuple factors from feasible complete treatments."
+      ],
+      "provenanceNotes": [
+        "Factor identity and finite cardinality must be retained; an empty factor is explicit rather than omitted."
+      ]
+    },
+    {
+      "id": "artifact.configuration.complete-treatment-legality.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Complete-treatment legality configuration",
+      "description": "Explicit settings for role legality, collapse, field states, gradient endpoints, contrast, and rejection-check order used while constructing internal complete treatments.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1334-1338 names the jointly evaluated legality settings."
+      ],
+      "provenanceNotes": [
+        "The configuration identity must travel with constructed domains and reports."
+      ]
+    },
+    {
+      "id": "artifact.treatment.complete-internal.v1",
+      "productFocus": "product-flow",
+      "label": "Internal complete treatment",
+      "description": "A complete internal background, surface, foreground, accent, and field-state treatment with collapse, lineage, legality, and score data. It is not the exact v3 published Palette contract and carries no product authority.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v2-3/src/internal/palette-core.ts:422-442 defines the historical internal CompletePaletteTreatment shape; research/v3/src/contract/types.ts:326-341 defines a distinct published Palette contract."
+      ],
+      "provenanceNotes": [
+        "This type intentionally does not identify artifact.product.ui-palette.v3 and must not be treated as published product output."
+      ]
+    },
+    {
+      "id": "artifact.candidate.complete-treatment-descriptor.v1",
+      "productFocus": "product-flow",
+      "label": "Complete-treatment descriptor",
+      "description": "One logical descriptor binding an internal complete treatment to field hypothesis, source mode, complete lineage, canonical key, and evaluation evidence. Distinct descriptors may describe the same internal treatment.",
+      "category": "candidate",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v2-3/src/internal/candidate-domain.ts:23-28 and candidate-materialization.ts:11-15 retain logical descriptors separately from canonical treatments."
+      ],
+      "provenanceNotes": [
+        "Descriptor multiplicity and lineage survive treatment-key equality."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.complete-treatment-domain.v1",
+      "productFocus": "product-flow",
+      "label": "Complete-treatment tuple domain",
+      "description": "A declared domain of complete-treatment descriptors and their internal treatments, cardinality, scores, and rejection accounting. State is explicitly nonempty, empty, or infeasible; empty membership is not confused with a missing artifact.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/state",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "in",
+                "value": [
+                  "empty",
+                  "infeasible"
+                ]
+              },
+              {
+                "comparator": "in",
+                "value": [
+                  "nonempty",
+                  "infeasible"
+                ]
+              }
+            ],
+            "notes": [
+              "This inspection-only discriminator makes empty, infeasible, and populated domain states machine-checkable without defining the complete runtime payload schema."
+            ]
+          }
+        ],
+        "notes": [
+          "Only the declared state discriminator is exposed for graph-level constraint inspection."
+        ]
+      },
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1337-1341, :1475-1478, and :1541-1544 require declared-domain scope and explicit infeasibility."
+      ],
+      "provenanceNotes": [
+        "The domain records its construction and policy identities; it is not interchangeable with one descriptor or one selected treatment."
+      ]
+    },
+    {
+      "id": "artifact.report.complete-tuple-enumeration.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Complete-tuple enumeration report",
+      "description": "Cardinality, lineage reconciliation, feasible and rejected counts, and first rejection reasons for a finite enumeration, including explicit empty or infeasible results.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1337-1338 requires cardinality, full lineage, scores, and rejection reasons."
+      ],
+      "provenanceNotes": [
+        "Counts are relative to the supplied finite factor domain and legality configuration."
+      ]
+    },
+    {
+      "id": "artifact.configuration.exact-search-objective.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Exact search objective",
+      "description": "Frozen objective definition, direction, arithmetic, and identity against which an exact search result and certificate are meaningful.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1350-1357 limits exactness to the exact frozen objective supplied."
+      ],
+      "provenanceNotes": [
+        "Changing the objective invalidates objective-relative optimality claims."
+      ]
+    },
+    {
+      "id": "artifact.configuration.deterministic-branch-order.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Deterministic branch order",
+      "description": "Explicit total traversal order for branches and tuple factors in an exact search.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1354-1355 requires deterministic branch order."
+      ],
+      "provenanceNotes": [
+        "Order identity supports replay but does not itself rank treatment quality."
+      ]
+    },
+    {
+      "id": "artifact.configuration.admissible-search-bounds.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Admissible search bounds",
+      "description": "Bound functions, validity assumptions, and objective identity used to prune branches without excluding the optimum for that objective.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1352-1357 makes admissible bound validity load-bearing."
+      ],
+      "provenanceNotes": [
+        "A certificate must bind both objective and bound identities."
+      ]
+    },
+    {
+      "id": "artifact.provenance.objective-relative-search-certificate.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Objective-relative search certificate",
+      "description": "Optimal tuple or explicit empty-domain result, exact objective value when present, visited and pruned counts, and bound witnesses proving optimality only for the bound objective and supplied finite factors.",
+      "category": "provenance",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1354-1357 requires visited/pruned counts and an objective-relative optimality certificate."
+      ],
+      "provenanceNotes": [
+        "The certificate does not claim aesthetic optimality or completeness outside the finite factors."
+      ]
+    },
+    {
+      "id": "artifact.treatment.selected-internal.v1",
+      "productFocus": "product-flow",
+      "label": "Selected internal treatment",
+      "description": "An internal complete treatment paired with the selector identity and selection basis that elected it. It is not the v3 product Palette and is absent when the accompanying outcome has no selected member.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Section 6 selector outputs are internal winners or members; research/v3/src/contract/types.ts:326-341 separately defines the exact published Palette."
+      ],
+      "provenanceNotes": [
+        "Selection never upgrades this type to artifact.product.ui-palette.v3."
+      ]
+    },
+    {
+      "id": "artifact.decision.treatment-selection-outcome.v1",
+      "productFocus": "product-flow",
+      "label": "Treatment selection outcome",
+      "description": "Explicit selector result state such as selected, empty-domain, no-eligible-member, baseline-retained, or promoted, with selected key and margin when applicable.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1438-1439, :1490-1491, and the documented empty eligibility risk at :1477 require selection and no-selection states."
+      ],
+      "provenanceNotes": [
+        "The outcome carries the selector and input-domain identities; a missing selected treatment is explained by an explicit state."
+      ]
+    },
+    {
+      "id": "artifact.configuration.pareto-quality-dimensions.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Pareto quality dimensions",
+      "description": "Fixed retained quality dimensions, directions, resolutions, missing-value behavior, and dominance semantics for treatment frontier construction.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1368-1374 requires a fixed vector of dimensions and resolutions."
+      ],
+      "provenanceNotes": [
+        "Omitted dimensions are visible configuration choices, not implicit defaults."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.treatment-pareto-subset.v1",
+      "productFocus": "product-flow",
+      "label": "Treatment Pareto subset",
+      "description": "The nondominated subset of a named complete-treatment domain under a named partial order. It may be explicitly empty only when the input domain is empty.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1368-1375 defines retention without winner selection; NATIVE_COMPLETE_PALETTE_PROTOCOL.md:325-333 uses a separate post-admission Pareto subset."
+      ],
+      "provenanceNotes": [
+        "A frontier is a subset, not a total ranking or selected winner."
+      ]
+    },
+    {
+      "id": "artifact.decision.treatment-partial-order.v1",
+      "productFocus": "product-flow",
+      "label": "Treatment partial order",
+      "description": "Pairwise no-worse, strictly-better, equal, and incomparable relations over a named treatment domain under declared dimensions or blocks. Empty and singleton relations are explicit.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1368-1375, :1454-1459, and :1521-1531 contain dominance and incomparability rather than complete ordering."
+      ],
+      "provenanceNotes": [
+        "Incomparability is preserved and must not be silently linearized."
+      ]
+    },
+    {
+      "id": "artifact.report.pareto-retention-audit.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Pareto retention audit",
+      "description": "Per-evaluation Pareto membership, retained frontier identity, and audited pruned rows with their dominators and configured resolutions.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1372-1377 requires membership flags and audited pruned rows."
+      ],
+      "provenanceNotes": [
+        "The report records harmful and protective pruning without asserting selection authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.banded-comparator-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Banded comparator policy",
+      "description": "Evidence resolutions, quality block order, relational stages, quantization rules, and deterministic fallbacks for a banded treatment comparator.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1388-1393 and v2-3 winner-scoring.ts:1028-1087 expose the staged comparator policy."
+      ],
+      "provenanceNotes": [
+        "All deciding stages and quanta are configuration, not hidden comparator constants."
+      ]
+    },
+    {
+      "id": "artifact.decision.treatment-total-order.v1",
+      "productFocus": "product-flow",
+      "label": "Treatment total order",
+      "description": "A complete deterministic ordering of every member of a named treatment domain, including an explicit empty order for an empty domain. This is distinct from a dominance partial order.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1390-1391, :1407, and :1558-1560 explicitly require total or deterministic orders."
+      ],
+      "provenanceNotes": [
+        "The artifact binds comparator and domain identities and does not imply Pareto dominance."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.treatment-ordering-trace.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Treatment ordering trace",
+      "description": "Evidence levels, pairwise deciding stage, tie stages, and deterministic fallback trace for a named treatment order; empty orders carry a no-comparison state.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1390-1391 and :1558-1563 require deciding-stage and tie traces."
+      ],
+      "provenanceNotes": [
+        "Trace records why an order was decided without asserting perceptual utility."
+      ]
+    },
+    {
+      "id": "artifact.configuration.quality-exchange-rates.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Quality exchange rates",
+      "description": "Named quality axes, hand weights, signs, normalization, and scalar aggregation formula for weighted treatment quality.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1405-1410 identifies exchange rates as load-bearing configuration."
+      ],
+      "provenanceNotes": [
+        "The artifact identifies the tested scalar formulation; it is not generic aesthetic authority."
+      ]
+    },
+    {
+      "id": "artifact.measurement.scalar-treatment-quality.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Scalar treatment quality evaluations",
+      "description": "One scalar per treatment and its constituent weighted contributions under a named exchange-rate configuration, including an explicit empty evaluation set.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1405-1408 defines the weighted scalar output."
+      ],
+      "provenanceNotes": [
+        "The scalar remains tied to its axes and exchange rates."
+      ]
+    },
+    {
+      "id": "artifact.model.global-description-length-coding.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Global description-length coding model",
+      "description": "Research coding model and pricing configuration for roles, collapse, gradients, data fit, and explanation breakdown in a global MDL treatment objective.",
+      "category": "model",
+      "plane": "development",
+      "axisPositionId": "commitment.structured-evidence",
+      "laneId": "lane.models-and-external",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1421-1427 describes the tested coding model and pricing risks."
+      ],
+      "provenanceNotes": [
+        "Model and pricing identity must be retained with every cost and optimum."
+      ]
+    },
+    {
+      "id": "artifact.report.description-length-selection.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Description-length selection report",
+      "description": "Per-configuration coding cost, global optimum or explicit empty-domain state, and role, collapse, gradient, and data-fit coding breakdown.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1423-1427 requires one cost, optimum, and coding explanation."
+      ],
+      "provenanceNotes": [
+        "A reported optimum is relative to the supplied domain and coding model."
+      ]
+    },
+    {
+      "id": "artifact.measurement.portfolio-member-independent-evidence.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Portfolio member-independent evidence",
+      "description": "Evidence computed without reading portfolio member identity, including declared description-length and coverage terms for comparing rival complete extractors.",
+      "category": "measurement",
+      "plane": "development",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1436-1439 requires member-independent evidence."
+      ],
+      "provenanceNotes": [
+        "Evidence records its member-independence assumptions and source scope."
+      ]
+    },
+    {
+      "id": "artifact.report.portfolio-selection.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Portfolio selection report",
+      "description": "Selected member or explicit no-member state, margin, bits and coverage trace, and complete disagreement set for a rival-treatment portfolio.",
+      "category": "report",
+      "plane": "development",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.development-diagnostics",
+      "contractMaturity": "experiment-bound",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1438-1442 names member, margin, trace, and disagreement outputs."
+      ],
+      "provenanceNotes": [
+        "The report binds the exact tested selector form and portfolio roster."
+      ]
+    },
+    {
+      "id": "artifact.configuration.noncompensatory-quality-blocks.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Noncompensatory quality blocks",
+      "description": "Fixed block definitions, component bars, block order, epsilon rules, and incomparable-state semantics for incumbent-relative arbitration.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1454-1463 makes block definitions, bars, and order explicit."
+      ],
+      "provenanceNotes": [
+        "Omitted and redundant blocks remain inspectable policy choices."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.noncompensatory-survivor-subset.v1",
+      "productFocus": "product-flow",
+      "label": "Noncompensatory survivor subset",
+      "description": "Candidates that survive every applicable noncompensatory block comparison, including an explicit empty subset when all candidates fail or the input is empty.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1458-1459 requires survivors separately from pairwise verdicts."
+      ],
+      "provenanceNotes": [
+        "Survival is relative to the supplied blocks and does not imply a total order or winner."
+      ]
+    },
+    {
+      "id": "artifact.report.noncompensatory-arbitration.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Noncompensatory arbitration report",
+      "description": "Pairwise block verdicts, first deciding block, failed bars, and explicit equal or incomparable states for every audited candidate comparison.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1458-1463 requires first deciding block and incomparable states."
+      ],
+      "provenanceNotes": [
+        "No surplus in one block is represented as compensation for a failed binding block."
+      ]
+    },
+    {
+      "id": "artifact.diagnostic.emergency-treatment-eligibility.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Emergency treatment eligibility diagnosis",
+      "description": "Optional diagnosis of the exact declared one-color black or white emergency form, including eligibility, reason, supported-pair count, maximum supported contrast, and threshold.",
+      "category": "diagnostic",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v2-3/src/internal/source-eligibility.ts:119-171 defines the exact optional emergency diagnosis checked by source eligibility."
+      ],
+      "provenanceNotes": [
+        "Absence means no emergency basis was supplied; it does not mean emergency eligibility."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.source-eligible-treatment-subset.v1",
+      "productFocus": "product-flow",
+      "label": "Source-eligible treatment subset",
+      "description": "The subset having at least one descriptor with complete ordinary source lineage or the exact declared emergency basis. The subset may explicitly be empty.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1473-1478 and source-eligibility.ts:218-261 define descriptor-based subset filtering."
+      ],
+      "provenanceNotes": [
+        "Eligibility proves custody consistency, not semantic belonging or quality."
+      ]
+    },
+    {
+      "id": "artifact.report.source-lineage-eligibility.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Source-lineage eligibility report",
+      "description": "Per-descriptor field, role, representative, binding, source-connection, and canonical-key booleans plus per-candidate basis, counts, and ineligible diagnostics.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1473-1478 and source-eligibility.ts:22-50 define the required booleans, basis, and counts."
+      ],
+      "provenanceNotes": [
+        "An empty eligible subset is reported rather than converted into an unrestricted winner."
+      ]
+    },
+    {
+      "id": "artifact.decision.gradient-transition-publication.v1",
+      "productFocus": "product-flow",
+      "label": "Gradient transition publication decision",
+      "description": "Accepted transition hypothesis IDs, eligibility, midpoint disposition, exact stop-path presence, or explicit no-midpoint and legal flat fallback with rejection provenance.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "validated",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "Earned publication and fallback states are specified in research/v4/MECHANISMS.md:1158-1164."
+      ],
+      "provenanceNotes": [
+        "A flat fallback must remain distinguishable from a missing computation and retain the rejected path identities."
+      ]
+    },
+    {
+      "id": "artifact.hypothesis.identity-obligation.v1",
+      "productFocus": "product-flow",
+      "label": "Ordered identity obligation",
+      "description": "One source-connected, materially distinct, non-field-owned family obligation with priority, direction, and evidence provenance.",
+      "category": "hypothesis",
+      "plane": "runtime",
+      "axisPositionId": "commitment.semantic-hypothesis",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "The base list has four seats and post-cap major-family and chromatic reservations can increase the output to six."
+      ],
+      "provenanceNotes": [
+        "An obligation is a retention hypothesis, not human semantic truth or final role authority."
+      ]
+    },
+    {
+      "id": "artifact.configuration.transition-promotion-objective.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Transition promotion objective",
+      "description": "Objective revision, promotion ordering, decisive coverage definition, quality envelope utility, tolerance, and both baseline-relative loss budgets.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1487-1494 and transition-promotion.ts:15-24 require fixed objective and distinct quality-envelope baselines."
+      ],
+      "provenanceNotes": [
+        "The two envelope baselines and shared budget are named so they cannot drift."
+      ]
+    },
+    {
+      "id": "artifact.report.transition-promotion.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Transition promotion report",
+      "description": "Per-candidate source connection, earned transition, obligation coverage, quality-envelope, and promotion-eligibility fields plus baseline, promoted key, or explicit empty-domain state.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1490-1494 and transition-promotion.ts:26-41 define per-candidate promotion diagnostics."
+      ],
+      "provenanceNotes": [
+        "Baseline retention and actual promotion are distinct states."
+      ]
+    },
+    {
+      "id": "artifact.measurement.artwork-gamut.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Artwork chromatic gamut",
+      "description": "Source-bound chromatic mass by hue direction, total mass, pixel counts, and achievable coverage ceiling for a declared number of treatment slots.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.derived-measurement",
+      "laneId": "lane.image-and-color",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v2-3/src/internal/gamut-coverage.ts:166-181 defines ArtworkGamut."
+      ],
+      "provenanceNotes": [
+        "The measurement binds the source raster and gamut policy."
+      ]
+    },
+    {
+      "id": "artifact.configuration.gamut-coverage-scope.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Gamut identity coverage scope",
+      "description": "Declared role scope, chromatic floor, hue window, saturation rule, field guard, slot count, and diagnostic-versus-objective use for gamut coverage.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1504-1507 requires declared scope and guards; gamut-coverage.ts:39-164 exposes the policy."
+      ],
+      "provenanceNotes": [
+        "Objective contribution is explicit and may be diagnostic-only."
+      ]
+    },
+    {
+      "id": "artifact.measurement.treatment-gamut-identity-coverage.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Treatment gamut identity coverage",
+      "description": "Normalized whole-treatment chromatic coverage per internal treatment, with raw coverage, ceiling, saturation and field-guard decisions, and optional named objective contribution.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1504-1510 and gamut-coverage.ts:295-335 define normalized coverage and guards."
+      ],
+      "provenanceNotes": [
+        "Coverage is a measurement over a named role scope, not a selected treatment."
+      ]
+    },
+    {
+      "id": "artifact.treatment.incumbent-internal.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Incumbent internal treatment",
+      "description": "Canonical internal treatment and semantic identity to preserve unless an admitted challenger satisfies every replacement condition. This is not an exact v3 product Palette.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1521-1531 and NATIVE_COMPLETE_PALETTE_PROTOCOL.md:310-335 define canonical preservation."
+      ],
+      "provenanceNotes": [
+        "Incumbent identity is input custody, not a product-anchor type."
+      ]
+    },
+    {
+      "id": "artifact.measurement.canonical-component-vector-reconstruction.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Canonical component-vector reconstruction",
+      "description": "Reconstruction state and, when available, the canonical named 27-component vector, five block decisions, evidence identities, and exact values. Unreconstructable is an explicit state with reasons.",
+      "category": "measurement",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1524-1531 and NATIVE_COMPLETE_PALETTE_PROTOCOL.md:310-323 require a reconstructable canonical vector and preserve canonical otherwise."
+      ],
+      "provenanceNotes": [
+        "Unavailable components are not represented as zero or passing values."
+      ]
+    },
+    {
+      "id": "artifact.configuration.treatment-hard-constraints.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Treatment hard constraints",
+      "description": "Fixed complete-treatment legality constraints, check order, and epsilon semantics that every incumbent challenger must pass.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1521-1526 names hard constraints as explicit replacement input."
+      ],
+      "provenanceNotes": [
+        "Constraint identity and frozen evaluation order are retained."
+      ]
+    },
+    {
+      "id": "artifact.configuration.incumbent-component-bars.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Incumbent component bars",
+      "description": "Named absolute component thresholds, 27-component order, epsilon, changed-block classes, and candidate-to-candidate post-admission rules.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1522-1527 and NATIVE_COMPLETE_PALETTE_PROTOCOL.md:174-241, :316-333 define bars, vector order, epsilon, and post-admission selection."
+      ],
+      "provenanceNotes": [
+        "No weighted compensation is encoded in this policy."
+      ]
+    },
+    {
+      "id": "artifact.report.incumbent-replacement.v1",
+      "productFocus": "full-analysis-only",
+      "label": "Incumbent replacement report",
+      "description": "Hard and absolute-bar outcomes, componentwise domination certificate, admission set, minimum changed-block class, equality and incomparability reasons, and final unchanged-incumbent or replaced state.",
+      "category": "report",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1524-1531 requires the componentwise domination certificate and preservation reasons."
+      ],
+      "provenanceNotes": [
+        "Exact equality, weaker components, incomparability, and unreconstructable canonical evidence are explicit unchanged states."
+      ]
+    },
+    {
+      "id": "artifact.configuration.fixed-relaxation-order.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Fixed treatment relaxation order",
+      "description": "Ordered legality forms and exact relaxations for field structure, gradient, collapse, and final black or white escape, including a stop condition after the final form.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "draft",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1541-1546 and research/v3/phase-3/PROPOSAL_COMPARISON.md:9-21 require a fixed relaxation ladder and delayed escape."
+      ],
+      "provenanceNotes": [
+        "Order is preference-bearing configuration and must not be inferred from iteration order."
+      ]
+    },
+    {
+      "id": "artifact.decision.treatment-relaxation-outcome.v1",
+      "productFocus": "product-flow",
+      "label": "Treatment relaxation outcome",
+      "description": "Explicit first-nonempty or exhausted-still-infeasible state, selected legality form when present, ordered steps attempted, and resulting domain identity.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/state",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "in",
+                "value": [
+                  "first-nonempty",
+                  "exhausted-still-infeasible"
+                ]
+              }
+            ],
+            "notes": [
+              "The outcome discriminator records success at the first nonempty form or exhaustion of every configured form."
+            ]
+          }
+        ],
+        "notes": [
+          "This is an inspection contract for the route outcome state, not a full decision payload schema."
+        ]
+      },
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1543-1546 requires first nonempty domain, legality form, and steps."
+      ],
+      "provenanceNotes": [
+        "Failure to find a nonempty relaxed domain remains explicit infeasibility, not an absent output."
+      ]
+    },
+    {
+      "id": "artifact.provenance.relaxation-emptiness-certificate.v1",
+      "productFocus": "secondary-overlay",
+      "label": "Relaxation emptiness certificate",
+      "description": "Per-step proof and counts showing that every legality domain before the selected form was empty, or that every configured form remained empty or infeasible.",
+      "category": "provenance",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "draft",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1543-1544 explicitly requires proof that earlier domains were empty."
+      ],
+      "provenanceNotes": [
+        "Certificate scope is the supplied factors, legality settings, and relaxation order."
+      ]
+    },
+    {
+      "id": "artifact.configuration.content-tie-break-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Content tie-break policy",
+      "description": "Quantized quality-block order and resolution followed by ASCII complete-treatment content key, treatment ID, and structural key stages.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1555-1563 and candidate-materialization.ts:50-71 define the content-first deterministic stages."
+      ],
+      "provenanceNotes": [
+        "Role hexes, gradient state, IDs, and structural labels used by the fallback are declared inputs to the policy."
+      ]
+    },
+    {
+      "id": "artifact.treatment.published-internal-with-midpoint.v1",
+      "productFocus": "product-flow",
+      "label": "Published-shape internal treatment with midpoint",
+      "description": "Historical internal complete treatment paired with its actually published midpoint descriptor for bounded post-selection inspection. It is not the exact v3 Palette product contract.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v2-3/src/internal/zero-contrast-repair.ts:118-133 defines PublishedPalette as internal treatment plus midpoint."
+      ],
+      "provenanceNotes": [
+        "The midpoint descriptor travels with the treatment so a re-picked field cannot inherit the old midpoint."
+      ]
+    },
+    {
+      "id": "artifact.candidate-set.ranked-source-eligible-repair-slate.v1",
+      "productFocus": "product-flow",
+      "label": "Ranked source-eligible repair slate",
+      "description": "Already evaluated source-eligible internal treatments with canonical key and rank, explicitly allowing an empty slate.",
+      "category": "candidate-set",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1577-1582 and zero-contrast-repair.ts:155-160 require a ranked source-eligible slate."
+      ],
+      "provenanceNotes": [
+        "Repair may choose only from the supplied evaluated slate."
+      ]
+    },
+    {
+      "id": "artifact.configuration.zero-contrast-repair-policy.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Zero-contrast repair policy",
+      "description": "Explicit enforced and protected pair sets, raw readability bars, tier order, disturbance ordering, publish function identity, and disabled-empty configuration.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v2-3/src/internal/zero-contrast-repair.ts:49-115, :247-261 makes enforced and protected sets explicit; empty enforced pairs means disabled."
+      ],
+      "provenanceNotes": [
+        "Coverage and protection choices are data, not a hidden boolean."
+      ]
+    },
+    {
+      "id": "artifact.treatment.repair-result-internal.v1",
+      "productFocus": "product-flow",
+      "label": "Internal repair result treatment",
+      "description": "The bounded repair result as an internal treatment, including byte-unchanged results and repaired alternatives. It is not the exact v3 product Palette and may be absent only for an explicit failed user-floor repick.",
+      "category": "treatment",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.role-and-treatment",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1575-1582 and :1592-1595 define bounded internal repair or repick results."
+      ],
+      "provenanceNotes": [
+        "Outcome identity is carried separately so unchanged and unrepairable states are not inferred from value equality alone."
+      ]
+    },
+    {
+      "id": "artifact.decision.zero-contrast-repair-outcome.v1",
+      "productFocus": "product-flow",
+      "label": "Zero-contrast repair outcome",
+      "description": "Exactly one of unchanged-not-needed, swapped, same-field-slate, whole-slate-repicked, or unrepairable-unchanged, with incoming violations and protected-pair checks.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1577-1582 and zero-contrast-repair.ts:135-153 define all repair outcome states."
+      ],
+      "provenanceNotes": [
+        "Unrepairable deliberately returns the original internal treatment unchanged."
+      ]
+    },
+    {
+      "id": "artifact.configuration.user-contrast-floors.v1",
+      "productFocus": "inspector-metadata",
+      "label": "Requested user contrast floors",
+      "description": "Always-declared text and accent contrast requests with resolved effective floors and default identities for late feasibility filtering.",
+      "category": "configuration",
+      "plane": "governance",
+      "axisPositionId": "commitment.native-source",
+      "laneId": "lane.configuration-and-governance",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "expected-external",
+      "sourceNotes": [
+        "research/v3/src/contract/types.ts:244-277 defines requested and resolved floors; PHASE_0_DECISIONS.md:154-157 requires default identity and zero collateral."
+      ],
+      "provenanceNotes": [
+        "Floors filter an already evaluated order and do not alter generation or ranking."
+      ]
+    },
+    {
+      "id": "artifact.decision.user-floor-repick-outcome.v1",
+      "productFocus": "product-flow",
+      "label": "User-floor repick outcome",
+      "description": "Explicit byte-unchanged-valid, repicked-highest-ranked-valid, or failed-no-valid-alternative state with violated floors and selected rank when present.",
+      "category": "decision",
+      "plane": "runtime",
+      "axisPositionId": "commitment.bounded-decision",
+      "laneId": "lane.validation-and-rendering",
+      "contractMaturity": "descriptive",
+      "boundaryClassification": "internal",
+      "sourceNotes": [
+        "research/v4/MECHANISMS.md:1592-1597 requires unchanged, highest-ranked valid alternative, or declared failure."
+      ],
+      "provenanceNotes": [
+        "Failure is explicit and does not authorize publishing below the requested floor."
+      ]
+    }
+  ],
+  "mechanismTypings": [
+    {
+      "id": "search.complete-tuple-enumeration",
+      "focusClass": "product-transformation",
+      "title": "Joint legal treatment construction",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `search.complete-tuple-enumeration` - Joint legal treatment construction",
+        "headingLine": 1329
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically for finite domains; implementation state `historical` and tested; evidence scope `mechanical`; runtime admissibility `permitted`.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "tuple-factors",
+          "label": "Finite role and field-state factors",
+          "artifactTypeId": "artifact.candidate-set.finite-treatment-tuple-factors.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Finite factors may contain an explicit empty alternative set; completeness remains relative to these supplied factors."
+          ]
+        },
+        {
+          "id": "legality-settings",
+          "label": "Joint legality settings",
+          "artifactTypeId": "artifact.configuration.complete-treatment-legality.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Collapse, gradient endpoint, contrast, and rejection-order rules are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "tuple-domain",
+          "label": "Declared complete-treatment domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is nonempty when at least one tuple is feasible.",
+            "State is empty or infeasible with zero members when no supplied combination passes legality."
+          ],
+          "notes": [
+            "Domain cardinality and construction scope are retained."
+          ]
+        },
+        {
+          "id": "descriptors",
+          "label": "Complete-treatment descriptors",
+          "artifactTypeId": "artifact.candidate.complete-treatment-descriptor.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "No descriptor is emitted for an empty or infeasible domain."
+          ],
+          "notes": [
+            "Each descriptor carries full lineage and scores independently of canonical treatment equality."
+          ]
+        },
+        {
+          "id": "treatments",
+          "label": "Feasible internal complete treatments",
+          "artifactTypeId": "artifact.treatment.complete-internal.v1",
+          "cardinality": "zero-or-more",
+          "valueStateNotes": [
+            "Zero treatments is a valid result explained by the domain and report."
+          ],
+          "notes": [
+            "These are internal treatments, not exact v3 product palettes."
+          ]
+        },
+        {
+          "id": "enumeration-report",
+          "label": "Enumeration accounting and rejection report",
+          "artifactTypeId": "artifact.report.complete-tuple-enumeration.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The report is present for nonempty, empty, and infeasible results."
+          ],
+          "notes": [
+            "Counts, lineage, scores, and first rejection reasons reconcile the finite enumeration."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "search.exact-branch-and-bound",
+      "focusClass": "product-transformation",
+      "title": "Certified complete-tuple search",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `search.exact-branch-and-bound` - Certified complete-tuple search",
+        "headingLine": 1346
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `prototype` and tested; evidence scope `mechanical`; runtime admissibility `permitted` for a valid frozen objective and bounds.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "tuple-factors",
+          "label": "Finite tuple factors",
+          "artifactTypeId": "artifact.candidate-set.finite-treatment-tuple-factors.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The finite search space may be empty."
+          ]
+        },
+        {
+          "id": "objective",
+          "label": "Frozen exact objective",
+          "artifactTypeId": "artifact.configuration.exact-search-objective.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Optimality is meaningful only for this exact objective."
+          ]
+        },
+        {
+          "id": "branch-order",
+          "label": "Deterministic branch order",
+          "artifactTypeId": "artifact.configuration.deterministic-branch-order.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Traversal order is fixed for deterministic replay."
+          ]
+        },
+        {
+          "id": "bounds",
+          "label": "Admissible objective bounds",
+          "artifactTypeId": "artifact.configuration.admissible-search-bounds.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Bounds must be valid for the supplied objective and factors."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "optimal-treatment",
+          "label": "Objective-optimal internal treatment",
+          "artifactTypeId": "artifact.treatment.selected-internal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present only when the finite domain has a feasible optimum.",
+            "Absent for an empty or infeasible domain; the outcome and certificate remain present."
+          ],
+          "notes": [
+            "The selected value is internal and objective-relative, not product-authorized."
+          ]
+        },
+        {
+          "id": "selection-outcome",
+          "label": "Exact-search selection outcome",
+          "artifactTypeId": "artifact.decision.treatment-selection-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is selected, empty-domain, or infeasible-domain."
+          ],
+          "notes": [
+            "No selected treatment is represented by an explicit outcome."
+          ]
+        },
+        {
+          "id": "certificate",
+          "label": "Objective-relative optimality certificate",
+          "artifactTypeId": "artifact.provenance.objective-relative-search-certificate.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "For a selected optimum, includes objective value and pruning proof.",
+            "For an empty domain, certifies emptiness relative to supplied factors."
+          ],
+          "notes": [
+            "Includes visited and pruned counts and binds objective, bounds, and branch order."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.pareto-retention",
+      "focusClass": "product-admission",
+      "title": "Non-dominated treatment frontier",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.pareto-retention` - Non-dominated treatment frontier",
+        "headingLine": 1362
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for observed loss from quantized dominance pruning and `inconclusive` as a sufficient retention rule; implementation state `historical`; evidence scope `complete-treatment`; runtime admissibility `permitted` only as a retention rule.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "treatment-domain",
+          "label": "Scored complete-treatment domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The domain may be explicitly empty."
+          ]
+        },
+        {
+          "id": "dimensions",
+          "label": "Fixed dominance dimensions and resolutions",
+          "artifactTypeId": "artifact.configuration.pareto-quality-dimensions.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Dimensions, directions, resolutions, and missing-value handling are frozen for the comparison."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "partial-order",
+          "label": "Dominance partial order",
+          "artifactTypeId": "artifact.decision.treatment-partial-order.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty input produces an explicit empty partial order.",
+            "Incomparable pairs remain incomparable."
+          ],
+          "notes": [
+            "The relation does not linearize the frontier."
+          ]
+        },
+        {
+          "id": "frontier",
+          "label": "Retained Pareto subset",
+          "artifactTypeId": "artifact.candidate-set.treatment-pareto-subset.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty input domain yields an empty frontier.",
+            "A nonempty finite domain retains every nondominated member."
+          ],
+          "notes": [
+            "No winner is selected from the subset."
+          ]
+        },
+        {
+          "id": "audit",
+          "label": "Pareto membership and pruning audit",
+          "artifactTypeId": "artifact.report.pareto-retention-audit.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The empty-domain audit contains zero evaluation rows and explicit state."
+          ],
+          "notes": [
+            "Includes each paretoMember flag and every audited pruned row."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.banded-comparator",
+      "focusClass": "product-transformation",
+      "title": "Quantized evidence ordering",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.banded-comparator` - Quantized evidence ordering",
+        "headingLine": 1383
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `mechanical` and `complete-treatment`; runtime admissibility `unresolved` as authority.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "scored-domain",
+          "label": "Scored treatment candidates",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "An empty domain is orderable as an explicit empty sequence."
+          ]
+        },
+        {
+          "id": "comparator-policy",
+          "label": "Evidence-resolution comparator policy",
+          "artifactTypeId": "artifact.configuration.banded-comparator-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Every quantized, relational, and deterministic stage is declared."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "total-order",
+          "label": "Banded total order",
+          "artifactTypeId": "artifact.decision.treatment-total-order.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty input produces an explicit empty total order."
+          ],
+          "notes": [
+            "This total order is distinct from Pareto dominance."
+          ]
+        },
+        {
+          "id": "ordering-trace",
+          "label": "Evidence levels and deciding-stage trace",
+          "artifactTypeId": "artifact.diagnostic.treatment-ordering-trace.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty order records no pairwise deciding stage."
+          ],
+          "notes": [
+            "Includes quantized levels and tie-stage fallthrough."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.weighted-quality-currency",
+      "focusClass": "evaluation-probe",
+      "title": "Hand-weighted scalar quality",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.weighted-quality-currency` - Hand-weighted scalar quality",
+        "headingLine": 1399
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `falsified` as the tested aesthetic authority and `supported` for constituent measurements; implementation state `historical`; evidence scope `complete-treatment` and `perturbation`; runtime admissibility `permitted` as a cold computation.",
+        "scientificInterpretations": [
+          "falsified",
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "complete-treatment",
+          "perturbation"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "quality-domain",
+          "label": "Treatments with quality-axis values",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The domain carries constituent quality axes and may be empty."
+          ]
+        },
+        {
+          "id": "exchange-rates",
+          "label": "Quality axes and exchange rates",
+          "artifactTypeId": "artifact.configuration.quality-exchange-rates.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Weights and normalization identify the tested scalar formulation."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "scalar-evaluations",
+          "label": "Per-treatment scalar quality",
+          "artifactTypeId": "artifact.measurement.scalar-treatment-quality.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty input produces an empty scalar-evaluation set."
+          ],
+          "notes": [
+            "Constituent contributions remain inspectable."
+          ]
+        },
+        {
+          "id": "total-order",
+          "label": "Scalar quality total order",
+          "artifactTypeId": "artifact.decision.treatment-total-order.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty input produces an explicit empty order."
+          ],
+          "notes": [
+            "The order is tied to the declared exchange rates and does not assert general aesthetic authority."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.global-description-length",
+      "focusClass": "evaluation-probe",
+      "title": "One MDL objective over all roles",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.global-description-length` - One MDL objective over all roles",
+        "headingLine": 1415
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.model-assisted-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `falsified` for the Phase 2 global authority; implementation state `prototype`; evidence scope `complete-treatment`; runtime admissibility `unresolved`; local structure pricing is recorded separately.",
+        "scientificInterpretations": [
+          "falsified"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "configurations",
+          "label": "Complete internal configurations",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The complete-configuration domain may be empty."
+          ]
+        },
+        {
+          "id": "coding-model",
+          "label": "Global coding model",
+          "artifactTypeId": "artifact.model.global-description-length-coding.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "model",
+          "notes": [
+            "Role, collapse, gradient, and data-fit prices are model inputs."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-treatment",
+          "label": "Minimum-cost internal treatment",
+          "artifactTypeId": "artifact.treatment.selected-internal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent when the supplied configuration domain is empty."
+          ],
+          "notes": [
+            "The selected value is internal and relative to the tested coding model."
+          ]
+        },
+        {
+          "id": "selection-outcome",
+          "label": "MDL selection outcome",
+          "artifactTypeId": "artifact.decision.treatment-selection-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is selected or empty-domain."
+          ],
+          "notes": [
+            "An explicit outcome accompanies optional selection."
+          ]
+        },
+        {
+          "id": "coding-report",
+          "label": "Cost and coding breakdown",
+          "artifactTypeId": "artifact.report.description-length-selection.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty input records no optimum and zero evaluated configurations."
+          ],
+          "notes": [
+            "Contains costs and explanation breakdown for every evaluated configuration."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.portfolio-selector",
+      "focusClass": "historical-comparator",
+      "title": "Elect among rival complete extractors",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.portfolio-selector` - Elect among rival complete extractors",
+        "headingLine": 1431
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.development-diagnostics"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `falsified` for the tested selector forms; implementation state `prototype`; evidence scope `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "falsified"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "portfolio",
+          "label": "Rival complete-treatment portfolio",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The portfolio may explicitly contain no members."
+          ]
+        },
+        {
+          "id": "member-independent-evidence",
+          "label": "Member-independent evidence",
+          "artifactTypeId": "artifact.measurement.portfolio-member-independent-evidence.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Evidence does not use extractor identity as a feature."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-member",
+          "label": "Selected internal portfolio member",
+          "artifactTypeId": "artifact.treatment.selected-internal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Absent for an empty portfolio or an explicit no-election result."
+          ],
+          "notes": [
+            "This selector output is not the exact v3 product palette."
+          ]
+        },
+        {
+          "id": "selection-outcome",
+          "label": "Portfolio election outcome",
+          "artifactTypeId": "artifact.decision.treatment-selection-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is selected, empty-portfolio, or no-election."
+          ],
+          "notes": [
+            "The optional member is paired with an explicit outcome."
+          ]
+        },
+        {
+          "id": "portfolio-report",
+          "label": "Portfolio margin and disagreement report",
+          "artifactTypeId": "artifact.report.portfolio-selection.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty portfolio report has no member margin and an empty disagreement set."
+          ],
+          "notes": [
+            "Includes bits, coverage, margin, and disagreements."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.noncompensatory-blocks",
+      "focusClass": "product-admission",
+      "title": "Incumbent-relative quality blocks",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.noncompensatory-blocks` - Incumbent-relative quality blocks",
+        "headingLine": 1447
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for incompleteness of the historical six-block incumbent guard and `inconclusive` for its unchallenged 12-block successor; implementation state `historical`; evidence scope `mechanical` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "candidate-domain",
+          "label": "Candidate treatment domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The domain may be empty and may contain mutually incomparable candidates."
+          ]
+        },
+        {
+          "id": "block-policy",
+          "label": "Fixed block order and bars",
+          "artifactTypeId": "artifact.configuration.noncompensatory-quality-blocks.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Block definitions, thresholds, order, and comparison epsilon are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "survivors",
+          "label": "Block-surviving subset",
+          "artifactTypeId": "artifact.candidate-set.noncompensatory-survivor-subset.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The subset may be empty because the input is empty or every candidate fails a binding block."
+          ],
+          "notes": [
+            "Survival does not select a winner."
+          ]
+        },
+        {
+          "id": "partial-order",
+          "label": "Block comparison partial order",
+          "artifactTypeId": "artifact.decision.treatment-partial-order.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Equal and incomparable states are retained; empty input yields an empty relation."
+          ],
+          "notes": [
+            "The block relation is not silently converted to a total order."
+          ]
+        },
+        {
+          "id": "arbitration-report",
+          "label": "Pairwise block arbitration report",
+          "artifactTypeId": "artifact.report.noncompensatory-arbitration.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty input records zero pairwise verdicts."
+          ],
+          "notes": [
+            "Includes first deciding block, failed bars, and incomparable states."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.source-lineage-filter",
+      "focusClass": "product-admission",
+      "title": "Winner eligibility from complete lineage",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.source-lineage-filter` - Winner eligibility from complete lineage",
+        "headingLine": 1467
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` mechanically; implementation state `historical` and tested; evidence scope `mechanical`; runtime admissibility `permitted` as custody filtering, not quality authority.",
+        "scientificInterpretations": [
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "materialized-domain",
+          "label": "Materialized candidates and descriptors",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Every canonical treatment may retain multiple complete-lineage descriptors; the domain may be empty."
+          ]
+        },
+        {
+          "id": "emergency-diagnosis",
+          "label": "Optional exact emergency diagnosis",
+          "artifactTypeId": "artifact.diagnostic.emergency-treatment-eligibility.v1",
+          "requirement": "optional",
+          "cardinality": "zero-or-one",
+          "inputClass": "natural",
+          "notes": [
+            "Only the exact declared one-color emergency form may use this basis; absence disables emergency eligibility."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "eligible-subset",
+          "label": "Source-eligible treatment subset",
+          "artifactTypeId": "artifact.candidate-set.source-eligible-treatment-subset.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The subset may be explicitly empty even when the input domain is nonempty."
+          ],
+          "notes": [
+            "No unrestricted fallback is inserted when eligibility is empty."
+          ]
+        },
+        {
+          "id": "eligibility-report",
+          "label": "Descriptor and candidate eligibility report",
+          "artifactTypeId": "artifact.report.source-lineage-eligibility.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty input and no-eligible-candidate states have explicit counts and bases."
+          ],
+          "notes": [
+            "Includes canonical-key, field, role, representative, binding, source, and emergency booleans."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.transition-promotion",
+      "focusClass": "product-admission",
+      "title": "Earned gradient and obligation promotion",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.transition-promotion` - Earned gradient and obligation promotion",
+        "headingLine": 1482
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `inconclusive`; implementation state `historical`; evidence scope `composition` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "composition",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "materialized-domain",
+          "label": "Materialized treatment candidates",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Descriptors and complete treatment keys remain available; the domain may be empty."
+          ]
+        },
+        {
+          "id": "ranked-order",
+          "label": "Baseline treatment order",
+          "artifactTypeId": "artifact.decision.treatment-total-order.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The order identifies the source-eligible baseline and must cover the named domain."
+          ]
+        },
+        {
+          "id": "accepted-transitions",
+          "label": "Accepted native transitions",
+          "artifactTypeId": "artifact.decision.gradient-transition-publication.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Consumes the explicit publication decision containing accepted path IDs, eligibility, or the flat-fallback disposition."
+          ]
+        },
+        {
+          "id": "role-obligations",
+          "label": "Foreground and accent obligations",
+          "artifactTypeId": "artifact.hypothesis.identity-obligation.v1",
+          "requirement": "optional",
+          "cardinality": "zero-to-six",
+          "inputClass": "natural",
+          "notes": [
+            "Consumes the ordered zero-to-six obligations emitted by role.identity-obligations; decisive and total coverage are evaluated separately."
+          ]
+        },
+        {
+          "id": "promotion-policy",
+          "label": "Objective revision and quality envelopes",
+          "artifactTypeId": "artifact.configuration.transition-promotion-objective.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Ordering and the two baseline-relative envelopes are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-treatment",
+          "label": "Promoted or baseline internal treatment",
+          "artifactTypeId": "artifact.treatment.selected-internal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present as promoted or baseline when a baseline exists.",
+            "Absent for an empty or inconsistent input domain."
+          ],
+          "notes": [
+            "The value is internal and not the exact product Palette."
+          ]
+        },
+        {
+          "id": "selection-outcome",
+          "label": "Promotion selection outcome",
+          "artifactTypeId": "artifact.decision.treatment-selection-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is promoted, baseline-retained, or empty-domain."
+          ],
+          "notes": [
+            "Baseline retention is not represented as absent output."
+          ]
+        },
+        {
+          "id": "promotion-report",
+          "label": "Per-candidate promotion eligibility",
+          "artifactTypeId": "artifact.report.transition-promotion.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty domain records no candidate rows and explicit empty state."
+          ],
+          "notes": [
+            "Includes source connection, earned transition, coverage, quality envelope, and eligibility."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.gamut-identity-coverage",
+      "focusClass": "evaluation-probe",
+      "title": "Whole-treatment chromatic extent",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.gamut-identity-coverage` - Whole-treatment chromatic extent",
+        "headingLine": 1498
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.pixel-and-color-measurement"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as a diagnostic and `inconclusive` as selection authority; implementation state `historical`; evidence scope `downstream-utility` and `complete-treatment`; runtime admissibility `permitted` as a measurement.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "downstream-utility",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "artwork-gamut",
+          "label": "Artwork chromatic gamut",
+          "artifactTypeId": "artifact.measurement.artwork-gamut.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Achromatic artwork is represented by zero chromatic mass rather than missing measurement."
+          ]
+        },
+        {
+          "id": "treatment-domain",
+          "label": "Internal complete treatments",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Coverage is computed for every member; the domain may be empty."
+          ]
+        },
+        {
+          "id": "coverage-policy",
+          "label": "Coverage scope and guards",
+          "artifactTypeId": "artifact.configuration.gamut-coverage-scope.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Role scope, saturation, field guard, and objective-versus-diagnostic use are declared."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "coverage-evaluations",
+          "label": "Per-treatment gamut identity coverage",
+          "artifactTypeId": "artifact.measurement.treatment-gamut-identity-coverage.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "An empty treatment domain yields an empty evaluation set.",
+            "A zero-mass artwork yields normalized full coverage because nothing chromatic is omitted."
+          ],
+          "notes": [
+            "Includes normalized coverage, saturation, field guards, and declared contribution."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.incumbent-anchored-replacement",
+      "focusClass": "research-only-oracle",
+      "title": "Preserve unless challenger dominates",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.incumbent-anchored-replacement` - Preserve unless challenger dominates",
+        "headingLine": 1514
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `falsified` as the tested product-improvement direction and `supported` as a mechanical non-regression oracle; implementation state `historical` and tested; evidence scope `mechanical` and `complete-treatment`; runtime admissibility `permitted` as a cold comparison over available treatments.",
+        "scientificInterpretations": [
+          "falsified",
+          "supported"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "incumbent",
+          "label": "Canonical incumbent internal treatment",
+          "artifactTypeId": "artifact.treatment.incumbent-internal.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The incumbent is always available for unchanged output."
+          ]
+        },
+        {
+          "id": "canonical-vector",
+          "label": "Canonical 27-component reconstruction",
+          "artifactTypeId": "artifact.measurement.canonical-component-vector-reconstruction.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The artifact may explicitly state unreconstructable, which preserves the incumbent."
+          ]
+        },
+        {
+          "id": "challenger-domain",
+          "label": "Complete challenger stream domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The challenger domain may be empty or infeasible."
+          ]
+        },
+        {
+          "id": "hard-constraints",
+          "label": "Hard treatment constraints",
+          "artifactTypeId": "artifact.configuration.treatment-hard-constraints.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Every admitted challenger must pass every hard constraint."
+          ]
+        },
+        {
+          "id": "component-bars",
+          "label": "Absolute bars and domination policy",
+          "artifactTypeId": "artifact.configuration.incumbent-component-bars.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Includes component order, epsilon, changed-block classes, and post-admission Pareto rules."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "selected-treatment",
+          "label": "Preserved incumbent or admitted challenger",
+          "artifactTypeId": "artifact.treatment.selected-internal.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "The incumbent is returned unchanged for empty challengers, unreconstructable canonical vector, equality, incomparability, or any weaker component.",
+            "A challenger is returned only after full admission and post-admission selection."
+          ],
+          "notes": [
+            "The selected treatment remains internal, not the exact v3 product Palette."
+          ]
+        },
+        {
+          "id": "admitted-pareto-subset",
+          "label": "Minimum-class admitted Pareto subset",
+          "artifactTypeId": "artifact.candidate-set.treatment-pareto-subset.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Empty when no challenger is admitted.",
+            "Contains only admitted challengers in the minimum changed-block class when nonempty."
+          ],
+          "notes": [
+            "Candidate-to-candidate Pareto applies only after incumbent admission."
+          ]
+        },
+        {
+          "id": "component-partial-order",
+          "label": "Componentwise challenger partial order",
+          "artifactTypeId": "artifact.decision.treatment-partial-order.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Equality and incomparability remain explicit; empty challenger domains yield an empty relation."
+          ],
+          "notes": [
+            "No weighted compensation linearizes component comparisons."
+          ]
+        },
+        {
+          "id": "replacement-report",
+          "label": "Domination certificate and replacement outcome",
+          "artifactTypeId": "artifact.report.incumbent-replacement.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Outcome explicitly identifies unchanged incumbent or replacement and the reason."
+          ],
+          "notes": [
+            "Includes hard bars, 27-component domination, admission, changed-block, and final tie stages."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.fixed-relaxation",
+      "focusClass": "product-transformation",
+      "title": "Ordered infeasibility relaxation",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.fixed-relaxation` - Ordered infeasibility relaxation",
+        "headingLine": 1536
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `unmeasured` as a general rule; implementation state `prototype` for some forms; evidence scope `mechanical`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "prototype"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "infeasible-domain",
+          "label": "Infeasible complete-treatment domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "valueConstraints": [
+            {
+              "valuePath": "/state",
+              "comparator": "in",
+              "value": [
+                "empty",
+                "infeasible"
+              ],
+              "notes": [
+                "Relaxation starts only after the initial complete-treatment domain explicitly reports empty or infeasible state."
+              ]
+            }
+          ],
+          "notes": [
+            "The input state must explicitly be empty or infeasible under the initial legality form."
+          ]
+        },
+        {
+          "id": "relaxation-order",
+          "label": "Fixed relaxation order",
+          "artifactTypeId": "artifact.configuration.fixed-relaxation-order.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Field and collapse alternatives precede any configured black or white escape."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "result-domain",
+          "label": "First nonempty or still-infeasible domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "cardinality": "exactly-one",
+          "valueConstraints": [
+            {
+              "valuePath": "/state",
+              "comparator": "in",
+              "value": [
+                "nonempty",
+                "infeasible"
+              ],
+              "notes": [
+                "The result is the first nonempty relaxed domain or explicit infeasibility after all configured forms are exhausted."
+              ]
+            }
+          ],
+          "valueStateNotes": [
+            "Nonempty state contains the first configured legality form with feasible members.",
+            "Infeasible state remains explicit when every configured relaxation is empty."
+          ],
+          "notes": [
+            "The output does not silently fabricate an escape treatment."
+          ]
+        },
+        {
+          "id": "relaxation-outcome",
+          "label": "Relaxation route outcome",
+          "artifactTypeId": "artifact.decision.treatment-relaxation-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueConstraints": [
+            {
+              "valuePath": "/state",
+              "comparator": "in",
+              "value": [
+                "first-nonempty",
+                "exhausted-still-infeasible"
+              ],
+              "notes": [
+                "The route state mirrors whether a nonempty domain was found before exhaustion."
+              ]
+            }
+          ],
+          "valueStateNotes": [
+            "State is first-nonempty or exhausted-still-infeasible."
+          ],
+          "notes": [
+            "Includes selected legality form and steps taken."
+          ]
+        },
+        {
+          "id": "emptiness-certificate",
+          "label": "Earlier-domain emptiness proof",
+          "artifactTypeId": "artifact.provenance.relaxation-emptiness-certificate.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "For success, proves every earlier configured domain empty.",
+            "For failure, proves every configured domain empty or infeasible."
+          ],
+          "notes": [
+            "Certificate scope is the exact factors and relaxation policy."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selection.content-tie-break",
+      "focusClass": "product-transformation",
+      "title": "Deterministic semantic tie resolution",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `selection.content-tie-break` - Deterministic semantic tie resolution",
+        "headingLine": 1549
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` for content-first deterministic ordering and `unmeasured` for semantic relabel invariance or perceptual utility; implementation state `historical`; evidence scope `mechanical`; runtime admissibility `permitted` only as a final tie rule.",
+        "scientificInterpretations": [
+          "supported",
+          "unmeasured"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "scored-domain",
+          "label": "Scored treatments and content keys",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Descriptors expose role hexes, gradient state, treatment IDs, complete-treatment keys, and structural keys; the domain may be empty."
+          ]
+        },
+        {
+          "id": "tie-policy",
+          "label": "Quality and content tie stages",
+          "artifactTypeId": "artifact.configuration.content-tie-break-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Quality-block order, resolution, and ASCII fallback fields are explicit."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "deterministic-orders",
+          "label": "Materialization and winner total orders",
+          "artifactTypeId": "artifact.decision.treatment-total-order.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "Each named order is explicit even when it is empty."
+          ],
+          "notes": [
+            "Materialization and winner orders retain separate comparator-stage identities."
+          ]
+        },
+        {
+          "id": "tie-traces",
+          "label": "First-deciding-stage traces",
+          "artifactTypeId": "artifact.diagnostic.treatment-ordering-trace.v1",
+          "cardinality": "one-or-more",
+          "valueStateNotes": [
+            "An empty order records no comparison; exact ties record the final deterministic stage."
+          ],
+          "notes": [
+            "Trace distinguishes quantized quality, complete-treatment content, treatment ID, and structural-key decisions."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "repair.winner-gated-zero-contrast",
+      "focusClass": "product-admission",
+      "title": "Post-publication defect repair",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `repair.winner-gated-zero-contrast` - Post-publication defect repair",
+        "headingLine": 1569
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` in bounded repair cases and `inconclusive` for coverage; implementation state `historical` and currently disabled in the cited module; evidence scope `composition` and `complete-treatment`; runtime admissibility `unresolved`.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "composition",
+          "complete-treatment"
+        ],
+        "runtimeAdmissibilities": [
+          "unresolved"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "published-internal",
+          "label": "Winner with published midpoint",
+          "artifactTypeId": "artifact.treatment.published-internal-with-midpoint.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "Inspection is winner-gated and includes the actual midpoint; this is not the exact v3 product Palette type."
+          ]
+        },
+        {
+          "id": "repair-slate",
+          "label": "Ranked source-eligible slate",
+          "artifactTypeId": "artifact.candidate-set.ranked-source-eligible-repair-slate.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The already evaluated slate may be empty."
+          ]
+        },
+        {
+          "id": "repair-policy",
+          "label": "Enforced and protected repair policy",
+          "artifactTypeId": "artifact.configuration.zero-contrast-repair-policy.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "An empty enforced pair set explicitly disables repair and yields unchanged-not-needed."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "result-treatment",
+          "label": "Unchanged or repaired internal treatment",
+          "artifactTypeId": "artifact.treatment.repair-result-internal.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Byte-unchanged for disabled policy, no enforced defect, or unrepairable defect.",
+            "Otherwise contains the swapped, same-field, or re-picked internal result."
+          ],
+          "notes": [
+            "No new treatment outside the ranked slate is invented; output is not the exact v3 product Palette."
+          ]
+        },
+        {
+          "id": "repair-outcome",
+          "label": "Zero-contrast repair outcome",
+          "artifactTypeId": "artifact.decision.zero-contrast-repair-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "Exactly one state: unchanged-not-needed, swapped, same-field-slate, whole-slate-repicked, or unrepairable-unchanged."
+          ],
+          "notes": [
+            "Incoming violations and protected-pair checks explain the state."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "repair.user-floor-repick",
+      "focusClass": "product-transformation",
+      "title": "User parameters as late feasibility",
+      "source": {
+        "path": "research/v4/MECHANISMS.md",
+        "headingText": "### `repair.user-floor-repick` - User parameters as late feasibility",
+        "headingLine": 1586
+      },
+      "capabilityIds": [
+        "capability.treatment-construction-and-arbitration",
+        "capability.contract-and-render-validation"
+      ],
+      "primaryCapabilityId": "capability.treatment-construction-and-arbitration",
+      "censusStatus": {
+        "authorizationText": "`inventory-only`; this census entry grants no selection, composition, funding, or product authority.",
+        "statusText": "scientific interpretation `supported` as containment and `inconclusive` for exact policy; implementation state `historical`; evidence scope `mechanical` and `composition`; runtime admissibility `permitted` only as late feasibility over an already evaluated domain.",
+        "scientificInterpretations": [
+          "supported",
+          "inconclusive"
+        ],
+        "implementationStates": [
+          "historical"
+        ],
+        "evidenceScopes": [
+          "mechanical",
+          "composition"
+        ],
+        "runtimeAdmissibilities": [
+          "permitted"
+        ],
+        "authorizationTokens": [
+          "inventory-only"
+        ]
+      },
+      "alternativeGroups": [],
+      "inputPorts": [
+        {
+          "id": "evaluated-domain",
+          "label": "Already evaluated treatment domain",
+          "artifactTypeId": "artifact.candidate-set.complete-treatment-domain.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "No generation, cap, or scoring change is permitted; the domain may be empty."
+          ]
+        },
+        {
+          "id": "unparameterized-order",
+          "label": "Unparameterized treatment ranking",
+          "artifactTypeId": "artifact.decision.treatment-total-order.v1",
+          "requirement": "required",
+          "cardinality": "exactly-one",
+          "inputClass": "natural",
+          "notes": [
+            "The highest-ranked member is the unparameterized winner; an empty domain has an empty order."
+          ]
+        },
+        {
+          "id": "requested-floors",
+          "label": "Requested user contrast floors",
+          "artifactTypeId": "artifact.configuration.user-contrast-floors.v1",
+          "requirement": "configuration",
+          "cardinality": "exactly-one",
+          "inputClass": "configuration",
+          "notes": [
+            "Default floors must reproduce the unparameterized result byte-identically."
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "id": "result-treatment",
+          "label": "Unchanged or re-picked internal treatment",
+          "artifactTypeId": "artifact.treatment.repair-result-internal.v1",
+          "cardinality": "zero-or-one",
+          "valueStateNotes": [
+            "Present and byte-identical to the unparameterized winner when that winner satisfies the requested floors.",
+            "Present as the highest-ranked valid alternative when repick succeeds.",
+            "Absent only for empty domain or declared no-valid-alternative failure."
+          ],
+          "notes": [
+            "The output remains internal and is not typed as the exact v3 product Palette."
+          ]
+        },
+        {
+          "id": "repick-outcome",
+          "label": "User-floor feasibility outcome",
+          "artifactTypeId": "artifact.decision.user-floor-repick-outcome.v1",
+          "cardinality": "exactly-one",
+          "valueStateNotes": [
+            "State is byte-unchanged-valid, repicked-highest-ranked-valid, or failed-no-valid-alternative."
+          ],
+          "notes": [
+            "Failure is explicit; contrast is a filter rather than a selector or generator input."
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Matching artifact type IDs assert candidate semantic compatibility only; this fragment contains no architecture, dependency, binding, runtime pipeline, or build-order claim.",
+    "All Section 6 selector and repair treatments are internal contracts and intentionally do not use artifact.product.ui-palette.v3, whose exact v3 Palette shape includes product metadata and publication invariants outside these mechanisms.",
+    "Empty, infeasible, unchanged, no-selection, and unrepairable states are carried by explicit domain, decision, report, or certificate artifacts rather than inferred from missing values."
+  ]
+}

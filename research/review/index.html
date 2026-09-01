@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Palette research review</title>
+		<link rel="stylesheet" href="/styles.css">
+	</head>
+	<body>
+		<header>
+			<h1>Palette research review</h1>
+			<div class="header-actions">
+				<a id="gallery-link" href="/gallery">Corpus gallery</a>
+				<button id="comparison" type="button">Iteration comparison</button>
+				<strong id="progress">Loading</strong>
+			</div>
+		</header>
+		<main>
+			<section class="artwork-section" aria-labelledby="artwork-name">
+				<h2 id="artwork-name"></h2>
+				<img id="artwork" alt="">
+			</section>
+			<section id="candidates" class="candidates" aria-label="Palette candidates"></section>
+			<section class="decision" aria-labelledby="decision-title">
+				<h2 id="decision-title">Which palette fits the artwork better?</h2>
+				<div class="preference-choices">
+					<button type="button" data-preference="left">1 / A</button>
+					<button type="button" data-preference="right">2 / B</button>
+					<button type="button" data-preference="tie">0 / No preference</button>
+				</div>
+				<h2>Would you ship either result?</h2>
+				<div class="ship-choices">
+					<button type="button" data-ship="left">Q / A only</button>
+					<button type="button" data-ship="right">W / B only</button>
+					<button type="button" data-ship="both">E / Both</button>
+					<button type="button" data-ship="neither">R / Neither</button>
+				</div>
+				<fieldset id="reasons">
+					<legend>What needs improvement?</legend>
+					<label><input type="checkbox" value="background"> Background</label>
+					<label><input type="checkbox" value="foreground"> Foreground</label>
+					<label><input type="checkbox" value="surface"> Surface</label>
+					<label><input type="checkbox" value="accent"> Accent</label>
+					<label><input type="checkbox" value="unfaithful"> Unfaithful</label>
+					<label><input type="checkbox" value="flat"> Too flat</label>
+					<label><input type="checkbox" value="unreadable"> Unreadable</label>
+					<label title="A tiny logo, sticker, border, or incidental detail controls the palette"><input type="checkbox" value="tiny-detail-dominates"> Tiny detail dominates</label>
+					<label><input type="checkbox" value="missing-gradient"> Missing gradient</label>
+					<label><input type="checkbox" value="unnecessary-gradient"> Unnecessary gradient</label>
+					<label><input type="checkbox" value="unnecessary-surface"> Surface should match background</label>
+					<label><input type="checkbox" value="missing-source-color"> Missing important artwork color</label>
+				</fieldset>
+				<label class="note">Optional note <input id="note" maxlength="500" autocomplete="off"></label>
+				<div class="navigation">
+					<button id="previous" type="button">Previous</button>
+					<button id="submit" type="button" disabled>Submit and next</button>
+					<button id="skip" type="button">Skip</button>
+				</div>
+				<p id="status" role="status"></p>
+			</section>
+		</main>
+		<script type="module" src="/app.js"></script>
+	</body>
+</html>

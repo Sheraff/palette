@@ -1,0 +1,549 @@
+{
+ "schemaVersion": 1,
+ "generatedBy": "research/v2-3-experiments/track-n/build-review-series.ts",
+ "trunk": "3cb2ecd",
+ "question": "Should a small, highly saturated family beat a larger family that is already fully chromatic, for the accent role?",
+ "detectorSignature": {
+  "winnerFullChroma": 0.09,
+  "winnerPopulationFloor": 0.015,
+  "smallPopulation": 0.015,
+  "chromaLead": 0.06,
+  "populationRatio": 2
+ },
+ "labels": {
+  "incumbent": "vivid-series-incumbent",
+  "vivid": "vivid-series-vivid"
+ },
+ "cases": [
+  {
+   "image": "08/ab67616d00001e0200087b1314ac8e17bc1c6916",
+   "name": "ab67616d00001e0200087b1314ac8e17bc1c6916",
+   "sourceSha256": "9cffcbc77286e03eb1d82d38b25260977d1d45a28288597c77fe82bcbc1ca425",
+   "root": "08",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": true,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#020401",
+     "#311f13",
+     "#f1e8df",
+     "#e7a680"
+    ],
+    "accentHex": "#e7a680",
+    "accentChroma": 0.0927,
+    "accentFamilyPopulationPercent": 3.801,
+    "accentFamilyMarkSupport": 0.026,
+    "relationUtility": 0.9291,
+    "qualityUtility": 0.8598,
+    "identityCoverage": 0.929
+   },
+   "vivid": {
+    "palette": [
+     "#020401",
+     "#311f13",
+     "#f1e8df",
+     "#f94a2f"
+    ],
+    "accentHex": "#f94a2f",
+    "accentChroma": 0.2155,
+    "accentFamilyPopulationPercent": 0.572,
+    "accentFamilyMarkSupport": 0.103,
+    "obligationPriority": 3,
+    "inSignatureLane": true,
+    "relationUtility": 0.882,
+    "qualityUtility": 0.8513,
+    "identityCoverage": 0.5,
+    "slateRank": 10
+   },
+   "tradeoff": {
+    "chromaLead": 0.1228,
+    "populationRatio": 6.6,
+    "relationMargin": 0.0472,
+    "qualityMargin": 0.0086,
+    "identityGainMargin": 0.0386,
+    "identityShareOfMargin": 0.818
+   }
+  },
+  {
+   "image": "06/ab67616d00001e020006eb2197bdb0a7b9392108",
+   "name": "ab67616d00001e020006eb2197bdb0a7b9392108",
+   "sourceSha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+   "root": "06",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": false,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#361a05",
+     "#220b05",
+     "#bbba8a",
+     "#8a7c33"
+    ],
+    "accentHex": "#8a7c33",
+    "accentChroma": 0.0947,
+    "accentFamilyPopulationPercent": 5.656,
+    "accentFamilyMarkSupport": 0.014,
+    "relationUtility": 0.7515,
+    "qualityUtility": 0.7001,
+    "identityCoverage": 0.571
+   },
+   "vivid": {
+    "palette": [
+     "#361a05",
+     "#220b05",
+     "#bbba8a",
+     "#fcdd44"
+    ],
+    "accentHex": "#fcdd44",
+    "accentChroma": 0.1653,
+    "accentFamilyPopulationPercent": 1.148,
+    "accentFamilyMarkSupport": 0.092,
+    "obligationPriority": 3,
+    "inSignatureLane": true,
+    "relationUtility": 0.7138,
+    "qualityUtility": 0.7009,
+    "identityCoverage": 0.143,
+    "slateRank": 188
+   },
+   "tradeoff": {
+    "chromaLead": 0.0705,
+    "populationRatio": 4.9,
+    "relationMargin": 0.0378,
+    "qualityMargin": -0.0008,
+    "identityGainMargin": 0.0386,
+    "identityShareOfMargin": 1.021
+   }
+  },
+  {
+   "image": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+   "name": "ab67616d00001e02000e229142cb6dbae156341c",
+   "sourceSha256": "47ff62e4f8bf173f9c91cd6c3eeac9c1dca5f0d4ee4f5a457edcd7b7b7ea28e2",
+   "root": "0e",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": false,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#101b15",
+     "#dd5839",
+     "#e8ebe2",
+     "#d5c675"
+    ],
+    "accentHex": "#d5c675",
+    "accentChroma": 0.1034,
+    "accentFamilyPopulationPercent": 3.298,
+    "accentFamilyMarkSupport": 0.007,
+    "relationUtility": 0.8414,
+    "qualityUtility": 0.7343,
+    "identityCoverage": 1
+   },
+   "vivid": {
+    "palette": [
+     "#101b15",
+     "#dd5839",
+     "#e8ebe2",
+     "#f5f652"
+    ],
+    "accentHex": "#f5f652",
+    "accentChroma": 0.1783,
+    "accentFamilyPopulationPercent": 0.686,
+    "accentFamilyMarkSupport": 0.383,
+    "obligationPriority": null,
+    "inSignatureLane": true,
+    "relationUtility": 0.758,
+    "qualityUtility": 0.7273,
+    "identityCoverage": 0.5,
+    "slateRank": 13
+   },
+   "tradeoff": {
+    "chromaLead": 0.0749,
+    "populationRatio": 4.8,
+    "relationMargin": 0.0834,
+    "qualityMargin": 0.0069,
+    "identityGainMargin": 0.0764,
+    "identityShareOfMargin": 0.917
+   }
+  },
+  {
+   "image": "11/ab67616d0000b27300113e357f86250837b99d13",
+   "name": "ab67616d0000b27300113e357f86250837b99d13",
+   "sourceSha256": "f7ed3d9731d8e3a74d82df493f58d4115f4e22898c0fb099b9a57df4b85ced33",
+   "root": "11",
+   "dimensions": [
+    640,
+    640
+   ],
+   "gradient": true,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#98aad2",
+     "#c8d1e0",
+     "#2c2216",
+     "#e7e38c"
+    ],
+    "accentHex": "#e7e38c",
+    "accentChroma": 0.1089,
+    "accentFamilyPopulationPercent": 5.924,
+    "accentFamilyMarkSupport": 0.182,
+    "relationUtility": 0.9178,
+    "qualityUtility": 0.8485,
+    "identityCoverage": 0.929
+   },
+   "vivid": {
+    "palette": [
+     "#98aad2",
+     "#c8d1e0",
+     "#2c2216",
+     "#da2723"
+    ],
+    "accentHex": "#da2723",
+    "accentChroma": 0.2131,
+    "accentFamilyPopulationPercent": 0.446,
+    "accentFamilyMarkSupport": 0.617,
+    "obligationPriority": 2,
+    "inSignatureLane": true,
+    "relationUtility": 0.8731,
+    "qualityUtility": 0.8381,
+    "identityCoverage": 0.548,
+    "slateRank": 34
+   },
+   "tradeoff": {
+    "chromaLead": 0.1042,
+    "populationRatio": 13.3,
+    "relationMargin": 0.0447,
+    "qualityMargin": 0.0105,
+    "identityGainMargin": 0.0343,
+    "identityShareOfMargin": 0.766
+   }
+  },
+  {
+   "image": "0f/ab67616d00001e02000f723f36271de0ed3aa893",
+   "name": "ab67616d00001e02000f723f36271de0ed3aa893",
+   "sourceSha256": "15119b41b440ad3b55f8b8b41bda765f906247f41adf07e3091e86edd3389b6a",
+   "root": "0f",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": true,
+   "midpoint": "#2c0b5a",
+   "incumbent": {
+    "palette": [
+     "#2a0c54",
+     "#09060d",
+     "#f7f2f9",
+     "#8b65b0"
+    ],
+    "accentHex": "#8b65b0",
+    "accentChroma": 0.1185,
+    "accentFamilyPopulationPercent": 1.586,
+    "accentFamilyMarkSupport": 0.018,
+    "relationUtility": 0.8517,
+    "qualityUtility": 0.8231,
+    "identityCoverage": 0.571
+   },
+   "vivid": {
+    "palette": [
+     "#2a0c54",
+     "#09060d",
+     "#f7f2f9",
+     "#8827c4"
+    ],
+    "accentHex": "#8827c4",
+    "accentChroma": 0.2258,
+    "accentFamilyPopulationPercent": 0.48,
+    "accentFamilyMarkSupport": 0.03,
+    "obligationPriority": null,
+    "inSignatureLane": true,
+    "relationUtility": 0.8119,
+    "qualityUtility": 0.8119,
+    "identityCoverage": 0,
+    "slateRank": 8
+   },
+   "tradeoff": {
+    "chromaLead": 0.1073,
+    "populationRatio": 3.3,
+    "relationMargin": 0.0398,
+    "qualityMargin": 0.0113,
+    "identityGainMargin": 0.0286,
+    "identityShareOfMargin": 0.717
+   }
+  },
+  {
+   "image": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+   "name": "ab67616d00001e02000a8aa1dafa651976a7bb44",
+   "sourceSha256": "37a9174a754c2b0441e00b354fdb3d870100158ccdf8e75eb26cac06835ad82d",
+   "root": "0a",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": true,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#040301",
+     "#491600",
+     "#fa8a02",
+     "#8f3908"
+    ],
+    "accentHex": "#8f3908",
+    "accentChroma": 0.1285,
+    "accentFamilyPopulationPercent": 5.249,
+    "accentFamilyMarkSupport": 0.078,
+    "relationUtility": 0.936,
+    "qualityUtility": 0.8774,
+    "identityCoverage": 0.943
+   },
+   "vivid": {
+    "palette": [
+     "#040301",
+     "#491600",
+     "#fa8a02",
+     "#fbf809"
+    ],
+    "accentHex": "#fbf809",
+    "accentChroma": 0.205,
+    "accentFamilyPopulationPercent": 0.444,
+    "accentFamilyMarkSupport": 0.526,
+    "obligationPriority": null,
+    "inSignatureLane": true,
+    "relationUtility": 0.9013,
+    "qualityUtility": 0.8653,
+    "identityCoverage": 0.657,
+    "slateRank": 18
+   },
+   "tradeoff": {
+    "chromaLead": 0.0765,
+    "populationRatio": 11.8,
+    "relationMargin": 0.0346,
+    "qualityMargin": 0.0121,
+    "identityGainMargin": 0.0225,
+    "identityShareOfMargin": 0.65
+   }
+  },
+  {
+   "image": "0b/ab67616d00001e02000b87c4345d251dd50300f8",
+   "name": "ab67616d00001e02000b87c4345d251dd50300f8",
+   "sourceSha256": "b467ef4460f9f35a8c2740918865025c47c9014535407e214332469cdf2bbda9",
+   "root": "0b",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": false,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#efcf92",
+     "#cca467",
+     "#00093c",
+     "#b68646"
+    ],
+    "accentHex": "#b68646",
+    "accentChroma": 0.1003,
+    "accentFamilyPopulationPercent": 7.641,
+    "accentFamilyMarkSupport": 0.004,
+    "relationUtility": 0.7593,
+    "qualityUtility": 0.72,
+    "identityCoverage": 0.786
+   },
+   "vivid": {
+    "palette": [
+     "#efcf92",
+     "#cca467",
+     "#00093c",
+     "#9e0d2e"
+    ],
+    "accentHex": "#9e0d2e",
+    "accentChroma": 0.1726,
+    "accentFamilyPopulationPercent": 0.464,
+    "accentFamilyMarkSupport": 0.027,
+    "obligationPriority": null,
+    "inSignatureLane": true,
+    "relationUtility": 0.7139,
+    "qualityUtility": 0.7032,
+    "identityCoverage": 0.214,
+    "slateRank": 67
+   },
+   "tradeoff": {
+    "chromaLead": 0.0722,
+    "populationRatio": 16.5,
+    "relationMargin": 0.0454,
+    "qualityMargin": 0.0168,
+    "identityGainMargin": 0.0286,
+    "identityShareOfMargin": 0.63
+   }
+  },
+  {
+   "image": "0b/ab67616d00001e02000b096f0b03b7745c8e8aab",
+   "name": "ab67616d00001e02000b096f0b03b7745c8e8aab",
+   "sourceSha256": "7a50cef2f104448b5daff1055282a05b8489424ab404004b4cc7dcbe6729e0f3",
+   "root": "0b",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": true,
+   "midpoint": "#003900",
+   "incumbent": {
+    "palette": [
+     "#083808",
+     "#001802",
+     "#f8fdf7",
+     "#54995a"
+    ],
+    "accentHex": "#54995a",
+    "accentChroma": 0.1168,
+    "accentFamilyPopulationPercent": 3.136,
+    "accentFamilyMarkSupport": 0.036,
+    "relationUtility": 0.8422,
+    "qualityUtility": 0.8136,
+    "identityCoverage": 0.571
+   },
+   "vivid": {
+    "palette": [
+     "#083808",
+     "#001802",
+     "#f8fdf7",
+     "#17d21f"
+    ],
+    "accentHex": "#17d21f",
+    "accentChroma": 0.2466,
+    "accentFamilyPopulationPercent": 1.279,
+    "accentFamilyMarkSupport": 0.089,
+    "obligationPriority": 1,
+    "inSignatureLane": true,
+    "relationUtility": 0.8133,
+    "qualityUtility": 0.799,
+    "identityCoverage": 0.286,
+    "slateRank": 11
+   },
+   "tradeoff": {
+    "chromaLead": 0.1298,
+    "populationRatio": 2.5,
+    "relationMargin": 0.0289,
+    "qualityMargin": 0.0146,
+    "identityGainMargin": 0.0143,
+    "identityShareOfMargin": 0.495
+   }
+  },
+  {
+   "image": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+   "name": "ab67616d00001e02000d457f4b8829a59481e78b",
+   "sourceSha256": "30ae4598777118512f9fc1998305617b1ceff691e9d68f2bd75541d6e04a8862",
+   "root": "0d",
+   "dimensions": [
+    300,
+    300
+   ],
+   "gradient": false,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#fd524b",
+     "#f9a94a",
+     "#fdfcaa",
+     "#fb8257"
+    ],
+    "accentHex": "#fb8257",
+    "accentChroma": 0.1588,
+    "accentFamilyPopulationPercent": 9.607,
+    "accentFamilyMarkSupport": 0,
+    "relationUtility": 0.7581,
+    "qualityUtility": 0.7096,
+    "identityCoverage": 0.884
+   },
+   "vivid": {
+    "palette": [
+     "#fd524b",
+     "#f9a94a",
+     "#fdfcaa",
+     "#df241d"
+    ],
+    "accentHex": "#df241d",
+    "accentChroma": 0.2197,
+    "accentFamilyPopulationPercent": 1.4,
+    "accentFamilyMarkSupport": 0.01,
+    "obligationPriority": null,
+    "inSignatureLane": true,
+    "relationUtility": 0.7269,
+    "qualityUtility": 0.6929,
+    "identityCoverage": 0.679,
+    "slateRank": 62
+   },
+   "tradeoff": {
+    "chromaLead": 0.061,
+    "populationRatio": 6.9,
+    "relationMargin": 0.0313,
+    "qualityMargin": 0.0167,
+    "identityGainMargin": 0.0146,
+    "identityShareOfMargin": 0.466
+   }
+  },
+  {
+   "image": "02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+   "name": "ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+   "sourceSha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+   "root": "02",
+   "dimensions": [
+    640,
+    640
+   ],
+   "gradient": false,
+   "midpoint": null,
+   "incumbent": {
+    "palette": [
+     "#fefefe",
+     "#fefefe",
+     "#0a0919",
+     "#12356d"
+    ],
+    "accentHex": "#12356d",
+    "accentChroma": 0.1056,
+    "accentFamilyPopulationPercent": 3.734,
+    "accentFamilyMarkSupport": 0.017,
+    "relationUtility": 0.769,
+    "qualityUtility": 0.7519,
+    "identityCoverage": 0.19
+   },
+   "vivid": {
+    "palette": [
+     "#fefefe",
+     "#fefefe",
+     "#0a0919",
+     "#ea64bb"
+    ],
+    "accentHex": "#ea64bb",
+    "accentChroma": 0.1908,
+    "accentFamilyPopulationPercent": 0.854,
+    "accentFamilyMarkSupport": 0.02,
+    "obligationPriority": 3,
+    "inSignatureLane": true,
+    "relationUtility": 0.7398,
+    "qualityUtility": 0.727,
+    "identityCoverage": 0.143,
+    "slateRank": 23
+   },
+   "tradeoff": {
+    "chromaLead": 0.0853,
+    "populationRatio": 4.4,
+    "relationMargin": 0.0292,
+    "qualityMargin": 0.0249,
+    "identityGainMargin": 0.0043,
+    "identityShareOfMargin": 0.147
+   }
+  }
+ ]
+}

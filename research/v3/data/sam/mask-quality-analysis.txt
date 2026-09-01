@@ -1,0 +1,59 @@
+SAM mask quality — sam-mask-quality-1
+answered 60 of 60
+
+RECOMMENDED SCORE_THRESHOLD
+  per group: {"person_like":0.577937,"text_like":0.697295}
+  the three lines below describe the POOLED cut, which is what the per-group table is measured against
+  at that cut: precision   91%, recall   69%, specificity   82%, Youden J 0.514
+  it keeps 29 good and 3 bad masks, drops 13 good and 14 bad
+  and it keeps 0 of the 1 "partly" masks
+  run threshold was 0.3 — raising it is a query, lowering it is a re-run
+
+SENSITIVITY TO "partly"
+  excluded   threshold 0.578  J 0.514
+  positive   threshold 0.578  J 0.498
+  negative   threshold 0.578  J 0.524
+  population-weighted: threshold 0.644  J 0.373
+
+BY BAND (yes / no / partly, and the yes-rate among decided)
+  0.30-0.45    6  10   1     38%
+  0.45-0.60   10   4   0     71%
+  0.60-0.80   12   3   0     80%
+  0.80+       14   0   0    100%
+
+BY GROUP
+  person_like  n= 29  own threshold 0.578  J 0.678  gain over pooled 0.000  (defines the pooled cut — abstains, does not veto)
+  text_like    n= 31  own threshold 0.697  J 0.478  gain over pooled 0.120
+  separation 0.119 over 2 group(s) (needs >= 0.05, at least one group gaining >= 0.05, and none losing) → per-group thresholds
+
+BY CONCEPT (loose end A5 — does the replaced prompt set earn its keep?)
+  person        n= 13 of   280 in the run  yes  9 no  4 partly  0    69%
+  lettering     n=  4 of   550 in the run  yes  4 no  0 partly  0   100%  (underpowered)
+  logo          n=  5 of   139 in the run  yes  3 no  2 partly  0    60%
+  face          n= 16 of   250 in the run  yes 10 no  5 partly  1    67%
+  words         n=  5 of   316 in the run  yes  5 no  0 partly  0   100%
+  album-title   n=  5 of   152 in the run  yes  5 no  0 partly  0   100%
+  sticker       n=  8 of    19 in the run  yes  2 no  6 partly  0    25%
+  letter        n=  4 of  3147 in the run  yes  4 no  0 partly  0   100%  (underpowered)
+
+HALLUCINATION CLASS
+  area_fraction > 0.5 and score < 0.5, force-included whole — 3 in the sample, 3 answered
+  face      score 0.426 area 0.519  answered no     dropped  11/ab67616d0000b27300116380305ae5fd3607c43b
+  sticker   score 0.374 area 0.889  answered no     dropped  images/elephunk.jpg
+  logo      score 0.433 area 0.773  answered no     dropped  0b/ab67616d0000b273000bc98f315aba36374f9f93
+  forced subset only: the recommended threshold 0.578 drops every rejected suspicious shape (true by construction — see below)
+
+EVERY MASK OVER AREA 0.5 (the question the forced subset cannot answer)
+  sticker   score 0.512 area 0.941  answered no     dropped   sampled  09/ab67616d0000b273000955ccfc1e8da97a09b32d
+  face      score 0.426 area 0.519  answered no     dropped   forced  11/ab67616d0000b27300116380305ae5fd3607c43b
+  sticker   score 0.374 area 0.889  answered no     dropped   forced  images/elephunk.jpg
+  logo      score 0.433 area 0.773  answered no     dropped   forced  0b/ab67616d0000b273000bc98f315aba36374f9f93
+  sticker   score 0.679 area 0.781  answered no     SURVIVES  sampled  0b/ab67616d0000b273000bc98f315aba36374f9f93
+  guard area <= 0.5: removes 1 false positive(s), costs 0 true positive(s) — precision   91% ->   94%, recall   69% ->   69%, J 0.514 -> 0.573
+  no big-area mask of these concepts reached the round: album-title, letter, lettering, person, words
+  verdict: a score threshold alone cannot remove this class — 1 of 5 reviewer-rejected big-area mask(s) score at or above 0.578 (the smallest covers 0.781 of the image). An area_fraction > 0.5 guard removes 1 false positive(s) at a cost of 0 true positive(s) in this sample, taking precision from 0.9063 to 0.9355 and J from 0.5140 to 0.5728. It is a query, not a re-run.
+
+WARNINGS
+  - the population-weighted sweep prefers 0.644, not 0.578 — the unweighted optimum is partly an artefact of the even-quota sampling
+  - concept lettering has fewer than 5 decided answers
+  - concept letter has fewer than 5 decided answers

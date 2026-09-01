@@ -1,0 +1,51 @@
+RESIDUAL ISOLATION — sam-eval-142-v3-dynamic, 142 covers
+static-answers-unperturbed check vs sam-eval-142-v2: 137/140 byte-identical, 3 differ only by barcode (added after that run), 0 genuinely perturbed
+
+residual_field_fraction, mean / median (higher = more subtracted away is NOT the goal;
+the goal is that what remains is field, which only the review round can say)
+condition                        mean   median      min      max
+static / guard_on              0.8261   0.8758   0.2469   1.0000
+dynamic / guard_on             0.8178   0.8609   0.2469   1.0000
+static / guard_off             0.8210   0.8739   0.2193   1.0000
+dynamic / guard_off            0.8128   0.8555   0.2193   1.0000
+
+what dynamic prompting newly captured (residual_static - residual_dynamic)
+  guard_on  mean +0.0083  median +0.0000  max +0.3217  covers moved >0.001: 14
+            over the 47 covers that HAD a dynamic concept: mean +0.0250  median +0.0000
+  guard_off mean +0.0083  median +0.0000  max +0.3217  covers moved >0.001: 14
+            over the 47 covers that HAD a dynamic concept: mean +0.0250  median +0.0000
+
+dynamic concepts: asked vs fired above the calibrated cut (guard_off)
+  concept           asked  fired    rate
+  dyn-animal            5      5    1.00
+  dyn-building          8      1    0.12
+  dyn-object           24      0    0.00
+  dyn-vehicle           7      5    0.71
+  dyn-watermark         8      5    0.62
+  best score reached per asked cover (0.00 = the concept returned nothing at all,
+  even at the 0.3 capture floor):
+    dyn-animal       [0.91, 0.84, 0.8, 0.7, 0.58]
+    dyn-building     [0.65, 0.36, 0.34, 0.0, 0.0, 0.0, 0.0, 0.0]
+    dyn-object       [0.38, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    dyn-vehicle      [0.92, 0.91, 0.88, 0.83, 0.72, 0.53, 0.0]
+    dyn-watermark    [0.8, 0.69, 0.64, 0.61, 0.6, 0.31, 0.0, 0.0]
+
+area guard: what it removes
+  1 regions removed by the guard, on 1 covers
+    sticker             1
+
+contaminated residuals (proxy, guard_off — NOT a pixel judgment)
+  53 of 142 covers carry at least one cause
+    text_below_cut                     26
+    subject_unmasked                   23
+    text_below_pooled_cut_too          11
+    subject_kind_variants_disagree     10
+    abstract_shape_no_noun              2
+
+  of the 26 text_below_cut covers: 15 are recoverable at the POOLED cut (the raised text_like cut of 0.6973 is the cause), 11 have nothing above the pooled cut either — the A12 shape
+
+  subject_unmasked, by agreed subject_kind:
+    object                             14
+    building_or_structure               7
+    person                              1
+    vehicle                             1

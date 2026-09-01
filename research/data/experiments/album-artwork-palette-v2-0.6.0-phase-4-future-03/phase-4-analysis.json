@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-future-03-review-v1",
+  "manifestId": "b9dd852a0e16d3b03b39aa9fdd5085b580a6664a457952bfce927b39c3624254",
+  "protocolId": "1e6f6fe330e58678e1bd30dc307f029864a9bdea4e8275e71d03af588808ecc7",
+  "futureSampleManifestId": "bee665792a4ddfaeb3541aa5e58181c8f3a0685836b13475643d9deccace4060",
+  "futureSampleSealCommitment": "139d9c9fe72838c9618f0cb575cda34d1b7b54c8e83a9d1446034c76b35b75ba",
+  "inputHashes": {
+    "manifestSha256": "f696adff8970b39c9a18bc23b43103893cdb045a04c5d049986dbfc46c431004",
+    "provenanceSha256": "afdf6586a0c99d46124e56d75ac158ec8a0434b93e805966f46071e9cbfde006",
+    "runCompleteSha256": "9addb4aa82d32aa031a5199922e98985b3ffcc0015f96604750fc8ebd52fe1a0",
+    "feedbackSha256": "f33144db8b770074d62812fbb53ce32792744223c59093e971033258acb2c342",
+    "technicalInterpretationsSha256": "bc6d27f22a46723febdc24f17e5d4dd8f7e3c31a98e3b375479777e7b0987f62"
+  },
+  "counts": {
+    "caseCount": 12,
+    "relative": {
+      "baseline-stronger": 4,
+      "candidate-stronger": 3,
+      "similarly-valid": 5
+    },
+    "candidateQuality": {
+      "acceptable": 3,
+      "strong": 8,
+      "weak-fallback": 1
+    },
+    "baselineQuality": {
+      "acceptable": 3,
+      "strong": 8,
+      "weak-fallback": 1
+    },
+    "candidateTags": {
+      "incomplete artwork identity": 3,
+      "missing gradient": 1
+    },
+    "baselineTags": {
+      "incomplete artwork identity": 3,
+      "missing gradient": 1
+    },
+    "positiveCandidateCount": 11,
+    "technicalClasses": {
+      "identity-bearing-accent-top-ranking-underselection": 1,
+      "signature-color-accent-availability-underselection": 1,
+      "signature-color-retained-slate-underselection": 1
+    }
+  },
+  "runtime": {
+    "candidate": {
+      "workerCount": 6,
+      "wallMs": 1974.8100410000002,
+      "totalChildWallMs": 8215.539913999999,
+      "totalCpuUserMicros": 10946641,
+      "totalCpuSystemMicros": 226927
+    },
+    "baseline": {
+      "mode": "sequential-stop-on-first-error",
+      "wallMs": 9911.824290999999,
+      "totalChildWallMs": 8519.975752,
+      "totalCpuUserMicros": 10924603,
+      "totalCpuSystemMicros": 215170
+    },
+    "totalWallMs": 12066.788083
+  },
+  "repeatConsistency": {
+    "intentionalRepeatsIncluded": false
+  },
+  "results": [
+    {
+      "caseId": "future03-01-140173463185",
+      "futureCaseId": "future-03-10",
+      "assignmentKey": "1401734631851338baf8414eccbc93fc8dbdbf89a84e2cfcff2f3b8ce2ace859",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-02-186b0bfab9c5",
+      "futureCaseId": "future-03-05",
+      "assignmentKey": "186b0bfab9c5ec4c39598044c39f36c561effd058bff10a728c06c4d460747b6",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "weak-fallback",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-03-27153b35dabc",
+      "futureCaseId": "future-03-11",
+      "assignmentKey": "27153b35dabc647dfd50f8064ce9565c557e54b7ea41316c815b3cd9fc7a979a",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-04-2eb0d3abef58",
+      "futureCaseId": "future-03-03",
+      "assignmentKey": "2eb0d3abef58815f888fe34f8c3ac6c24dc112fe96dac780fc0210de8ffee75e",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "acceptable",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-05-7a25113befbd",
+      "futureCaseId": "future-03-07",
+      "assignmentKey": "7a25113befbdfe5e6c33e8af4f25f52e99413f647dc035fbf81706c0417d2f16",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "acceptable",
+      "relative": "similarly-valid",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "there is a strip of orange-gold lights in the artwork that really contrasts with the blue-green tones, and not having it in either palettes is really missing some core identity",
+      "technicalInterpretation": {
+        "caseId": "future03-05-7a25113befbd",
+        "commentSha256": "68e3d201231789c80970fbd2097c5c64125cfa5dce638885f163404ea8f615fa",
+        "classes": [
+          "signature-color-accent-availability-underselection"
+        ],
+        "rationale": "The candidate is option A. Orange and warm-gold source families including family-5976 and family-5094 reached the signature lane, but neither reached the complete-candidate accent-family set; the winner and retained slate therefore remain blue-green. The missing orange-gold identity described for both methods is a candidate accent-availability loss before complete-treatment Pareto ranking.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future03-06-80ca3794fda9",
+      "futureCaseId": "future-03-08",
+      "assignmentKey": "80ca3794fda998c1b689d6a00acbdb94688500904031e1f12558224bdbc5183a",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-07-856314f006cf",
+      "futureCaseId": "future-03-12",
+      "assignmentKey": "856314f006cf7617ea465744c45211fc7e0dc15a8b4dcdb9618b14ebdb4a3ae7",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "acceptable",
+      "relative": "baseline-stronger",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "there is a big green dome in this artwork that contrasts with the dominant pink-beige gradient, this color is necessary for full artwork identity",
+      "technicalInterpretation": {
+        "caseId": "future03-07-856314f006cf",
+        "commentSha256": "09e2c91a256686398fc766d857c973ef8695a6491adb3c272ac8ff744d6c1ae0",
+        "classes": [
+          "signature-color-retained-slate-underselection"
+        ],
+        "rationale": "The candidate is option B. Green source families including family-7235, family-8117, and family-9020 reached complete accent candidates, but no green family survived into the retained accent slate; the selected treatment uses a brown accent. The missing green dome identity is therefore retained-slate underselection after candidate availability rather than source-family discovery failure.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future03-08-c4928c6179fc",
+      "futureCaseId": "future-03-04",
+      "assignmentKey": "c4928c6179fcdc7096b3689e154a04c3407d011ab48edd040f10974393ba0cb2",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-09-c69d9e863d6b",
+      "futureCaseId": "future-03-01",
+      "assignmentKey": "c69d9e863d6b13e0d9e014eff4a04b531cd6901a4f5f3dad690221cc3e1b940f",
+      "candidateSide": "B",
+      "candidateQuality": "weak-fallback",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "there is some green grass and red clothes that could add some variety to this only-blue palette",
+      "technicalInterpretation": {
+        "caseId": "future03-09-c69d9e863d6b",
+        "commentSha256": "d0f9ba3de6560d305ff83bb7924e15ab366b5e74d1b41c7ece37e997012cdf27",
+        "classes": [
+          "identity-bearing-accent-top-ranking-underselection"
+        ],
+        "rationale": "The candidate is option B. Green family-7237 reached both complete accent candidates and the retained accent slate, while red family-5995 reached complete candidates; the deterministic winner nevertheless uses muted blue family-5489 as accent. The candidate was rated weak fallback and the baseline stronger, so the omitted green and red variety identifies top-treatment ranking underselection despite an identity-bearing green retained alternative.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future03-10-ded7cd3e2735",
+      "futureCaseId": "future-03-02",
+      "assignmentKey": "ded7cd3e273597deb645d70ff4313af2233744df56f8d4dae42f098894dd3293",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-11-e37560ad1acf",
+      "futureCaseId": "future-03-06",
+      "assignmentKey": "e37560ad1acf296fa5137bc23152c3a7c8be478306fd0e669ff821d8c0a19412",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future03-12-ed4e93fdbd18",
+      "futureCaseId": "future-03-09",
+      "assignmentKey": "ed4e93fdbd18cdfcbe151e37043e9ce6fbcc077d603612b9c182eb047f743e60",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [
+        "missing gradient"
+      ],
+      "baselineTags": [
+        "missing gradient"
+      ],
+      "comment": "",
+      "technicalInterpretation": null
+    }
+  ],
+  "advancementGate": {
+    "pass": false,
+    "candidateStrongerThanBaseline": false,
+    "candidateQualityCommonlyPositive": true,
+    "noRepeatedSystemicFailureClass": true,
+    "repeatedTechnicalClasses": []
+  },
+  "limitations": [
+    "This is a 12-source deterministic directional sample, not a population-wide estimate.",
+    "No adaptation or rerun on future sample 03 is permitted.",
+    "Phase 5, promotion, persistence, and full-roster execution require a separate decision."
+  ],
+  "phaseDisposition": "phase4-future-03-directional-gate-failed-reassess-approach"
+}
