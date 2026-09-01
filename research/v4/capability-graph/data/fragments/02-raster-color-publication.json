@@ -82,6 +82,52 @@
       "laneId": "lane.image-and-color",
       "contractMaturity": "frozen",
       "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
       "sourceNotes": [
         "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
       ],

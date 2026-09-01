@@ -14,6 +14,12 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { Ajv2020 } from "ajv/dist/2020.js";
 
 import {
+  BRANCH_ANALYSIS_PATH,
+  BRANCH_REPORT_PATH,
+  loadValidateAndAnalyzeBranchPlan,
+} from "./branch.ts";
+import type { BranchAnalysis } from "./branch-types.ts";
+import {
   compareCodeUnits,
   computeGenerationDigest,
   EXPECTED_GENERATION_INPUT_PATHS,
@@ -79,6 +85,8 @@ export interface BuildOutputs {
   analysis: GeneratedAnalysis;
   orphanMarkdown: string;
   productConnectivityMarkdown: string;
+  branchAnalysis: BranchAnalysis;
+  branchResearchMarkdown: string;
 }
 
 export interface BuildOptions {
@@ -698,6 +706,11 @@ export async function buildCapabilityGraph(
   if (graphIssues.length > 0) {
     throw new Error(formatIssues("generated capability graph", graphIssues));
   }
+  const capabilityGraphSerialization = serialize(graph);
+  const branch = await loadValidateAndAnalyzeBranchPlan(
+    graph,
+    capabilityGraphSerialization,
+  );
 
   const orphanMarkdown = buildOrphanMarkdown(analysis, artifactTypes);
   const productConnectivityMarkdown = buildProductConnectivityMarkdown(
@@ -705,13 +718,15 @@ export async function buildCapabilityGraph(
     artifactTypes,
   );
   const generatedOutputs = [
-    { path: GRAPH_OUTPUT_PATH, content: serialize(graph) },
+    { path: GRAPH_OUTPUT_PATH, content: capabilityGraphSerialization },
     { path: ANALYSIS_OUTPUT_PATH, content: serialize(analysis) },
     { path: ORPHANS_OUTPUT_PATH, content: orphanMarkdown },
     {
       path: PRODUCT_CONNECTIVITY_OUTPUT_PATH,
       content: productConnectivityMarkdown,
     },
+    { path: BRANCH_ANALYSIS_PATH, content: serialize(branch.analysis) },
+    { path: BRANCH_REPORT_PATH, content: branch.markdown },
   ];
   if (options.check) {
     await checkOutputs(generatedOutputs);
@@ -719,7 +734,14 @@ export async function buildCapabilityGraph(
     await writeOutputsFromStaging(generatedOutputs);
   }
 
-  return { graph, analysis, orphanMarkdown, productConnectivityMarkdown };
+  return {
+    graph,
+    analysis,
+    orphanMarkdown,
+    productConnectivityMarkdown,
+    branchAnalysis: branch.analysis,
+    branchResearchMarkdown: branch.markdown,
+  };
 }
 
 const invokedPath = process.argv[1]
@@ -733,9 +755,9 @@ if (invokedPath === import.meta.url) {
   } else {
     const check = arguments_[0] === "--check";
     buildCapabilityGraph({ check })
-      .then(({ analysis }) => {
+      .then(({ analysis, branchAnalysis }) => {
         console.log(
-          `${check ? "Verified" : "Generated"} ${analysis.counts.mechanisms} mechanisms, ${analysis.counts.artifactTypes} artifact types, ${analysis.counts.compatibilityHyperedges} compatibility hyperedges, ${analysis.counts.neverProvidedInputTypes} never-provided types, and ${analysis.counts.neverUsedOutputTypes} never-used types.`,
+          `${check ? "Verified" : "Generated"} ${analysis.counts.mechanisms} mechanisms, ${branchAnalysis.inventoryCounts.proposedMechanisms} branch proposals, ${branchAnalysis.recipeCounts.successful} type-closed planned branch recipes, ${analysis.counts.artifactTypes} artifact types, and ${analysis.counts.compatibilityHyperedges} compatibility hyperedges.`,
         );
       })
       .catch((error: unknown) => {

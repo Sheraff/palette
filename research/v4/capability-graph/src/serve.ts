@@ -7,6 +7,7 @@ const GRAPH_ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const DEFAULT_PORT = 4200;
 const LOOPBACK_HOST = "127.0.0.1";
 const MECHANISMS_PATH = resolve(GRAPH_ROOT, "../MECHANISMS.md");
+const BRANCH_RESEARCH_PATH = resolve(GRAPH_ROOT, "BRANCH_RESEARCH.md");
 
 interface FixedRoute {
   path: string;
@@ -18,9 +19,13 @@ const ROUTES: ReadonlyMap<string, FixedRoute> = new Map([
   ["/index.html", { path: resolve(GRAPH_ROOT, "web/index.html"), contentType: "text/html; charset=utf-8" }],
   ["/styles.css", { path: resolve(GRAPH_ROOT, "web/styles.css"), contentType: "text/css; charset=utf-8" }],
   ["/app.js", { path: resolve(GRAPH_ROOT, "web/app.js"), contentType: "text/javascript; charset=utf-8" }],
+  ["/workbench.js", { path: resolve(GRAPH_ROOT, "web/workbench.js"), contentType: "text/javascript; charset=utf-8" }],
   ["/api/graph", { path: resolve(GRAPH_ROOT, "data/capability-graph.json"), contentType: "application/json; charset=utf-8" }],
   ["/api/orphans", { path: resolve(GRAPH_ROOT, "data/orphan-analysis.json"), contentType: "application/json; charset=utf-8" }],
+  ["/api/branch-plan", { path: resolve(GRAPH_ROOT, "data/branch-plan.json"), contentType: "application/json; charset=utf-8" }],
+  ["/api/branch-analysis", { path: resolve(GRAPH_ROOT, "data/branch-analysis.json"), contentType: "application/json; charset=utf-8" }],
   ["/MECHANISMS.md", { path: MECHANISMS_PATH, contentType: "text/markdown; charset=utf-8" }],
+  ["/BRANCH_RESEARCH.md", { path: BRANCH_RESEARCH_PATH, contentType: "text/markdown; charset=utf-8" }],
 ]);
 
 function escapeHtml(value: string): string {
@@ -200,7 +205,7 @@ if (invokedPath === import.meta.url) {
     const handle = createCapabilityGraphServer();
     handle.listen(port)
       .then((boundPort) => {
-        process.stdout.write(`Palette Product Capability Map: http://${LOOPBACK_HOST}:${boundPort}/\n`);
+        process.stdout.write(`Palette Planned Branch Workbench: http://${LOOPBACK_HOST}:${boundPort}/\n`);
       })
       .catch((error: unknown) => {
         process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);

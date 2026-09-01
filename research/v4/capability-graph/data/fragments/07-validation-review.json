@@ -46,6 +46,52 @@
       "laneId": "lane.image-and-color",
       "contractMaturity": "frozen",
       "boundaryClassification": "internal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/sourceImageId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of the supplied encoded artwork image."
+            ]
+          },
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Stable identity of this exact native decode."
+            ]
+          },
+          {
+            "valuePath": "/allPixelsOpaque",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": true
+              }
+            ],
+            "notes": [
+              "The native opaque contract admits only decodes with no alpha-bearing pixels."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths expose source identity, decode identity, and the opaque success condition without changing raster topology."
+        ]
+      },
       "sourceNotes": [
         "This is the fixed left product anchor and the NativeRaster output in research/v4/MECHANISMS.md:82-96."
       ],
@@ -64,6 +110,467 @@
       "laneId": "lane.role-and-treatment",
       "contractMaturity": "frozen",
       "boundaryClassification": "product-goal",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/contractVersion",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "equals",
+                "value": "v3-contract-0.1.0"
+              }
+            ],
+            "notes": [
+              "Frozen published v3 contract revision."
+            ]
+          },
+          {
+            "valuePath": "/roles/background/rgb",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-equals",
+                "value": 3
+              }
+            ],
+            "notes": [
+              "Background sRGB triplet."
+            ]
+          },
+          {
+            "valuePath": "/roles/background/hex",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "Background lowercase hexadecimal color."
+            ]
+          },
+          {
+            "valuePath": "/roles/background/name",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Optional human-readable background label."
+            ]
+          },
+          {
+            "valuePath": "/roles/surface/rgb",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-equals",
+                "value": 3
+              }
+            ],
+            "notes": [
+              "Surface sRGB triplet."
+            ]
+          },
+          {
+            "valuePath": "/roles/surface/hex",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "Surface lowercase hexadecimal color."
+            ]
+          },
+          {
+            "valuePath": "/roles/surface/name",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Optional human-readable surface label."
+            ]
+          },
+          {
+            "valuePath": "/roles/foreground/rgb",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-equals",
+                "value": 3
+              }
+            ],
+            "notes": [
+              "Foreground sRGB triplet."
+            ]
+          },
+          {
+            "valuePath": "/roles/foreground/hex",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "Foreground lowercase hexadecimal color."
+            ]
+          },
+          {
+            "valuePath": "/roles/foreground/name",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Optional human-readable foreground label."
+            ]
+          },
+          {
+            "valuePath": "/roles/accent/rgb",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-equals",
+                "value": 3
+              }
+            ],
+            "notes": [
+              "Accent sRGB triplet."
+            ]
+          },
+          {
+            "valuePath": "/roles/accent/hex",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "Accent lowercase hexadecimal color."
+            ]
+          },
+          {
+            "valuePath": "/roles/accent/name",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Optional human-readable accent label."
+            ]
+          },
+          {
+            "valuePath": "/gradient",
+            "valueKind": "object",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Optional published gradient treatment."
+            ]
+          },
+          {
+            "valuePath": "/gradient/stops",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-between-inclusive",
+                "value": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "notes": [
+              "Published gradient stop sequence."
+            ]
+          },
+          {
+            "valuePath": "/gradient/stops/0/color/hex",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "First gradient stop color."
+            ]
+          },
+          {
+            "valuePath": "/gradient/stops/-1/color/hex",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "Last gradient stop color."
+            ]
+          },
+          {
+            "valuePath": "/gradient/geometry/kind",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "in",
+                "value": [
+                  "linear",
+                  "radial",
+                  "conic"
+                ]
+              }
+            ],
+            "notes": [
+              "Published gradient geometry."
+            ]
+          },
+          {
+            "valuePath": "/collapse/surfaceCollapsed",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "in",
+                "value": [
+                  true,
+                  false
+                ]
+              }
+            ],
+            "notes": [
+              "Whether surface intentionally collapses to background."
+            ]
+          },
+          {
+            "valuePath": "/collapse/accentCollapsed",
+            "valueKind": "state",
+            "permittedConstraints": [
+              {
+                "comparator": "in",
+                "value": [
+                  true,
+                  false
+                ]
+              }
+            ],
+            "notes": [
+              "Whether accent intentionally collapses to foreground."
+            ]
+          },
+          {
+            "valuePath": "/escape/role",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "in",
+                "value": [
+                  "background",
+                  "foreground"
+                ]
+              }
+            ],
+            "notes": [
+              "Role selected by an explicit black-or-white escape."
+            ]
+          },
+          {
+            "valuePath": "/escape/color",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^#[0-9a-f]{6}$"
+              }
+            ],
+            "notes": [
+              "Published escape color."
+            ]
+          },
+          {
+            "valuePath": "/contrast/minTextContrast/requestedLc",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Requested text contrast threshold."
+            ]
+          },
+          {
+            "valuePath": "/contrast/minTextContrast/effectiveRawMagnitude",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Effective raw text contrast magnitude."
+            ]
+          },
+          {
+            "valuePath": "/contrast/minAccentContrast/requestedLc",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Requested accent contrast threshold."
+            ]
+          },
+          {
+            "valuePath": "/contrast/minAccentContrast/effectiveRawMagnitude",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Effective raw accent contrast magnitude."
+            ]
+          },
+          {
+            "valuePath": "/metadata/algorithmVersion",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published algorithm version."
+            ]
+          },
+          {
+            "valuePath": "/metadata/preprocessingVersion",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published preprocessing version."
+            ]
+          },
+          {
+            "valuePath": "/metadata/inputContentHash",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[0-9a-f]{64}$"
+              }
+            ],
+            "notes": [
+              "SHA-256 identity of the supplied artwork bytes."
+            ]
+          },
+          {
+            "valuePath": "/metadata/sourceRendition/path",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published source rendition path."
+            ]
+          },
+          {
+            "valuePath": "/metadata/sourceRendition/width",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published source rendition width."
+            ]
+          },
+          {
+            "valuePath": "/metadata/sourceRendition/height",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published source rendition height."
+            ]
+          },
+          {
+            "valuePath": "/metadata/sourceRendition/format",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published source rendition format."
+            ]
+          },
+          {
+            "valuePath": "/metadata/processedSize/width",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published processed width."
+            ]
+          },
+          {
+            "valuePath": "/metadata/processedSize/height",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "present"
+              }
+            ],
+            "notes": [
+              "Published processed height."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection paths authoritatively define the frozen published v3 payload consumed by validation and emitted by branch materializers."
+        ]
+      },
       "sourceNotes": [
         "MECHANISMS.md 7.1 accepts one complete treatment for structural validation."
       ],
@@ -118,6 +625,42 @@
       "laneId": "lane.image-and-color",
       "contractMaturity": "validated",
       "boundaryClassification": "expected-external",
+      "valueInspection": {
+        "paths": [
+          {
+            "valuePath": "/nativeRasterId",
+            "valueKind": "scalar",
+            "permittedConstraints": [
+              {
+                "comparator": "matches",
+                "value": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              }
+            ],
+            "notes": [
+              "Identity of the native raster whose colors were measured."
+            ]
+          },
+          {
+            "valuePath": "/occupiedColorIds",
+            "valueKind": "collection",
+            "permittedConstraints": [
+              {
+                "comparator": "count-between-inclusive",
+                "value": [
+                  1,
+                  16777216
+                ]
+              }
+            ],
+            "notes": [
+              "Distinct exact colors occupied by at least one native pixel."
+            ]
+          }
+        ],
+        "notes": [
+          "Inspection binds occupancy witnesses to their exact native raster and occupied-color set."
+        ]
+      },
       "sourceNotes": [
         "MECHANISMS.md 7.1 requires native occupancy for source-color checks."
       ],

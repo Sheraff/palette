@@ -1,3 +1,13 @@
+import {
+  assertBranchPayloadIntegrity,
+  buildBranchWorkbench,
+  buildLayerProjection,
+  plannedInspectorData,
+  searchBranchWorkbench,
+  verifyBranchPlanDigest,
+  verifyCapabilityGraphDigest,
+} from "./workbench.js";
+
 const LEFT_ANCHOR_ID = "artifact.raster.native-srgb8-opaque.v1";
 const RIGHT_ANCHOR_ID = "artifact.product.ui-palette.v3";
 const NODE_SIZE = {
@@ -42,12 +52,21 @@ const ORPHAN_LABELS = {
   "product-goal-terminal": "Product goal terminal",
 };
 const MODE_NOTES = {
+  workbench: "Many interchangeable mechanisms. Start with image-facing foundations, then progress once a mechanism's outputs are validated. Planned routes are not implementation proof.",
   product: "Generated product-focus classifications only. This view does not select or authorize a product pipeline.",
   full: "Every canonical artifact, census mechanism, and typed port incidence in the generated registry.",
-  frontiers: "Declaration-level candidate closure from the native raster and eligible expected-external runtime/governance roots. This is not executable or source-validated reachability.",
+  frontiers: "Declaration-level input reach from the native raster and eligible external roots. This is not executable or source-validated reachability.",
   orphans: "Generated never-provided and never-used artifact types with their incident mechanisms.",
   diagnostics: "Development values and diagnostic, model, external, review, and evidence-custody lanes.",
   runtime: "Mechanisms with a permitted runtime variant. Every typed port remains visible; non-runtime context is marked, and mixed permitted/prohibited status is retained.",
+};
+const BUILT_MODE_LABELS = {
+  product: "Built Product",
+  full: "Full registry",
+  frontiers: "Declared input reach",
+  orphans: "Full-registry orphans",
+  diagnostics: "Diagnostics and development",
+  runtime: "Permitted runtime",
 };
 const PRODUCT_LANE_DEFINITIONS = [
   {
@@ -79,23 +98,37 @@ const PRODUCT_LANE_DEFINITIONS = [
 ];
 const OVERLAY_LANE_DEFINITIONS = [
   { id: "overlay.evaluation", label: "Evaluation", overlay: true },
-  { id: "overlay.research-custody", label: "Governance & research custody", overlay: true },
+  { id: "overlay.research-context", label: "Research context", overlay: true },
 ];
 
 const browserEnvironment = typeof window !== "undefined" && typeof document !== "undefined";
 const elements = browserEnvironment ? Object.fromEntries([
   "canvasWrap",
   "allProductContractsControl",
+  "axisCaption",
+  "branchSearchResults",
   "capabilityFilter",
   "categoryFilter",
   "clearFilters",
+  "condemnedControls",
+  "condemnedCount",
+  "condemnedList",
+  "controls",
   "fitButton",
   "generatedCounts",
   "graphCanvas",
+  "handoffControls",
+  "handoffCount",
+  "handoffList",
+  "handoffSearch",
   "instrument",
   "inspector",
+  "layerCount",
+  "layerTabs",
   "liveStatus",
   "loading",
+  "mapWarning",
+  "mapShell",
   "minimap",
   "modeControls",
   "modeNote",
@@ -110,10 +143,18 @@ const elements = browserEnvironment ? Object.fromEntries([
   "orphanFilter",
   "overlayControl",
   "planeFilters",
+  "plannedError",
   "productConnectivity",
   "productOverlay",
+  "recipeControls",
+  "recipeCount",
+  "recipeDetail",
+  "recipeSelect",
+  "recipeSlotDetail",
+  "recipeSlotSelect",
   "resetButton",
   "searchContext",
+  "searchContextControl",
   "searchCount",
   "searchForm",
   "searchInput",
@@ -141,7 +182,14 @@ const state = {
   visibleEdgeIds: new Set(),
   searchMatches: [],
   searchCursor: -1,
-  mode: "product",
+  mode: "workbench",
+  branchPlan: null,
+  branchAnalysis: null,
+  workbench: null,
+  plannedError: null,
+  selectedLayer: null,
+  selectedRecipeId: null,
+  plannedProjection: null,
   productOverlay: false,
   showAllProductContracts: false,
   planes: new Set(["runtime", "development", "governance"]),
@@ -173,6 +221,17 @@ function nodeKey(kind, id) {
 
 function setIntersection(left, right) {
   return new Set([...left].filter((value) => right.has(value)));
+}
+
+export function moveLayerTabFocus({ layerIds, currentLayerId, key, activate, resolveRenderedTab }) {
+  if (key !== "ArrowLeft" && key !== "ArrowRight") return null;
+  const index = layerIds.indexOf(currentLayerId);
+  if (index < 0 || !layerIds.length) return null;
+  const offset = key === "ArrowRight" ? 1 : -1;
+  const nextLayerId = layerIds[(index + offset + layerIds.length) % layerIds.length];
+  activate(nextLayerId);
+  resolveRenderedTab(nextLayerId)?.focus();
+  return nextLayerId;
 }
 
 function referenceKey(reference) {
@@ -207,6 +266,12 @@ export function visibleCountSegments({
     ];
   }
   return [`${visibleArtifacts} artifacts`, `${visibleMechanisms} mechanisms`, `${visibleIncidences} incidences`];
+}
+
+export function workbenchStatusText(branchAnalysis) {
+  const inventory = branchAnalysis.inventoryCounts;
+  const recipes = branchAnalysis.recipeCounts;
+  return `${inventory.currentRetained} retained / ${inventory.proposedMechanisms} missing to build / ${inventory.currentCondemned} condemned / ${inventory.totalSidecarInspectors} sidecar-inspectors / ${branchAnalysis.essentialWitnesses.length} essential source-to-v3 witnesses / ${recipes.successful} optional type-closed recipes / ${branchAnalysis.interchangeabilitySlots.length} interchangeability slots / ${recipes.executionReady} execution-ready. Progress only once a mechanism's outputs are validated; planned routes are not implementation proof.`;
 }
 
 function inputDetailClasses(entry, detail) {
@@ -260,6 +325,10 @@ async function requestJson(path) {
   const response = await fetch(path, { headers: { accept: "application/json" } });
   if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
   return response.json();
+}
+
+function errorMessage(error) {
+  return error instanceof Error ? error.message : String(error);
 }
 
 const GENERATION_DIGEST_PATTERN = /^[0-9a-f]{64}$/;
@@ -332,6 +401,66 @@ export function assertConsumerPayloadIntegrity(graph, analysis) {
   ) {
     throw new Error("Generated product-focus metadata is absent or malformed.");
   }
+}
+
+export async function loadApplicationData(request = requestJson) {
+  const graph = await request("/api/graph");
+  assertConsumerPayloadIntegrity(graph, graph.analysis);
+
+  const [orphanResult, branchResult] = await Promise.allSettled([
+    request("/api/orphans"),
+    Promise.all([
+      request("/api/branch-plan"),
+      request("/api/branch-analysis"),
+    ]),
+  ]);
+
+  let analysis = graph.analysis;
+  let orphanWarning = null;
+  if (orphanResult.status === "fulfilled") {
+    try {
+      assertConsumerPayloadIntegrity(graph, orphanResult.value);
+      analysis = orphanResult.value;
+    } catch (error) {
+      orphanWarning = errorMessage(error);
+    }
+  } else {
+    orphanWarning = errorMessage(orphanResult.reason);
+  }
+
+  let branchPlan = null;
+  let branchAnalysis = null;
+  let workbench = null;
+  let plannedError = null;
+  if (branchResult.status === "fulfilled") {
+    try {
+      [branchPlan, branchAnalysis] = branchResult.value;
+      await Promise.all([
+        verifyBranchPlanDigest(branchPlan, branchAnalysis),
+        verifyCapabilityGraphDigest(graph, branchAnalysis),
+      ]);
+      assertBranchPayloadIntegrity(graph, branchPlan, branchAnalysis);
+      workbench = buildBranchWorkbench(graph, branchPlan, branchAnalysis);
+    } catch (error) {
+      branchPlan = null;
+      branchAnalysis = null;
+      workbench = null;
+      plannedError = errorMessage(error);
+    }
+  } else {
+    plannedError = errorMessage(branchResult.reason);
+  }
+
+  return {
+    graph,
+    analysis,
+    branchPlan,
+    branchAnalysis,
+    workbench,
+    plannedError,
+    orphanWarning,
+    initialMode: plannedError ? "product" : "workbench",
+  };
 }
 
 function graphIncidences(graph) {
@@ -781,7 +910,7 @@ function declarationCandidateClosure({
   }
 
   if (availableArtifactIds.has(RIGHT_ANCHOR_ID)) {
-    throw new Error("The producerless product goal must remain outside candidate closure.");
+    throw new Error("The producerless product goal must remain outside declared input reach.");
   }
 
   const frontierDetailsByMechanismId = new Map();
@@ -1291,7 +1420,301 @@ function currentProductProjection(model) {
   return model.compactProductProjection;
 }
 
+function plannedNodeKey(id) {
+  return `planned:${id}`;
+}
+
+function visibleNodeByKey(key) {
+  return state.mode === "workbench"
+    ? state.plannedProjection?.nodeByKey.get(key)
+    : state.model.nodeByKey.get(key);
+}
+
+export function plannedProjectionPresentation(projection) {
+  const upstreamIds = [...projection.upstreamContextIds].sort();
+  const selectedIds = [...projection.selectedIds].sort();
+  const downstreamIds = [...projection.downstreamContextIds].sort();
+  return {
+    dualRoleIds: upstreamIds.filter((id) => projection.downstreamContextIds.has(id)),
+    columns: [
+      { role: "upstream context", mechanismIds: upstreamIds },
+      { role: "selected layer", mechanismIds: selectedIds },
+      { role: "downstream context", mechanismIds: downstreamIds },
+    ],
+  };
+}
+
+export function plannedNodePresentation(node, routeOccurrences = []) {
+  const routeItems = routeOccurrences.map(({ ordinal, instanceId }) => `${ordinal}. ${instanceId}`);
+  const nodeStatus = node.origin === "proposed" ? "MISSING TO BUILD" : "EXISTING";
+  return {
+    statusText: `${nodeStatus}${node.dualRole ? " / DUAL ROLE" : ""}`,
+    routeBadgeText: routeOccurrences.map(({ ordinal }) => ordinal).join(", "),
+    routeTooltipText: routeItems.length ? `Route: ${routeItems.join(" / ")}` : "",
+  };
+}
+
+function layoutPlannedProjection(projection) {
+  const presentation = plannedProjectionPresentation(projection);
+  const [upstreamColumn, selectedColumn, downstreamColumn] = presentation.columns;
+  const upstreamIds = upstreamColumn.mechanismIds;
+  const selectedIds = selectedColumn.mechanismIds;
+  const downstreamIds = downstreamColumn.mechanismIds;
+  const dualRoleIds = presentation.dualRoleIds;
+  const dualRoleIdSet = new Set(dualRoleIds);
+  const rows = 8;
+  const columnWidth = 236;
+  const rowHeight = 66;
+  const top = 96;
+  let cursorX = 146;
+  const nodes = [];
+  const nodeByPlacement = new Map();
+  const place = (ids, role) => {
+    if (!ids.length) return { start: cursorX, end: cursorX, width: 0, label: role };
+    const columns = Math.ceil(ids.length / rows);
+    const start = cursorX - 112;
+    ids.forEach((id, index) => {
+      const mechanism = state.workbench.mechanismById.get(id);
+      const column = Math.floor(index / rows);
+      const row = index % rows;
+      const node = {
+        ...mechanism,
+        kind: "mechanism",
+        key: plannedNodeKey(id),
+        role,
+        dualRole: dualRoleIdSet.has(id),
+        width: role === "selected" ? 214 : 196,
+        height: role === "selected" ? 52 : 44,
+        x: cursorX + column * columnWidth,
+        y: top + row * rowHeight,
+        incidentEdges: [],
+      };
+      nodes.push(node);
+      nodeByPlacement.set(`${role}:${id}`, node);
+    });
+    cursorX += columns * columnWidth + 92;
+    return { start, end: cursorX - 46, width: cursorX - start - 46, label: role };
+  };
+  const groups = presentation.columns
+    .map(({ mechanismIds, role }) => place(mechanismIds, role))
+    .filter((group) => group.width > 0);
+  const width = Math.max(900, cursorX + 90);
+  const height = top + Math.max(1, Math.min(rows, Math.max(upstreamIds.length, selectedIds.length, downstreamIds.length))) * rowHeight + 70;
+  const nodeByKey = new Map(nodes.map((node) => [node.key, node]));
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const edges = projection.edges.map((edge, index) => {
+    const source = nodeByPlacement.get(`${projection.selectedIds.has(edge.sourceId) ? "selected layer" : "upstream context"}:${edge.sourceId}`) ?? null;
+    const target = nodeByPlacement.get(`${projection.selectedIds.has(edge.targetId) ? "selected layer" : "downstream context"}:${edge.targetId}`) ?? null;
+    const sourcePoint = source
+      ? { x: source.x + source.width / 2, y: source.y }
+      : { x: 28, y: target?.y ?? top };
+    const targetPoint = target
+      ? { x: target.x - target.width / 2, y: target.y }
+      : { x: width - 28, y: source?.y ?? top };
+    const railX = (sourcePoint.x + targetPoint.x) / 2 + ((stableHash(edge.id) % 5) - 2) * 4;
+    const points = [sourcePoint, { x: railX, y: sourcePoint.y }, { x: railX, y: targetPoint.y }, targetPoint];
+    const xs = points.map((point) => point.x);
+    const ys = points.map((point) => point.y);
+    const displayEdge = {
+      ...edge,
+      id: `display-${index}:${edge.id}`,
+      source,
+      target,
+      points,
+      bounds: {
+        left: Math.min(...xs) - 8,
+        right: Math.max(...xs) + 8,
+        top: Math.min(...ys) - 8,
+        bottom: Math.max(...ys) + 8,
+      },
+    };
+    source?.incidentEdges.push(displayEdge);
+    target?.incidentEdges.push(displayEdge);
+    return displayEdge;
+  });
+  return {
+    ...projection,
+    nodes,
+    nodeByKey,
+    nodeById,
+    edges,
+    layout: {
+      width,
+      height,
+      groups,
+      ranks: [],
+      laneBands: [{ id: projection.layer.id, label: projection.layer.label, top: 46, height: height - 46 }],
+    },
+  };
+}
+
+function edgeEndpointLabel(id) {
+  if (id === "$source") return "Artwork file";
+  if (id === "$goal") return "UI palette v3";
+  return id;
+}
+
+function handoffText(edge) {
+  return `${edgeEndpointLabel(edge.sourceId)}:${edge.producerPortId} -> ${edge.artifactTypeId} -> ${edgeEndpointLabel(edge.targetId)}:${edge.consumerPortId}`;
+}
+
+function renderLayerTabs() {
+  elements.layerTabs.innerHTML = state.workbench.layers.map((layer, index) => `
+    <button type="button" role="tab" data-layer-id="${escapeHtml(layer.id)}" aria-selected="${layer.id === state.selectedLayer}" tabindex="${layer.id === state.selectedLayer ? "0" : "-1"}">
+      <span>${index + 1}. ${escapeHtml(layer.label)}</span>
+      <small>${layer.existingCount} Existing / ${layer.proposedCount} Missing</small>
+    </button>`).join("");
+  elements.layerCount.textContent = `${state.workbench.layers.length} layers`;
+}
+
+function renderRecipeDetail() {
+  const recipe = state.selectedRecipeId ? state.workbench.recipeById.get(state.selectedRecipeId) : undefined;
+  if (!recipe) {
+    elements.recipeDetail.innerHTML = `<p class="control-note">No recipe highlighted. Every layer continues to show all alternatives.</p>`;
+    return;
+  }
+  const stepsByLayer = new Map();
+  for (const step of recipe.expandedSteps) {
+    const layer = state.workbench.mechanismById.get(step.mechanismId)?.layer ?? "other";
+    if (!stepsByLayer.has(layer)) stepsByLayer.set(layer, []);
+    if (!stepsByLayer.get(layer).includes(step.mechanismId)) stepsByLayer.get(layer).push(step.mechanismId);
+  }
+  const layerRows = state.workbench.layers
+    .filter((layer) => stepsByLayer.has(layer.id))
+    .map((layer) => `<li><strong>${escapeHtml(layer.label)}</strong>: ${stepsByLayer.get(layer.id).map(escapeHtml).join(", ")}</li>`)
+    .join("");
+  elements.recipeDetail.innerHTML = `
+    <p class="disclosure-status">Type-closed on paper; not implemented or evaluated.</p>
+    <p>${escapeHtml(recipe.description)}</p>
+    <h4>Essential mechanisms in this witness</h4>
+    <p>${recipe.essentialMechanismIds.length ? recipe.essentialMechanismIds.map(escapeHtml).join(", ") : "None reported by removal testing."}</p>
+    <h4>Layer substitutions</h4>
+    <ul class="note-list">${layerRows}</ul>
+    <h4>Ordered route</h4>
+    <ol>${recipe.expandedSteps.map((step, index) => `<li><button class="recipe-step" type="button" data-plan-mechanism-id="${escapeHtml(step.mechanismId)}"><span><b>${index + 1}. ${escapeHtml(step.instanceId)}</b><br>${escapeHtml(step.mechanismId)}</span><small>${escapeHtml(step.selectedOutputBranch)}</small></button></li>`).join("")}</ol>`;
+}
+
+function renderRecipeSlotDetail() {
+  const slot = state.workbench.interchangeabilitySlots
+    .find((entry) => entry.slotId === elements.recipeSlotSelect.value);
+  if (!slot) {
+    elements.recipeSlotDetail.innerHTML = `<p class="control-note">Choose a slot to inspect its generated alternatives, clean essential witnesses, and substitution pairs.</p>`;
+    return;
+  }
+  elements.recipeSlotDetail.innerHTML = `
+    <h4>${escapeHtml(slot.slotId)}</h4>
+    <p>${slot.mechanismIds.length} genuine alternatives. Each pair below has matching normalized surroundings; different pairs may have different digests.</p>
+    <h4>Clean essential witnesses</h4>
+    ${slot.cleanWitnesses.map((witness) => `<div class="slot-witness"><strong>${escapeHtml(witness.mechanismId)}</strong>${witness.recipeIds.map((recipeId) => `<button type="button" data-recipe-id="${escapeHtml(recipeId)}">${escapeHtml(recipeId)}</button>`).join("")}</div>`).join("")}
+    <h4>Clean substitution pairs</h4>
+    ${slot.comparisons.map((comparison) => `<div class="slot-comparison"><button type="button" data-recipe-id="${escapeHtml(comparison.leftRecipeId)}">${escapeHtml(comparison.leftMechanismId)}<br>${escapeHtml(comparison.leftRecipeId)}</button><span aria-label="clean substitution pair">&lt;-&gt;</span><button type="button" data-recipe-id="${escapeHtml(comparison.rightRecipeId)}">${escapeHtml(comparison.rightMechanismId)}<br>${escapeHtml(comparison.rightRecipeId)}</button></div>`).join("")}`;
+}
+
+function renderMissingHandoffs() {
+  const query = elements.handoffSearch.value.trim().toLowerCase();
+  const rows = state.workbench.missingHandoffs.filter((handoff) => {
+    const text = [
+      handoff.mechanismId,
+      handoff.operation,
+      ...handoff.upstream.map(handoffText),
+      ...handoff.downstream.map(handoffText),
+    ].join(" ").toLowerCase();
+    return !query || text.includes(query);
+  });
+  elements.handoffCount.textContent = String(state.workbench.missingHandoffs.length);
+  elements.handoffList.innerHTML = rows.map((handoff) => `
+    <article class="handoff-row">
+      <button type="button" data-plan-mechanism-id="${escapeHtml(handoff.mechanismId)}">${escapeHtml(handoff.mechanismId)}</button>
+      <p>${escapeHtml(handoff.operation)}</p>
+      <small><b>Upstream</b>${handoff.upstream.length ? handoff.upstream.map((edge) => escapeHtml(handoffText(edge))).join("<br>") : "None"}</small>
+      <small><b>Downstream</b>${handoff.downstream.length ? handoff.downstream.map((edge) => escapeHtml(handoffText(edge))).join("<br>") : "Terminal product output"}</small>
+    </article>`).join("");
+}
+
+function renderCondemnedList() {
+  elements.condemnedCount.textContent = String(state.workbench.condemned.length);
+  elements.condemnedList.innerHTML = state.workbench.condemned.map((mechanism) => `
+    <article class="condemned-row">
+      <button type="button" data-condemned-mechanism-id="${escapeHtml(mechanism.id)}">${escapeHtml(mechanism.id)}</button>
+      <p>${escapeHtml(mechanism.reason)}</p>
+      ${mechanism.evidenceRefs.map((reference) => `<small>${escapeHtml(reference)}</small>`).join("")}
+    </article>`).join("");
+}
+
+function renderWorkbenchControls() {
+  renderLayerTabs();
+  elements.recipeCount.textContent = `${state.workbench.recipeById.size} recipes / ${state.workbench.interchangeabilitySlots.length} slots`;
+  elements.recipeSlotSelect.innerHTML = `<option value="">Choose a generated slot</option>${state.workbench.interchangeabilitySlots
+    .map((slot) => `<option value="${escapeHtml(slot.slotId)}">${escapeHtml(slot.slotId)} / ${slot.mechanismIds.length} alternatives / ${slot.comparisons.length} pairs</option>`)
+    .join("")}`;
+  elements.recipeSelect.innerHTML = `<option value="">No recipe highlight</option>${[...state.workbench.recipeFamilies]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([family, recipeIds]) => `<optgroup label="${escapeHtml(family)}">${recipeIds.map((recipeId) => `<option value="${escapeHtml(recipeId)}">${escapeHtml(recipeId)}</option>`).join("")}</optgroup>`)
+    .join("")}`;
+  elements.recipeSlotSelect.value = "";
+  elements.recipeSelect.value = "";
+  renderRecipeSlotDetail();
+  renderRecipeDetail();
+  renderMissingHandoffs();
+  renderCondemnedList();
+}
+
+function renderWorkbenchSearch(query) {
+  const matches = searchBranchWorkbench(state.workbench, query);
+  state.searchMatches = matches.map((match) => match.key);
+  state.searchCursor = Math.min(state.searchCursor, matches.length - 1);
+  elements.searchCount.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"}`;
+  elements.branchSearchResults.innerHTML = matches.map((match) => `
+    <button type="button" role="listitem" data-search-result-key="${escapeHtml(match.key)}">
+      <span>${escapeHtml(match.title)}</span>
+      <small>${escapeHtml(match.status)} / ${escapeHtml(match.id)}</small>
+    </button>`).join("");
+  return matches;
+}
+
+function updatePlannedProjection({ fit = true } = {}) {
+  const query = elements.searchInput.value.trim();
+  renderWorkbenchSearch(query);
+  state.plannedProjection = layoutPlannedProjection(buildLayerProjection(state.workbench, state.selectedLayer));
+  state.layout = state.plannedProjection.layout;
+  state.visibleKeys = new Set(state.plannedProjection.nodes.map((node) => node.key));
+  state.visibleEdgeIds = new Set(state.plannedProjection.edges.map((edge) => edge.id));
+  if (state.selectedKey?.startsWith("planned:") && !state.visibleKeys.has(state.selectedKey)) selectNode(null);
+  const layer = state.plannedProjection.layer;
+  const selectedMechanisms = layer.mechanismIds.map((id) => state.workbench.mechanismById.get(id));
+  const countSegments = [
+    `${selectedMechanisms.length} mechanism${selectedMechanisms.length === 1 ? "" : "s"} in layer`,
+    `${layer.existingCount} Existing`,
+    `${layer.proposedCount} Missing mechanism${layer.proposedCount === 1 ? "" : "s"} to build`,
+    `${state.plannedProjection.contextIds.size} immediate context`,
+  ];
+  elements.visibleCount.innerHTML = countSegments.map((segment) => `<span>${escapeHtml(segment)}</span>`).join(" ");
+  elements.modeNote.textContent = workbenchStatusText(state.branchAnalysis);
+  elements.productConnectivity.hidden = true;
+  elements.allProductContractsControl.hidden = true;
+  elements.overlayControl.hidden = true;
+  elements.searchContextControl.hidden = true;
+  elements.axisCaption.innerHTML = `<span>immediate upstream</span><b>${escapeHtml(layer.label)} <small>all alternatives</small></b><span>immediate downstream</span>`;
+  elements.mapWarning.textContent = "Many interchangeable mechanisms. Start with image-facing foundations and progress once a mechanism's outputs are validated. Planned routes are not implementation proof.";
+  renderLayerTabs();
+  updateModeButtons();
+  updateVisibleNavigator();
+  if (state.selectedKey?.startsWith("planned:")) renderPlannedInspector(state.selectedKey.slice("planned:".length));
+  announce(`${layer.label}. ${elements.visibleCount.textContent}`);
+  if (fit) requestAnimationFrame(frameReadablePlannedView);
+  else requestRender();
+}
+
 function updateProjection({ fit = true } = {}) {
+  if (state.mode === "workbench" && !state.workbench) state.mode = "product";
+  if (state.mode === "workbench") {
+    elements.mapShell.setAttribute("aria-label", "Interactive planned mechanism workbench");
+    elements.graphCanvas.setAttribute("aria-label", "Planned mechanism layer map. Every box is a mechanism and every line is an exact typed product handoff. Drag or use one finger to pan; wheel, pinch, plus, or minus to zoom; arrow keys pan; Home or F fits visible mechanisms; Enter centers the selected mechanism; Escape clears selection.");
+    updatePlannedProjection({ fit });
+    return;
+  }
+  elements.mapShell.setAttribute("aria-label", `Interactive ${BUILT_MODE_LABELS[state.mode]} capability graph`);
+  elements.graphCanvas.setAttribute("aria-label", `${BUILT_MODE_LABELS[state.mode]} capability graph. Mechanisms and artifact contracts are shown from the generated built registry. Drag or use one finger to pan; wheel, pinch, plus, or minus to zoom; arrow keys pan; Home or F fits visible entries; Enter centers the selected entry; Escape clears selection.`);
   const model = state.model;
   const productMode = state.mode === "product";
   const query = productMode ? "" : elements.searchInput.value.trim().toLowerCase();
@@ -1427,28 +1850,35 @@ function updateProjection({ fit = true } = {}) {
   const focus = state.analysis.productFocus;
   elements.modeNote.textContent = productMode
     ? state.productOverlay
-      ? `${MODE_NOTES.product} Primary ${focus.primaryMechanismIds.length} mechanisms, ${focus.primaryArtifactIds.length} artifacts, and ${focus.primaryIncidences.length} incidences; overlay adds ${focus.secondaryOverlayMechanismIds.length} mechanisms, ${focus.secondaryOverlayArtifactIds.length} artifacts, and ${model.productOverlayProjection.overlayIncidenceIds.size} declared one-hop incidences.`
+      ? `${MODE_NOTES.product} The secondary overlay adds ${focus.secondaryOverlayMechanismIds.length} mechanisms, ${focus.secondaryOverlayArtifactIds.length} artifacts, and ${model.productOverlayProjection.overlayIncidenceIds.size} declared one-hop incidences.`
       : state.showAllProductContracts
-        ? `${MODE_NOTES.product} Showing all ${focus.primaryArtifactIds.length} product contracts, ${focus.primaryMechanismIds.length} mechanisms, and ${focus.primaryIncidences.length} typed candidate incidences.`
+        ? `${MODE_NOTES.product} Showing all ${focus.primaryArtifactIds.length} product contracts, ${focus.primaryMechanismIds.length} mechanisms, and ${focus.primaryIncidences.length} typed incidences.`
         : `${MODE_NOTES.product} Compact canvas shows ${visibleArtifacts} shared, expected-external boundary, or goal contracts and all ${focus.primaryMechanismIds.length} mechanisms. All ${focus.primaryArtifactIds.length} product contracts and ${focus.primaryIncidences.length} incidences remain available under Research details.`
     : state.mode === "frontiers"
-    ? `${MODE_NOTES.frontiers} ${closure.rootArtifactIds.size} seed roots yield ${closure.availableArtifactIds.size} candidate-available artifacts after ${closure.rounds} fixpoint round. ${closure.reachedMechanismKeys.size} permitted mechanisms are candidate-reached with complete bundles (${closure.reachedEdgeIds.size} incidences). Frontier: ${closure.frontierMechanismKeys.size} unreached permitted mechanisms across ${closure.frontierEdgeIds.size} displayed input incidences, with ${missingDirectCount} unresolved direct conditions and ${missingGroupCount} unresolved alternative-group conditions (${missingGroupPortCount} member ports). ${conditionalClosureCount} displayed mixed variant is labeled conditional. UI goal: ${model.goalProducerCount} producers and candidate-unreachable. Conditional value constraints and branches are disclosed but not evaluated.`
+    ? `${MODE_NOTES.frontiers} ${closure.rootArtifactIds.size} declared roots yield ${closure.availableArtifactIds.size} available artifacts after ${closure.rounds} rounds. ${closure.reachedMechanismKeys.size} permitted mechanisms have complete declared inputs (${closure.reachedEdgeIds.size} incidences); ${closure.frontierMechanismKeys.size} remain unreached across ${closure.frontierEdgeIds.size} displayed input incidences, with ${missingDirectCount} unresolved direct conditions and ${missingGroupCount} unresolved alternative-group conditions (${missingGroupPortCount} member ports). ${conditionalClosureCount} displayed mixed variant is labeled conditional. Conditional value constraints and branches are disclosed but not evaluated.`
     : state.mode === "runtime"
       ? `${MODE_NOTES.runtime} Generated status contains ${permittedMechanisms.length} mechanisms with permitted and ${mixedPermitted.length} with mixed admissibility.`
       : MODE_NOTES[state.mode];
   elements.overlayControl.hidden = !productMode;
   elements.allProductContractsControl.hidden = !productMode;
   elements.productConnectivity.hidden = !productMode;
+  elements.searchContextControl.hidden = false;
+  elements.branchSearchResults.replaceChildren();
+  elements.axisCaption.innerHTML = `<span>source-bound observation</span><b>built registry <small>classification, not sequence</small></b><span>exact product contract</span>`;
+  elements.mapWarning.textContent = "Built runtime/focus classifications do not mean selected, integrated, product-ready, source-validated, or proven compatible.";
   updateModeButtons();
   updateVisibleNavigator();
   if (state.selectedKey && keys.has(state.selectedKey)) renderInspector(model.nodeByKey.get(state.selectedKey));
-  announce(`${elements.modeControls.querySelector(`[data-mode="${state.mode}"]`)?.textContent ?? state.mode} projection. ${elements.visibleCount.textContent}`);
+  announce(`${elements.controls.querySelector(`[data-mode="${state.mode}"]`)?.textContent ?? state.mode} projection. ${elements.visibleCount.textContent}`);
   if (fit) fitVisible();
   else requestRender();
 }
 
 function updateModeButtons() {
-  for (const button of elements.modeControls.querySelectorAll("[data-mode]")) {
+  for (const button of elements.controls.querySelectorAll("[data-mode]")) {
+    const unavailable = button.dataset.mode === "workbench" && !state.workbench;
+    button.disabled = unavailable;
+    button.setAttribute("aria-disabled", String(unavailable));
     const active = button.dataset.mode === state.mode;
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
@@ -1460,13 +1890,16 @@ function updateModeButtons() {
 function updateVisibleNavigator() {
   const selected = state.selectedKey;
   const visibleNodes = [...state.visibleKeys]
-    .map((key) => state.model.nodeByKey.get(key))
+    .map((key) => visibleNodeByKey(key))
+    .filter(Boolean)
     .sort((left, right) => left.kind.localeCompare(right.kind) || left.label.localeCompare(right.label) || left.id.localeCompare(right.id));
   const fragment = document.createDocumentFragment();
   for (const node of visibleNodes) {
     const option = document.createElement("option");
     option.value = node.key;
-    let kind = node.kind;
+    let kind = state.mode === "workbench"
+      ? (node.origin === "existing" ? "Existing" : "Missing mechanism to build")
+      : node.kind;
     if (state.mode === "product") {
       kind = node.kind === "mechanism"
         ? node.record.focusClass
@@ -1474,12 +1907,12 @@ function updateVisibleNavigator() {
     } else if (state.mode === "frontiers" && node.kind === "mechanism") {
       const conditional = state.model.candidateClosure.conditionalMechanismKeys.has(node.key) ? " conditional" : "";
       kind = state.model.candidateClosure.reachedMechanismKeys.has(node.key)
-        ? `${conditional} candidate-reached`
-        : `${conditional} frontier-unreached`;
+        ? `${conditional} declaration-reached`
+        : `${conditional} unreached`;
     } else if (state.mode === "frontiers" && node.id === RIGHT_ANCHOR_ID) {
       kind = "confirmed product materializer gap";
     } else if (state.mode === "frontiers" && state.model.candidateClosure.rootArtifactIds.has(node.id)) {
-      kind = "seed artifact";
+      kind = "declared root artifact";
     }
     option.textContent = `[${kind.trim()}] ${node.label} - ${node.id}`;
     option.selected = node.key === selected;
@@ -1492,7 +1925,7 @@ function updateVisibleNavigator() {
 }
 
 function boundsForKeys(keys) {
-  const nodes = [...keys].map((key) => state.model.nodeByKey.get(key)).filter(Boolean);
+  const nodes = [...keys].map((key) => visibleNodeByKey(key)).filter(Boolean);
   if (!nodes.length) return { left: 0, top: 0, right: state.layout.width, bottom: state.layout.height };
   return {
     left: Math.min(...nodes.map((node) => node.x - node.width / 2)) - 80,
@@ -1507,7 +1940,8 @@ function fitBounds(bounds) {
   if (!rect.width || !rect.height) return;
   const width = Math.max(1, bounds.right - bounds.left);
   const height = Math.max(1, bounds.bottom - bounds.top);
-  const scale = Math.max(0.025, Math.min(1.45, Math.min((rect.width - 28) / width, (rect.height - 28) / height)));
+  const minimumScale = state.mode === "workbench" ? NODE_LABEL_MIN_SCALE : 0.025;
+  const scale = Math.max(minimumScale, Math.min(1.45, Math.min((rect.width - 28) / width, (rect.height - 28) / height)));
   state.view.scale = scale;
   state.view.x = rect.width / 2 - ((bounds.left + bounds.right) / 2) * scale;
   state.view.y = rect.height / 2 - ((bounds.top + bounds.bottom) / 2) * scale;
@@ -1531,7 +1965,22 @@ function frameReadableProductView() {
   requestRender();
 }
 
+function frameReadablePlannedView() {
+  const rect = elements.graphCanvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const selectedKeys = new Set([...state.plannedProjection.selectedIds].map(plannedNodeKey));
+  const bounds = boundsForKeys(selectedKeys);
+  state.view.scale = window.matchMedia("(max-width: 520px)").matches ? 0.68 : 0.82;
+  state.view.x = 24 - bounds.left * state.view.scale;
+  state.view.y = 46 - bounds.top * state.view.scale;
+  requestRender();
+}
+
 function resetMap() {
+  if (state.mode === "workbench") {
+    frameReadablePlannedView();
+    return;
+  }
   fitBounds({ left: 0, top: 0, right: state.layout.width, bottom: state.layout.height });
 }
 
@@ -1551,7 +2000,7 @@ function zoomFromCenter(factor) {
 }
 
 function centerNode(key, select = true) {
-  const node = state.model.nodeByKey.get(key);
+  const node = visibleNodeByKey(key);
   if (!node) return;
   if (select) selectNode(key);
   const rect = elements.graphCanvas.getBoundingClientRect();
@@ -1597,12 +2046,172 @@ function intersects(left, right) {
     && left.top <= right.bottom && left.bottom >= right.top;
 }
 
+function drawPlannedEdge(edge, highlighted) {
+  const scale = state.view.scale;
+  const recipeHighlighted = Boolean(state.selectedRecipeId && edge.recipeIds.has(state.selectedRecipeId));
+  context.beginPath();
+  context.moveTo(edge.points[0].x, edge.points[0].y);
+  for (const point of edge.points.slice(1)) context.lineTo(point.x, point.y);
+  context.strokeStyle = highlighted
+    ? "#f2fbf8"
+    : recipeHighlighted
+      ? "rgba(170, 144, 220, 0.92)"
+      : "rgba(99, 214, 205, 0.34)";
+  context.lineWidth = Math.min((highlighted ? 2.4 : recipeHighlighted ? 1.8 : 1) / scale, 16);
+  if (!highlighted && !recipeHighlighted) context.setLineDash([Math.min(5 / scale, 18), Math.min(3 / scale, 12)]);
+  context.lineJoin = "round";
+  context.stroke();
+  context.setLineDash([]);
+  const target = edge.points.at(-1);
+  const previous = edge.points.at(-2);
+  const direction = Math.sign(target.x - previous.x) || 1;
+  const size = Math.min((highlighted ? 7 : 5) / scale, 18);
+  context.fillStyle = highlighted ? "#f2fbf8" : recipeHighlighted ? "#aa90dc" : "#63d6cd";
+  context.beginPath();
+  context.moveTo(target.x, target.y);
+  context.lineTo(target.x - direction * size, target.y - size * 0.58);
+  context.lineTo(target.x - direction * size, target.y + size * 0.58);
+  context.closePath();
+  context.fill();
+  if (!highlighted) return;
+  const labelPoint = edge.points[1];
+  const fontSize = Math.min(9 / scale, 15);
+  context.font = `600 ${fontSize}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono")}`;
+  const label = edge.artifactTypeId;
+  const width = Math.min(390, context.measureText(label).width + 12);
+  context.fillStyle = "rgba(5, 13, 12, 0.94)";
+  context.fillRect(labelPoint.x - width / 2, labelPoint.y - fontSize - 5, width, fontSize + 8);
+  context.fillStyle = "#d9e2df";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(fitText(label, width - 8, fontSize), labelPoint.x, labelPoint.y - fontSize / 2 - 1);
+  context.textAlign = "left";
+}
+
+function drawPlannedNode(node) {
+  const scale = state.view.scale;
+  const selected = node.key === state.selectedKey;
+  const hovered = node.key === state.hoveredKey;
+  const matched = state.searchMatches.includes(node.key);
+  const recipe = state.selectedRecipeId ? state.workbench.recipeById.get(state.selectedRecipeId) : undefined;
+  const routeOccurrences = recipe?.routeOccurrences.get(node.id) ?? [];
+  const presentation = plannedNodePresentation(node, routeOccurrences);
+  mechanismPath(node);
+  context.fillStyle = node.origin === "proposed"
+    ? (node.role === "selected" ? "#302417" : "#211c16")
+    : (node.role === "selected" ? "#12312d" : "#102421");
+  context.fill();
+  context.strokeStyle = selected || hovered
+    ? "#f2fbf8"
+    : routeOccurrences.length
+      ? "#aa90dc"
+      : node.origin === "proposed"
+        ? "#e9aa57"
+        : "#63d6cd";
+  context.lineWidth = Math.min((selected ? 3 : hovered || routeOccurrences.length ? 2 : 1.2) / scale, 18);
+  if (node.origin === "proposed" && !selected) context.setLineDash([Math.min(5 / scale, 18), Math.min(3 / scale, 12)]);
+  mechanismPath(node);
+  context.stroke();
+  context.setLineDash([]);
+  if (matched && !selected) {
+    mechanismPath(node);
+    context.strokeStyle = "#f2fbf8";
+    context.lineWidth = Math.min(2 / scale, 14);
+    context.stroke();
+  }
+  const fontSize = Math.min(11 / scale, 18);
+  context.save();
+  mechanismPath(node);
+  context.clip();
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillStyle = selected || hovered ? "#ffffff" : "#d9e2df";
+  context.font = `650 ${fontSize}px ${getComputedStyle(document.documentElement).getPropertyValue("--sans")}`;
+  context.fillText(fitText(node.title, node.width - 18, fontSize), node.x, node.y - 7);
+  context.fillStyle = node.origin === "proposed" ? "#e9aa57" : "#63d6cd";
+  context.font = `700 ${Math.min(8 / scale, 12)}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono")}`;
+  context.fillText(presentation.statusText, node.x, node.y + 10);
+  context.restore();
+  if (presentation.routeBadgeText) {
+    const routeLabel = presentation.routeBadgeText;
+    const badgeFontSize = Math.min(7 / scale, 10);
+    context.font = `700 ${badgeFontSize}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono")}`;
+    const badgeWidth = context.measureText(routeLabel).width + 10;
+    const badgeX = node.x + node.width / 2 - badgeWidth;
+    const badgeY = node.y - node.height / 2 - badgeFontSize - 5;
+    context.fillStyle = "#aa90dc";
+    context.fillRect(badgeX, badgeY, badgeWidth, badgeFontSize + 6);
+    context.fillStyle = "#071110";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(routeLabel, badgeX + badgeWidth / 2, badgeY + (badgeFontSize + 6) / 2);
+    context.textAlign = "left";
+  }
+}
+
+function drawPlannedWorkbench(screen, viewport) {
+  context.save();
+  context.translate(state.view.x, state.view.y);
+  context.scale(state.view.scale, state.view.scale);
+  context.fillStyle = "#071110";
+  context.fillRect(0, 0, state.layout.width, state.layout.height);
+  const roleLabels = {
+    "upstream context": "IMMEDIATE UPSTREAM",
+    "selected layer": state.plannedProjection.layer.label.toUpperCase(),
+    "downstream context": "IMMEDIATE DOWNSTREAM",
+  };
+  state.layout.groups.forEach((group, index) => {
+    context.fillStyle = index % 2 ? "rgba(99, 214, 205, 0.025)" : "rgba(16, 35, 32, 0.2)";
+    context.fillRect(group.start, 46, group.width, state.layout.height - 46);
+    context.fillStyle = group.label === "selected layer" ? "#63d6cd" : "#82918f";
+    context.font = `700 ${Math.min(9 / state.view.scale, 16)}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono")}`;
+    context.fillText(roleLabels[group.label], group.start + 10, 68);
+  });
+  context.fillStyle = "#82918f";
+  context.font = `700 ${Math.min(8 / state.view.scale, 14)}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono")}`;
+  context.fillText("ARTWORK FILE", 18, 38);
+  context.textAlign = "right";
+  context.fillText("UI PALETTE V3", state.layout.width - 18, 38);
+  context.textAlign = "left";
+  const highlighted = new Set();
+  for (const edge of state.plannedProjection.edges) {
+    if (edge.source?.key === state.selectedKey || edge.target?.key === state.selectedKey || edge.source?.key === state.hoveredKey || edge.target?.key === state.hoveredKey) {
+      highlighted.add(edge.id);
+    }
+  }
+  for (const edge of state.plannedProjection.edges) {
+    if (highlighted.has(edge.id) || !intersects(edge.bounds, viewport)) continue;
+    drawPlannedEdge(edge, false);
+  }
+  for (const edge of state.plannedProjection.edges) {
+    if (!highlighted.has(edge.id) || !intersects(edge.bounds, viewport)) continue;
+    drawPlannedEdge(edge, true);
+  }
+  let visibleLabels = 0;
+  for (const node of state.plannedProjection.nodes) {
+    const bounds = { left: node.x - node.width / 2, right: node.x + node.width / 2, top: node.y - node.height / 2, bottom: node.y + node.height / 2 };
+    if (!intersects(bounds, viewport)) continue;
+    drawPlannedNode(node);
+    visibleLabels += 1;
+  }
+  context.restore();
+  elements.graphCanvas.dataset.mechanismLabels = state.view.scale >= NODE_LABEL_MIN_SCALE ? "visible" : "hidden";
+  elements.graphCanvas.dataset.visibleMechanismLabels = String(visibleLabels);
+  elements.zoomReadout.textContent = `${Math.round(state.view.scale * 100)}%`;
+  drawMinimap(viewport);
+}
+
 function draw() {
   const screen = resizeCanvas(elements.graphCanvas, context);
   context.clearRect(0, 0, screen.width, screen.height);
   context.fillStyle = "#050d0c";
   context.fillRect(0, 0, screen.width, screen.height);
   const viewport = worldViewport(screen.width, screen.height);
+
+  if (state.mode === "workbench") {
+    drawPlannedWorkbench(screen, viewport);
+    return;
+  }
 
   context.save();
   context.translate(state.view.x, state.view.y);
@@ -1956,8 +2565,8 @@ function drawNode(node) {
 
   if (node.kind === "mechanism" && (closureReached || closureFrontier || mixedPermitted) && (scale >= 0.16 || selected || hovered)) {
     const labels = [];
-    if (closureReached) labels.push("CANDIDATE-REACHED");
-    if (closureFrontier) labels.push("FRONTIER / UNREACHED");
+    if (closureReached) labels.push("DECLARATION-REACHED");
+    if (closureFrontier) labels.push("UNREACHED INPUTS");
     if (mixedPermitted) labels.push("CONDITIONAL");
     context.fillStyle = closureFrontier || mixedPermitted ? "#e9aa57" : "#63d6cd";
     context.font = `700 ${Math.min(8 / scale, 16)}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono")}`;
@@ -2007,6 +2616,21 @@ function drawMinimap(viewport) {
   );
   const offsetX = (screen.width - state.layout.width * scale) / 2;
   const offsetY = (screen.height - state.layout.height * scale) / 2;
+
+  if (state.mode === "workbench") {
+    for (const node of state.plannedProjection.nodes) {
+      minimapContext.fillStyle = node.origin === "proposed" ? "rgba(233, 170, 87, 0.9)" : "rgba(99, 214, 205, 0.82)";
+      minimapContext.fillRect(offsetX + node.x * scale - 1.5, offsetY + node.y * scale - 1.5, 3, 3);
+    }
+    const viewLeft = offsetX + Math.max(0, viewport.left) * scale;
+    const viewTop = offsetY + Math.max(0, viewport.top) * scale;
+    const viewRight = offsetX + Math.min(state.layout.width, viewport.right) * scale;
+    const viewBottom = offsetY + Math.min(state.layout.height, viewport.bottom) * scale;
+    minimapContext.strokeStyle = "#e9aa57";
+    minimapContext.strokeRect(viewLeft, viewTop, Math.max(1, viewRight - viewLeft), Math.max(1, viewBottom - viewTop));
+    elements.minimap._mapTransform = { scale, offsetX, offsetY };
+    return;
+  }
 
   for (const lane of state.layout.laneBands) {
     const y = offsetY + lane.top * scale;
@@ -2058,7 +2682,7 @@ function screenToWorld(clientX, clientY) {
 
 function hitNode(clientX, clientY) {
   const point = screenToWorld(clientX, clientY);
-  const nodes = state.model.nodes;
+  const nodes = state.mode === "workbench" ? state.plannedProjection.nodes : state.model.nodes;
   for (let index = nodes.length - 1; index >= 0; index -= 1) {
     const node = nodes[index];
     if (!state.visibleKeys.has(node.key)) continue;
@@ -2078,6 +2702,22 @@ function showTooltip(node, clientX, clientY) {
     return;
   }
   const wrap = elements.canvasWrap.getBoundingClientRect();
+  if (state.mode === "workbench") {
+    const recipe = state.selectedRecipeId ? state.workbench.recipeById.get(state.selectedRecipeId) : undefined;
+    const occurrences = recipe?.routeOccurrences.get(node.id) ?? [];
+    const presentation = plannedNodePresentation(node, occurrences);
+    const routeDetail = presentation.routeTooltipText
+      ? `<br>${escapeHtml(presentation.routeTooltipText)}`
+      : "";
+    const detail = `${node.origin === "existing" ? "Existing" : "Missing mechanism to build"}<br>${escapeHtml(node.layer)} layer<br>${node.contract.productInputs.reduce((count, group) => count + group.ports.length, 0)} product inputs / ${node.contract.outputBranches.reduce((count, branch) => count + branch.ports.length, 0)} product outputs${routeDetail}`;
+    elements.tooltip.innerHTML = `<strong>${escapeHtml(node.label)}</strong><code>${escapeHtml(node.id)}</code>${detail}`;
+    elements.tooltip.hidden = false;
+    const left = Math.min(wrap.width - 300, Math.max(8, clientX - wrap.left + 14));
+    const top = Math.min(wrap.height - 100, Math.max(8, clientY - wrap.top + 14));
+    elements.tooltip.style.left = `${left}px`;
+    elements.tooltip.style.top = `${top}px`;
+    return;
+  }
   const orphan = node.kind === "artifact" && state.mode !== "product" ? orphanSummary(node) : "";
   let detail = node.kind === "artifact"
     ? `${escapeHtml(node.record.category)} / ${escapeHtml(node.record.plane)}<br>Focus: ${escapeHtml(node.record.productFocus)}${orphan ? `<br>${escapeHtml(orphan)}` : ""}`
@@ -2087,7 +2727,7 @@ function showTooltip(node, clientX, clientY) {
     const frontier = state.model.candidateClosure.frontierDetailsByMechanismId.get(node.id);
     const conditional = state.model.candidateClosure.conditionalMechanismKeys.has(node.key);
     detail += reached
-      ? "<br>Candidate-reached / complete declared bundle"
+      ? "<br>Declaration-reached / complete declared bundle"
       : frontier
         ? `<br>Frontier / unreached / ${frontier.directPorts.length} direct and ${frontier.alternativeGroups.length} group unresolved conditions`
         : "";
@@ -2111,12 +2751,23 @@ function orphanSummary(node) {
 function selectNode(key) {
   state.selectedKey = key;
   if (key) {
-    const node = state.model.nodeByKey.get(key);
+    if (key.startsWith("condemned:")) {
+      const mechanism = state.workbench.condemnedById.get(key.slice("condemned:".length));
+      elements.instrument.classList.add("inspector-open");
+      elements.inspector.classList.add("is-open");
+      renderCondemnedInspector(mechanism);
+      announce(`Selected condemned formulation ${mechanism.title}, ${mechanism.id}.`);
+      requestRender();
+      return;
+    }
+    const node = visibleNodeByKey(key);
+    if (!node) return;
     elements.instrument.classList.add("inspector-open");
     elements.inspector.classList.add("is-open");
-    renderInspector(node);
+    if (key.startsWith("planned:")) renderPlannedInspector(node.id);
+    else renderInspector(node);
     elements.visibleNodeNavigator.value = key;
-    announce(`Selected ${node.kind} ${node.label}, ${node.id}.`);
+    announce(`Selected mechanism ${node.label}, ${node.id}.`);
   } else {
     renderEmptyInspector();
     elements.visibleNodeNavigator.selectedIndex = -1;
@@ -2137,6 +2788,143 @@ function tagList(values, alert = false) {
 
 function notesList(notes) {
   return `<ul class="note-list">${notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>`;
+}
+
+function renderPlannedPortGroups(groups, emptyText) {
+  if (!groups.length) return `<p class="status-copy">${escapeHtml(emptyText)}</p>`;
+  return groups.map((group) => `
+    <article class="port-card planned-port-group">
+      <h4>${escapeHtml(group.id)} <small>${escapeHtml(group.mode ?? "branch")}</small></h4>
+      ${group.ports.map((port) => `<div class="planned-port"><strong>${escapeHtml(port.id)}</strong><code>${escapeHtml(port.artifactTypeId)}</code><small>${escapeHtml(port.cardinality)}</small></div>`).join("")}
+    </article>`).join("");
+}
+
+function renderPlannedRelations(edges, direction) {
+  if (!edges.length) return `<p class="status-copy">No immediate ${escapeHtml(direction)} product mechanism.</p>`;
+  return `<div class="relation-list">${edges.map((edge) => {
+    const mechanismId = direction === "upstream" ? edge.sourceId : edge.targetId;
+    const boundary = mechanismId === "$source" || mechanismId === "$goal";
+    return `<div class="relation-row">
+      ${boundary
+        ? `<strong>${escapeHtml(edgeEndpointLabel(mechanismId))}</strong>`
+        : `<button class="node-jump" type="button" data-plan-mechanism-id="${escapeHtml(mechanismId)}">${escapeHtml(state.workbench.mechanismById.get(mechanismId)?.title ?? mechanismId)}</button>`}
+      <small>${escapeHtml(handoffText(edge))}</small>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function renderPlannedSource(mechanism) {
+  if (mechanism.sourceLine) {
+    return `<a href="/MECHANISMS.html#L${mechanism.sourceLine}" target="_blank" rel="noreferrer">${escapeHtml(mechanism.sourceRef)}</a>`;
+  }
+  return `<a href="/BRANCH_RESEARCH.md" target="_blank" rel="noreferrer">${escapeHtml(mechanism.sourceRef)}</a>`;
+}
+
+function renderPlannedInspector(mechanismId) {
+  const detail = plannedInspectorData(state.workbench, mechanismId);
+  if (!detail || detail.kind !== "planned") return;
+  const { mechanism } = detail;
+  const fixedAvailability = new Map(state.branchPlan.fixedConfigurations.map((entry) => [entry.id, entry.available]));
+  const providerPorts = state.branchPlan.readinessProviders.flatMap((provider) =>
+    provider.outputPorts.map((port) => ({ artifactTypeId: port.artifactTypeId, available: provider.available })));
+  const missingReadiness = [];
+  if (!mechanism.readiness.implementationAvailable) missingReadiness.push("Implementation unavailable");
+  for (const reference of mechanism.readiness.fixedConfigRefs) {
+    if (!fixedAvailability.get(reference)) missingReadiness.push(`Fixed configuration unavailable: ${reference}`);
+  }
+  for (const port of mechanism.readiness.requiredNonProductInputs) {
+    if (!providerPorts.some((provider) => provider.artifactTypeId === port.artifactTypeId && provider.available)) {
+      missingReadiness.push(`Non-product input unavailable: ${port.id} -> ${port.artifactTypeId}`);
+    }
+  }
+  if (!mechanism.readiness.fixtureAvailable) missingReadiness.push("Known-good fixture unavailable");
+  if (!mechanism.readiness.visualizationAvailable) missingReadiness.push("Independent visualization unavailable");
+  if (!mechanism.readiness.humanScoreAvailable) missingReadiness.push("Human score unavailable");
+  elements.inspector.innerHTML = `
+    <header class="inspector-header planned-inspector-header ${mechanism.origin}">
+      <span class="node-kind">${mechanism.origin === "existing" ? "Existing" : "Missing mechanism to build"}</span>
+      <button class="inspector-close" type="button" aria-label="Close inspector">Close</button>
+      <h2>${escapeHtml(mechanism.title)}</h2>
+      <div class="node-id">${escapeHtml(mechanism.id)}</div>
+    </header>
+    <section class="inspector-section">
+      <dl class="fact-grid">
+        <dt>Layer</dt><dd>${escapeHtml(mechanism.layer)}</dd>
+        <dt>Implementation</dt><dd>${escapeHtml(mechanism.readiness.implementationStatus)}</dd>
+        <dt>Recipe witnesses</dt><dd>${detail.witnessRecipes.length}</dd>
+      </dl>
+    </section>
+    <section class="inspector-section">
+      <h3>Exact product inputs</h3>
+      ${renderPlannedPortGroups(detail.inputs, "No product input declared.")}
+    </section>
+    <section class="inspector-section">
+      <h3>Operation</h3>
+      <p class="description">${escapeHtml(mechanism.operation)}</p>
+    </section>
+    <section class="inspector-section">
+      <h3>Exact product outputs</h3>
+      ${renderPlannedPortGroups(detail.outputs, "No product output declared.")}
+    </section>
+    <section class="inspector-section">
+      <h3>Immediate upstream</h3>
+      ${renderPlannedRelations(detail.upstream, "upstream")}
+      <h3>Immediate downstream consumers</h3>
+      ${renderPlannedRelations(detail.downstream, "downstream")}
+    </section>
+    <section class="inspector-section">
+      <h3>Witness recipes</h3>
+      ${detail.witnessRecipes.length
+        ? `<ul class="note-list">${detail.witnessRecipes.map((recipe) => `<li><button class="inline-action" type="button" data-recipe-id="${escapeHtml(recipe.recipeId)}">${escapeHtml(recipe.recipeId)}</button> - Type-closed on paper; not implemented or evaluated</li>`).join("")}</ul>`
+        : `<p class="status-copy">No source-to-v3 recipe witness.</p>`}
+    </section>
+    <section class="inspector-section readiness-section">
+      <h3>Missing readiness</h3>
+      ${missingReadiness.length ? notesList(missingReadiness) : `<p class="status-copy">No unavailable readiness item is declared.</p>`}
+    </section>
+    <section class="inspector-section sidecar-section">
+      <h3>Test sidecars</h3>
+      <p class="status-copy">Inspector attachments only. They are not product connectivity.</p>
+      <div class="sidecar-attachments">${detail.sidecars.map((sidecar) => `
+        <article class="sidecar-card">
+          <strong>${escapeHtml(sidecar.kind)}</strong>
+          <code>${escapeHtml(sidecar.id)}</code>
+          <span>Planned / unavailable</span>
+        </article>`).join("")}</div>
+    </section>
+    <section class="inspector-section">
+      <h3>Source</h3>
+      ${renderPlannedSource(mechanism)}
+    </section>`;
+}
+
+function renderCondemnedInspector(mechanism) {
+  if (!mechanism) return;
+  elements.inspector.innerHTML = `
+    <header class="inspector-header condemned-inspector-header">
+      <span class="node-kind">Condemned current formulation</span>
+      <button class="inspector-close" type="button" aria-label="Close inspector">Close</button>
+      <h2>${escapeHtml(mechanism.title)}</h2>
+      <div class="node-id">${escapeHtml(mechanism.id)}</div>
+    </header>
+    <section class="inspector-section">
+      <h3>Exact researched reason</h3>
+      <p class="description">${escapeHtml(mechanism.reason)}</p>
+      <p class="status-copy">Hidden from planned layers and recipes. This formulation is not a work item or a route rescue node.</p>
+    </section>
+    <section class="inspector-section">
+      <h3>Exact current inputs</h3>
+      ${renderPlannedPortGroups([{ id: "current inputs", mode: "built contract", ports: mechanism.inputs }], "No inputs.")}
+      <h3>Exact current outputs</h3>
+      ${renderPlannedPortGroups([{ id: "success", mode: "built contract", ports: mechanism.outputs }], "No outputs.")}
+    </section>
+    <section class="inspector-section">
+      <h3>Source evidence</h3>
+      <ul class="note-list">${mechanism.evidenceRefs.map((reference) => {
+        const line = /MECHANISMS\.md:(\d+)$/u.exec(reference)?.[1];
+        return `<li>${line ? `<a href="/MECHANISMS.html#L${line}" target="_blank" rel="noreferrer">${escapeHtml(reference)}</a>` : escapeHtml(reference)}</li>`;
+      }).join("")}</ul>
+    </section>`;
 }
 
 function relationRows(edges, direction) {
@@ -2181,17 +2969,17 @@ function renderOutputAnalysisDetail(detail) {
 function renderClosureArtifactStatus(node) {
   if (state.mode !== "frontiers") return "";
   const closure = state.model.candidateClosure;
-  let status = "Context artifact in a displayed candidate or frontier bundle; it is not candidate-available at the closure fixpoint.";
+  let status = "Context artifact in a displayed declared-input bundle; it is not available after the declared-input pass.";
   if (node.id === RIGHT_ANCHOR_ID) {
-    status = "Pinned confirmed product materializer gap. It is not a seed, no declared mechanism produces it, and it remains candidate-unreachable.";
+    status = "Pinned confirmed product materializer gap. It is not a declared root, and no built mechanism produces it.";
   } else if (closure.rootArtifactIds.has(node.id)) {
     status = node.id === LEFT_ANCHOR_ID
-      ? "Native raster anchor and declaration-level closure seed."
-      : "Eligible expected-external runtime/governance root and declaration-level closure seed.";
+      ? "Native raster anchor and declared root."
+      : "Eligible expected-external declared root.";
   } else if (closure.availableArtifactIds.has(node.id)) {
-    status = "Candidate-available output added by an obligation-satisfied permitted mechanism.";
+    status = "Available output from a permitted mechanism with complete declared inputs.";
   }
-  return `<section class="inspector-section closure-status"><h3>Candidate closure status</h3><p class="status-copy">${escapeHtml(status)}</p><p class="status-copy">Availability here is declaration-level only. It is not executable or source-validated reachability.</p></section>`;
+  return `<section class="inspector-section closure-status"><h3>Declared input reach</h3><p class="status-copy">${escapeHtml(status)}</p><p class="status-copy">Availability here is declaration-level only. It is not executable or source-validated reachability.</p></section>`;
 }
 
 function renderClosureMechanismStatus(node) {
@@ -2202,7 +2990,7 @@ function renderClosureMechanismStatus(node) {
     ? `<p class="status-copy"><strong>Conditional:</strong> generated status contains both permitted and prohibited variants.</p>`
     : "";
   if (closure.reachedMechanismKeys.has(node.key)) {
-    return `<section class="inspector-section closure-status"><h3>Candidate closure status</h3>${tagList(["Candidate-reached", "Complete declared bundle"])}<p class="status-copy">Every direct required/configuration obligation is candidate-available and every declared alternative group has an available member. Optional inputs are not closure conditions.</p>${conditionalText}<p class="status-copy">Conditional value constraints and branches are displayed below but not evaluated by this closure.</p></section>`;
+    return `<section class="inspector-section closure-status"><h3>Declared input reach</h3>${tagList(["Declaration-reached", "Complete declared bundle"])}<p class="status-copy">Every direct required/configuration input is available and every declared alternative group has an available member. Optional inputs are not required conditions.</p>${conditionalText}<p class="status-copy">Conditional value constraints and branches are displayed below but not evaluated by this view.</p></section>`;
   }
   const frontier = closure.frontierDetailsByMechanismId.get(node.id);
   if (!frontier) return "";
@@ -2210,7 +2998,7 @@ function renderClosureMechanismStatus(node) {
   const direct = frontier.directPorts.map((port) => `${port.id}: ${port.artifactTypeId}`);
   const groups = frontier.alternativeGroups.map(({ group, memberPorts }) =>
     `${group.id}: none of ${memberPorts.map((port) => `${port.id} (${port.artifactTypeId})`).join(", ")} is available`);
-  return `<section class="inspector-section closure-status"><h3>Candidate closure status</h3>${tagList(["Frontier", "Unreached"], true)}<p class="status-copy">At least one natural input is candidate-available, while declared closure conditions remain unresolved. No outputs are admitted or drawn.</p><h4>Available natural inputs</h4>${notesList(available)}${direct.length ? `<h4>Unresolved direct conditions</h4>${notesList(direct)}` : ""}${groups.length ? `<h4>Unresolved alternative-group conditions</h4>${notesList(groups)}` : ""}${conditionalText}<p class="status-copy">Conditional value constraints and branches are displayed below but not evaluated by this closure.</p></section>`;
+  return `<section class="inspector-section closure-status"><h3>Declared input reach</h3>${tagList(["Unreached", "Incomplete inputs"], true)}<p class="status-copy">At least one natural input is available, while declared required conditions remain unresolved. No outputs are admitted or drawn.</p><h4>Available natural inputs</h4>${notesList(available)}${direct.length ? `<h4>Unresolved direct conditions</h4>${notesList(direct)}` : ""}${groups.length ? `<h4>Unresolved alternative-group conditions</h4>${notesList(groups)}` : ""}${conditionalText}<p class="status-copy">Conditional value constraints and branches are displayed below but not evaluated by this view.</p></section>`;
 }
 
 function renderArtifactInspector(node) {
@@ -2291,20 +3079,20 @@ function renderClosurePortStatus(mechanismId, port, direction) {
   const mechanismKey = nodeKey("mechanism", mechanismId);
   if (direction === "output") {
     return closure.reachedMechanismKeys.has(mechanismKey)
-      ? `<p class="closure-port-state">Candidate-available output admitted at the fixpoint.</p>`
+      ? `<p class="closure-port-state">Output available after the declared-input pass.</p>`
       : closure.frontierMechanismKeys.has(mechanismKey)
         ? `<p class="closure-port-state blocked">Declared frontier output; not admitted or drawn.</p>`
         : "";
   }
   if (closure.availableArtifactIds.has(port.artifactTypeId)) {
-    return `<p class="closure-port-state">Candidate-available input${closure.rootArtifactIds.has(port.artifactTypeId) ? " seed" : ""}.</p>`;
+    return `<p class="closure-port-state">Available input${closure.rootArtifactIds.has(port.artifactTypeId) ? " from a declared root" : ""}.</p>`;
   }
   const frontier = closure.frontierDetailsByMechanismId.get(mechanismId);
   const blocked = frontier?.directPorts.some((candidate) => candidate.id === port.id)
     || frontier?.alternativeGroups.some(({ memberPorts }) => memberPorts.some((candidate) => candidate.id === port.id));
   return blocked
-    ? `<p class="closure-port-state blocked">Unresolved declaration-level closure condition.</p>`
-    : `<p class="closure-port-state context">Unavailable optional or unselected bundle context; not a closure condition.</p>`;
+    ? `<p class="closure-port-state blocked">Unresolved declaration-level required condition.</p>`
+    : `<p class="closure-port-state context">Unavailable optional or unselected bundle context; not a required condition.</p>`;
 }
 
 function renderPort(mechanismId, port, direction) {
@@ -2453,10 +3241,22 @@ function renderProductConnectivity() {
 function updateGeneratedMetadata() {
   const counts = state.analysis.counts;
   const incidenceCount = counts.inputPorts + counts.outputPorts;
-  elements.snapshot.textContent = `schema ${state.graph.schemaVersion} / snapshot ${formatDate(state.analysis.generatedAt)} / commit ${state.graph.sourceSnapshot.gitCommit.slice(0, 12)}`;
+  elements.snapshot.textContent = state.branchPlan
+    ? `plan ${state.branchPlan.schemaVersion} / built ${state.graph.schemaVersion} / ${formatDate(state.analysis.generatedAt)}`
+    : `planned unavailable / built ${state.graph.schemaVersion} / ${formatDate(state.analysis.generatedAt)}`;
+  const plannedCounts = state.branchAnalysis ? `
+    <span>Retained product mechanisms</span><b>${state.branchAnalysis.inventoryCounts.currentRetained}</b>
+    <span>Missing mechanisms to build</span><b>${state.branchAnalysis.inventoryCounts.proposedMechanisms}</b>
+    <span>Condemned formulations</span><b>${state.branchAnalysis.inventoryCounts.currentCondemned}</b>
+    <span>Sidecar / inspector mechanisms</span><b>${state.branchAnalysis.inventoryCounts.totalSidecarInspectors}</b>
+    <span>Essential source-to-v3 witnesses</span><b>${state.branchAnalysis.essentialWitnesses.length}</b>
+    <span>Type-closed planned recipes</span><b>${state.branchAnalysis.recipeCounts.successful}</b>
+    <span>Interchangeability slots</span><b>${state.branchAnalysis.interchangeabilitySlots.length}</b>
+    <span>Execution-ready recipes</span><b>${state.branchAnalysis.recipeCounts.executionReady}</b>` : "";
   elements.generatedCounts.innerHTML = `
-    <span>Artifact contracts</span><b>${counts.artifactTypes}</b>
-    <span>Mechanisms</span><b>${counts.mechanisms}</b>
+    ${plannedCounts}
+    <span>Built artifact contracts</span><b>${counts.artifactTypes}</b>
+    <span>Built census mechanisms</span><b>${counts.mechanisms}</b>
     <span>Typed port incidences</span><b>${incidenceCount}</b>
     <span>Compatibility bridges</span><b>${counts.compatibilityHyperedges}</b>
     <span>Never-provided types</span><b>${counts.neverProvidedInputTypes}</b>
@@ -2471,6 +3271,14 @@ function updateGeneratedMetadata() {
 }
 
 function centerNextSearchMatch() {
+  if (state.mode === "workbench") {
+    if (!state.searchMatches.length) return;
+    state.searchCursor = (state.searchCursor + 1) % state.searchMatches.length;
+    const key = state.searchMatches[state.searchCursor];
+    if (key.startsWith("condemned:")) selectNode(key);
+    else selectPlannedMechanism(key.slice("planned:".length));
+    return;
+  }
   const visibleMatches = state.searchMatches.filter((key) => state.visibleKeys.has(key));
   if (!visibleMatches.length) return;
   state.searchCursor = (state.searchCursor + 1) % visibleMatches.length;
@@ -2498,20 +3306,101 @@ function revealInFullRegistry(key) {
   announce(`Revealed ${state.model.nodeByKey.get(key)?.label ?? key} in the Full registry.`);
 }
 
+function selectPlannedMechanism(mechanismId) {
+  if (!state.workbench) return;
+  const mechanism = state.workbench.mechanismById.get(mechanismId);
+  if (!mechanism) return;
+  const layerChanged = state.selectedLayer !== mechanism.layer;
+  state.mode = "workbench";
+  state.selectedLayer = mechanism.layer;
+  updateProjection({ fit: layerChanged });
+  requestAnimationFrame(() => centerNode(plannedNodeKey(mechanismId)));
+}
+
+function selectRecipe(recipeId) {
+  if (!state.workbench) return;
+  state.selectedRecipeId = recipeId || null;
+  elements.recipeSelect.value = recipeId;
+  renderRecipeDetail();
+  requestRender();
+  announce(recipeId
+    ? `Highlighted ${recipeId}. All layer alternatives remain visible.`
+    : "Recipe highlight cleared. All layer alternatives remain visible.");
+}
+
 function bindInteractions() {
-  elements.modeControls.addEventListener("click", (event) => {
+  elements.controls.addEventListener("click", (event) => {
     const button = event.target.closest("[data-mode]");
     if (!button) return;
+    if (button.dataset.mode === "workbench" && !state.workbench) return;
     state.mode = button.dataset.mode;
     if (state.mode === "full") resetRegistryConstraints();
     updateProjection({ fit: state.mode !== "product" });
     if (state.mode === "product") requestAnimationFrame(frameReadableProductView);
   });
 
+  elements.layerTabs.addEventListener("click", (event) => {
+    if (!state.workbench) return;
+    const button = event.target.closest("[data-layer-id]");
+    if (!button || button.dataset.layerId === state.selectedLayer) return;
+    state.mode = "workbench";
+    state.selectedLayer = button.dataset.layerId;
+    updateProjection();
+  });
+  elements.layerTabs.addEventListener("keydown", (event) => {
+    if (!state.workbench) return;
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    event.stopPropagation();
+    const currentLayerId = event.target.closest("[data-layer-id]")?.dataset.layerId;
+    if (!currentLayerId) return;
+    moveLayerTabFocus({
+      layerIds: state.workbench.layers.map((layer) => layer.id),
+      currentLayerId,
+      key: event.key,
+      activate(nextLayerId) {
+        state.mode = "workbench";
+        state.selectedLayer = nextLayerId;
+        updateProjection();
+      },
+      resolveRenderedTab(nextLayerId) {
+        return [...elements.layerTabs.querySelectorAll("[data-layer-id]")]
+          .find((tab) => tab.dataset.layerId === nextLayerId);
+      },
+    });
+  });
+
+  elements.recipeSelect.addEventListener("change", () => selectRecipe(elements.recipeSelect.value));
+  elements.recipeSlotSelect.addEventListener("change", renderRecipeSlotDetail);
+  elements.handoffSearch.addEventListener("input", renderMissingHandoffs);
+  elements.controls.addEventListener("click", (event) => {
+    const recipeButton = event.target.closest("[data-recipe-id]");
+    if (recipeButton) {
+      elements.recipeControls.open = true;
+      selectRecipe(recipeButton.dataset.recipeId);
+      return;
+    }
+    const planButton = event.target.closest("[data-plan-mechanism-id]");
+    if (planButton) {
+      selectPlannedMechanism(planButton.dataset.planMechanismId);
+      return;
+    }
+    const condemnedButton = event.target.closest("[data-condemned-mechanism-id]");
+    if (condemnedButton) {
+      selectNode(`condemned:${condemnedButton.dataset.condemnedMechanismId}`);
+      return;
+    }
+    const searchButton = event.target.closest("[data-search-result-key]");
+    if (!searchButton) return;
+    const key = searchButton.dataset.searchResultKey;
+    if (key.startsWith("condemned:")) selectNode(key);
+    else selectPlannedMechanism(key.slice("planned:".length));
+  });
+
   elements.productOverlay.addEventListener("change", () => {
     state.productOverlay = elements.productOverlay.checked;
     updateProjection({ fit: false });
-    announce(`${state.productOverlay ? "Added" : "Removed"} the generated evaluation, governance, and research custody overlay without changing the current map view.`);
+    announce(`${state.productOverlay ? "Added" : "Removed"} the secondary built research overlay without changing the current map view.`);
   });
 
   elements.showAllProductContracts.addEventListener("change", () => {
@@ -2549,19 +3438,21 @@ function bindInteractions() {
     updateProjection();
   });
 
-  elements.searchInput.addEventListener("input", () => updateProjection({ fit: elements.searchContext.checked }));
-  elements.searchContext.addEventListener("change", () => updateProjection());
+  elements.searchInput.addEventListener("input", () => updateProjection({ fit: state.mode === "workbench" ? false : elements.searchContext.checked }));
+  elements.searchContext.addEventListener("change", () => {
+    if (state.mode !== "workbench") updateProjection();
+  });
   elements.searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
     centerNextSearchMatch();
   });
   elements.fitButton.addEventListener("click", () => {
     fitVisible();
-    announce("Fit all currently visible nodes.");
+    announce("Fit currently visible entries while preserving readable mechanism labels.");
   });
   elements.resetButton.addEventListener("click", () => {
     resetMap();
-    announce("Reset map view to the full layout extent.");
+    announce(state.mode === "workbench" ? "Reset to the readable selected-layer view." : "Reset map view to the full layout extent.");
   });
   elements.zoomInButton.addEventListener("click", () => zoomFromCenter(1.25));
   elements.zoomOutButton.addEventListener("click", () => zoomFromCenter(0.8));
@@ -2723,6 +3614,17 @@ function bindInteractions() {
       elements.graphCanvas.focus();
       return;
     }
+    const recipeButton = event.target.closest("[data-recipe-id]");
+    if (recipeButton) {
+      elements.recipeControls.open = true;
+      selectRecipe(recipeButton.dataset.recipeId);
+      return;
+    }
+    const planButton = event.target.closest("[data-plan-mechanism-id]");
+    if (planButton) {
+      selectPlannedMechanism(planButton.dataset.planMechanismId);
+      return;
+    }
     const revealButton = event.target.closest("[data-reveal-key]");
     if (revealButton) {
       revealInFullRegistry(revealButton.dataset.revealKey);
@@ -2755,7 +3657,7 @@ function bindInteractions() {
     else if (event.key === "+" || event.key === "=") zoomFromCenter(1.25);
     else if (event.key === "-" || event.key === "_") zoomFromCenter(0.8);
     else if (event.key === "Home" || event.key.toLowerCase() === "f") fitVisible();
-    else if (event.key === "Enter" && state.selectedKey) centerNode(state.selectedKey, false);
+    else if (event.key === "Enter" && state.selectedKey && !state.selectedKey.startsWith("condemned:")) centerNode(state.selectedKey, false);
     else return;
     event.preventDefault();
     requestRender();
@@ -2765,25 +3667,49 @@ function bindInteractions() {
 
 async function initialize() {
   try {
-    const [graph, analysis] = await Promise.all([
-      requestJson("/api/graph"),
-      requestJson("/api/orphans"),
-    ]);
-    assertConsumerPayloadIntegrity(graph, analysis);
-    state.graph = graph;
-    state.analysis = analysis;
-    state.model = buildModel(graph, analysis);
+    const loaded = await loadApplicationData();
+    state.graph = loaded.graph;
+    state.analysis = loaded.analysis;
+    state.branchPlan = loaded.branchPlan;
+    state.branchAnalysis = loaded.branchAnalysis;
+    state.plannedError = loaded.plannedError;
+    state.model = buildModel(loaded.graph, loaded.analysis);
+    state.workbench = loaded.workbench;
+    state.selectedLayer = state.workbench?.defaultLayerId ?? null;
+    state.mode = loaded.initialMode;
     state.layout = layoutGraph(state.model);
     populateControls(state.model);
-    elements.secondaryControls.open = false;
+    elements.secondaryControls.open = !state.workbench;
     elements.openContracts.open = false;
+    elements.recipeControls.open = false;
+    elements.handoffControls.open = false;
+    elements.condemnedControls.open = false;
+    if (state.workbench) {
+      elements.plannedError.hidden = true;
+      elements.layerTabs.hidden = false;
+      elements.recipeControls.hidden = false;
+      elements.handoffControls.hidden = false;
+      elements.condemnedControls.hidden = false;
+      renderWorkbenchControls();
+    } else {
+      elements.plannedError.hidden = false;
+      elements.plannedError.querySelector("span").textContent = `${loaded.plannedError} Built Product and Full registry remain available.`;
+      elements.layerCount.textContent = "Unavailable";
+      elements.layerTabs.hidden = true;
+      elements.recipeControls.hidden = true;
+      elements.handoffControls.hidden = true;
+      elements.condemnedControls.hidden = true;
+      elements.recipeCount.textContent = "Unavailable";
+      elements.handoffCount.textContent = "Unavailable";
+      elements.condemnedCount.textContent = "Unavailable";
+    }
     bindInteractions();
     state.initialized = true;
     updateProjection({ fit: false });
     updateGeneratedMetadata();
     renderEmptyInspector();
     elements.loading.hidden = true;
-    requestAnimationFrame(frameReadableProductView);
+    requestAnimationFrame(state.workbench ? frameReadablePlannedView : frameReadableProductView);
   } catch (error) {
     elements.loading.classList.add("error");
     elements.loading.setAttribute("role", "alert");

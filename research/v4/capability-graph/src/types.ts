@@ -301,6 +301,7 @@ export const VALUE_CONSTRAINT_COMPARATORS = [
   "not-equals",
   "in",
   "not-in",
+  "matches",
   "less-than",
   "less-than-or-equal",
   "greater-than",

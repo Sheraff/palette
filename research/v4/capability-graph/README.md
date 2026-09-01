@@ -106,27 +106,85 @@ input and alternative collections. Exploration may implement a narrow mechanism 
 without closing or registering these contracts. The generated `PRODUCT_CONNECTIVITY.md` presents this
 analysis, while `ORPHANS.md` remains the exhaustive type- and port-level topology report.
 
-### Web Product Canvas
+## Branch Plan
 
-The web instrument opens as the **Palette Product Capability Map**. Its sole primary/default Product
-map shows every generated primary mechanism, shared producer-to-consumer product contracts,
-expected-external boundary anchors, and the exact v3 goal. Leaf and open product contracts remain in
-mechanism inspectors and the closed **Open contracts** disclosure. That disclosure presents compact
-generated counts and exact candidate-connectivity observations without prescribing work or sequence.
+`data/branch-plan.json` is a separate planned-data layer over the unchanged 149-mechanism graph. It
+records current dispositions, domain-specific proposed artifacts and mechanisms, per-mechanism
+sidecar IDs, and concrete producer-instance/output-port recipe bindings. A type-closed planned recipe
+is a structurally type-closed source-to-v3 plan only. It is not runtime validation, does not select a
+preferred architecture, and does not establish execution readiness. The current branch snapshot has
+zero execution-ready recipes; proposed implementations, known-good fixtures, visualizations, and
+human-feedback scores remain explicitly unavailable.
 
-Product map nodes are packed into four viewing lanes over the generated semantic-commitment axis.
-Configuration, control, model, review, and custody context remains available in the exact mechanism
-inspector even when it is not drawn as a product incidence. The closed **Research details** disclosure
-contains **Show all product contracts**, **Full registry**, the evaluation/governance/research-custody
-overlay, Candidate closure, exhaustive orphan views, runtime-status views, filters, search, and the
-full visible-node navigator. These controls change only the viewing projection; none establishes a
-selected pipeline, integration, product readiness, source validation, compatibility, or build order.
+The branch analyzer validates the manifest with `schema/branch-plan.schema.json`, checks exact current
+census coverage, inspectable payloads, product types, cardinality groups, value constraints,
+forward-only bindings, source and goal reachability, removal-tested essential witnesses,
+normalized typed-edge route clones and packing, per-color native-occupancy admission certificates,
+and the sole cross-scope v3 materializer. It rejects generic
+closure shells, raw-raster fanout, pre-reification treatment mints, metadata-only infeasibility
+proofs, emergency admission without typed exhaustion evidence, and sidecars in product ancestry.
+Ordinary recipes preserve role cues, relations, and swap legality through joint hypotheses, finite
+factors, swap-legal candidate insertion, decision, role reification, repair input, repair, repair-result
+reification, native-occupancy admission, and publication. Emergency admission additionally requires
+candidate-domain, native-occupancy, and zero-feasible selection evidence in its proof. The generator
+authors the 62 proposal definitions, their reviewed operation/payload/inspection contracts, all
+current-mechanism dispositions, and one explicit `workbenchLayer` for each of the 133 active product
+mechanisms. The analyzer accepts only the closed 14-layer vocabulary and never infers current layers
+from IDs, recipe families, slot names, or route order. It
+separately reports fixed configuration and load-bearing non-product bindings, implementation
+availability, known-good fixtures, independent visualizations, and human-feedback scores. The build
+deterministically writes `data/branch-analysis.json` and the sole branch prose report,
+`BRANCH_RESEARCH.md`.
+
+Regenerate the authored branch plan before rebuilding derived reports:
+
+```sh
+node research/v4/capability-graph/scripts/regenerate-branch-plan.mjs
+```
+
+Verify the generator and exact plan bytes without writing:
+
+```sh
+node research/v4/capability-graph/scripts/regenerate-branch-plan.mjs --check
+```
+
+The generator constructs the complete plan in memory before either comparing or writing it. A stale
+`data/branch-plan.json` makes `--check` fail without modifying the file. It also reproduces the exact
+canonical `data/capability-graph.json` serialization and verifies that the generated branch analysis
+is bound to those bytes.
+
+### Planned Branch Workbench
+
+The web instrument opens as the **Palette Planned Branch Workbench**. Progressive layer tabs start at
+the artwork-file and raster foundations and show all retained and proposed alternatives in the layer,
+plus only their immediate typed-product context. Product lines come from successful generated recipe
+bindings; configuration, sidecar, diagnostic, report, and other non-product artifacts stay out of the
+canvas. The current snapshot groups all 88 optional recipes by their generated families and exposes
+10 generated interchangeability slots with clean essential witnesses and substitution pairs.
+Selecting a recipe highlights one type-closed route without hiding alternatives or marking it
+preferred. Exact handoffs, search, and mechanism inspectors remain available independently.
+
+The default status copy reports the generated retained, proposed, condemned, sidecar, recipe-witness,
+and execution-readiness totals. Proposed implementations and their known-good fixtures,
+visualizations, and human-feedback scores remain explicitly Planned / unavailable. The closed
+**Research details** disclosure retains the prior Built product graph, Full registry, and supporting
+research projections as secondary views. Condemned formulations are excluded from planned layers and
+recipes and remain inspectable only in their closed Research disclosure.
+
+The browser verifies both the generated canonical branch-plan SHA-256 and the branch analysis
+`canonical-json-utf8` SHA-256 over the exact sorted-key, two-space, trailing-newline capability graph
+before constructing the workbench. Layer tabs, memberships, filtering, and counts consume only the
+generated `workbenchMechanisms` and `workbenchLayers` metadata.
+If branch fetch, integrity, or digest verification fails, the Built Product view remains available and
+the failure is reported without treating the built graph as invalid. A graph fetch or graph-integrity
+failure remains fatal.
 
 ## Not A Trial Gate
 
-The Product map is the default research view. The Full registry and its custody, diagnostic,
-configuration, governance, and contract detail remain available as secondary inspection context;
-they support research but are not the mechanism research itself and must not dominate the map.
+The Planned workbench is the default research view. The Built Product map, Full registry, and their
+custody, diagnostic, configuration, governance, and contract detail remain available as secondary
+inspection context; they support research but are not the mechanism workbench itself and must not
+dominate it.
 
 Focus classifications are display and research-priority metadata, not authority. They do not grant
 or deny implementation, evidence, integration, release, product, or scientific interpretation.
@@ -198,6 +256,8 @@ input to structural validation because no census mechanism materializes the publ
   graph document.
 - `schema/fragment.schema.json`: JSON Schema Draft 2020-12 contract for independently authored mapping
   fragments.
+- `schema/branch-plan.schema.json`: strict contract for branch inventory, proposed contracts, concrete
+  recipes, and execution-readiness bindings.
 - `data/capability-groups.json`: the semantic-commitment axis, orthogonal lanes, capability cells,
   fixed product anchors, and topology policy.
 - `src/types.ts`: corresponding TypeScript records and closed vocabularies.
@@ -213,9 +273,12 @@ input to structural validation because no census mechanism materializes the publ
   all 149 census entries.
 - `data/capability-graph.json`: generated canonical graph.
 - `data/orphan-analysis.json`: generated compatibility and port-level orphan analysis.
+- `data/branch-plan.json`: authored branch inventory and concrete recipe declarations.
+- `data/branch-analysis.json`: generated closure, readiness, sidecar, witness, and disposition data.
 - `ORPHANS.md`: generated readable orphan report with one row per orphaned port.
 - `PRODUCT_CONNECTIVITY.md`: generated product projection, confirmed materializer gap, and
   non-prescriptive open-contract observations.
+- `BRANCH_RESEARCH.md`: generated branch workbench and concrete recipe report.
 
 A fragment contains artifact type definitions and complete typing records for its census mechanisms.
 It does not contain generated compatibility hyperedges, orphan lists, or architecture edges. The build
@@ -308,32 +371,17 @@ Open <http://127.0.0.1:4200/>. To choose another port, pass it directly or use `
 pnpm exec node --experimental-strip-types research/v4/capability-graph/src/serve.ts --port 4300
 ```
 
-The Canvas projection draws one incidence for every typed input and output port. It does not create
-producer-by-consumer edges. Mechanisms use `primaryCapabilityId` only for their visualization cell;
-all other taxonomy memberships remain inspectable without inventing an averaged position or semantic
-priority. The Candidate closure projection starts with the native raster plus generated
-`expected-external-root` artifacts in runtime and governance planes. A mechanism belongs to the
-fixpoint when it has a permitted runtime variant, every direct `required` or `configuration` input is
-candidate-available, and each declared alternative group has a candidate-available member. Optional
-inputs do not affect fixpoint membership. Reached mechanisms retain complete declared port bundles;
-unreached frontier mechanisms show an available natural input and the declared inputs or alternative
-groups that are not candidate-available, without showing outputs. Mixed permitted/prohibited variants
-remain conditional. The producerless UI goal stays pinned and candidate-unreachable.
+The planned canvas draws producer-to-consumer product lines only from exact bindings in successful
+generated recipes. Each progressive layer retains every active mechanism assigned to that layer and
+adds only immediate upstream and downstream context. The optional recipe control highlights one route
+without changing layer membership. Built product and Full registry views retain their generated typed
+port incidences as secondary Research views.
 
-Candidate closure is declaration-level only. It does not evaluate conditional value constraints or
-branches and does not establish executable, source-validated, or safe reachability. The semantic
-validator checks declaration consistency; shared artifact IDs do not establish source-backed
-compatibility, a route, dependency, selected handoff, or safe composition.
-
-Missing-link controls use the generated per-port obligation and terminal dispositions, including
-collective unavailable alternative groups and unused alternatives. The Has permitted variant
-projection retains every typed port of each included mechanism and marks non-runtime context rather
-than silently drawing partial hyperedges. Visible zoom controls, one-finger pan, pinch zoom, keyboard
-map controls, and a visible-node listbox provide pointer and non-canvas exploration. Exact mechanism
-source links open the server's escaped, line-numbered source view. No npm, npx, global module, or
-external frontend dependency is required. At phone widths, Full and Candidate closure remain directly
-available while additional projections, filters, and the node navigator move into a native accessible
-disclosure so the initial viewport retains a useful map region.
+Visible zoom controls, one-finger pan, pinch zoom, keyboard map controls, search, and exact inspectors
+provide pointer and non-canvas exploration. Existing source links open the escaped line-numbered census;
+proposed links open the generated branch report. No external frontend dependency is required. At phone
+widths, layers remain horizontally scrollable, disclosures stay closed initially, targets are at least
+44 CSS pixels, and the initial viewport retains a usable planned canvas region.
 
 ## Generation
 
@@ -345,11 +393,16 @@ byte-identical outputs. The graph and standalone analysis share one generation d
 generator identity, pinned source snapshot, and exact sorted input manifest. Manifest entries and
 source-fragment records hash raw bytes and include byte lengths.
 
+Branch-plan-derived outputs (`data/branch-analysis.json` and `BRANCH_RESEARCH.md`) are validated and
+generated in the same build. Branch analysis carries both its canonical branch-plan digest and the
+SHA-256 of the exact canonical UTF-8 capability-graph bytes emitted and served by this build, so equal
+counts or the graph's input-manifest digest cannot mask different fetched graph content.
+
 The canonical manifest belongs to the generator and schema contract. Adding, removing, or renaming a
 fragment requires an explicit manifest edit, generator-version increment, schema-version update, and
 regeneration; directory discovery never silently migrates the graph to a different input set.
 
-Generation stages all four outputs before replacing their destinations. Each replacement is an atomic
+Generation stages all six outputs before replacing their destinations. Each replacement is an atomic
 file rename on the local filesystem, but the sequence is not an atomic directory transaction: an
 interruption can expose files from two generations. The shared digest and `--check` make that partial
 publication detectable; consumers that read multiple generated files must compare their generation

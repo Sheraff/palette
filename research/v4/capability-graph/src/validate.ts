@@ -477,6 +477,29 @@ function valueConstraintIssues(
       ),
     );
   }
+  if (constraint.comparator === "matches") {
+    if (typeof constraint.value !== "string") {
+      issues.push(
+        issue(
+          "constraint-pattern",
+          `${path}.value`,
+          "matches requires a regular-expression string.",
+        ),
+      );
+    } else {
+      try {
+        new RegExp(constraint.value);
+      } catch {
+        issues.push(
+          issue(
+            "constraint-pattern",
+            `${path}.value`,
+            "matches requires a valid regular-expression string.",
+          ),
+        );
+      }
+    }
+  }
   if (
     [
       "less-than",

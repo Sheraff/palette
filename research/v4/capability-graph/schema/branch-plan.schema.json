@@ -1,0 +1,440 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://palette.local/research/v4/capability-graph/schema/branch-plan.schema.json",
+  "title": "Capability Branch Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["documentKind", "schemaVersion", "sourceArtifactTypeId", "goalArtifactTypeId", "currentReadinessPolicy", "sidecarPolicy", "fixedConfigurations", "readinessProviders", "currentMechanisms", "proposedArtifacts", "artifactTypeAliases", "productArtifactDemotions", "proposedMechanisms", "recipes"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "documentKind": { "const": "capability-branch-plan" },
+    "schemaVersion": { "const": "1.0.0" },
+    "sourceArtifactTypeId": { "const": "artifact.source.encoded-artwork-image.v1" },
+    "goalArtifactTypeId": { "const": "artifact.product.ui-palette.v3" },
+    "currentReadinessPolicy": { "const": "derive-required-nonproduct-ports-from-built-contract" },
+    "requireCompleteActiveWitnesses": { "type": "boolean" },
+    "sidecarPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixtureIdTemplate", "visualizationIdTemplate", "humanScoreIdTemplate", "fixtureArtifactTypeId", "visualizationArtifactTypeId", "humanScoreArtifactTypeId"],
+      "properties": {
+        "fixtureIdTemplate": { "const": "fixture.{mechanismId}.v1" },
+        "visualizationIdTemplate": { "const": "visualization.{mechanismId}.v1" },
+        "humanScoreIdTemplate": { "const": "human-score.{mechanismId}.v1" },
+        "fixtureArtifactTypeId": { "type": "string", "pattern": "^artifact\\." },
+        "visualizationArtifactTypeId": { "type": "string", "pattern": "^artifact\\." },
+        "humanScoreArtifactTypeId": { "type": "string", "pattern": "^artifact\\." }
+      }
+    },
+    "fixedConfigurations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/fixedConfiguration" }
+    },
+    "readinessProviders": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/readinessProvider" }
+    },
+    "currentMechanisms": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/currentMechanism" }
+    },
+    "proposedArtifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/proposedArtifact" }
+    },
+    "artifactTypeAliases": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "pattern": "^artifact\\." },
+      "propertyNames": { "pattern": "^artifact\\." }
+    },
+    "productArtifactDemotions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^artifact\\." }
+    },
+    "proposedMechanisms": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/proposedMechanism" }
+    },
+    "recipeModules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/recipeModule" }
+    },
+    "recipes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/recipe" }
+    }
+  },
+  "$defs": {
+    "workbenchLayer": {
+      "enum": ["raster", "evidence", "literature", "saliency", "field", "candidate", "role", "color", "gradient", "treatment", "search", "selection", "repair", "publication"]
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valuePath", "comparator", "value"],
+      "properties": {
+        "valuePath": { "type": "string", "pattern": "^/" },
+        "comparator": { "enum": ["equals", "in", "matches", "count-equals", "count-between-inclusive"] },
+        "value": {}
+      }
+    },
+    "inspectionConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comparator", "value"],
+      "properties": {
+        "comparator": { "enum": ["equals", "in", "matches", "count-equals", "count-between-inclusive"] },
+        "value": {}
+      }
+    },
+    "inspectionPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valuePath", "valueKind", "permittedConstraints", "notes"],
+      "properties": {
+        "valuePath": { "type": "string", "pattern": "^/" },
+        "valueKind": { "enum": ["state", "scalar", "collection", "object"] },
+        "permittedConstraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/inspectionConstraint" }
+        },
+        "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "semanticRole": { "type": "string", "minLength": 1 }
+      }
+    },
+    "inspectionRelation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "subjectPath", "objectPath"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "kind": { "enum": ["equals", "member-of", "subset-of", "aligned-equals", "aligned-witness", "rgb-hex-equivalent", "collapse-equivalence", "variant-semantics"] },
+        "subjectPath": { "type": "string", "pattern": "^/" },
+        "objectPath": { "type": "string", "pattern": "^/" },
+        "whenVariant": { "enum": ["flat", "gradient", "emergency-flat"] }
+      }
+    },
+    "valueInspection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paths", "notes"],
+      "properties": {
+        "paths": { "type": "array", "items": { "$ref": "#/$defs/inspectionPath" } },
+        "relations": { "type": "array", "items": { "$ref": "#/$defs/inspectionRelation" } },
+        "notes": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "payloadVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "discriminatorConstraints", "requiredPaths", "forbiddenPaths"],
+      "properties": {
+        "id": { "enum": ["flat", "gradient", "emergency-flat"] },
+        "discriminatorConstraints": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/constraint" } },
+        "requiredPaths": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^/" } },
+        "forbiddenPaths": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^/" } }
+      }
+    },
+    "payloadShape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schemaRef", "description", "fields"],
+      "properties": {
+        "kind": { "enum": ["object", "array", "scalar", "opaque"] },
+        "schemaRef": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["valuePath", "valueKind", "required"],
+            "properties": {
+              "valuePath": { "type": "string", "pattern": "^/" },
+              "valueKind": { "enum": ["state", "scalar", "collection", "object"] },
+              "required": { "type": "boolean" }
+            }
+          }
+        },
+        "variants": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/payloadVariant" } }
+      }
+    },
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "artifactTypeId", "cardinality", "constraints", "identityPaths"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "artifactTypeId": { "type": "string", "pattern": "^artifact\\." },
+        "cardinality": { "enum": ["exactly-one", "exactly-two", "zero-or-one", "zero-to-two", "zero-to-six", "one-to-two", "one-or-more", "zero-or-more"] },
+        "constraints": { "type": "array", "items": { "$ref": "#/$defs/constraint" } },
+        "identityPaths": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^/" } }
+      }
+    },
+    "inputGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "mode", "ports"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "mode": { "enum": ["all", "exactly-one", "one-or-more"] },
+        "ports": { "type": "array", "items": { "$ref": "#/$defs/port" } }
+      }
+    },
+    "outputBranch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ports"],
+      "properties": {
+        "id": { "enum": ["success", "abstention", "refusal", "alpha"] },
+        "ports": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/port" } }
+      }
+    },
+    "replacementContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reason", "productInputs", "productOutputs"],
+      "properties": {
+        "reason": { "type": "string", "minLength": 1 },
+        "productInputs": { "type": "array", "items": { "$ref": "#/$defs/inputGroup" } },
+        "productOutputs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/outputBranch" } }
+      }
+    },
+    "currentMechanism": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanismId", "disposition", "reason", "excludedProductPorts"],
+      "properties": {
+        "mechanismId": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["retained", "condemned", "sidecar"] },
+        "reason": { "type": "string", "minLength": 1 },
+        "workbenchLayer": { "$ref": "#/$defs/workbenchLayer" },
+        "interchangeabilitySlot": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "evidenceRefs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "condemnedScope": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "excludedProductPorts": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^(input|output):" } },
+        "outputCardinalityOverrides": {
+          "type": "object",
+          "additionalProperties": { "enum": ["exactly-one", "exactly-two", "zero-or-one", "zero-to-two", "zero-to-six", "one-to-two", "one-or-more", "zero-or-more"] },
+          "propertyNames": { "type": "string", "minLength": 1 }
+        },
+        "replacementContract": { "$ref": "#/$defs/replacementContract" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "disposition": { "const": "condemned" } }, "required": ["disposition"] },
+          "then": { "required": ["condemnedScope", "evidenceRefs"] }
+        },
+        {
+          "if": { "properties": { "disposition": { "const": "retained" } }, "required": ["disposition"] },
+          "then": { "required": ["workbenchLayer"] }
+        }
+      ]
+    },
+    "proposedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "productFocus", "label", "description", "payloadShape", "valueInspection"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^artifact\\." },
+        "kind": { "enum": ["product", "sidecar"] },
+        "productFocus": { "enum": ["product-flow", "inspector-metadata", "secondary-overlay", "full-analysis-only"] },
+        "label": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "payloadShape": { "$ref": "#/$defs/payloadShape" },
+        "valueInspection": { "$ref": "#/$defs/valueInspection" },
+        "semanticRoles": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "product" } }, "required": ["kind"] },
+          "then": { "properties": { "productFocus": { "const": "product-flow" } } },
+          "else": { "properties": { "productFocus": { "enum": ["inspector-metadata", "secondary-overlay", "full-analysis-only"] } } }
+        }
+      ]
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixedConfigRefs", "requiredNonProductInputs", "implementationAvailable", "fixtureAvailable", "visualizationAvailable", "humanScoreAvailable"],
+      "properties": {
+        "fixedConfigRefs": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "requiredNonProductInputs": { "type": "array", "items": { "$ref": "#/$defs/port" } },
+        "implementationAvailable": { "type": "boolean" },
+        "fixtureAvailable": { "type": "boolean" },
+        "visualizationAvailable": { "type": "boolean" },
+        "humanScoreAvailable": { "type": "boolean" }
+      }
+    },
+    "proposedMechanism": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "layer", "workbenchLayer", "sourceRef", "operation", "productInputs", "productOutputs", "crossPortConstraints", "readiness", "sidecars"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "layer": { "type": "string", "minLength": 1 },
+        "workbenchLayer": { "$ref": "#/$defs/workbenchLayer" },
+        "sourceRef": { "type": "string", "minLength": 1 },
+        "operation": { "type": "string", "minLength": 1 },
+        "interchangeabilitySlot": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "productInputs": { "type": "array", "items": { "$ref": "#/$defs/inputGroup" } },
+        "productOutputs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/outputBranch" } },
+        "crossPortConstraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["leftPortId", "leftValuePath", "relation", "rightPortId", "rightValuePath"],
+            "properties": {
+              "leftPortId": { "type": "string", "minLength": 1 },
+              "leftValuePath": { "type": "string", "pattern": "^/" },
+              "relation": { "enum": ["equals", "member-of", "subset-of", "equals-when-present", "aligned-record-member-of", "derived-from"] },
+              "rightPortId": { "type": "string", "minLength": 1 },
+              "rightValuePath": { "type": "string", "pattern": "^/" }
+            }
+          }
+        },
+        "readiness": { "$ref": "#/$defs/readiness" },
+        "sidecars": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fixtureId", "visualizationId", "humanScoreId", "availability"],
+          "properties": {
+            "fixtureId": { "type": "string", "pattern": "^fixture\\." },
+            "visualizationId": { "type": "string", "pattern": "^visualization\\." },
+            "humanScoreId": { "type": "string", "pattern": "^human-score\\." },
+            "availability": { "const": "planned-unavailable" }
+          }
+        }
+      }
+    },
+    "fixedConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "available"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "available": { "type": "boolean" }
+      }
+    },
+    "readinessProvider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "available", "outputPorts"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "available": { "type": "boolean" },
+        "outputPorts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/port" } }
+      }
+    },
+    "equalityConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["producerValuePath", "consumerValuePath"],
+      "properties": {
+        "producerValuePath": { "type": "string", "pattern": "^/" },
+        "consumerValuePath": { "type": "string", "pattern": "^/" }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumerPortId", "producerInstanceId", "producerPortId", "equalityConstraints"],
+      "properties": {
+        "consumerPortId": { "type": "string", "minLength": 1 },
+        "producerInstanceId": { "type": "string", "minLength": 1 },
+        "producerPortId": { "type": "string", "minLength": 1 },
+        "equalityConstraints": { "type": "array", "items": { "$ref": "#/$defs/equalityConstraint" } }
+      }
+    },
+    "readinessBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["consumerInputId", "producerKind", "producerId", "producerPortId", "equalityConstraints"],
+      "properties": {
+        "consumerInputId": { "type": "string", "minLength": 1 },
+        "producerKind": { "enum": ["recipe-instance", "external-provider"] },
+        "producerId": { "type": "string", "minLength": 1 },
+        "producerPortId": { "type": "string", "minLength": 1 },
+        "equalityConstraints": { "type": "array", "items": { "$ref": "#/$defs/equalityConstraint" } }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instanceId", "mechanismId", "selectedOutputBranch", "productBindings", "readinessBindings"],
+      "properties": {
+        "instanceId": { "type": "string", "minLength": 1 },
+        "mechanismId": { "type": "string", "minLength": 1 },
+        "selectedOutputBranch": { "enum": ["success", "alpha", "abstention", "refusal"] },
+        "productBindings": { "type": "array", "items": { "$ref": "#/$defs/binding" } },
+        "readinessBindings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fixedConfigRefs", "nonProductInputs"],
+          "properties": {
+            "fixedConfigRefs": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+            "nonProductInputs": { "type": "array", "items": { "$ref": "#/$defs/readinessBinding" } }
+          }
+        }
+      }
+    },
+    "goalBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["producerInstanceId", "producerPortId"],
+      "properties": {
+        "producerInstanceId": { "type": "string", "minLength": 1 },
+        "producerPortId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "postGoalSidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instanceId", "mechanismId", "consumerPortId", "producerInstanceId", "producerPortId", "equalityConstraints"],
+      "properties": {
+        "instanceId": { "type": "string", "minLength": 1 },
+        "mechanismId": { "type": "string", "minLength": 1 },
+        "consumerPortId": { "type": "string", "minLength": 1 },
+        "producerInstanceId": { "type": "string", "minLength": 1 },
+        "producerPortId": { "type": "string", "minLength": 1 },
+        "equalityConstraints": { "type": "array", "items": { "$ref": "#/$defs/equalityConstraint" } }
+      }
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "family", "description", "preferred", "declaredRootInstanceIds", "steps", "goalBinding", "postGoalSidecars"],
+      "anyOf": [
+        { "properties": { "steps": { "type": "array", "minItems": 1 } } },
+        { "required": ["moduleRefs"], "properties": { "moduleRefs": { "type": "array", "minItems": 1 } } }
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^recipe\\." },
+        "family": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "preferred": { "const": false },
+        "moduleRefs": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "compositionTestSlots": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" } },
+        "declaredRootInstanceIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "steps": { "type": "array", "items": { "$ref": "#/$defs/step" } },
+        "goalBinding": { "$ref": "#/$defs/goalBinding" },
+        "postGoalSidecars": { "type": "array", "items": { "$ref": "#/$defs/postGoalSidecar" } }
+      }
+    },
+    "recipeModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "steps"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^module\\." },
+        "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } }
+      }
+    }
+  }
+}
